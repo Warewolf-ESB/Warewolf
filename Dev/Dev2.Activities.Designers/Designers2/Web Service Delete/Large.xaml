@@ -60,10 +60,10 @@
                         <RowDefinition.Style>
                             <Style>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="True">
+                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="True">
                                         <Setter Property="RowDefinition.Height" Value="*"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="False">
+                                    <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="False">
                                         <Setter Property="RowDefinition.Height" Value="Auto"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -73,7 +73,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Control Template="{StaticResource SelectionGrid}"/>
+                <Control Template="{StaticResource NewSelectionGrid}"/>
 
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
@@ -93,7 +93,7 @@
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMapppingDataGridStyle}"
                                    Height="Auto"
-                                   IsEnabled="{Binding InputArea.IsVisible}"
+                                   IsEnabled="{Binding InputArea.IsEnabled}"
                                    ColumnWidth="*"
                                    Margin="{StaticResource ControlBorderTop}">
 
@@ -172,7 +172,7 @@
                             </DataGrid.Columns>
                         </controls:Dev2DataGrid>
                     </Grid>
-                    <Grid x:Name="UrlGrid" Grid.Row="1" IsEnabled="{Binding InputArea.IsVisible}">
+                    <Grid x:Name="UrlGrid" Grid.Row="1" IsEnabled="{Binding InputArea.IsEnabled}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>

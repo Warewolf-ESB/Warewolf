@@ -735,7 +735,7 @@ namespace Dev2.Studio.ViewModels
                 case "SharepointServerSource":
                     EditSharePointSource(resourceModel);
                     break;
-                case "OauthSource":
+                case "SelectedOauthSource":
                     ShowEditResourceWizard(resourceModel);
                     break;
                 case "Server":
@@ -1357,7 +1357,7 @@ namespace Dev2.Studio.ViewModels
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
-            if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("OauthSource"))
+            if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("SelectedOauthSource"))
             {
                 SaveDropBoxSource(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel, true);
             }

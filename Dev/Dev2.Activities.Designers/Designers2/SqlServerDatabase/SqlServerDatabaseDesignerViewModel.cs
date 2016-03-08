@@ -104,12 +104,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
             InitializeProperties();
 
-            if (OutputsRegion != null && OutputsRegion.IsVisible)
+            if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
                 }
             }
         }
@@ -337,9 +337,9 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.SqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.SqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(ActionRegion);
            
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
@@ -349,7 +349,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
 
                 }
                 ErrorRegion = new ErrorRegion();
@@ -427,14 +427,14 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 _generateOutputsVisible = value;
                 if (value)
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = true;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(false);
                 }
                 else
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = false;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(true);
                 }
 
@@ -466,7 +466,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         public void ValidateTestComplete()
         {
-            OutputsRegion.IsVisible = true;
+            OutputsRegion.IsEnabled = true;
         }
 
         public void SetDisplayName(string outputFieldName)
@@ -494,15 +494,10 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         void SetRegionVisibility(bool value)
         {
-            InputArea.IsVisible = value;
-            OutputsRegion.IsVisible = value && OutputsRegion.Outputs.Count > 0;
-            ErrorRegion.IsVisible = value;
-            SourceRegion.IsVisible = value;
-        }
-
-        public override void ReCalculateHeight()
-        {
-            
+            InputArea.IsEnabled = value;
+            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
+            ErrorRegion.IsEnabled = value;
+            SourceRegion.IsEnabled = value;
         }
 
         #endregion

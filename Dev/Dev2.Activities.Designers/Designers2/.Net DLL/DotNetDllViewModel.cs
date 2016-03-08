@@ -114,15 +114,14 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
             InitializeProperties();
 
-            if (OutputsRegion != null && OutputsRegion.IsVisible)
+            if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
                 }
             }
-            ReCalculateHeight();
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -187,7 +186,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.IsVisible)
+            if (!OutputsRegion.IsEnabled)
             {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Plugin get must be validated before minimising" } };
             }
@@ -344,11 +343,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
+                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () => { OutputsRegion.IsVisible = false; } };
+                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(NamespaceRegion);
-                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
+                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(ActionRegion);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
@@ -356,7 +355,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
 
                 }
                 ErrorRegion = new ErrorRegion();
@@ -366,23 +365,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }
-            ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
-        {
-            ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -459,20 +444,19 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 _generateOutputsVisible = value;
                 if (value)
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = true;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(false);
 
                 }
                 else
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = false;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(true);
                 }
 
                 OnPropertyChanged();
-                ReCalculateHeight();
             }
         }
 
@@ -523,36 +507,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         void SetRegionVisibility(bool value)
         {
-            InputArea.IsVisible = value;
-            OutputsRegion.IsVisible = value && OutputsRegion.Outputs.Count > 0;
-            ErrorRegion.IsVisible = value;
-            SourceRegion.IsVisible = value;
-        }
-
-        public override void ReCalculateHeight()
-        {
-            if (_regions != null)
-            {
-                bool isInputVisible = false;
-                foreach (var toolRegion in _regions)
-                {
-                    if (toolRegion.ToolRegionName == "DotNetInputRegion")
-                    {
-                        isInputVisible = toolRegion.IsVisible;
-                    }
-                }
-
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isInputVisible && !GenerateOutputsVisible)
-                {
-                    DesignMaxHeight += 30;
-                    DesignHeight += 30;
-                    DesignMinHeight += 30;
-                }
-            }
+            InputArea.IsEnabled = value;
+            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
+            ErrorRegion.IsEnabled = value;
+            SourceRegion.IsEnabled = value;
         }
 
         #endregion

@@ -9,8 +9,5 @@ namespace Dev2.Common.Interfaces.ToolBase
         string PutData { get; set; }
 
         ObservableCollection<INameValue> Headers { get; set; }
-
-        double HeadersHeight { get; set; }
-        double MaxHeadersHeight { get; set; }
     }
 }

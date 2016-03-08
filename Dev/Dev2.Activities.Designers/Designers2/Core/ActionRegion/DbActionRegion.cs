@@ -22,11 +22,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IDbSource> _source;
-        private double _minHeight;
-        private double _currentHeight;
-        private double _maxHeight;
-        private bool _isVisible;
-        private const double BaseHeight = 25;
+        private bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
@@ -40,7 +36,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public DbActionRegion()
         {
             ToolRegionName = "DbActionRegion";
-            SetInitialValues();
         }
 
         public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
@@ -52,7 +47,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             _model = model;
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
-            SetInitialValues();
             Dependants = new List<IToolRegion>();
             IsRefreshing = false;
             if (_source.SelectedSource != null)
@@ -62,19 +56,19 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (!string.IsNullOrEmpty(ProcedureName))
             {
                 IsActionEnabled = true;
-                SelectedAction = Actions.FirstOrDefault(action => action.Name == ProcedureName);                
+                SelectedAction = Actions.FirstOrDefault(action => action.Name == ProcedureName);
             }
             RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
             {
                 IsRefreshing = true;
-                if(_source.SelectedSource != null)
+                if (_source.SelectedSource != null)
                 {
                     Actions = model.GetActions(_source.SelectedSource);
                 }
                 IsRefreshing = false;
             }, CanRefresh);
 
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
         }
 
@@ -86,11 +80,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Actions = _model.GetActions(_source.SelectedSource);
                 SelectedAction = null;
                 IsActionEnabled = true;
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
+            OnPropertyChanged(@"IsEnabled");
         }
 
         string ProcedureName
@@ -100,14 +93,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 _modelItem.SetProperty("ProcedureName", value);
             }
-        }
-
-        private void SetInitialValues()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            IsVisible = true;
         }
 
         public bool CanRefresh()
@@ -155,7 +140,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             OnSomethingChanged(this);
             }
             var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-            if(delegateCommand != null)
+            if (delegateCommand != null)
             {
                 delegateCommand.RaiseCanExecuteChanged();
             }
@@ -229,67 +214,26 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-                _minHeight = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
         {
             var action = new DbActionMemento
             {
-                MaxHeight = MaxHeight,
-                MinHeight = MinHeight,
-                IsVisible = IsVisible,
-                CurrentHeight = CurrentHeight,
-                SelectedAction = (SelectedAction == null ? null : new DbAction 
-                { Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a=>new ServiceInput(a.Name,a.Value) as IServiceInput).ToList(), Name = SelectedAction.Name, SourceId = SelectedAction.SourceId })
+                IsEnabled = IsEnabled,
+                SelectedAction = (SelectedAction == null ? null : new DbAction { Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(), Name = SelectedAction.Name, SourceId = SelectedAction.SourceId })
             };
             return action;
         }
@@ -299,12 +243,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             var region = toRestore as DbActionMemento;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
                 SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);
-                MinHeight = region.MinHeight;
-                CurrentHeight = region.CurrentHeight;
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 OnPropertyChanged("SelectedAction");
 
             }
@@ -325,12 +266,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             SavedAction = value;
             if (value != null)
             {
-      
-               
+
+
                 ProcedureName = value.Name;
             }
 
-            OnHeightChanged(this);
             OnPropertyChanged("SelectedAction");
         }
         private void StorePreviousValues(string name)
@@ -350,7 +290,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IDbAction value)
         {
-            return value!=null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
+            return value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
         }
 
         public IList<string> Errors
@@ -386,15 +326,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
-        }
-
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
@@ -405,7 +336,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
     }
 
-    public class DbActionMemento:IActionToolRegion<IDbAction>
+    public class DbActionMemento : IActionToolRegion<IDbAction>
     {
         private IDbAction _selectedAction;
 
@@ -418,13 +349,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight { get; set; }
-        public double CurrentHeight { get; set; }
-        public bool IsVisible { get; set; }
-        public double MaxHeight { get; set; }
-        public event HeightChanged HeightChanged;
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        public IList<string> Errors { get;  set; }
+        public IList<string> Errors { get; set; }
 
         public IToolRegion CloneRegion()
         {
@@ -462,16 +389,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
-            if(handler != null)
-            {
-                handler(this, args);
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, args);
             }
@@ -480,7 +398,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }

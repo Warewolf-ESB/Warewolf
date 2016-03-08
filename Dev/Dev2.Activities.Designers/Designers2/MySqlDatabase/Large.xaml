@@ -52,10 +52,10 @@
                     <RowDefinition.Style>
                         <Style>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="True">
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="True">
                                     <Setter Property="RowDefinition.Height" Value="*"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsVisible}" Value="False">
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="False">
                                     <Setter Property="RowDefinition.Height" Value="Auto"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -65,7 +65,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Control Template="{StaticResource SelectionActionGrid}"/>
+            <Control Template="{StaticResource NewSelectionActionGrid}"/>
 
             <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewInputsGrid}"/>
 
