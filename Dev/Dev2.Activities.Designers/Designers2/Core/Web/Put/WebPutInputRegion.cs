@@ -14,20 +14,6 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.Web.Put
 {
-    /* public class WebPutInputRegion : WebRegionInputBase<WebPutInputRegion>, IRegionClone
-    {
-        public WebPutInputRegion()
-            : base(new WebTooRegionDisplayInfo() { ToolRegionName = "WebPutInputRegion" })
-        {
-
-        }
-
-        public WebPutInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
-            : base(modelItem, source)
-        {
-        }
-    }*/
-
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class WebPutInputRegion : IWebPutInputArea
     {
