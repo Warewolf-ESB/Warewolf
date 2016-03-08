@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -18,11 +17,7 @@ namespace Dev2.Activities.Designers2.Core
     public class OutputsRegion : IOutputsToolRegion
     {
         private readonly ModelItem _modelItem;
-        private double _minHeight;
-        private double _currentHeight;
-        private bool _isVisible;
-        private double _maxHeight;
-        private const double BaseHeight = 60;
+        private bool _isEnabled;
         private ICollection<IServiceOutputMapping> _outputs;
         public OutputsRegion(ModelItem modelItem)
         {
@@ -33,28 +28,19 @@ namespace Dev2.Activities.Designers2.Core
                 var current = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
                 if(current == null)
                 {
-                    IsVisible = false;
+                    IsEnabled = false;
                 }
                 var outputs = new ObservableCollection<IServiceOutputMapping>(current ?? new List<IServiceOutputMapping>());
                 outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
-                SetInitialHeight();
             }
             else
             {
-                IsVisible = true;
+                IsEnabled = true;
                 var outputs = new ObservableCollection<IServiceOutputMapping>(_modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs"));
                 outputs.CollectionChanged += OutputsCollectionChanged;
                 Outputs = outputs;
-                ReCalculateHeight();
             }
-        }
-
-        void SetInitialHeight()
-        {
-            MaxHeight = BaseHeight;
-            MinHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -62,12 +48,10 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion()
         {
             ToolRegionName = "OutputsRegion";
-            SetInitialHeight();
         }
 
         void OutputsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            ReCalculateHeight();
             _modelItem.SetProperty("Outputs", _outputs.ToList());
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsOutputsEmptyRows");
@@ -82,56 +66,18 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-                _minHeight = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnHeightChanged(this);
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -145,11 +91,9 @@ namespace Dev2.Activities.Designers2.Core
             var region = toRestore as OutputsRegion;
             if (region != null)
             {
-
-
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
-                IsVisible = toRestore.IsVisible;
+                IsEnabled = toRestore.IsEnabled;
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
@@ -171,8 +115,6 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _outputs = value;
                     _modelItem.SetProperty("Outputs", value.ToList());
-                    ReCalculateHeight();
-                    OnHeightChanged(this);
                     OnPropertyChanged();
                 }
                 else
@@ -181,29 +123,6 @@ namespace Dev2.Activities.Designers2.Core
                     _modelItem.SetProperty("Outputs", _outputs.ToList());
                     OnPropertyChanged();
                 }
-            }
-        }
-
-        private void ReCalculateHeight()
-        {
-            OutputCountExpandAllowed = false;
-            if (_outputs.Count >= 3)
-            {
-                MinHeight = 3 * GlobalConstants.RowHeight;
-                MaxHeight = (_outputs.Count * GlobalConstants.RowHeight) + 15;
-                CurrentHeight = MinHeight;
-                CurrentHeight = MinHeight;
-                OutputCountExpandAllowed = true;
-            }
-            else
-            {
-                CurrentHeight = GlobalConstants.RowHeaderHeight + _outputs.Count * GlobalConstants.RowHeight;
-                if (CurrentHeight < BaseHeight)
-                {
-                    CurrentHeight = BaseHeight;
-                }
-                MinHeight = CurrentHeight;
-                MaxHeight = CurrentHeight + 15;
             }
         }
 
@@ -310,15 +229,6 @@ namespace Dev2.Activities.Designers2.Core
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
     }

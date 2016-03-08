@@ -8,6 +8,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
 // ReSharper disable InconsistentNaming
+// ReSharper disable UseObjectOrCollectionInitializer
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -90,33 +91,10 @@ namespace Dev2.Activities.Designers.Tests.Core
             //------------Execute Test---------------------------
             inputview.ExecuteTest();
             //------------Assert Results-------------------------
-            Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsTrue(inputview.InputArea.IsEnabled);
+            Assert.IsTrue(inputview.OutputArea.IsEnabled);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
             Assert.IsTrue(inputview.OutputArea.Outputs.Count>0);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageWebServiceInputViewModel_HeightChangedHandler()
-        {
-            //------------Setup for test--------------------------
-            var mod = new MyWebModel();
-
-            var act = new DsfWebGetActivity();
-            var called = false;
-            var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageWebServiceInputViewModel(webget, mod);
-            inputview.HeightChanged += (sender, args) => called = true;
-            inputview.Model = new WebServiceDefinition();
-            //------------Execute Test---------------------------
-            inputview.ExecuteTest();
-            
-            //------------Assert Results-------------------------
-            Assert.IsTrue(called);
-
-            
         }
 
         [TestMethod]
@@ -242,18 +220,18 @@ namespace Dev2.Activities.Designers.Tests.Core
             inputview.Model = new WebServiceDefinition();
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
-            Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsTrue(inputview.OutputArea.IsVisible);
+            Assert.IsTrue(inputview.InputArea.IsEnabled);
+            Assert.IsTrue(inputview.OutputArea.IsEnabled);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
             Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
 
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -294,11 +272,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             inputview.ExecuteClose();
             //------------Execute Ok---------------------------
             Assert.IsNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsFalse(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsFalse(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }

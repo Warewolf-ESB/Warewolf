@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -38,10 +37,7 @@ namespace Dev2.Activities.Designers2.Core
         bool _pasteResponseAvailable;
         IGenerateOutputArea _generateOutputArea;
         IGenerateInputArea _generateInputArea;
-        double _minHeight;
-        double _currentHeight;
-        double _maxHeight;
-        bool _isVisible;
+        bool _isEnabled;
         IWebServiceBaseViewModel _viewmodel;
         IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
@@ -93,7 +89,7 @@ namespace Dev2.Activities.Designers2.Core
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
-            OutputArea.IsVisible = true;
+            OutputArea.IsEnabled = true;
             TestResults = null;
             IsTesting = true;
 
@@ -120,7 +116,7 @@ namespace Dev2.Activities.Designers2.Core
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
                 // ReSharper restore MaximumChainedReferences
-                _generateOutputArea.IsVisible = true;
+                _generateOutputArea.IsEnabled = true;
                 _generateOutputArea.Outputs = outputMapping;
                 
                 
@@ -139,12 +135,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Errors.Add(e.Message);
                 IsTesting = false;
-                _generateOutputArea.IsVisible = false;
+                _generateOutputArea.IsEnabled = false;
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
             }
-            OnHeightChanged(this);
-
             PasteResponseVisible = false;
         }
 
@@ -152,11 +146,10 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecutePaste()
         {
-            OutputArea.IsVisible = true;
-            _generateOutputArea.IsVisible = true;
+            OutputArea.IsEnabled = true;
+            _generateOutputArea.IsEnabled = true;
             _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
             PasteResponseVisible = true;
-            OnHeightChanged(this);
         }
 
         public void ExecuteOk()
@@ -186,7 +179,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
 
                 _viewmodel.OutputsRegion.Description = Description;
-                _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+                _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
                 ResetOutputsView();
             }
             catch (Exception e)
@@ -197,16 +190,15 @@ namespace Dev2.Activities.Designers2.Core
             }
 
             OkSelected = true;
-            OnHeightChanged(this);
         }
 
         void ResetOutputsView()
         {
-            IsVisible = false;
+            IsEnabled = false;
             _viewmodel.GenerateOutputsVisible = false;
             PasteResponseVisible = false;
-            InputArea.IsVisible = false;
-            OutputArea.IsVisible = false;
+            InputArea.IsEnabled = false;
+            OutputArea.IsEnabled = false;
             TestResults = String.Empty;
             TestResultsAvailable = false;
 
@@ -216,14 +208,13 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+            _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
             if (TestResults != null)
             {
                 TestResultsAvailable = TestResults != null;
                 IsTesting = false;
             }
             ResetOutputsView();
-            OnHeightChanged(this);
         }
 
         public IGenerateInputArea InputArea
@@ -344,9 +335,9 @@ namespace Dev2.Activities.Designers2.Core
 
         public void SetInitialVisibility()
         {
-            IsVisible = true;
-            InputArea.IsVisible = true;
-            OutputArea.IsVisible = false;
+            IsEnabled = true;
+            InputArea.IsEnabled = true;
+            OutputArea.IsEnabled = false;
         }
 
         [ExcludeFromCodeCoverage]
@@ -406,69 +397,18 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-
-                if (Math.Abs(_minHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _minHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                if (Math.Abs(_currentHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _currentHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnHeightChanged(this);
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                if (Math.Abs(_maxHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _maxHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors { get; private set; }
 
@@ -482,15 +422,6 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         #endregion
-
-        protected void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

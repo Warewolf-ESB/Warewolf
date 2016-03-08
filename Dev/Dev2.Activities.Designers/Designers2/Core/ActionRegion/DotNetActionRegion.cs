@@ -19,11 +19,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IPluginSource> _source;
         private readonly INamespaceToolRegion<INamespaceItem> _namespace;
-        private double _minHeight;
-        private double _currentHeight;
-        private double _maxHeight;
-        private bool _isVisible;
-        private const double BaseHeight = 25;
+        private bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
@@ -37,7 +33,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public DotNetActionRegion()
         {
             ToolRegionName = "DotNetActionRegion";
-            SetInitialValues();
         }
 
         public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
@@ -49,7 +44,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             _source = source;
             _namespace = namespaceItem;
             _namespace.SomethingChanged += SourceOnSomethingChanged;
-            SetInitialValues();
             Dependants = new List<IToolRegion>();
             IsRefreshing = false;
             UpdateBasedOnNamespace();
@@ -67,7 +61,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsRefreshing = false;
             }, CanRefresh);
 
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
         }
 
@@ -102,8 +96,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             UpdateBasedOnNamespace();
             SelectedAction = null;
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
+            OnPropertyChanged(@"IsEnabled");
         }
 
         private void UpdateBasedOnNamespace()
@@ -112,16 +105,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 IsActionEnabled = true;
-                IsVisible = true;
+                IsEnabled = true;
             }
-        }
-
-        private void SetInitialValues()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            IsVisible = true;
         }
 
         public bool CanRefresh()
@@ -218,66 +203,26 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-                _minHeight = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
         {
             return new DotNetActionRegion
             {
-                MaxHeight = MaxHeight,
-                MinHeight = MinHeight,
-                IsVisible = IsVisible,
-                SelectedAction = SelectedAction,
-                CurrentHeight = CurrentHeight
+                IsEnabled = IsEnabled,
+                SelectedAction = SelectedAction
             };
         }
 
@@ -286,11 +231,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             var region = toRestore as DotNetActionRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
                 SelectedAction = region.SelectedAction;
-                MinHeight = region.MinHeight;
-                CurrentHeight = region.CurrentHeight;
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
             }
         }
 
@@ -312,7 +254,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 Method = value;
             }
 
-            OnHeightChanged(this);
             OnPropertyChanged("SelectedAction");
         }
       
@@ -367,15 +308,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
 

@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             Assert.AreEqual(1,region.Errors.Count);
-            Assert.IsTrue(region.IsVisible);
+            Assert.IsTrue(region.IsEnabled);
         }
         [TestMethod]
         public void CtorWitSelectedSrc()

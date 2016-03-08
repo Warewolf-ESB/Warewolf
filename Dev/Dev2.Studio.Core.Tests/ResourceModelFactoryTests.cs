@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
         {
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, ResourceType.Source, "iconPath", "displayName"), ResourceType.Source, "displayName", null, null);
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource"), ResourceType.Source, "DropboxSource", "", "DropboxSource");
-            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource", "OauthSource"), ResourceType.Source, "OauthSource", "", "DropboxSource");
+            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource", "SelectedOauthSource"), ResourceType.Source, "SelectedOauthSource", "", "DropboxSource");
 
         }
         [TestMethod]

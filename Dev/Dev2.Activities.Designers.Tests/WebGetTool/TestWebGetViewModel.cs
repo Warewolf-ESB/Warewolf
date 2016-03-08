@@ -46,12 +46,12 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
             webget.ValidateTestComplete();
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -106,10 +106,10 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsFalse(webget.OutputsRegion.IsVisible);
-            Assert.IsFalse(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsFalse(webget.OutputsRegion.IsEnabled);
+            Assert.IsFalse(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -128,10 +128,10 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
             webget.ManageServiceInputViewModel = new InputViewForTest(webget, mod);
             webget.SourceRegion.SelectedSource = webget.SourceRegion.Sources.First();
             //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsFalse(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsFalse(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -152,16 +152,16 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.IsEnabled = true;
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -183,13 +183,13 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.IsEnabled = true;
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
 
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -209,7 +209,7 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.IsEnabled = true;
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
@@ -235,15 +235,15 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.IsEnabled = true;
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
             Assert.AreEqual(1, webget.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             //------------Assert Results-------------------------
@@ -266,15 +266,15 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.IsEnabled = true;
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
@@ -299,15 +299,15 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
 #pragma warning disable 4014
             webget.TestInputCommand.Execute();
             webget.ManageServiceInputViewModel.TestCommand.Execute(null);
-            webget.ManageServiceInputViewModel.IsVisible = true;
+            webget.ManageServiceInputViewModel.IsEnabled = true;
             webget.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             webget.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //------------Execute Test---------------------------
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
             Assert.IsTrue(webget.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");

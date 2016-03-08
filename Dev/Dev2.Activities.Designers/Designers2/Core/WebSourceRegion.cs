@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.ToObservableCollection();
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
             SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.WebServiceSourcesHelp;
@@ -149,11 +149,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight { get; set; }
-        public double CurrentHeight { get; set; }
-        public bool IsVisible { get; set; }
-        public double MaxHeight { get; set; }
-        public event HeightChanged HeightChanged;
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -284,15 +280,6 @@ namespace Dev2.Activities.Designers2.Core
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
 

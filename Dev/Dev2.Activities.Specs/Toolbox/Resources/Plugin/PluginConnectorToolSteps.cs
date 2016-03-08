@@ -68,7 +68,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenComboboxIsEnabled(string p0)
         {
             var vm =ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.IsTrue(vm.SourceRegion.IsVisible);
+            Assert.IsTrue(vm.SourceRegion.IsEnabled);
         }
 
         [Then(@"Selected Source is null")]
@@ -236,7 +236,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenValidateIs(string p0)
         {
             var vm = ScenarioContext.Current.Get<DotNetDllViewModel>("viewModel");
-            Assert.AreEqual(vm.InputArea.IsVisible, p0.ToLower()=="enabled");
+            Assert.AreEqual(vm.InputArea.IsEnabled, p0.ToLower()=="enabled");
         }
 
         [Given(@"I open Saved Plugin Tool")]

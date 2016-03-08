@@ -108,19 +108,19 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Execute Test---------------------------
 
             var vm = new DotNetDllViewModel(CreateModelItem(), ps.Object);
-            vm.ManageServiceInputViewModel.InputArea.IsVisible = false;
-            vm.ManageServiceInputViewModel.OutputArea.IsVisible = false;
+            vm.ManageServiceInputViewModel.InputArea.IsEnabled = false;
+            vm.ManageServiceInputViewModel.OutputArea.IsEnabled = false;
             //------------Assert Results-------------------------
             vm.GenerateOutputsVisible = true;
 
             Assert.IsTrue(vm.GenerateOutputsVisible);
-            Assert.IsTrue(vm.ManageServiceInputViewModel.InputArea.IsVisible);
-            Assert.IsFalse(vm.ManageServiceInputViewModel.OutputArea.IsVisible);
+            Assert.IsTrue(vm.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsFalse(vm.ManageServiceInputViewModel.OutputArea.IsEnabled);
 
             vm.GenerateOutputsVisible = false;
             Assert.IsFalse(vm.GenerateOutputsVisible);
-            Assert.IsFalse(vm.ManageServiceInputViewModel.InputArea.IsVisible);
-            Assert.IsFalse(vm.ManageServiceInputViewModel.OutputArea.IsVisible);
+            Assert.IsFalse(vm.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsFalse(vm.ManageServiceInputViewModel.OutputArea.IsEnabled);
 
         }
 

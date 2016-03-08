@@ -47,12 +47,12 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
-            Assert.IsTrue(sqlServer.ActionRegion.IsVisible);
-            Assert.IsTrue(sqlServer.InputArea.IsVisible);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.ActionRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             sqlServer.ValidateTestComplete();
-            Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
+            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -106,10 +106,10 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
-            Assert.IsFalse(sqlServer.OutputsRegion.IsVisible);
-            Assert.IsFalse(sqlServer.InputArea.IsVisible);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -128,10 +128,10 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
-            Assert.IsFalse(sqlServer.OutputsRegion.IsVisible);
-            Assert.IsFalse(sqlServer.InputArea.IsVisible);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -151,7 +151,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning disable 4014
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
-            sqlServer.ManageServiceInputViewModel.IsVisible = true;
+            sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.Model = new DatabaseService() { Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" } };
 
@@ -159,11 +159,11 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
-            Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
-            Assert.IsTrue(sqlServer.InputArea.IsVisible);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
-            Assert.IsFalse(sqlServer.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
+            Assert.IsFalse(sqlServer.ManageServiceInputViewModel.InputArea.IsEnabled);
         }
 
         [TestMethod]
@@ -184,13 +184,13 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning disable 4014
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
-            sqlServer.ManageServiceInputViewModel.IsVisible = true;
+            sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -212,16 +212,16 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning disable 4014
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
-            sqlServer.ManageServiceInputViewModel.IsVisible = true;
+            sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
-            Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
-            Assert.IsTrue(sqlServer.InputArea.IsVisible);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             Assert.AreEqual(2, sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
         }
@@ -244,16 +244,16 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning disable 4014
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
-            sqlServer.ManageServiceInputViewModel.IsVisible = true;
+            sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
-            Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
-            Assert.IsTrue(sqlServer.InputArea.IsVisible);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
@@ -278,16 +278,16 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 #pragma warning disable 4014
             sqlServer.TestInputCommand.Execute();
             sqlServer.ManageServiceInputViewModel.TestCommand.Execute(null);
-            sqlServer.ManageServiceInputViewModel.IsVisible = true;
+            sqlServer.ManageServiceInputViewModel.IsEnabled = true;
             sqlServer.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             sqlServer.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(sqlServer.SourceRegion.IsVisible);
-            Assert.IsTrue(sqlServer.OutputsRegion.IsVisible);
-            Assert.IsTrue(sqlServer.InputArea.IsVisible);
-            Assert.IsTrue(sqlServer.ErrorRegion.IsVisible);
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");

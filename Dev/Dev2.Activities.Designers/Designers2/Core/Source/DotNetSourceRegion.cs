@@ -16,11 +16,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
     {
-        private double _minHeight;
-        private double _currentHeight;
-        private bool _isVisible;
-        private double _maxHeight;
-        private const double BaseHeight = 25;
+        private bool _isEnabled;
         private IPluginSource _selectedSource;
         private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
@@ -42,7 +38,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.ToObservableCollection();
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
             SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.PluginServiceSourcesHelp;
@@ -110,10 +106,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         private void SetInitialValues()
         {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            IsVisible = true;
+            IsEnabled = true;
         }
 
         public DotNetSourceRegion()
@@ -161,66 +154,26 @@ namespace Dev2.Activities.Designers2.Core.Source
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-                _minHeight = value;
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
         {
             return new DotNetSourceRegion
             {
-                MaxHeight = MaxHeight,
-                MinHeight = MinHeight,
-                IsVisible = IsVisible,
-                SelectedSource = SelectedSource,
-                CurrentHeight = CurrentHeight
+                IsEnabled = IsEnabled,
+                SelectedSource = SelectedSource
             };
         }
 
@@ -229,11 +182,8 @@ namespace Dev2.Activities.Designers2.Core.Source
             var region = toRestore as DotNetSourceRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
                 SelectedSource = region.SelectedSource;
-                MinHeight = region.MinHeight;
-                CurrentHeight = region.CurrentHeight;
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
             }
         }
 
@@ -282,8 +232,6 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SourceId = value.Id;
             }
-
-            OnHeightChanged(this);
             OnPropertyChanged("SelectedSource");
         }
 
@@ -350,15 +298,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
 

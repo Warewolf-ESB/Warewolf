@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
@@ -17,16 +16,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class WebPutInputRegion : IWebPutInputArea
     {
-        private const double BaseHeight = 160;
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IWebServiceSource> _source;
-        private double _currentHeight;
         private ObservableCollection<INameValue> _headers;
-        private double _headersHeight;
-        bool _isVisible;
-        double _maxHeadersHeight;
-        private double _maxHeight;
-        private double _minHeight;
+        bool _isEnabled;
         private string _queryString;
         private string _requestUrl;
         private string _putData;
@@ -34,7 +27,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         public WebPutInputRegion()
         {
             ToolRegionName = "PutInputRegion";
-            SetInitialHeight();
         }
 
         public WebPutInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -43,13 +35,12 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
-            SetInitialHeight();
-            IsVisible = false;
+            IsEnabled = false;
             SetupHeaders(modelItem);
             if (source != null && source.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
 
@@ -66,11 +57,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     _modelItem.SetProperty("Headers",
                         _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
+            OnPropertyChanged(@"IsEnabled");
         }
 
         private void SetupHeaders(ModelItem modelItem)
@@ -100,12 +90,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     }));
                 }
             }
-            ResetInputsHeight();
         }
 
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ResetInputsHeight();
             _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
@@ -127,54 +115,16 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-                _minHeight = value;
+                _isEnabled = value;
                 OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-
-                OnPropertyChanged();
-                OnHeightChanged(this);
             }
         }
 
@@ -194,7 +144,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
-                IsVisible = IsVisible
+                IsEnabled = IsEnabled
             };
         }
 
@@ -203,7 +153,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             var region = toRestore as WebPutRegionClone;
             if (region != null)
             {
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();
@@ -224,8 +174,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     }
                     Headers.Remove(Headers.First());
                 }
-
-                ResetInputsHeight();
             }
         }
 
@@ -235,61 +183,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             {
                 IList<string> errors = new List<string>();
                 return errors;
-            }
-        }
-
-        private void SetInitialHeight()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            MaxHeadersHeight = BaseHeight;
-        }
-
-        void ResetInputsHeight()
-        {
-            SetInitialHeight();
-            HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
-            MaxHeadersHeight = HeadersHeight;
-            if (Headers.Count >= 3)
-            {
-                MinHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
-                MaxHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
-                MaxHeadersHeight = 120;
-                CurrentHeight = MinHeight;
-            }
-            else
-            {
-                var count = 0;
-                if (Headers.Count > 0)
-                {
-                    // Remove the header from the count
-                    count = Headers.Count - 1;
-                }
-                CurrentHeight = GlobalConstants.RowHeaderHeight + count * GlobalConstants.RowHeight;
-                if (CurrentHeight < BaseHeight)
-                {
-                    CurrentHeight = BaseHeight;
-                    // Check if the count is greater than 0 before adding the RowHeight
-                    if (count > 0)
-                    {
-                        CurrentHeight += GlobalConstants.RowHeight;
-                    }
-                }
-                MinHeight = CurrentHeight;
-                MaxHeight = CurrentHeight;
-                OnHeightChanged(this);
-            }
-        }
-
-        public event HeightChanged HeightChanged;
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
 
@@ -346,30 +239,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             {
                 _headers = value;
                 _modelItem.SetProperty("Headers", value.ToList());
-                OnPropertyChanged();
-            }
-        }
-        public double HeadersHeight
-        {
-            get
-            {
-                return _headersHeight;
-            }
-            set
-            {
-                _headersHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeadersHeight
-        {
-            get
-            {
-                return _maxHeadersHeight;
-            }
-            set
-            {
-                _maxHeadersHeight = value;
                 OnPropertyChanged();
             }
         }
