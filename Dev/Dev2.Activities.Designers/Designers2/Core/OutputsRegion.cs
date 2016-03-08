@@ -145,10 +145,8 @@ namespace Dev2.Activities.Designers2.Core
             var region = toRestore as OutputsRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
-                MinHeight = region.MinHeight;
-                IsVisible = region.IsVisible;
-                CurrentHeight = region.CurrentHeight;
+
+
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
                 // ReSharper disable once ExplicitCallerInfoArgument
@@ -174,6 +172,12 @@ namespace Dev2.Activities.Designers2.Core
                     _modelItem.SetProperty("Outputs", value.ToList());
                     ReCalculateHeight();
                     OnHeightChanged(this);
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    _outputs.Clear();
+                    _modelItem.SetProperty("Outputs", _outputs.ToList());
                     OnPropertyChanged();
                 }
             }

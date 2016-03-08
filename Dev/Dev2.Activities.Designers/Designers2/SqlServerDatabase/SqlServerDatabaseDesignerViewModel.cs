@@ -176,7 +176,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.IsVisible)
+            if (!OutputsRegion.OutputMappingEnabled)
             {
                 Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
             }
