@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Dev2.Common;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -11,14 +9,7 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class GenerateInputsRegion : IGenerateInputArea
     {
-        private double _minHeight;
-        private double _currentHeight;
-        private double _maxHeight;
-        double _inputsHeight;
-        double _maxInputsHeight;
         ICollection<IServiceInput> _inputs;
-        private bool _isWeb;
-        private const double BaseHeight = 30;
 
         public GenerateInputsRegion()
         {
@@ -26,61 +17,11 @@ namespace Dev2.Activities.Designers2.Core
             IsVisible = true;
         }
 
-        private void SetInitialHeight()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            MaxInputsHeight = BaseHeight;
-        }
-
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
         public bool IsVisible { get; set; }
         public bool IsInputCountEmpty { get; set; }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                if (Math.Abs(_maxHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _maxHeight = value;
-
-                    OnPropertyChanged();
-                    OnHeightChanged(this);
-                }
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors
         {
@@ -100,37 +41,6 @@ namespace Dev2.Activities.Designers2.Core
         {
         }
 
-        void ResetInputsHeight()
-        {
-            SetInitialHeight();
-            InputsHeight = Inputs.Count * GlobalConstants.RowHeight;
-            MaxInputsHeight = InputsHeight;
-            if (Inputs.Count >= 3)
-            {
-                MinHeight = 3 * GlobalConstants.RowHeight;
-                MaxHeight = Inputs.Count * GlobalConstants.RowHeight;
-                InputsHeight = MinHeight;
-                MaxInputsHeight = MaxHeight;
-                CurrentHeight = MinHeight;
-            }
-            else
-            {
-                CurrentHeight = Inputs.Count * GlobalConstants.RowHeight;
-                if (CurrentHeight < BaseHeight)
-                {
-                    CurrentHeight = BaseHeight;
-                }
-                MinHeight = CurrentHeight;
-                MaxHeight = CurrentHeight;
-            }
-            if (IsWeb)
-            {
-                CurrentHeight += 30;
-                MinHeight += 30;
-                MaxHeight += 30;
-            }
-        }
-
         #endregion
 
         #region Implementation of IGenerateInputArea
@@ -145,43 +55,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _inputs = value;
                 OnPropertyChanged();
-                ResetInputsHeight();
-            }
-        }
-        public double InputsHeight
-        {
-            get
-            {
-                return _inputsHeight;
-            }
-            set
-            {
-                _inputsHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxInputsHeight
-        {
-            get
-            {
-                return _maxInputsHeight;
-            }
-            set
-            {
-                _maxInputsHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsWeb
-        {
-            get
-            {
-                return _isWeb;
-            }
-            set
-            {
-                _isWeb = value;
-                OnPropertyChanged();
             }
         }
 
@@ -190,15 +63,6 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
-        }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

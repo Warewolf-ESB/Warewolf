@@ -16,11 +16,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
     {
-        private double _minHeight;
-        private double _currentHeight;
         private bool _isVisible;
-        private double _maxHeight;
-        private const double BaseHeight = 25;
         private IPluginSource _selectedSource;
         private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
@@ -110,9 +106,6 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         private void SetInitialValues()
         {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
             IsVisible = true;
         }
 
@@ -161,30 +154,6 @@ namespace Dev2.Activities.Designers2.Core.Source
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
         public bool IsVisible
         {
             get
@@ -197,30 +166,14 @@ namespace Dev2.Activities.Designers2.Core.Source
                 OnPropertyChanged();
             }
         }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
         {
             return new DotNetSourceRegion
             {
-                MaxHeight = MaxHeight,
-                MinHeight = MinHeight,
                 IsVisible = IsVisible,
-                SelectedSource = SelectedSource,
-                CurrentHeight = CurrentHeight
+                SelectedSource = SelectedSource
             };
         }
 
@@ -229,10 +182,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             var region = toRestore as DotNetSourceRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
                 SelectedSource = region.SelectedSource;
-                MinHeight = region.MinHeight;
-                CurrentHeight = region.CurrentHeight;
                 IsVisible = region.IsVisible;
             }
         }
@@ -282,8 +232,6 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SourceId = value.Id;
             }
-
-            OnHeightChanged(this);
             OnPropertyChanged("SelectedSource");
         }
 
@@ -350,15 +298,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
 

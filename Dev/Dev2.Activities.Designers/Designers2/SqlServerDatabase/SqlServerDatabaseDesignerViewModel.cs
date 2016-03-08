@@ -500,11 +500,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             SourceRegion.IsVisible = value;
         }
 
-        public override void ReCalculateHeight()
-        {
-            
-        }
-
         #endregion
     }
 }

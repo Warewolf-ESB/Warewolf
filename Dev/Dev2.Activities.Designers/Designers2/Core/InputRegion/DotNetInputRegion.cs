@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -16,53 +15,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
     {
          private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IPluginAction> _action;
-        private double _minHeight;
-        private double _currentHeight;
-        private double _maxHeight;
-        private double _headersHeight;
-        double _maxHeadersHeight;
         bool _isVisible;
         private IList<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
-        private const double BaseHeight = 60;
 
         public DotNetInputRegion()
         {
             ToolRegionName = "DotNetInputRegion";
-            SetInitialHeight();
-        }
-
-        private void SetInitialHeight()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            MaxHeadersHeight = BaseHeight;
-        }
-
-        void ResetInputsHeight()
-        {
-            SetInitialHeight();
-            HeadersHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
-            MaxHeadersHeight = HeadersHeight;
-            if (Inputs.Count >= 3)
-            {
-                MinHeight = 115;
-                MaxHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
-                MaxHeadersHeight = 115;
-                CurrentHeight = MinHeight;
-            }
-            else
-            {
-                CurrentHeight = GlobalConstants.RowHeaderHeight + Inputs.Count * GlobalConstants.RowHeight;
-                if (CurrentHeight < BaseHeight)
-                {
-                    CurrentHeight = BaseHeight;
-                }
-                MinHeight = CurrentHeight;
-                MaxHeight = CurrentHeight;
-                OnHeightChanged(this);
-            }
         }
 
         public DotNetInputRegion(ModelItem modelItem, IActionToolRegion<IPluginAction> action)
@@ -71,7 +30,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
-            SetInitialHeight();
             Inputs = new List<IServiceInput>();
             IsVisible = action != null && action.SelectedAction != null;
         }
@@ -88,7 +46,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
         }
 
         public bool IsInputsEmptyRows
@@ -104,63 +61,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        #region Implementation of IDotNetInputRegion
-
-        public double HeadersHeight
-        {
-            get
-            {
-                return _headersHeight;
-            }
-            set
-            {
-                _headersHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        public double MaxHeadersHeight
-        {
-            get
-            {
-                return _maxHeadersHeight;
-            }
-            set
-            {
-                _maxHeadersHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
         public bool IsVisible
         {
             get
@@ -171,20 +74,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 _isVisible = value;
                 OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-
-                OnPropertyChanged();
-                OnHeightChanged(this);
             }
         }
 
@@ -213,8 +102,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 {
                     Inputs = region.Inputs;
                 }
-
-                ResetInputsHeight();
             }
         }
 
@@ -227,18 +114,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        public event HeightChanged HeightChanged;
-
         #endregion
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -262,7 +138,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             set
             {
                 _inputs = value;
-                ResetInputsHeight();
                 OnPropertyChanged();
             }
         }

@@ -122,7 +122,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                     OutputsRegion.IsVisible = true;
                 }
             }
-            ReCalculateHeight();
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -366,23 +365,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }
-            ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
-        {
-            ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -472,7 +457,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 }
 
                 OnPropertyChanged();
-                ReCalculateHeight();
             }
         }
 
@@ -527,32 +511,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             OutputsRegion.IsVisible = value && OutputsRegion.Outputs.Count > 0;
             ErrorRegion.IsVisible = value;
             SourceRegion.IsVisible = value;
-        }
-
-        public override void ReCalculateHeight()
-        {
-            if (_regions != null)
-            {
-                bool isInputVisible = false;
-                foreach (var toolRegion in _regions)
-                {
-                    if (toolRegion.ToolRegionName == "DotNetInputRegion")
-                    {
-                        isInputVisible = toolRegion.IsVisible;
-                    }
-                }
-
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isInputVisible && !GenerateOutputsVisible)
-                {
-                    DesignMaxHeight += 30;
-                    DesignHeight += 30;
-                    DesignMinHeight += 30;
-                }
-            }
         }
 
         #endregion

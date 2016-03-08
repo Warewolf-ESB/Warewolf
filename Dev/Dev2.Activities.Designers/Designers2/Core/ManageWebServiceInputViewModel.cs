@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
@@ -38,9 +37,6 @@ namespace Dev2.Activities.Designers2.Core
         bool _pasteResponseAvailable;
         IGenerateOutputArea _generateOutputArea;
         IGenerateInputArea _generateInputArea;
-        double _minHeight;
-        double _currentHeight;
-        double _maxHeight;
         bool _isVisible;
         IWebServiceBaseViewModel _viewmodel;
         IWebServiceModel _serverModel;
@@ -143,8 +139,6 @@ namespace Dev2.Activities.Designers2.Core
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
             }
-            OnHeightChanged(this);
-
             PasteResponseVisible = false;
         }
 
@@ -156,7 +150,6 @@ namespace Dev2.Activities.Designers2.Core
             _generateOutputArea.IsVisible = true;
             _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
             PasteResponseVisible = true;
-            OnHeightChanged(this);
         }
 
         public void ExecuteOk()
@@ -197,7 +190,6 @@ namespace Dev2.Activities.Designers2.Core
             }
 
             OkSelected = true;
-            OnHeightChanged(this);
         }
 
         void ResetOutputsView()
@@ -223,7 +215,6 @@ namespace Dev2.Activities.Designers2.Core
                 IsTesting = false;
             }
             ResetOutputsView();
-            OnHeightChanged(this);
         }
 
         public IGenerateInputArea InputArea
@@ -406,39 +397,6 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-
-                if (Math.Abs(_minHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _minHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                if (Math.Abs(_currentHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _currentHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
         public bool IsVisible
         {
             get
@@ -448,27 +406,9 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _isVisible = value;
-                OnHeightChanged(this);
                 OnPropertyChanged();
             }
         }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                if (Math.Abs(_maxHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _maxHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors { get; private set; }
 
@@ -482,15 +422,6 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         #endregion
-
-        protected void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
+// ReSharper disable UseObjectOrCollectionInitializer
 
 // ReSharper disable InconsistentNaming
 
@@ -87,29 +88,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //------------Assert Results-------------------------
             Assert.IsTrue(inputview.InputArea.IsVisible);
             Assert.IsTrue(inputview.OutputArea.IsVisible);
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageDatabaseServiceInputViewModel_HeightChangedHandler()
-        {
-            //------------Setup for test--------------------------
-            var mod = new SqlServerModel();
-
-            var act = new DsfSqlServerDatabaseActivity();
-            var called = false;
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
-            inputview.HeightChanged += (sender, args) => called = true;
-            inputview.Model = new DatabaseService();
-            //------------Execute Test---------------------------
-            inputview.ExecuteTest();
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(called);
-
 
         }
 
