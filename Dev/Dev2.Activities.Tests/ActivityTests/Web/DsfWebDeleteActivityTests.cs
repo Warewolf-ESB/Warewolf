@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
@@ -12,6 +13,8 @@ using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Framework.Converters.Graph.Ouput;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
 
@@ -213,6 +216,52 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Time]]", 0)));
             Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
         }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfWebDeleteActivity_Execute")]
+        public void DsfWebDeleteActivity_Delete_WithTextResponseValidResponseReturned()
+        {
+            //------------Setup for test--------------------------
+            const string response = "{\"Location\": \"Paris\",\"Time\": \"May 29, 2013 - 09:00 AM EDT / 2013.05.29 1300 UTC\"," +
+                                    "\"Wind\": \"from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0\"," +
+                                    "\"Visibility\": \"greater than 7 mile(s):0\"," +
+                                    "\"Temperature\": \"59 F (15 C)\"," +
+                                    "\"DewPoint\": \"41 F (5 C)\"," +
+                                    "\"RelativeHumidity\": \"51%\"," +
+                                    "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
+                                    "\"Status\": \"Success\"" +
+                                    "}";
+            var environment = new ExecutionEnvironment();
+            environment.Assign("[[City]]", "PMB", 0);
+            environment.Assign("[[CountryName]]", "South Africa", 0);
+            var dsfWebDeleteActivity = CreateTestDeleteActivity();
+            var serviceInputs = new List<IServiceInput> { new ServiceInput("CityName", "[[City]]"), new ServiceInput("Country", "[[CountryName]]") };
+            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Response", "[[Response]]", "") };
+            dsfWebDeleteActivity.Inputs = serviceInputs;
+            dsfWebDeleteActivity.Outputs = serviceOutputs;
+            var serviceXml = XmlResource.Fetch("WebService");
+            // ReSharper disable once ObjectCreationAsStatement
+            new WebService(serviceXml) { RequestResponse = response };
+            dsfWebDeleteActivity.OutputDescription = new OutputDescription();
+            dsfWebDeleteActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape(){Paths = new List<IPath>(){new StringPath(){ActualPath = "[[Response]]", OutputExpression = "[[Response]]"}}});
+            dsfWebDeleteActivity.ResponseFromWeb = response;
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+            dsfWebDeleteActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            dsfWebDeleteActivity.QueryString = "";
+            //dsfWebPostActivity.PostData = "";
+            dsfWebDeleteActivity.SourceId = Guid.Empty;
+            dsfWebDeleteActivity.Headers = new List<INameValue>();
+            //------------Execute Test---------------------------
+            dsfWebDeleteActivity.Execute(dataObjectMock.Object, 0);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfWebDeleteActivity.OutputDescription);
+            Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
+                  }
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
