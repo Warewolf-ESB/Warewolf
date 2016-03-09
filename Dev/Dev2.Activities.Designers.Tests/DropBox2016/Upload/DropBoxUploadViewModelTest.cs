@@ -25,9 +25,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             var mockResourceRepo = new Mock<IResourceRepository>();
             var oauthSources = new List<OauthSource> { new OauthSource { ResourceName = "Dropbox Source" } };
             mockResourceRepo.Setup(repository => repository.FindSourcesByType<OauthSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
-            env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
+            env.Setup(model => model.ResourceRepository).Returns((IResourceRepository)mockResourceRepo.Object);
             var agg = new Mock<IEventAggregator>();
-            var dropBoxUploadViewModel = new DropBoxUploadViewModel(CreateModelItem(), env.Object, agg.Object);
+            var dropBoxUploadViewModel = new DropBoxUploadViewModel(CreateModelItem(), (IEnvironmentModel)env.Object, (IEventAggregator)agg.Object);
             return dropBoxUploadViewModel;
         }
 
@@ -149,6 +149,42 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.SelectedSourceName));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Overwrite_GivenActivityIsNew_ShouldBeDefaultToTrue()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxUploadViewModel = CreateMockViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.SelectedSourceName));
+            //---------------Execute Test ----------------------
+            Assert.IsTrue(dropBoxUploadViewModel.OverWrite);
+            //---------------Test Result -----------------------
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Add_GivenActivityIsNew_ShouldBeDefaultToFalse()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxUploadViewModel = CreateMockViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dropBoxUploadViewModel.OverWrite);
+            //---------------Execute Test ----------------------
+            Assert.IsFalse(dropBoxUploadViewModel.Add);
+            //---------------Test Result -----------------------
+        }[TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Update_GivenActivityIsNew_ShouldBeDefaultToFalse()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxUploadViewModel = CreateMockViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(dropBoxUploadViewModel.Add);
+            //---------------Execute Test ----------------------
+            Assert.IsFalse(dropBoxUploadViewModel.Update);
+            //---------------Test Result -----------------------
         }
     }
 }
