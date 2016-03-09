@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -9,7 +10,9 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -18,12 +21,13 @@ using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.DropBox2016.Upload
 {
-    public class DropBoxUploadViewModel : ActivityDesignerViewModel,INotifyPropertyChanged
+    public class DropBoxUploadViewModel : CustomToolWithRegionBase
     {
         private ObservableCollection<OauthSource> _sources;
         private IEnvironmentModel _environmentModel;
         private IEventAggregator _eventPublisher;
         private bool _isRefreshing;
+        private string _selectedSourceName;
 
         public DropBoxUploadViewModel(ModelItem modelItem)
             : this(modelItem,EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
@@ -84,7 +88,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             }
         }
         public RelayCommand EditDropboxSourceCommand { get; private set; }
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
         public bool IsDropboxSourceSelected
         {
             get
@@ -92,6 +96,22 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 return SelectedSource != null && SelectedSource != SelectOAuthSource && SelectedSource != NewOAuthSource;
             }
         }
+        public string FromPath { get; set; }
+        public string ToPath { get; set; }
+        public string Result { get; set; }
+        public string SelectedSourceName
+        {
+            get
+            {
+                if(SelectedSource == null)
+                {
+                    return string.Empty;
+                }
+                _selectedSourceName = string.Format(SelectedSource.ResourceName);
+                return _selectedSourceName;
+            }
+        }
+
         private void EditDropBoxSource()
         {
             CustomContainer.Get<IShellViewModel>().OpenResource(SelectOAuthSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
@@ -106,7 +126,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             SetSelectedOAuthSource(newOAuthSource);
             _isRefreshing = false;
         }
-        void SetSelectedOAuthSource(OauthSource oAuthSource)
+
+        public void SetSelectedOAuthSource(OauthSource oAuthSource)
         {
             var selectOAuthSource = oAuthSource == null ? null : Sources.FirstOrDefault(d => d.ResourceID == oAuthSource.ResourceID);
             if (selectOAuthSource == null)
@@ -134,19 +155,31 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
 
         public override void UpdateHelpDescriptor(string helpText)
         {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
         }
 
         #endregion
 
-        
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public new event PropertyChangedEventHandler PropertyChanged;
+        protected new  void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public override IList<IToolRegion> BuildRegions()
+        {
+            return null;
+        }
+
+
     }
 }

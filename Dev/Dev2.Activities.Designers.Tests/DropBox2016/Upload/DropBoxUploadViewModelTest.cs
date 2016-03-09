@@ -97,9 +97,58 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //---------------Execute Test ----------------------
             Assert.IsNotNull(dropBoxUploadViewModel.Sources);
             //---------------Test Result -----------------------
-           
         }
 
-       
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void FromPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxUploadViewModel = CreateMockViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dropBoxUploadViewModel.Sources);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.FromPath));
+        }
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ToPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxUploadViewModel = CreateMockViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.FromPath));
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.ToPath));
+        }
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Result_GivenActivityIsNew_ShouldBeNullOrEmpty()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxUploadViewModel = CreateMockViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.ToPath));
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.Result));
+        }
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SelectedSourceName_GivenActivityIsNewAndNoSourceSelected_ShouldBeNullOrEmpty()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxUploadViewModel = CreateMockViewModel();
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.Result));
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.SelectedSourceName));
+        }
     }
 }
