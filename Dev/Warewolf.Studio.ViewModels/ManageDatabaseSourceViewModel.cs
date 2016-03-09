@@ -58,7 +58,21 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDisposed;
         string _path;
         string _emptyServerName;
+        private bool _canSelectWindows;
         public IComputerNameProvider Provider { get;  set; }
+
+        public bool CanSelectWindows
+        {
+            get
+            {
+                return _canSelectWindows;
+            }
+            set
+            {
+                _canSelectWindows = value;
+                OnPropertyChanged(()=>CanSelectWindows);
+            }
+        }
 
         private void PerformInitialise(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
         {
@@ -479,6 +493,7 @@ namespace Warewolf.Studio.ViewModels
                 _serverType = value;
                 OnPropertyChanged(() => ServerType);
                 OnPropertyChanged(() => Header);
+                CanSelectWindows = ServerType.Value != enSourceType.PostgreSql.ToString();
             }
         }
 

@@ -158,9 +158,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var viewModel = GetViewModel();
             viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-           
         }
-
 
         [Then(@"Test Connector and Calculate Outputs outputs appear as")]
         public void ThenOutPutsAppearAs(Table table)
@@ -183,7 +181,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowIdx++;
             }
         }
-
 
         private static PostgreSqlDatabaseDesignerViewModel GetViewModel()
         {

@@ -146,8 +146,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                         if (string.IsNullOrEmpty(DatabaseName))
                             DatabaseName = string.Empty;
-                        
-                        return string.Format("Host={0};Username={1};Password={2};Database={3}", Server, UserID, Password,
+
+                        return string.Format(@"Host={0};Username={1};Password={2};Database={3}", Server, UserID, Password,
                             DatabaseName);
 
                 }
