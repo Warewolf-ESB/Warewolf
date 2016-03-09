@@ -4643,13 +4643,49 @@ Scenario: Mixing Scalar And Recordset bug 2
 	Then the workflow execution has "NO" error
 
 #Wolf-1034
-Scenario: ForEach using * and Database Connector2
-	  Given I have a workflow "Wolf-1034-ReturnsText"
-	  And "Wolf-1034-ReturnsText" contains "TestingReturnText" from server "localhost" with mapping as
+Scenario: Get Request returns text
+	  Given I have a workflow "Wolf-1034-GetReturnsText"
+	  And "Wolf-1034-ReturnsText" contains "Web/TestingReturnText" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	  When "Wolf-1034-ReturnsText" is executed
 	  Then the workflow execution has "NO" error	  
-	  And the 'TestingReturnText' in Workflow 'Wolf-1034-ReturnsText' debug outputs as
+	  And the 'Web/TestingReturnText' in Workflow 'Wolf-1034-ReturnsText' debug outputs as
+	  |                        |
+	  | [[Result]] = 0.6.0.301 |
+
+#Wolf-1034
+Scenario: Post Request returns text
+	  Given I have a workflow "Wolf-1034-PostReturnsText"
+	  And "Wolf-1034-PostReturnsText" contains "Web/TestingReturnText" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Wolf-1034-PostReturnsText" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Web/TestingReturnText' in Workflow 'Wolf-1034-PostReturnsText' debug outputs as
+	  |                        |
+	  | [[Result]] = 0.6.0.301 |
+
+#Wolf-1034
+Scenario: Put Request returns text
+	  Given I have a workflow "Wolf-1034-PutReturnsText"
+	  And "Wolf-1034-PutReturnsText" contains "Web/TestingReturnText" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Wolf-1034-PutReturnsText" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Web/TestingReturnText' in Workflow 'Wolf-1034-PutReturnsText' debug outputs as
+	  |                        |
+	  | [[Result]] = 0.6.0.301 |
+
+#Wolf-1034
+Scenario: Delete Request returns text
+	  Given I have a workflow "Wolf-1034-DeleteReturnsText"
+	  And "Wolf-1034-DeleteReturnsText" contains "Web/TestingReturnText" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  |                  |               | Result              | [[Result]]  |
+	  When "Wolf-1034-DeleteReturnsText" is executed
+	  Then the workflow execution has "NO" error	  
+	  And the 'Web/TestingReturnText' in Workflow 'Wolf-1034-DeleteReturnsText' debug outputs as
 	  |                        |
 	  | [[Result]] = 0.6.0.301 |
