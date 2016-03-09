@@ -54,7 +54,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void UpdateOnActionSelection()
         {
-            Inputs.Clear();
+            Inputs= new List<IServiceInput>();
             IsEnabled = false;
             if(_action != null && _action.SelectedAction != null)
             {
@@ -63,6 +63,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
+            OnPropertyChanged("Inputs");
         }
 
         public bool IsInputsEmptyRows
@@ -159,6 +160,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 _inputs = value;
                 OnPropertyChanged();
                 _modelItem.SetProperty("Inputs",value);
+                OnPropertyChanged();
             }
         }
 

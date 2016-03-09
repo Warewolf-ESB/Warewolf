@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -117,7 +118,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 var region = outputs as OutputsRegion;
                 if(region != null)
                 {
-                    region.Outputs = null;
+                    region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                     region.RecordsetName = String.Empty;
                    
                 }
