@@ -83,8 +83,41 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I select \"DemoPostgres\" as the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
  testRunner.When("I select \"getemployees\" as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input",
+                        "Value",
+                        "Empty is Null"});
+            table1.AddRow(new string[] {
+                        "fname",
+                        "",
+                        "false"});
 #line 10
+ testRunner.Then("Test Inputs appear", ((string)(null)), table1, "Then ");
+#line 13
  testRunner.Then("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "fname"});
+            table2.AddRow(new string[] {
+                        "Bill"});
+#line 14
+ testRunner.Given("I Enter a value as the input", ((string)(null)), table2, "Given ");
+#line 17
+ testRunner.Then("Test button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 18
+ testRunner.Then("Test button is Clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "name",
+                        "salary",
+                        "age"});
+            table3.AddRow(new string[] {
+                        "Bill",
+                        "4200",
+                        "45"});
+#line 19
+ testRunner.Then("Test Connector and Calculate Outputs outputs appear as", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
