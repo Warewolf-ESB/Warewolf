@@ -337,7 +337,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.SqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.SqlDatabase) { 
+                    SourceChangedAction = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    
+                } };
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(ActionRegion);
