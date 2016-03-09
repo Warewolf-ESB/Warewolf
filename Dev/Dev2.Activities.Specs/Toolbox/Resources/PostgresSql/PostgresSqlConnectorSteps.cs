@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Oracle;
 using Dev2.Activities.Designers2.PostgreSql;
@@ -26,9 +28,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     {
         private DbSourceDefinition postgresSqlSource;
         private DbAction selectedAction;
-        //private DbSourceDefinition _testingDbSource;
-        //private DbAction getmEmployeesAction;
-
 
         [Given(@"I drag a PostgresSql Server database connector")]
         public void GivenIDragAPostgresSqlServerDatabaseConnector()
@@ -78,7 +77,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             {
                 selectedAction = new DbAction();
                 selectedAction.Name = "getemployees";
-                selectedAction.Inputs = new List<IServiceInput> { new ServiceInput("EID", "") };
+                selectedAction.Inputs = new List<IServiceInput> { new ServiceInput("fname", "") };
                 GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { selectedAction });
                 GetViewModel().SourceRegion.SelectedSource = postgresSqlSource;
             }
@@ -90,10 +89,32 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             if (actionName == "getemployees")
             {
                 var dataTable = new DataTable();
-                dataTable.Columns.Add(new DataColumn("Column1"));
-                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
+                dataTable.Columns.Add(new DataColumn("name"));
+                dataTable.Columns.Add(new DataColumn("salary"));
+                dataTable.Columns.Add(new DataColumn("age"));
+                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill",4200,45 }, true));
                 GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
                 GetViewModel().ActionRegion.SelectedAction = selectedAction;
+            }
+        }
+
+        [Given(@"I click on Generate Output")]
+        [Then(@"Then the Inputs Window will open")]
+        [Then(@"Test Inputs appear")]
+        public void TestInputsAppear(Table table)
+        {
+            var viewModel = GetViewModel().ToModel();
+
+            var rowNum = 0;
+            foreach (var row in table.Rows)
+            {
+                var inputValue = row["Input"];
+                var value = row["Value"];
+                var serviceInputs = viewModel.Inputs.ToList();
+                var serviceInput = serviceInputs[rowNum];
+                Assert.AreEqual(inputValue, serviceInput.Name);
+                Assert.AreEqual(value, serviceInput.Value);
+                rowNum++;
             }
         }
 
@@ -103,6 +124,64 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsVisible;
             Assert.IsTrue(hasInputs);
+        }
+
+        [Given(@"I Enter a value as the input")]
+        public void GivenIEnterAsTheInput(Table table)
+        {
+
+            int rowNum = 0;
+            var viewModel = GetViewModel();
+            viewModel.TestProcedure();
+
+            foreach (var row in table.Rows)
+            {
+                var inputValue = row["fname"];
+                var serviceInputs = viewModel.ManageServiceInputViewModel.InputArea.Inputs.ToList();
+                var serviceInput = serviceInputs[rowNum];
+                serviceInput.Value = inputValue;
+                rowNum++;
+            }
+        }
+
+
+        [Then(@"Test button is Enabled")]
+        public void ThenValidateIsEnabled()
+        {
+            var viewModel = GetViewModel();
+
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
+        }
+
+        [Then(@"Test button is Clicked")]
+        public void ThenTestButtonIsClicked()
+        {
+            var viewModel = GetViewModel();
+            viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
+           
+        }
+
+
+        [Then(@"Test Connector and Calculate Outputs outputs appear as")]
+        public void ThenOutPutsAppearAs(Table table)
+        {
+            var rowIdx = 0;
+            foreach (var tableRow in table.Rows)
+            {
+                var viewModel = GetViewModel();
+                var nameValue = tableRow["name"];
+                var salaryValue = tableRow["salary"];
+                var ageValue = tableRow["age"];
+                var rows = viewModel.ManageServiceInputViewModel.TestResults.Rows;
+                var dataRow = rows[rowIdx];
+                var dataNameValue = dataRow[0].ToString();
+                var dataSalaryValue = dataRow[1].ToString();
+                var dataAgeValue = dataRow[2].ToString();
+                Assert.AreEqual(nameValue, dataNameValue);
+                Assert.AreEqual(salaryValue, dataSalaryValue);
+                Assert.AreEqual(ageValue, dataAgeValue);
+                rowIdx++;
+            }
         }
 
 
