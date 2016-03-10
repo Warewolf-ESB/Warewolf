@@ -148,7 +148,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
             //_scrollStartOffset.X = MyScrollViewer.HorizontalOffset;
             //_scrollStartOffset.Y = MyScrollViewer.VerticalOffset;
 
-            //// Update the cursor if scrolling is possible 
+            //// UpdateMode the cursor if scrolling is possible 
             //Cursor = (MyScrollViewer.ExtentWidth > MyScrollViewer.ViewportWidth) ||
             //    (MyScrollViewer.ExtentHeight > MyScrollViewer.ViewportHeight) ?
             //    Cursors.ScrollAll : Cursors.Arrow;

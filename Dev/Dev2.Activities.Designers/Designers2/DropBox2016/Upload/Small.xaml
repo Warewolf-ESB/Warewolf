@@ -8,7 +8,7 @@
         xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
         mc:Ignorable="d"
         d:DesignWidth="250"
-        d:DataContext="{d:DesignInstance dropBoxUploadService:DropBoxUploadViewModel}"                              
+        d:DataContext="{d:DesignInstance dropBoxUploadService:DropBoxUploadViewModel}"                            
                                
                                >
     <core:ActivityDesignerTemplate.Resources>

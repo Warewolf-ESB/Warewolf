@@ -287,12 +287,12 @@ namespace Dev2.Activities.Designers.Tests.Decision
 
         //    // ReSharper disable PossibleNullReferenceException
         //    var miCollection = mi.Properties["ResultsCollection"].Collection;
-        //    var dtoModelItem1 = miCollection.Add(dto1);
-        //    var dtoModelItem2 = miCollection.Add(dto2);
-        //    var dtoModelItem3 = miCollection.Add(dto3);
-        //    var dtoModelItem4 = miCollection.Add(dto4);
-        //    var dtoModelItem5 = miCollection.Add(dto5);
-        //    var dtoModelItem6 = miCollection.Add(dto6);
+        //    var dtoModelItem1 = miCollection.AddMode(dto1);
+        //    var dtoModelItem2 = miCollection.AddMode(dto2);
+        //    var dtoModelItem3 = miCollection.AddMode(dto3);
+        //    var dtoModelItem4 = miCollection.AddMode(dto4);
+        //    var dtoModelItem5 = miCollection.AddMode(dto5);
+        //    var dtoModelItem6 = miCollection.AddMode(dto6);
         //    // ReSharper restore PossibleNullReferenceException
 
         //    var viewModel = new DecisionDesignerViewModel(mi);

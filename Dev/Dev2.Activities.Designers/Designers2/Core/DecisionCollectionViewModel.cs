@@ -180,7 +180,7 @@
 //            {
 //                ModelItemCollection.Clear();
 
-//                // Add blank row
+//                // AddMode blank row
 //                AddDto(indexNumber);
 //            }
 //            else
@@ -242,7 +242,7 @@
 //            if(idx >= ModelItemCollection.Count)
 //            {
 
-//                ModelItemCollection.Add(dto as T);
+//                ModelItemCollection.AddMode(dto as T);
 //            }
 //            else
 //            {

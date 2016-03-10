@@ -334,7 +334,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 LoadDontShowAgainOptions();
             }
 
-            // Add/Update option
+            // AddMode/UpdateMode option
             if(_dontShowAgainOptions != null)
             {
                 _dontShowAgainOptions[dontShowAgainKey] = result;

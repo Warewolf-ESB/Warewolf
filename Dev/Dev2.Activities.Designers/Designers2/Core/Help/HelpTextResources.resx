@@ -2595,7 +2595,7 @@ You can drag and drop the rules to change their execution order.
 Rules will be processed in the order listed. If a Rule is found to be True, that flow arm will be executed.
 
 Allowed:
-Add to or edit the rules list.</value>
+AddMode to or edit the rules list.</value>
   </data>
   <data name="RulesToolTip" xml:space="preserve">
     <value>To add a rule, enter the rule name in the Default input and hit enter or double click a rule to edit.
