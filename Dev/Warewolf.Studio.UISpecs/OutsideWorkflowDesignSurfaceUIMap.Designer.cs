@@ -1890,11 +1890,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_New_DB_Connector_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton uICreateanewdatabasecoButton = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom.UICreateanewdatabasecoButton;
+            WpfButton databaseConnectorButton = this.MainStudioWindow.SideMenuBar.DatabaseConnectorButton;
             #endregion
 
             // Click 'Create a new database connector' button
-            Mouse.Click(uICreateanewdatabasecoButton, new Point(8, 22));
+            Mouse.Click(databaseConnectorButton, new Point(8, 22));
         }
         
         /// <summary>
@@ -1903,11 +1903,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_New_Plugin_Connector_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton uICreateanewpluginconnButton = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom.UICreateanewpluginconnButton;
+            WpfButton pluginConnectorButton = this.MainStudioWindow.SideMenuBar.PluginConnectorButton;
             #endregion
 
             // Click 'Create a new plugin connector' button
-            Mouse.Click(uICreateanewpluginconnButton, new Point(35, 12));
+            Mouse.Click(pluginConnectorButton, new Point(35, 12));
         }
         
         /// <summary>
@@ -4528,30 +4528,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mUIWarewolfDEV2LEROYWARWindow1;
             }
         }
-        
-        public UIWarewolfDEV2LEROYWARWindow2 UIWarewolfDEV2LEROYWARWindow2
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2LEROYWARWindow2 == null))
-                {
-                    this.mUIWarewolfDEV2LEROYWARWindow2 = new UIWarewolfDEV2LEROYWARWindow2();
-                }
-                return this.mUIWarewolfDEV2LEROYWARWindow2;
-            }
-        }
-        
-        public UIWarewolfDEV2LEROYWARWindow3 UIWarewolfDEV2LEROYWARWindow3
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2LEROYWARWindow3 == null))
-                {
-                    this.mUIWarewolfDEV2LEROYWARWindow3 = new UIWarewolfDEV2LEROYWARWindow3();
-                }
-                return this.mUIWarewolfDEV2LEROYWARWindow3;
-            }
-        }
         #endregion
         
         #region Fields
@@ -4852,10 +4828,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private SaveDialogWindow mSaveDialogWindow;
         
         private UIWarewolfDEV2LEROYWARWindow1 mUIWarewolfDEV2LEROYWARWindow1;
-        
-        private UIWarewolfDEV2LEROYWARWindow2 mUIWarewolfDEV2LEROYWARWindow2;
-        
-        private UIWarewolfDEV2LEROYWARWindow3 mUIWarewolfDEV2LEROYWARWindow3;
         #endregion
     }
     
@@ -7191,6 +7163,38 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public WpfButton DatabaseConnectorButton
+        {
+            get
+            {
+                if ((this.mDatabaseConnectorButton == null))
+                {
+                    this.mDatabaseConnectorButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDatabaseConnectorButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database connector";
+                    this.mDatabaseConnectorButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mDatabaseConnectorButton;
+            }
+        }
+        
+        public WpfButton PluginConnectorButton
+        {
+            get
+            {
+                if ((this.mPluginConnectorButton == null))
+                {
+                    this.mPluginConnectorButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mPluginConnectorButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin connector";
+                    this.mPluginConnectorButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mPluginConnectorButton;
+            }
+        }
+        
         public WpfButton WebSourceButton
         {
             get
@@ -7384,6 +7388,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private WpfButton mDatabaseSourceButton;
         
         private WpfButton mPluginSourceButton;
+        
+        private WpfButton mDatabaseConnectorButton;
+        
+        private WpfButton mPluginConnectorButton;
         
         private WpfButton mWebSourceButton;
         
@@ -17956,38 +17964,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WpfButton UICreateanewdatabasecoButton
-        {
-            get
-            {
-                if ((this.mUICreateanewdatabasecoButton == null))
-                {
-                    this.mUICreateanewdatabasecoButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUICreateanewdatabasecoButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database connector";
-                    this.mUICreateanewdatabasecoButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUICreateanewdatabasecoButton;
-            }
-        }
-        
-        public WpfButton UICreateanewpluginconnButton
-        {
-            get
-            {
-                if ((this.mUICreateanewpluginconnButton == null))
-                {
-                    this.mUICreateanewpluginconnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUICreateanewpluginconnButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin connector";
-                    this.mUICreateanewpluginconnButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUICreateanewpluginconnButton;
-            }
-        }
-        
         public UIItemText UIItemText
         {
             get
@@ -18002,10 +17978,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private WpfButton mUICreateanewdatabasecoButton;
-        
-        private WpfButton mUICreateanewpluginconnButton;
-        
         private UIItemText mUIItemText;
         #endregion
     }
@@ -21552,197 +21524,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         #region Fields
         private WpfCustom mUIDebugOutputCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfDEV2LEROYWARWindow2 : WpfWindow
-    {
-        
-        public UIWarewolfDEV2LEROYWARWindow2()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\LEROY.WARNER)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
-        {
-            get
-            {
-                if ((this.mUIUI_ExplorerControl_ACustom == null))
-                {
-                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
-                }
-                return this.mUIUI_ExplorerControl_ACustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_ExplorerControl_ACustom : WpfCustom
-    {
-        
-        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIExplorerTreeTree UIExplorerTreeTree
-        {
-            get
-            {
-                if ((this.mUIExplorerTreeTree == null))
-                {
-                    this.mUIExplorerTreeTree = new UIExplorerTreeTree(this);
-                }
-                return this.mUIExplorerTreeTree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIExplorerTreeTree mUIExplorerTreeTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIExplorerTreeTree : WpfTree
-    {
-        
-        public UIExplorerTreeTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
-                }
-                return this.mUIInfragisticsControlsTreeItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInfragisticsControlsTreeItem : WpfTreeItem
-    {
-        
-        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTreeItem UIInfragisticsControlsTreeItem1
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem1 == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem1 = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mUIInfragisticsControlsTreeItem1.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mUIInfragisticsControlsTreeItem1.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIInfragisticsControlsTreeItem1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mUIInfragisticsControlsTreeItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIInfragisticsControlsTreeItem1;
-            }
-        }
-        
-        public WpfTreeItem UIInfragisticsControlsTreeItem11
-        {
-            get
-            {
-                if ((this.mUIInfragisticsControlsTreeItem11 == null))
-                {
-                    this.mUIInfragisticsControlsTreeItem11 = new WpfTreeItem(this);
-                    #region Search Criteria
-                    this.mUIInfragisticsControlsTreeItem11.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-                    this.mUIInfragisticsControlsTreeItem11.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
-                    this.mUIInfragisticsControlsTreeItem11.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mUIInfragisticsControlsTreeItem11.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIInfragisticsControlsTreeItem11;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTreeItem mUIInfragisticsControlsTreeItem1;
-        
-        private WpfTreeItem mUIInfragisticsControlsTreeItem11;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfDEV2LEROYWARWindow3 : WpfWindow
-    {
-        
-        public UIWarewolfDEV2LEROYWARWindow3()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\LEROY.WARNER)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new WpfWindow(this);
-                    #region Search Criteria
-                    this.mUIWpfWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-                    this.mUIWpfWindow.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWpfWindow;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfWindow mUIWpfWindow;
         #endregion
     }
 }
