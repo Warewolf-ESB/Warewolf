@@ -3351,6 +3351,15 @@ Data
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
+  <data name="SharepointHelpServer" xml:space="preserve">
+    <value>Select a preconfigured SharePoint server source or "New SharePoint Server Source..." to add a new one.</value>
+  </data>
+  <data name="SharepointEditServerHelp" xml:space="preserve">
+    <value>SharepointEditServerHelp</value>
+  </data>
+  <data name="SharepointRefreshListHelp" xml:space="preserve">
+    <value>SharepointRefreshListHelp</value>
+  </data>
   <data name="SharepointToolTipToVariable" xml:space="preserve">
     <value>To read list item data into a variable, put the variable here.</value>
   </data>
@@ -3398,6 +3407,12 @@ Data
 
         Allowed:&lt;br /&gt;
         Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+  </data>
+  <data name="SQLBulkInsertEditDatabaseHelp" xml:space="preserve">
+    <value>SQLBulkInsertEditDatabaseHelp</value>
+  </data>
+  <data name="SQLBulkInsertRefreshListHelp" xml:space="preserve">
+    <value>SQLBulkInsertRefreshListHelp</value>
   </data>
   <data name="SQLBulkInsertHelpFiretriggers" xml:space="preserve">
     <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.&lt;br/&gt;
@@ -3790,5 +3805,15 @@ Data
   </data>
   <data name="NewServerLabel" xml:space="preserve">
     <value>New Remote Server...</value>
+  </data>
+
+  <data name="EditEmailSourceHelp" xml:space="preserve">
+    <value>EditEmailSourceHelp</value>
+  </data>
+  <data name="TestEmailAccountHelp" xml:space="preserve">
+    <value>TestEmailAccountHelp</value>
+  </data>
+  <data name="ChooseAttachmentsHelp" xml:space="preserve">
+    <value>ChooseAttachmentsHelp</value>
   </data>
 </root>

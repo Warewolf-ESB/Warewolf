@@ -122,7 +122,7 @@
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
-                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
+                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}"  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Name"
                                                          SourcePropertyValue="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
@@ -157,7 +157,7 @@
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
-                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding}" />
+                                                    <core1:HelpSetter Text="{x:Static languages:Core.WebServiceRequestHeadersTableHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
