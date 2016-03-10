@@ -6155,7 +6155,6 @@
                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                 <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId" Operator="Contains">Unsaved</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>
@@ -7054,6 +7053,106 @@
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="Custom" Id="LargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.Large</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">LargeViewContent</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Table" Id="DataGrid" FriendlyName="LargeDataGrid" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">LargeDataGrid</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Row" Id="Row1" FriendlyName="" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <SearchConfigurations>
+                                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                          </SearchConfigurations>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Cell" Id="InputDataColum" FriendlyName="Item: Warewolf.Core.ServiceInput, Column Display I..." SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ColumnHeader">Input Data or [[Variable]]</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Edit" Id="Textbox" FriendlyName="To bulk insert data into a table, put the data to ..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                            <UIObject ControlType="Cell" Id="EmptyIsNullColum" FriendlyName="Item: Warewolf.Core.ServiceInput, Column Display I..." SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ColumnHeader">Empty Is Null</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="CheckBox" Id="CheckBox" FriendlyName="" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
                                                 </UIObject>
                                               </Descendants>
                                             </UIObject>
@@ -9013,19 +9112,6 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Button" Id="CloseStudioButton" FriendlyName="" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                <PropertyCondition Name="AutomationId">PART_CLOSE</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
             <UIObject ControlType="Custom" Id="DockManager" FriendlyName="DockManager" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
@@ -10327,19 +10413,6 @@
                   </Descendants>
                 </UIObject>
               </Descendants>
-            </UIObject>
-            <UIObject ControlType="Button" Id="MaximiseStudioButton" FriendlyName="PART_MAXIMIZE_RESTORE" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                <PropertyCondition Name="AutomationId">PART_MAXIMIZE_RESTORE</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
             </UIObject>
           </Descendants>
         </TopLevelWindow>
