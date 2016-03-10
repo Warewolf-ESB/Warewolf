@@ -53,6 +53,15 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(getExpander, new Point(18, 3));
         }
 
+        [When(@"I drag '(.*)' from the explorer tree onto the design surface")]
+        public void WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface(string path)
+        {
+            UITestControl getTreeItem = GetTreeItemFromPath(path);
+            UITestControl getWorkflowdesigner = Uimap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            Mouse.StartDragging(getTreeItem);
+            Mouse.StopDragging(getWorkflowdesigner, new Point(305, 137));
+        }
+
         private UITestControl GetTreeItemFromPath(string path)
         {
             var pathAsArray = path.Split('\\');
