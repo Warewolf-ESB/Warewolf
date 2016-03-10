@@ -263,6 +263,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ChooseAttachmentsHelp.
+        /// </summary>
+        public static string ChooseAttachmentsHelp {
+            get {
+                return ResourceManager.GetString("ChooseAttachmentsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.&lt;br /&gt;
         ///        To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.&lt;br /&gt;
         ///        &lt;br /&gt;
@@ -1984,6 +1993,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DropboxSourceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("DropboxSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EditEmailSourceHelp.
+        /// </summary>
+        public static string EditEmailSourceHelp {
+            get {
+                return ResourceManager.GetString("EditEmailSourceHelp", resourceCulture);
             }
         }
         
@@ -5486,6 +5504,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SharepointEditServerHelp.
+        /// </summary>
+        public static string SharepointEditServerHelp {
+            get {
+                return ResourceManager.GetString("SharepointEditServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the field you want to match on.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
@@ -5539,6 +5566,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SharepointInsertHelpResult {
             get {
                 return ResourceManager.GetString("SharepointInsertHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SharepointRefreshListHelp.
+        /// </summary>
+        public static string SharepointRefreshListHelp {
+            get {
+                return ResourceManager.GetString("SharepointRefreshListHelp", resourceCulture);
             }
         }
         
@@ -5667,6 +5703,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SplashImage {
             get {
                 return ResourceManager.GetString("SplashImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQLBulkInsertEditDatabaseHelp.
+        /// </summary>
+        public static string SQLBulkInsertEditDatabaseHelp {
+            get {
+                return ResourceManager.GetString("SQLBulkInsertEditDatabaseHelp", resourceCulture);
             }
         }
         
@@ -5849,6 +5894,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SQLBulkInsertRefreshListHelp.
+        /// </summary>
+        public static string SQLBulkInsertRefreshListHelp {
+            get {
+                return ResourceManager.GetString("SQLBulkInsertRefreshListHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.&lt;br/&gt;
         ///        Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.&lt;br /&gt;
         ///        A single Recordset will yield the best performance.&lt;br/&gt;
@@ -5958,6 +6012,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TestDefaultLabel {
             get {
                 return ResourceManager.GetString("TestDefaultLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TestEmailAccountHelp.
+        /// </summary>
+        public static string TestEmailAccountHelp {
+            get {
+                return ResourceManager.GetString("TestEmailAccountHelp", resourceCulture);
             }
         }
         

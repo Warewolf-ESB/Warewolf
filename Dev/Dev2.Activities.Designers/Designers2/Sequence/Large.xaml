@@ -11,8 +11,8 @@
                                xmlns:sa="http://schemas.microsoft.com/netfx/2009/xaml/activities"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                MinWidth="200"
                                MinHeight="188"
                                MaxWidth="Infinity"
@@ -74,7 +74,7 @@
                     </ItemsPanelTemplate>
                 </sap:WorkflowItemsPresenter.ItemsPanel>
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSequence}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSequence}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ActivitiesPresenter_AutoID">
