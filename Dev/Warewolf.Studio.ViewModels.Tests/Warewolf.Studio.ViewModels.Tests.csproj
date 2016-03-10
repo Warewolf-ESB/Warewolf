@@ -90,14 +90,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectControlViewModelTests.cs" />
-    <Compile Include="DeployViewModelTests.cs" />
-    <Compile Include="EmailAttachmentModelTests.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ConnectControlViewModelTests.cs" />
+    <Compile Include="DeployViewModelTests.cs" />
+    <Compile Include="EmailAttachmentModelTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
+    <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
     <Compile Include="ManagePluginSourceViewModellTests.cs" />
     <Compile Include="ManageWebSourceModellTests.cs" />
