@@ -69,7 +69,7 @@ namespace Dev2.Utilities
                 using(var sw = new StringWriter(sb))
                 {
                     var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext()));
-                    XamlServices.Save(xw, builder);
+                   XamlServices.Save(xw, builder);
 
                     text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
                 }
