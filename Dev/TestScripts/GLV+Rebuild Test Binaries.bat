@@ -6,5 +6,9 @@ git -C "%~dp0..\.." pull
 if not %errorlevel%==0 pause & exit 1
 "%~dp0..\.nuget\nuget.exe" restore "%~dp0..\AcceptanceTesting.sln"
 if not %errorlevel%==0 pause & exit 1
+powershell -file "%~dp0..\BakeInVersion.ps1"
+if not %errorlevel%==0 pause & exit 1
 "%vs120comntools%..\IDE\devenv.com" "%~dp0..\AcceptanceTesting.sln" /Build Debug
+if not %errorlevel%==0 pause & exit 1
+powershell -file "%~dp0..\ReadOutVersion.ps1"
 if not %errorlevel%==0 pause & exit 1
