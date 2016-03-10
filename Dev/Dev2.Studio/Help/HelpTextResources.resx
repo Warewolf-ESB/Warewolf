@@ -243,7 +243,7 @@ The local machine Administrators are automatically given this permission.
 Giving Public access to this permission is akin to turning security off and is not recommended.</value>
   </data>
   <data name="SettingsSecurityServerHelpContribute" xml:space="preserve">
-    <value>By Default this group will be able to Add New resources, Edit resources and Delete existing resources on this server. 
+    <value>By Default this group will be able to AddMode New resources, Edit resources and Delete existing resources on this server. 
 To do this they can also View and Execute.</value>
   </data>
   <data name="SettingsSecurityServerHelpDeployFrom" xml:space="preserve">

@@ -89,9 +89,9 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<RadioButton GroupName="WriteMode" Grid.Column="0" Grid.Row="0" IsChecked="{Binding Path=OverWrite}"  Name="CheckBoxOverwriteMode" FlowDirection="RightToLeft" Content="Overwrite"></RadioButton>
-            <RadioButton GroupName="WriteMode" Grid.Column="1" Grid.Row="0" IsChecked="{Binding Path=Update}"  Name="CheckBoxAddMode" FlowDirection="RightToLeft" Content="Add"></RadioButton>
-            <RadioButton GroupName="WriteMode" Grid.Column="2" Grid.Row="0" IsChecked="{Binding Path=Add}"  Name="CheckBoxUpdateMode" FlowDirection="RightToLeft" Content="Update"></RadioButton>
+			<RadioButton GroupName="WriteMode" Grid.Column="0" Grid.Row="0" IsChecked="{Binding Path=OverWriteMode}"  Name="CheckBoxOverwriteMode" FlowDirection="RightToLeft" Content="Overwrite"></RadioButton>
+            <RadioButton GroupName="WriteMode" Grid.Column="1" Grid.Row="0" IsChecked="{Binding Path=UpdateMode}"  Name="CheckBoxAddMode" FlowDirection="RightToLeft" Content="AddMode"></RadioButton>
+            <RadioButton GroupName="WriteMode" Grid.Column="2" Grid.Row="0" IsChecked="{Binding Path=AddMode}"  Name="CheckBoxUpdateMode" FlowDirection="RightToLeft" Content="UpdateMode"></RadioButton>
 		</Grid>
 		<!--<ui:IntellisenseTextBox x:Name="InitialFocusElement"
 								Grid.Column="1"

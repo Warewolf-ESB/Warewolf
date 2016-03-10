@@ -76,7 +76,7 @@ namespace Dev2.Core.Tests
 
         #endregion Test Initialization
 
-        #region Update Tests
+        #region UpdateMode Tests
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -145,7 +145,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(inputs, updateResourceModel.Inputs);
             Assert.AreEqual(outputs, updateResourceModel.Outputs);
         }
-        #endregion Update Tests
+        #endregion UpdateMode Tests
 
         [TestMethod]
         public void ResourceModel_DataListPropertyWhereChangedToSameString_NotifyPropertyChangedNotFiredTwice()

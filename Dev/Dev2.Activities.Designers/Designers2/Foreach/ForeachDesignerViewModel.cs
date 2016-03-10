@@ -168,7 +168,7 @@ namespace Dev2.Activities.Designers2.Foreach
                         //                            var activity = currentValue as Activity;
                         //                            if(activity != null)
                         //                            {
-                        //                                dsfSequenceActivity.Activities.Add(activity);
+                        //                                dsfSequenceActivity.Activities.AddMode(activity);
                         //                            }
                         //                        }
                         //                        ModelItem modelItem = ModelItemUtils.CreateModelItem(dsfSequenceActivity);

@@ -67,6 +67,7 @@ using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
 using Dev2.Activities.DropBox2016;
+using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

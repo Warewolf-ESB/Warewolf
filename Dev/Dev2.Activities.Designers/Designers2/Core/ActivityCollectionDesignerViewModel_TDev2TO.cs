@@ -216,7 +216,7 @@ namespace Dev2.Activities.Designers2.Core
                     ModelItemCollection.Clear();
                 }
 
-                // Add blank row
+                // AddMode blank row
                 AddDto(indexNumber);
             }
             else
