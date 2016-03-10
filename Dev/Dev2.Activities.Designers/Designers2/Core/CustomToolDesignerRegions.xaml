@@ -36,7 +36,7 @@
                           Grid.Column="1"
                           DisplayMemberPath="Name" 
                           Margin="{StaticResource ControlBorderRight}"
-                          ToolTip="{x:Static languages:Core.ManageDbServiceSourcesTooltip}"
+                          ToolTip="{Binding SourceRegion.SourcesTooltip}"
                           ItemsSource="{Binding SourceRegion.Sources}"
                           SelectedItem="{Binding SourceRegion.SelectedSource , Mode=TwoWay}">
                 <i:Interaction.Behaviors>
@@ -47,7 +47,7 @@
                         Grid.Column="2"
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
-                        ToolTip="{x:Static languages:Core.ManageDbServiceEditSourceTooltip}"
+                        ToolTip="{Binding SourceRegion.EditSourceTooltip}"
                         Command="{Binding Path=SourceRegion.EditSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding SourceRegion.EditSourceHelpText}" DataContext="{Binding}" />
@@ -58,7 +58,7 @@
                         Content="{x:Static languages:Core.New}" 
                         Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip="{x:Static languages:Core.ManageDbServiceNewSourceTooltip}"
+                        ToolTip="{Binding SourceRegion.NewSourceTooltip}"
                         Command="{Binding Path=SourceRegion.NewSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding SourceRegion.NewSourceHelpText}" DataContext="{Binding}" />
