@@ -1563,6 +1563,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DbInputDefaultValueHelp.
+        /// </summary>
+        public static string DbInputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("DbInputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DbInsertToolTipColumn.
+        /// </summary>
+        public static string DbInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("DbInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear the filter box.
         /// </summary>
         public static string DebugOutputClearSearchTooltip {
@@ -1966,6 +1984,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DotNetDllTestHeader {
             get {
                 return ResourceManager.GetString("DotNetDllTestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DotNetInputDefaultValueHelp.
+        /// </summary>
+        public static string DotNetInputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("DotNetInputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DotNetInsertToolTipColumn.
+        /// </summary>
+        public static string DotNetInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("DotNetInsertToolTipColumn", resourceCulture);
             }
         }
         
@@ -2942,6 +2978,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string HostNameLabel {
             get {
                 return ResourceManager.GetString("HostNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputDefaultValueHelp.
+        /// </summary>
+        public static string InputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("InputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputEmptyIsNullDefaultValueHelp.
+        /// </summary>
+        public static string InputEmptyIsNullDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("InputEmptyIsNullDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputGenerateOutputsDefaultHelp.
+        /// </summary>
+        public static string InputGenerateOutputsDefaultHelp {
+            get {
+                return ResourceManager.GetString("InputGenerateOutputsDefaultHelp", resourceCulture);
             }
         }
         
@@ -6422,6 +6485,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebGetTestHeader {
             get {
                 return ResourceManager.GetString("WebGetTestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebInputDefaultValueHelp.
+        /// </summary>
+        public static string WebInputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("WebInputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebInsertToolTipColumn.
+        /// </summary>
+        public static string WebInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("WebInsertToolTipColumn", resourceCulture);
             }
         }
         
