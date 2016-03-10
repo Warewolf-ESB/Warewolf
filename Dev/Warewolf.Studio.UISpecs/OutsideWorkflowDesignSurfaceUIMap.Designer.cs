@@ -4516,18 +4516,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mSaveDialogWindow;
             }
         }
-        
-        public UIWarewolfDEV2LEROYWARWindow1 UIWarewolfDEV2LEROYWARWindow1
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2LEROYWARWindow1 == null))
-                {
-                    this.mUIWarewolfDEV2LEROYWARWindow1 = new UIWarewolfDEV2LEROYWARWindow1();
-                }
-                return this.mUIWarewolfDEV2LEROYWARWindow1;
-            }
-        }
         #endregion
         
         #region Fields
@@ -4826,8 +4814,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private UIWpfWindow mUIWpfWindow;
         
         private SaveDialogWindow mSaveDialogWindow;
-        
-        private UIWarewolfDEV2LEROYWARWindow1 mUIWarewolfDEV2LEROYWARWindow1;
         #endregion
     }
     
@@ -21487,43 +21473,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         #region Fields
         private WpfTreeItem mExplorerTreeItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfDEV2LEROYWARWindow1 : WpfWindow
-    {
-        
-        public UIWarewolfDEV2LEROYWARWindow1()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\LEROY.WARNER)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDebugOutputCustom
-        {
-            get
-            {
-                if ((this.mUIDebugOutputCustom == null))
-                {
-                    this.mUIDebugOutputCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDebugOutputCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
-                    this.mUIDebugOutputCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DebugOutput";
-                    this.mUIDebugOutputCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIDebugOutputCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIDebugOutputCustom;
         #endregion
     }
 }
