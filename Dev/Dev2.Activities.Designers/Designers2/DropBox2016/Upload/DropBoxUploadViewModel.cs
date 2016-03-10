@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -21,11 +20,11 @@ using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.DropBox2016.Upload
 {
-    public class DropBoxUploadViewModel : CustomToolWithRegionBase
+    public class DropBoxUploadViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
         private ObservableCollection<OauthSource> _sources;
-        private IEnvironmentModel _environmentModel;
-        private IEventAggregator _eventPublisher;
+        private readonly IEnvironmentModel _environmentModel;
+        private readonly IEventAggregator _eventPublisher;
         private bool _isRefreshing;
         private string _selectedSourceName;
 
@@ -39,6 +38,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         {
            _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
+            ShowLarge = true;
+            ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), o => IsDropboxSourceSelected);
              Sources = LoadOAuthSources();
              SetSelectedOAuthSource(SelectedSource);
@@ -54,8 +55,10 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             ResourceID = Guid.NewGuid(),
             ResourceName = "Select a OAuth Source..."
         };
-       
-       
+        public static readonly DependencyProperty OverWriteModeProperty = DependencyProperty.Register("OverWriteMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(true));
+        public static readonly DependencyProperty UpdateModeProperty = DependencyProperty.Register("UpdateMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty AddModeProperty = DependencyProperty.Register("AddMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
+
         public OauthSource SelectedSource
         {
             get { return GetProperty<OauthSource>(); }
@@ -71,6 +74,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
            
                 OnPropertyChanged("IsDropboxSourceSelected");
+                // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("SelectedSource");
             }
         }
@@ -84,6 +88,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             private set
             {
                 _sources = value;
+                // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("Sources");
             }
         }
@@ -109,6 +114,39 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 }
                 _selectedSourceName = string.Format(SelectedSource.ResourceName);
                 return _selectedSourceName;
+            }
+        }
+        public bool OverWriteMode
+        {
+            get
+            {
+                return (bool)GetValue(OverWriteModeProperty);
+            }
+            set
+            {
+                SetValue(OverWriteModeProperty, value);
+            }
+        }
+        public bool UpdateMode
+        {
+            get
+            {
+                return (bool)GetValue(UpdateModeProperty);
+            }
+            set
+            {
+                SetValue(UpdateModeProperty, value);
+            }
+        }
+        public bool AddMode
+        {
+            get
+            {
+                return (bool)GetValue(AddModeProperty);
+            }
+            set
+            {
+                SetValue(AddModeProperty, value);
             }
         }
 
@@ -165,8 +203,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         #endregion
 
 
-        public new event PropertyChangedEventHandler PropertyChanged;
-        protected new  void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected   void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null)
@@ -175,10 +213,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             }
         }
 
-        public override IList<IToolRegion> BuildRegions()
-        {
-            return null;
-        }
+       
 
 
     }

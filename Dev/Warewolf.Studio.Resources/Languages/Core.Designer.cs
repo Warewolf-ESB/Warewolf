@@ -263,6 +263,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ChooseAttachmentsHelp.
+        /// </summary>
+        public static string ChooseAttachmentsHelp {
+            get {
+                return ResourceManager.GetString("ChooseAttachmentsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.&lt;br /&gt;
         ///        To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.&lt;br /&gt;
         ///        &lt;br /&gt;
@@ -1554,6 +1563,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DbInputDefaultValueHelp.
+        /// </summary>
+        public static string DbInputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("DbInputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DbInsertToolTipColumn.
+        /// </summary>
+        public static string DbInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("DbInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear the filter box.
         /// </summary>
         public static string DebugOutputClearSearchTooltip {
@@ -1961,6 +1988,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DotNetInputDefaultValueHelp.
+        /// </summary>
+        public static string DotNetInputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("DotNetInputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DotNetInsertToolTipColumn.
+        /// </summary>
+        public static string DotNetInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("DotNetInsertToolTipColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are not allowed to drag remote workflows onto a remote service designer..
         /// </summary>
         public static string DragRemoteNotSupported {
@@ -1984,6 +2029,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DropboxSourceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("DropboxSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EditEmailSourceHelp.
+        /// </summary>
+        public static string EditEmailSourceHelp {
+            get {
+                return ResourceManager.GetString("EditEmailSourceHelp", resourceCulture);
             }
         }
         
@@ -2924,6 +2978,33 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string HostNameLabel {
             get {
                 return ResourceManager.GetString("HostNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputDefaultValueHelp.
+        /// </summary>
+        public static string InputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("InputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputEmptyIsNullDefaultValueHelp.
+        /// </summary>
+        public static string InputEmptyIsNullDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("InputEmptyIsNullDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InputGenerateOutputsDefaultHelp.
+        /// </summary>
+        public static string InputGenerateOutputsDefaultHelp {
+            get {
+                return ResourceManager.GetString("InputGenerateOutputsDefaultHelp", resourceCulture);
             }
         }
         
@@ -5486,6 +5567,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SharepointEditServerHelp.
+        /// </summary>
+        public static string SharepointEditServerHelp {
+            get {
+                return ResourceManager.GetString("SharepointEditServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the field you want to match on.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
@@ -5539,6 +5629,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SharepointInsertHelpResult {
             get {
                 return ResourceManager.GetString("SharepointInsertHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SharepointRefreshListHelp.
+        /// </summary>
+        public static string SharepointRefreshListHelp {
+            get {
+                return ResourceManager.GetString("SharepointRefreshListHelp", resourceCulture);
             }
         }
         
@@ -5667,6 +5766,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SplashImage {
             get {
                 return ResourceManager.GetString("SplashImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQLBulkInsertEditDatabaseHelp.
+        /// </summary>
+        public static string SQLBulkInsertEditDatabaseHelp {
+            get {
+                return ResourceManager.GetString("SQLBulkInsertEditDatabaseHelp", resourceCulture);
             }
         }
         
@@ -5849,6 +5957,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SQLBulkInsertRefreshListHelp.
+        /// </summary>
+        public static string SQLBulkInsertRefreshListHelp {
+            get {
+                return ResourceManager.GetString("SQLBulkInsertRefreshListHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To bulk insert data into a table, put the data to insert in here.&lt;br/&gt;
         ///        Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.&lt;br /&gt;
         ///        A single Recordset will yield the best performance.&lt;br/&gt;
@@ -5958,6 +6075,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TestDefaultLabel {
             get {
                 return ResourceManager.GetString("TestDefaultLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TestEmailAccountHelp.
+        /// </summary>
+        public static string TestEmailAccountHelp {
+            get {
+                return ResourceManager.GetString("TestEmailAccountHelp", resourceCulture);
             }
         }
         
@@ -6359,6 +6485,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebGetTestHeader {
             get {
                 return ResourceManager.GetString("WebGetTestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebInputDefaultValueHelp.
+        /// </summary>
+        public static string WebInputDefaultValueHelp {
+            get {
+                return ResourceManager.GetString("WebInputDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WebInsertToolTipColumn.
+        /// </summary>
+        public static string WebInsertToolTipColumn {
+            get {
+                return ResourceManager.GetString("WebInsertToolTipColumn", resourceCulture);
             }
         }
         

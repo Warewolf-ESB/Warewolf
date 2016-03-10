@@ -1045,7 +1045,8 @@ This data will not be stored and the execution will be rolled back if supported 
   <data name="DatabaseServiceTestHelp" xml:space="preserve">
     <value>Test the execution of this resource.</value>
   </data>
-
+    
+  
   <data name="ServiceTestActionTooltip" xml:space="preserve">
     <value>Test the procedure or function</value>
   </data>
@@ -1306,6 +1307,33 @@ This account needs to be a valid email address/account for the Host server.</val
   </data>
   <data name="EmailSourceTestHelp" xml:space="preserve">
     <value>Test the settings you have entered by sending a test email.</value>
+  </data>
+  <data name="DbInputDefaultValueHelp" xml:space="preserve">
+    <value>DbInputDefaultValueHelp</value>
+  </data>
+  <data name="DbInsertToolTipColumn" xml:space="preserve">
+    <value>DbInsertToolTipColumn</value>
+  </data>
+  <data name="WebInputDefaultValueHelp" xml:space="preserve">
+    <value>WebInputDefaultValueHelp</value>
+  </data>
+  <data name="WebInsertToolTipColumn" xml:space="preserve">
+    <value>WebInsertToolTipColumn</value>
+  </data>
+  <data name="DotNetInputDefaultValueHelp" xml:space="preserve">
+    <value>DotNetInputDefaultValueHelp</value>
+  </data>
+  <data name="DotNetInsertToolTipColumn" xml:space="preserve">
+    <value>DotNetInsertToolTipColumn</value>
+  </data>
+  <data name="InputDefaultValueHelp" xml:space="preserve">
+    <value>InputDefaultValueHelp</value>
+  </data>
+  <data name="InputEmptyIsNullDefaultValueHelp" xml:space="preserve">
+    <value>InputEmptyIsNullDefaultValueHelp</value>
+  </data>
+  <data name="InputGenerateOutputsDefaultHelp" xml:space="preserve">
+    <value>InputGenerateOutputsDefaultHelp</value>
   </data>
   <data name="MappingsRecordsetNameHelp" xml:space="preserve">
     <value>If you would like the default variables in a recordset, put the recordset name in here.</value>
@@ -3351,6 +3379,15 @@ Data
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
+  <data name="SharepointHelpServer" xml:space="preserve">
+    <value>Select a preconfigured SharePoint server source or "New SharePoint Server Source..." to add a new one.</value>
+  </data>
+  <data name="SharepointEditServerHelp" xml:space="preserve">
+    <value>SharepointEditServerHelp</value>
+  </data>
+  <data name="SharepointRefreshListHelp" xml:space="preserve">
+    <value>SharepointRefreshListHelp</value>
+  </data>
   <data name="SharepointToolTipToVariable" xml:space="preserve">
     <value>To read list item data into a variable, put the variable here.</value>
   </data>
@@ -3398,6 +3435,12 @@ Data
 
         Allowed:&lt;br /&gt;
         Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+  </data>
+  <data name="SQLBulkInsertEditDatabaseHelp" xml:space="preserve">
+    <value>SQLBulkInsertEditDatabaseHelp</value>
+  </data>
+  <data name="SQLBulkInsertRefreshListHelp" xml:space="preserve">
+    <value>SQLBulkInsertRefreshListHelp</value>
   </data>
   <data name="SQLBulkInsertHelpFiretriggers" xml:space="preserve">
     <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.&lt;br/&gt;
@@ -3790,5 +3833,15 @@ Data
   </data>
   <data name="NewServerLabel" xml:space="preserve">
     <value>New Remote Server...</value>
+  </data>
+
+  <data name="EditEmailSourceHelp" xml:space="preserve">
+    <value>EditEmailSourceHelp</value>
+  </data>
+  <data name="TestEmailAccountHelp" xml:space="preserve">
+    <value>TestEmailAccountHelp</value>
+  </data>
+  <data name="ChooseAttachmentsHelp" xml:space="preserve">
+    <value>ChooseAttachmentsHelp</value>
   </data>
 </root>

@@ -420,7 +420,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to Add New resources, Edit resources and Delete existing resources on this server. 
+        ///   Looks up a localized string similar to By Default this group will be able to AddMode New resources, Edit resources and Delete existing resources on this server. 
         ///To do this they can also View and Execute..
         /// </summary>
         public static string SettingsSecurityServerHelpContribute {

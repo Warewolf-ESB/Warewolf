@@ -16,14 +16,14 @@
                                d:DataContext="{d:DesignInstance core:ActivityCollectionDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.RightButtons>
-        <core:ActivityDesignerButton Content="Add" 
+        <core:ActivityDesignerButton Content="AddMode" 
                                      DataContext="{Binding QuickVariableInputViewModel, Mode=TwoWay}"
                                      Margin="0,0,12,12"
                                      Style="{StaticResource ActivityDesignerButtonStyle}"
                                      IsEnabled="{Binding CanAdd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      CustomCommand="{Binding AddCommand}"
                                      IsValidatedBefore="True"
-                                     AutomationProperties.AutomationId="AddButton"
+                                     AutomationProperties.AutomationId="AddModeButton"
                                      IsClosedAfter="True" />
     </core:ActivityDesignerTemplate.RightButtons>
 

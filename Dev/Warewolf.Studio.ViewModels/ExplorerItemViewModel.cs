@@ -1116,7 +1116,17 @@ namespace Warewolf.Studio.ViewModels
 
                 try
                 {
-
+                    if (Equals(this, destination))
+                    {
+                        return false;
+                    }
+                    if (Parent != null && destination.Parent != null)
+                    {
+                        if (Equals(Parent, destination.Parent))
+                        {
+                            return false;
+                        }
+                    }
                    await _explorerRepository.Move(this, destination);
 
                     if (destination.ResourceType == ResourceType.Folder)

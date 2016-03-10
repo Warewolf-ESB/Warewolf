@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests
 
         // It would be very useful to have a sort of test Designer to generate XAML, it's apparently         
 
-        #region Add Missing Tests
+        #region AddMode Missing Tests
 
         [TestMethod]
         public void AddMissingDataListItems_AddScalars_ExpectedAddDataListItems()
@@ -221,7 +221,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("field1", _dataListViewModel.RecsetCollection[0].Children[0].Name);
         }
 
-        #endregion Add Missing Tests
+        #endregion AddMode Missing Tests
 
         #region RemoveUnused Tests
 
@@ -315,7 +315,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void RemoveUnusedDataListItems_RemoveMalformedScalar_ExpectedItemNotRemovedFromDataList()
         {
-            //TO DO: Implement Logic for the Add Malformed Scalar test method
+            //TO DO: Implement Logic for the AddMode Malformed Scalar test method
         }
 
         [TestMethod]
@@ -591,7 +591,7 @@ namespace Dev2.Core.Tests
 
         #endregion AddRecordsetNamesIfMissing Tests
 
-        #region Add Tests
+        #region AddMode Tests
 
         [TestMethod]
         public void AddMissingDataListItemsAndThenAddManualy_AddRecordSetWhenDataListContainsRecordsertWithSameName()
@@ -857,7 +857,7 @@ namespace Dev2.Core.Tests
         }
 
 
-        #endregion Add Tests
+        #endregion AddMode Tests
 
         #region AddRecordSet Tests
 

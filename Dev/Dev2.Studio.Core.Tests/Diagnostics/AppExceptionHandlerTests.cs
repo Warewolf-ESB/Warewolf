@@ -91,7 +91,7 @@ namespace Dev2.Core.Tests.Diagnostics
         //{
         //    //------------Setup for test--------------------------
         //    var testTraceListner = new TestTraceListner(new StringBuilder());
-        //    Trace.Listeners.Add(testTraceListner);
+        //    Trace.Listeners.AddMode(testTraceListner);
         //    var e = GetException();
         //    var mockHandler = new Mock<AppExceptionHandlerAbstract>();
         //    var popupController = new Mock<IAppExceptionPopupController>();
