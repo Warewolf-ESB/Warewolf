@@ -126,7 +126,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Database_Source_Dropdownlist_Exists()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
             #endregion
 
             // Verify that the 'Exists' property of 'SourcesComboBox' custom control equals 'True'
@@ -2652,7 +2652,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Select_Data_Source_Droplist()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
             #endregion
 
             // Click 'SourcesComboBox' custom control
@@ -7124,30 +7124,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mUIUI_DataListView_AutoCustom;
             }
         }
-        
-        public UIZ4ca1052fb5ae416e825Custom UIZ4ca1052fb5ae416e825Custom
-        {
-            get
-            {
-                if ((this.mUIZ4ca1052fb5ae416e825Custom == null))
-                {
-                    this.mUIZ4ca1052fb5ae416e825Custom = new UIZ4ca1052fb5ae416e825Custom(this);
-                }
-                return this.mUIZ4ca1052fb5ae416e825Custom;
-            }
-        }
-        
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7166,10 +7142,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private DockManager mDockManager;
         
         private UIUI_DataListView_AutoCustom mUIUI_DataListView_AutoCustom;
-        
-        private UIZ4ca1052fb5ae416e825Custom mUIZ4ca1052fb5ae416e825Custom;
-        
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
         #endregion
     }
     
@@ -12854,18 +12826,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public SourcesComboBox SourcesComboBox
-        {
-            get
-            {
-                if ((this.mSourcesComboBox == null))
-                {
-                    this.mSourcesComboBox = new SourcesComboBox(this);
-                }
-                return this.mSourcesComboBox;
-            }
-        }
-        
         public WorkSurfaceContext3 WorkSurfaceContext
         {
             get
@@ -12912,68 +12872,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private SourcesComboBox mSourcesComboBox;
-        
         private WorkSurfaceContext3 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
         private WpfScrollBar mHorizontalScrollBar;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class SourcesComboBox : WpfCustom
-    {
-        
-        public SourcesComboBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourcesComboBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton SourceComboBoxDropdownButton
-        {
-            get
-            {
-                if ((this.mSourceComboBoxDropdownButton == null))
-                {
-                    this.mSourceComboBoxDropdownButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mSourceComboBoxDropdownButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mSourceComboBoxDropdownButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mSourceComboBoxDropdownButton;
-            }
-        }
-        
-        public WpfEdit SourceTextBox
-        {
-            get
-            {
-                if ((this.mSourceTextBox == null))
-                {
-                    this.mSourceTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mSourceTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "TextBoxPresenter";
-                    this.mSourceTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mSourceTextBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mSourceComboBoxDropdownButton;
-        
-        private WpfEdit mSourceTextBox;
         #endregion
     }
     
@@ -12992,6 +12895,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public SourcesComboBox SourcesComboBox
+        {
+            get
+            {
+                if ((this.mSourcesComboBox == null))
+                {
+                    this.mSourcesComboBox = new SourcesComboBox(this);
+                }
+                return this.mSourcesComboBox;
+            }
+        }
+        
         public NewDBConnectorWizard NewDBConnectorWizard
         {
             get
@@ -13033,23 +12948,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     #endregion
                 }
                 return this.mTitleText;
-            }
-        }
-        
-        public WpfCustom SourcesComboBox
-        {
-            get
-            {
-                if ((this.mSourcesComboBox == null))
-                {
-                    this.mSourcesComboBox = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mSourcesComboBox.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-                    this.mSourcesComboBox.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesComboBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mSourcesComboBox;
             }
         }
         
@@ -13349,13 +13247,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
+        private SourcesComboBox mSourcesComboBox;
+        
         private NewDBConnectorWizard mNewDBConnectorWizard;
         
         private WpfText mStep1Text;
         
         private WpfText mTitleText;
-        
-        private WpfCustom mSourcesComboBox;
         
         private WpfButton mEditButton;
         
@@ -13394,6 +13292,61 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private WpfText mErrorText;
         
         private WpfTable mOutputsTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class SourcesComboBox : WpfCustom
+    {
+        
+        public SourcesComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton SourceComboBoxDropdownButton
+        {
+            get
+            {
+                if ((this.mSourceComboBoxDropdownButton == null))
+                {
+                    this.mSourceComboBoxDropdownButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSourceComboBoxDropdownButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mSourceComboBoxDropdownButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSourceComboBoxDropdownButton;
+            }
+        }
+        
+        public WpfEdit SourceTextBox
+        {
+            get
+            {
+                if ((this.mSourceTextBox == null))
+                {
+                    this.mSourceTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mSourceTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "TextBoxPresenter";
+                    this.mSourceTextBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSourceTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mSourceComboBoxDropdownButton;
+        
+        private WpfEdit mSourceTextBox;
         #endregion
     }
     
@@ -17434,198 +17387,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZ4ca1052fb5ae416e825Custom : WpfCustom
-    {
-        
-        public UIZ4ca1052fb5ae416e825Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Z4ca1052fb5ae416e82580afe2b1150da";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIOUTPUTCustom
-        {
-            get
-            {
-                if ((this.mUIOUTPUTCustom == null))
-                {
-                    this.mUIOUTPUTCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
-                    this.mUIOUTPUTCustom.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mUIOUTPUTCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIOUTPUTCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_TabManager_AutoIDTabList : WpfTabList
-    {
-        
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
-        {
-            get
-            {
-                if ((this.mUIDev2ViewModelsSourceTabPage == null))
-                {
-                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
-                }
-                return this.mUIDev2ViewModelsSourceTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
-    {
-        
-        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IDbSour" +
-                "ce]";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2StudioViewModelsCustom : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDatabaseComboxBoxCustom
-        {
-            get
-            {
-                if ((this.mUIDatabaseComboxBoxCustom == null))
-                {
-                    this.mUIDatabaseComboxBoxCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDatabaseComboxBoxCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-                    this.mUIDatabaseComboxBoxCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DatabaseComboxBox";
-                    this.mUIDatabaseComboxBoxCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIDatabaseComboxBoxCustom;
-            }
-        }
-        
-        public WpfCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseSourceControl";
-                    this.mUIItemCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIDatabaseComboxBoxCustom;
-        
-        private WpfCustom mUIItemCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MessageBoxWindow : WpfWindow
     {
         
@@ -17865,13 +17626,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIUI_SplitPane_AutoIDCustom1 UIUI_SplitPane_AutoIDCustom
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
         {
             get
             {
                 if ((this.mUIUI_SplitPane_AutoIDCustom == null))
                 {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom1(this);
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
                 }
                 return this.mUIUI_SplitPane_AutoIDCustom;
             }
@@ -18017,13 +17778,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIDev2StudioViewModelsCustom3 UIDev2StudioViewModelsCustom
+        public UIDev2StudioViewModelsCustom2 UIDev2StudioViewModelsCustom
         {
             get
             {
                 if ((this.mUIDev2StudioViewModelsCustom == null))
                 {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom3(this);
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom2(this);
                 }
                 return this.mUIDev2StudioViewModelsCustom;
             }
@@ -18139,7 +17900,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private WpfCustom mUIDboPr_CitiesGetCountCustom;
         
-        private UIUI_SplitPane_AutoIDCustom1 mUIUI_SplitPane_AutoIDCustom;
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
         
         private UIItemCustom2 mUIItemCustom2;
         
@@ -18161,7 +17922,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private UISourceNavigationViewCustom mUISourceNavigationViewCustom;
         
-        private UIDev2StudioViewModelsCustom3 mUIDev2StudioViewModelsCustom;
+        private UIDev2StudioViewModelsCustom2 mUIDev2StudioViewModelsCustom;
         
         private UIExitFullScreenF11Text mUIExitFullScreenF11Text;
         
@@ -18476,10 +18237,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_SplitPane_AutoIDCustom1 : WpfCustom
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
     {
         
-        public UIUI_SplitPane_AutoIDCustom1(UITestControl searchLimitContainer) : 
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18490,13 +18251,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UIUI_TabManager_AutoIDTabList1 UIUI_TabManager_AutoIDTabList
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
         {
             get
             {
                 if ((this.mUIUI_TabManager_AutoIDTabList == null))
                 {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList1(this);
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
                 }
                 return this.mUIUI_TabManager_AutoIDTabList;
             }
@@ -18504,15 +18265,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UIUI_TabManager_AutoIDTabList1 mUIUI_TabManager_AutoIDTabList;
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_TabManager_AutoIDTabList1 : WpfTabList
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
     {
         
-        public UIUI_TabManager_AutoIDTabList1(UITestControl searchLimitContainer) : 
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18522,25 +18283,25 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UIDev2ViewModelsSourceTabPage1 UIDev2ViewModelsSourceTabPage
+        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
         {
             get
             {
                 if ((this.mUIDev2ViewModelsSourceTabPage == null))
                 {
-                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage1(this);
+                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
                 }
                 return this.mUIDev2ViewModelsSourceTabPage;
             }
         }
         
-        public UIDev2ViewModelsSourceTabPage11 UIDev2ViewModelsSourceTabPage1
+        public UIDev2ViewModelsSourceTabPage1 UIDev2ViewModelsSourceTabPage1
         {
             get
             {
                 if ((this.mUIDev2ViewModelsSourceTabPage1 == null))
                 {
-                    this.mUIDev2ViewModelsSourceTabPage1 = new UIDev2ViewModelsSourceTabPage11(this);
+                    this.mUIDev2ViewModelsSourceTabPage1 = new UIDev2ViewModelsSourceTabPage1(this);
                 }
                 return this.mUIDev2ViewModelsSourceTabPage1;
             }
@@ -18548,17 +18309,17 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UIDev2ViewModelsSourceTabPage1 mUIDev2ViewModelsSourceTabPage;
+        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
         
-        private UIDev2ViewModelsSourceTabPage11 mUIDev2ViewModelsSourceTabPage1;
+        private UIDev2ViewModelsSourceTabPage1 mUIDev2ViewModelsSourceTabPage1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2ViewModelsSourceTabPage1 : WpfTabPage
+    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
     {
         
-        public UIDev2ViewModelsSourceTabPage1(UITestControl searchLimitContainer) : 
+        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18568,13 +18329,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UIDev2StudioViewModelsCustom1 UIDev2StudioViewModelsCustom
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
         {
             get
             {
                 if ((this.mUIDev2StudioViewModelsCustom == null))
                 {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom1(this);
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
                 }
                 return this.mUIDev2StudioViewModelsCustom;
             }
@@ -18582,15 +18343,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UIDev2StudioViewModelsCustom1 mUIDev2StudioViewModelsCustom;
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2StudioViewModelsCustom1 : WpfCustom
+    public class UIDev2StudioViewModelsCustom : WpfCustom
     {
         
-        public UIDev2StudioViewModelsCustom1(UITestControl searchLimitContainer) : 
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18660,10 +18421,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2ViewModelsSourceTabPage11 : WpfTabPage
+    public class UIDev2ViewModelsSourceTabPage1 : WpfTabPage
     {
         
-        public UIDev2ViewModelsSourceTabPage11(UITestControl searchLimitContainer) : 
+        public UIDev2ViewModelsSourceTabPage1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18673,13 +18434,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public UIDev2StudioViewModelsCustom2 UIDev2StudioViewModelsCustom
+        public UIDev2StudioViewModelsCustom1 UIDev2StudioViewModelsCustom
         {
             get
             {
                 if ((this.mUIDev2StudioViewModelsCustom == null))
                 {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom2(this);
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom1(this);
                 }
                 return this.mUIDev2StudioViewModelsCustom;
             }
@@ -18687,15 +18448,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private UIDev2StudioViewModelsCustom2 mUIDev2StudioViewModelsCustom;
+        private UIDev2StudioViewModelsCustom1 mUIDev2StudioViewModelsCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2StudioViewModelsCustom2 : WpfCustom
+    public class UIDev2StudioViewModelsCustom1 : WpfCustom
     {
         
-        public UIDev2StudioViewModelsCustom2(UITestControl searchLimitContainer) : 
+        public UIDev2StudioViewModelsCustom1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -20060,10 +19821,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2StudioViewModelsCustom3 : WpfCustom
+    public class UIDev2StudioViewModelsCustom2 : WpfCustom
     {
         
-        public UIDev2StudioViewModelsCustom3(UITestControl searchLimitContainer) : 
+        public UIDev2StudioViewModelsCustom2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
