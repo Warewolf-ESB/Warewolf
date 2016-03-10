@@ -12,6 +12,10 @@ using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedVariable
+// ReSharper disable UseObjectOrCollectionInitializer
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -30,13 +34,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
 
-            Assert.AreEqual(160, region.MaxHeight);
-            Assert.AreEqual(160, region.MinHeight);
-            Assert.AreEqual(160, region.CurrentHeight);
-            Assert.AreEqual(false, region.IsVisible);
-            Assert.AreEqual(60, region.HeadersHeight);
+            Assert.AreEqual(false, region.IsEnabled);
             Assert.AreEqual(0, region.Errors.Count);
-
         }
         private DsfWebPutActivity CreatePutActivity()
         {
@@ -62,12 +61,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPostInputRegion();
-            Assert.AreEqual(region.MaxHeight, 160);
-            Assert.AreEqual(region.MinHeight, 160);
-            Assert.AreEqual(region.CurrentHeight, 160);
-            Assert.AreEqual(region.IsVisible, false);
-
-
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
 
@@ -83,88 +77,16 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             region.PutData = "bob";
-            Assert.AreEqual(region.MaxHeight, 160);
-            Assert.AreEqual(region.MinHeight, 160);
-            Assert.AreEqual(region.CurrentHeight, 160);
-            Assert.AreEqual(region.IsVisible, false);
-            Assert.AreEqual(region.HeadersHeight, 60);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as WebPutInputRegion;
             if(clone != null)
             {
-                Assert.AreEqual(clone.MaxHeight, 265);
-                Assert.AreEqual(clone.MinHeight, 265);
-                Assert.AreEqual(clone.CurrentHeight, 265);
-                Assert.AreEqual(clone.IsVisible, false);
-                Assert.AreEqual(clone.HeadersHeight, 265);
+                Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
                 Assert.AreEqual(clone.PutData,"bob");
             }
         }
-
-
-        [TestMethod]
-        public void Test_HeightChangedUpdatesMain()
-        {
-            var id = Guid.NewGuid();
-            var act = new DsfWebPutActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
-            bool Called = false;
-            var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
-            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            region.HeightChanged += (a, b) => { Called = true; };
-            region.Headers.Add(new NameValue());
-            Assert.AreEqual(region.MaxHeight, 190);
-            Assert.IsTrue(Called);
-        }
-
-        [TestMethod]
-        public void TestInputAddHeaderExpectHeightChanges()
-        {
-            var id = Guid.NewGuid();
-            var act = new DsfWebPutActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
-
-            var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
-            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            Assert.AreEqual(region.MaxHeight, 160);
-            Assert.AreEqual(region.MinHeight, 160);
-            Assert.AreEqual(region.CurrentHeight, 160);
-            Assert.AreEqual(region.IsVisible, false);
-            region.Headers.Add(new NameValue());
-            Assert.AreEqual(region.MaxHeight, 190);
-            Assert.AreEqual(region.MinHeight, 190);
-            Assert.AreEqual(region.CurrentHeight, 190);
-        }
-
-        [TestMethod]
-        public void TestInputAddHeaderExpectHeightChangesPastThree()
-        {
-            var id = Guid.NewGuid();
-            var act = new DsfWebPutActivity() { SourceId = id };
-            var src = new Mock<IWebServiceSource>();
-
-            var mod = new Mock<IWebServiceModel>();
-            mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
-            var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            Assert.AreEqual(region.MaxHeight, 160);
-            Assert.AreEqual(region.MinHeight, 160);
-            Assert.AreEqual(region.CurrentHeight, 160);
-            Assert.AreEqual(region.IsVisible, false);
-            region.Headers.Add(new NameValue());
-            region.Headers.Add(new NameValue());
-            region.Headers.Add(new NameValue());
-            region.Headers.Add(new NameValue());
-            Assert.AreEqual(region.MaxHeight, 220);
-            Assert.AreEqual(region.MinHeight, 220);
-            Assert.AreEqual(region.CurrentHeight, 220);
-        }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -181,19 +103,13 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebPutRegionClone();
-            regionToRestore.MinHeight = 265;
-            regionToRestore.MaxHeight = 265;
-            regionToRestore.CurrentHeight = 265;
-            regionToRestore.IsVisible = true;
+            regionToRestore.IsEnabled = true;
             regionToRestore.QueryString = "blob";
             regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------
 
-            Assert.AreEqual(region.MaxHeight, 160);
-            Assert.AreEqual(region.MinHeight, 160);
-            Assert.AreEqual(region.CurrentHeight, 160);
             Assert.AreEqual(region.QueryString, "blob");
             Assert.AreEqual(region.Headers.First().Name, "a");
             Assert.AreEqual(region.Headers.First().Value, "b");

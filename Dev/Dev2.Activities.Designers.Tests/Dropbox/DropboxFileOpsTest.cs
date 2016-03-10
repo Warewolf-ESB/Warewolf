@@ -178,7 +178,8 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
             new DropBoxUploadFileViewModel(model, env.Object, agg.Object) { Operation = "Read File", SelectedSource = sources[0] };
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            agg.Verify(a => a.Publish(It.IsAny<ShowNewResourceWizard>()));
+            Expression<Action<IEventAggregator>> expression = a => a.Publish(It.IsAny<ShowNewResourceWizard>());
+            agg.Verify(expression);
         }
 
 

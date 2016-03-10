@@ -143,19 +143,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         [Then(@"Post Body is Enabled")]
         public void ThenBodyIsEnabled()
         {
-            Assert.IsTrue(PostViewModel().InputArea.IsVisible);
+            Assert.IsTrue(PostViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Post Url is Visible")]
         public void ThenUrlIsVisible()
         {
-            Assert.IsTrue(PostViewModel().InputArea.IsVisible);
+            Assert.IsTrue(PostViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Post Query is Enabled")]
         public void ThenQueryIsEnabled()
         {
-            Assert.IsTrue(PostViewModel().InputArea.IsVisible);
+            Assert.IsTrue(PostViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Post Generate Outputs is Enabled")]
@@ -170,23 +170,23 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         {
             var webServicePostViewModel = PostViewModel();
             Assert.IsTrue(webServicePostViewModel.GenerateOutputsVisible);
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
-            Assert.IsFalse(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.IsVisible);
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsFalse(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.IsEnabled);
         }
 
         [Then(@"Post Variables are Enabled")]
         public void ThenVariablesAreEnabled()
         {
             var webServicePostViewModel = PostViewModel();
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
         }
 
         [Then(@"Post the response is loaded")]
         public void ThenTheResponseIsLoaded()
         {
             var webServicePostViewModel = PostViewModel();
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
         }
 
 
@@ -194,7 +194,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenMappingIsEnabled()
         {
             var webServicePostViewModel = PostViewModel();
-            Assert.IsTrue(webServicePostViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(webServicePostViewModel.OutputsRegion.IsEnabled);
         }
 
         [Then(@"I enter ""(.*)"" as Post Query String")]
@@ -277,7 +277,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenMappingsIsDisabled()
         {
             var webServicePostViewModel = PostViewModel();
-            Assert.IsFalse(webServicePostViewModel.OutputsRegion.IsVisible);
+            Assert.IsFalse(webServicePostViewModel.OutputsRegion.IsEnabled);
         }
 
 

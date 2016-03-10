@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Warewolf.Studio.UISpecs
@@ -41,16 +42,40 @@ namespace Warewolf.Studio.UISpecs
         [When(@"I expand '(.*)' in the explorer tree")]
         public void WhenIExpandTheItemInTheExplorerTree(string path)
         {
-            var getTreeItem = GetTreeItemFromPath(path);
-            var getExpander = getTreeItem.GetChildren().FirstOrDefault(control =>
-            {
-                if (control is WpfCheckBox)
-                {
-                    return control.FriendlyName == "ExpansionIndicator";
-                }
-                return false;
-            });
+            var getExpander = GetExpansionIndicator(path);
             Mouse.Click(getExpander, new Point(18, 3));
+        }
+
+        [When(@"I drag '(.*)' from the explorer tree onto the design surface")]
+        public void WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface(string path)
+        {
+            UITestControl getTreeItem = GetTreeItemFromPath(path);
+            UITestControl getWorkflowdesigner = Uimap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            Mouse.StartDragging(getTreeItem);
+            Mouse.StopDragging(getWorkflowdesigner, new Point(305, 137));
+        }
+
+        [When(@"I drag '(.*)' from the explorer tree onto '(.*)' also in the explorer tree")]
+        public void WhenIDragTheItemFromTheExplorerTreeOntoTheDesignSurface(string pathFrom, string pathTo)
+        {
+            UITestControl getFromTreeItem = GetTreeItemFromPath(pathFrom);
+            UITestControl getToTreeItem = GetTreeItemFromPath(pathTo);
+            Mouse.StartDragging(getFromTreeItem);
+            Mouse.StopDragging(getToTreeItem, new Point(140, 3));
+        }
+
+        [Given(@"The View permission icon for '(.*)' exists in the explorer tree")]
+        [Then(@"The View permission icon for '(.*)' exists in the explorer tree")]
+        public void AssertTheViewPermissionIconForTreeItemExistsInTheExplorerTree(string path)
+        {
+            Assert.IsTrue(GetEditButton(path).Exists, "Edit button does not exist for " + path);
+        }
+
+        [Given(@"The Execute permission icon for '(.*)' exists in the explorer tree")]
+        [Then(@"The Execute permission icon for '(.*)' exists in the explorer tree")]
+        public void AssertTheExecutePermissionIconForTreeItemExistsInTheExplorerTree(string path)
+        {
+            Assert.IsTrue(GetExecuteButton(path).Exists, "Execute button does not exist for " + path);
         }
 
         private UITestControl GetTreeItemFromPath(string path)
@@ -69,6 +94,45 @@ namespace Warewolf.Studio.UISpecs
                 });
             }
             return CurrentTreeItem;
+        }
+
+        private static UITestControl GetExpansionIndicator(string treeItemPath)
+        {
+            var treeItem = GetTreeItemFromPath(treeItemPath);
+            return treeItem.GetChildren().FirstOrDefault(control =>
+            {
+                if (control is WpfCheckBox)
+                {
+                    return control.FriendlyName == "ExpansionIndicator";
+                }
+                return false;
+            });
+        }
+
+        private static UITestControl GetEditButton(string treeItemPath)
+        {
+            var treeItem = GetTreeItemFromPath(treeItemPath);
+            return treeItem.GetChildren().FirstOrDefault(control =>
+            {
+                if (control is WpfButton)
+                {
+                    return control.FriendlyName == "EditButton";
+                }
+                return false;
+            });
+        }
+
+        private static UITestControl GetExecuteButton(string treeItemPath)
+        {
+            var treeItem = GetTreeItemFromPath(treeItemPath);
+            return treeItem.GetChildren().FirstOrDefault(control =>
+            {
+                if (control is WpfButton)
+                {
+                    return control.FriendlyName == "ExecuteButton";
+                }
+                return false;
+            });
         }
 
         #region Properties and Fields
