@@ -36,7 +36,7 @@
                           Grid.Column="1"
                           DisplayMemberPath="Name" 
                           Margin="{StaticResource ControlBorderRight}"
-                          ToolTip="{x:Static languages:Core.ManageDbServiceSourcesTooltip}"
+                          ToolTip="{Binding SourceRegion.SourcesTooltip}"
                           ItemsSource="{Binding SourceRegion.Sources}"
                           SelectedItem="{Binding SourceRegion.SelectedSource , Mode=TwoWay}">
                 <i:Interaction.Behaviors>
@@ -47,7 +47,7 @@
                         Grid.Column="2"
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
-                        ToolTip="{x:Static languages:Core.ManageDbServiceEditSourceTooltip}"
+                        ToolTip="{Binding SourceRegion.EditSourceTooltip}"
                         Command="{Binding Path=SourceRegion.EditSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding SourceRegion.EditSourceHelpText}" DataContext="{Binding}" />
@@ -58,7 +58,7 @@
                         Content="{x:Static languages:Core.New}" 
                         Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip="{x:Static languages:Core.ManageDbServiceNewSourceTooltip}"
+                        ToolTip="{Binding SourceRegion.NewSourceTooltip}"
                         Command="{Binding Path=SourceRegion.NewSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{Binding SourceRegion.NewSourceHelpText}" DataContext="{Binding}" />
@@ -255,7 +255,7 @@
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpInputData}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.InputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
@@ -308,7 +308,11 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center"/>
+                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                            </i:Interaction.Behaviors>
+                                        </CheckBox>
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -328,9 +332,13 @@
                     Width="Auto" 
                     IsEnabled="{Binding InputArea.IsEnabled}"
                     Margin="{StaticResource ControlBorderTop}"
-                    ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                    ToolTip="{x:Static languages:Core.ServiceTestActionTooltip}"
                     HorizontalAlignment="Right"
-                    Command="{Binding Path=TestInputCommand, Mode=TwoWay}"/>
+                    Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.InputGenerateOutputsDefaultHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewOutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
@@ -401,7 +409,7 @@
                                                     Text="{Binding Path=MappedTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.MappingsDefaultValueHelp}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.MappingsDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="MappedTo"
                                                          SourcePropertyValue="{Binding Path=MappedTo, UpdateSourceTrigger=PropertyChanged}"
@@ -436,7 +444,7 @@
                 <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" 
                          IsEnabled="{Binding IsEnabled}">
                     <i:Interaction.Behaviors>
-                        <core:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding}" />
+                        <core:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
             </Grid>
@@ -585,11 +593,11 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
+                                                    ToolTip="{x:Static languages:Core.DbInsertToolTipColumn}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpInputData}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.DbInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
@@ -627,7 +635,7 @@
                             Content="Test"
                             Width="46">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                 </StackPanel>
@@ -651,7 +659,7 @@
                             Width="46"
                             Content="Done">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDoneButtonHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDoneButtonHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                     <Button HorizontalAlignment="Right" 
@@ -660,7 +668,7 @@
                             Width="46"
                             Content="Cancel">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestCancelButtonHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestCancelButtonHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                 </StackPanel>
@@ -691,9 +699,6 @@
                                    VerticalAlignment="Stretch"
                                    ScrollViewer.HorizontalScrollBarVisibility="Auto" 
                                    ScrollViewer.VerticalScrollBarVisibility="Auto">
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.PluginServiceTestResultsHelp}" DataContext="{Binding}" />
-                            </i:Interaction.Behaviors>
                         </TextBlock>
                     </Grid>
                 </ScrollViewer>
@@ -729,7 +734,7 @@
                          ToolTip="{x:Static languages:Core.ManageWebPasteResponseTooltip}"
                          HorizontalScrollBarVisibility="Disabled" >
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteInputHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteInputHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                 </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
@@ -812,11 +817,11 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
+                                                    ToolTip="{x:Static languages:Core.WebInsertToolTipColumn}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpInputData}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.WebInputDefaultValueHelp}" DataContext="{Binding}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
@@ -861,7 +866,7 @@
                                     VerticalAlignment="Top" 
                                     HorizontalAlignment="Center"/>
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.WebServicePasteHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                     <Button x:Name="TestActionButton" 
@@ -871,7 +876,7 @@
                             Content="Test"
                             Width="46">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                 </StackPanel>
@@ -898,7 +903,7 @@
                             Width="46"
                             Content="Done">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDoneButtonHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDoneButtonHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                     <Button HorizontalAlignment="Right" 
@@ -907,7 +912,7 @@
                             Width="46"
                             Content="Cancel">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestCancelButtonHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestCancelButtonHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                 </StackPanel>
@@ -1005,11 +1010,11 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
+                                                    ToolTip="{x:Static languages:Core.DotNetInsertToolTipColumn}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpInputData}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.DotNetInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
@@ -1047,7 +1052,7 @@
                             Content="Test"
                             Width="46">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                 </StackPanel>
@@ -1071,7 +1076,7 @@
                             Width="46"
                             Content="Done">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDoneButtonHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestDoneButtonHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                     <Button HorizontalAlignment="Right" 
@@ -1080,7 +1085,7 @@
                             Width="46"
                             Content="Cancel">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestCancelButtonHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.ServiceTestCancelButtonHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                         </i:Interaction.Behaviors>
                     </Button>
                 </StackPanel>

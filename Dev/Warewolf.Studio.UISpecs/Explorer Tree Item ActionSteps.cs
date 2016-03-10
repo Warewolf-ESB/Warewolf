@@ -78,7 +78,7 @@ namespace Warewolf.Studio.UISpecs
             Assert.IsTrue(GetExecuteButton(path).Exists, "Execute button does not exist for " + path);
         }
 
-        private UITestControl GetTreeItemFromPath(string path)
+        private static UITestControl GetTreeItemFromPath(string path)
         {
             var pathAsArray = path.Split('\\');
             UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
