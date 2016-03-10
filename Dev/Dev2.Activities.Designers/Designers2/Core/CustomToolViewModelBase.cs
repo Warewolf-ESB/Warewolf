@@ -269,13 +269,13 @@ namespace Dev2.Activities.Designers2.Core
                     switch (Inputs.Count)
                     {
                         case 0:
-                            // Add the Grid Height to the tool Height
+                            // AddMode the Grid Height to the tool Height
                             ToolHeight += _inputGridHeight + RowHeight;
                             InputsHasItems = false;
                             break;
                         default:
                             /* 30px used for row Height multiply by Inputs count plus 1 extra row
-                             * Add grid Height to tool Height original Height value
+                             * AddMode grid Height to tool Height original Height value
                              * Set Maximum tool Height to calculated tool Height */
                             if (Inputs.Count > 0 && Inputs.Count < 5 && Outputs != null && TestComplete)
                             {
@@ -310,13 +310,13 @@ namespace Dev2.Activities.Designers2.Core
                     switch (Outputs.Count)
                     {
                         case 0:
-                            // Add the Grid Height to the tool Height
+                            // AddMode the Grid Height to the tool Height
                             ToolHeight += _outputGridHeight + RowHeight;
                             OutputsHasItems = false;
                             break;
                         default:
                             /* 30px used for row Height multiply by Outputs count plus 1 extra row
-                             * Add grid Height to tool Height original Height value
+                             * AddMode grid Height to tool Height original Height value
                              * Set Maximum tool Height to calculated tool Height */
                             if (Inputs != null && Outputs.Count > 0 && Outputs.Count < 5 && Inputs.Count > 0 && Inputs.Count < 5)
                             {
@@ -362,12 +362,12 @@ namespace Dev2.Activities.Designers2.Core
                     switch (Inputs.Count)
                     {
                         case 0:
-                            // Add the Grid Height to the tool Height
+                            // AddMode the Grid Height to the tool Height
                             ToolHeight += _inputGridHeight + RowHeight;
                             break;
                         default:
                             /* 30px used for row Height multiply by Inputs count plus 1 extra row
-                             * Add grid Height to tool Height original Height value
+                             * AddMode grid Height to tool Height original Height value
                              * Set Maximum tool Height to calculated tool Height */
                             if (Inputs.Count > 0 && Inputs.Count < 5)
                             {

@@ -64,7 +64,7 @@
                                             <Grid.ContextMenu>
                                                 <ContextMenu>
                                                         <MenuItem Header="Delete Last Recordset Row" InputGestureText="[Shift + Delete]" Click="MenuItemDeleteRow"/>
-                                                        <MenuItem Header="Add Blank Row To Recordset" InputGestureText="[Shift + Insert]" Click="MenuItemAddRow"/>
+                                                        <MenuItem Header="AddMode Blank Row To Recordset" InputGestureText="[Shift + Insert]" Click="MenuItemAddRow"/>
                                                 </ContextMenu>
                                             </Grid.ContextMenu>
                                                 <TextBlock  KeyboardNavigation.IsTabStop="False" Focusable="True" ToolTip="{Binding Path=Description}" 

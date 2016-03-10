@@ -53,9 +53,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             ResourceID = Guid.NewGuid(),
             ResourceName = "Select a OAuth Source..."
         };
-        public static readonly DependencyProperty OverWriteProperty = DependencyProperty.Register("OverWrite", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(true));
-        public static readonly DependencyProperty UpdateProperty = DependencyProperty.Register("Update", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
-        public static readonly DependencyProperty AddProperty = DependencyProperty.Register("Add", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty OverWriteModeProperty = DependencyProperty.Register("OverWriteMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(true));
+        public static readonly DependencyProperty UpdateModeProperty = DependencyProperty.Register("UpdateMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty AddModeProperty = DependencyProperty.Register("AddMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
 
         public OauthSource SelectedSource
         {
@@ -114,37 +114,37 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 return _selectedSourceName;
             }
         }
-        public bool OverWrite
+        public bool OverWriteMode
         {
             get
             {
-                return (bool)GetValue(OverWriteProperty);
+                return (bool)GetValue(OverWriteModeProperty);
             }
             set
             {
-                SetValue(OverWriteProperty, value);
+                SetValue(OverWriteModeProperty, value);
             }
         }
-        public bool Update
+        public bool UpdateMode
         {
             get
             {
-                return (bool)GetValue(UpdateProperty);
+                return (bool)GetValue(UpdateModeProperty);
             }
             set
             {
-                SetValue(UpdateProperty, value);
+                SetValue(UpdateModeProperty, value);
             }
         }
-        public bool Add
+        public bool AddMode
         {
             get
             {
-                return (bool)GetValue(AddProperty);
+                return (bool)GetValue(AddModeProperty);
             }
             set
             {
-                SetValue(AddProperty, value);
+                SetValue(AddModeProperty, value);
             }
         }
 
@@ -202,7 +202,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected   void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected   void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null)

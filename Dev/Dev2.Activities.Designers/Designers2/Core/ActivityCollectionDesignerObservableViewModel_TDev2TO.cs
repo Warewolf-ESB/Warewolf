@@ -182,7 +182,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Collection.Clear();
 
-                // Add blank row
+                // AddMode blank row
                 AddDto(indexNumber);
             }
             else

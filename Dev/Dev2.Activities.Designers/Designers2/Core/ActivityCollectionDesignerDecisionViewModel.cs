@@ -127,7 +127,7 @@
 //        {
 //            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png", "Close Quick Variable Input", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png", "Open Quick Variable Input", "QuickVariableInputToggle", this, ShowQuickVariableInputProperty
 //                );
-//            TitleBarToggles.Add(toggle);
+//            TitleBarToggles.AddMode(toggle);
 //        }
 
 

@@ -48,7 +48,7 @@
 
     //        var prop = new Mock<ModelProperty>();
     //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.Add("Condition", prop);
+    //        properties.AddMode("Condition", prop);
 
     //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
 
@@ -69,7 +69,7 @@
 
     //        var decisionProp = new Mock<ModelProperty>();
     //        decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
-    //        decisionProperties.Add("Condition", decisionProp);
+    //        decisionProperties.AddMode("Condition", decisionProp);
 
     //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(decisionProp.Object);
 
@@ -122,7 +122,7 @@
 
     //        var prop = new Mock<ModelProperty>();
     //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.Add("Expression", prop);
+    //        properties.AddMode("Expression", prop);
 
     //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Expression", true).Returns(prop.Object);
 
@@ -138,7 +138,7 @@
 
     //        var decisionProp = new Mock<ModelProperty>();
     //        decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
-    //        decisionProperties.Add("ExpressionText", decisionProp);
+    //        decisionProperties.AddMode("ExpressionText", decisionProp);
 
     //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "ExpressionText", true).Returns(decisionProp.Object);
 
@@ -194,7 +194,7 @@
 
     //        var prop = new Mock<ModelProperty>();
     //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.Add("Expression", prop);
+    //        properties.AddMode("Expression", prop);
 
     //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Expression", true).Returns(prop.Object);
 
@@ -214,7 +214,7 @@
     //        var decisionProp = new Mock<ModelProperty>();
     //        decisionProp.Setup(p => p.ComputedValue).Returns("[[Var]]");
     //        decisionProp.Setup(p => p.Value).Returns(returnModelItem.Object);
-    //        decisionProperties.Add("ExpressionText", decisionProp);
+    //        decisionProperties.AddMode("ExpressionText", decisionProp);
 
     //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "ExpressionText", true).Returns(decisionProp.Object);
 
@@ -263,7 +263,7 @@
 
     //        var prop = new Mock<ModelProperty>();
     //        prop.Setup(p => p.ComputedValue).Returns(testAct);
-    //        properties.Add("Condition", prop);
+    //        properties.AddMode("Condition", prop);
 
     //        propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
 
@@ -284,7 +284,7 @@
 
     //        var decisionProp = new Mock<ModelProperty>();
     //        decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
-    //        decisionProperties.Add("Condition", decisionProp);
+    //        decisionProperties.AddMode("Condition", decisionProp);
 
     //        decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(decisionProp.Object);
 
