@@ -8,6 +8,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                MinWidth="370"
                                MinHeight="360"
                                MaxWidth="600"
@@ -80,7 +81,7 @@
                      AutomationProperties.AutomationId="QviVariableListBox"
                      attached:FocusSetter.IsFocused="{Binding IsVariableListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableVariableListHelpText}"
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableVariableListHelpText}"
                                      DataContext="{Binding DataContext, ElementName=ParentContext}" />
                 </i:Interaction.Behaviors>
             </TextBox>
@@ -100,7 +101,7 @@
                           AutomationProperties.AutomationId="QviSplitOnCombobox"
                           HorizontalAlignment="Stretch">
                     <i:Interaction.Behaviors>
-                        <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
+                        <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </ComboBox>
@@ -110,7 +111,7 @@
                          AutomationProperties.AutomationId="QviSplitOnCharacter"
                          attached:FocusSetter.IsFocused="{Binding IsSplitOnFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Behaviors>
-                        <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
+                        <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -124,7 +125,7 @@
                      HorizontalAlignment="Stretch"
                      attached:FocusSetter.IsFocused="{Binding IsPrefixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariablePrefixWithHelpText}"
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariablePrefixWithHelpText}"
                                      DataContext="{Binding DataContext, ElementName=ParentContext}" />
                 </i:Interaction.Behaviors>
             </TextBox>
@@ -137,7 +138,7 @@
                      HorizontalAlignment="Stretch"
                      attached:FocusSetter.IsFocused="{Binding IsSuffixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSuffixWithHelpText}"
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSuffixWithHelpText}"
                                      DataContext="{Binding DataContext, ElementName=ParentContext}" />
                 </i:Interaction.Behaviors>
             </TextBox>
@@ -155,7 +156,7 @@
                              AutomationProperties.AutomationId="AppendOption"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>
-                        <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableAppendHelpText}"
+                        <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableAppendHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
@@ -166,7 +167,7 @@
                              VerticalAlignment="Center"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>
-                        <help:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableReplaceHelpText}"
+                        <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableReplaceHelpText}"
                                          DataContext="{Binding DataContext, ElementName=ParentContext}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
