@@ -31,6 +31,9 @@ namespace Dev2.Activities.Designers2.Core.Source
         private string _sourcesHelpText;
         private string _editSourceHelpText;
         private string _newSourceHelpText;
+        private string _newSourceToolText;
+        private string _editSourceToolText;
+        private string _sourcesToolText;
 
         public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem,enSourceType type)
         {
@@ -47,6 +50,11 @@ namespace Dev2.Activities.Designers2.Core.Source
             SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceTypesHelp;
             EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceEditSourceHelp;
             NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceNewSourceHelp;
+
+            SourcesTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceSourcesTooltip;
+            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceEditSourceTooltip;
+            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceNewSourceTooltip;
+
             if (SourceId != Guid.Empty)
             {
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
@@ -89,6 +97,47 @@ namespace Dev2.Activities.Designers2.Core.Source
             set
             {
                 _sourcesHelpText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string NewSourceTooltip
+        {
+            get
+            {
+                return _newSourceToolText;
+            }
+            set
+            {
+                _newSourceToolText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string EditSourceTooltip
+        {
+            get
+            {
+                return _editSourceToolText;
+            }
+            set
+            {
+                _editSourceToolText = value;
+                OnPropertyChanged();
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        public string SourcesTooltip
+        {
+            get
+            {
+                return _sourcesToolText;
+            }
+            set
+            {
+                _sourcesToolText = value;
                 OnPropertyChanged();
             }
         }
