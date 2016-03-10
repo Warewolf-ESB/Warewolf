@@ -1782,61 +1782,104 @@ namespace Dev2
 
         private bool MigrateWebActivity(FlowStep flowStep)
         {
-            var webActivity = flowStep.Action as DsfWebserviceActivity;
-            var forEachActivity = flowStep.Action as DsfForEachActivity;
-            DsfActivity webAct = null;
-            var updated = false;
-            if (webActivity == null)
-            {
-                if (forEachActivity != null)
-                {
-                    webActivity = forEachActivity.DataFunc.Handler as DsfWebserviceActivity;
-                }
-            }
+            var activity = flowStep.Action;
+            var updated = PerformMigration(flowStep, activity);
+            return updated;
+        }
 
+        private static bool PerformMigration(FlowStep flowStep, Activity activity)
+        {
+            DsfForEachActivity forEachActivity;
+            DsfActivity webAct;
+            bool updated;
             WebService service = null;
-            if (webActivity != null)
+            var webActivity = GetActivity(activity, out forEachActivity, out webAct, out updated);
+            var foundActivity = webActivity ?? webAct;
+            if(foundActivity != null)
             {
-                updated = true;
-                var id = webActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(webActivity.ResourceID.Expression.ToString());
-                service = ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, id);
+                var id = foundActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(foundActivity.ResourceID.Expression.ToString());
+                service = ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, id) ??
+                          ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, foundActivity.ServiceName);
+                
             }
-            else
-            {
-                webAct = flowStep.Action as DsfActivity;
-                if (webAct == null)
-                {
-                    forEachActivity = flowStep.Action as DsfForEachActivity;
-                    if (forEachActivity != null)
-                    {
-                        webAct = forEachActivity.DataFunc.Handler as DsfActivity;
-                    }
-                }
-                if (webAct != null && webAct.Type.Expression.ToString() == "Webservice")
-                {
-                    updated = true;
-                    var id = webAct.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(webAct.ResourceID.Expression.ToString());
-                    service = ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, id) ??
-                              ResourceCatalog.Instance.GetResource<WebService>(GlobalConstants.ServerWorkspaceID, webAct.ServiceName);
-                }
-            }
-
-            if (service != null)
+            if(service != null)
             {
                 var source = ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceID) ??
                              ResourceCatalog.Instance.GetResource<WebSource>(GlobalConstants.ServerWorkspaceID, service.Source.ResourceName);
-                if (source != null)
+                if(source != null)
                 {
-                    MigrateGetWebService(flowStep, service, webActivity, webAct, source, forEachActivity);                
-                    MigratePostWebService(flowStep, service, webActivity, webAct, source, forEachActivity);
-                    MigrateDeleteWebService(flowStep, service, webActivity, webAct, source, forEachActivity);
-                    MigratePutWebService(flowStep, service, webActivity, webAct, source, forEachActivity);                
+                    Activity migratedActivity = null;
+                    var migrateGetWebService = MigrateGetWebService(service, webActivity, webAct, source);
+                    if (migrateGetWebService != null)
+                    {
+                        migratedActivity = migrateGetWebService;
+                    }
+                    var migratePostWebService = MigratePostWebService(service, webActivity, webAct, source);
+                    if (migratePostWebService != null)
+                    {
+                        migratedActivity = migratePostWebService;
+                    }
+                    var migrateDeleteWebService = MigrateDeleteWebService(service, webActivity, webAct, source);
+                    if (migratePostWebService != null)
+                    {
+                        migratedActivity = migrateDeleteWebService;
+                    }
+                    var migratePutWebService = MigratePutWebService(service, webActivity, webAct, source);
+                    if (migratePutWebService != null)
+                    {
+                        migratedActivity = migratePutWebService;
+                    }
+
+                    if (forEachActivity != null)
+                    {
+                        forEachActivity.DataFunc.Handler = migratedActivity;
+                    }
+                    else
+                    {
+                        flowStep.Action = migratedActivity;
+                    }
                 }
             }
             return updated;
         }
 
-        private static void MigrateGetWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        private static DsfWebserviceActivity GetActivity(Activity activity, out DsfForEachActivity forEachActivity, out DsfActivity webAct, out bool updated)
+        {
+            var webActivity = activity as DsfWebserviceActivity;
+            forEachActivity = activity as DsfForEachActivity;
+            webAct = activity as DsfActivity;
+            updated = false;
+            if(webActivity == null)
+            {
+                if(forEachActivity != null)
+                {
+                    webActivity = forEachActivity.DataFunc.Handler as DsfWebserviceActivity;
+                }
+            }
+
+            if(webActivity != null)
+            {
+                updated = true;
+            }
+            else
+            {
+                if(webAct == null)
+                {
+                    forEachActivity = activity as DsfForEachActivity;
+                    if(forEachActivity != null)
+                    {
+                        webAct = forEachActivity.DataFunc.Handler as DsfActivity;
+                    }
+                }
+                if(webAct != null && webAct.Type.Expression.ToString() == "Webservice")
+                {
+                    updated = true;
+                }
+            }
+            return webActivity;
+        }
+
+        private static DsfWebGetActivity MigrateGetWebService(WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source)
         {
             if(service.RequestMethod == WebRequestMethod.Get)
             {
@@ -1864,19 +1907,13 @@ namespace Dev2
                 webGetActivty.OutputDescription = service.OutputDescription;
                 webGetActivty.SourceId = source.ResourceID;
                 webGetActivty.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
-                webGetActivty.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
-                if(forEachActivity != null)
-                {
-                    forEachActivity.DataFunc.Handler = webGetActivty;
-                }
-                else
-                {
-                    flowStep.Action = webGetActivty;
-                }
+                webGetActivty.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);                
+                return webGetActivty;
             }
+            return null;
         }
 
-        private static void MigrateDeleteWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        private static DsfWebDeleteActivity MigrateDeleteWebService(WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source)
         {
             if (service.RequestMethod == WebRequestMethod.Delete)
             {
@@ -1905,18 +1942,12 @@ namespace Dev2
                 webDeleteActivity.SourceId = source.ResourceID;
                 webDeleteActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
                 webDeleteActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
-                if (forEachActivity != null)
-                {
-                    forEachActivity.DataFunc.Handler = webDeleteActivity;
-                }
-                else
-                {
-                    flowStep.Action = webDeleteActivity;
-                }
+                return webDeleteActivity;
             }
+            return null;
         }
 
-        private static void MigratePostWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        private static DsfWebPostActivity MigratePostWebService(WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source)
         {
             if (service.RequestMethod == WebRequestMethod.Post)
             {
@@ -1946,18 +1977,12 @@ namespace Dev2
                 dsfWebPostActivity.PostData = service.RequestBody;
                 dsfWebPostActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
                 dsfWebPostActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
-                if (forEachActivity != null)
-                {
-                    forEachActivity.DataFunc.Handler = dsfWebPostActivity;
-                }
-                else
-                {
-                    flowStep.Action = dsfWebPostActivity;
-                }
+                return dsfWebPostActivity;
             }
+            return null;
         }
 
-        private static void MigratePutWebService(FlowStep flowStep, WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source, DsfForEachActivity forEachActivity)
+        private static DsfWebPutActivity MigratePutWebService(WebService service, DsfWebserviceActivity webActivity, DsfActivity webAct, WebSource source)
         {
             if (service.RequestMethod == WebRequestMethod.Put)
             {
@@ -1987,15 +2012,9 @@ namespace Dev2
                 webPutActivity.PutData = service.RequestBody;
                 webPutActivity.Inputs = ActivityUtils.TranslateInputMappingToInputs(inputMapping);
                 webPutActivity.Outputs = ActivityUtils.TranslateOutputMappingToOutputs(outputMapping);
-                if (forEachActivity != null)
-                {
-                    forEachActivity.DataFunc.Handler = webPutActivity;
-                }
-                else
-                {
-                    flowStep.Action = webPutActivity;
-                }
+                return webPutActivity;
             }
+            return null;
         }
 
         private static void UpdateActivity(DsfActivity webGetActivty, DsfActivity webActivity)
