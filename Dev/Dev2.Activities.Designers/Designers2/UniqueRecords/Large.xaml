@@ -11,7 +11,6 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="350"
                                MinWidth="350"
@@ -33,7 +32,7 @@
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
-                                     Margin="0,0,9,12"
+                                     Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
@@ -117,7 +116,7 @@
         </ui:IntellisenseTextBox>
 
         <errors:OnError Grid.Column="0"
-                        Grid.Row="4"
+                        Grid.Row="3"
                         Grid.ColumnSpan="2" />
         
     </Grid>

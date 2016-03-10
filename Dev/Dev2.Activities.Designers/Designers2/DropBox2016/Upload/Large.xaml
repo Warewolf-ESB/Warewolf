@@ -1,22 +1,20 @@
 ﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.DropBox2016.Upload.Large"
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-		xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Upload"
-		xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-		xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-		xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
-		xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-		xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-		xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
-		Width="320"
-		mc:Ignorable="d"
-		d:DesignWidth="280"  
-		d:DataContext="{d:DesignInstance upload:DropBoxUploadViewModel}">
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Upload"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               Width="340"
+                               MinWidth="340"
+                               MinHeight="260"
+                               mc:Ignorable="d"
+                               d:DesignWidth="340"  
+                               d:DataContext="{d:DesignInstance upload:DropBoxUploadViewModel}">
 
 	<core:ActivityDesignerTemplate.Resources>
 		<ResourceDictionary>
@@ -28,7 +26,7 @@
 	<core:ActivityDesignerTemplate.RightButtons>
 		<core:ActivityDesignerButton x:Name="DoneButton"
 									 Content="Done"
-									 Margin="0,0,9,12"
+									 Margin="0,0,7,12"
 									 IsValidatedBefore="True"
 									 IsClosedAfter="True"
 									 Style="{StaticResource ActivityDesignerButtonStyle}" />
@@ -45,10 +43,11 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<!-- Source Implemantation-->
-		<TextBlock Grid.Column="0" Grid.Row="0" Text="Dropbox Source" FontWeight="Normal" VerticalAlignment="Top"/>
+		<TextBlock Grid.Column="0" Grid.Row="0" Text="Source" FontWeight="Normal" VerticalAlignment="Top"/>
 
 		<Grid Grid.Column="1" Grid.Row="0">
 			<Grid.ColumnDefinitions>
@@ -79,7 +78,20 @@
 		</Grid>
 		<!-- Local File Implemantation-->
 		<TextBlock Grid.Column="0" Grid.Row="1" Text="Local File" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
-		<ui:IntellisenseTextBox x:Name="InitialFocusElement"
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding FromPath}" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}" />
+
+		<TextBlock Grid.Column="0" Grid.Row="2" Text="Write Mode" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
+		<Grid Grid.Column="1" Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+            <RadioButton GroupName="WriteMode" Grid.Column="0" Grid.Row="0" IsChecked="{Binding Path=OverWriteMode}"  Name="CheckBoxOverwriteMode" FlowDirection="LeftToRight" Content="Overwrite"></RadioButton>
+            <RadioButton GroupName="WriteMode" Grid.Column="1" Grid.Row="0" IsChecked="{Binding Path=UpdateMode}"  Name="CheckBoxAddMode" FlowDirection="LeftToRight" Content="AddMode"></RadioButton>
+            <RadioButton GroupName="WriteMode" Grid.Column="2" Grid.Row="0" IsChecked="{Binding Path=AddMode}"  Name="CheckBoxUpdateMode" FlowDirection="LeftToRight" Content="UpdateMode"></RadioButton>
+		</Grid>
+		<!--<ui:IntellisenseTextBox x:Name="InitialFocusElement"
 								Grid.Column="1"
 								Grid.Row="1"
 								Margin="{StaticResource ControlBorderTop}"
@@ -105,11 +117,12 @@
 									 SourcePropertyValue="{Binding  ModelItem.DestinationPath, UpdateSourceTrigger=PropertyChanged}"
 									 Target="{Binding}" />
 			</i:Interaction.Behaviors>
-		</ui:IntellisenseTextBox>
+		</ui:IntellisenseTextBox>-->
 		
 		<!--DropBox File Location-->
-		<TextBlock Grid.Column="0" Grid.Row="3" Text="Dropbox File" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
-		<ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
+		<TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" FontWeight="Normal" VerticalAlignment="Top"/>
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding ToPath}" FontWeight="Normal" VerticalAlignment="Top" />
+		<!--<ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
 								Grid.Column="1"
 								Grid.Row="3"
 								ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -128,11 +141,12 @@
 							 SourcePropertyValue="{Binding  ModelItem.DestinationPath, UpdateSourceTrigger=PropertyChanged}"
 							 Target="{Binding}" />
 			</i:Interaction.Behaviors>
-		</ui:IntellisenseTextBox>
+		</ui:IntellisenseTextBox>-->
 		
 		<!--Result Section-->
-		<TextBlock Grid.Column="0" Grid.Row="4" Text="Result" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
-		<ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
+		<TextBlock Grid.Column="0" Grid.Row="5" Text="Result" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding ToPath}" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}" />
+		<!--<ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
 								Grid.Column="1"
 								Grid.Row="4"
 								ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -152,10 +166,11 @@
 									 SourcePropertyValue="{Binding  ModelItem.DestinationPath, UpdateSourceTrigger=PropertyChanged}"
 									 Target="{Binding}" />
 			</i:Interaction.Behaviors>
-		</ui:IntellisenseTextBox>
-        <errors:OnError Grid.Column="0"
-                        Grid.Row="5"
-                        Grid.ColumnSpan="2" />
-        
+		</ui:IntellisenseTextBox>-->
+		<errors:OnError Grid.Column="0"
+						Grid.Row="6"
+                        Margin="{StaticResource ControlBorderTop}"
+						Grid.ColumnSpan="2" />
+		
 	</Grid>
 </core:ActivityDesignerTemplate>

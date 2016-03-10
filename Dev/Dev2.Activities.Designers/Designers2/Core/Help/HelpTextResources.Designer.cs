@@ -4164,7 +4164,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Rules will be processed in the order listed. If a Rule is found to be True, that flow arm will be executed.
         ///
         ///Allowed:
-        ///Add to or edit the rules list..
+        ///AddMode to or edit the rules list..
         /// </summary>
         public static string RulesHelp {
             get {

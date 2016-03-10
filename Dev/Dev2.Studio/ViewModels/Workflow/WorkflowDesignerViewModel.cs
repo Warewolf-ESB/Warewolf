@@ -309,7 +309,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get { return ResourceHelper.GetIconPath(ResourceModel); }
         }
 
-        //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
+        //2012.10.01: massimo.guerrera - AddMode Remove buttons made into one:)
         public IPopupController PopUp { get; set; }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
