@@ -17,10 +17,10 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               Width="350"
-                               MinWidth="350"
-                               MinHeight="200"
-                               Height="200"
+                               Width="320"
+                               MinWidth="320"
+                               MinHeight="175"
+                               Height="175"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
                                mc:Ignorable="d"
@@ -44,13 +44,14 @@
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                           ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           Style="{StaticResource SpacedActivityDataGridStyle}"
-                           MinHeight="56">
+                               ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Style="{StaticResource SpacedActivityDataGridStyle}"
+                               Height="Auto"
+                               MaxHeight="Infinity">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
             <i:Interaction.Behaviors>

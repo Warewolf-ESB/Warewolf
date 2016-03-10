@@ -17,5 +17,8 @@ namespace Dev2.Common.Interfaces.ToolBase
         string NewSourceHelpText { get; set; }
         string EditSourceHelpText { get; set; }
         string SourcesHelpText { get; set; }
+        string NewSourceTooltip { get; set; }
+        string EditSourceTooltip { get; set; }
+        string SourcesTooltip { get; set; }
     }
 }
