@@ -326,7 +326,7 @@
                     Grid.Row="1" 
                     Content="Generate Outputs" 
                     Width="Auto" 
-                    IsEnabled="{Binding InputArea.IsVisible}"
+                    IsEnabled="{Binding InputArea.IsEnabled}"
                     Margin="{StaticResource ControlBorderTop}"
                     ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
                     HorizontalAlignment="Right"
