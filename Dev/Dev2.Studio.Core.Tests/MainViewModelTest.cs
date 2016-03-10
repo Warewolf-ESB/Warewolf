@@ -309,7 +309,7 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #region Add Work Surface
+        #region AddMode Work Surface
 
 
         #endregion

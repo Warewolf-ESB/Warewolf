@@ -141,19 +141,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         [Then(@"Put Body is Enabled")]
         public void ThenPutBodyIsEnabled()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Put Url is Visible")]
         public void ThenPutUrlIsVisible()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Put Query is Enabled")]
         public void ThenPutQueryIsEnabled()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
         }
 
         [Then(@"Put Generate Outputs is Enabled")]
@@ -168,23 +168,23 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         {
             var webServicePutViewModel = GetViewModel();
             Assert.IsTrue(webServicePutViewModel.GenerateOutputsVisible);
-            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
-            Assert.IsFalse(webServicePutViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
-            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.IsVisible);
+            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsFalse(webServicePutViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
+            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.IsEnabled);
         }
 
         [Then(@"Put Variables are Enabled")]
         public void ThenPutVariablesAreEnabled()
         {
             var webServicePutViewModel = GetViewModel();
-            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
         }
 
         [Then(@"the Put response is loaded")]
         public void ThenThePutResponseIsLoaded()
         {
             var webServicePutViewModel = GetViewModel();
-            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
+            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
         }
 
 
@@ -192,7 +192,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenPutMappingIsEnabled()
         {
             var webServicePutViewModel = GetViewModel();
-            Assert.IsTrue(webServicePutViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(webServicePutViewModel.OutputsRegion.IsEnabled);
         }
 
         [Then(@"I enter ""(.*)"" as Put Query String")]
@@ -275,7 +275,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenPutMappingsIsDisabled()
         {
             var webServicePutViewModel = GetViewModel();
-            Assert.IsFalse(webServicePutViewModel.OutputsRegion.IsVisible);
+            Assert.IsFalse(webServicePutViewModel.OutputsRegion.IsEnabled);
         }
 
 

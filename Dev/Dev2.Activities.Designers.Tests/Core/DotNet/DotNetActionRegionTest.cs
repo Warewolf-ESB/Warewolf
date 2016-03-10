@@ -39,11 +39,8 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetActionRegion dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()), sourceRegion, dotNetNamespaceRegion);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(25, dotNetActionRegion.CurrentHeight);
-            Assert.AreEqual(25, dotNetActionRegion.MaxHeight);
-            Assert.AreEqual(25, dotNetActionRegion.MinHeight);
             Assert.AreEqual(1, dotNetActionRegion.Errors.Count);
-            Assert.IsTrue(dotNetActionRegion.IsVisible);
+            Assert.IsTrue(dotNetActionRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -210,10 +207,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var cloned = dotNetActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.CurrentHeight, dotNetActionRegion.CurrentHeight);
-            Assert.AreEqual(cloned.MaxHeight, dotNetActionRegion.MaxHeight);
-            Assert.AreEqual(cloned.IsVisible, dotNetActionRegion.IsVisible);
-            Assert.AreEqual(cloned.MinHeight, dotNetActionRegion.MinHeight);
+            Assert.AreEqual(cloned.IsEnabled, dotNetActionRegion.IsEnabled);
             Assert.AreEqual(((DotNetActionRegion)cloned).SelectedAction, dotNetActionRegion.SelectedAction);
         }
 
@@ -241,20 +235,14 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetActionRegion dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
             // ReSharper disable once UseObjectOrCollectionInitializer
             DotNetActionRegion dotNetActionRegionToRestore = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, dotNetNamespaceRegion);
-            dotNetActionRegionToRestore.MaxHeight = 144;
-            dotNetActionRegionToRestore.MinHeight = 133;
-            dotNetActionRegionToRestore.CurrentHeight = 111;
-            dotNetActionRegionToRestore.IsVisible = false;
+            dotNetActionRegionToRestore.IsEnabled = false;
             dotNetActionRegionToRestore.SelectedAction = action;
 
             dotNetActionRegion.RestoreRegion(dotNetActionRegionToRestore);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(dotNetActionRegion.MaxHeight, 144);
-            Assert.AreEqual(dotNetActionRegion.MinHeight, 133);
-            Assert.AreEqual(dotNetActionRegion.CurrentHeight, 111);
             Assert.AreEqual(dotNetActionRegion.SelectedAction, action);
-            Assert.IsFalse(dotNetActionRegion.IsVisible);
+            Assert.IsFalse(dotNetActionRegion.IsEnabled);
         }
     }
 }

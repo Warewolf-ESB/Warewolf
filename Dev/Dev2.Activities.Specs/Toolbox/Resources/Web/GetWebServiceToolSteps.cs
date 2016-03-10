@@ -95,7 +95,7 @@
 //        {
 //            var vm = GetViewModel();
 //            vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.First(a => a.Name == p0);
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
 
 //        [When(@"I Select WebHeloo as Source")]
@@ -103,14 +103,14 @@
 //        {
 //            var vm = GetViewModel();
 //            vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.First(a=>a.Name=="WebHeloo");
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
         
 //        [When(@"Request header is enabled")]
 //        public void WhenRequestHeaderIsEnabled()
 //        {
 //            var vm = GetViewModel();
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
         
 //        [When(@"Request Url is enabled")]
@@ -118,7 +118,7 @@
 //        {
 //            var vm = GetViewModel();
     
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
         
 //        [When(@"Generate Outputs is enabled")]
@@ -261,7 +261,7 @@
 //        {
 //            var vm = GetViewModel();
 //            vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.First(a => a.Name == p1);
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
 
         
@@ -314,7 +314,7 @@
 //        {
 //            var vm = GetViewModel();
 
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
 
 //        [Then(@"Header is added as")]
@@ -338,7 +338,7 @@
 //        {
 //            var vm = GetViewModel();
 
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
         
 //        [Then(@"Query is Enabled")]
@@ -346,7 +346,7 @@
 //        {
 //            var vm = GetViewModel();
 
-//            Assert.IsTrue(vm.InputArea.IsVisible);
+//            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
         
 //        [Then(@"Generate Outputs is Enabled")]
@@ -411,31 +411,31 @@
 //        [Then(@"Url is Visible")]
 //        public void ThenUrlIsVisible()
 //        {
-//            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+//            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
 //        }
         
 //        [Then(@"Query is Visible")]
 //        public void ThenQueryIsVisible()
 //        {
-//            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+//            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
 //        }
 
 //        [Then(@"Web Inputs is Enabled")]
 //        public void ThenWebInputsIsEnabled()
 //        {
-//            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsVisible);
+//            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsEnabled);
 //        }
 
 //        [Then(@"Web Test is Enabled")]
 //        public void ThenWebTestIsEnabled()
 //        {
-//            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsVisible);
+//            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsEnabled);
 //        }
 
 //        [Then(@"Web Paste is Enabled")]
 //        public void ThenWebPasteIsEnabled()
 //        {
-//            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsVisible);
+//            Assert.IsTrue(GetViewModel().ManageServiceInputViewModel.IsEnabled);
 //        }
 
 
@@ -497,7 +497,7 @@
 //        [Then(@"Mappings is Disabled")]
 //        public void ThenMappingsIsDisabled()
 //        {
-//            Assert.IsFalse(GetViewModel().OutputsRegion.IsVisible);
+//            Assert.IsFalse(GetViewModel().OutputsRegion.IsEnabled);
 //        }
         
 //        [Then(@"I click Generate Outputs")]
