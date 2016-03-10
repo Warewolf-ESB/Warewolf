@@ -17,8 +17,8 @@
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="523"
-                               Height="523"
+                               MinHeight="533"
+                               Height="533"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
@@ -57,7 +57,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*" MinHeight="237"/>
+                    <RowDefinition Height="*" MinHeight="247"/>
                     <RowDefinition>
                         <RowDefinition.Style>
                             <Style>
