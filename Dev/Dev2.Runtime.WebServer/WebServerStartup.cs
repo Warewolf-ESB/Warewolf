@@ -43,7 +43,7 @@ namespace Dev2.Runtime.WebServer
             GlobalHost.Configuration.DefaultMessageBufferSize = 1000;
             GlobalHost.Configuration.MaxIncomingWebSocketMessageSize = null;
             GlobalHost.Configuration.TransportConnectTimeout = TimeSpan.FromSeconds(10);
-            
+
             var startOptions = new StartOptions();
             
             foreach(var endpoint in endpoints)
