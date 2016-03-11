@@ -12,7 +12,7 @@ if not %errorlevel%==0 pause & exit 1
 if not %errorlevel%==0 pause & exit 1
 powershell -file "%~dp0..\ReadOutVersion.ps1"
 if not %errorlevel%==0 pause & exit 1
-git -C "%~dp0..\..\AssemblyCommonInfo.cs" reset --hard
+git -C "%~dp0..\.." checkout "AssemblyCommonInfo.cs"
 if not %errorlevel%==0 pause & exit 1
-git -C "%~dp0..\..\AssemblyCommonInfo.fs" reset --hard
+git -C "%~dp0..\.." checkout "AssemblyCommonInfo.fs"
 if not %errorlevel%==0 pause & exit 1
