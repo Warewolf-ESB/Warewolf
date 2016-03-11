@@ -287,6 +287,7 @@ namespace Dev2.Studio.Controller
             var dataContext = new DecisionDesignerViewModel(mi);
             large.DataContext = dataContext;
             var window = new WindowBorderLess();
+            window.Height = 350;
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
