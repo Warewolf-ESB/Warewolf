@@ -62,7 +62,7 @@
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
             <Setter Property="WindowStyle" Value="None" />
             <Setter Property="AllowsTransparency" Value="False" />
-            <Setter Property="ResizeMode" Value="CanResize"/>
+            <Setter Property="ResizeMode" Value="CanMinimize"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
