@@ -6,19 +6,17 @@ using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
-using MySql.Data.MySqlClient;
 using Npgsql;
 using NpgsqlTypes;
-using Oracle.ManagedDataAccess.Client;
 
 namespace Dev2.Services.Sql
 {
     public class PostgreServer : IDbServer
     {
+        // ReSharper disable once SuggestVarOrType_Elsewhere
+
         private readonly IDbFactory _factory;
         private IDbCommand _command;
         private NpgsqlConnection _connection;
@@ -26,11 +24,14 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected
         {
+            // ReSharper disable once ConvertPropertyToExpressionBody
             get { return _connection != null && _connection.State == ConnectionState.Open; }
         }
 
         public string ConnectionString
         {
+            // ReSharper disable once ConvertPropertyToExpressionBody
+            // ReSharper disable once MergeConditionalExpression
             get { return _connection == null ? null : _connection.ConnectionString; }
         }
 
@@ -40,26 +41,25 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            DataTable proceduresDataTable = GetSchema(_connection);
+            var proceduresDataTable = GetSchema(_connection);
 
-
-            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
-
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
+                var fullProcedureName = row["Name"].ToString();
+
                 if (row["Db"].ToString() == dbName)
                 {
                     using (
-                        IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
+                        var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
                         try
                         {
                             List<IDbDataParameter> outParameters;
 
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
-                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
+                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
                         }
@@ -107,8 +107,10 @@ namespace Dev2.Services.Sql
         {
             VerifyConnection();
             NpgsqlDataReader reader = null;
-            List<string> result = new List<string>();
-            NpgsqlCommand cmd = new NpgsqlCommand("select datname from pg_database", _connection);
+            
+            var result = new List<string>();
+            var cmd = new NpgsqlCommand("select datname from pg_database", _connection);
+
             try
             {
                 reader = cmd.ExecuteReader();
@@ -120,6 +122,7 @@ namespace Dev2.Services.Sql
 
             finally
             {
+                // ReSharper disable once UseNullPropagation
                 if (reader != null) reader.Close();
             }
 
@@ -179,24 +182,23 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            DataTable proceduresDataTable = GetSchema(_connection);
+            var proceduresDataTable = GetSchema(_connection);
 
-            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
-
+            // ReSharper disable once LoopCanBePartlyConvertedToQuery
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
+                var fullProcedureName = row["Name"].ToString();
                 if (row["Db"].ToString() == dbName)
                 {
                     using (
-                        IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
+                        var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
                         try
                         {
                             List<IDbDataParameter> isOut;
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
-                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
                         }
@@ -211,8 +213,6 @@ namespace Dev2.Services.Sql
                 }
             }
         }
-
-        // ReSharper disable InconsistentNaming
 
         private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {
@@ -276,7 +276,7 @@ namespace Dev2.Services.Sql
         {
             try
             {
-                using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                using (var reader = command.ExecuteReader(commandBehavior))
                 {
                     return handler(reader);
                 }
@@ -294,13 +294,12 @@ namespace Dev2.Services.Sql
             }
         }
 
-
         public static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
         {
             command.Parameters.Clear();
             if (parameters != null && parameters.Count > 0)
             {
-                foreach (IDbDataParameter parameter in parameters)
+                foreach (var parameter in parameters)
                 {
                     command.Parameters.Add(parameter);
                 }
@@ -309,8 +308,8 @@ namespace Dev2.Services.Sql
 
         private DataTable GetSchema(IDbConnection connection)
         {
-            const string CommandText = GlobalConstants.SchemaQueryPostgreSql;
-            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
+            const string commandText = GlobalConstants.SchemaQueryPostgreSql;
+            using (var command = _factory.CreateCommand(connection, CommandType.Text, commandText))
             {
                 return FetchDataTable(command);
             }
@@ -319,7 +318,8 @@ namespace Dev2.Services.Sql
         private string GetHelpText(IDbConnection connection, string objectName)
         {
             using (
-                IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
+                var command = _factory.CreateCommand(connection, CommandType.Text,
+                    // ReSharper disable once UseStringInterpolation
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
                 return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
@@ -328,7 +328,7 @@ namespace Dev2.Services.Sql
                         var sb = new StringBuilder();
                         while (reader.Read())
                         {
-                            object value = reader.GetValue(2);
+                            var value = reader.GetValue(2);
                             if (value != null)
                             {
                                 sb.Append(value);
@@ -341,23 +341,22 @@ namespace Dev2.Services.Sql
 
         public List<NpgsqlParameter> GetProcedureOutParams(string fullProcedureName, string dbName)
         {
-            using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
+            using (var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
             {
 
                 List<IDbDataParameter> isOut;
                 GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
                 return isOut.Select(a => a as NpgsqlParameter).ToList();
-
             }
         }
 
         public List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName, out List<IDbDataParameter> outParams)
         {
             outParams = new List<IDbDataParameter>();
-            //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
-            string originalCommandText = command.CommandText;
+            var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
 
+            // ReSharper disable once UseStringInterpolation
             var proc = string.Format(@"select parameter_name as paramname, parameters.udt_name as datatype, parameters.parameter_mode as direction FROM information_schema.routines
                 JOIN information_schema.parameters ON routines.specific_name=parameters.specific_name
                 WHERE routines.specific_schema='public' and routine_name ='{0}' and parameters.parameter_mode = 'IN'
@@ -366,7 +365,7 @@ namespace Dev2.Services.Sql
             command.CommandType = CommandType.Text;
             command.CommandText = proc;
 
-            DataTable dataTable = FetchDataTable(command);
+            var dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
                 if (row != null)
@@ -375,36 +374,31 @@ namespace Dev2.Services.Sql
                     var datatype = row[1].ToString();
                     var direction = row[2].ToString();
 
-                    if (!string.IsNullOrEmpty(value))
+                    NpgsqlDbType sqlType;
+
+                    Enum.TryParse(datatype, true, out sqlType);
+
+                    var sqlParameter = new NpgsqlParameter(value, sqlType);
+
+                    var isout = direction.Contains("OUT ");
+                    if (direction.Contains("IN"))
+                        isout = false;
+
+                    if (!isout)
                     {
-                        NpgsqlDbType sqlType;
-
-                        Enum.TryParse(datatype, true, out sqlType);
-
-                        var sqlParameter = new NpgsqlParameter(value, sqlType);
-
-                        bool isout = false;
-
-                        if (direction.Contains("OUT "))
-                            isout = true;
-                        if (direction.Contains("IN"))
-                            isout = false;
-
-                        if (!isout)
-                        {
-                            command.Parameters.Add(sqlParameter);
-                            parameters.Add(sqlParameter);
-                        }
-                        else
-                        {
-                            sqlParameter.Direction = ParameterDirection.Output;
-                            outParams.Add(sqlParameter);
-                            sqlParameter.Value = "@a";
-                            command.Parameters.Add(sqlParameter);
-                        }
+                        command.Parameters.Add(sqlParameter);
+                        parameters.Add(sqlParameter);
+                    }
+                    else
+                    {
+                        sqlParameter.Direction = ParameterDirection.Output;
+                        outParams.Add(sqlParameter);
+                        sqlParameter.Value = "@a";
+                        command.Parameters.Add(sqlParameter);
                     }
                 }
             }
+
             command.CommandText = originalCommandText;
 
             return parameters;
@@ -454,7 +448,7 @@ namespace Dev2.Services.Sql
         // If disposing equals false, the method has been called by the 
         // runtime from inside the finalizer and you should not reference 
         // other objects. Only unmanaged resources can be disposed. 
-        void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called. 
             if (!_disposed)
@@ -464,11 +458,13 @@ namespace Dev2.Services.Sql
                 if (disposing)
                 {
                     // Dispose managed resources.
+                    // ReSharper disable once UseNullPropagation
                     if (_transaction != null)
                     {
                         _transaction.Dispose();
                     }
 
+                    // ReSharper disable once UseNullPropagation
                     if (_command != null)
                     {
                         _command.Dispose();
