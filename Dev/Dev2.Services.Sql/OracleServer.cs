@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Oracle.ManagedDataAccess.Client;
@@ -262,7 +260,7 @@ namespace Dev2.Services.Sql
         {
             if (connectionString.Contains("Database"))
             {
-                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database")), "");
+                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database", StringComparison.Ordinal)), "");
             }
             _connection = (OracleConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
@@ -273,7 +271,7 @@ namespace Dev2.Services.Sql
         {
             if (connectionString.Contains("Database"))
             {
-                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database")), "");
+                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database", StringComparison.Ordinal)), "");
             }
             _connection = (OracleConnection)_factory.CreateConnection(connectionString);
 
@@ -428,7 +426,7 @@ namespace Dev2.Services.Sql
             command.CommandText =
                 string.Format(
                     "SELECT * from all_arguments where owner = '{0}' and object_name = '{1}'",
-                    dbName, procedureName.Substring(procedureName.IndexOf(".") + 1));
+                    dbName, procedureName.Substring(procedureName.IndexOf(".", StringComparison.Ordinal) + 1));
 
             DataTable dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
@@ -440,20 +438,20 @@ namespace Dev2.Services.Sql
                 bool isout = false;
                 const ParameterDirection direction = ParameterDirection.Output;
 
-                if (InOut.Contains("IN/OUT"))
-                    isout = false;
-                if (InOut.Contains("OUT"))
+               
+                if (InOut != null && InOut.Contains("OUT"))
                     isout = true;
-
+                if (InOut != null && InOut.Contains("IN/OUT"))
+                    isout = false;
 
 
                 if (!String.IsNullOrEmpty(parameterName))
                 {
 
-                    var OracleParameter = new OracleParameter();
+                    OracleParameter OracleParameter;
                     OracleDbType OracleType;
 
-                    Enum.TryParse((row["DATA_TYPE"] as string).Replace(" ", ""), true, out OracleType);
+                    Enum.TryParse((row["DATA_TYPE"] as string)?.Replace(" ", ""), true, out OracleType);
                     if (OracleType == 0)
                     {
                         string dataType = row["DATA_TYPE"].ToString();
@@ -486,23 +484,17 @@ namespace Dev2.Services.Sql
 
                     if (!isout)
                     {
-                        try
-                        {
+                        
                             OracleParameter.Direction = ParameterDirection.Input;
                             command.Parameters.Add(OracleParameter);
                             parameters.Add(OracleParameter);
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
+                      
                     }
                     else
                     {
 
                         outParams.Add(OracleParameter);
-                        //  OracleParameter.Value = "@a";
-                        // command.Parameters.Add(OracleParameter);
+                     
                     }
 
                 }

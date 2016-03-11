@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
-using Oracle.ManagedDataAccess;
 using Oracle.ManagedDataAccess.Client;
 using Warewolf.Security.Encryption;
 

@@ -1,7 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -54,7 +52,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             VerifyArgument.IsNotNull("dbSource", dbSource);
             using (var server = CreateDbServer(dbSource))
             {
-                server.Connect(dbSource.ConnectionString);
                 return server.FetchDatabases();
             }
         }
@@ -77,27 +74,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
-
-            //
-            // Function to handle procedures returned by the data broker
-            //
-            Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, outparameters, helpText, executeAction) =>
-            {
-                var serviceMethod = CreateServiceMethod(command, parameters, outparameters, helpText, executeAction);
-                serviceMethods.Add(serviceMethod);
-                return true;
-            };
-
-            //
-            // Function to handle functions returned by the data broker
-            //
-            Func<IDbCommand, IList<IDbDataParameter>, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, outparameters, helpText, executeAction) =>
-            {
-                var serviceMethod = CreateServiceMethod(command, parameters, outparameters, helpText, executeAction);
-                serviceMethods.Add(serviceMethod);
-                return true;
-            };
-
+            
             //
             // Get stored procedures and functions for this database source
             //
@@ -119,13 +96,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             return new ODBCServer();
         }
-        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
-        {
-            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
-            {
-                OutParameters = outParameters.Select(MethodParameterFromDataParameter).ToList()
-            };
-        }
+
         #endregion
 
         #endregion
@@ -146,14 +117,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     // Execute command and normalize XML
                     //
                     var command = CommandFromServiceMethod(server, dbService.Method);
-                    // ReSharper disable PossibleNullReferenceException
-                    // var outParams = server.GetProcedureOutParams(dbService.Method.Name, (dbService.Source as DbSource).DatabaseName);
-                    //var outParams = server.GetProcedureOutParams(dbService.Method.ExecuteAction.Substring(dbService.Method.ExecuteAction.IndexOf(".") + 1), (dbService.Source as DbSource).DatabaseName);
-                    // ReSharper restore PossibleNullReferenceException
-                    //foreach (var dbDataParameter in outParams)
-                    //{
-                    //    command.Parameters.Add(dbDataParameter);
-                    //}
+                  
                     var dataTable = server.FetchDataTable(command);
 
                     //
@@ -188,14 +152,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     // Execute command and normalize XML
                     //
-                    var command = CommandFromServiceMethod(server, dbService.Method);
-                    // ReSharper disable PossibleNullReferenceException
-                  //  var outParams = server.GetProcedureOutParams(dbService.Method.Name, dbSource.DatabaseName);
-                    // ReSharper restore PossibleNullReferenceException
-                  //  foreach (var dbDataParameter in outParams)
-                   // {
-                  //      dbService.Method.OutParameters.Add(new MethodParameter { Name = dbDataParameter.ParameterName, Value = dbDataParameter.Value.ToString() });
-                 //   }
+                     CommandFromServiceMethod(server, dbService.Method);
+                   
 
                 }
                 finally
