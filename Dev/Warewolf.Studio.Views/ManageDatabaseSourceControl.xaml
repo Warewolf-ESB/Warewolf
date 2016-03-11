@@ -80,6 +80,7 @@
                 </i:Interaction.Behaviors>
             </ig:XamComboEditor>
             <TextBlock VerticalAlignment="Center"
+                       IsEnabled="{Binding Path=CanSelectServer}"
                        Grid.Row="1"
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
