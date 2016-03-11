@@ -469,6 +469,16 @@
       <DependentUpon>Script.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Scripting\Script\ScriptSteps.cs" />
+    <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReadDropbox.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\WriteDropbox.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WriteDropbox.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -698,6 +708,14 @@
     <None Include="Toolbox\Scripting\Script\Script.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Script.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Storage\Dropbox\ReadDropbox.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReadDropbox.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Storage\Dropbox\WriteDropbox.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WriteDropbox.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Calculate\Calculate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
