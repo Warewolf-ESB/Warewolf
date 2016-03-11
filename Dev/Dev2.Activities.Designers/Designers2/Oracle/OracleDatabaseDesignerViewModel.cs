@@ -1294,10 +1294,7 @@ namespace Dev2.Activities.Designers2.Oracle
         {
             if (message != null && message.ResourceModel != null)
             {
-                //                if(message.ResourceModel.ID == ResourceID)
-                //                {
-                //                    InitializeMappings();
-                //                }
+           
                 if (SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
                 {
 

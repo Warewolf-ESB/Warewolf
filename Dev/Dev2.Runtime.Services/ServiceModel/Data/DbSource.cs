@@ -190,6 +190,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                           
                             break;
                         case "database":
+                        case "dsn":
                         case "initial catalog":
                             DatabaseName = prm[1];
                             break;

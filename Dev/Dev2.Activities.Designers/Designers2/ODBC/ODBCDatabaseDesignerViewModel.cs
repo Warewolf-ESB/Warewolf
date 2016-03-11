@@ -262,7 +262,11 @@ namespace Dev2.Activities.Designers2.ODBC
         IDatabaseService ToModel()
         {
             DbAction command = new DbAction();
-            command.Name = MyCommand.ToString();
+            if (string.IsNullOrEmpty(MyCommand))
+            {
+                throw new Exception("Action cannot be empty");
+            }
+            command.Name = MyCommand;
             SelectedProcedure = command;
           
             var databaseService = new DatabaseService
@@ -283,6 +287,10 @@ namespace Dev2.Activities.Designers2.ODBC
                 RemoveErrors(DesignValidationErrors.Where(a => a.Message.Contains(_procedureNotSelectedMessage)).ToList());
                 Errors = new List<IActionableErrorInfo>();
                 var databaseService = ToModel();
+                if (string.IsNullOrEmpty(databaseService.Action.Name))
+                {
+                    throw new Exception("Action cannot be empty");
+                }
                 ManageServiceInputViewModel.Model = databaseService;
                 ManageServiceInputViewModel.Inputs = databaseService.Inputs;
                 ManageServiceInputViewModel.TestResults = null;

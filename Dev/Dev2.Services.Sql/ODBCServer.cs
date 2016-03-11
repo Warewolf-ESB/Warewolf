@@ -12,10 +12,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Microsoft.Win32;
 
@@ -73,7 +69,7 @@ namespace Dev2.Services.Sql
 
         public bool Connect(string connectionString)
         {
-          
+
             _connection = (OdbcConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
             return true;
@@ -152,7 +148,7 @@ namespace Dev2.Services.Sql
 
         public List<string> FetchDatabases()
         {
-            throw new NotImplementedException();
+            return GetDSN();
         }
 
         public DataTable FetchDataTable(IDbCommand command)
@@ -164,7 +160,7 @@ namespace Dev2.Services.Sql
         }
         public DataTable FetchDataTable()
         {
-           
+
 
             return ExecuteReader(_command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
@@ -177,7 +173,7 @@ namespace Dev2.Services.Sql
                 if (command.CommandType == CommandType.StoredProcedure)
                 {
                     command.CommandType = CommandType.Text;
-                   
+
                     using (IDataReader reader = command.ExecuteReader(commandBehavior))
                     {
                         return handler(reader);
@@ -224,7 +220,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-       
+
 
         #region helper methods
 
@@ -233,17 +229,17 @@ namespace Dev2.Services.Sql
         public List<string> GetDSN()
         {
             List<string> list = new List<string>();
-            list.AddRange(EnumDsn(Registry.CurrentUser,false));
-            list.AddRange(EnumDsn(Registry.LocalMachine,false));
+            list.AddRange(EnumDsn(Registry.CurrentUser, false));
+            list.AddRange(EnumDsn(Registry.LocalMachine, false));
             if (Environment.Is64BitOperatingSystem)
             {
-                list.AddRange(EnumDsn(Registry.CurrentUser,true));
+                list.AddRange(EnumDsn(Registry.CurrentUser, true));
                 list.AddRange(EnumDsn(Registry.LocalMachine, true));
             }
-                return list;
+            return list;
         }
 
-        private IEnumerable<string> EnumDsn(RegistryKey rootKey, bool is64 )
+        private IEnumerable<string> EnumDsn(RegistryKey rootKey, bool is64)
         {
             RegistryKey regKey = rootKey.OpenSubKey(@"Software\ODBC\ODBC.INI\ODBC Data Sources");
             if (is64)
@@ -254,7 +250,6 @@ namespace Dev2.Services.Sql
             {
                 foreach (string name in regKey.GetValueNames())
                 {
-                    string value = regKey.GetValue(name, "").ToString();
                     yield return name;
                 }
             }
