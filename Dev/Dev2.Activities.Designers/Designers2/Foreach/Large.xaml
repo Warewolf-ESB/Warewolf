@@ -15,6 +15,10 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="320"
+                               MinHeight="210"
+                               Height="210"
+                               MaxWidth="600"
+                               MaxHeight="210"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:ForeachDesignerViewModel}">
