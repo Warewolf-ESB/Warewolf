@@ -16,7 +16,7 @@ using TechTalk.SpecFlow;
 namespace Warewolf.Studio.UISpecs
 {
     [Binding]
-    public sealed class Explorer_Tree_Item_ActionSteps
+    public sealed class Explorer_Tree_Item_Action_Steps
     {
         [When(@"I click '(.*)' in the explorer tree")]
         public void WhenIClickTheItemInTheExplorerTree(string path)
