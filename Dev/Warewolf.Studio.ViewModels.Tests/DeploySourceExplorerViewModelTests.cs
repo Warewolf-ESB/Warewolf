@@ -213,15 +213,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        public void TestServerConnect()
-        {
-            var args = new Mock<INetworkStateChangedEventArgs>();
-            args.SetupGet(it => it.State).Returns(ConnectionNetworkState.Connected);
-            var server = new Mock<IServer>();
-            _serverMock.Raise(it => it.NetworkStateChanged += null, args.Object, server.Object);
-        }
-
-        [TestMethod]
         public void TestSelectedEnvironmentChanged()
         {
             //var args = new Mock<INetworkStateChangedEventArgs>();
