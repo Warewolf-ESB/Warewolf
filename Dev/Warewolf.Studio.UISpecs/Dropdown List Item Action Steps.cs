@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.Studio.UISpecs
 {
