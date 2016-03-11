@@ -33,6 +33,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
 
         MessageBoxResult ShowNotConnected();
         MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);
+        MessageBoxResult ShowCorruptTaskResult(string errorMessage);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);
         MessageBoxResult ShowDeployConflict(int conflictCount);
         MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion);

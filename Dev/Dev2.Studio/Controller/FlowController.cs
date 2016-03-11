@@ -155,6 +155,7 @@ namespace Dev2.Studio.Controller
             var dataContext = new SwitchDesignerViewModel(modelItem,display);
             large.DataContext = dataContext;
             var window = new WindowBorderLess();
+            window.Height = 280;
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
