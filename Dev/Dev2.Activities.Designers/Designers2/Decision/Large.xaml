@@ -18,12 +18,8 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               Width="400"
-                               MinWidth="350"
-                               MinHeight="380"
+                               Width="Auto"
                                Height="350"
-                               MaxWidth="Infinity"
-                               MaxHeight="Infinity"
                                mc:Ignorable="d"
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance decision:DecisionDesignerViewModel}">
@@ -52,7 +48,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -69,7 +65,7 @@
                                x:Name="LargeDataGrid"
                                ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
-                               Margin="0,3">
+                               Height="90">
             <i:Interaction.Behaviors>
                 <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors2:DataGridWatermarkModifier.WatermarkText>
@@ -314,7 +310,6 @@
         </CheckBox>
 
         <Grid Grid.Row="2"
-              Margin="-8,0,0,0"
               Grid.Column="0"
               Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -342,7 +337,7 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        <Grid Grid.Row="3" Margin="-8,0,0,0" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -368,7 +363,7 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        <Grid Grid.Row="4" Margin="-8,0,0,0" Grid.Column="0" Grid.ColumnSpan="2">
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=TrueArmLabel, Path=ActualWidth}" />
                 <ColumnDefinition Width="*" />

@@ -15,6 +15,11 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                mc:Ignorable="d"
                                Width="320"
+                               MinWidth="320"
+                               MinHeight="265"
+                               Height="265"
+                               MaxWidth="Infinity"
+                               MaxHeight="265"
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance local:FindIndexDesignerViewModel}">
 
@@ -33,6 +38,7 @@
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

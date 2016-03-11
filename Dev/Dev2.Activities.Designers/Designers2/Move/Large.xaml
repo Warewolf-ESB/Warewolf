@@ -21,7 +21,6 @@
                                MinHeight="390"
                                Height="390"
                                MaxHeight="390"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:MoveDesignerViewModel}">
 
@@ -42,7 +41,7 @@
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
