@@ -17,7 +17,6 @@
                                MinHeight="188"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
-                               Padding="7"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
                                ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}">
@@ -29,7 +28,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
-    <Grid>
+    
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
