@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
@@ -31,19 +26,25 @@ namespace Dev2.Activities
 
             errors = new ErrorResultTO();
             errors.MergeErrors(execErrors);
+
             if (string.IsNullOrEmpty(ProcedureName))
             {
                 errors.AddError("The selected database does not contain actions to perform");
                 return;
             }
+
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
+
             if (databaseServiceExecution != null)
             {
                 databaseServiceExecution.Inputs = Inputs;
                 databaseServiceExecution.Outputs = Outputs;
             }
+
             ServiceExecution.Execute(out execErrors, update);
+
             var fetchErrors = execErrors.FetchErrors();
+
             foreach (var error in fetchErrors)
             {
                 dataObject.Environment.Errors.Add(error);
@@ -53,10 +54,9 @@ namespace Dev2.Activities
 
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
-
             base.BeforeExecutionStart(dataObject, tmpErrors);
             ServiceExecution = new DatabaseServiceExecution(dataObject);
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
+            var databaseServiceExecution = (DatabaseServiceExecution) ServiceExecution;
             databaseServiceExecution.ProcedureName = ProcedureName;
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);
@@ -67,7 +67,6 @@ namespace Dev2.Activities
             base.AfterExecutionCompleted(tmpErrors);
             ServiceExecution.AfterExecution(tmpErrors);
         }
-
 
         public override enFindMissingType GetFindMissingType()
         {

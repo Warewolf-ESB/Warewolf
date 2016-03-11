@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Npgsql;
-using Oracle.ManagedDataAccess.Client;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql

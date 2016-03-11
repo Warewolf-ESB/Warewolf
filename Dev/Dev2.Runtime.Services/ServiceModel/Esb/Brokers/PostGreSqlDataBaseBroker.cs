@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
@@ -21,7 +20,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var xDoc = new XmlDocument();
             xDoc.LoadXml(payload);
             var nl = xDoc.SelectNodes("//NewDataSet/Table/*[starts-with(local-name(),'XML_')]");
-            var foundXMLFrags = 0;
+            var foundXmlFrags = 0;
 
             if (nl != null)
             {
@@ -29,17 +28,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 {
                     var tmp = n.InnerXml;
                     result = result.Append(tmp);
-                    foundXMLFrags++;
+                    foundXmlFrags++;
                 }
             }
 
             var res = result.ToString();
 
-            if (foundXMLFrags >= 1)
+            if (foundXmlFrags >= 1)
             {
                 res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
             }
-            else if (foundXMLFrags == 0)
+            else if (foundXmlFrags == 0)
             {
                 res = payload;
             }
@@ -139,9 +138,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 server.BeginTransaction();
                 try
                 {
-                    //
-                    // Execute command and normalize XML
-                    //
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     // ReSharper disable PossibleNullReferenceException
                     var outParams = server.GetProcedureOutParams(command.CommandText, (dbService.Source as DbSource).DatabaseName);
@@ -152,9 +148,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     }
                     var dataTable = server.FetchDataTable(command);
 
-                    //
-                    // Map shape of XML
-                    //
                     result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                     var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                     result.DataSourceShapes.Add(dataSourceShape);
@@ -171,7 +164,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return result;
         }
 
-
         public override void UpdateServiceOutParameters(DbService dbService, DbSource dbSource)
         {
             dbService.Method.OutParameters = new List<MethodParameter>();
@@ -181,9 +173,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 server.BeginTransaction();
                 try
                 {
-                    //
-                    // Execute command and normalize XML
-                    //
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     // ReSharper disable PossibleNullReferenceException
                     var outParams = server.GetProcedureOutParams(dbService.Method.Name, dbSource.DatabaseName);
