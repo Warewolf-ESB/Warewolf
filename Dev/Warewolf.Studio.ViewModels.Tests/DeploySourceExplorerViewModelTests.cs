@@ -215,10 +215,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestSelectedEnvironmentChanged()
         {
-            //var args = new Mock<INetworkStateChangedEventArgs>();
-            //args.SetupGet(it => it.State).Returns(ConnectionNetworkState.Connected);
-            //var server = new Mock<IServer>();
-            //_serverMock.Raise(it => it.NetworkStateChanged += null, args.Object, server.Object);
             //arrange
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
             var serverMock = new Mock<IServer>();

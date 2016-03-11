@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -25,6 +26,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         private ExplorerViewModel _target;
 
+        private Guid _localhostServerEnvironmentId;
         private Mock<IShellViewModel> _shellViewModelMock;
         private Mock<IServer> _localhostServerMock;
         private Mock<IWindowsGroupPermission> _windowsGroupPermissionMock;
@@ -38,7 +40,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         { 
             _shellViewModelMock = new Mock<IShellViewModel>();
+            _localhostServerEnvironmentId = Guid.NewGuid();
             _localhostServerMock = new Mock<IServer>();
+            _localhostServerMock.Setup(it => it.EnvironmentID).Returns(_localhostServerEnvironmentId);
             _windowsGroupPermissionMock = new Mock<IWindowsGroupPermission>();
             _localhostServerMock.Setup(it => it.Permissions).Returns(new List<IWindowsGroupPermission>()
             {
@@ -54,6 +58,29 @@ namespace Warewolf.Studio.ViewModels.Tests
         #endregion Test initialize
 
         #region Test commands
+
+        [TestMethod]
+        public void TestRefreshEvent()
+        {
+            //arrange
+            var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
+            _localhostServerMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
+            _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
+            var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
+            environmentViewModelMock.SetupGet(it => it.IsConnected).Returns(true);
+
+            _target.Environments.Add(environmentViewModelMock.Object);
+            _target.SearchText = "someText";
+            _target.Environments.Remove(_target.Environments.First(it => it is EnvironmentViewModel));
+            
+            //act
+            studioUpdateManagerMock.Raise(it => it.ItemSaved += null);
+
+            //assert
+            environmentViewModelMock.VerifyGet(it => it.IsConnected);
+            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.Filter("someText"));
+        }
 
         [TestMethod]
         public void TestRefreshCommand()
@@ -225,8 +252,10 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.SelectedDataItems = selectedDataItems;
+            var value = _target.SelectedDataItems;
 
             //assert
+            Assert.AreSame(selectedDataItems, value);
             Assert.IsTrue(isSelectedItems);
             Assert.AreSame(selectedItemMock.Object, _target.SelectedItem);
             Assert.IsTrue(_target.ShowConnectControl);
@@ -355,9 +384,46 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
         }
 
+        [TestMethod]
+        public void TestIsDeploy()
+        {
+            //arrange
+            _target.IsDeploy = false;
+
+            //act
+            _target.IsDeploy = !_target.IsDeploy;
+
+            //assert
+            Assert.IsTrue(_target.IsDeploy);
+        }
+
         #endregion Test properties
 
         #region Test methods
+
+        [TestMethod]
+        public void TestServerDisconnect()
+        {
+            //arrange
+            var isEnvironmentChanged = false;
+            _target.PropertyChanged += (s, e) =>
+            {
+                isEnvironmentChanged = isEnvironmentChanged || e.PropertyName == "Environments";
+            };
+            var childMock = new Mock<IExplorerItemViewModel>();
+            childMock.SetupGet(it => it.IsVisible).Returns(true);
+            _target.Environments.First().AddChild(childMock.Object);
+            _localhostServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _localhostServerMock.SetupGet(it => it.HasLoaded).Returns(true);
+
+            //act
+            _target.ConnectControlViewModel.ToggleConnectionStateCommand.Execute(null);
+
+            //assert
+            childMock.VerifySet(it => it.IsVisible = false);
+            Assert.IsTrue(isEnvironmentChanged);
+            Assert.IsFalse(_target.Environments.Any());
+        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -391,6 +457,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
         public async Task TestServerReConnected()
         {
             //arrange
@@ -408,7 +475,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var netwworkStateChangedEventArgs = new Mock<INetworkStateChangedEventArgs>();
             netwworkStateChangedEventArgs.SetupGet(it => it.State).Returns(ConnectionNetworkState.Connected);
             var server1Mock = new Mock<IServer>();
-            server1Mock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid);
+            server1Mock.SetupGet(it => it.EnvironmentID).Returns(Guid.Empty);
             _target.ConnectControlViewModel.Servers.Add(server1Mock.Object);
             _target.ConnectControlViewModel.LoadNewServers();
             _target.IsLoading = false;
@@ -536,12 +603,24 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var itemId = Guid.NewGuid();
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
+            Action<IExplorerItemViewModel> propAction = null;
+            var explorerItemMock = new Mock<IExplorerItemViewModel>();
+            var explorerItemMockSelectAction = new Mock<IExplorerItemViewModel>();
+            environmentViewModelMock.Setup(
+                it => it.SelectItem(It.IsAny<Guid>(), It.IsAny<Action<IExplorerItemViewModel>>()))
+                .Callback<Guid, Action<IExplorerItemViewModel>>((id, act) => act(explorerItemMock.Object));
+            environmentViewModelMock.SetupSet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>())
+                .Callback<Action<IExplorerItemViewModel>>(a => propAction = a);
              _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
-
+            
             //act
             _target.SelectItem(itemId);
 
             //assert
+            Assert.AreSame(explorerItemMock.Object, _target.SelectedItem);
+            Assert.IsNotNull(propAction);
+            propAction(explorerItemMockSelectAction.Object);
+            Assert.AreSame(explorerItemMockSelectAction.Object, _target.SelectedItem);
             environmentViewModelMock.Verify(it => it.SelectItem(itemId, It.IsAny<Action<IExplorerItemViewModel>>()));
             environmentViewModelMock.VerifySet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>());
         }
@@ -552,12 +631,24 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var itemPath = "somePath";
             var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
+            Action<IExplorerItemViewModel> propAction = null;
+            var explorerItemMock = new Mock<IExplorerItemViewModel>();
+            var explorerItemMockSelectAction = new Mock<IExplorerItemViewModel>();
+            environmentViewModelMock.Setup(
+                it => it.SelectItem(It.IsAny<string>(), It.IsAny<Action<IExplorerItemViewModel>>()))
+                .Callback<string, Action<IExplorerItemViewModel>>((id, act) => act(explorerItemMock.Object));
+            environmentViewModelMock.SetupSet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>())
+                .Callback<Action<IExplorerItemViewModel>>(a => propAction = a);
             _target.Environments = new List<IEnvironmentViewModel>() { environmentViewModelMock.Object };
 
             //act
             _target.SelectItem(itemPath);
 
             //assert
+            Assert.AreSame(explorerItemMock.Object, _target.SelectedItem);
+            Assert.IsNotNull(propAction);
+            propAction(explorerItemMockSelectAction.Object);
+            Assert.AreSame(explorerItemMockSelectAction.Object, _target.SelectedItem);
             environmentViewModelMock.Verify(it => it.SelectItem(itemPath, It.IsAny<Action<IExplorerItemViewModel>>()));
             environmentViewModelMock.VerifySet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>());
         }
@@ -574,6 +665,23 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.Verify(it => it.Dispose());
+        }
+
+        [TestMethod]
+        public void TestFindItems()
+        {
+            //act
+            var value = _target.FindItems(null);
+
+            //assert
+            Assert.IsNull(value);
+        }
+
+        [TestMethod]
+        public void TestSelectAction()
+        {
+            //act
+            _target.Environments.First().SelectAction(null);
         }
 
         #endregion Test methods
