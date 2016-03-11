@@ -86,6 +86,7 @@
                        Margin="{StaticResource ControlBorderTop}"
                        Text="{x:Static languages:Core.DatabaseSourceServerLabel}"/>
             <controls:AutoCompleteBox x:Name="ServerTextBox" 
+                                       IsEnabled="{Binding Path=CanSelectServer}"
                                       VerticalAlignment="Top"
                                       Grid.Row="1"
                                       Grid.Column="1" 
