@@ -59,6 +59,7 @@ namespace Warewolf.Studio.ViewModels
         string _path;
         string _emptyServerName;
         private bool _canSelectWindows;
+        private bool _canSelectServer;
         public IComputerNameProvider Provider { get;  set; }
 
         public bool CanSelectWindows
@@ -71,6 +72,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canSelectWindows = value;
                 OnPropertyChanged(()=>CanSelectWindows);
+            }
+        }
+        public bool CanSelectServer
+        {
+            get
+            {
+                return _canSelectServer;
+            }
+            set
+            {
+                _canSelectServer = value;
+                OnPropertyChanged(() => CanSelectServer);
             }
         }
 
@@ -495,7 +508,20 @@ namespace Warewolf.Studio.ViewModels
                 _serverType = value;
                 OnPropertyChanged(() => ServerType);
                 OnPropertyChanged(() => Header);
-                CanSelectWindows = ServerType.Value != enSourceType.PostgreSql.ToString();
+                if (ServerType.Value == enSourceType.ODBC.ToString())
+                {
+                    CanSelectWindows = false;
+                    CanSelectServer = false;
+                    ServerName.Name = "Localhost";
+                }
+                else
+                {
+                    CanSelectWindows = ServerType.Value != enSourceType.PostgreSql.ToString(); 
+                    CanSelectServer = true;
+                    ServerName.Name = "";
+                }
+      
+
             }
         }
 
