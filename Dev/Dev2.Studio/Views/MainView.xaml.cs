@@ -534,6 +534,7 @@ namespace Dev2.Studio.Views
         private void ToggleWindowState()
         {
             WindowState = WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
+            ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
         }
 
         private void PART_MINIMIZE_Click(object sender, RoutedEventArgs e)
