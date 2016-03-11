@@ -94,6 +94,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ConnectControlViewModelTests.cs" />
+    <Compile Include="DeploySourceExplorerViewModelTests.cs" />
     <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="EmailAttachmentModelTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
