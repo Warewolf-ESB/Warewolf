@@ -78,7 +78,7 @@ namespace Warewolf.Studio.UISpecs
             Assert.IsTrue(GetExecuteButton(path).Exists, "Execute button does not exist for " + path);
         }
 
-        private static UITestControl GetTreeItemFromPath(string path)
+        private UITestControl GetTreeItemFromPath(string path)
         {
             var pathAsArray = path.Split('\\');
             UITestControl CurrentTreeItem = Uimap.MainStudioWindow.Explorer.ExplorerTree;
@@ -96,7 +96,7 @@ namespace Warewolf.Studio.UISpecs
             return CurrentTreeItem;
         }
 
-        private static UITestControl GetExpansionIndicator(string treeItemPath)
+        private UITestControl GetExpansionIndicator(string treeItemPath)
         {
             var treeItem = GetTreeItemFromPath(treeItemPath);
             return treeItem.GetChildren().FirstOrDefault(control =>
@@ -109,7 +109,7 @@ namespace Warewolf.Studio.UISpecs
             });
         }
 
-        private static UITestControl GetEditButton(string treeItemPath)
+        private UITestControl GetEditButton(string treeItemPath)
         {
             var treeItem = GetTreeItemFromPath(treeItemPath);
             return treeItem.GetChildren().FirstOrDefault(control =>
@@ -122,7 +122,7 @@ namespace Warewolf.Studio.UISpecs
             });
         }
 
-        private static UITestControl GetExecuteButton(string treeItemPath)
+        private UITestControl GetExecuteButton(string treeItemPath)
         {
             var treeItem = GetTreeItemFromPath(treeItemPath);
             return treeItem.GetChildren().FirstOrDefault(control =>
