@@ -513,6 +513,7 @@ namespace Warewolf.Studio.ViewModels
                     CanSelectWindows = false;
                     CanSelectServer = false;
                     ServerName.Name = "Localhost";
+                    EmptyServerName = "Localhost";
                 }
                 else
                 {
