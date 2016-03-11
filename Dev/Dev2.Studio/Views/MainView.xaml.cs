@@ -593,6 +593,7 @@ namespace Dev2.Studio.Views
                     double targetVertical = RestoreBounds.Height * percentVertical;
 
                     WindowState = WindowState.Normal;
+                    ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
 
                     POINT lMousePosition;
                     GetCursorPos(out lMousePosition);
