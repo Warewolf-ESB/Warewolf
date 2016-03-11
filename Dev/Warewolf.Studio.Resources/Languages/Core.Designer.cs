@@ -2042,6 +2042,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EditRabbitMQSourceHelp.
+        /// </summary>
+        public static string EditRabbitMQSourceHelp {
+            get {
+                return ResourceManager.GetString("EditRabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the path to the attachments you want to send separated by a semicolon ;&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
@@ -4545,6 +4554,112 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PortLabel {
             get {
                 return ResourceManager.GetString("PortLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue auto delete.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Make the queue auto delete.
+        /// </summary>
+        public static string RabbitMQHelpIsAutoDelete {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpIsAutoDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue durable.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Make the queue durable.
+        /// </summary>
+        public static string RabbitMQHelpIsDurable {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpIsDurable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue exclusive.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Make the queue exclusive.
+        /// </summary>
+        public static string RabbitMQHelpIsExclusive {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpIsExclusive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or &quot;New RabbitMQ Source...&quot; to add a new one.&lt;br /&gt;
+        ///.
+        /// </summary>
+        public static string RabbitMQHelpMailSource {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpMailSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message goes in here.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpMessage {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpQueueName {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpQueueName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.&lt;br /&gt;
+        ///        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpResult {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpResult", resourceCulture);
             }
         }
         
