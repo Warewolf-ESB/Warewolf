@@ -16,7 +16,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.InputRegion;
@@ -26,13 +25,11 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 // ReSharper disable UnusedMember.Local
@@ -74,7 +71,8 @@ namespace Dev2.Activities.Designers2.PostgreSql
             SetupCommonProperties();
         }
 
-        Guid UniqueID { get { return GetProperty<Guid>(); } }
+        // ReSharper disable once ConvertPropertyToExpressionBody
+        Guid UniqueId { get { return GetProperty<Guid>(); } }
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
@@ -133,12 +131,12 @@ namespace Dev2.Activities.Designers2.PostgreSql
         {
             var memo = new DesignValidationMemo
             {
-                InstanceID = UniqueID,
+                InstanceID = UniqueId,
                 IsValid = false,
             };
             memo.Errors.Add(new ErrorInfo
             {
-                InstanceID = UniqueID,
+                InstanceID = UniqueId,
                 ErrorType = ErrorType.Critical,
                 FixType = FixType.None,
                 Message = _sourceNotFoundMessage
@@ -150,12 +148,12 @@ namespace Dev2.Activities.Designers2.PostgreSql
         {
             var memo = new DesignValidationMemo
             {
-                InstanceID = UniqueID,
+                InstanceID = UniqueId,
                 IsValid = false,
             };
             memo.Errors.Add(new ErrorInfo
             {
-                InstanceID = UniqueID,
+                InstanceID = UniqueId,
                 ErrorType = ErrorType.None,
                 FixType = FixType.None,
                 Message = ""
