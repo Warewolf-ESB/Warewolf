@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Core.Interfaces;
 
-namespace Dev2.Views.DropBox
+namespace Dev2.Views.DropBox2016
 {
     public class DropBoxHelper : IDropBoxHelper
     {
