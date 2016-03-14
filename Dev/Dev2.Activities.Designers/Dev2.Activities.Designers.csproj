@@ -170,6 +170,9 @@
     <Compile Include="Designers2\BaseConvert\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Calculate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Calculate\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -229,13 +232,13 @@
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
-    <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
+    <Compile Include="Designers2\Core\Source\WebSourceRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
+    <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Delete\WebDeleteRegionClone.cs" />
-    <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
-    <Compile Include="Designers2\Core\WebSourceRegion.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
     <Compile Include="Designers2\CountRecords\Large.xaml.cs">
@@ -299,6 +302,9 @@
     <Compile Include="Designers2\FormatNumber\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml.cs">
       <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
     </Compile>
@@ -308,6 +314,9 @@
     </Compile>
     <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Random\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
@@ -972,6 +981,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Calculate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\Calculate\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1096,6 +1109,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\GatherSystemInformation\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1107,6 +1124,10 @@
     <Page Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Random\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
