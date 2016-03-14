@@ -48,7 +48,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Connect_button_Destination_Server_Exists()
         {
             #region Variable Declarations
-            WpfButton connectDestinationButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectDestinationButton;
+            WpfButton connectDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectDestinationButton;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_DestinationServerConnectbtn_AutoID' button equals 'True'
@@ -61,7 +61,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Connect_Button_Source_Server_Exists()
         {
             #region Variable Declarations
-            WpfButton sourceConnectButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectButton;
+            WpfButton sourceConnectButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectButton;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_SourceConnectServerbtn_AutoID' button equals 'True'
@@ -87,7 +87,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Connect_Control_DestinationServer_Exists()
         {
             #region Variable Declarations
-            WpfButton connectControlDestination = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectControlDestination;
+            WpfButton connectControlDestination = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectControlDestination;
             #endregion
 
             // Verify that the 'Exists' property of 'ToggleButton' button equals 'True'
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Connect_Control_SourceServer_Exists()
         {
             #region Variable Declarations
-            WpfCustom sourceConnectControl = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectControl;
+            WpfCustom sourceConnectControl = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectControl;
             #endregion
 
             // Verify that the 'Exists' property of 'SourceConnectControl' custom control equals 'True'
@@ -126,7 +126,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Database_Source_Dropdownlist_Exists()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
             #endregion
 
             // Verify that the 'Exists' property of 'SourcesComboBox' custom control equals 'True'
@@ -295,7 +295,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_DeployButton_DestinationServer_Exists()
         {
             #region Variable Declarations
-            WpfButton deployButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.DeployButton;
+            WpfButton deployButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.DeployButton;
             #endregion
 
             // Verify that the 'Exists' property of 'Deploy' button equals 'True'
@@ -308,7 +308,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Edit_Button_Destination_Server_Exists()
         {
             #region Variable Declarations
-            WpfButton editDestinationButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditDestinationButton;
+            WpfButton editDestinationButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditDestinationButton;
             #endregion
 
             // Verify that the 'Exists' property of '...' button equals 'True'
@@ -373,7 +373,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Filter_Source_Server_Exists()
         {
             #region Variable Declarations
-            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.FilterText;
+            WpfText filterText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.FilterText;
             #endregion
 
             // Verify that the 'Exists' property of 'Filter' label equals 'True'
@@ -451,7 +451,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_NewResource_Count_Exists()
         {
             #region Variable Declarations
-            WpfHyperlink newResourceHyperlink = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourceHyperlink;
+            WpfHyperlink newResourceHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourceHyperlink;
             #endregion
 
             // Verify that the 'Exists' property of link equals 'True'
@@ -464,7 +464,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_NewResource_Label_Exists()
         {
             #region Variable Declarations
-            WpfText newResourcesText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourcesText;
+            WpfText newResourcesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourcesText;
             #endregion
 
             // Verify that the 'Exists' property of 'New Resources' label equals 'True'
@@ -490,7 +490,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Override_Count_Exists()
         {
             #region Variable Declarations
-            WpfHyperlink overrideHyperlink = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideHyperlink;
+            WpfHyperlink overrideHyperlink = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideHyperlink;
             #endregion
 
             // Verify that the 'Exists' property of link equals 'True'
@@ -503,7 +503,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Override_Label_DestinationServer_Exists()
         {
             #region Variable Declarations
-            WpfText overrideText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideText;
+            WpfText overrideText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideText;
             #endregion
 
             // Verify that the 'Exists' property of 'Override' label equals 'True'
@@ -529,7 +529,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Position_Exists()
         {
             #region Variable Declarations
-            WpfMenuItem positionButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.FilesMenu.PositionButton;
+            WpfMenuItem positionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.FilesMenu.PositionButton;
             #endregion
 
             // Verify that the 'Exists' property of 'PART_FilesMenuItem' menu item equals 'True'
@@ -555,7 +555,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Refresh_Button_Source_Server_Exists()
         {
             #region Variable Declarations
-            WpfButton refreshSourceServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.RefreshSourceServerButton;
+            WpfButton refreshSourceServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.RefreshSourceServerButton;
             #endregion
 
             // Verify that the 'Exists' property of '' button equals 'True'
@@ -724,7 +724,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_ConncectControl_Exists()
         {
             #region Variable Declarations
-            WpfComboBox serverComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ServerComboBox;
+            WpfComboBox serverComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ServerComboBox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_SettingsServerComboBox_AutoID' combo box equals 'True'
@@ -737,7 +737,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_ConnectButton_Exists()
         {
             #region Variable Declarations
-            WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ConnectServerButton;
+            WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ConnectServerButton;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_SettingsServerConnectButton_AutoID' button equals 'True'
@@ -750,7 +750,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_ConnectControl_Edit_Exists()
         {
             #region Variable Declarations
-            WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.EditServerButton;
+            WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.EditServerButton;
             #endregion
 
             // Verify that the 'Exists' property of '...' button equals 'True'
@@ -763,7 +763,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_CreateNewTask_Exists()
         {
             #region Variable Declarations
-            WpfButton newTaskButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton;
+            WpfButton newTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton;
             #endregion
 
             // Verify that the 'Exists' property of first button next to '' button equals 'True'
@@ -776,7 +776,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_DeleteButton_Exists()
         {
             #region Variable Declarations
-            WpfButton deleteTaskButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton;
+            WpfButton deleteTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton;
             #endregion
 
             // Verify that the 'Exists' property of '...' button equals 'True'
@@ -789,7 +789,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_DisabledRadioButton_Exists()
         {
             #region Variable Declarations
-            WpfRadioButton disabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.DisabledRadioButton;
+            WpfRadioButton disabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.DisabledRadioButton;
             #endregion
 
             // Verify that the 'Exists' property of 'Disabled' radio button equals 'True'
@@ -802,7 +802,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_EditTrigger_Exists()
         {
             #region Variable Declarations
-            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton;
+            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton;
             #endregion
 
             // Verify that the 'Exists' property of '' button equals 'True'
@@ -815,7 +815,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_EnabledRadioButton_Exists()
         {
             #region Variable Declarations
-            WpfRadioButton enabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.EnabledRadioButton;
+            WpfRadioButton enabledRadioButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.EnabledRadioButton;
             #endregion
 
             // Verify that the 'Exists' property of 'Enabled' radio button equals 'True'
@@ -828,7 +828,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_ErrorMessage_Exists()
         {
             #region Variable Declarations
-            WpfText errorMessageText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ErrorMessageText;
+            WpfText errorMessageText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ErrorMessageText;
             #endregion
 
             // Verify that the 'Exists' property of 'Please select a workflow to schedule' label equals 'True'
@@ -841,7 +841,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_HistoryInput_Exists()
         {
             #region Variable Declarations
-            WpfEdit numOfHistoryTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NumOfHistoryTextBoxEdit;
+            WpfEdit numOfHistoryTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NumOfHistoryTextBoxEdit;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_NumOfHisTextBox' text box equals 'True'
@@ -854,7 +854,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_HistoryLabel_Exists()
         {
             #region Variable Declarations
-            WpfText numberofHistoryText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NumberofHistoryText;
+            WpfText numberofHistoryText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NumberofHistoryText;
             #endregion
 
             // Verify that the 'Exists' property of 'Number of History records to load (0 = all)' label equals 'True'
@@ -867,7 +867,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_HistoryTable_Exists()
         {
             #region Variable Declarations
-            WpfTable historyTable = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.HistoryTable;
+            WpfTable historyTable = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.HistoryTable;
             #endregion
 
             // Verify that the 'Exists' property of table equals 'True'
@@ -880,7 +880,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_NameInput_Exists()
         {
             #region Variable Declarations
-            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NameTextbox;
+            WpfEdit nameTextbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NameTextbox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_NameTextbox' text box equals 'True'
@@ -893,7 +893,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_NameLabel_Exists()
         {
             #region Variable Declarations
-            WpfText nameText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NameText;
+            WpfText nameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NameText;
             #endregion
 
             // Verify that the 'Exists' property of 'Name' label equals 'True'
@@ -906,7 +906,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_PasswordInput_Exists()
         {
             #region Variable Declarations
-            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.PasswordTextBoxEdit;
+            WpfEdit passwordTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.PasswordTextBoxEdit;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_PasswordBox' text box equals 'True'
@@ -919,7 +919,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_PasswordLabel_Exists()
         {
             #region Variable Declarations
-            WpfText passwordText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.PasswordText;
+            WpfText passwordText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.PasswordText;
             #endregion
 
             // Verify that the 'Exists' property of 'Password' label equals 'True'
@@ -932,7 +932,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_ResourcePicker_Exists()
         {
             #region Variable Declarations
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton;
+            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton;
             #endregion
 
             // Verify that the 'Exists' property of '...' button equals 'True'
@@ -945,7 +945,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_RunTask_Checkbox_Exists()
         {
             #region Variable Declarations
-            WpfCheckBox runTaskCheckBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox;
+            WpfCheckBox runTaskCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox;
             #endregion
 
             // Verify that the 'Exists' property of 'Run task as soon as possible after a scheduled sta...' check box equals 'True'
@@ -958,7 +958,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_Status_RadioButton_Exists()
         {
             #region Variable Declarations
-            WpfCheckBox statusCheckbox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.NewTask.StatusCheckbox;
+            WpfCheckBox statusCheckbox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.NewTask.StatusCheckbox;
             #endregion
 
             // Verify that the 'Exists' property of check box equals 'True'
@@ -971,7 +971,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_StatusLabe_Exists()
         {
             #region Variable Declarations
-            WpfText statusText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.StatusText;
+            WpfText statusText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.StatusText;
             #endregion
 
             // Verify that the 'Exists' property of 'Status' label equals 'True'
@@ -984,7 +984,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_TriggerLabel_Exists()
         {
             #region Variable Declarations
-            WpfText triggerText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.TriggerText;
+            WpfText triggerText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.TriggerText;
             #endregion
 
             // Verify that the 'Exists' property of 'Triggered at' label equals 'True'
@@ -997,7 +997,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_TriggerValue_Exists()
         {
             #region Variable Declarations
-            WpfText triggerValueText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.TriggerValueText;
+            WpfText triggerValueText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.TriggerValueText;
             #endregion
 
             // Verify that the 'Exists' property of 'At 2:40 PM every day' label equals 'True'
@@ -1010,7 +1010,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_UserAccountLabel_Exists()
         {
             #region Variable Declarations
-            WpfText uIRunasthefollowinguseText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.UIRunasthefollowinguseText;
+            WpfText uIRunasthefollowinguseText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.UIRunasthefollowinguseText;
             #endregion
 
             // Verify that the 'Exists' property of 'Run as the following user account' label equals 'True'
@@ -1023,7 +1023,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_UsernameInput_Exists()
         {
             #region Variable Declarations
-            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.UserNameTextBoxEdit;
+            WpfEdit userNameTextBoxEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.UserNameTextBoxEdit;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_UserNameTextBox' text box equals 'True'
@@ -1036,7 +1036,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_Usernamelabel_Exists()
         {
             #region Variable Declarations
-            WpfText usernameText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.UsernameText;
+            WpfText usernameText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.UsernameText;
             #endregion
 
             // Verify that the 'Exists' property of 'Username' label equals 'True'
@@ -1049,7 +1049,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_WorkflowInput_Exists()
         {
             #region Variable Declarations
-            WpfEdit workflowNameTextBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.WorkflowNameTextBox;
+            WpfEdit workflowNameTextBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.WorkflowNameTextBox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_WorkflowNameTextBox_AutoID' text box equals 'True'
@@ -1062,7 +1062,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Scheduler_WorkflowLabel_Exists()
         {
             #region Variable Declarations
-            WpfText workflowText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.WorkflowText;
+            WpfText workflowText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.WorkflowText;
             #endregion
 
             // Verify that the 'Exists' property of 'Workflow' label equals 'True'
@@ -1075,7 +1075,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_ServiceLabel_DestinationServer_Exists()
         {
             #region Variable Declarations
-            WpfText servicesText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServicesText;
+            WpfText servicesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServicesText;
             #endregion
 
             // Verify that the 'Exists' property of 'Services' label equals 'True'
@@ -1088,7 +1088,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_ServicesCount_Label_Exists()
         {
             #region Variable Declarations
-            WpfText serviceCountText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServiceCountText;
+            WpfText serviceCountText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServiceCountText;
             #endregion
 
             // Verify that the 'Exists' property of '0' label equals 'True'
@@ -1101,7 +1101,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Settings_ConnectButton_Exists()
         {
             #region Variable Declarations
-            WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.ConnectControl.ConnectServerButton;
+            WpfButton connectServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.ConnectServerButton;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_SettingsServerConnectButton_AutoID' button equals 'True'
@@ -1114,7 +1114,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Settings_ConnectControl_Edit_Button_Exists()
         {
             #region Variable Declarations
-            WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.ConnectControl.EditServerButton;
+            WpfButton editServerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.EditServerButton;
             #endregion
 
             // Verify that the 'Exists' property of '...' button equals 'True'
@@ -1127,7 +1127,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Settings_ConnectControl_Exists()
         {
             #region Variable Declarations
-            WpfComboBox settingsServerComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.ConnectControl.SettingsServerComboBox;
+            WpfComboBox settingsServerComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.SettingsServerComboBox;
             #endregion
 
             // Verify that the 'Exists' property of 'UI_SettingsServerComboBox_AutoID' combo box equals 'True'
@@ -1140,7 +1140,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Settings_LoggingTab_Exists()
         {
             #region Variable Declarations
-            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.LoggingTab;
+            WpfTabPage loggingTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.LoggingTab;
             #endregion
 
             // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
@@ -1153,7 +1153,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Settings_ResourcePermissions_Exists()
         {
             #region Variable Declarations
-            WpfTable resourcePermissions = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions;
+            WpfTable resourcePermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions;
             #endregion
 
             // Verify that the 'Exists' property of 'ResourcePermissionsDataGrid' table equals 'True'
@@ -1166,7 +1166,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Settings_SecurityTab_Exists()
         {
             #region Variable Declarations
-            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab;
+            WpfTabPage securityTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab;
             #endregion
 
             // Verify that the 'Exists' property of 'System.Windows.Controls.TabItem Header: Content:' tab equals 'True'
@@ -1179,7 +1179,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Settings_ServerPermissions_Exists()
         {
             #region Variable Declarations
-            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions;
+            WpfTable serverPermissions = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions;
             #endregion
 
             // Verify that the 'Exists' property of 'ServerPermissionsDataGrid' table equals 'True'
@@ -1192,7 +1192,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_ShowDependencies_Button_DestinationServer_Exists()
         {
             #region Variable Declarations
-            WpfButton showDependenciesButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ShowDependenciesButton;
+            WpfButton showDependenciesButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ShowDependenciesButton;
             #endregion
 
             // Verify that the 'Exists' property of 'Select All Dependencies' button equals 'True'
@@ -1205,7 +1205,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Source_Server_Edit_Exists()
         {
             #region Variable Declarations
-            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton;
+            WpfButton editSourceButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton;
             #endregion
 
             // Verify that the 'Exists' property of '...' button equals 'True'
@@ -1218,7 +1218,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_Source_Server_Name_Exists()
         {
             #region Variable Declarations
-            WpfTreeItem sourceServerName = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.SourceServerName;
+            WpfTreeItem sourceServerName = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.SourceServerName;
             #endregion
 
             // Verify that the 'Exists' property of 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item equals 'True'
@@ -1231,7 +1231,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_SourceCount_DestinationServer_Exists()
         {
             #region Variable Declarations
-            WpfText sourceCountText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceCountText;
+            WpfText sourceCountText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceCountText;
             #endregion
 
             // Verify that the 'Exists' property of '0' label equals 'True'
@@ -1244,7 +1244,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_SourceLabel_DestinationServer_Exists()
         {
             #region Variable Declarations
-            WpfText sourcesText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourcesText;
+            WpfText sourcesText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourcesText;
             #endregion
 
             // Verify that the 'Exists' property of 'Sources' label equals 'True'
@@ -1257,7 +1257,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_SplitPane_Content_Exists()
         {
             #region Variable Declarations
-            WpfCustom splitPaneContent = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent;
+            WpfCustom splitPaneContent = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent;
             #endregion
 
             // Verify that the 'Exists' property of 'SplitPaneContent' custom control equals 'True'
@@ -1270,11 +1270,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_SplitPane_Left_Exists()
         {
             #region Variable Declarations
-            WpfCustom splitPaneLeft = this.MainStudioWindow.DockManager.SplitPaneLeft;
+            WpfCustom splitPaneMiddle = this.MainStudioWindow.DockManager.SplitPaneMiddle;
             #endregion
 
-            // Verify that the 'Exists' property of 'SplitPaneLeft' custom control equals 'True'
-            Assert.AreEqual(this.Assert_SplitPane_Left_ExistsExpectedValues.SplitPaneLeftExists, splitPaneLeft.Exists, "Split pane left does not exist");
+            // Verify that the 'Exists' property of 'SplitPaneMiddle' custom control equals 'True'
+            Assert.AreEqual(this.Assert_SplitPane_Left_ExistsExpectedValues.SplitPaneMiddleExists, splitPaneMiddle.Exists, "Split pane left does not exist");
         }
         
         /// <summary>
@@ -1296,7 +1296,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_SuccessMessage_Label_Exists()
         {
             #region Variable Declarations
-            WpfText successMessageText = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SuccessMessageText;
+            WpfText successMessageText = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SuccessMessageText;
             #endregion
 
             // Verify that the 'Exists' property of '1 Resource Deployed Successfully.' label equals 'True'
@@ -1309,7 +1309,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_TabHeader_Exists()
         {
             #region Variable Declarations
-            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.TabContextMenu;
+            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu;
             #endregion
 
             // Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
@@ -1603,7 +1603,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_WebSource_ReqTypeComboBox_Exists()
         {
             #region Variable Declarations
-            WpfComboBox requestTypesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox;
+            WpfComboBox requestTypesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox;
             #endregion
 
             // Verify that the 'Exists' property of 'RequestTypes' combo box equals 'True'
@@ -1994,7 +1994,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Position_Button()
         {
             #region Variable Declarations
-            WpfMenuItem positionButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.FilesMenu.PositionButton;
+            WpfMenuItem positionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.FilesMenu.PositionButton;
             #endregion
 
             // Click 'PART_FilesMenuItem' menu item
@@ -2033,7 +2033,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_Create_New_Task_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfButton newTaskButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton;
+            WpfButton newTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton;
             #endregion
 
             // Click first button next to '' button
@@ -2046,7 +2046,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_Delete_Task()
         {
             #region Variable Declarations
-            WpfButton deleteTaskButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton;
+            WpfButton deleteTaskButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton;
             #endregion
 
             // Click '...' button
@@ -2059,7 +2059,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_Disable_Task_Radio_Button()
         {
             #region Variable Declarations
-            WpfCheckBox statusCheckBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
+            WpfCheckBox statusCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
             #endregion
 
             // Clear check box
@@ -2072,7 +2072,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_EditTrigger_Button()
         {
             #region Variable Declarations
-            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton;
+            WpfButton editTriggerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton;
             #endregion
 
             // Click '' button
@@ -2085,7 +2085,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_Enable_Task_Radio_Button()
         {
             #region Variable Declarations
-            WpfCheckBox statusCheckBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
+            WpfCheckBox statusCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox;
             #endregion
 
             // Select check box
@@ -2098,7 +2098,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_ResourcePicker()
         {
             #region Variable Declarations
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton;
+            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton;
             #endregion
 
             // Click '...' button
@@ -2111,7 +2111,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_ResourcePicker_Button()
         {
             #region Variable Declarations
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton;
+            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton;
             #endregion
 
             // Click '...' button
@@ -2137,7 +2137,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Scheduler_RunTask()
         {
             #region Variable Declarations
-            WpfCheckBox runTaskCheckBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox;
+            WpfCheckBox runTaskCheckBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox;
             #endregion
 
             // Select 'Run task as soon as possible after a scheduled sta...' check box
@@ -2150,7 +2150,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Settings_Admin_ServerPermissions()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell;
+            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell;
             #endregion
 
             // Select 'False' cell
@@ -2163,7 +2163,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Settings_Contribute_ResourcePermissions()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
+            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
             #endregion
 
             // Select 'False' cell
@@ -2176,7 +2176,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Settings_Contribute_ServerPermissions()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell;
+            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell;
             #endregion
 
             // Select 'False' cell
@@ -2189,7 +2189,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Settings_Execute_ResourcePermissions()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
+            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
             #endregion
 
             // Select 'False' cell
@@ -2202,7 +2202,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Settings_ResourcePermissions_ResourcePicker()
         {
             #region Variable Declarations
-            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.ResourceCell.ResourcePickerButton;
+            WpfButton resourcePickerButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.ResourceCell.ResourcePickerButton;
             #endregion
 
             // Click '...' button
@@ -2228,7 +2228,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_Settings_View_ResourcePermissions()
         {
             #region Variable Declarations
-            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
+            WpfCell uIFalseCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell;
             #endregion
 
             // Select 'False' cell
@@ -2474,7 +2474,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Close_New_Workflow_Tab_Without_Saving()
         {
             #region Variable Declarations
-            WpfButton uIItemButton = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.WorkflowTab.UIItemButton;
+            WpfButton uIItemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.UIItemButton;
             WpfButton nOButton = this.MessageBoxWindow.NOButton;
             #endregion
 
@@ -2635,7 +2635,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Select_Action_Droplist()
         {
             #region Variable Declarations
-            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox;
+            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox;
             WpfCustom uIDboPr_CitiesGetCountCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDboPr_CitiesGetCountCustom;
             #endregion
 
@@ -2652,7 +2652,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Select_Data_Source_Droplist()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox;
             #endregion
 
             // Click 'SourcesComboBox' custom control
@@ -2665,7 +2665,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Select_Plugin_Connector_Action_Droplist()
         {
             #region Variable Declarations
-            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.ActionsComboBox;
+            WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.ActionsComboBox;
             WpfCustom uIDummySentCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDummySentCustom;
             #endregion
 
@@ -2682,7 +2682,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Select_Plugin_Connector_Namespace_Droplist()
         {
             #region Variable Declarations
-            WpfCustom namespacesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.NamespacesComboBox;
+            WpfCustom namespacesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.NamespacesComboBox;
             WpfText uIUnlimitedFrameworkPlText = this.UIWarewolfDEV2LEROYWARWindow.UIUnlimitedFrameworkPlCustom.UIUnlimitedFrameworkPlText;
             #endregion
 
@@ -2699,7 +2699,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Select_Plugin_Connector_Source_Droplist()
         {
             #region Variable Declarations
-            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.SourcesComboBox;
+            WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.SourcesComboBox;
             WpfCustom uIEmailPluginCustom = this.UIWarewolfDEV2LEROYWARWindow.UIEmailPluginCustom;
             #endregion
 
@@ -2716,7 +2716,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Tab_Context_Menu()
         {
             #region Variable Declarations
-            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.TabContextMenu;
+            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu;
             #endregion
 
             // Right-Click 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab
@@ -6251,9 +6251,9 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'SplitPaneLeft' custom control equals 'True'
+        /// Verify that the 'Exists' property of 'SplitPaneMiddle' custom control equals 'True'
         /// </summary>
-        public bool SplitPaneLeftExists = true;
+        public bool SplitPaneMiddleExists = true;
         #endregion
     }
     
@@ -7634,6 +7634,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public SplitPaneMiddle SplitPaneMiddle
+        {
+            get
+            {
+                if ((this.mSplitPaneMiddle == null))
+                {
+                    this.mSplitPaneMiddle = new SplitPaneMiddle(this);
+                }
+                return this.mSplitPaneMiddle;
+            }
+        }
+        
         public SplitPaneRight SplitPaneRight
         {
             get
@@ -7714,6 +7726,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #region Fields
         private SplitPaneLeft mSplitPaneLeft;
         
+        private SplitPaneMiddle mSplitPaneMiddle;
+        
         private SplitPaneRight mSplitPaneRight;
         
         private WpfTabList mUnpinnedTabAreaTop;
@@ -7735,7 +7749,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
             #endregion
         }
@@ -7811,18 +7825,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mHelp;
             }
         }
-        
-        public SplitPaneContent SplitPaneContent
-        {
-            get
-            {
-                if ((this.mSplitPaneContent == null))
-                {
-                    this.mSplitPaneContent = new SplitPaneContent(this);
-                }
-                return this.mSplitPaneContent;
-            }
-        }
         #endregion
         
         #region Fields
@@ -7835,8 +7837,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private WpfControl mToolboxHelpSplitter;
         
         private Help mHelp;
-        
-        private SplitPaneContent mSplitPaneContent;
         #endregion
     }
     
@@ -9547,6 +9547,39 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private WpfButton mDocumentorUnpinBtn;
         
         private WpfControl mHelpWindow;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class SplitPaneMiddle : WpfCustom
+    {
+        
+        public SplitPaneMiddle(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public SplitPaneContent SplitPaneContent
+        {
+            get
+            {
+                if ((this.mSplitPaneContent == null))
+                {
+                    this.mSplitPaneContent = new SplitPaneContent(this);
+                }
+                return this.mSplitPaneContent;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SplitPaneContent mSplitPaneContent;
         #endregion
     }
     
