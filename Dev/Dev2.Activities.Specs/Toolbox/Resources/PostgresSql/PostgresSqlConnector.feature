@@ -19,4 +19,16 @@ Scenario: Creating PostgresSql Server Connector
 	Then Test Connector and Calculate Outputs outputs appear as
 	| name | salary | age |
 	| Bill | 4200   | 45  |
+
+	Scenario: Opening Saved workflow with Postgres Server tool
+	Given I Open workflow with PostgreSql connector
+	And Source Is Enable
+	And Source Is "postgressql"
+	And Action Is Enable
+	And Action Is "getemployees"
+	And Inputs Is Enable
+	Then Inputs appear As
+	| Input | Value | Empty is Null |
+	| fname |       | false | 
+	And Validate Is Enable
 	

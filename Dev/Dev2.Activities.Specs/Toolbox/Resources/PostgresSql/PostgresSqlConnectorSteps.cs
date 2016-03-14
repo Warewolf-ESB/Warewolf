@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Oracle;
 using Dev2.Activities.Designers2.PostgreSql;
@@ -19,6 +18,7 @@ using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
@@ -26,8 +26,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class PostgresSqlConnectorSteps
     {
-        private DbSourceDefinition postgresSqlSource;
-        private DbAction selectedAction;
+        private DbSourceDefinition _postgresSqlSource;
+        private DbAction _selectedAction;
+        private DbSourceDefinition _testingDbSource;
+        private DbAction _getEmployees;
 
         [Given(@"I drag a PostgresSql Server database connector")]
         public void GivenIDragAPostgresSqlServerDatabaseConnector()
@@ -47,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
 
-            postgresSqlSource = new DbSourceDefinition
+            _postgresSqlSource = new DbSourceDefinition
             {
                 Name = "DemoPostgres",
                 Type = enSourceType.PostgreSql,
@@ -57,10 +59,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.User
             };
 
-            var dbSources = new ObservableCollection<IDbSource> { postgresSqlSource };
+            var dbSources = new ObservableCollection<IDbSource> { _postgresSqlSource };
             
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
-            mockDbServiceModel.Setup(model => model.GetActions(postgresSqlSource));
+            mockDbServiceModel.Setup(model => model.GetActions(_postgresSqlSource));
             mockServiceInputViewModel.SetupAllProperties();
           
             var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
@@ -75,11 +77,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             if (sourceName == "DemoPostgres")
             {
-                selectedAction = new DbAction();
-                selectedAction.Name = "getemployees";
-                selectedAction.Inputs = new List<IServiceInput> { new ServiceInput("fname", "") };
-                GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { selectedAction });
-                GetViewModel().SourceRegion.SelectedSource = postgresSqlSource;
+                _selectedAction = new DbAction();
+                _selectedAction.Name = "getemployees";
+                _selectedAction.Inputs = new List<IServiceInput> { new ServiceInput("fname", "") };
+                GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _selectedAction });
+                GetViewModel().SourceRegion.SelectedSource = _postgresSqlSource;
             }
         }
 
@@ -94,7 +96,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 dataTable.Columns.Add(new DataColumn("age"));
                 dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill",4200,45 }, true));
                 GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().ActionRegion.SelectedAction = selectedAction;
+                GetViewModel().ActionRegion.SelectedAction = _selectedAction;
             }
         }
 
@@ -180,6 +182,131 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Assert.AreEqual(ageValue, dataAgeValue);
                 rowIdx++;
             }
+        }
+
+        [Given(@"I Open workflow with PostgreSql connector")]
+        public void GivenIOpenWorkflowWithPostgreSqlConnector()
+        {
+            var sourceId = Guid.NewGuid();
+            var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
+            var outputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping("name", "name", "getemployees"),
+            };
+
+            var postgresActivity = new DsfPostgreSqlActivity();
+            
+            var modelItem = ModelItemUtils.CreateModelItem(postgresActivity);
+            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
+            var mockDbServiceModel = new Mock<IDbServiceModel>();
+            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+            _postgresSqlSource = new DbSourceDefinition
+            {
+                Name = "postgressql",
+                Type = enSourceType.PostgreSql,
+                ServerName = "Localhost",
+                UserName = "postgres",
+                Password = "sa",
+                AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.User
+            };
+
+            _testingDbSource = new DbSourceDefinition
+            {
+                Name = "testingDBSrc",
+                Type = enSourceType.PostgreSql,
+                Id = sourceId
+            };
+
+            _selectedAction = new DbAction
+            {
+                Name = "getemployees",
+                Inputs = new List<IServiceInput> { new ServiceInput("fname", "") }
+            };
+
+            _getEmployees = new DbAction { Name = "getemployees" };
+            _getEmployees.Inputs = inputs;
+            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _postgresSqlSource };
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
+            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getEmployees, _selectedAction });
+            mockServiceInputViewModel.SetupAllProperties();
+            var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
+
+            ScenarioContext.Current.Add("viewModel", postgresDesignerViewModel);
+            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+        }
+
+        [Given(@"Source Is Enable")]
+        public void GivenSourceIsEnable()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.IsValid);
+        }
+
+        [Given(@"Source Is ""(.*)""")]
+        public void GivenSourceIs(string sourceName)
+        {
+            var selectedSource = GetViewModel().SourceRegion.SelectedSource = _postgresSqlSource;
+            Assert.IsNotNull(selectedSource);
+            Assert.AreEqual(sourceName, selectedSource.Name);
+        }
+
+        [Given(@"Action Is Enable")]
+        public void GivenActionIsEnable()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.ActionRegion.IsActionEnabled);
+        }
+
+        [Given(@"Action Is ""(.*)""")]
+        public void GivenActionIs(string actionName)
+        {
+            var selectedProcedure = GetViewModel().ActionRegion.SelectedAction = _selectedAction;
+            Assert.IsNotNull(selectedProcedure);
+            Assert.AreEqual(actionName, selectedProcedure.Name);
+        }
+
+        [Given(@"Inputs Is Enable")]
+        public void GivenInputsIsEnable()
+        {
+            var viewModel = GetViewModel();
+            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsVisible;
+            Assert.IsTrue(hasInputs);
+        }
+
+        [Then(@"Inputs appear As")]
+        public void ThenInputsAppearAs(Table table)
+        {
+
+            var viewModel = GetViewModel();
+            int rowNum = 0;
+            foreach (var row in table.Rows)
+            {
+                var inputValue = row["Input"];
+                var value = row["Value"];
+                var serviceInputs = viewModel.InputArea.Inputs.ToList();
+                var serviceInput = serviceInputs[rowNum];
+                Assert.AreEqual(inputValue, serviceInput.Name);
+                Assert.AreEqual(value, serviceInput.Value);
+                rowNum++;
+            }
+        }
+
+        [Then(@"Validate Is Enable")]
+        public void ThenValidateIsEnable()
+        {
+            var viewModel = GetViewModel();
+            Assert.IsTrue(viewModel.ManageServiceInputViewModel.TestCommand.CanExecute(null));
+
+            viewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
         }
 
         private static PostgreSqlDatabaseDesignerViewModel GetViewModel()
