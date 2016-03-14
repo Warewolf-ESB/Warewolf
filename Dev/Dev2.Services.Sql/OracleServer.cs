@@ -449,9 +449,13 @@ namespace Dev2.Services.Sql
                 {
 
                     OracleParameter OracleParameter;
-                    OracleDbType OracleType;
+                    OracleDbType OracleType = 0;
 
-                    Enum.TryParse((row["DATA_TYPE"] as string)?.Replace(" ", ""), true, out OracleType);
+                    var s = row["DATA_TYPE"] as string;
+                    if(s != null)
+                    {
+                        Enum.TryParse(s.Replace(" ", ""), true, out OracleType);
+                    }
                     if (OracleType == 0)
                     {
                         string dataType = row["DATA_TYPE"].ToString();
