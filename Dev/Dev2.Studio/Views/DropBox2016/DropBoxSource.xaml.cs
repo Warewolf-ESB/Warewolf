@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace Dev2.Views.DropBox
+namespace Dev2.Views.DropBox2016
 {
     /// <summary>
     /// Interaction logic for Window1.xaml

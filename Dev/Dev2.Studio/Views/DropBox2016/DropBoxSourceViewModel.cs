@@ -7,47 +7,57 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Webs.Callbacks;
-using DropNet;
+using Dropbox.Api;
 
-namespace Dev2.Views.DropBox
+namespace Dev2.Views.DropBox2016
 {
     public class DropBoxSourceViewModel
     {
-        string AuthUri { get; set; }
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        public string Key { get; set; }
-
-        public  string Secret { get; set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        public string AccessToken { get; set; }
+        public string Uid { get; set; }
+        public string Secret { get; set; }
+        public string Title { get { return "Dropbox Source"; } }
+        public string AuthUri { get; set; }
         IDropBoxHelper DropBoxHelper { get; set; }
         public bool HasAuthenticated { get; set; }
         public IContextualResourceModel Resource { get; set; }
+
+
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
+
+
         readonly INetworkHelper _network;
         readonly IDropboxFactory _dropboxFactory;
-        IDropNetClient _client;
-        public string Title { get { return "Dropbox Source"; } }
+        DropboxClient _client;
+        //private string _appKey = GlobalConstants.DropBoxApiKey;       
+        private string _appKey = "31qf750f1vzffhu";
+
+
+        private string _oauth2State;
+        private const string RedirectUri = "https://www.example.com/";
 
         // ReSharper disable TooManyDependencies
         public DropBoxSourceViewModel(INetworkHelper network, IDropBoxHelper dropboxHelper, IDropboxFactory dropboxFactory, bool shouldAuthorise)
-            // ReSharper restore TooManyDependencies
+        // ReSharper restore TooManyDependencies
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory",dropboxFactory } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory", dropboxFactory } });
             _network = network;
             _dropboxFactory = dropboxFactory;
             DropBoxHelper = dropboxHelper;
             CookieHelper.Clear();
-            if(shouldAuthorise)
-            Authorise();
+            if (shouldAuthorise)
+                Authorise();
         }
 
         // ReSharper disable once UnusedMember.Local
         void WebBrowserNavigated(object sender, NavigationEventArgs e)
         {
 
-               var token =  _client.GetAccessToken();
-               Key = token.Token;
-               Secret = token.Secret;
-
+            /*     //var token =  _client.GetAccessToken();
+                 Key = token.Token;
+                 Secret = token.Secret;
+              */
 
 
         }
@@ -66,51 +76,63 @@ namespace Dev2.Views.DropBox
                     DropBoxHelper.CircularProgressBar.Visibility = Visibility.Hidden;
                     DropBoxHelper.WebBrowser.Visibility = Visibility.Visible;
                 });
-          
+
                 DropBoxHelper.Navigate(AuthUri);
 
             }
         }
 
+
+
         public async void Authorise()
         {
-            _client = _dropboxFactory.Create();
-            var authorizeUrl = _client.GetTokenAndBuildUrl("http://www.google.com");
-            await LoadBrowserUri(authorizeUrl);
+
+            _oauth2State = Guid.NewGuid().ToString("N");
+            var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, _appKey, new Uri(RedirectUri), _oauth2State);
+            await LoadBrowserUri(authorizeUri.ToString());
         }
         void GetAuthTokens(NavigationEventArgs args)
         {
+
+
+            if (!args.Uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
+            {
+                // we need to ignore all navigation that isn't to the redirect uri.
+                return;
+            }
+
             try
             {
-                if (args.Uri.ToString().StartsWith("https://www.google"))
+                OAuth2Response result = DropboxOAuth2Helper.ParseTokenFragment(args.Uri);
+                if (result.State != this._oauth2State)
                 {
-                    var token = _client.GetAccessToken();
-                    Key = token.Token;
-                    Secret = token.Secret;
-                    HasAuthenticated = true;
-                    DropBoxHelper.CloseAndSave(this);
+                    return;
                 }
+                AccessToken = result.AccessToken;
+                Uid = result.Uid;
+                HasAuthenticated = true;
+                DropBoxHelper.CloseAndSave(this);
             }
-            catch(Exception)
+            catch (ArgumentException)
             {
                 DropBoxHelper.CloseAndSave(this);
             }
-
         }
     }
 
     public interface IDropboxFactory
     {
-        IDropNetClient Create();
+        DropboxClient Create();
     }
 
     public class DropboxFactory : IDropboxFactory
     {
         #region Implementation of IDropboxFactory
 
-        public IDropNetClient Create()
+        public DropboxClient Create()
         {
-            return new DropNetClient(GlobalConstants.DropBoxApiKey, GlobalConstants.DropBoxAppSecret);
+            //return new DropboxClient(GlobalConstants.DropBoxApiKey);       
+            return new DropboxClient("31qf750f1vzffhu", new DropboxClientConfig(GlobalConstants.UserAgentString));
         }
 
         #endregion
