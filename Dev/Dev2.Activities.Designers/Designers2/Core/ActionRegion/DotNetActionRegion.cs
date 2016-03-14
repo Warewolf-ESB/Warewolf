@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.Core;
+
 // ReSharper disable ExplicitCallerInfoArgument
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 
@@ -46,9 +50,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             _namespace.SomethingChanged += SourceOnSomethingChanged;
             Dependants = new List<IToolRegion>();
             IsRefreshing = false;
-            UpdateBasedOnNamespace();
-            if (Method != null)
+            if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
             {
+                Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+            }
+            if (Method != null && Actions != null)
+            {
+                IsActionEnabled = true;
                 SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
             }
             RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
@@ -94,7 +102,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             // ReSharper disable once ExplicitCallerInfoArgument
             UpdateBasedOnNamespace();
-            SelectedAction = null;
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsEnabled");
         }
@@ -104,6 +111,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if(_source != null && _source.SelectedSource != null && _namespace != null && _namespace.SelectedNamespace != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                SelectedAction = null;
                 IsActionEnabled = true;
                 IsEnabled = true;
             }
@@ -124,31 +132,44 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
-                    if (!String.IsNullOrEmpty(_selectedAction.FullName))
-                        StorePreviousValues(_selectedAction.FullName);
+                    if (!String.IsNullOrEmpty(_selectedAction.Method))
+                        StorePreviousValues(_selectedAction.GetHashCodeBySource());
                 }
+                var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
+                var region = outputs as OutputsRegion;
+                if (region != null)
+                {
+                    region.Outputs = new ObservableCollection<IServiceOutputMapping>();
+                    region.RecordsetName = String.Empty;
 
-                if (IsAPreviousValue(value) && _selectedAction != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedAction(value);
                 }
-                else
-                {
-                    SetSelectedAction(value);
-                    SourceChangedAction();
-                    OnSomethingChanged(this);
-                }
-                var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                if (delegateCommand != null)
-                {
-                    delegateCommand.RaiseCanExecuteChanged();
-                }
-
-                _selectedAction = value;
+                RestoreIfPrevious(value);
                 OnPropertyChanged();
             }
         }
+
+        private void RestoreIfPrevious(IPluginAction value)
+        {
+            if (IsAPreviousValue(value) && _selectedAction != null)
+            {
+                RestorePreviousValues(value);
+                SetSelectedAction(value);
+            }
+            else
+            {
+                SetSelectedAction(value);
+                SourceChangedAction();
+                OnSomethingChanged(this);
+            }
+            var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+            if (delegateCommand != null)
+            {
+                delegateCommand.RaiseCanExecuteChanged();
+            }
+
+            _selectedAction = value;
+        }
+
         public ICollection<IPluginAction> Actions
         {
             get
@@ -222,7 +243,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             return new DotNetActionRegion
             {
                 IsEnabled = IsEnabled,
-                SelectedAction = SelectedAction
+                SelectedAction = SelectedAction == null ? null : new PluginAction
+                {
+                    Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(), 
+                    FullName = SelectedAction.FullName,
+                    Method = SelectedAction.Method
+                }
             };
         }
 
@@ -232,7 +258,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (region != null)
             {
                 SelectedAction = region.SelectedAction;
+                RestoreIfPrevious(region.SelectedAction);
                 IsEnabled = region.IsEnabled;
+                OnPropertyChanged("SelectedAction");
             }
         }
 
@@ -247,10 +275,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void SetSelectedAction(IPluginAction value)
         {
+            _selectedAction = value;
+            SavedAction = value;
             if (value != null)
             {
-                _selectedAction = value;
-                SavedAction = value;
                 Method = value;
             }
 
@@ -266,7 +294,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void RestorePreviousValues(IPluginAction value)
         {
-            var toRestore = _previousRegions[value.FullName];
+            var toRestore = _previousRegions[value.GetHashCodeBySource()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -275,7 +303,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IPluginAction value)
         {
-            return value != null && _previousRegions.Keys.Any(a => value.FullName != null && (a == value.FullName));
+            return value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
         }
 
         public IList<string> Errors

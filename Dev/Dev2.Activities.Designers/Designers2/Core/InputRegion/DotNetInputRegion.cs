@@ -1,12 +1,18 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
+using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.Core;
+
+// ReSharper disable ExplicitCallerInfoArgument
+
 // ReSharper disable NotAccessedField.Local
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
@@ -30,22 +36,34 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
-            Inputs = new List<IServiceInput>();
+            var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
+            Inputs = new List<IServiceInput>(inputsFromModel ?? new List<IServiceInput>());
+            if (inputsFromModel == null)
+                UpdateOnActionSelection();
             IsEnabled = action != null && action.SelectedAction != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
+            UpdateOnActionSelection();
+            // ReSharper disable once ExplicitCallerInfoArgument
+            OnPropertyChanged(@"Inputs");
+            OnPropertyChanged(@"IsEnabled");
+        }
+
+        private void UpdateOnActionSelection()
+        {
+            Inputs = new List<IServiceInput>();
+            IsEnabled = false;
             if (_action != null && _action.SelectedAction != null)
             {
-                Inputs.Clear();
+
                 Inputs = _action.SelectedAction.Inputs;
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsEnabled");
+            OnPropertyChanged("Inputs");
         }
 
         public bool IsInputsEmptyRows
@@ -81,9 +99,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-            //var ser = new Dev2JsonSerializer();
-            //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
-            var inputs2 = new List<IServiceInput>();
+            
+            var inputs2 = new List<IServiceInput>(Inputs.Select(a=> new ServiceInput(a.Name,a.Value)
+            {
+                EmptyIsNull = a.EmptyIsNull, TypeName = a.TypeName 
+            }));
             return new DotNetInputRegionClone
             {
                 Inputs = inputs2,
@@ -96,12 +116,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             var region = toRestore as DotNetInputRegionClone;
             if (region != null)
             {
-                IsEnabled = region.IsEnabled;
                 Inputs.Clear();
                 if (region.Inputs != null)
                 {
-                    Inputs = region.Inputs;
+                    var inp = region.Inputs.ToList();
+
+                    Inputs = inp;
                 }
+                OnPropertyChanged("Inputs");
+                IsInputsEmptyRows = Inputs == null || Inputs.Count == 0;
             }
         }
 
@@ -133,11 +156,21 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         {
             get
             {
-                return _inputs;
+                return _modelItem.GetProperty<List<IServiceInput>>("Inputs") ?? new List<IServiceInput>();
             }
             set
             {
+                if (value.Count < 1)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
                 _inputs = value;
+                OnPropertyChanged();
+                _modelItem.SetProperty("Inputs", value);
                 OnPropertyChanged();
             }
         }

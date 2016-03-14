@@ -42,7 +42,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source)
         {
             LabelWidth = 46;
-            ToolRegionName = "ActionRegion";
             ToolRegionName = "DbActionRegion";
             _modelItem = modelItem;
             _model = model;
@@ -234,7 +233,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             var action = new DbActionMemento
             {
                 IsEnabled = IsEnabled,
-                SelectedAction = (SelectedAction == null ? null : new DbAction { Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(), Name = SelectedAction.Name, SourceId = SelectedAction.SourceId })
+                SelectedAction = SelectedAction == null ? null : new DbAction
+                {
+                    Inputs = SelectedAction == null ? null : SelectedAction.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(), 
+                    Name = SelectedAction.Name, 
+                    SourceId = SelectedAction.SourceId
+                }
             };
             return action;
         }
