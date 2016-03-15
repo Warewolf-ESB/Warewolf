@@ -312,6 +312,22 @@ namespace Dev2.Core.Tests
             viewModel.Append(content);
 
             // Assert Nothing Appended
+            Assert.AreEqual(1, viewModel.RootItems.Count);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("DebugOutputViewModel_Append")]
+        public void DebugOutputViewModel_Append_TypeIsEsbServicesInvokerAndNotLastStep_NothingAppended()
+        {
+            var envRepo = GetEnvironmentRepository();
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
+            var content = new DebugState { Name = "EsbServiceInvoker",ExecutionOrigin = ExecutionOrigin.Unknown, ID = Guid.NewGuid(), ParentID = Guid.Empty, StateType = StateType.End, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
+
+            //------------Execute Test---------------------------
+            viewModel.Append(content);
+
+            // Assert Nothing Appended
             Assert.AreEqual(0, viewModel.RootItems.Count);
         }
     }
