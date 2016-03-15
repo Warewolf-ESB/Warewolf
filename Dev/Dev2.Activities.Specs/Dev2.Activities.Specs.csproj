@@ -469,6 +469,26 @@
       <DependentUpon>Script.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Scripting\Script\ScriptSteps.cs" />
+    <Compile Include="Toolbox\Sharepoint\SharepointCreate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointCreate.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointDelete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointDelete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointRead.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointRead.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointUpdate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointUpdate.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -708,6 +728,22 @@
     <None Include="Toolbox\Scripting\Script\Script.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Script.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Sharepoint\SharepointCreate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointCreate.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Sharepoint\SharepointDelete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointDelete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Sharepoint\SharepointRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Sharepoint\SharepointUpdate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointUpdate.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Storage\Dropbox\ReadDropbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
