@@ -9,7 +9,7 @@ if not %errorlevel%==0 pause & exit 1
 powershell -file "%~dp0..\BakeInVersion.ps1"
 if not %errorlevel%==0 pause & exit 1
 "%vs120comntools%..\IDE\devenv.com" "%~dp0..\AcceptanceTesting.sln" /Build Debug
-if not %errorlevel%==0 pause & exit 1
+if not %errorlevel%==0 git -C "%~dp0.." checkout "AssemblyCommonInfo.cs" & git -C "%~dp0.." checkout "AssemblyCommonInfo.fs" & pause & exit 1
 powershell -file "%~dp0..\ReadOutVersion.ps1"
 if not %errorlevel%==0 pause & exit 1
 git -C "%~dp0.." checkout "AssemblyCommonInfo.cs"
