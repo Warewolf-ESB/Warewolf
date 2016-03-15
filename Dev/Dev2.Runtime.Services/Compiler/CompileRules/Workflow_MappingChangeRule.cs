@@ -18,13 +18,14 @@ using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
+// ReSharper disable UnusedMember.Global
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.Compiler.CompileRules
 {
     /// <summary>
     /// Detect IO mapping changes for WFs
     /// </summary>
-    // ReSharper disable InconsistentNaming
     internal class Workflow_MappingChangeRule : IServiceCompileRule
     {
         public ServerCompileMessageType HandlesType()
