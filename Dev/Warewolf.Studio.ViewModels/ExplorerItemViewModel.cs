@@ -1210,6 +1210,16 @@ namespace Warewolf.Studio.ViewModels
                     IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
             }
+            if (!String.IsNullOrEmpty(filter))
+            {
+                if (ResourceType == ResourceType.Folder)
+                    IsExpanded = true;
+            }
+            else
+            {
+                if (ResourceType == ResourceType.Folder)
+                    IsExpanded = false;
+            }
             OnPropertyChanged(() => Children);
         }
 
