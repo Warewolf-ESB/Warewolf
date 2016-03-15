@@ -394,6 +394,7 @@ Then you'll see, that it is not the spoon that bends, it is only yourself. ");
             inner.Setup(a => a.ResourceId).Returns(guid);
             inner.Setup(a => a.Category).Returns("Neo");
             inner.Setup(a => a.Name).Returns("Morpheus");
+            inner.Setup(a => a.IsActive).Returns(true);
             inner.Setup(a => a.Setup()).Callback(() => { setup = true; });
             var  safe = new SafeCounter(inner.Object);
             safe.Increment();
