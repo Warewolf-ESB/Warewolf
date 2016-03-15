@@ -119,23 +119,10 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
             set
             {
-                if (!Equals(value, _selectedNamespace) && _selectedNamespace != null)
-                {
-                    if (!String.IsNullOrEmpty(_selectedNamespace.FullName))
-                        StorePreviousValues(_selectedNamespace.FullName);
-                }
+                SetSelectedNamespace(value);
+                SourceChangedNamespace();
+                OnSomethingChanged(this);
 
-                if (IsAPreviousValue(value) && _selectedNamespace != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedNamespace(value);
-                }
-                else
-                {
-                    SetSelectedNamespace(value);
-                    SourceChangedNamespace();
-                    OnSomethingChanged(this);
-                }
                 var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 if (delegateCommand != null)
                 {
@@ -252,26 +239,6 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 Namespace = value;
             }
             OnPropertyChanged("SelectedNamespace");
-        }
-
-        private void StorePreviousValues(string fullName)
-        {
-            _previousRegions.Remove(fullName);
-            _previousRegions[fullName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
-        }
-
-        private void RestorePreviousValues(INamespaceItem value)
-        {
-            var toRestore = _previousRegions[value.FullName];
-            foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
-            {
-                toolRegion.Item1.RestoreRegion(toolRegion.Item2);
-            }
-        }
-
-        private bool IsAPreviousValue(INamespaceItem value)
-        {
-            return value != null && _previousRegions.Keys.Any(a => a == value.FullName);
         }
 
         public IList<string> Errors

@@ -11,6 +11,8 @@ namespace Dev2.Common.Interfaces
         IList<IServiceInput> Inputs { get; set; }
         Type ReturnType { get; set; }
         IList<INameValue> Variables { get; set; }
+
+        string GetHashCodeBySource();
     }
 
     public class PluginAction : IPluginAction
@@ -77,6 +79,11 @@ namespace Dev2.Common.Interfaces
             {
                 _variables = value;
             }
+        }
+
+        public string GetHashCodeBySource()
+        {
+            return FullName + Method;
         }
 
         #endregion
