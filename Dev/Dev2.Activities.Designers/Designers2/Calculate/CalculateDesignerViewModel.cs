@@ -20,6 +20,7 @@ namespace Dev2.Activities.Designers2.Calculate
         public CalculateDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarLargeToggle();
         }
 
         public override void Validate()
