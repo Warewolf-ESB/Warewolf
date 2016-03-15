@@ -734,7 +734,7 @@ namespace Dev2.Studio.ViewModels
                 case "SharepointServerSource":
                     EditSharePointSource(resourceModel);
                     break;
-                case "SelectedOauthSource":
+                case "OauthSource":
                     ShowEditResourceWizard(resourceModel);
                     break;
                 case "Server":
@@ -926,9 +926,7 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                var wfscvm = FindWorkSurfaceContextViewModel(contextualResourceModel);
-                CloseWorkSurfaceContext(wfscvm, null, true);
-
+                DisplayResourceWizard(contextualResourceModel, true);
             }
         }
 
@@ -1365,7 +1363,7 @@ namespace Dev2.Studio.ViewModels
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
-            if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("SelectedOauthSource"))
+            if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("OauthSource"))
             {
                 SaveDropBox2016Source(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel, true);
             }
