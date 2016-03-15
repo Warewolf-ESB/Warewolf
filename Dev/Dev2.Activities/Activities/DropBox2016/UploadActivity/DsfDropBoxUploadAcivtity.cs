@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
@@ -21,7 +24,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = "Upload to Drop Box";
             Type = "Upload to Drop Box";
-
+            OverWriteMode = true;
         }
 
         public OauthSource SelectedSource { get; set; }
@@ -30,14 +33,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         public bool OverWriteMode { get; set; }
         public bool UpdateMode { get; set; }
         public bool AddMode { get; set; }
-        public Lazy<DropboxClient> ClientLazy = new Lazy<DropboxClient>(() =>
+
+        private DropboxClient GetClient()
         {
-            var dropboxClientConfig = new DropboxClientConfig(GlobalConstants.UserAgentString);
-            DropboxClient dropboxClient = new DropboxClient(GlobalConstants.DropBoxApiKey, dropboxClientConfig);
-            return dropboxClient;
-        });
-
-
+            return _client ?? (_client = new DropboxClient(SelectedSource.Secret, new DropboxClientConfig(GlobalConstants.UserAgentString)));
+        }
 
         #region Overrides of DsfActivity
 
@@ -52,9 +52,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             try
             {
                 var writeMode = GetWriteMode();
-                var stream = GetFileStream();
-                _dropboxSingleExecutor = new DropBoxUpload(false, null, true, writeMode, ToPath, stream);
-                _dropboxSingleExecutor.ExecuteTask(ClientLazy.Value);
+                _dropboxSingleExecutor = new DropBoxUpload(false, null, true, writeMode, ToPath,FromPath);
+                var fileMetadata = _dropboxSingleExecutor.ExecuteTask(GetClient());
+                _uploadedFilePath = fileMetadata.PathLower;
+                
             }
             catch (Exception e)
             {
@@ -63,21 +64,28 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
 
         }
-        [ExcludeFromCodeCoverage]
-        private Stream GetFileStream()
+        private string _uploadedFilePath;
+        private DropboxClient _client;
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            using (var stream = new MemoryStream(File.ReadAllBytes(FromPath)))
-            {
-                return stream;
-            }
+            if (env == null) return _debugInputs;
+            base.GetDebugInputs(env, update);
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Uploaded File Path"), debugItem);
+            AddDebugItem(new DebugEvalResult(_uploadedFilePath, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+
+            return _debugInputs;
         }
 
         private WriteMode GetWriteMode()
         {
             if (OverWriteMode)
-                return new WriteMode().AsOverwrite;
+                return WriteMode.Overwrite.Instance;
             if (AddMode)
-                return new WriteMode().AsAdd;
+                return WriteMode.Add.Instance;
             return new WriteMode().AsUpdate;
         }
     }
