@@ -1,41 +1,42 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Threading.Tasks;
+using Dev2.Common;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    public class DropBoxUpload : IDropboxSingleExecutor<FileMetadata>
+    public interface IDropBoxUpload : IDropboxSingleExecutor<FileMetadata>
     {
-        private readonly bool _mute;
-        private readonly DateTime? _clientModified;
-        private readonly bool _autoRename;
+    }
+
+    public class DropBoxUpload : IDropBoxUpload
+    {
         private WriteMode _writeMode;
         private readonly string _dropboxPath;
         private readonly string _fromPath;
 
-        public DropBoxUpload(bool mute, DateTime? clientModified, bool autoRename, WriteMode writeMode, string dropboxPath, string fromPath)
+        public DropBoxUpload(WriteMode writeMode, string dropboxPath, string fromPath)
         {
-            _mute = mute;
-            _clientModified = clientModified;
-            _autoRename = autoRename;
             _writeMode = writeMode;
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
+            Validate();
         }
 
-        #region Implementation of IDropboxSingleExecutor
+        public bool IsValid { get; set; }
 
+        #region Implementation of IDropboxSingleExecutor
+        [ExcludeFromCodeCoverage]
         public FileMetadata ExecuteTask(DropboxClient client)
         {
             try
             {
-                if (_writeMode == null)
-                    _writeMode = WriteMode.Add.Instance;
+                if (!IsValid)
+                    return null;
                 using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
                 {
-                    //var commitInfo = new CommitInfo("/" + _dropboxPath, _writeMode, _autoRename, _mute);
                     FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
                     return uploadAsync;
                 }
@@ -44,10 +45,17 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             catch (AggregateException exception)
             {
                 var innerException = exception.InnerExceptions[0];
+                Dev2Logger.Error(innerException.Message);
                 return null;
             }
         }
 
         #endregion
+
+        public void Validate()
+        {
+            if(_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
+                IsValid = true;
+        }
     }
 }
