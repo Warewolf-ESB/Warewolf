@@ -11,7 +11,7 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.RabbitMQ
+namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 {
     public partial class Small
     {

@@ -116,6 +116,10 @@
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -290,13 +294,16 @@
     <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RabbitMQ\Large.xaml.cs">
+    <Compile Include="Designers2\RabbitMQ\Publish\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RabbitMQ\RabbitMQDesigner.xaml.cs">
-      <DependentUpon>RabbitMQDesigner.xaml</DependentUpon>
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.xaml.cs">
+      <DependentUpon>RabbitMQPublishDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\RabbitMQ\RabbitMQDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Publish\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\FindIndex\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -314,9 +321,6 @@
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\RabbitMQ\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
@@ -1118,15 +1122,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\RabbitMQ\Large.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\RabbitMQ\RabbitMQDesigner.xaml">
+    <Page Include="Designers2\RabbitMQ\Publish\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\RabbitMQ\Small.xaml">
+    <Page Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
