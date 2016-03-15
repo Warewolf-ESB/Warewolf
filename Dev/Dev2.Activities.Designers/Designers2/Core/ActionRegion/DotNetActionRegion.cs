@@ -135,13 +135,16 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     if (!String.IsNullOrEmpty(_selectedAction.Method))
                         StorePreviousValues(_selectedAction.GetHashCodeBySource());
                 }
-                var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                var region = outputs as OutputsRegion;
-                if (region != null)
+                if(Dependants != null)
                 {
-                    region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                    region.RecordsetName = String.Empty;
+                    var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
+                    var region = outputs as OutputsRegion;
+                    if (region != null)
+                    {
+                        region.Outputs = new ObservableCollection<IServiceOutputMapping>();
+                        region.RecordsetName = String.Empty;
 
+                    }
                 }
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
