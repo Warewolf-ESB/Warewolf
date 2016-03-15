@@ -14,8 +14,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Data.Settings;
+using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
@@ -49,6 +51,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SettingsRead_Execute_SecurityReadDoesNotThrowException_HasErrorsIsFalseAndSecurityPermissionsAreAssigned()
         {
             //------------Setup for test--------------------------
+            var serializer = new Dev2JsonSerializer();
             var securityPermissions = new List<WindowsGroupPermission>
             {
                 new WindowsGroupPermission { IsServer = true, WindowsGroup = "TestGroup", Permissions = AuthorizationContext.DeployFrom.ToPermissions() },
@@ -65,12 +68,14 @@ namespace Dev2.Tests.Runtime.Services
 
                 return endpoint.Object;
             });
-
+            var mockPerfCounterRepo = new Mock<IPerformanceCounterRepository>();
+            mockPerfCounterRepo.Setup(repository => repository.Counters).Returns(new PerformanceCounterTo());
+            CustomContainer.Register(mockPerfCounterRepo.Object);
             var settingsRead = new TestSettingsRead(securityRead);
 
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
-            var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions.ToString());
+            var settings = serializer.Deserialize<Settings>(jsonPermissions.ToString());
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
