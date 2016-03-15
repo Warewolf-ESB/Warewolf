@@ -927,9 +927,6 @@ namespace Dev2.Studio.ViewModels
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
                 DisplayResourceWizard(contextualResourceModel, true);
-//                var wfscvm = FindWorkSurfaceContextViewModel(contextualResourceModel);
-//                CloseWorkSurfaceContext(wfscvm, null, true);
-
             }
         }
 
