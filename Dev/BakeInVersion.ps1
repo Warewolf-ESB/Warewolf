@@ -3,6 +3,9 @@ Write-Host Writing C# and F# versioning files...
 git -C "$WarewolfGitRepoDirectory" fetch --tags
 $FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
 $GitCommitID = git -C "$WarewolfGitRepoDirectory" rev-parse HEAD
+$GitCommitTimeString = [Double](git -C "$WarewolfGitRepoDirectory" show -s --format="%ct" $GitCommitID)
+$origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
+$GitCommitTime = $origin.AddSeconds($GitCommitTimeString)
 if ([string]::IsNullOrEmpty($FullVersionString)) {
 
     Write-Host This version is not tagged, generating new tag...
@@ -41,7 +44,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$Line3 = "[assembly: AssemblyProduct(""Warewolf ESB"")]"
 	$Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
 	$Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
-	$Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitID + """)]"
+	$Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitID + " " + $GitCommitTime + """)]"
 	Write-Host $Line1
 	$Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
 	Write-Host $Line2
@@ -64,7 +67,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$Line4 = "[<assembly: AssemblyProduct(""Warewolf ESB"")>]"
 	$Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
 	$Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
-	$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitID + """)>]"
+	$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitID + " " + $GitCommitTime + """)>]"
 	$Line8 = "do()"
 	Write-Host $Line1
 	$Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
