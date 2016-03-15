@@ -11,26 +11,41 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         private readonly bool _mute;
         private readonly DateTime? _clientModified;
         private readonly bool _autoRename;
-        private readonly WriteMode _writeMode;
-        private readonly string _path;
-        private readonly Stream _stream;
+        private WriteMode _writeMode;
+        private readonly string _dropboxPath;
+        private readonly string _fromPath;
 
-        public DropBoxUpload(bool mute, DateTime? clientModified, bool autoRename, WriteMode writeMode, string path, Stream stream)
+        public DropBoxUpload(bool mute, DateTime? clientModified, bool autoRename, WriteMode writeMode, string dropboxPath, string fromPath)
         {
             _mute = mute;
             _clientModified = clientModified;
             _autoRename = autoRename;
             _writeMode = writeMode;
-            _path = path;
-            _stream = stream;
+            _dropboxPath = dropboxPath;
+            _fromPath = fromPath;
         }
 
         #region Implementation of IDropboxSingleExecutor
 
-        public async Task<FileMetadata> ExecuteTask(DropboxClient client)
+        public FileMetadata ExecuteTask(DropboxClient client)
         {
-            var uploadAsync = await client.Files.UploadAsync(new CommitInfo(_path, _writeMode, _autoRename, _clientModified, _mute), _stream);
-            return uploadAsync;
+            try
+            {
+                if (_writeMode == null)
+                    _writeMode = WriteMode.Add.Instance;
+                using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
+                {
+                    //var commitInfo = new CommitInfo("/" + _dropboxPath, _writeMode, _autoRename, _mute);
+                    FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
+                    return uploadAsync;
+                }
+
+            }
+            catch (AggregateException exception)
+            {
+                var innerException = exception.InnerExceptions[0];
+                return null;
+            }
         }
 
         #endregion

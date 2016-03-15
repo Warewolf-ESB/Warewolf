@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Dropbox Source" FontWeight="Normal" VerticalAlignment="Top"/>
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedSourceName}" FontWeight="Normal" VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedSource.ResourceName}" FontWeight="Normal" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Dropbox File" FontWeight="Normal" VerticalAlignment="Top"/>
         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ToPath}" FontWeight="Normal" VerticalAlignment="Top"/>
