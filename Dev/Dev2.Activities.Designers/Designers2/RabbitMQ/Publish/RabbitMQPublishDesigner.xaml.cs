@@ -9,11 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-namespace Dev2.Activities.Designers2.RabbitMQ
+namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 {
-    public partial class RabbitMQDesigner
+    public partial class RabbitMQPublishDesigner
     {
-        public RabbitMQDesigner()
+        public RabbitMQPublishDesigner()
         {
             InitializeComponent();
         }

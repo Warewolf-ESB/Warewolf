@@ -71,6 +71,7 @@ using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Activities.Designers2.RabbitMQ.Publish;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -140,6 +141,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
                 //{ typeof(DsfFlowDecisionActivity), typeof(DecisionDesigner) },
                 //{ typeof(DsfSwitch), typeof(ConfigureSwitch) }
+                { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);

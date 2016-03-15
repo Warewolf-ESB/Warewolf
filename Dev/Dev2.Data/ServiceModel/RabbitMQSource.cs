@@ -1,35 +1,28 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
-using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
-using Warewolf.Security.Encryption;
+using Dev2.Runtime.ServiceModel.Data;
 using RabbitMQ.Client;
+using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
+using Warewolf.Security.Encryption;
 
-// ReSharper disable CheckNamespace
-namespace Dev2.Runtime.ServiceModel.Data
+namespace Dev2.Data.ServiceModel
 {
-    // PBI 953 - 2013.05.16 - TWR - Created
     public class RabbitMQSource : Resource
     {
-        //public static int DefaultTimeout = 100000; // (100 seconds)
         public static int DefaultPort = 5672;
-        //public static int SslPort = 465;
-        //public static int TlsPort = 587;
         public static string DefaultVirtualHost = "/";
 
         #region Properties
@@ -39,33 +32,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string UserName { get; set; }
         public string Password { get; set; }
         public string VirtualHost { get; set; }
-        //public bool EnableSsl { get; set; }
-        //public int Timeout { get; set; }
 
-        /// <summary>
-        /// This must NEVER be persisted - here for JSON transport only!
-        /// </summary>
-        //public string TestFromAddress { get; set; }
-
-        /// <summary>
-        /// This must NEVER be persisted - here for JSON transport only!
-        /// </summary>
-        //public string TestToAddress { get; set; }
-
-        //public new string DataList
-        //{
-        //    get
-        //    {
-        //        var stringBuilder = base.DataList;
-        //        return stringBuilder != null ? stringBuilder.ToString() : null;
-        //    }
-        //    set
-        //    {
-        //        base.DataList = value.ToStringBuilder();
-        //    }
-        //}
-
-        #endregion
+        #endregion Properties
 
         #region CTOR
 
@@ -73,7 +41,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             ResourceID = Guid.Empty;
             ResourceType = ResourceType.RabbitMQSource;
-            //Timeout = DefaultTimeout;
             Port = DefaultPort;
         }
 
@@ -81,7 +48,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             : base(xml)
         {
             ResourceType = ResourceType.RabbitMQSource;
-            //Timeout = DefaultTimeout;
             Port = DefaultPort;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -103,9 +69,10 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             int port;
             Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
+            VirtualHost = !string.IsNullOrWhiteSpace(properties["VirtualHost"]) ? properties["VirtualHost"] : DefaultVirtualHost;
         }
 
-        public void Send(string message)
+        public void Publish(string queueName, bool isDurable, bool isExclusive, bool isAutoDelete, string message)
         {
             var factory = new ConnectionFactory()
             {
@@ -120,37 +87,23 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 using (var channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "greeting_queue",
-                                            durable: false,
-                                            exclusive: false,
-                                            autoDelete: false,
+                    channel.QueueDeclare(queue: queueName,
+                                            durable: isDurable,
+                                            exclusive: isExclusive,
+                                            autoDelete: isAutoDelete,
                                             arguments: null);
 
                     var body = Encoding.UTF8.GetBytes(message);
 
                     channel.BasicPublish(exchange: "",
-                        routingKey: "greeting_queue",
+                        routingKey: queueName,
                         basicProperties: null,
                         body: body);
                 }
             }
-
-
-
-
-            //var userParts = UserName.Split('@');
-            //using(var smtp = new SmtpClient(Host, Port)
-            //{
-            //    Credentials = new NetworkCredential(userParts[0], Password),
-            //    EnableSsl = EnableSsl,
-            //    DeliveryMethod = SmtpDeliveryMethod.Network,
-            //    Timeout = Timeout
-            //})
-            //{
-            //    smtp.Send(mailMessage);
-            //}
         }
-        #endregion
+
+        #endregion CTOR
 
         #region ToXml
 
@@ -174,6 +127,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             return result;
         }
 
-        #endregion
+        #endregion ToXml
     }
 }

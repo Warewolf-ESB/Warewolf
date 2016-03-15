@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,7 +11,7 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.RabbitMQ
+namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 {
     public partial class Large
     {
@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ
             Loaded += OnLoaded;
         }
 
-        RabbitMQDesignerViewModel ViewModel { get { return DataContext as RabbitMQDesignerViewModel; } }
+        RabbitMQPublishDesignerViewModel ViewModel { get { return DataContext as RabbitMQPublishDesignerViewModel; } }
 
         protected override IInputElement GetInitialFocusElement()
         {

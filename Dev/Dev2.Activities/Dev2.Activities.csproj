@@ -133,6 +133,10 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RestSharp, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\RestSharp.dll</HintPath>
@@ -207,6 +211,7 @@
     <Compile Include="Activities\DsfNumberFormatActivity.cs" />
     <Compile Include="Activities\DsfRandomActivity.cs" />
     <Compile Include="Activities\DsfReplaceActivity.cs" />
+    <Compile Include="Activities\DsfPublishRabbitMQActivity.cs" />
     <Compile Include="Activities\DsfSendEmailActivity.cs" />
     <Compile Include="Activities\DsfSequenceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
