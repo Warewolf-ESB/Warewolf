@@ -26,6 +26,7 @@ namespace Dev2.Activities.Designers2.Random
         {
             RandomTypes = Dev2EnumConverter.ConvertEnumsTypeToStringList<enRandomType>();
             SelectedRandomType = Dev2EnumConverter.ConvertEnumValueToString(RandomType);
+            AddTitleBarLargeToggle();
         }
 
         public IList<string> RandomTypes { get; private set; }
