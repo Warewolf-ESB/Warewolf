@@ -1045,7 +1045,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ModelItem innerActivity = RecursiveForEachCheck(test);
                     if (innerActivity != null)
                     {
-                        selectedItem = innerActivity;
+                        //Commenting this out to allow for the Foreach tool to expand to large view.
+                        //Do not take out until we have finalized that this is not to be used
+                        //selectedItem = innerActivity;
                     }
                 }
                 Selection.Union(_wd.Context, selectedItem);
