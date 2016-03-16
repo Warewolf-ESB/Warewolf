@@ -606,7 +606,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             resources.Add(scheduledResourceForTest);
             resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
+            mockPopupController.Setup(c => c.ShowCorruptTaskResult(It.IsAny<string>())).Returns(MessageBoxResult.OK).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
@@ -620,9 +620,9 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             mockScheduledResourceModel.Setup(model => model.Save(It.IsAny<IScheduledResource>(), out test)).Returns(true).Verifiable();
             schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
             //------------Execute Test---------------------------
-            var taskList = schedulerViewModel.TaskList;
+            var taskList = schedulerViewModel.IsDirty;
             //------------Assert Results-------------------------
-            mockPopupController.Verify(a => a.Show("Unable to retrieve tasks - bob", "Scheduler load error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false), Times.Once);
+            mockPopupController.Verify(a => a.ShowCorruptTaskResult("bob"), Times.Once);
         }
         [TestMethod]
         [Owner("Massimo Guerrera")]
@@ -636,7 +636,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             resources.Add(scheduledResourceForTest);
             resources.Add(new ScheduledResource("Task3", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1", Guid.NewGuid().ToString()) { OldName = "Task3", IsDirty = true });
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
+            mockPopupController.Setup(c => c.ShowCorruptTaskResult(It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
             var env = new Mock<IEnvironmentModel>();
             var auth = new Mock<IAuthorizationService>();
@@ -651,11 +651,11 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             schedulerViewModel.ScheduledResourceModel = mockScheduledResourceModel.Object;
             //------------Execute Test---------------------------
             // ReSharper disable once NotAccessedVariable
-            var taskList = schedulerViewModel.TaskList;
+            var taskList = schedulerViewModel.IsDirty;
             // ReSharper disable once RedundantAssignment
-            taskList = schedulerViewModel.TaskList;
+            taskList = schedulerViewModel.IsDirty;
             //------------Assert Results-------------------------
-            mockPopupController.Verify(a => a.Show("Unable to retrieve tasks - bob", "Scheduler load error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false), Times.Once);
+            mockPopupController.Verify(a => a.ShowCorruptTaskResult("bob"), Times.Once);
 
         }
 

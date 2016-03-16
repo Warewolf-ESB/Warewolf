@@ -360,8 +360,10 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
-                SourceRegion.Dependants.Add(InputArea);
-                SourceRegion.Dependants.Add(OutputsRegion);
+                SourceRegion.Dependants.Add(NamespaceRegion);
+                NamespaceRegion.Dependants.Add(ActionRegion);
+                ActionRegion.Dependants.Add(InputArea);
+                ActionRegion.Dependants.Add(OutputsRegion);
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;

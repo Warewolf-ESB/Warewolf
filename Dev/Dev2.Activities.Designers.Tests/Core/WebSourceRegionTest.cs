@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces.WebService;
 using Moq;
 using Dev2.Studio.Core.Activities.Utils;

@@ -1,38 +1,61 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Threading.Tasks;
+using Dev2.Common;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    public class DropBoxUpload : IDropboxSingleExecutor<FileMetadata>
+    public interface IDropBoxUpload : IDropboxSingleExecutor<IDropboxResult>
     {
-        private readonly bool _mute;
-        private readonly DateTime? _clientModified;
-        private readonly bool _autoRename;
-        private readonly WriteMode _writeMode;
-        private readonly string _path;
-        private readonly Stream _stream;
+    }
 
-        public DropBoxUpload(bool mute, DateTime? clientModified, bool autoRename, WriteMode writeMode, string path, Stream stream)
+    public class DropBoxUpload : IDropBoxUpload
+    {
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private WriteMode _writeMode;
+        private readonly string _dropboxPath;
+        private readonly string _fromPath;
+
+        public DropBoxUpload(WriteMode writeMode, string dropboxPath, string fromPath)
         {
-            _mute = mute;
-            _clientModified = clientModified;
-            _autoRename = autoRename;
             _writeMode = writeMode;
-            _path = path;
-            _stream = stream;
+            _dropboxPath = dropboxPath;
+            _fromPath = fromPath;
+            Validate();
         }
 
-        #region Implementation of IDropboxSingleExecutor
+        public bool IsValid { get; set; }
 
-        public async Task<FileMetadata> ExecuteTask(DropboxClient client)
+        #region Implementation of IDropboxSingleExecutor
+        [ExcludeFromCodeCoverage]
+        public IDropboxResult ExecuteTask(DropboxClient client)
         {
-            var uploadAsync = await client.Files.UploadAsync(new CommitInfo(_path, _writeMode, _autoRename, _clientModified, _mute), _stream);
-            return uploadAsync;
+            try
+            {
+                if (!IsValid)
+                    return null;
+                using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
+                {
+                    FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
+                    return new DropboxSuccessResult(uploadAsync);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Dev2Logger.Error(exception.Message);
+                return new DropboxFailureResult(exception);
+            }
         }
 
         #endregion
+
+        public void Validate()
+        {
+            if (_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
+                IsValid = true;
+        }
     }
 }
