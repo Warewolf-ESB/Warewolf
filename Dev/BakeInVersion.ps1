@@ -3,9 +3,9 @@ Write-Host Writing C# and F# versioning files...
 git -C "$WarewolfGitRepoDirectory" fetch --tags
 $FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
 $GitCommitID = git -C "$WarewolfGitRepoDirectory" rev-parse HEAD
-$GitCommitTimeString = git -C "$WarewolfGitRepoDirectory" show -s --format="%ct" $GitCommitID
+$GitCommitTimeString = (git -C "$WarewolfGitRepoDirectory" show -s --format="%ct" $GitCommitID)[0]
 if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
-	Write-Host Cannot resolve time string of commit `"$GitCommitID`".
+	Write-Host Cannot resolve time of commit `"$GitCommitID`".
 } else {
     write-host Resolved time of commit `"$GitCommitID`" as `"$GitCommitTimeString`".
     $GitCommitTimeDouble = [Double]$GitCommitTimeString
@@ -27,16 +27,16 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
     	[int]$NewBuildNumber = $FullVersionString.Split(".")[3]
     	$NewBuildNumber++
     	$FullVersionString = $FullVersionString.Split(".")[0] + "." + $FullVersionString.Split(".")[1] + "." + $FullVersionString.Split(".")[2] + "." + $NewBuildNumber
-        Write-Host Next local tag would be $FullVersionString. Checking against origin...
+        Write-Host Next version would be $FullVersionString. Double checking with origin...
         $originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags origin $FullVersionString
         if ($originTag.length -ne 0) {
             Write-Host Origin has tag `"$originTag`".
         }
         
     } while ($originTag.length -ne 0)
-    Write-Host Origin does not have tag. Setting version to `"$FullVersionString`".
+    Write-Host Origin has confirmed version `"$FullVersionString`" is OK.
 } else {
-    Write-Host This version is already tagged as `"$FullVersionString`".
+    Write-Host You are up to date with version `"$FullVersionString`".
 }
 $SeperateVersions = $FullVersionString -split " "
 $FullVersionString = $SeperateVersions[-1]
