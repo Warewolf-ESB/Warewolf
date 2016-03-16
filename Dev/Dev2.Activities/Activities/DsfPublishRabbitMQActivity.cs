@@ -36,7 +36,9 @@ namespace Dev2.Activities
 
         #endregion Ctor
 
+        // ReSharper disable InconsistentNaming
         public Guid RabbitMQSourceResourceId { get; set; }
+        // ReSharper restore InconsistentNaming
 
         [Inputs("Queue Name")]
         [FindMissing]
@@ -63,6 +65,7 @@ namespace Dev2.Activities
         {
             try
             {
+                // ReSharper disable InconsistentNaming
                 RabbitMQSource rabbitMQSource = new RabbitMQSource()
                 {
                     ResourceID = new Guid("00000000-0000-0000-0000-000000000001"),
@@ -79,6 +82,7 @@ namespace Dev2.Activities
                 {
                     return "Failure: Source has been deleted.";
                 }
+                // ReSharper restore InconsistentNaming
 
                 ConnectionFactory factory = new ConnectionFactory()
                 {

@@ -13,8 +13,11 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -22,6 +25,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using System;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -41,8 +45,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         private readonly IEventAggregator _eventPublisher;
         private readonly IEnvironmentModel _environmentModel;
-
-        //public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
             : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
@@ -89,6 +91,15 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         public static readonly DependencyProperty SelectedRabbitMQSourceProperty = DependencyProperty.Register("SelectedRabbitMQSource", typeof(RabbitMQSource), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(null, OnSelectedRabbitMQSourceChanged));
 
+        public bool IsRabbitMQSourceFocused { get { return (bool)GetValue(IsRabbitMQSourceFocusedProperty); } set { SetValue(IsRabbitMQSourceFocusedProperty, value); } }
+        public static readonly DependencyProperty IsRabbitMQSourceFocusedProperty = DependencyProperty.Register("IsRabbitMQSourceFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
+
+        public bool IsQueueNameFocused { get { return (bool)GetValue(IsQueueNameFocusedProperty); } set { SetValue(IsQueueNameFocusedProperty, value); } }
+        public static readonly DependencyProperty IsQueueNameFocusedProperty = DependencyProperty.Register("IsQueueNameFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
+
+        public bool IsMessageFocused { get { return (bool)GetValue(IsMessageFocusedProperty); } set { SetValue(IsMessageFocusedProperty, value); } }
+        public static readonly DependencyProperty IsMessageFocusedProperty = DependencyProperty.Register("IsMessageFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
+
         private static void OnSelectedRabbitMQSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (RabbitMQPublishDesignerViewModel)d;
@@ -128,8 +139,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             }
         }
 
-        // ReSharper restore InconsistentNaming
-
         public Guid RabbitMQSourceResourceId
         {
             get
@@ -141,6 +150,8 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
                 SetProperty(value);
             }
         }
+
+        // ReSharper restore InconsistentNaming
 
         public string QueueName
         {
@@ -233,47 +244,47 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         public override void Validate()
         {
-            //var result = new List<IActionableErrorInfo>();
-            //result.AddRange(ValidateThis());
-            //Errors = result.Count == 0 ? null : result;
+            var result = new List<IActionableErrorInfo>();
+            result.AddRange(ValidateThis());
+            Errors = result.Count == 0 ? null : result;
         }
 
-        //private IEnumerable<IActionableErrorInfo> ValidateThis()
-        //{
-        //    foreach (var error in GetRuleSet("RabbitMQSource", GetDatalistString()).ValidateRules("'RabbitMQ Source'", () => IsRabbitMQSourceFocused = true))
-        //    {
-        //        yield return error;
-        //    }
-        //    foreach (var error in GetRuleSet("QueueName", GetDatalistString()).ValidateRules("'Queue Name'", () => IsQueueNameFocused = true))
-        //    {
-        //        yield return error;
-        //    }
-        //    foreach (var error in GetRuleSet("Message", GetDatalistString()).ValidateRules("'Message'", () => IsMessageFocused = true))
-        //    {
-        //        yield return error;
-        //    }
-        //}
+        private IEnumerable<IActionableErrorInfo> ValidateThis()
+        {
+            foreach (var error in GetRuleSet("RabbitMQSource").ValidateRules("'RabbitMQ Source'", () => IsRabbitMQSourceFocused = true))
+            {
+                yield return error;
+            }
+            foreach (var error in GetRuleSet("QueueName").ValidateRules("'Queue Name'", () => IsQueueNameFocused = true))
+            {
+                yield return error;
+            }
+            foreach (var error in GetRuleSet("Message").ValidateRules("'Message'", () => IsMessageFocused = true))
+            {
+                yield return error;
+            }
+        }
 
-        //private IRuleSet GetRuleSet(string propertyName, string datalist)
-        //{
-        //    var ruleSet = new RuleSet();
+        private IRuleSet GetRuleSet(string propertyName)
+        {
+            var ruleSet = new RuleSet();
 
-        //    switch (propertyName)
-        //    {
-        //        case "RabbitMQSource":
-        //            ruleSet.Add(new IsNullRule(() => SelectedRabbitMQSource));
-        //            break;
+            switch (propertyName)
+            {
+                case "RabbitMQSource":
+                    ruleSet.Add(new IsNullRule(() => SelectedRabbitMQSource));
+                    break;
 
-        //        case "QueueName":
-        //            ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => QueueName));
-        //            break;
+                case "QueueName":
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => QueueName));
+                    break;
 
-        //        case "Message":
-        //            ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Message));
-        //            break;
-        //    }
-        //    return ruleSet;
-        //}
+                case "Message":
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Message));
+                    break;
+            }
+            return ruleSet;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
