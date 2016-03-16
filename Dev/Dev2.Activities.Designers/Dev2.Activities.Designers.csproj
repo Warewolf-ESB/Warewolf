@@ -283,16 +283,6 @@
     <Compile Include="Designers2\DropBox2016\Upload\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml.cs">
-      <DependentUpon>DropboxUploadFileDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DropBox\Upload\DropBoxUploadFileViewModel.cs" />
-    <Compile Include="Designers2\DropBox\Upload\Large.xaml.cs">
-      <DependentUpon>Large.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Designers2\FindIndex\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1085,18 +1075,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\DropBox\Upload\Large.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\DropBox\Upload\Small.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Designers2\FindIndex\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1660,11 +1638,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Resize_Grip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Designers2\DropBox\Upload\dropbox-windows.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
