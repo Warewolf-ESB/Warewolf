@@ -3,20 +3,26 @@ Write-Host Writing C# and F# versioning files...
 git -C "$WarewolfGitRepoDirectory" fetch --tags
 $FullVersionString = git -C "$WarewolfGitRepoDirectory" tag --points-at HEAD
 $GitCommitID = git -C "$WarewolfGitRepoDirectory" rev-parse HEAD
-$GitCommitTimeString = [Double](git -C "$WarewolfGitRepoDirectory" show -s --format="%ct" $GitCommitID)
-$origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
-$GitCommitTime = $origin.AddSeconds($GitCommitTimeString)
+$GitCommitTimeString = git -C "$WarewolfGitRepoDirectory" show -s --format="%ct" $GitCommitID
+if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
+	Write-Host Cannot resolve time string of commit `"$GitCommitID`".
+} else {
+    write-host Resolved time of commit `"$GitCommitID`" as `"$GitCommitTimeString`".
+    $GitCommitTimeDouble = [Double]$GitCommitTimeString
+    $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
+    $GitCommitTime = $origin.AddSeconds($GitCommitTimeDouble)
+}
 if ([string]::IsNullOrEmpty($FullVersionString)) {
 
     Write-Host This version is not tagged, generating new tag...
     $FullVersionString = git -C "$WarewolfGitRepoDirectory" describe --abbrev=0 --tags
     $FullVersionString = $FullVersionString.Trim()
     if ([string]::IsNullOrEmpty($FullVersionString)) {
-        Write-Host No local tags found in git history. Setting version to 0.0.0.0
+        Write-Host No local tags found in git history. Setting version to `"0.0.0.0`".
         $FullVersionString = 0.0.0.0
     }
 
-    Write-Host Last version was $FullVersionString. Generating next version...
+    Write-Host Last version was `"$FullVersionString`". Generating next version...
     do {
     	[int]$NewBuildNumber = $FullVersionString.Split(".")[3]
     	$NewBuildNumber++
@@ -24,18 +30,18 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
         Write-Host Next local tag would be $FullVersionString. Checking against origin...
         $originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags origin $FullVersionString
         if ($originTag.length -ne 0) {
-            Write-Host Origin has tag $originTag
+            Write-Host Origin has tag `"$originTag`".
         }
         
     } while ($originTag.length -ne 0)
-    Write-Host Origin does not have tag. Setting version to $FullVersionString.
+    Write-Host Origin does not have tag. Setting version to `"$FullVersionString`".
 } else {
-    Write-Host This version is already tagged as: $FullVersionString
+    Write-Host This version is already tagged as `"$FullVersionString`".
 }
 $SeperateVersions = $FullVersionString -split " "
 $FullVersionString = $SeperateVersions[-1]
 if ([string]::IsNullOrEmpty($FullVersionString)) {
-	Write-Host Cannot resolve version string from repo from commit $GitCommitID
+	Write-Host Cannot resolve version string from commit `"$GitCommitID`".
 } else {
 	$CSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.cs"
 	Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
@@ -57,7 +63,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$Line5 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
 	Write-Host $Line6
 	$Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
-	Write-Host C Sharp version file written to $CSharpVersionFile
+	Write-Host C Sharp version file written to `"$CSharpVersionFile`".
 	
 	$FSharpVersionFile = "$WarewolfGitRepoDirectory\AssemblyCommonInfo.fs"
 	Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
@@ -85,6 +91,6 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$Line7 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
 	Write-Host $Line8
 	$Line8 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-	Write-Host F Sharp version file written to $FSharpVersionFile
+	Write-Host F Sharp version file written to `"$FSharpVersionFile`".
 }
 Write-Host Version written successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
