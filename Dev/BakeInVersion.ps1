@@ -67,7 +67,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
 	$Line4 = "[<assembly: AssemblyProduct(""Warewolf ESB"")>]"
 	$Line5 = "[<assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)>]"
 	$Line6 = "[<assembly: AssemblyVersion(""" + $FullVersionString + """)>]"
-	$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitID + " " + $GitCommitTime + """)>]"
+	$Line7 = "[<assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)>]"
 	$Line8 = "do()"
 	Write-Host $Line1
 	$Line1 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Force
