@@ -75,10 +75,6 @@
       <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\DropNet.dll</HintPath>
-    </Reference>
     <Reference Include="FontAwesome.WPF">
       <HintPath>..\packages\FontAwesome.WPF.4.3.0.3\lib\FontAwesome.WPF.dll</HintPath>
     </Reference>
