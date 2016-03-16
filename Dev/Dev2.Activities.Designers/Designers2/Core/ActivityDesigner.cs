@@ -133,8 +133,11 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     return;
                 }
-                ShowCollapseLargeView();
-                eventArgs.Handled = true;
+                if (ViewModel.IsSelected)
+                {
+                    ShowCollapseLargeView();
+                    eventArgs.Handled = true;
+                }
             }
         }
 

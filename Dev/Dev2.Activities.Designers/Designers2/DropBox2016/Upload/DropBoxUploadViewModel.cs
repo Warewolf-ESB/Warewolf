@@ -2,9 +2,10 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
@@ -15,6 +16,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 
@@ -25,60 +27,64 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         private ObservableCollection<OauthSource> _sources;
         private readonly IEnvironmentModel _environmentModel;
         private readonly IEventAggregator _eventPublisher;
-        private bool _isRefreshing;
-        private string _selectedSourceName;
+        private string _fromPath;
+        private string _toPath;
+        private string _result;
+        private bool _overWriteMode;
+        private bool _updateMode;
+        private bool _addMode;
+        private string _fileSuccesResult;
 
+        [ExcludeFromCodeCoverage]
         public DropBoxUploadViewModel(ModelItem modelItem)
-            : this(modelItem,EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
         }
 
         public DropBoxUploadViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
-           _environmentModel = environmentModel;
+            _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
-            EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), o => IsDropboxSourceSelected);
-             Sources = LoadOAuthSources();
-             SetSelectedOAuthSource(SelectedSource);
-             AddTitleBarLargeToggle();
-        }
-        public readonly OauthSource NewOAuthSource = new OauthSource
-        {
-            ResourceID = Guid.NewGuid(),
-            ResourceName = "New OAuth Source..."
-        };
-        public readonly OauthSource SelectOAuthSource = new OauthSource
-        {
-            ResourceID = Guid.NewGuid(),
-            ResourceName = "Select a OAuth Source..."
-        };
-        public static readonly DependencyProperty OverWriteModeProperty = DependencyProperty.Register("OverWriteMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(true));
-        public static readonly DependencyProperty UpdateModeProperty = DependencyProperty.Register("UpdateMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
-        public static readonly DependencyProperty AddModeProperty = DependencyProperty.Register("AddMode", typeof(bool), typeof(DropBoxUploadViewModel), new PropertyMetadata(default(bool)));
+            EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource());
+            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
+            _sources = LoadOAuthSources();
+            AddTitleBarLargeToggle();
 
+
+        }
+        public ICommand NewSourceCommand { get; set; }
         public OauthSource SelectedSource
         {
-            get { return GetProperty<OauthSource>(); }
+            get
+            {
+                var oauthSource = GetModelPropertyName() as OauthSource;
+                return oauthSource ?? GetProperty<OauthSource>();
+            }
             // ReSharper disable once ExplicitCallerInfoArgument
             set
             {
-                if (value == NewOAuthSource && !_isRefreshing)
-                {
-                    CreateOAuthSource();
-                    return;
-                }
-                SetProperty(value);
+                SetModelItemProperty(value);
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
-           
                 OnPropertyChanged("IsDropboxSourceSelected");
                 // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("SelectedSource");
             }
         }
-      
+
+        private void SetModelItemProperty(object value, [CallerMemberName]string propName = null)
+        {
+            ModelItem.SetProperty(propName, value);
+        }
+
+        private object GetModelPropertyName([CallerMemberName]string propName = null)
+        {
+            var propertyValue = ModelItem.GetProperty(propName);
+            return propertyValue ?? string.Empty;
+        }
+        [ExcludeFromCodeCoverage]
         public ObservableCollection<OauthSource> Sources
         {
             get
@@ -87,110 +93,152 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             }
             private set
             {
-                _sources = value;
+                SetProperty(value);
+                SetModelItemProperty(_sources);
                 // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("Sources");
             }
         }
+        [ExcludeFromCodeCoverage]
         public RelayCommand EditDropboxSourceCommand { get; private set; }
-        //public event PropertyChangedEventHandler PropertyChanged;
+        [ExcludeFromCodeCoverage]
         public bool IsDropboxSourceSelected
         {
             get
             {
-                return SelectedSource != null && SelectedSource != SelectOAuthSource && SelectedSource != NewOAuthSource;
+                return SelectedSource != null;
             }
         }
-        public string FromPath { get; set; }
-        public string ToPath { get; set; }
-        public string Result { get; set; }
-        public string SelectedSourceName
+        [ExcludeFromCodeCoverage]
+        public string FromPath
         {
             get
             {
-                if(SelectedSource == null)
-                {
-                    return string.Empty;
-                }
-                _selectedSourceName = string.Format(SelectedSource.ResourceName);
-                return _selectedSourceName;
+                _fromPath = GetModelPropertyName().ToString();
+                return _fromPath;
+
+            }
+            set
+            {
+                _fromPath = value;
+                SetModelItemProperty(_fromPath);
+                OnPropertyChanged();
             }
         }
+        [ExcludeFromCodeCoverage]
+        public string ToPath
+        {
+            get
+            {
+                _toPath = GetModelPropertyName().ToString();
+                return _toPath;
+            }
+            set
+            {
+                _toPath = value;
+                SetModelItemProperty(_toPath);
+                OnPropertyChanged();
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        public string Result
+        {
+            get
+            {
+                _result = GetModelPropertyName().ToString();
+                return _result;
+            }
+            set
+            {
+                _result = value;
+                SetModelItemProperty(_result);
+                OnPropertyChanged();
+            }
+        }
+        [ExcludeFromCodeCoverage]
         public bool OverWriteMode
         {
             get
             {
-                return (bool)GetValue(OverWriteModeProperty);
+                _overWriteMode = Convert.ToBoolean(GetModelPropertyName());
+                return _overWriteMode;
             }
             set
             {
-                SetValue(OverWriteModeProperty, value);
+                _overWriteMode = value;
+                SetModelItemProperty(_overWriteMode);
+                OnPropertyChanged();
             }
         }
+        [ExcludeFromCodeCoverage]
         public bool UpdateMode
         {
             get
             {
-                return (bool)GetValue(UpdateModeProperty);
+                _updateMode = Convert.ToBoolean(GetModelPropertyName());
+                return _updateMode;
             }
             set
             {
-                SetValue(UpdateModeProperty, value);
+                _updateMode = value;
+                SetModelItemProperty(_updateMode);
+                OnPropertyChanged();
             }
         }
+        [ExcludeFromCodeCoverage]
         public bool AddMode
         {
             get
             {
-                return (bool)GetValue(AddModeProperty);
+                _addMode = Convert.ToBoolean(GetModelPropertyName());
+                return _addMode;
             }
             set
             {
-                SetValue(AddModeProperty, value);
+                _addMode = value;
+                SetModelItemProperty(_addMode);
+                OnPropertyChanged();
+            }
+        }
+         [ExcludeFromCodeCoverage]
+        public string FileSuccesResult
+        {
+            get
+            {
+                _fileSuccesResult = GetModelPropertyName().ToString();
+                return _fileSuccesResult;
+            } 
+             set 
+            {
+                _fileSuccesResult = value;
+                SetModelItemProperty(_fileSuccesResult);
+                OnPropertyChanged();
             }
         }
 
         private void EditDropBoxSource()
         {
-            CustomContainer.Get<IShellViewModel>().OpenResource(SelectOAuthSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
+            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
 
         }
         void CreateOAuthSource()
         {
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
-            _isRefreshing = true;
-            Sources = LoadOAuthSources();
-            var newOAuthSource = Sources.FirstOrDefault(source => source.IsNewResource);
-            SetSelectedOAuthSource(newOAuthSource);
-            _isRefreshing = false;
+            _sources = LoadOAuthSources();
         }
 
-        public void SetSelectedOAuthSource(OauthSource oAuthSource)
-        {
-            var selectOAuthSource = oAuthSource == null ? null : Sources.FirstOrDefault(d => d.ResourceID == oAuthSource.ResourceID);
-            if (selectOAuthSource == null)
-            {
-                if (Sources.FirstOrDefault(d => d.Equals(SelectOAuthSource)) == null)
-                {
-                    Sources.Insert(0, SelectOAuthSource);
-                }
-                selectOAuthSource = SelectOAuthSource;
-            }
-            SelectedSource = selectOAuthSource;
-        }
         ObservableCollection<OauthSource> LoadOAuthSources()
         {
             var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
-            oauthSources.Insert(0, NewOAuthSource);
             return oauthSources.ToObservableCollection();
         }
 
         #region Overrides of ActivityDesignerViewModel
-
+        [ExcludeFromCodeCoverage]
         public override void Validate()
         {
         }
-
+         [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
@@ -204,7 +252,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected   void OnPropertyChanged(string propertyName = null)
+        [ExcludeFromCodeCoverage]
+        protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null)
@@ -213,8 +262,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             }
         }
 
-       
-
 
     }
+
+
 }

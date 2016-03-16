@@ -534,6 +534,7 @@ namespace Dev2.Studio.Views
         private void ToggleWindowState()
         {
             WindowState = WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
+            ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
         }
 
         private void PART_MINIMIZE_Click(object sender, RoutedEventArgs e)
@@ -592,6 +593,7 @@ namespace Dev2.Studio.Views
                     double targetVertical = RestoreBounds.Height * percentVertical;
 
                     WindowState = WindowState.Normal;
+                    ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
 
                     POINT lMousePosition;
                     GetCursorPos(out lMousePosition);

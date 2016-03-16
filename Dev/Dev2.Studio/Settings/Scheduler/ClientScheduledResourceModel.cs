@@ -25,7 +25,7 @@ namespace Dev2.Settings.Scheduler
         private readonly IEnvironmentModel _model;
         readonly Action _createNewTask;
         ObservableCollection<IScheduledResource> _scheduledResources;
-
+       
         public ClientScheduledResourceModel([Annotations.NotNull] IEnvironmentModel model, Action createNewTask)
         {
             if(model == null)

@@ -15,10 +15,10 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="320"
-                               MinHeight="210"
-                               Height="210"
+                               MinHeight="240"
+                               Height="Auto"
                                MaxWidth="600"
-                               MaxHeight="210"
+                               MaxHeight="Infinity"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:ForeachDesignerViewModel}">
@@ -38,8 +38,13 @@
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
-    <StackPanel>
-        <Grid Margin="{StaticResource ElementBorder}">
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Margin="{StaticResource ControlBorderBottom}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -164,7 +169,7 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="5,0,5,5" CornerRadius="12">
+        <Border BorderBrush="#CFD6E1" BorderThickness="1" Margin="5,0,5,5" CornerRadius="12" Grid.Row="1">
             <sap:WorkflowItemPresenter x:Name="DropPoint"
                                        AllowDrop="False"
                                        Margin="3"
@@ -181,6 +186,6 @@
                 </AutomationProperties.AutomationId>
             </sap:WorkflowItemPresenter>
         </Border>
-        <errors:OnError  />
-    </StackPanel>
+        <errors:OnError Grid.Row="2" />
+    </Grid>
 </core:ActivityDesignerTemplate>
