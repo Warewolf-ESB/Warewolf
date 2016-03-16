@@ -25,14 +25,10 @@ namespace Dev2.Views.DropBox2016
 
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local
-
-
         readonly INetworkHelper _network;
-        readonly IDropboxFactory _dropboxFactory;
-        DropboxClient _client;
-        //private string _appKey = GlobalConstants.DropBoxApiKey;       
-        private string _appKey = "31qf750f1vzffhu";
-
+        public DropboxClient Client { get; set; }
+        //private string AppKey = GlobalConstants.DropBoxApiKey;       
+        private const string AppKey = "31qf750f1vzffhu";
 
         private string _oauth2State;
         private const string RedirectUri = "https://www.example.com/";
@@ -43,23 +39,10 @@ namespace Dev2.Views.DropBox2016
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory", dropboxFactory } });
             _network = network;
-            _dropboxFactory = dropboxFactory;
             DropBoxHelper = dropboxHelper;
             CookieHelper.Clear();
             if (shouldAuthorise)
                 Authorise();
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        void WebBrowserNavigated(object sender, NavigationEventArgs e)
-        {
-
-            /*     //var token =  _client.GetAccessToken();
-                 Key = token.Token;
-                 Secret = token.Secret;
-              */
-
-
         }
 
         public async Task LoadBrowserUri(string uri)
@@ -69,7 +52,6 @@ namespace Dev2.Views.DropBox2016
             if (hasConnection)
             {
 
-
                 DropBoxHelper.WebBrowser.Navigated += (sender, args) => GetAuthTokens(args);
                 DropBoxHelper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
                 {
@@ -78,7 +60,6 @@ namespace Dev2.Views.DropBox2016
                 });
 
                 DropBoxHelper.Navigate(AuthUri);
-
             }
         }
 
@@ -88,23 +69,21 @@ namespace Dev2.Views.DropBox2016
         {
 
             _oauth2State = Guid.NewGuid().ToString("N");
-            var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, _appKey, new Uri(RedirectUri), _oauth2State);
+            var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
             await LoadBrowserUri(authorizeUri.ToString());
         }
         void GetAuthTokens(NavigationEventArgs args)
         {
-
 
             if (!args.Uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
             {
                 // we need to ignore all navigation that isn't to the redirect uri.
                 return;
             }
-
             try
             {
                 OAuth2Response result = DropboxOAuth2Helper.ParseTokenFragment(args.Uri);
-                if (result.State != this._oauth2State)
+                if (result.State != _oauth2State)
                 {
                     return;
                 }
