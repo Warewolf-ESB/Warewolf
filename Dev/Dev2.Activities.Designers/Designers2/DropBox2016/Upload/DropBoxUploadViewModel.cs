@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -34,6 +33,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         private bool _overWriteMode;
         private bool _updateMode;
         private bool _addMode;
+        private string _fileSuccesResult;
 
         [ExcludeFromCodeCoverage]
         public DropBoxUploadViewModel(ModelItem modelItem)
@@ -94,6 +94,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             private set
             {
                 SetProperty(value);
+                SetModelItemProperty(_sources);
                 // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("Sources");
             }
@@ -196,6 +197,21 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             {
                 _addMode = value;
                 SetModelItemProperty(_addMode);
+                OnPropertyChanged();
+            }
+        }
+         [ExcludeFromCodeCoverage]
+        public string FileSuccesResult
+        {
+            get
+            {
+                _fileSuccesResult = GetModelPropertyName().ToString();
+                return _fileSuccesResult;
+            } 
+             set 
+            {
+                _fileSuccesResult = value;
+                SetModelItemProperty(_fileSuccesResult);
                 OnPropertyChanged();
             }
         }
