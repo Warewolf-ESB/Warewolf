@@ -3848,6 +3848,9 @@ Data
   <data name="EditRabbitMQSourceHelp" xml:space="preserve">
     <value>EditRabbitMQSourceHelp</value>
   </data>
+  <data name="TestRabbitMQPublishHelp" xml:space="preserve">
+    <value>TestRabbitMQPublishHelp</value>
+  </data>
   <data name="RabbitMQHelpMailSource" xml:space="preserve">
     <value>Select a preconfigured RabbitMQ source or "New RabbitMQ Source..." to add a new one.&lt;br /&gt;
 </value>

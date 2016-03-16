@@ -12,67 +12,107 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
-using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using System;
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 
 namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 {
-    public class RabbitMQPublishDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>
+    // ReSharper disable InconsistentNaming
+    public class RabbitMQPublishDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
+    // ReSharper restore InconsistentNaming
     {
+        // ReSharper disable InconsistentNaming
         private static readonly RabbitMQSource NewRabbitMQSource = new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "New RabbitMQ Source..." };
-        private static readonly RabbitMQSource SelectRabbitMQSource = new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "Select an RabbitMQ Source..." };
+
+        private static readonly RabbitMQSource SelectRabbitMQSource = new RabbitMQSource { ResourceID = Guid.NewGuid(), ResourceName = "Select a RabbitMQ Source..." };
+        // ReSharper restore InconsistentNaming
 
         private readonly IEventAggregator _eventPublisher;
         private readonly IEnvironmentModel _environmentModel;
-        private readonly IAsyncWorker _asyncWorker;
 
-        private bool _isInitializing;
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        //public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
         }
 
-        public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
-            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            _asyncWorker = asyncWorker;
+
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
-            _eventPublisher.Subscribe(this);
 
+            ShowLarge = true;
+            ThumbVisibility = Visibility.Visible;
+
+            EditRabbitMQSourceCommand = new RelayCommand(o => EditRabbitMQSource(), o => IsEditableRabbitMQSourceSelected);
+
+            IsRefreshing = true;
+            RabbitMQSources = LoadRabbitMQSources();
+            SetSelectedRabbitMQSource(SelectedRabbitMQSource);
+            IsRefreshing = false;
             AddTitleBarLargeToggle();
+        }
 
-            RabbitMQSources = new ObservableCollection<RabbitMQSource>();
+        // ReSharper disable InconsistentNaming
+        public ObservableCollection<RabbitMQSource> RabbitMQSources { get; private set; }
 
-            EditRabbitMQSourceCommand = new RelayCommand(o => EditRabbitMQSource(), o => IsRabbitMQSourceSelected);
-            TestRabbitMQPublishCommand = new RelayCommand(o => TestRabbitMQPublish(QueueName, IsDurable, IsExclusive, IsAutoDelete, Message), o => CanTestRabbitMQPublish);
+        public RelayCommand EditRabbitMQSourceCommand { get; private set; }
 
-            RefreshSources(true);
+        private bool IsEditableRabbitMQSourceSelected
+        {
+            get
+            {
+                return SelectedRabbitMQSource != null && SelectedRabbitMQSource != SelectRabbitMQSource && SelectedRabbitMQSource != NewRabbitMQSource;
+            }
+        }
+
+        public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
+
+        public static readonly DependencyProperty IsRefreshingProperty = DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty SelectedRabbitMQSourceProperty = DependencyProperty.Register("SelectedRabbitMQSource", typeof(RabbitMQSource), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(null, OnSelectedRabbitMQSourceChanged));
+
+        private static void OnSelectedRabbitMQSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (RabbitMQPublishDesignerViewModel)d;
+            if (viewModel.IsRefreshing)
+            {
+                return;
+            }
+            viewModel.OnRabbitMQSourceChanged();
+            viewModel.EditRabbitMQSourceCommand.RaiseCanExecuteChanged();
+        }
+
+        protected void OnRabbitMQSourceChanged()
+        {
+            if (SelectedRabbitMQSource == NewRabbitMQSource)
+            {
+                CreateRabbitMQSource();
+                return;
+            }
+
+            if (SelectedRabbitMQSource != SelectRabbitMQSource && !IsRefreshing)
+            {
+                RabbitMQSources.Remove(SelectRabbitMQSource);
+            }
+            RabbitMQSourceResourceId = SelectedRabbitMQSource.ResourceID;
         }
 
         public RabbitMQSource SelectedRabbitMQSource
@@ -88,308 +128,161 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
             }
         }
 
-        public static readonly DependencyProperty SelectedRabbitMQSourceProperty = DependencyProperty.Register("SelectedRabbitMQSource", typeof(RabbitMQSource), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(null, OnSelectedRabbitMQSourceChanged));
+        // ReSharper restore InconsistentNaming
 
-        private static void OnSelectedRabbitMQSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = (RabbitMQPublishDesignerViewModel)d;
-
-            viewModel.OnSelectedRabbitMQSourceChanged();
-        }
-
-        public RelayCommand EditRabbitMQSourceCommand { get; private set; }
-        public RelayCommand TestRabbitMQPublishCommand { get; private set; }
-
-        public bool IsRabbitMQSourceSelected
+        public Guid RabbitMQSourceResourceId
         {
             get
             {
-                return SelectedRabbitMQSource != SelectRabbitMQSource;
-            }
-        }
-
-        public bool CanEditSource { get; set; }
-
-        public ObservableCollection<RabbitMQSource> RabbitMQSources { get; private set; }
-
-        public bool CanTestRabbitMQPublish
-        {
-            get
-            {
-                return (bool)GetValue(CanTestRabbitMQPublishProperty);
+                return GetProperty<Guid>();
             }
             set
             {
-                SetValue(CanTestRabbitMQPublishProperty, value);
-                TestRabbitMQPublishCommand.RaiseCanExecuteChanged();
+                SetProperty(value);
             }
         }
-        public static readonly DependencyProperty CanTestRabbitMQPublishProperty = DependencyProperty.Register("CanTestRabbitMQPublish", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(true));
-
-        public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
-        public static readonly DependencyProperty IsRefreshingProperty = DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
-
-        public bool IsRabbitMQSourceFocused { get { return (bool)GetValue(IsRabbitMQSourceFocusedProperty); } set { SetValue(IsRabbitMQSourceFocusedProperty, value); } }
-        public static readonly DependencyProperty IsRabbitMQSourceFocusedProperty = DependencyProperty.Register("IsRabbitMQSourceFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
-
-        public bool IsQueueNameFocused { get { return (bool)GetValue(IsQueueNameFocusedProperty); } set { SetValue(IsQueueNameFocusedProperty, value); } }
-        public static readonly DependencyProperty IsQueueNameFocusedProperty = DependencyProperty.Register("IsQueueNameFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
-
-        public bool IsMessageFocused { get { return (bool)GetValue(IsMessageFocusedProperty); } set { SetValue(IsMessageFocusedProperty, value); } }
-        public static readonly DependencyProperty IsMessageFocusedProperty = DependencyProperty.Register("IsMessageFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public string QueueName
         {
             get { return GetProperty<string>(); }
-            set
-            {
-                SetProperty(value);
-                OnPropertyChanged("QueueName");
-            }
+            set { SetProperty(value); }
         }
 
         public bool IsDurable
         {
             get { return GetProperty<bool>(); }
-            set
-            {
-                SetProperty(value);
-                OnPropertyChanged("IsDurable");
-            }
+            set { SetProperty(value); }
         }
 
         public bool IsExclusive
         {
             get { return GetProperty<bool>(); }
-            set
-            {
-                SetProperty(value);
-                OnPropertyChanged("IsExclusive");
-            }
+            set { SetProperty(value); }
         }
 
         public bool IsAutoDelete
         {
             get { return GetProperty<bool>(); }
-            set
-            {
-                SetProperty(value);
-                OnPropertyChanged("IsAutoDelete");
-            }
+            set { SetProperty(value); }
         }
 
         public string Message
         {
             get { return GetProperty<string>(); }
-            set
-            {
-                SetProperty(value);
-                OnPropertyChanged("Message");
-            }
+            set { SetProperty(value); }
         }
 
-        public string PublishResult
+        public string Result
         {
             get { return GetProperty<string>(); }
-            set
-            {
-                SetProperty(value);
-                OnPropertyChanged("PublishResult");
-            }
+            set { SetProperty(value); }
         }
 
-        private RabbitMQSource RabbitMQSource
-        {
-            // ReSharper disable ExplicitCallerInfoArgument
-            get { return GetProperty<RabbitMQSource>("SelectedRabbitMQSource"); }
-            // ReSharper restore ExplicitCallerInfoArgument
-            set
-            {
-                if (!_isInitializing)
-                {
-                    // ReSharper disable ExplicitCallerInfoArgument
-                    SetProperty(value, "SelectedRabbitMQSource");
-                    // ReSharper restore ExplicitCallerInfoArgument
-                }
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        [ExcludeFromCodeCoverage]
-        protected void OnPropertyChanged(string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public void CreateRabbitMQSource()
+        // ReSharper disable InconsistentNaming
+        private void CreateRabbitMQSource()
         {
             _eventPublisher.Publish(new ShowNewResourceWizard("RabbitMQSource"));
-            RefreshSources();
-        }
-
-        public void EditRabbitMQSource()
-        {
-            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedRabbitMQSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
-        }
-
-        private void TestRabbitMQPublish(string queueName, bool isDurable, bool isExclusive, bool isAutoDelete, string message)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(message))
-                    message = "Test message";
-                SelectRabbitMQSource.Publish(queueName, isDurable, isExclusive, isAutoDelete, message);
-                PublishResult = "Success";
-            }
-            catch
-            {
-                PublishResult = "Fail";    
-            }
-        }
-
-        protected virtual void OnSelectedRabbitMQSourceChanged()
-        {
-            if (SelectedRabbitMQSource == NewRabbitMQSource)
-            {
-                CreateRabbitMQSource();
-                return;
-            }
-
             IsRefreshing = true;
-
-            if (SelectedRabbitMQSource != SelectRabbitMQSource)
-            {
-                RabbitMQSources.Remove(SelectRabbitMQSource);
-            }
-            RabbitMQSource = SelectedRabbitMQSource;
-            EditRabbitMQSourceCommand.RaiseCanExecuteChanged();
+            RabbitMQSources = LoadRabbitMQSources();
+            RabbitMQSource newRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.IsNewResource);
+            SetSelectedRabbitMQSource(newRabbitMQSources);
+            IsRefreshing = false;
         }
 
-        private void RefreshSources(bool isInitializing = false)
+        private ObservableCollection<RabbitMQSource> LoadRabbitMQSources()
         {
-            IsRefreshing = true;
-            var selectedRabbitMQSource = RabbitMQSource;
-            if (isInitializing)
+            var rabbitMQSources = new[]
             {
-                _isInitializing = true;
-            }
-            LoadSources(() =>
-            {
-                SetSelectedRabbitMQSource(selectedRabbitMQSource);
-                IsRefreshing = false;
-                if (isInitializing)
+                new RabbitMQSource()
                 {
-                    _isInitializing = false;
+                    ResourceID = new Guid("00000000-0000-0000-0000-000000000001"),
+                    ResourceType = ResourceType.RabbitMQSource,
+                    ResourceName = "Test (localhost)",
+                    Host = "localhost",
+                    UserName = "guest",
+                    Password = "guest"
                 }
-            });
+            }.ToObservableCollection();
+
+            // TODO: Remove the above stub and uncomment below when new RabbitMQSource has been implemented WOLF-1523
+            //var rabbitMQSources = _environmentModel.ResourceRepository.FindSourcesByType<RabbitMQSource>(_environmentModel, enSourceType.RabbitMQSource);
+            rabbitMQSources.Insert(0, NewRabbitMQSource);
+            return rabbitMQSources.ToObservableCollection();
         }
 
-        private void SetSelectedRabbitMQSource(Resource source)
+        private void SetSelectedRabbitMQSource(RabbitMQSource rabbitMQSource)
         {
-            var selectedSource = source == null ? null : RabbitMQSources.FirstOrDefault(d => d.ResourceID == source.ResourceID);
-            if (selectedSource == null)
+            var selectRabbitMQSource = rabbitMQSource ?? RabbitMQSources.FirstOrDefault(d => d.ResourceID == RabbitMQSourceResourceId);
+            if (selectRabbitMQSource == null)
             {
                 if (RabbitMQSources.FirstOrDefault(d => d.Equals(SelectRabbitMQSource)) == null)
                 {
                     RabbitMQSources.Insert(0, SelectRabbitMQSource);
                 }
-                selectedSource = SelectRabbitMQSource;
+                selectRabbitMQSource = SelectRabbitMQSource;
             }
-            SelectedRabbitMQSource = selectedSource;
+            SelectedRabbitMQSource = selectRabbitMQSource;
         }
 
-        private void LoadSources(System.Action continueWith = null)
+        private void EditRabbitMQSource()
         {
-            RabbitMQSources.Clear();
-            RabbitMQSources.Add(NewRabbitMQSource);
-
-            _asyncWorker.Start(() => GetRabbitMQSources().OrderBy(r => r.ResourceName), sources =>
-            {
-                foreach (var source in sources)
-                {
-                    RabbitMQSources.Add(source);
-                }
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
-            });
+            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedRabbitMQSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
         }
 
-        private IEnumerable<RabbitMQSource> GetRabbitMQSources()
-        {
-            return new[]
-            {
-                new RabbitMQSource()
-                {
-                    Host = "localhost", 
-                    UserName = "guest", 
-                    Password = "guest"
-                }
-            };
-            //return _environmentModel.ResourceRepository.FindSourcesByType<RabbitMQSource>(_environmentModel, enSourceType.RabbitMQSource);
-        }
+        // ReSharper restore InconsistentNaming
 
         public override void Validate()
         {
-            var result = new List<IActionableErrorInfo>();
-            result.AddRange(ValidateThis());
-            Errors = result.Count == 0 ? null : result;
+            //var result = new List<IActionableErrorInfo>();
+            //result.AddRange(ValidateThis());
+            //Errors = result.Count == 0 ? null : result;
         }
 
-        private IEnumerable<IActionableErrorInfo> ValidateThis()
-        {
-            foreach (var error in GetRuleSet("RabbitMQSource", GetDatalistString()).ValidateRules("'RabbitMQ Source'", () => IsRabbitMQSourceFocused = true))
-            {
-                yield return error;
-            }
-            foreach (var error in GetRuleSet("QueueName", GetDatalistString()).ValidateRules("'Queue Name'", () => IsQueueNameFocused = true))
-            {
-                yield return error;
-            }
-            foreach (var error in GetRuleSet("Message", GetDatalistString()).ValidateRules("'Message'", () => IsMessageFocused = true))
-            {
-                yield return error;
-            }
-        }
+        //private IEnumerable<IActionableErrorInfo> ValidateThis()
+        //{
+        //    foreach (var error in GetRuleSet("RabbitMQSource", GetDatalistString()).ValidateRules("'RabbitMQ Source'", () => IsRabbitMQSourceFocused = true))
+        //    {
+        //        yield return error;
+        //    }
+        //    foreach (var error in GetRuleSet("QueueName", GetDatalistString()).ValidateRules("'Queue Name'", () => IsQueueNameFocused = true))
+        //    {
+        //        yield return error;
+        //    }
+        //    foreach (var error in GetRuleSet("Message", GetDatalistString()).ValidateRules("'Message'", () => IsMessageFocused = true))
+        //    {
+        //        yield return error;
+        //    }
+        //}
 
-        private IRuleSet GetRuleSet(string propertyName, string datalist)
-        {
-            var ruleSet = new RuleSet();
+        //private IRuleSet GetRuleSet(string propertyName, string datalist)
+        //{
+        //    var ruleSet = new RuleSet();
 
-            switch (propertyName)
-            {
-                case "RabbitMQSource":
-                    ruleSet.Add(new IsNullRule(() => RabbitMQSource));
-                    break;
-                case "QueueName":
-                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => QueueName));
-                    break;
-                case "Message":
-                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Message));
-                    break;
-            }
-            return ruleSet;
-        }
+        //    switch (propertyName)
+        //    {
+        //        case "RabbitMQSource":
+        //            ruleSet.Add(new IsNullRule(() => SelectedRabbitMQSource));
+        //            break;
 
-        public void Handle(UpdateResourceMessage message)
+        //        case "QueueName":
+        //            ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => QueueName));
+        //            break;
+
+        //        case "Message":
+        //            ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Message));
+        //            break;
+        //    }
+        //    return ruleSet;
+        //}
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName = null)
         {
-            var selectedSource = new RabbitMQSource(message.ResourceModel.WorkflowXaml.ToXElement());
-            if (RabbitMQSource == null)
+            var handler = PropertyChanged;
+            if (handler != null)
             {
-                RabbitMQSource = selectedSource;
-            }
-            else
-            {
-                if (selectedSource.ResourceID == RabbitMQSource.ResourceID)
-                {
-                    RabbitMQSource = null;
-                    RabbitMQSource = selectedSource;
-                }
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 

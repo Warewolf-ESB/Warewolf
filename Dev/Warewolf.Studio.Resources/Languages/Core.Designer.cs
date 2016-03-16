@@ -6212,6 +6212,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TestRabbitMQPublishHelp.
+        /// </summary>
+        public static string TestRabbitMQPublishHelp {
+            get {
+                return ResourceManager.GetString("TestRabbitMQPublishHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear the filter box.
         /// </summary>
         public static string ToolboxClearSearchTooltip {

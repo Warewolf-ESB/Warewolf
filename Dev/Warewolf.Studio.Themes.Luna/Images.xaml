@@ -123,6 +123,7 @@
         <ResourceDictionary Source="Images/ViewFileLogo.xaml" />
         <ResourceDictionary Source="Images/EditFileLogo.xaml" />
         <ResourceDictionary Source="Images/Email-Source.xaml" />
+        <ResourceDictionary Source="Images/Utility-PublishRabbitMQ.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
