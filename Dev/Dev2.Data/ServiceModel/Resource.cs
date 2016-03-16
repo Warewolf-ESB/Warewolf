@@ -52,6 +52,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.ServerSource, "Source" },
             { ResourceType.OauthSource, "Source" },
             { ResourceType.SharepointServerSource, "Source" },
+            { ResourceType.RabbitMQSource, "Source" },
         };
         IVersionInfo _versionInfo;
 

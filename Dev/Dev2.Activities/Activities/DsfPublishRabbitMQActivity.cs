@@ -17,12 +17,15 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-PublishRabbitMQ", "RabbitMQ Publish", ToolType.Native, "FFEC6885-597E-49A2-A1AD-AE81E33DF809", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    // ReSharper disable InconsistentNaming
     public class DsfPublishRabbitMQActivity : DsfBaseActivity
+    // ReSharper restore InconsistentNaming
     {
         #region Ctor
 
@@ -33,20 +36,25 @@ namespace Dev2.Activities
 
         #endregion Ctor
 
-        public RabbitMQSource SelectedRabbitMQSource { get; set; }
+        public Guid RabbitMQSourceResourceId { get; set; }
 
+        [Inputs("Queue Name")]
         [FindMissing]
         public string QueueName { get; set; }
 
+        [Inputs("Is Durable")]
         [FindMissing]
         public bool IsDurable { get; set; }
 
+        [Inputs("Is Exclusive")]
         [FindMissing]
         public bool IsExclusive { get; set; }
 
+        [Inputs("Is Auto Delete")]
         [FindMissing]
         public bool IsAutoDelete { get; set; }
 
+        [Inputs("Message")]
         [FindMissing]
         public string Message { get; set; }
 
@@ -58,24 +66,19 @@ namespace Dev2.Activities
         {
             try
             {
-                if (SelectedRabbitMQSource != null)
+                RabbitMQSource rabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
+                if (rabbitMQSource == null || rabbitMQSource.ResourceType != ResourceType.RabbitMQSource)
                 {
-                    var rabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, SelectedRabbitMQSource.ResourceID);
-                    if (rabbitMQSource == null || rabbitMQSource.ResourceType != ResourceType.RabbitMQSource)
-                    {
-                        Result = "Failure: Source has been deleted.";
-                        return "Failure: Source has been deleted.";
-                    }
-                    SelectedRabbitMQSource = rabbitMQSource;
+                    return "Failure: Source has been deleted.";
                 }
 
-                var factory = new ConnectionFactory()
+                ConnectionFactory factory = new ConnectionFactory()
                 {
-                    HostName = SelectedRabbitMQSource.Host,
-                    Port = SelectedRabbitMQSource.Port,
-                    UserName = SelectedRabbitMQSource.UserName,
-                    Password = SelectedRabbitMQSource.Password,
-                    VirtualHost = SelectedRabbitMQSource.VirtualHost
+                    HostName = rabbitMQSource.Host,
+                    Port = rabbitMQSource.Port,
+                    UserName = rabbitMQSource.UserName,
+                    Password = rabbitMQSource.Password,
+                    VirtualHost = rabbitMQSource.VirtualHost
                 };
 
                 string queueName = evaluatedValues["QueueName"], message = evaluatedValues["Message"];
@@ -109,12 +112,11 @@ namespace Dev2.Activities
                     }
                 }
                 Dev2Logger.Debug(String.Format("Message published to queue {0}", queueName));
-                Result = "Success";
                 return "Success";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Result = "Failure";
+                Dev2Logger.Error("SharepointReadListActivity", ex);
                 return "Failure";
             }
         }

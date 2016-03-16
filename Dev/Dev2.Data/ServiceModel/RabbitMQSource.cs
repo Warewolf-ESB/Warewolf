@@ -11,19 +11,19 @@
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
-using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
+    // ReSharper disable InconsistentNaming
     public class RabbitMQSource : Resource
+    // ReSharper restore InconsistentNaming
     {
-        public static int DefaultPort = 5672;
-        public static string DefaultVirtualHost = "/";
+        private const int DefaultPort = 5672;
+        private const string DefaultVirtualHost = "/";
 
         #region Properties
 
@@ -42,6 +42,7 @@ namespace Dev2.Data.ServiceModel
             ResourceID = Guid.Empty;
             ResourceType = ResourceType.RabbitMQSource;
             Port = DefaultPort;
+            VirtualHost = DefaultVirtualHost;
         }
 
         public RabbitMQSource(XElement xml)
@@ -70,37 +71,6 @@ namespace Dev2.Data.ServiceModel
             int port;
             Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
             VirtualHost = !string.IsNullOrWhiteSpace(properties["VirtualHost"]) ? properties["VirtualHost"] : DefaultVirtualHost;
-        }
-
-        public void Publish(string queueName, bool isDurable, bool isExclusive, bool isAutoDelete, string message)
-        {
-            var factory = new ConnectionFactory()
-            {
-                HostName = Host,
-                Port = Port,
-                UserName = UserName,
-                Password = Password,
-                VirtualHost = VirtualHost
-            };
-
-            using (var connection = factory.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare(queue: queueName,
-                                            durable: isDurable,
-                                            exclusive: isExclusive,
-                                            autoDelete: isAutoDelete,
-                                            arguments: null);
-
-                    var body = Encoding.UTF8.GetBytes(message);
-
-                    channel.BasicPublish(exchange: "",
-                        routingKey: queueName,
-                        basicProperties: null,
-                        body: body);
-                }
-            }
         }
 
         #endregion CTOR
