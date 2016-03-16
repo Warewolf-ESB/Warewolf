@@ -42,15 +42,12 @@ namespace Dev2.Activities
         [FindMissing]
         public string QueueName { get; set; }
 
-        [Inputs("Is Durable")]
         [FindMissing]
         public bool IsDurable { get; set; }
 
-        [Inputs("Is Exclusive")]
         [FindMissing]
         public bool IsExclusive { get; set; }
 
-        [Inputs("Is Auto Delete")]
         [FindMissing]
         public bool IsAutoDelete { get; set; }
 
@@ -66,7 +63,18 @@ namespace Dev2.Activities
         {
             try
             {
-                RabbitMQSource rabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
+                RabbitMQSource rabbitMQSource = new RabbitMQSource()
+                {
+                    ResourceID = new Guid("00000000-0000-0000-0000-000000000001"),
+                    ResourceType = ResourceType.RabbitMQSource,
+                    ResourceName = "Test (localhost)",
+                    Host = "localhost",
+                    UserName = "guest",
+                    Password = "guest"
+                };
+
+                // TODO: Remove the above stub and uncomment below when new RabbitMQSource has been implemented WOLF-1523
+                //RabbitMQSource rabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (rabbitMQSource == null || rabbitMQSource.ResourceType != ResourceType.RabbitMQSource)
                 {
                     return "Failure: Source has been deleted.";
@@ -82,25 +90,15 @@ namespace Dev2.Activities
                 };
 
                 string queueName = evaluatedValues["QueueName"], message = evaluatedValues["Message"];
-                bool isDurable, isExclusive, isAutoDelete;
-
-                if (!bool.TryParse(evaluatedValues["IsDurable"], out isDurable))
-                    isDurable = false;
-
-                if (!bool.TryParse(evaluatedValues["IsExclusive"], out isExclusive))
-                    isExclusive = false;
-
-                if (!bool.TryParse(evaluatedValues["IsAutoDelete"], out isAutoDelete))
-                    isAutoDelete = false;
 
                 using (var connection = factory.CreateConnection())
                 {
                     using (var channel = connection.CreateModel())
                     {
                         channel.QueueDeclare(queue: queueName,
-                                                durable: isDurable,
-                                                exclusive: isExclusive,
-                                                autoDelete: isAutoDelete,
+                                                durable: IsDurable,
+                                                exclusive: IsExclusive,
+                                                autoDelete: IsAutoDelete,
                                                 arguments: null);
 
                         var body = Encoding.UTF8.GetBytes(message);
