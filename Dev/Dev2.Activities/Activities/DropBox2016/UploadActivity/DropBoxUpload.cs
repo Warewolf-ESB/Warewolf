@@ -7,12 +7,13 @@ using Dropbox.Api.Files;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    public interface IDropBoxUpload : IDropboxSingleExecutor<FileMetadata>
+    public interface IDropBoxUpload : IDropboxSingleExecutor<IDropboxResult>
     {
     }
 
     public class DropBoxUpload : IDropBoxUpload
     {
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private WriteMode _writeMode;
         private readonly string _dropboxPath;
         private readonly string _fromPath;
@@ -29,7 +30,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         #region Implementation of IDropboxSingleExecutor
         [ExcludeFromCodeCoverage]
-        public FileMetadata ExecuteTask(DropboxClient client)
+        public IDropboxResult ExecuteTask(DropboxClient client)
         {
             try
             {
@@ -38,15 +39,14 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
                 {
                     FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
-                    return uploadAsync;
+                    return new DropboxSuccessResult(uploadAsync);
                 }
 
             }
-            catch (AggregateException exception)
+            catch (Exception exception)
             {
-                var innerException = exception.InnerExceptions[0];
-                Dev2Logger.Error(innerException.Message);
-                return null;
+                Dev2Logger.Error(exception.Message);
+                return new DropboxFailureResult(exception);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public void Validate()
         {
-            if(_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
+            if (_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
                 IsValid = true;
         }
     }

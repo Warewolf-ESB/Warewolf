@@ -1,6 +1,5 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dropbox.Api;
 using Dropbox.Api.Files;
@@ -16,8 +15,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         private Mock<IDropBoxUpload> CreateDropboxUploadMock()
         {
             var mock = new Mock<IDropBoxUpload>();
-            var fileMetadata = new FileMetadata();
-            mock.Setup(expression)
+            var fileMetadata = new DropboxSuccessResult(new FileMetadata());
+            mock.Setup(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()))
                  .Returns(fileMetadata);
             return mock;
         }
@@ -35,7 +34,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             Assert.IsNotNull(dropBoxUpload);
         }
 
-        readonly Expression<Func<IDropBoxUpload, FileMetadata>> expression = upload => upload.ExecuteTask(It.IsAny<DropboxClient>());
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTask_GivenDropBoxUpload_ShouldReturnFileMetadata()
@@ -47,7 +45,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             dropBoxUpload.Object.ExecuteTask(It.IsAny<DropboxClient>());
-            dropBoxUpload.Verify(expression);
+            dropBoxUpload.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
         }
         
         [TestMethod]
