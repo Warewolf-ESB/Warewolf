@@ -40,7 +40,7 @@
                 <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
 
-            <!-- WAREWOL LOGO -->
+            <!-- WAREWOLF LOGO -->
             <Grid Margin="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left">
                 <Image Source="{StaticResource WarewolfWhiteLogo}" 
                        VerticalAlignment="Top"
