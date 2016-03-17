@@ -499,6 +499,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WriteDropbox.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\WriteDropboxSteps.cs" />
     <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -830,6 +831,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>

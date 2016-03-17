@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             var dpExc = new Exception("Message");
             var failureResult = new DropboxFailureResult(dpExc);
             //---------------Assert Precondition----------------
-
+            Assert.IsNotNull(failureResult);
             //---------------Execute Test ----------------------
             var exception = failureResult.GetException();
             //---------------Test Result -----------------------
