@@ -141,17 +141,6 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //---------------Execute Test ----------------------
             Assert.IsFalse(dropBoxUploadViewModel.AddMode);
             //---------------Test Result -----------------------
-        }[TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Update_GivenActivityIsNew_ShouldBeDefaultToFalse()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxUploadViewModel = CreateMockViewModel();
-            //---------------Assert Precondition----------------
-            Assert.IsFalse(dropBoxUploadViewModel.AddMode);
-            //---------------Execute Test ----------------------
-            Assert.IsFalse(dropBoxUploadViewModel.UpdateMode);
-            //---------------Test Result -----------------------
         }
 
         [TestMethod]
