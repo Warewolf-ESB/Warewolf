@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _serverVersion = value;
+                _serverInformationalVersion = value;
                 OnPropertyChanged("ServerInformationalVersion");
             }
         }
