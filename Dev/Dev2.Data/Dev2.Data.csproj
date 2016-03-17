@@ -221,7 +221,6 @@
     <Compile Include="Enums\enIndexFinderDirection.cs" />
     <Compile Include="Enums\enIndexFinderOccurrence.cs" />
     <Compile Include="Enums\enIntellisenseErrorCode.cs" />
-    <Compile Include="Enums\enIntellisensePartType.cs" />
     <Compile Include="Enums\enIntellisenseResultType.cs" />
     <Compile Include="Enums\enMergeAlignment.cs" />
     <Compile Include="Enums\enMergeType.cs" />
