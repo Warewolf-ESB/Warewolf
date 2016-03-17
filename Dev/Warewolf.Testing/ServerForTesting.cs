@@ -61,6 +61,11 @@ namespace Warewolf.Testing
         {
         }
 
+        public string GetServerInformationalVersion()
+        {
+            return null;
+        }
+
         public void Connect()
         {
         }
