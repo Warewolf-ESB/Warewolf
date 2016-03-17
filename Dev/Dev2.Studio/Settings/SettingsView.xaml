@@ -6,9 +6,7 @@
              xmlns:settings="clr-namespace:Dev2.Settings"
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              xmlns:security="clr-namespace:Dev2.Settings.Security"
-             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
-    xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
     xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
     Padding="10"
              d:DesignHeight="300"
@@ -68,7 +66,7 @@
                     <TabItem Style="{StaticResource TabItemStyle}">
                         <TabItem.Header>
                             <StackPanel Orientation="Horizontal" Cursor="Hand">
-                                <fa:FontAwesome Icon="Table" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
+                                <fa:FontAwesome Icon="Tachometer" FontSize="17" Margin="{StaticResource ControlBorderTop}"></fa:FontAwesome>
                                 <TextBlock FontSize="15" Text="{Binding PerfmonHeader}"/>
                             </StackPanel>
                         </TabItem.Header>
@@ -100,13 +98,6 @@
                            VerticalAlignment="Center"
                            Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                            AutomationProperties.AutomationId="UI_Errors_AutoID" />
-
-                <!--<Button Content="Save"
-                        Command="{Binding SaveCommand}"
-                        Margin="5,0,0,0"
-                        Width="90"
-                        Height="28" 
-                        AutomationProperties.AutomationId="UI_SaveSettingsbtn_AutoID"/>-->
             </StackPanel>
         </Grid>
     </Grid>

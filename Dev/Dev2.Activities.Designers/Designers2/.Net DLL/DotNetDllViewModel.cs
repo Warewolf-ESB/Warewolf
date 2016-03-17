@@ -31,6 +31,8 @@ using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities.Designers2.Net_DLL
 {
@@ -57,6 +59,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
         // ReSharper restore UnusedMember.Local
 
+        [ExcludeFromCodeCoverage]
         public DotNetDllViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -106,21 +109,19 @@ namespace Dev2.Activities.Designers2.Net_DLL
             });
 
             SetDisplayName("");
-            InitializeImageSource();
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
             InitializeProperties();
 
-            if (OutputsRegion != null && OutputsRegion.IsVisible)
+            if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
                 }
             }
-            ReCalculateHeight();
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -185,9 +186,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.IsVisible)
+            if (!OutputsRegion.IsEnabled)
             {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Plugin get must be validated before minimising" } };
             }
             if (SourceRegion.Errors.Count > 0)
             {
@@ -269,8 +270,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 
+                ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+                ManageServiceInputViewModel.OutputCountExpandAllowed = true;
+
                 GenerateOutputsVisible = true;
-                ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }
@@ -309,10 +313,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
         {
         }
 
-        void InitializeImageSource()
-        {
-        }
-
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -343,11 +343,11 @@ namespace Dev2.Activities.Designers2.Net_DLL
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
+                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () => { OutputsRegion.IsVisible = false; } };
-                regions.Add(SourceRegion);
-                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
+                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () => { OutputsRegion.IsEnabled = false; } };
+                regions.Add(NamespaceRegion);
+                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(ActionRegion);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
@@ -355,33 +355,21 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
 
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
-                SourceRegion.Dependants.Add(InputArea);
-                SourceRegion.Dependants.Add(OutputsRegion);
+                SourceRegion.Dependants.Add(NamespaceRegion);
+                NamespaceRegion.Dependants.Add(ActionRegion);
+                ActionRegion.Dependants.Add(InputArea);
+                ActionRegion.Dependants.Add(OutputsRegion);
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }
-            ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
-        {
-            ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -458,20 +446,19 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 _generateOutputsVisible = value;
                 if (value)
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = true;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(false);
 
                 }
                 else
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = false;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(true);
                 }
 
                 OnPropertyChanged();
-                ReCalculateHeight();
             }
         }
 
@@ -497,11 +484,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
         }
 
-        public void ValidateTestComplete()
-        {
-            OutputsRegion.IsVisible = true;
-        }
-
         public void SetDisplayName(string outputFieldName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
@@ -523,72 +505,14 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        private IList<IServiceInput> InputsFromModel()
-        {
-            var dt = new List<IServiceInput>();
-            foreach (var nameValue in InputArea.Inputs)
-            {
-                GetValue(nameValue.Name, dt);
-                GetValue(nameValue.Value, dt);
-            }
-            return dt;
-        }
-
-        private static void GetValue(string s, List<IServiceInput> dt)
-        {
-            var exp = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(s);
-            if (exp.IsComplexExpression)
-            {
-                var item = ((LanguageAST.LanguageExpression.ComplexExpression)exp).Item;
-                var vals = item.Where(a => a.IsRecordSetExpression || a.IsScalarExpression).Select(WarewolfDataEvaluationCommon.languageExpressionToString);
-                dt.AddRange(vals.Select(a => new ServiceInput(a, "")));
-            }
-            if (exp.IsScalarExpression)
-            {
-
-                dt.Add(new ServiceInput(s, ""));
-            }
-            if (exp.IsRecordSetExpression)
-            {
-
-                dt.Add(new ServiceInput(s, ""));
-            }
-        }
-
         private IPluginServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
         {
-            InputArea.IsVisible = value;
-            OutputsRegion.IsVisible = value && OutputsRegion.Outputs.Count > 0;
-            ErrorRegion.IsVisible = value;
-            SourceRegion.IsVisible = value;
-        }
-
-        public override void ReCalculateHeight()
-        {
-            if (_regions != null)
-            {
-                bool isInputVisible = false;
-                foreach (var toolRegion in _regions)
-                {
-                    if (toolRegion.ToolRegionName == "DotNetInputRegion")
-                    {
-                        isInputVisible = toolRegion.IsVisible;
-                    }
-                }
-
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isInputVisible && !GenerateOutputsVisible)
-                {
-                    DesignMaxHeight += 30;
-                    DesignHeight += 30;
-                    DesignMinHeight += 30;
-                }
-            }
+            InputArea.IsEnabled = value;
+            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
+            ErrorRegion.IsEnabled = value;
+            SourceRegion.IsEnabled = value;
         }
 
         #endregion

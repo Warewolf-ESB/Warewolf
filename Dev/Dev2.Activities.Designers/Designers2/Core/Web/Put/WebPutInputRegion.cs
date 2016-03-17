@@ -5,48 +5,28 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable NotAccessedField.Local
 
 namespace Dev2.Activities.Designers2.Core.Web.Put
 {
-    /* public class WebPutInputRegion : WebRegionInputBase<WebPutInputRegion>, IRegionClone
-    {
-        public WebPutInputRegion()
-            : base(new WebTooRegionDisplayInfo() { ToolRegionName = "WebPutInputRegion" })
-        {
-
-        }
-
-        public WebPutInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
-            : base(modelItem, source)
-        {
-        }
-    }*/
-
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class WebPutInputRegion : IWebPutInputArea
     {
-        private const double BaseHeight = 165;
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IWebServiceSource> _source;
-        private double _currentHeight;
         private ObservableCollection<INameValue> _headers;
-        private double _headersHeight;
-        bool _isVisible;
-        double _maxHeadersHeight;
-        private double _maxHeight;
-        private double _minHeight;
+        bool _isEnabled;
         private string _queryString;
         private string _requestUrl;
+        private string _putData;
 
         public WebPutInputRegion()
         {
             ToolRegionName = "PutInputRegion";
-            SetInitialHeight();
         }
 
         public WebPutInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -55,20 +35,19 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             _modelItem = modelItem;
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
-            SetInitialHeight();
-            IsVisible = false;
+            IsEnabled = false;
             SetupHeaders(modelItem);
-            if(source != null && source.SelectedSource != null)
+            if (source != null && source.SelectedSource != null)
             {
                 RequestUrl = source.SelectedSource.HostName;
-                IsVisible = true;
+                IsEnabled = true;
             }
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            if(_source != null && _source.SelectedSource != null)
+            if (_source != null && _source.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
                 QueryString = _source.SelectedSource.DefaultQuery;
@@ -78,11 +57,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     _modelItem.SetProperty("Headers",
                         _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
-                IsVisible = true;
+                IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
-            OnHeightChanged(this);
+            OnPropertyChanged(@"IsEnabled");
         }
 
         private void SetupHeaders(ModelItem modelItem)
@@ -92,7 +70,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
             Headers = headerCollection;
 
-            if(Headers.Count == 0)
+            if (Headers.Count == 0)
             {
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
                 {
@@ -103,7 +81,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             else
             {
                 var nameValue = Headers.Last();
-                if(!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
+                if (!string.IsNullOrWhiteSpace(nameValue.Name) || !string.IsNullOrWhiteSpace(nameValue.Value))
                 {
                     Headers.Add(new ObservableAwareNameValue(Headers, s =>
                     {
@@ -112,12 +90,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     }));
                 }
             }
-            ResetInputsHeight();
         }
 
         private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ResetInputsHeight();
             _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
@@ -128,7 +104,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -139,54 +115,16 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-                _minHeight = value;
+                _isEnabled = value;
                 OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-
-                OnPropertyChanged();
-                OnHeightChanged(this);
             }
         }
 
@@ -197,7 +135,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             //var ser = new Dev2JsonSerializer();
             //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
             var headers2 = new ObservableCollection<INameValue>();
-            foreach(var nameValue in Headers)
+            foreach (var nameValue in Headers)
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
@@ -206,16 +144,16 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
-                IsVisible = IsVisible
+                IsEnabled = IsEnabled
             };
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
             var region = toRestore as WebPutRegionClone;
-            if(region != null)
+            if (region != null)
             {
-                IsVisible = region.IsVisible;
+                IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
                 RequestUrl = region.RequestUrl;
                 Headers.Clear();
@@ -224,9 +162,9 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     _modelItem.SetProperty("Headers",
                         _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
                 }));
-                if(region.Headers != null)
+                if (region.Headers != null)
                 {
-                    foreach(var nameValue in region.Headers)
+                    foreach (var nameValue in region.Headers)
                     {
                         Headers.Add(new ObservableAwareNameValue(Headers, s =>
                         {
@@ -236,8 +174,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                     }
                     Headers.Remove(Headers.First());
                 }
-
-                ResetInputsHeight();
             }
         }
 
@@ -250,64 +186,9 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             }
         }
 
-        private void SetInitialHeight()
-        {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            MaxHeadersHeight = BaseHeight;
-        }
-
-        void ResetInputsHeight()
-        {
-            SetInitialHeight();
-            HeadersHeight = GlobalConstants.RowHeaderHeight + Headers.Count * GlobalConstants.RowHeight;
-            MaxHeadersHeight = HeadersHeight;
-            if(Headers.Count >= 3)
-            {
-                MinHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
-                MaxHeight = BaseHeight + GlobalConstants.RowHeaderHeight + GlobalConstants.RowHeight;
-                MaxHeadersHeight = 120;
-                CurrentHeight = MinHeight;
-            }
-            else
-            {
-                var count = 0;
-                if(Headers.Count > 0)
-                {
-                    // Remove the header from the count
-                    count = Headers.Count - 1;
-                }
-                CurrentHeight = GlobalConstants.RowHeaderHeight + count * GlobalConstants.RowHeight;
-                if(CurrentHeight < BaseHeight)
-                {
-                    CurrentHeight = BaseHeight;
-                    // Check if the count is greater than 0 before adding the RowHeight
-                    if(count > 0)
-                    {
-                        CurrentHeight += GlobalConstants.RowHeight;
-                    }
-                }
-                MinHeight = CurrentHeight;
-                MaxHeight = CurrentHeight;
-                OnHeightChanged(this);
-            }
-        }
-
-        public event HeightChanged HeightChanged;
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if(handler != null)
-            {
-                handler(this, args);
-            }
-        }
-
         #endregion
 
-        #region Implementation of IWebBeleteInputArea
+        #region Implementation of IWebPutInputArea
 
         public string QueryString
         {
@@ -334,6 +215,20 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
                 OnPropertyChanged();
             }
         }
+        
+        public string PutData
+        {
+            get
+            {
+                return _modelItem.GetProperty<string>("PutData") ?? string.Empty;
+            }
+            set
+            {
+                _putData = value ?? string.Empty;
+                _modelItem.SetProperty("PutData", value ?? string.Empty);
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<INameValue> Headers
         {
             get
@@ -344,30 +239,6 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             {
                 _headers = value;
                 _modelItem.SetProperty("Headers", value.ToList());
-                OnPropertyChanged();
-            }
-        }
-        public double HeadersHeight
-        {
-            get
-            {
-                return _headersHeight;
-            }
-            set
-            {
-                _headersHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeadersHeight
-        {
-            get
-            {
-                return _maxHeadersHeight;
-            }
-            set
-            {
-                _maxHeadersHeight = value;
                 OnPropertyChanged();
             }
         }

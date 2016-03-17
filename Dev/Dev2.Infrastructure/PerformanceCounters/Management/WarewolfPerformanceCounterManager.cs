@@ -13,9 +13,9 @@ namespace Dev2.PerformanceCounters.Management
 
     public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory,IPerformanceCounterRepository
     {
-        private readonly IList<IPerformanceCounter> _counters;
+        private IList<IPerformanceCounter> _counters;
         private readonly IPerformanceCounterPersistence _perf;
-        private readonly IList<IPerformanceCounter> _resourceCounters;
+        private IList<IPerformanceCounter> _resourceCounters;
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         public WarewolfPerformanceCounterManager(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourceCounters, IWarewolfPerformanceCounterRegister register, IPerformanceCounterPersistence perf)
@@ -109,6 +109,25 @@ namespace Dev2.PerformanceCounters.Management
 
         public void Save(IPerformanceCounterTo toSave)
         {
+            var resourceCounters = toSave.ResourceCounters;
+            var nativeCounters = toSave.NativeCounters;
+            _perf.Save(nativeCounters);
+            _perf.Save(resourceCounters);
+            _counters = nativeCounters;
+            _resourceCounters = resourceCounters.Cast<IPerformanceCounter>().ToList();
+        }
+
+        public void ResetCounters()
+        {
+            foreach(var performanceCounter in _resourceCounters)
+            {
+                performanceCounter.Reset();
+            }
+
+            foreach (var performanceCounter in _counters)
+            {
+                performanceCounter.Reset();
+            }
         }
 
         #endregion

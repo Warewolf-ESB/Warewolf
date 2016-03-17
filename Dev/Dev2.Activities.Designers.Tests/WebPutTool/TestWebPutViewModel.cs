@@ -70,15 +70,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual(470, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(470, postViewModel.DesignMinHeight);
-            Assert.AreEqual(470, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
             postViewModel.ValidateTestComplete();
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
+            Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
         }
 
         private static WebServicePutViewModel CreateViewModel(DsfWebPostActivity act, MyWebModel mod)
@@ -135,13 +132,10 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             var postViewModel = CreateViewModel(act, mod);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(150, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(150, postViewModel.DesignMinHeight);
-            Assert.AreEqual(150, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsFalse(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsFalse(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsFalse(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsFalse(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
 
             //---------------Test Result -----------------------
         }
@@ -159,13 +153,10 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             postViewModel.SourceRegion.SelectedSource = postViewModel.SourceRegion.Sources.First();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(315, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(315, postViewModel.DesignMinHeight);
-            Assert.AreEqual(315, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsFalse(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsFalse(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
 
             //---------------Test Result -----------------------
         }
@@ -185,21 +176,17 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            postViewModel.ManageServiceInputViewModel.IsEnabled = true;
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(470, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(445, postViewModel.DesignMinHeight);
-            Assert.AreEqual(445, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
-            Assert.IsFalse(postViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
+            Assert.IsFalse(postViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
             //---------------Test Result -----------------------
         }
 
@@ -217,15 +204,14 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            postViewModel.ManageServiceInputViewModel.IsEnabled = true;
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
             //---------------Test Result -----------------------
         }
 
@@ -244,8 +230,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            postViewModel.ManageServiceInputViewModel.IsEnabled = true;
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
@@ -270,20 +255,16 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            postViewModel.ManageServiceInputViewModel.IsEnabled = true;
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, postViewModel.DesignMinHeight);
-            Assert.AreEqual(475, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
             Assert.AreEqual(1, postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
 
@@ -306,21 +287,17 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            postViewModel.ManageServiceInputViewModel.IsEnabled = true;
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, postViewModel.DesignMinHeight);
-            Assert.AreEqual(475, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b]]");
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
@@ -343,21 +320,17 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
 #pragma warning disable 4014
             postViewModel.TestInputCommand.Execute();
             postViewModel.ManageServiceInputViewModel.TestCommand.Execute(null);
-            postViewModel.ManageServiceInputViewModel.IsVisible = true;
-            postViewModel.ManageServiceInputViewModel.SetInitialVisibility();
+            postViewModel.ManageServiceInputViewModel.IsEnabled = true;
             postViewModel.ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c"), new ServiceOutputMapping("a", "b", "c") };
             postViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
 #pragma warning restore 4014
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Assert.AreEqual(500, postViewModel.DesignMaxHeight);
-            Assert.AreEqual(475, postViewModel.DesignMinHeight);
-            Assert.AreEqual(475, postViewModel.DesignHeight);
-            Assert.IsTrue(postViewModel.SourceRegion.IsVisible);
-            Assert.IsTrue(postViewModel.OutputsRegion.IsVisible);
-            Assert.IsTrue(postViewModel.InputArea.IsVisible);
-            Assert.IsTrue(postViewModel.ErrorRegion.IsVisible);
+            Assert.IsTrue(postViewModel.SourceRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
+            Assert.IsTrue(postViewModel.InputArea.IsEnabled);
+            Assert.IsTrue(postViewModel.ErrorRegion.IsEnabled);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[b().a]]");
             Assert.IsTrue(postViewModel.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");

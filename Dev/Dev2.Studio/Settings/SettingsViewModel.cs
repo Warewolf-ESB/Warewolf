@@ -424,7 +424,7 @@ namespace Dev2.Settings
 
         protected virtual PerfcounterViewModel CreatePerfmonViewModel()
         {
-            return new PerfcounterViewModel(Settings.PerfCounters, _parentWindow, CurrentEnvironment);
+            return new PerfcounterViewModel(Settings.PerfCounters, CurrentEnvironment);
         }
 
 
@@ -462,16 +462,28 @@ namespace Dev2.Settings
                     }
                 };
             }
+            if (PerfmonViewModel != null)
+            {
+                isDirtyProperty.AddValueChanged(PerfmonViewModel, OnIsDirtyPropertyChanged);
+                PerfmonViewModel.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == "IsDirty")
+                    {
+                        OnIsDirtyPropertyChanged(null, new EventArgs());
+                    }
+                };
+            }
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
             if (SecurityViewModel != null && LogSettingsViewModel != null)
             {
-                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty;
+                IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty || PerfmonViewModel.IsDirty;
             }
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
+            NotifyOfPropertyChange(() => PerfmonHeader);
             ClearErrors();
         }
 
@@ -486,6 +498,11 @@ namespace Dev2.Settings
             {
                 LogSettingsViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => LogHeader);
+            }
+            if (PerfmonViewModel != null)
+            {
+                PerfmonViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => PerfmonHeader);
             }
         }
 
@@ -566,6 +583,10 @@ namespace Dev2.Settings
                     {
                         LogSettingsViewModel.Save(Settings.Logging);
                     }
+                    if (PerfmonViewModel.IsDirty)
+                    {
+                        PerfmonViewModel.Save(Settings.PerfCounters);
+                    }
                     var isWritten = WriteSettings();
                     if(isWritten)
                     {
@@ -640,7 +661,7 @@ namespace Dev2.Settings
         {
             get
             {
-                return "Performance Counters";
+                return PerfmonViewModel != null && PerfmonViewModel.IsDirty ? "PERFORMANCE COUNTERS *" : "PERFORMANCE COUNTERS";
             }
         }
     }

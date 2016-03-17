@@ -27,6 +27,7 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
             : base(modelItem)
         {
             AddTitleBarQuickVariableInputToggle();
+            AddTitleBarLargeToggle();
             dynamic mi = ModelItem;
             InitializeItems(mi.SystemInformationCollection);
 

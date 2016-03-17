@@ -17,6 +17,15 @@ namespace Dev2.Diagnostics.Test
             CategoryInstanceName = "bobcat";
         }
 
+        public TestResourceCounter(WarewolfPerfCounterType warewolfPerfCounterType, Guid resourceId)
+        {
+            Category = "";
+            Name = "bob";
+            PerfCounterType = warewolfPerfCounterType;
+            ResourceId = resourceId;
+            CategoryInstanceName = "bobcat";
+        }
+
         public void Increment()
         {
         }
@@ -52,5 +61,8 @@ namespace Dev2.Diagnostics.Test
         public string CategoryInstanceName { get; private set; }
 
         #endregion
+        public void Reset()
+        {
+        }
     }
 }

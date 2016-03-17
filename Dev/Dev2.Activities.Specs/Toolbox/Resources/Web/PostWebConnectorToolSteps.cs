@@ -73,64 +73,64 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             ScenarioContext.Current.Add("mockServiceModel", mockServiceModel);
         }
 
-        private static WebServicePostViewModel GetViewModel()
+        private static WebServicePostViewModel PostViewModel()
         {
             return ScenarioContext.Current.Get<WebServicePostViewModel>("viewModel");
         }
 
-        private static Mock<IWebServiceModel> GetServiceModel()
+        private static Mock<IWebServiceModel> PostServiceModel()
         {
             return ScenarioContext.Current.Get<Mock<IWebServiceModel>>("mockServiceModel");
         }
 
-        [When(@"Test Inputs is Successful")]
+        [When(@"Post Test Inputs is Successful")]
         public void WhenTestInputsIsSuccessful()
         {
             
-            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
+            PostViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
         }
 
-        [Given(@"New is Enabled")]
-        [When(@"New is Enabled")]
-        [Then(@"New is Enabled")]
+        [Given(@"Post New is Enabled")]
+        [When(@"Post New is Enabled")]
+        [Then(@"Post New is Enabled")]
         public void WhenNewIsEnabled()
         {
-            var canExecuteNewCommand = GetViewModel().SourceRegion.NewSourceCommand.CanExecute(null);
+            var canExecuteNewCommand = PostViewModel().SourceRegion.NewSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecuteNewCommand);
         }
 
-        [Given(@"Edit is Enabled")]
-        [When(@"Edit is Enabled")]
-        [Then(@"Edit is Enabled")]
+        [Given(@"Post Edit is Enabled")]
+        [When(@"Post Edit is Enabled")]
+        [Then(@"Post Edit is Enabled")]
         public void WhenEditIsEnabled()
         {
-            var canExecuteNewCommand = GetViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
+            var canExecuteNewCommand = PostViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecuteNewCommand);
         }
 
-        [Given(@"Edit is Disabled")]
+        [Given(@"Post Edit is Disabled")]
         public void GivenEditIsDisabled()
         {
-            var canExecuteNewCommand = GetViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
+            var canExecuteNewCommand = PostViewModel().SourceRegion.EditSourceCommand.CanExecute(null);
             Assert.IsFalse(canExecuteNewCommand);
         }
 
-        [When(@"I click Edit")]
+        [When(@"I click Post Edit")]
         public void WhenIClickEdit()
         {
-           GetViewModel().SourceRegion.EditSourceCommand.Execute(null);
-        }              
-        
-        [Then(@"Header is Enabled")]
+           PostViewModel().SourceRegion.EditSourceCommand.Execute(null);
+        }
+
+        [Then(@"Post Header is Enabled")]
         public void ThenHeaderIsEnabled()
         {
-            Assert.AreEqual(1, GetViewModel().InputArea.Headers.Count);
+            Assert.AreEqual(1, PostViewModel().InputArea.Headers.Count);
         }
-        
-        [Then(@"Header appears as")]
+
+        [Then(@"Post Header appears as")]
         public void ThenHeaderAppearsAs(Table table)
         {
-            var headers = GetViewModel().InputArea.Headers;
+            var headers = PostViewModel().InputArea.Headers;
             foreach(var tableRow in table.Rows)
             {
                 var name = tableRow["Header"];
@@ -140,81 +140,81 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
 
-        [Then(@"Body is Enabled")]
+        [Then(@"Post Body is Enabled")]
         public void ThenBodyIsEnabled()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(PostViewModel().InputArea.IsEnabled);
         }
-        
-        [Then(@"Url is Visible")]
+
+        [Then(@"Post Url is Visible")]
         public void ThenUrlIsVisible()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(PostViewModel().InputArea.IsEnabled);
         }
-        
-        [Then(@"Query is Enabled")]
+
+        [Then(@"Post Query is Enabled")]
         public void ThenQueryIsEnabled()
         {
-            Assert.IsTrue(GetViewModel().InputArea.IsVisible);
+            Assert.IsTrue(PostViewModel().InputArea.IsEnabled);
         }
-              
-        [Then(@"Generate Outputs is Enabled")]
+
+        [Then(@"Post Generate Outputs is Enabled")]
         public void ThenGenerateOutputsIsEnabled()
         {
-            var canGenerateOutputs = GetViewModel().TestInputCommand.CanExecute();
+            var canGenerateOutputs = PostViewModel().TestInputCommand.CanExecute();
             Assert.IsTrue(canGenerateOutputs);
         }
 
-        [Then(@"the Generate Outputs window is shown")]
+        [Then(@"Post the Generate Outputs window is shown")]
         public void ThenTheGenerateOutputsWindowIsShown()
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             Assert.IsTrue(webServicePostViewModel.GenerateOutputsVisible);
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
-            Assert.IsFalse(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.IsVisible);
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
+            Assert.IsFalse(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.IsEnabled);
         }
 
-        [Then(@"Variables are Enabled")]
+        [Then(@"Post Variables are Enabled")]
         public void ThenVariablesAreEnabled()
         {
-            var webServicePostViewModel = GetViewModel();
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsVisible);
+            var webServicePostViewModel = PostViewModel();
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
         }
 
-        [Then(@"the response is loaded")]
+        [Then(@"Post the response is loaded")]
         public void ThenTheResponseIsLoaded()
         {
-            var webServicePostViewModel = GetViewModel();
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsVisible);
+            var webServicePostViewModel = PostViewModel();
+            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
         }
 
 
-        [Then(@"Mapping is Enabled")]
+        [Then(@"Post Mapping is Enabled")]
         public void ThenMappingIsEnabled()
         {
-            var webServicePostViewModel = GetViewModel();
-            Assert.IsTrue(webServicePostViewModel.OutputsRegion.IsVisible);
+            var webServicePostViewModel = PostViewModel();
+            Assert.IsTrue(webServicePostViewModel.OutputsRegion.IsEnabled);
         }
-        
-        [Then(@"I enter ""(.*)"" as Query String")]
+
+        [Then(@"I enter ""(.*)"" as Post Query String")]
         public void ThenIEnterAsQueryString(string queryString)
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             webServicePostViewModel.InputArea.QueryString = queryString;
         }
 
-        [Then(@"Url as ""(.*)""")]
+        [Then(@"Post Url as ""(.*)""")]
         public void ThenUrlAs(string url)
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             Assert.AreEqual(url,webServicePostViewModel.InputArea.RequestUrl);
         }
-        
-        [Then(@"I add Header as")]
+
+        [Then(@"I add Post Header as")]
         public void ThenIAddHeaderAs(Table table)
         {
-            var headers = GetViewModel().InputArea.Headers;
+            var headers = PostViewModel().InputArea.Headers;
             foreach(var tableRow in table.Rows)
             {
                 var name = tableRow["Name"];
@@ -223,10 +223,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
 
-        [Then(@"Input variables are")]
+        [Then(@"Post Input variables are")]
         public void ThenInputVariablesAre(Table table)
         {
-            var serviceInputs = GetViewModel().ManageServiceInputViewModel.InputArea.Inputs;
+            var serviceInputs = PostViewModel().ManageServiceInputViewModel.InputArea.Inputs;
             foreach(var tableRow in table.Rows)
             {
                 var inputName = tableRow["Name"];
@@ -235,65 +235,65 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
 
-        [Then(@"Test is Enabled")]
+        [Then(@"Post Test is Enabled")]
         public void ThenTestIsEnabled()
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             var canExecuteTest = webServicePostViewModel.ManageServiceInputViewModel.TestCommand.CanExecute(null);
             Assert.IsTrue(canExecuteTest);
         }
-        
-        [Then(@"Paste is Enabled")]
+
+        [Then(@"Post Paste is Enabled")]
         public void ThenPasteIsEnabled()
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             var canPaste = webServicePostViewModel.ManageServiceInputViewModel.PasteResponseCommand.CanExecute(null);
             Assert.IsTrue(canPaste);
         }
-        
-        [Then(@"the ""(.*)"" Source tab is opened")]
+
+        [Then(@"the ""(.*)"" Post Source tab is opened")]
         public void ThenTheSourceTabIsOpened(string p0)
         {
-            GetServiceModel().Verify(model => model.EditSource(It.IsAny<IWebServiceSource>()));
+            PostServiceModel().Verify(model => model.EditSource(It.IsAny<IWebServiceSource>()));
         }
-        
-        [Given(@"I click Generate Outputs")]
-        [When(@"I click Generate Outputs")]
-        [Then(@"I click Generate Outputs")]
+
+        [Given(@"I click Post Generate Outputs")]
+        [When(@"I click Post Generate Outputs")]
+        [Then(@"I click Post Generate Outputs")]
         public async Task ThenIClickGenerateOutputs()
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             await webServicePostViewModel.TestInputCommand.Execute();
         }
-        
-        [Then(@"Response appears as ""(.*)""")]
+
+        [Then(@"Post Response appears as ""(.*)""")]
         public void ThenResponseAppearsAs(string response)
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             Assert.AreEqual(response,webServicePostViewModel.ManageServiceInputViewModel.TestResults);
         }
-        
-        [Then(@"Mappings is Disabled")]
+
+        [Then(@"Post Mappings is Disabled")]
         public void ThenMappingsIsDisabled()
         {
-            var webServicePostViewModel = GetViewModel();
-            Assert.IsFalse(webServicePostViewModel.OutputsRegion.IsVisible);
+            var webServicePostViewModel = PostViewModel();
+            Assert.IsFalse(webServicePostViewModel.OutputsRegion.IsEnabled);
         }
-                      
-        
-        [Given(@"I click Done")]
-        [When(@"I click Done")]
-        [Then(@"I click Done")]
+
+
+        [Given(@"I click Post Done")]
+        [When(@"I click Post Done")]
+        [Then(@"I click Post Done")]
         public void ThenIClickDone()
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             webServicePostViewModel.ManageServiceInputViewModel.OkCommand.Execute(null);
         }
-        
-        [Then(@"output mappings are")]
+
+        [Then(@"Post output mappings are")]
         public void ThenOutputMappingsAre(Table table)
         {
-            var webServicePostViewModel = GetViewModel();
+            var webServicePostViewModel = PostViewModel();
             var outputs = webServicePostViewModel.OutputsRegion.Outputs;
             foreach(var tableRow in table.Rows)
             {
@@ -304,12 +304,12 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             }
         }
 
-        [When(@"I Select ""(.*)"" as a web Source")]
+        [When(@"I Select ""(.*)"" as a Post web Source")]
         public void WhenISelectAsAWebSource(string sourceName)
         {
             if (sourceName == "Dev2CountriesWebService")
             {
-                var serviceModel = GetServiceModel();
+                var serviceModel = PostServiceModel();
                 var webService = new WebService
                 {
                     RequestResponse = "{\"CountryID\" : \"a\",\"Description\":\"a\"}",
@@ -339,15 +339,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
                 var serializer = new Dev2JsonSerializer();
                 var testResult = serializer.Serialize(webService);
                 serviceModel.Setup(model => model.TestService(It.IsAny<IWebService>())).Returns(testResult);
-                GetViewModel().SourceRegion.SelectedSource = _dev2CountriesWebServiceWebSource;
+                PostViewModel().SourceRegion.SelectedSource = _dev2CountriesWebServiceWebSource;
             }
             else if (sourceName == "Google Address Lookup")
             {
-                GetViewModel().SourceRegion.SelectedSource = _googleWebSource;
+                PostViewModel().SourceRegion.SelectedSource = _googleWebSource;
             }
             else
             {
-                var serviceModel = GetServiceModel();
+                var serviceModel = PostServiceModel();
                 var webService = new WebService
                 {
                     RequestResponse = "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}",
@@ -377,14 +377,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
                 var serializer = new Dev2JsonSerializer();
                 var testResult = serializer.Serialize(webService);
                 serviceModel.Setup(model => model.TestService(It.IsAny<IWebService>())).Returns(testResult);
-                GetViewModel().SourceRegion.SelectedSource = _webHelooWebSource;
+                PostViewModel().SourceRegion.SelectedSource = _webHelooWebSource;
             }
         }
 
-        [Then(@"mapped outputs are")]
+        [Then(@"Post mapped outputs are")]
         public void ThenMappedOutputsAre(Table table)
         {
-            var vm = GetViewModel();
+            var vm = PostViewModel();
             if (table.Rows.Count == 0)
             {
                 if (vm.OutputsRegion.Outputs != null)

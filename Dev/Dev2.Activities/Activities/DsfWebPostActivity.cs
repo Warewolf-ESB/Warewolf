@@ -18,6 +18,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -117,6 +118,11 @@ namespace Dev2.Activities
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
                 i++;
+            }
+            if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+            {
+                dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
+                return;
             }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
             try

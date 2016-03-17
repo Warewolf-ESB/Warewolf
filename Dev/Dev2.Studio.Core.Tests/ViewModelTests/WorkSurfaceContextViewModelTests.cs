@@ -190,7 +190,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.SetDebugStatus(DebugStatus.Configure);
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
+            Assert.AreEqual(1, workSurfaceContextViewModel.DebugOutputViewModel.ContentItemCount);
         }
 
         [TestMethod]

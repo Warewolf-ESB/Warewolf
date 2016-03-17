@@ -13,6 +13,8 @@ namespace Warewolf.Studio.ViewModels
     {
         string _serverVersion;
         string _studioVersion;
+        string _serverInformationalVersion;
+        string _studioInformationalVersion;
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
@@ -59,6 +61,19 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged("ServerVersion");
             }
         }
+        public string ServerInformationalVersion
+        {
+            get
+            {
+                return _serverInformationalVersion;
+            }
+            set
+            {
+                _serverVersion = value;
+                OnPropertyChanged("ServerInformationalVersion");
+            }
+        }
+
         public string StudioVersion
         {
             get
@@ -71,6 +86,19 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged("StudioVersion");
             }
         }
+        public string StudioInformationalVersion
+        {
+            get
+            {
+                return _studioInformationalVersion;
+            }
+            set
+            {
+                _studioInformationalVersion = value;
+                OnPropertyChanged("StudioInformationalVersion");
+            }
+        }
+
         public Uri DevUrl { get; set; }
         public Uri WarewolfUrl { get; set; }
         public Uri ContributorsUrl { get; set; }
@@ -85,6 +113,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ServerVersion = "Version " + Server.GetServerVersion();
                 StudioVersion = "Version " + Utils.FetchVersionInfo();
+                var serverVersionInformation = Server.GetServerInformationalVersion().Split(' ');
+                ServerInformationalVersion = "Committed on " + serverVersionInformation[0] + " at " + serverVersionInformation[1] + " as " + serverVersionInformation[2];
+                var studioVersionInformation = Utils.FetchInformationalVersionInfo().Split(' ');
+                StudioInformationalVersion = "Committed on " + studioVersionInformation[0] + " at " + studioVersionInformation[1] + " as " + studioVersionInformation[2];
             });
             
         }
