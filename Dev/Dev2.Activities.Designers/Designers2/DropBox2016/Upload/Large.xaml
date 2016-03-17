@@ -9,9 +9,13 @@
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="340"
                                MinWidth="340"
+                               MaxWidth="600"
+                               Height="260"
                                MinHeight="260"
+                               MaxHeight="260"
                                mc:Ignorable="d"
                                d:DesignWidth="340"  
                                d:DataContext="{d:DesignInstance upload:DropBoxUploadViewModel}">
@@ -47,7 +51,7 @@
         </Grid.RowDefinitions>
 
         <!-- Source Implemantation-->
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Source" FontWeight="Normal" VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Source" />
 
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -77,7 +81,7 @@
                         Grid.Column="1"
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
-                        ToolTip=""
+                        ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipEditSource}"
                         Command="{Binding Path=EditDropboxSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="" DataContext="{Binding}" />
@@ -85,10 +89,10 @@
             </Button>
             <Button x:Name="SourceNewButton" 
                         Grid.Column="2"
-                        Content="new" 
+                        Content="{x:Static languages:Core.New}" 
                         Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip=""
+                        ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipNewSource}"
                         Command="{Binding Path=NewSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="" DataContext="{Binding}" />
@@ -96,28 +100,27 @@
             </Button>
         </Grid>
         <!-- Local File Implemantation-->
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Local File" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding FromPath}" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Local File" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding FromPath}" Margin="{StaticResource ControlBorderTop}" />
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Write Mode" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Write Mode" Margin="{StaticResource ControlBorderTop}"/>
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <RadioButton GroupName="WriteMode" Grid.Column="0" Grid.Row="0" IsChecked="{Binding Path=OverWriteMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Name="CheckBoxOverwriteMode" FlowDirection="RightToLeft" Content="Overwrite"></RadioButton>
-            <RadioButton GroupName="WriteMode" Grid.Column="2" Grid.Row="0" IsChecked="{Binding Path=AddMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Name="CheckBoxUpdateMode" FlowDirection="RightToLeft" Content="Add"></RadioButton>
+            <RadioButton GroupName="WriteMode" Grid.Column="0" Grid.Row="0" IsChecked="{Binding Path=OverWriteMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Name="CheckBoxOverwriteMode" FlowDirection="LeftToRight" Content="Overwrite"></RadioButton>
+            <RadioButton GroupName="WriteMode" Grid.Column="2" Grid.Row="0" IsChecked="{Binding Path=AddMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Name="CheckBoxUpdateMode" FlowDirection="LeftToRight" Content="Add"></RadioButton>
         </Grid>
 
         <!--DropBox File Location-->
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" FontWeight="Normal" VerticalAlignment="Top"/>
-        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding ToPath}" FontWeight="Normal" VerticalAlignment="Top" />
-       
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" />
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding ToPath}" />
 
         <!--Result Section-->
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
-        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding FileSuccesResult, Mode=TwoWay}" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding FileSuccesResult, Mode=TwoWay}" Margin="{StaticResource ControlBorderTop}" />
        
         <errors:OnError Grid.Column="0"
 						Grid.Row="6"

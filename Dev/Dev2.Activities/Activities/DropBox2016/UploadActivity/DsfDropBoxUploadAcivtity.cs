@@ -16,7 +16,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    [ToolDescriptorInfo("DropBoxLogo", "Upload to Drop Box", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Connectors", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("DropBoxLogo", "Upload to Dropbox", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Connectors", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxUploadAcivtity : DsfActivity
     {
         private DropboxClient _client;
@@ -29,8 +29,8 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         public DsfDropBoxUploadAcivtity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
-            DisplayName = "Upload to Drop Box";
-            Type = "Upload to Drop Box";
+            DisplayName = "Upload to Dropbox";
+            Type = "Upload to Dropbox";
             OverWriteMode = true;
         }
 

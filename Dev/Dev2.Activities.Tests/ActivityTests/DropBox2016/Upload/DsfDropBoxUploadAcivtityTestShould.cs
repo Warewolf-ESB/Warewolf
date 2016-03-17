@@ -54,7 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             Assert.IsNotNull(boxUploadAcivtity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("Upload to Drop Box", boxUploadAcivtity.DisplayName);
+            Assert.AreEqual("Upload to Dropbox", boxUploadAcivtity.DisplayName);
 
         }
 
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             Assert.IsNotNull(boxUploadAcivtity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("Upload to Drop Box", boxUploadAcivtity.Type.Expression.ToString());
+            Assert.AreEqual("Upload to Dropbox", boxUploadAcivtity.Type.Expression.ToString());
 
         }
 
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Set up test pack-------------------
             var boxUploadAcivtity = CreateDropboxActivity();
             //---------------Assert Precondition----------------
-            Assert.AreEqual("Upload to Drop Box", boxUploadAcivtity.Type.Expression.ToString());
+            Assert.AreEqual("Upload to Dropbox", boxUploadAcivtity.Type.Expression.ToString());
             //---------------Execute Test ----------------------
             var enFindMissingType = boxUploadAcivtity.GetFindMissingType();
             //---------------Test Result -----------------------
