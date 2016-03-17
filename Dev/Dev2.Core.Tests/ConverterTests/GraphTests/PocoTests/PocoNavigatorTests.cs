@@ -385,6 +385,27 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             string actual = string.Join("|", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
+        }      
+        
+        /// <summary>
+        /// Select enumerable values using enumerable path from reference type expected values from each 
+        /// item in enumeration.
+        /// </summary>
+        [TestMethod]
+        public void SelectEnumerableValuesUsingEnumerableReferenceType_Expected_ValuesFromEachItemInEnumeration()
+        {
+            PocoTestData testData = Given();
+
+            IPath namePath = new PocoPath("UnnamedArray().Name", "UnnamedArray.Name");
+
+            PocoNavigator pocoNavigator = new PocoNavigator(testData.EnumerableData);
+
+            IEnumerable<object> data = pocoNavigator.SelectEnumerable(namePath);
+
+            string expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
+            string actual = string.Join("|", data.Select(o => o.ToString()));
+
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
