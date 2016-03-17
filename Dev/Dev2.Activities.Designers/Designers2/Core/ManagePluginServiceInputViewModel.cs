@@ -125,10 +125,7 @@ namespace Dev2.Activities.Designers2.Core
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (OutputArea != null)
                 {
-                    foreach (var serviceOutputMapping in OutputArea.Outputs)
-                    {
-                        _viewmodel.OutputsRegion.Outputs.Add(serviceOutputMapping);
-                    }
+                    _viewmodel.OutputsRegion.Outputs = OutputArea.Outputs;
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
                     if (recSet != null)
                     {
