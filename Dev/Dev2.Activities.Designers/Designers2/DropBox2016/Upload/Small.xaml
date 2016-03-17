@@ -42,7 +42,7 @@
         <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding FromPath}" FontWeight="Normal" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Result" FontWeight="Normal" VerticalAlignment="Top"/>
-        <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding Result}" FontWeight="Normal" VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding FileSuccesResult}" FontWeight="Normal" VerticalAlignment="Top"/>
 
     </Grid>
 </core:ActivityDesignerTemplate>
