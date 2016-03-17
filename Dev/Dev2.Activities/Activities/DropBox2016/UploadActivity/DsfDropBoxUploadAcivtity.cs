@@ -77,7 +77,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             {
 
                 return _client;
-            }
+        }
             var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
             {
                 Timeout = TimeSpan.FromMinutes(20)
