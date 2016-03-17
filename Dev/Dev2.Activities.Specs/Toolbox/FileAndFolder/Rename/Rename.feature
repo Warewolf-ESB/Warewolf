@@ -3,8 +3,7 @@ Feature: Rename
 	In order to be able to Rename File or Folder 
 	as a Warewolf user
 	I want a tool that will rename a File or Floder at a given location
-
-
+	
 Scenario Outline: Rename file at location
 	Given I have a source path '<source>' with value '<sourceLocation>' 
 	And source credentials as '<username>' and '<password>'
