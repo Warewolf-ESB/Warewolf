@@ -133,7 +133,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Method))
-                        StorePreviousValues(_selectedAction.GetHashCodeBySource());
+                        StorePreviousValues(_selectedAction.GetIdentifier());
                 }
                 if(Dependants != null)
                 {
@@ -297,7 +297,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void RestorePreviousValues(IPluginAction value)
         {
-            var toRestore = _previousRegions[value.GetHashCodeBySource()];
+            var toRestore = _previousRegions[value.GetIdentifier()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -306,7 +306,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IPluginAction value)
         {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
+            return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
         }
 
         public IList<string> Errors
