@@ -33,8 +33,8 @@ Scenario: Change Dropbox Source
 	And Edit is Disabled
 	When I Select "Drop" as the source
 	Then Edit is Enabled
-	And Local File equals "E:\test.txt"
-	And Dropbox File equals "Home.txt"
+	And I set Local File equals "E:\test.txt"
+	And I set Dropbox File equals "Home.txt"
 	When I change source from "Drop" to "BackupSource"
 	Then Local File equals ""
 	And Dropbox File equals ""

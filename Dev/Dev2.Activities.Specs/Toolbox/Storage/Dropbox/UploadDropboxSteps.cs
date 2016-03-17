@@ -18,9 +18,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
     [Binding]
     //[Owner("Nkosinathi Sangweni")]
-    public class WriteDropboxSteps
+    public class UploadDropboxSteps
     {
-        [Given(@"I drag Write Dropbox Tool onto the design surface")]
+        [Given(@"I drag Upload Dropbox Tool onto the design surface")]
         public void GivenIDragWriteDropboxToolOntoTheDesignSurface()
         {
             var dropBoxUploadTool = new DsfDropBoxUploadAcivtity();
@@ -73,6 +73,12 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
+        [Given(@"Edit is Disabled")]
+        public void GivenEditIsDisabled()
+        {
+            var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
+            Assert.IsFalse(canExecute);
+        }
 
         [Given(@"Local File is Enabled")]
         public void GivenLocalFileIsEnabled()
@@ -80,6 +86,13 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var fromPath = GetViewModel().FromPath;
             Assert.IsNotNull(fromPath);
         }
+
+        [Then(@"I Click Edit")]
+        public void ThenIClickEdit()
+        {
+            GetViewModel().EditDropboxSourceCommand.Execute(null);
+        }
+
 
         [Given(@"Dropbox File is Enabled")]
         public void GivenDropboxFileIsEnabled()
@@ -109,17 +122,15 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             }
         }
 
-        [When(@"Local File equals ""(.*)""")]
-        public void WhenLocalFileEquals(string localPath)
+        [Then(@"I set Local File equals ""(.*)""")]
+        public void ThenISetLocalFileEquals(string localPath)
         {
             GetViewModel().FromPath = localPath;
         }
-
-        [When(@"Dropbox File equals ""(.*)""")]
-        public void WhenDropboxFileEquals(string dropboxPath)
+        [Then(@"I set Dropbox File equals ""(.*)""")]
+        public void ThenISetDropboxFileEquals(string dropboxPath)
         {
             GetViewModel().ToPath = dropboxPath;
-
         }
 
         [When(@"I change source from ""(.*)"" to ""(.*)""")]
@@ -146,6 +157,12 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             if(sourceName == "Drop")
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+        }
+        [Then(@"Edit is Enabled")]
+        public void ThenEditIsEnabled()
+        {
+            var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
         }
 
         [Then(@"Local File equals ""(.*)""")]

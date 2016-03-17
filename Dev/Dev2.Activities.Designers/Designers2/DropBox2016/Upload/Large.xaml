@@ -117,7 +117,7 @@
 
         <!--Result Section-->
         <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
-        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding FileSuccesResult, Mode=TwoWay}" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}" />
+        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Result, Mode=TwoWay}" FontWeight="Normal" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}" />
        
         <errors:OnError Grid.Column="0"
 						Grid.Row="6"
