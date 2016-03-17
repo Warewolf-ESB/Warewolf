@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         }
 
-        [TestMethod]
+      /*  [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewActivity_GivenIsNew_ShouldHaveType()
         {
@@ -85,7 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.DataGridActivity, enFindMissingType);
 
-        }
+        }*/
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -346,23 +346,59 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
         public void Execute(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
+            //ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
+            tmpErrors = new ErrorResultTO();
         }
 
         public FileMetadata FileResult
         {
             get
             {
-                return _fileMetadata;
+                return FileMetadata;
             }
         }
 
         public void SetBaseMetadata(FileMetadata metadata)
         {
-            _fileMetadata = metadata;
+            FileMetadata = metadata;
         }
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        #region Overrides of DsfBaseActivity
+
+        #region Overrides of DsfDropBoxUploadAcivtity
+
+        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
+        {
+            try
+            {
+                var dropboxResult = DropboxSingleExecutor.ExecuteTask(TestConstant.DropboxClientInstance.Value);
+                if (IsUplodValidSuccess)
+                {
+                    FileSuccesResult = GlobalConstants.DropBoxSucces;
+                    FileMetadata = ((DropboxSuccessResult)dropboxResult).GerFileMetadata();
+                }
+                else
+                {
+                    Exception = ((DropboxFailureResult)dropboxResult).GetException();
+                }
+
+                return String.Empty;
+            }
+            catch (Exception e)
+            {
+                //dataObject.Environment.AddError(e.Message);
+                Dev2Logger.Error(e.Message, e);
+                FileSuccesResult = GlobalConstants.DropBoxFailure;
+                Exception = new DropboxFailureResult(new Exception()).GetException();
+                return String.Empty;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+       /* protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
             try
@@ -371,11 +407,11 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                 if (IsUplodValidSuccess)
                 {
                     FileSuccesResult = GlobalConstants.DropBoxSucces;
-                    _fileMetadata = ((DropboxSuccessResult)dropboxResult).GerFileMetadata();
+                    FileMetadata = ((DropboxSuccessResult)dropboxResult).GerFileMetadata();
                 }
                 else
                 {
-                    _exception = ((DropboxFailureResult)dropboxResult).GetException();
+                    Exception = ((DropboxFailureResult)dropboxResult).GetException();
                 }
             }
             catch (Exception e)
@@ -383,9 +419,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                 dataObject.Environment.AddError(e.Message);
                 Dev2Logger.Error(e.Message, e);
                 FileSuccesResult = GlobalConstants.DropBoxFailure;
-                _exception = new DropboxFailureResult(new Exception()).GetException();
+                Exception = new DropboxFailureResult(new Exception()).GetException();
             }
-        }
+        }*/
 
         public bool IsUplodValidSuccess { get; set; }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net;
 using Dev2.Common;
 using Dropbox.Api;
 using Dropbox.Api.Files;
@@ -24,6 +25,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
             Validate();
+            InitializeCertPinning();
         }
 
         public bool IsValid { get; set; }
@@ -46,7 +48,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             catch (Exception exception)
             {
                 Dev2Logger.Error(exception.Message);
-                return new DropboxFailureResult(exception);
+                return exception.InnerException != null ? new DropboxFailureResult(exception.InnerException) : new DropboxFailureResult(exception);
             }
         }
 
@@ -56,6 +58,17 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             if (_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
                 IsValid = true;
+        }
+        [ExcludeFromCodeCoverage]
+        private void InitializeCertPinning()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
+            {
+                var root = chain.ChainElements[chain.ChainElements.Count - 1];
+                var publicKey = root.Certificate.GetPublicKeyString();
+
+                return DropboxCertHelper.IsKnownRootCertPublicKey(publicKey);
+            };
         }
     }
 }

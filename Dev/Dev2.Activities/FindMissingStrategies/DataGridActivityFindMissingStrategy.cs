@@ -302,14 +302,14 @@ namespace Dev2.FindMissingStrategies
                 var maAct = activity as DsfDropBoxUploadAcivtity;
                 if (maAct != null)
                 {
-                    if (maAct.Inputs != null)
+                  /*  if (maAct.Inputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
+                    }**/
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {
                         results.Add(maAct.OnErrorVariable);

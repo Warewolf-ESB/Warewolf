@@ -31,7 +31,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         private string _toPath;
         private string _result;
         private bool _overWriteMode;
-        private bool _updateMode;
         private bool _addMode;
         private string _fileSuccesResult;
 
@@ -48,11 +47,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             _eventPublisher = eventPublisher;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
-            EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource());
+            EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             _sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             IsDropboxSourceWizardSourceMessagePulished = false;
+            EditDropboxSourceCommand.RaiseCanExecuteChanged();
 
         }
         public ICommand NewSourceCommand { get; set; }
@@ -171,21 +171,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             }
         }
         [ExcludeFromCodeCoverage]
-        public bool UpdateMode
-        {
-            get
-            {
-                _updateMode = Convert.ToBoolean(GetModelPropertyName());
-                return _updateMode;
-            }
-            set
-            {
-                _updateMode = value;
-                SetModelItemProperty(_updateMode);
-                OnPropertyChanged();
-            }
-        }
-        [ExcludeFromCodeCoverage]
         public bool AddMode
         {
             get
@@ -200,15 +185,15 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-         [ExcludeFromCodeCoverage]
+        [ExcludeFromCodeCoverage]
         public string FileSuccesResult
         {
             get
             {
                 _fileSuccesResult = GetModelPropertyName().ToString();
                 return _fileSuccesResult;
-            } 
-             set 
+            }
+            set
             {
                 _fileSuccesResult = value;
                 SetModelItemProperty(_fileSuccesResult);
@@ -242,7 +227,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         public override void Validate()
         {
         }
-         [ExcludeFromCodeCoverage]
+        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
