@@ -101,7 +101,7 @@ namespace Warewolf.Core
             }
         }
 
-        public  string GetHashCodeBySource()
+        public  string GetIdentifier()
         {
             return SourceId + Name;
             
