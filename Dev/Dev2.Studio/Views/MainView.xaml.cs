@@ -57,15 +57,12 @@ namespace Dev2.Studio.Views
                 {
                     var streamReader = new StreamReader(fs);
                     _savedLayout = streamReader.ReadToEnd();
-
                 }
                 if (!string.IsNullOrEmpty(_savedLayout))
                 {
                     try
                     {
-
                         DockManager.LoadLayout(_savedLayout);
-
                     }
                     catch (Exception err)
                     {
@@ -77,8 +74,6 @@ namespace Dev2.Studio.Views
                 }
             }
         }
-
-
 
         private string FilePath
         {
@@ -139,13 +134,11 @@ namespace Dev2.Studio.Views
                     }
                     break;
             }
-
             return (IntPtr)0;
         }
 
         private static void WmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
-
             var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
 
             // Adjust the maximized size and position to fit the work area of the correct monitor
@@ -273,20 +266,8 @@ namespace Dev2.Studio.Views
             }
         }
 
-        //public void ClearToolboxSelection()
-        //{
-        //    if (Toolboxcontrol != null)
-        //    {
-        //        Toolboxcontrol.ClearSelection();
-        //    }
-        //}
-
         public void ClearToolboxSearch()
         {
-            //if (Toolboxcontrol != null)
-            //{
-            //    Toolboxcontrol.ClearSearch();
-            //}
         }
 
         #region Implementation of IWin32Window
@@ -343,8 +324,6 @@ namespace Dev2.Studio.Views
             }
         }
 
-
-
         public void DockManager_OnPaneDragEnded_(object sender, PaneDragEndedEventArgs e)
         {
             var contentPane = e.Panes[0];
@@ -371,16 +350,11 @@ namespace Dev2.Studio.Views
             if (contentPane == null)
                 throw new ArgumentNullException("contentPane");
 
-
             WorkflowDesignerViewModel workflowDesignerViewModel = contentPane.TabHeader as WorkflowDesignerViewModel;
             if (workflowDesignerViewModel != null && contentPane.ContentVisibility == Visibility.Visible)
             {
-
                 contentPane.CloseButtonVisibility = Visibility.Visible;
             }
-
-
-
         }
 
         void ActuallWindowOnActivated(object sender, EventArgs eventArgs)
@@ -506,53 +480,10 @@ namespace Dev2.Studio.Views
             }
         }
 
-
-        //void DockManager_OnPaneDragOver(object sender, PaneDragOverEventArgs e)
-        //{
-        //    if (e.DragAction.GetType() != typeof(MoveWindowAction))
-        //    {
-        //        var contentPane = e.Panes[0];
-        //        MainViewModel mainViewModel = DataContext as MainViewModel;
-        //        if (mainViewModel != null && contentPane != null)
-        //        {
-        //            var windows = Application.Current.Windows;
-        //            foreach (var window in windows)
-        //            {
-        //                var actuallWindow = window as Window;
-        //                if (actuallWindow != null)
-        //                {
-        //                    var windowType = actuallWindow.GetType();
-        //                    if (windowType.FullName == "Infragistics.Windows.Controls.ToolWindowHostWindow")
-        //                    {
-        //                        WorkflowDesignerViewModel workflowDesignerViewModel = contentPane.TabHeader as WorkflowDesignerViewModel;
-        //                        if (workflowDesignerViewModel != null && contentPane.ContentVisibility == Visibility.Visible)
-        //                        {
-
-
-        //                            PaneDragAction paneDragAction = e.DragAction;
-        //                            if (paneDragAction is AddToGroupAction || paneDragAction is NewSplitPaneAction || paneDragAction is NewTabGroupAction)
-        //                            {
-        //                                e.IsValidDragAction = false;
-        //                                e.Cursor = Cursors.No;
-        //                            }
-        //                        }
-
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         private void ContentControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
 
         }
-
-        //void DockManager_OnPaneDragStarting(object sender, PaneDragStartingEventArgs e)
-        //{
-        //    _contentPane = e.Panes[0];
-        //}
 
         bool restoreIfMove;
         bool allowMaximizeState;
@@ -569,7 +500,6 @@ namespace Dev2.Studio.Views
                 {
                     restoreIfMove = true;
                 }
-
                 DragMove();
             }
         }
@@ -604,6 +534,7 @@ namespace Dev2.Studio.Views
         private void ToggleWindowState()
         {
             WindowState = WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
+            ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
         }
 
         private void PART_MINIMIZE_Click(object sender, RoutedEventArgs e)
@@ -662,6 +593,7 @@ namespace Dev2.Studio.Views
                     double targetVertical = RestoreBounds.Height * percentVertical;
 
                     WindowState = WindowState.Normal;
+                    ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
 
                     POINT lMousePosition;
                     GetCursorPos(out lMousePosition);
@@ -683,7 +615,7 @@ namespace Dev2.Studio.Views
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 // ignored
             }

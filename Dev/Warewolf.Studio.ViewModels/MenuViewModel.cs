@@ -48,6 +48,7 @@ namespace Warewolf.Studio.ViewModels
             OpenSchedulerCommand = _viewModel.SchedulerCommand;
             OpenSettingsCommand = _viewModel.SettingsCommand;
             ExecuteServiceCommand = _viewModel.DebugCommand;
+            StartPageCommand = _viewModel.ShowStartPageCommand;
             OnPropertyChanged(() => SaveCommand);
             OnPropertyChanged(() => ExecuteServiceCommand);
             CheckForNewVersion(_viewModel);
@@ -160,6 +161,8 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand IsOverLockCommand { get; private set; }
         public ICommand IsNotOverLockCommand { get; private set; }
+
+        public ICommand StartPageCommand { get; private set; }
 
         public void UpdateHelpDescriptor(string helpText)
         {

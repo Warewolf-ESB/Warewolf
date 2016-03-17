@@ -65,6 +65,7 @@ using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
+using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -131,6 +132,7 @@ namespace Dev2.Studio.ActivityDesigners
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                  { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                  { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
+                 { typeof(DsfDropBoxUploadAcivtity), typeof(Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },

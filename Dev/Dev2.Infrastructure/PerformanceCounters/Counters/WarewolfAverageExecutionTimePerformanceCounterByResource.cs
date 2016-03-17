@@ -128,7 +128,17 @@ namespace Dev2.PerformanceCounters.Counters
                 return "Average workflow execution time";
             }
         }
-
+        public void Reset()
+        {
+            if (_counter != null)
+            {
+                _counter.RawValue = 0;
+            }
+            if (_baseCounter != null)
+            {
+                _baseCounter.RawValue = 0;
+            }
+        }
         #endregion
 
         #region Implementation of IResourcePerformanceCounter

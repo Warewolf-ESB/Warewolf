@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.Wrappers;
@@ -33,6 +34,12 @@ namespace Dev2.PerformanceCounters.Management
         {
             var path = EnvironmentVariables.ServerPerfmonSettingsFile;
             Save(counters, path);
+        }
+
+        public void Save(IList<IResourcePerformanceCounter> counters)
+        {
+            var path = EnvironmentVariables.ServerResourcePerfmonSettingsFile;
+            Save(counters.Cast<IPerformanceCounter>().ToList(), path);
         }
 
         [ExcludeFromCodeCoverage]
@@ -110,13 +117,7 @@ namespace Dev2.PerformanceCounters.Management
         {
             get
             {
-                return new List<IResourcePerformanceCounter>{
-                                                       new WarewolfCurrentExecutionsPerformanceCounterByResource(Guid.Empty, ""),
-                                                       new WarewolfNumberOfErrorsByResource(Guid.Empty, ""),
-                                                       new WarewolfRequestsPerSecondPerformanceCounterByResource(Guid.Empty, ""),
-                                                       new WarewolfAverageExecutionTimePerformanceCounterByResource(Guid.Empty, ""),
-
-                                                    };
+                return new List<IResourcePerformanceCounter>();
             }
         }
 

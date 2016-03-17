@@ -2,6 +2,7 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -20,49 +21,130 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DatabaseSourceRegion : ISourceToolRegion<IDbSource>
     {
-        private double _minHeight;
-        private double _currentHeight;
-        private bool _isVisible;
-        private double _maxHeight;
-        private const double BaseHeight = 25;
         private IDbSource _selectedSource;
         private ICollection<IDbSource> _sources;
         private readonly ModelItem _modelItem;
-        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
+
         private Guid _sourceId;
         private Action _sourceChangedAction;
         private double _labelWidth;
+        private string _sourcesHelpText;
+        private string _editSourceHelpText;
+        private string _newSourceHelpText;
+        private string _newSourceToolText;
+        private string _editSourceToolText;
+        private string _sourcesToolText;
 
         public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem,enSourceType type)
         {
             LabelWidth = 46;
             ToolRegionName = "DatabaseSourceRegion";
-            SetInitialValues();
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.Where(source => source != null && source.Type == type).ToObservableCollection();
-            IsVisible = true;
+            IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
+            SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceTypesHelp;
+            EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceEditSourceHelp;
+            NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceNewSourceHelp;
+
+            SourcesTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceSourcesTooltip;
+            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceEditSourceTooltip;
+            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceNewSourceTooltip;
+
             if (SourceId != Guid.Empty)
             {
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
             }
         }
-
-        private void SetInitialValues()
+        [ExcludeFromCodeCoverage]
+        public string NewSourceHelpText
         {
-            MinHeight = BaseHeight;
-            MaxHeight = BaseHeight;
-            CurrentHeight = BaseHeight;
-            IsVisible = true;
+            get
+            {
+                return _newSourceHelpText;
+            }
+            set
+            {
+                _newSourceHelpText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string EditSourceHelpText
+        {
+            get
+            {
+                return _editSourceHelpText;
+            }
+            set
+            {
+                _editSourceHelpText = value;
+                OnPropertyChanged();
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        public string SourcesHelpText
+        {
+            get
+            {
+                return _sourcesHelpText;
+            }
+            set
+            {
+                _sourcesHelpText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string NewSourceTooltip
+        {
+            get
+            {
+                return _newSourceToolText;
+            }
+            set
+            {
+                _newSourceToolText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [ExcludeFromCodeCoverage]
+        public string EditSourceTooltip
+        {
+            get
+            {
+                return _editSourceToolText;
+            }
+            set
+            {
+                _editSourceToolText = value;
+                OnPropertyChanged();
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        public string SourcesTooltip
+        {
+            get
+            {
+                return _sourcesToolText;
+            }
+            set
+            {
+                _sourcesToolText = value;
+                OnPropertyChanged();
+            }
         }
 
         public DatabaseSourceRegion()
         {
-            SetInitialValues();
+            
         }
 
         Guid SourceId
@@ -117,66 +199,14 @@ namespace Dev2.Activities.Designers2.Core.Source
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
-        {
-            get
-            {
-                return _minHeight;
-            }
-            set
-            {
-                _minHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                _currentHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                _maxHeight = value;
-                OnPropertyChanged();
-            }
-        }
-        public event HeightChanged HeightChanged;
+        public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
         {
             return new DatabaseSourceRegion
             {
-                MaxHeight = MaxHeight,
-                MinHeight = MinHeight,
-                IsVisible = IsVisible,
-                SelectedSource = SelectedSource,
-                CurrentHeight = CurrentHeight
+                SelectedSource = SelectedSource
             };
         }
 
@@ -185,11 +215,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             var region = toRestore as DatabaseSourceRegion;
             if (region != null)
             {
-                MaxHeight = region.MaxHeight;
                 SelectedSource = region.SelectedSource;
-                MinHeight = region.MinHeight;
-                CurrentHeight = region.CurrentHeight;
-                IsVisible = region.IsVisible;
             }
         }
 
@@ -205,23 +231,9 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                if (!Equals(value, _selectedSource) && _selectedSource != null)
-                {
-                    if (!String.IsNullOrEmpty(_selectedSource.DbName))
-                        StorePreviousValues(_selectedSource.Id);
-                }
-
-                if (IsAPreviousValue(value) && _selectedSource != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedSource(value);
-                }
-                else
-                {
-                    SetSelectedSource(value);
-                    SourceChangedAction();
-                    OnSomethingChanged(this);
-                }
+                SetSelectedSource(value);
+                SourceChangedAction();
+                OnSomethingChanged(this);
                 var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 if (delegateCommand != null)
                 {
@@ -238,29 +250,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SourceId = value.Id;
             }
-
-            OnHeightChanged(this);
             OnPropertyChanged("SelectedSource");
-        }
-
-        private void StorePreviousValues(Guid id)
-        {
-            _previousRegions.Remove(id);
-            _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
-        }
-
-        private void RestorePreviousValues(IDbSource value)
-        {
-            var toRestore = _previousRegions[value.Id];
-            foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
-            {
-                toolRegion.Item1.RestoreRegion(toolRegion.Item2);
-            }
-        }
-
-        private bool IsAPreviousValue(IDbSource value)
-        {
-            return _previousRegions.Keys.Any(a => a == value.Id);
         }
 
         public ICollection<IDbSource> Sources
@@ -306,15 +296,6 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
             }
         }
 

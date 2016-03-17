@@ -47,6 +47,10 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
@@ -68,9 +72,9 @@
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -114,12 +118,19 @@
     <Compile Include="Core\Database\DatabaseActionRegionTest.cs" />
     <Compile Include="Core\Database\DatabaseInputRegionTest.cs" />
     <Compile Include="Core\Database\ManageDatabaseServiceInputViewModelTests.cs" />
+    <Compile Include="Core\DotNet\DotNetSourceRegionTest.cs" />
+    <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
+    <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
+    <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
     <Compile Include="Core\WebOutputsRegion.cs" />
+    <Compile Include="Core\WebPutInputRegionTest.cs" />
     <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
+    <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
+    <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="Dropbox\DropboxFileOpsTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
@@ -272,6 +283,10 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
+      <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
+      <Name>Warewolf.Testing</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

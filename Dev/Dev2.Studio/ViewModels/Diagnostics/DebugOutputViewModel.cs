@@ -470,14 +470,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 return;
             }
-
-            //Juries - Dont append start and end states, its not for display, just for logging puposes, unless its the first or last step
-            if(content.StateType == StateType.Start && !content.IsFirstStep())
+            if (content.Name == "EsbServiceInvoker" && content.ExecutionOrigin == ExecutionOrigin.Unknown)
             {
                 return;
             }
-
-            if(content.StateType == StateType.End && !content.IsFinalStep())
+            
+            if(content.StateType == StateType.Start && !content.IsFirstStep())
             {
                 return;
             }
@@ -488,7 +486,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     _lastStep = content;
                 }
-                //return;
             }
 
             _continueDebugDispatch = false;
@@ -504,7 +501,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return;
             }
 
-            // BUG 9735 - 2013.06.22 - TWR : refactored
             AddItemToTree(content);
         }
 

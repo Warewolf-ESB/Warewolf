@@ -1492,19 +1492,7 @@ namespace Dev2.Runtime.Hosting
             List<ICompileMessageTO> messages = new List<ICompileMessageTO>();
             switch(beforeAction.ActionType)
             {
-                case enActionType.InvokeStoredProc:
-                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.DbMappingChangeRule, beforeAction.ResourceDefinition, contents));
-                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.DbIsRequireChangeRule, beforeAction.ResourceDefinition, contents));
-                    break;
-                case enActionType.InvokeWebService:
-                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WebServiceMappingChangeRule, beforeAction.ResourceDefinition, contents));
-                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WebServiceIsRequiredChangeRule, beforeAction.ResourceDefinition, contents));
-                    break;
-                case enActionType.Plugin:
-                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.PluginMappingChangeRule, beforeAction.ResourceDefinition, contents));
-                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.PluginIsRequiredChangeRule, beforeAction.ResourceDefinition, contents));
-                    break;
-                case enActionType.Workflow:
+               case enActionType.Workflow:
                     messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WorkflowMappingChangeRule, beforeAction.ResourceDefinition, contents));
                     break;
                 default:

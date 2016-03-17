@@ -12,5 +12,6 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsOutputsEmptyRows { get; }
         string RecordsetName { get; set; }
         IOutputDescription Description { get; set; }
+        bool OutputCountExpandAllowed { get; set; }
     }
 }

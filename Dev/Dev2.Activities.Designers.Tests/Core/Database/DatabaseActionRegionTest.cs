@@ -34,11 +34,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(25, dbActionRegion.CurrentHeight);
-            Assert.AreEqual(25, dbActionRegion.MaxHeight);
-            Assert.AreEqual(25, dbActionRegion.MinHeight);
             Assert.AreEqual(1, dbActionRegion.Errors.Count);
-            Assert.IsTrue(dbActionRegion.IsVisible);
+            Assert.IsTrue(dbActionRegion.IsEnabled);
         }
 
         [TestMethod]
@@ -101,10 +98,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             var dbsrc = new DbSourceDefinition() { Id = id, Name = "bob" };
-            var action = new DbAction() { Name = "bravo" };
+            var action = new DbAction() { Name = "bravo" ,SourceId = id};
 
             var s2 = new DbSourceDefinition() { Id = Guid.NewGuid(), Name = "bob" };
-            var action1 = new DbAction() { Name = "bravo" };
+            var action1 = new DbAction() { Name = "bravo" ,SourceId = Guid.NewGuid()};
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
@@ -124,8 +121,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             dbActionRegion.SelectedAction = action1;
 
             //------------Assert Results-------------------------
-            dep1.Verify(a => a.RestoreRegion(clone1.Object));
-            dep2.Verify(a => a.RestoreRegion(clone2.Object));
+            dep1.Verify(a => a.RestoreRegion(clone1.Object),Times.Never);
+            dep2.Verify(a => a.RestoreRegion(clone2.Object),Times.Never);
         }
 
         [TestMethod]
@@ -185,11 +182,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var cloned = dbActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.CurrentHeight, dbActionRegion.CurrentHeight);
-            Assert.AreEqual(cloned.MaxHeight, dbActionRegion.MaxHeight);
-            Assert.AreEqual(cloned.IsVisible, dbActionRegion.IsVisible);
-            Assert.AreEqual(cloned.MinHeight, dbActionRegion.MinHeight);
-            Assert.AreEqual(((DbActionRegion)cloned).SelectedAction, dbActionRegion.SelectedAction);
+            Assert.AreEqual(cloned.IsEnabled, dbActionRegion.IsEnabled);
+            Assert.AreEqual(((DbActionMemento)cloned).SelectedAction, dbActionRegion.SelectedAction);
         }
 
         [TestMethod]
@@ -211,21 +205,15 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //------------Execute Test---------------------------
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             // ReSharper disable once UseObjectOrCollectionInitializer
-            DbActionRegion dbActionRegionToRestore = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
-            dbActionRegionToRestore.MaxHeight = 144;
-            dbActionRegionToRestore.MinHeight = 133;
-            dbActionRegionToRestore.CurrentHeight = 111;
-            dbActionRegionToRestore.IsVisible = false;
+            DbActionMemento dbActionRegionToRestore = new DbActionMemento();
+            dbActionRegionToRestore.IsEnabled = false;
             dbActionRegionToRestore.SelectedAction = action;
 
             dbActionRegion.RestoreRegion(dbActionRegionToRestore);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(dbActionRegion.MaxHeight, 144);
-            Assert.AreEqual(dbActionRegion.MinHeight, 133);
-            Assert.AreEqual(dbActionRegion.CurrentHeight, 111);
             Assert.AreEqual(dbActionRegion.SelectedAction, action);
-            Assert.IsFalse(dbActionRegion.IsVisible);
+            Assert.IsFalse(dbActionRegion.IsEnabled);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Dev2.Activities
     public class DsfWebDeleteActivity : DsfWebActivityBase
     {
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public DsfWebDeleteActivity()
             : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Delete, "Web Delete Request Connector", "Web Delete Request Connector"))
         {
@@ -39,7 +40,7 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, putData: string.Empty);
+            var webRequestResult = PerformWebPostRequest(head, query, url, string.Empty);
             PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
 

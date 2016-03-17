@@ -98,7 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _previousParentInstanceID;
         IDebugState _debugState;
         bool _isOnDemandSimulation;
-        protected IResourceCatalog _resourceCatalog;
+        private IResourceCatalog _resourceCatalog;
         //Added for decisions checking errors bug 9704
         ErrorResultTO _tmpErrors = new ErrorResultTO();
 

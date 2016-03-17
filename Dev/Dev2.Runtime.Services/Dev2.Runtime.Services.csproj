@@ -101,9 +101,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Npgsql, Version=3.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.3.0.5\lib\net45\Npgsql.dll</HintPath>
@@ -166,9 +166,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Compiler\CompileRules\DBService_IsRequiredChangeRule.cs" />
-    <Compile Include="Compiler\CompileRules\PluginService_IsRequiredChangeRule.cs" />
-    <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
@@ -186,6 +183,7 @@
     <Compile Include="ESB\Management\Services\GetDllListings.cs" />
     <Compile Include="ESB\Management\Services\GetFiles.cs" />
     <Compile Include="ESB\Management\Services\GetMinSupportedServerVersion.cs" />
+    <Compile Include="ESB\Management\Services\GetServerInformationalVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListFields.cs" />
     <Compile Include="ESB\Management\Services\GetServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListService.cs" />
@@ -197,6 +195,7 @@
     <Compile Include="ESB\Management\Services\MoveItemService.cs" />
     <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
+    <Compile Include="ESB\Management\Services\ResetPerformanceCounters.cs" />
     <Compile Include="ESB\Management\Services\RollbackTo.cs" />
     <Compile Include="ESB\Management\Services\SaveEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
@@ -223,10 +222,7 @@
     <Compile Include="ESB\Management\Services\FetchCurrentServerLog.cs" />
     <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
     <Compile Include="Compiler\CompileRules\CompileRulesRepo.cs" />
-    <Compile Include="Compiler\CompileRules\DBService_MappingChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\IServiceCompileRule.cs" />
-    <Compile Include="Compiler\CompileRules\PluginService_MappingChangeRule.cs" />
-    <Compile Include="Compiler\CompileRules\WebService_MappingChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\Workflow_MappingChangeRule.cs" />
     <Compile Include="ESB\Management\Services\FetchCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />

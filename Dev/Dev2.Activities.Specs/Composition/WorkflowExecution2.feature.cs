@@ -16747,6 +16747,177 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Get Request returns text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void GetRequestReturnsText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Request returns text", ((string[])(null)));
+#line 4646
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4647
+   testRunner.Given("I have a workflow \"Wolf-1034-GetReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table881 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table881.AddRow(new string[] {
+                        "",
+                        "",
+                        "Result",
+                        "[[Result]]"});
+#line 4648
+   testRunner.And("\"Wolf-1034-ReturnsText\" contains \"Web/TestingReturnText\" from server \"localhost\" " +
+                    "with mapping as", ((string)(null)), table881, "And ");
+#line 4651
+   testRunner.When("\"Wolf-1034-ReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4652
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table882 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table882.AddRow(new string[] {
+                        "[[Result]] = 0.6.0.301"});
+#line 4653
+   testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-ReturnsText\' debug outputs as", ((string)(null)), table882, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Post Request returns text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void PostRequestReturnsText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post Request returns text", ((string[])(null)));
+#line 4658
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4659
+   testRunner.Given("I have a workflow \"Wolf-1034-PostReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table883 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table883.AddRow(new string[] {
+                        "",
+                        "",
+                        "Result",
+                        "[[Result]]"});
+#line 4660
+   testRunner.And("\"Wolf-1034-PostReturnsText\" contains \"Web/TestingReturnText\" from server \"localho" +
+                    "st\" with mapping as", ((string)(null)), table883, "And ");
+#line 4663
+   testRunner.When("\"Wolf-1034-PostReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4664
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table884 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table884.AddRow(new string[] {
+                        "[[Result]] = 0.6.0.301"});
+#line 4665
+   testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-PostReturnsText\' debug outputs" +
+                    " as", ((string)(null)), table884, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Put Request returns text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void PutRequestReturnsText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Put Request returns text", ((string[])(null)));
+#line 4670
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4671
+   testRunner.Given("I have a workflow \"Wolf-1034-PutReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table885 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table885.AddRow(new string[] {
+                        "",
+                        "",
+                        "Result",
+                        "[[Result]]"});
+#line 4672
+   testRunner.And("\"Wolf-1034-PutReturnsText\" contains \"Web/TestingReturnText\" from server \"localhos" +
+                    "t\" with mapping as", ((string)(null)), table885, "And ");
+#line 4675
+   testRunner.When("\"Wolf-1034-PutReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4676
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table886 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table886.AddRow(new string[] {
+                        "[[Result]] = 0.6.0.301"});
+#line 4677
+   testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-PutReturnsText\' debug outputs " +
+                    "as", ((string)(null)), table886, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete Request returns text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void DeleteRequestReturnsText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Request returns text", ((string[])(null)));
+#line 4682
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4683
+   testRunner.Given("I have a workflow \"Wolf-1034-DeleteReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table887 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table887.AddRow(new string[] {
+                        "",
+                        "",
+                        "Result",
+                        "[[Result]]"});
+#line 4684
+   testRunner.And("\"Wolf-1034-DeleteReturnsText\" contains \"Web/TestingReturnText\" from server \"local" +
+                    "host\" with mapping as", ((string)(null)), table887, "And ");
+#line 4687
+   testRunner.When("\"Wolf-1034-DeleteReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4688
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table888 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table888.AddRow(new string[] {
+                        "[[Result]] = 0.6.0.301"});
+#line 4689
+   testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-DeleteReturnsText\' debug outpu" +
+                    "ts as", ((string)(null)), table888, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

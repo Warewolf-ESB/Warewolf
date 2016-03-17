@@ -285,17 +285,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
+                if (resourceId != Guid.Empty)
+                {
+                    dataObject.ResourceID = resourceId;
+                }
+
                 if(dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     DispatchDebugState(dataObject, StateType.Before, 0);
                 }
 
                 
-                if(resourceId != Guid.Empty)
-                {
-                    dataObject.ResourceID = resourceId;
-                }
-
+                
                 // scrub it clean ;)
 
                 // set the parent service
@@ -515,18 +516,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
-                if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
-                {
-                    DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before,update);
-
-                }
-
                 Guid resourceId = dataObject.ResourceID;
                 if (resourceId != Guid.Empty)
                 {
                     dataObject.ResourceID = resourceId;
                 }
-
+                
                 // scrub it clean ;)
 
                 // set the parent service
@@ -557,6 +552,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
                             dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
                             BeforeExecutionStart(dataObject, allErrors);
+                            if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
+                            {
+                                DispatchDebugStateAndUpdateRemoteServer(dataObject, StateType.Before, update);
+
+                            }
                             allErrors.MergeErrors(tmpErrors);
                             // Execute Request
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, update);

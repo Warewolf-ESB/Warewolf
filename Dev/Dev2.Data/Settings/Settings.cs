@@ -10,8 +10,8 @@
 */
 
 using Dev2.Common.Interfaces.Monitoring;
+using Dev2.Communication;
 using Dev2.Services.Security;
-using Newtonsoft.Json;
 
 namespace Dev2.Data.Settings
 {
@@ -37,7 +37,8 @@ namespace Dev2.Data.Settings
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            var serializer = new Dev2JsonSerializer();
+            return serializer.Serialize(this);
         }
     }
 }

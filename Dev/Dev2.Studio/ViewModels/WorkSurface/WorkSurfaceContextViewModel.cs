@@ -454,7 +454,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 CommandManager.InvalidateRequerySuggested();
             }
 
-            if(debugStatus == DebugStatus.Configure)
+            if(debugStatus == DebugStatus.Executing)
             {
                 DebugOutputViewModel.Clear();
             }
@@ -480,7 +480,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 }
             }
 
-            SetDebugStatus(DebugStatus.Configure);
+            
             var inputDataViewModel = SetupForDebug(resourceModel, isDebug);
             _windowManager.ShowDialog(inputDataViewModel);
         }
@@ -490,6 +490,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             var inputDataViewModel = GetWorkflowInputDataViewModel(resourceModel, isDebug);
             inputDataViewModel.DebugExecutionStart += () =>
             {
+                SetDebugStatus(DebugStatus.Executing);
                 DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
                 var workfloDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
                 if(workfloDesignerViewModel != null)
@@ -583,7 +584,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            SetDebugStatus(DebugStatus.Configure);
             var inputDataViewModel = SetupForDebug(ContextualResourceModel, true);
             inputDataViewModel.LoadWorkflowInputs();
             inputDataViewModel.Save();

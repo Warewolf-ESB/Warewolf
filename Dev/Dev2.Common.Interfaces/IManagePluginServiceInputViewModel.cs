@@ -17,8 +17,9 @@ namespace Dev2.Common.Interfaces
         IGenerateInputArea InputArea { get; set; }
         bool PasteResponseVisible { get; set; }
         bool PasteResponseAvailable { get; }
-
-        void SetInitialVisibility();
+        bool OutputCountExpandAllowed { get; set; }
+        bool InputCountExpandAllowed { get; set; }
+        bool IsGenerateInputsEmptyRows { get; set; }
     }
 
     public interface IManageWebServiceInputViewModel : IToolRegion, IManageServiceInputViewModel<IWebService>
@@ -31,7 +32,8 @@ namespace Dev2.Common.Interfaces
         IGenerateInputArea InputArea { get; set; }
         bool PasteResponseVisible { get; set; }
         bool PasteResponseAvailable { get; }
-
-        void SetInitialVisibility();
+        bool OutputCountExpandAllowed { get; set; }
+        bool InputCountExpandAllowed { get; set; }
+        bool IsGenerateInputsEmptyRows { get; set; }
     }
 }

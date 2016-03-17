@@ -55,6 +55,45 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowCorruptTaskResult")]
+        public void PopupController_ShowCorruptTaskResult_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            string errorMessage = string.Empty;
+
+            string expectedDescription = "Unable to retrieve tasks." + Environment.NewLine +
+                                         "ERROR: " + errorMessage + ". " + Environment.NewLine +
+                                         "Please check that there a no corrupt files." + Environment.NewLine +
+                                        @"C:\Windows\System32\Tasks\Warewolf";
+
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowCorruptTaskResult(errorMessage);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Scheduler load error", header);
+            Assert.AreEqual(expectedDescription, description);
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("PopupController_ShowNameChangedConflict")]
         public void PopupController_ShowNameChangedConflict_SetProperties_AllPropertiesDisplayed()

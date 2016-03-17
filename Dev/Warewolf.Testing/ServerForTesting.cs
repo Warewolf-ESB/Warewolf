@@ -26,6 +26,17 @@ namespace Warewolf.Testing
             _updateManager = new Mock<IStudioUpdateManager>().Object;
         }
 
+        public ServerForTesting(Mock<IExplorerRepository> explorerRepository,Mock<IQueryManager> mockQueryManager)
+        {
+            MockExplorerRepo = explorerRepository;
+            _explorerProxy = explorerRepository.Object;
+            ResourceName = "localhost";
+            DisplayName = "localhost";
+            ServerID = Guid.Empty;
+            _updateManager = new Mock<IStudioUpdateManager>().Object;
+            _queryManager = mockQueryManager.Object;
+        }
+
         public ServerForTesting(Mock<IExplorerRepository> explorerRepository, WindowsGroupPermission permission)
         {
             MockExplorerRepo = explorerRepository;
@@ -34,7 +45,7 @@ namespace Warewolf.Testing
             DisplayName = "localhost";
             ServerID = Guid.Empty;
             _updateManager = new Mock<IStudioUpdateManager>().Object;
-            Permissions = new List<IWindowsGroupPermission>{ permission};
+            Permissions = new List<IWindowsGroupPermission>{ permission };
         }
 
         private readonly IExplorerRepository _explorerProxy;
@@ -143,6 +154,7 @@ namespace Warewolf.Testing
         int i = 1;
         private bool _canDeployTo;
         private bool _canDeployFrom;
+        private IQueryManager _queryManager;
 
         private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
         {
@@ -179,22 +191,6 @@ namespace Warewolf.Testing
             return null;
         }
 
-//        public IList<IToolDescriptor> LoadTools()
-//        {
-//            return new List<IToolDescriptor>
-//            {
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Decision","",new Version(),true,"Controlflow",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Data Merge","",new Version(),true,"Controlflow",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Data Split","",new Version(),true,"Controlflow",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Delete","",new Version(),true,"Controlflow",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Base Conversion","",new Version(),true,"Data",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Drop box","",new Version(),true,"Dropbox",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"SQL Bulk Insert","",new Version(),true,"Recordset",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Web Request","",new Version(),true,"Recordset",ToolType.Native, "" ),
-//                new ToolDescriptor(Guid.NewGuid(), new Mock<IWarewolfType>().Object,new Mock<IWarewolfType>().Object,"Format Number","",new Version(),true,"Utility",ToolType.Native, "" )
-//            };
-//        }
-
         public IExplorerRepository ExplorerRepository
         {
             get
@@ -210,7 +206,14 @@ namespace Warewolf.Testing
         [JsonIgnore]
         public IQueryManager QueryProxy
         {
-            get { return null; }
+            get
+            {
+                if (_queryManager != null)
+                {
+                    return _queryManager;
+                }
+                return new Mock<IQueryManager>().Object;
+            }
         }
 
         public bool IsConnected
@@ -266,6 +269,11 @@ namespace Warewolf.Testing
         public Mock<IExplorerRepository> MockExplorerRepo { get; set; }
 
         public string GetServerVersion()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetServerInformationalVersion()
         {
             throw new NotImplementedException();
         }

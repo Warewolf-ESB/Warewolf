@@ -101,6 +101,21 @@ namespace Dev2.Studio.Controller
             IsQuestion = false;
             return Show();
         }
+        public MessageBoxResult ShowCorruptTaskResult(string errorMessage)
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = "Scheduler load error";
+            Description = "Unable to retrieve tasks." + Environment.NewLine + 
+                          "ERROR: " + errorMessage + ". " + Environment.NewLine + 
+                          "Please check that there a no corrupt files."  + Environment.NewLine + 
+                         @"C:\Windows\System32\Tasks\Warewolf";
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            return Show();
+        }
 
         public MessageBoxResult ShowNameChangedConflict(string oldName, string newName)
         {

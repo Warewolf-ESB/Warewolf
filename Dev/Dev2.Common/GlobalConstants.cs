@@ -560,6 +560,8 @@ public static int MinCompressVersionMinor
             }
    
         }
+        public static string DropBoxSucces = "Success";
+        public static string DropBoxFailure = "Failed";
         public static string GlobalCounterName = "All";
         public static string Warewolf = "Warewolf";
         public static string WarewolfServices = "Warewolf Services";
