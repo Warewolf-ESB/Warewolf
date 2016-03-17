@@ -79,6 +79,7 @@
     <Compile Include="PublicFunctions.fs" />
     <Compile Include="WarewolfTestData.fs" />
     <Compile Include="EvalTools.fs" />
+    <Compile Include="IntellisenseStringProvider.fs" />
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>

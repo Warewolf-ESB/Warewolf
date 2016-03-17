@@ -12,6 +12,7 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:editors="clr-namespace:WpfControls.Editors;assembly=WpfControls"
                                Width="200"
                                MaxWidth="200"
                                mc:Ignorable="d"
@@ -37,25 +38,26 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Recordset" />
-        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+        <editors:AutoCompleteTextBox x:Name="InitialFocusElement"
+                            
                                 Grid.Column="1"
                                 Grid.Row="0"
-                                DefaultText="[[Recordset()]]"
-                                FilterType="RecordsetsOnly"
+                                Watermark="[[Recordset()]]"
+                                FilterType="RecordsetFields"
                                 ToolTip="{x:Static help:HelpTextResources.LengthToolTipRecordset}"
-                                WrapInBrackets="True"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Text="{Binding Path=RecordsetNameValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
+                                Provider="{Binding RecordSetProvider}"
+                                  WrapInBrackets="True"
+                                Text="{Binding RecordsetNameValue}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorsettxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.LengthHelpRecordset}" DataContext="{Binding}" />
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.LengthHelpRecordset}"
+                                 DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="RecordsetNameValue"
                                      SourcePropertyValue="{Binding RecordsetNameValue, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+        </editors:AutoCompleteTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
         <ui:IntellisenseTextBox Grid.Row="1"

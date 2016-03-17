@@ -19,6 +19,10 @@ type WarewolfEvalResult =
     | WarewolfRecordSetResult of WarewolfRecordset
 
 
+let IsAtomExpression (a:LanguageExpression ) =
+    match a with
+    |WarewolfAtomAtomExpression a -> true
+    |_-> false
 
 let atomtoString (x:WarewolfAtom )=
     match x with 
@@ -169,11 +173,27 @@ and  languageExpressionToString  (x:LanguageExpression) =
 
 and  LanguageExpressionToStringWithoutStuff  (x:LanguageExpression) =
     match x with
-        | RecordSetExpression _ -> ""
-        | ScalarExpression _ -> ""
+        | RecordSetExpression a -> ""
+        | ScalarExpression a -> ""
         | WarewolfAtomAtomExpression a -> atomtoString a
-        | ComplexExpression _ -> ""
-        | RecordSetNameExpression _ -> ""
+        | ComplexExpression a -> ""
+        | RecordSetNameExpression a -> ""
+
+and LanguageExpressionToSumOfInt (x: LanguageExpression list) =
+    let expressionToInt (current:int) (y:LanguageExpression) =
+        match current with 
+        | -1 -> -99
+        | _ ->
+                match y with
+                | RecordSetExpression _ -> current
+                | ScalarExpression _ -> current
+                | RecordSetNameExpression _ -> current
+                | ComplexExpression _ -> current
+                | WarewolfAtomAtomExpression a when languageExpressionToString y = "]]" -> current-1 
+                | WarewolfAtomAtomExpression a when languageExpressionToString y = "[[" -> current+1 
+                | WarewolfAtomAtomExpression _ -> current 
+    let sum = List.fold expressionToInt 0 x
+    sum
 
 and evalRecordsSet (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
@@ -239,6 +259,85 @@ and parseLanguageExpressionWithoutUpdate  (lang:string) : LanguageExpression=
                     ParseCache<-ParseCache.Add(lang,res)
                     res
     else WarewolfAtomAtomExpression (parseAtom lang)
+
+and ValidateRecordsetIndex (ind:Index) =
+    match ind with 
+    | IndexExpression a -> 
+        match a with 
+            | RecordSetExpression _ -> ""
+            | RecordSetNameExpression _ -> ""
+            | ScalarExpression _ ->  ""
+            | ComplexExpression x -> ParseLanguageExpressionAndValidate (languageExpressionToString a) |> snd
+            | WarewolfAtomAtomExpression _ ->"Recordset index (" + languageExpressionToString a + ") contains invalid character(s)"
+    | _ -> ""
+        
+and ParseLanguageExpressionAndValidate  (lang:string) : (LanguageExpression*string)=
+    if( lang.Contains"[[")
+    then
+        try 
+            let lexbuf = LexBuffer<string>.FromString lang 
+            let buffer = Parser.start Lexer.tokenstream lexbuf
+            let res = buffer |> Clean
+            match res with 
+            | RecordSetExpression e -> (res,ValidateRecordsetIndex e.Index)
+            | RecordSetNameExpression e -> (res,ValidateRecordsetIndex e.Index)
+            | ScalarExpression _ -> (res,"")
+            | ComplexExpression x -> VerifyComplexExpression(x)
+            | WarewolfAtomAtomExpression _ -> (res,"")
+        with ex when ex.Message.ToLower() = "parse error" -> 
+                                                                 if(lang.Length>2) then
+                                                                    let startswithNum,_ = System.Int32.TryParse(lang.[2].ToString())
+                                                                    match startswithNum with
+                                                                        | true -> (WarewolfAtomAtomExpression (DataString lang),"Variable name " + lang +  " begins with a number")
+                                                                        |false -> (WarewolfAtomAtomExpression (DataString lang),"Variable name " + lang + " contains invalid character(s)")
+                                                                 else
+             
+                                                                    (WarewolfAtomAtomExpression (DataString lang),"Variable name " + lang + " contains invalid character(s)")
+    else (WarewolfAtomAtomExpression (parseAtom lang),"")
+
+and CheckForInvalidVariables (lang:LanguageExpression list) =
+    let updateLanguageExpression (a:LanguageExpression) =
+        match a with 
+            | RecordSetExpression _ -> WarewolfAtomAtomExpression (DataString "")
+            | RecordSetNameExpression _ -> WarewolfAtomAtomExpression (DataString"")
+            | ScalarExpression _ ->  WarewolfAtomAtomExpression (DataString"")
+            | ComplexExpression x -> a
+            | WarewolfAtomAtomExpression _ ->a
+    let data = List.map (languageExpressionToString << updateLanguageExpression) lang |> fun a-> System.String.Join("",a)
+    if data = languageExpressionToString (ComplexExpression lang)
+    then
+        if(data.Length>2) then
+            let startswithNum,_ = System.Int32.TryParse(data.[2].ToString())
+            match startswithNum with
+                | true -> (ComplexExpression lang,"Recordset field " + data +  " begins with a number")
+                |false -> (ComplexExpression lang,"Variable name " + data + " contains invalid character(s)")
+         else
+             
+            (ComplexExpression lang,"Variable name " + data + " contains invalid character(s)")
+    else
+        
+        let parsed = ParseLanguageExpressionAndValidate data
+        let res=     match parsed with 
+                        | (RecordSetExpression a,_)  -> parsed
+                        | (RecordSetNameExpression f,_)  -> parsed
+                        | (ScalarExpression f,_) ->  parsed
+                        | (ComplexExpression x,_) when  data.StartsWith"[[" && data.EndsWith("]]")  -> (ComplexExpression lang,"invalid variable name")
+                        | (ComplexExpression x,_) -> parsed
+                        | (WarewolfAtomAtomExpression _,_) ->parsed
+        res
+
+and VerifyComplexExpression (lang:LanguageExpression list) =
+    if  List.exists IsAtomExpression lang
+    then
+        let balanced = LanguageExpressionToSumOfInt lang 
+        match balanced with 
+        | 99 -> (ComplexExpression lang,"The order of [[ and ]] is incorrect")
+        | a when a<0 -> (ComplexExpression lang,"Invalid region detected: A close ]] without a related open [[")
+        | 0 -> CheckForInvalidVariables lang
+        |_ -> (ComplexExpression lang,"Invalid region detected: An open [[ without a related close ]]")
+
+    else 
+        (ComplexExpression lang,"")
 
 and parseLanguageExpression  (lang:string)  (update:int): LanguageExpression=
     let data = parseLanguageExpressionWithoutUpdate lang
