@@ -290,6 +290,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Testing", "Warewol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.SharepointTest", "SharepointTest\Warewolf.SharepointTest.csproj", "{58BFAFE8-8B35-4B02-B983-3CBEA65A3A02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplicationToTestNetwork", "ConsoleApplicationToTestNetwork\ConsoleApplicationToTestNetwork.csproj", "{FEF0E429-201C-4530-9E14-698910D49FB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -712,6 +714,10 @@ Global
 		{58BFAFE8-8B35-4B02-B983-3CBEA65A3A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58BFAFE8-8B35-4B02-B983-3CBEA65A3A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58BFAFE8-8B35-4B02-B983-3CBEA65A3A02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEF0E429-201C-4530-9E14-698910D49FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF0E429-201C-4530-9E14-698910D49FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF0E429-201C-4530-9E14-698910D49FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF0E429-201C-4530-9E14-698910D49FB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
