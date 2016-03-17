@@ -19,6 +19,7 @@ namespace Dev2.Helpers
     class Dev2WebClient : IDev2WebClient
     {
         readonly WebClient _webClient;
+        private WebClient webClient;
 
         public Dev2WebClient(WebClient webClient)
         {
