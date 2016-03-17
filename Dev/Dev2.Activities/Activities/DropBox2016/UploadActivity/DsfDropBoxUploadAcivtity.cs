@@ -1,44 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.Debug;
+using System.Net.Http;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
-using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
+using Dev2.Util;
 using Dropbox.Api;
 using Dropbox.Api.Files;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
-using Warewolf.Storage;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     [ToolDescriptorInfo("DropBoxLogo", "Upload to Drop Box", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Connectors", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
-    public class DsfDropBoxUploadAcivtity : DsfActivity
+    public class DsfDropBoxUploadAcivtity : DsfBaseActivity
     {
         private DropboxClient _client;
         private bool _addMode;
         private bool _overWriteMode;
-        protected FileMetadata _fileMetadata;
-        protected Exception _exception;
+        protected FileMetadata FileMetadata;
+        protected Exception Exception;
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
         public DsfDropBoxUploadAcivtity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = "Upload to Drop Box";
-            Type = "Upload to Drop Box";
             OverWriteMode = true;
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public OauthSource SelectedSource { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        [Inputs("Local File Path")]
+        [FindMissing]
         public string FromPath { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        [Inputs("Path in the user's Dropbox")]
+        [FindMissing]
         public string ToPath { get; set; }
         public bool OverWriteMode
         {
@@ -65,90 +67,61 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
         }
         // ReSharper disable once MemberCanBeProtected.Global
+        [Outputs("Upload Status")]
         public string FileSuccesResult { get; set; }
 
         [ExcludeFromCodeCoverage]
         private DropboxClient GetClient()
         {
-            return _client ?? (_client = new DropboxClient(SelectedSource.Secret, new DropboxClientConfig(GlobalConstants.UserAgentString)));
+            if (_client != null)
+            {
+
+                return _client;
+        }
+            var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
+            {
+                Timeout = TimeSpan.FromMinutes(20)
+            };
+            _client = new DropboxClient(SelectedSource.Secret, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
+            return _client;
         }
 
         #region Overrides of DsfActivity
 
         public override enFindMissingType GetFindMissingType()
         {
-            return enFindMissingType.DataGridActivity;
+            return enFindMissingType.StaticActivity;
         }
-
-        [ExcludeFromCodeCoverage]
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
+        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            tmpErrors = new ErrorResultTO();
             try
             {
-                dataObject.Environment.Assign(FileSuccesResult, string.Empty, update);
                 var writeMode = GetWriteMode();
                 DropboxSingleExecutor = new DropBoxUpload(writeMode, ToPath, FromPath);
                 var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
                 var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
                 if (dropboxSuccessResult != null)
                 {
-                    _fileMetadata = dropboxSuccessResult.GerFileMetadata();
-                    dataObject.Environment.Assign(FileSuccesResult, GlobalConstants.DropBoxSucces, update);
+                    FileMetadata = dropboxSuccessResult.GerFileMetadata();
+                    return FileMetadata.PathDisplay;
                 }
-                var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-                // ReSharper disable once InvertIf
-                if (dropboxFailureResult != null)
+                if((dropboxExecutionResult as DropboxFailureResult)!=null)
                 {
-                    _exception = dropboxFailureResult.GetException();
-                    dataObject.Environment.Assign(FileSuccesResult, GlobalConstants.DropBoxFailure, update);
+                    Exception = (dropboxExecutionResult as DropboxFailureResult).GetException();
+                    return Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
                 }
+                throw new Exception("An unkown exception occurred");
             }
             catch (Exception e)
             {
-                dataObject.Environment.AddError(e.Message);
                 Dev2Logger.Error(e.Message, e);
-                dataObject.Environment.Assign(FileSuccesResult, GlobalConstants.DropBoxFailure, update);
+                return e.Message;
             }
-
-        }
-
-
-
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            if (env == null) return _debugInputs;
-            base.GetDebugInputs(env, update);
-
-            if (FromPath != null)
-            {
-                AddDebugInputItem(new DebugEvalResult(FromPath, "Local File Path", env, update));
-            }
-            if (ToPath != null)
-            {
-                AddDebugInputItem(new DebugEvalResult(ToPath, "Path in the user's Dropbox", env, update));
-            }
-
-            return _debugInputs;
         }
 
         #region Overrides of DsfActivity
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            if (env == null) return _debugOutputs;
-            base.GetDebugInputs(env, update);
-
-            if(_fileMetadata != null)
-            {
-                AddDebugOutputItem(new DebugItemStaticDataParams(string.IsNullOrEmpty(_fileMetadata.Name) ? "No File" : _fileMetadata.Name, "Uploaded File"));
-            }
-            if (_exception != null)
-            {
-                AddDebugOutputItem(new DebugItemStaticDataParams(string.IsNullOrEmpty(_exception.Message) ? "exception Occured" : _exception.Message, "Uploaded File"));
-            }
-            return _debugOutputs;
-        }
+        public override string DisplayName { get; set; }
 
         #endregion
 
