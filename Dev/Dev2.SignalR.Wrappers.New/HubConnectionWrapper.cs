@@ -17,8 +17,6 @@ namespace Dev2.SignalR.Wrappers.New
         private HubConnectionWrapper(HubConnection wrapped)
         {
             _wrapped = wrapped;
-//            _wrapped.TraceLevel = TraceLevels.All;
-//            _wrapped.TraceWriter = new Dev2LoggingTextWriter();
         }
 
         public HubConnectionWrapper(string uriString)
@@ -42,6 +40,7 @@ namespace Dev2.SignalR.Wrappers.New
                 _wrapped.Error -= value;
             }
         }
+
         public event Action Closed
         {
             add
@@ -53,6 +52,7 @@ namespace Dev2.SignalR.Wrappers.New
                 _wrapped.Closed -= value;
             }
         }
+
         public event Action<IStateChangeWrapped> StateChanged
         {
             add
@@ -63,6 +63,7 @@ namespace Dev2.SignalR.Wrappers.New
             {
             }
         }
+
         public ConnectionStateWrapped State
         {
             get

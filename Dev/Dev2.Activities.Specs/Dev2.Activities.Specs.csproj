@@ -47,6 +47,22 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Toolbox\Data\BaseConversion\BaseConversion3.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseConversion.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Rename\Rename2.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rename.feature</DependentUpon>
+    </Compile>
+    <Compile Include="WarewolfVersionUpdater\VersionDownloader.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VersionDownloader.feature</DependentUpon>
+    </Compile>
+    <Compile Include="WarewolfVersionUpdater\VersionDownloaderSteps.cs" />
     <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.DotMemoryUnit.2.1.20150828.125449\Lib\dotMemory.Unit.dll</HintPath>
       <Private>True</Private>
@@ -266,11 +282,6 @@
       <DependentUpon>Assign.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Assign\AssignSteps.cs" />
-    <Compile Include="Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BaseConversion.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\Data\BaseConversion\BaseConversionSteps.cs" />
     <Compile Include="Toolbox\Data\CaseConversion\CaseConversion.feature.cs">
       <AutoGen>True</AutoGen>
@@ -344,11 +355,6 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read Folder\ReadFolderSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Rename\Rename.feature.cs">
-      <DependentUpon>Rename.feature</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
@@ -596,6 +602,7 @@
     </None>
     <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BaseConversion3.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\CaseConversion\CaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -790,6 +797,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>XPath.feature.cs</LastGenOutput>
     </None>
+    <None Include="WarewolfVersionUpdater\VersionDownloader.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>VersionDownloader.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
@@ -944,7 +955,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Toolbox\3rd Party Connectors\Sharepoint\" />
-    <Folder Include="WarewolfVersionUpdater\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
