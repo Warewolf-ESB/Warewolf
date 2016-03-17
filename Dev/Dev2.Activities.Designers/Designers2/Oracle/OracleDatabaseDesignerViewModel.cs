@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.Oracle
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
-            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
+            InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), null, dbServiceModel);
         }
 
         public OracleDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
@@ -89,7 +89,7 @@ namespace Dev2.Activities.Designers2.Oracle
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
-            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, new AsyncWorker(), new ManageServiceInputViewModel(), dbServiceModel);
+            InitialiseViewModel(rootModel, environmentRepository, eventPublisher, new AsyncWorker(), null, dbServiceModel);
         }
 
         public OracleDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IManageServiceInputViewModel manageServiceInputViewModel, IDbServiceModel dbServiceModel)

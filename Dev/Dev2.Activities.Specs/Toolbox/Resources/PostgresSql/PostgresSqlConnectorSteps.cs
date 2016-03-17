@@ -124,7 +124,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
-            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsVisible;
+            var hasInputs = viewModel.InputArea.Inputs != null;
             Assert.IsTrue(hasInputs);
         }
 
@@ -278,7 +278,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenInputsIsEnable()
         {
             var viewModel = GetViewModel();
-            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsVisible;
+            var hasInputs = viewModel.InputArea.Inputs != null;
             Assert.IsTrue(hasInputs);
         }
 
