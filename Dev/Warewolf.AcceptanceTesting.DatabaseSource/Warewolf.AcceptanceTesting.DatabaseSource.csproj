@@ -78,9 +78,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="..\..\..\Users\Bernardt\Desktop\NewPostgresSqlSteps.cs">
-      <Link>PostgresSqlSource\NewPostgresSqlSteps.cs</Link>
-    </Compile>
     <Compile Include="New Database Source.feature.cs">
       <DependentUpon>New Database Source.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -90,11 +87,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="PostgresSqlSource\PostgresSqlSource.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PostgresSqlSource.feature</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -103,10 +95,6 @@
       <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="PostgresSqlSource\PostgresSqlSource.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostgresSqlSource.feature.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

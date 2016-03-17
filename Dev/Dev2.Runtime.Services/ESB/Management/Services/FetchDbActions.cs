@@ -53,7 +53,7 @@ var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerW
                     db.ServerType = dbSource.Type;
                     db.ResourceName = dbSource.Name;
 
-                    var  methods = services.FetchMethods(db).Select(CreateDbAction).OrderBy(a => a.Name);
+                    var methods = services.FetchMethods(src).Select(method => CreateDbAction(method, src)).OrderBy(a => a.Name);
                     return serializer.SerializeToBuilder(new ExecuteMessage
                     {
                         HasError = false,
@@ -63,7 +63,7 @@ var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerW
                 else
                 {
                     
-                   var methods = services.FetchMethods(src).Select(CreateDbAction).OrderBy(a => a.Name);
+                   var methods = services.FetchMethods(src).Select(method => CreateDbAction(method,src)).OrderBy(a => a.Name);
                     return serializer.SerializeToBuilder(new ExecuteMessage
                     {
                         HasError = false,
