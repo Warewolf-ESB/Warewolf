@@ -10,7 +10,7 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetServerVersion : IEsbManagementEndpoint
+    public class GetServerInformationalVersion : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -30,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "GetServerVersion";
+            return "GetServerInformationalVersion";
         }
 
 
@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var asm = Assembly.GetExecutingAssembly();
             var fileName = asm.Location;
             var versionResource = FileVersionInfo.GetVersionInfo(fileName);
-            return versionResource.FileVersion;
+            return versionResource.ProductVersion;
         }
     }
 }
