@@ -52,7 +52,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             _sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
-
+            IsDropboxSourceWizardSourceMessagePulished = false;
 
         }
         public ICommand NewSourceCommand { get; set; }
@@ -223,10 +223,14 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         }
         void CreateOAuthSource()
         {
+            IsDropboxSourceWizardSourceMessagePulished = false;
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
             _sources = LoadOAuthSources();
+            IsDropboxSourceWizardSourceMessagePulished = true;
         }
-
+        [ExcludeFromCodeCoverage]
+        //Used by specs
+        public bool IsDropboxSourceWizardSourceMessagePulished { get; set; }
         ObservableCollection<OauthSource> LoadOAuthSources()
         {
             var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
