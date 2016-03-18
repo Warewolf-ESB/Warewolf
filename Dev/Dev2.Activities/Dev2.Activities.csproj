@@ -168,12 +168,14 @@
     <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
     <Compile Include="Activities\DropBox2016\DropboxFailureResult.cs" />
     <Compile Include="Activities\DropBox2016\DropboxSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DropboxSoureFileValidator.cs" />
     <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
     <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxSingleExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxTeamExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxResult.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\IFilenameValidator.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
