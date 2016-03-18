@@ -2,7 +2,7 @@ using Dropbox.Api.Files;
 
 namespace Dev2.Activities.DropBox2016
 {
-    public class DropboxSuccessResult : FileMetadata, IDropboxResult
+    public class DropboxSuccessResult : IDropboxResult
     {
         private readonly FileMetadata _metadata;
 
