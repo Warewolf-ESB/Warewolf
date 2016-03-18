@@ -22,6 +22,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         private ExplorerItemViewModel _target;
         private Mock<IServer> _serverMock;
+        private Mock<IStudioUpdateManager> _updateManager;
         private Mock<IExplorerTreeItem> _explorerTreeItemMock;
         private Mock<IShellViewModel> _shellViewModelMock;
         private Mock<IExplorerRepository> _explorerRepositoryMock;
@@ -36,6 +37,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _serverMock = new Mock<IServer>();
+            _updateManager = new Mock<IStudioUpdateManager>();
+            _serverMock.Setup(a=>a.UpdateRepository).Returns(_updateManager.Object);
+           
             _explorerTreeItemMock = new Mock<IExplorerTreeItem>();
             _shellViewModelMock = new Mock<IShellViewModel>();
             _explorerRepositoryMock = new Mock<IExplorerRepository>();
@@ -1551,9 +1555,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
-            Assert.AreEqual(1, childDestItem.Object.Children.Count);
-            Assert.IsTrue(childDestItem.Object.Children.Contains(currentChildrenMock.Object));
-            currentChildrenMock.VerifySet(it=>it.ResourcePath = "somePath\\someResourceName");
             studioUpdateManagerMock.Verify(it=>it.FireItemSaved());
         }
 
@@ -1586,10 +1587,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
-            destinationMock.Verify(it => it.AddChild(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
-            Assert.AreSame(destinationMock.Object, _target.Parent);
-            currentChildrenMock.VerifySet(it => it.ResourcePath = "someDestPath\\someResourceName");
+         
+
+
             studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
@@ -1619,9 +1619,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsTrue(result);
-            destinationMock.Verify(it => it.AddChild(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
-            Assert.AreEqual("someDestPath\\someName", _target.ResourcePath);
+
             studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
@@ -1652,8 +1650,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsTrue(result);
-            destinationMock.Verify(it => it.AddChild(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
+
             studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
@@ -1678,13 +1675,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceType = ResourceType.WebSource;
 
             var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
-
+            _explorerRepositoryMock.Setup(a => a.Move(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IExplorerTreeItem>())).Throws(new Exception());
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
             //act
             var result = await _target.Move(destinationMock.Object);
             //assert
             Assert.IsFalse(result);
-            destinationMock.Verify(it => it.AddChild(_target));
+
             studioUpdateManagerMock.Verify(it => it.FireItemSaved());
         }
 
