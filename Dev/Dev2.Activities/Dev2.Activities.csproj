@@ -169,7 +169,7 @@
     <Compile Include="Activities\DropBox2016\DropboxFailureResult.cs" />
     <Compile Include="Activities\DropBox2016\DropboxSuccessResult.cs" />
     <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
-    <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadAcivtity.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxSingleExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxTeamExecutor.cs" />
