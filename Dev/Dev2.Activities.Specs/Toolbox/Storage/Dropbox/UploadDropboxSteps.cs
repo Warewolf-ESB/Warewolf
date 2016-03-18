@@ -14,17 +14,18 @@ using Dev2.Data.ServiceModel;
 using Dev2.Services.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
+using Dev2.Activities.Designers2.DropBox2016.Upload;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
     [Binding]
     //[Owner("Nkosinathi Sangweni")]
-    public class UploadDropboxSteps
+    public class UploadDropboxSteps : RecordSetBases
     {
         [Given(@"I drag Upload Dropbox Tool onto the design surface")]
         public void GivenIDragWriteDropboxToolOntoTheDesignSurface()
         {
-            var dropBoxUploadTool = new DsfDropBoxUploadAcivtity();
+            var dropBoxUploadTool = new DsfDropBoxUploadActivity();
             var modelItem = ModelItemUtils.CreateModelItem(dropBoxUploadTool);
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
