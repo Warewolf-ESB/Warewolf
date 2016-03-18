@@ -1,5 +1,5 @@
 ﻿@DbSource
-Feature: New Database Source
+Feature: New PostgresSql Database Source
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
@@ -40,19 +40,19 @@ Scenario: Creating New DB Source as User Auth
    | PostgreSql Database                |
    And I Type Select The Server as "Localhost"
    And Type options has "Microsoft SQL Server" as the default
-   And Database Dropdown is "Collapsed"
+   And database dropdown is "Collapsed"
    And I Select Authentication type as "User"
-   And "Save" Save Is "Disabled"
-   And "Test Connection" Connection Is "Enabled"
-   Then Username field Is "Collapsed"
-   And Password field Is "Collapsed"
-   Then Database dropdown Is "Collapsed"
+   And "Save" Save is "Disabled"
+   And "Test Connection" Connection is "Enabled"
+   Then Username Is "Collapsed"
+   And Password  Is "Collapsed"
+   Then Database dropdown is "Collapsed"
    And "Test Connection" Con Is "Enabled"
    And "Cancel Test" Cancel Is "Disabled"
    When I Click test connnection "Test Connection"
    Then "Cancel Test" Disabled Is "Disabled"
    Then Test Connecton Is "Successful"
-   Then Database dropdown Is "Visible"
+   Then Database dropdown is "Visible"
    Then I select "postgres" As Database
    And "Save" Save Is Enabled "Enabled"   
    When I save the source As "SavedDBSource"
@@ -93,7 +93,7 @@ Scenario: Editing saved DB Source Remembers credentials
     And Password  Is "******"
     Then "Test Connection" Connection is "Enabled" 
     And "Save" Save is "Disabled"
-    Then Database Dropdown is "Collapsed"
+    Then Database dropdown is "Collapsed"
     And "Test Connection" Connection is "Enabled"
     When Test connecton is "Successful"
 	Then "Save" Save is "Enabled"
