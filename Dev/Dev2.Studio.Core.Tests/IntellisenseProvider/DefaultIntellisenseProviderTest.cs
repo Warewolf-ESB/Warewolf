@@ -26,11 +26,9 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
-using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
