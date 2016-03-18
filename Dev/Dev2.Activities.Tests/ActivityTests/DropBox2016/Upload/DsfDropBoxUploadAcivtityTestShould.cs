@@ -236,6 +236,51 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void ExecuteTool_GivenNoFromPath_ShouldAddError()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
+                .Returns(new DropboxSuccessResult(TestConstant.FileMetadataInstance.Value));
+            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
+            //---------------Execute Test ----------------------
+            var datObj = new Mock<IDSFDataObject>();
+            var executionEnvironment = new Mock<IExecutionEnvironment>();
+            datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
+            // ReSharper disable once RedundantAssignment
+            IDSFDataObject dataObject = datObj.Object;
+            dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
+            //---------------Test Result -----------------------
+            executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file location has been entered"));
+        } 
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ExecuteTool_GivenNoToPath_ShouldAddError()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
+                .Returns(new DropboxSuccessResult(TestConstant.FileMetadataInstance.Value));
+            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+            dsfDropBoxUploadAcivtityMock.FromPath = "File.txt";
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
+            //---------------Execute Test ----------------------
+            var datObj = new Mock<IDSFDataObject>();
+            var executionEnvironment = new Mock<IExecutionEnvironment>();
+            datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
+            // ReSharper disable once RedundantAssignment
+            IDSFDataObject dataObject = datObj.Object;
+            dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
+            //---------------Test Result -----------------------
+            executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file destination has been entered"));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
         public void PerformExecution_GivenNoPaths_ShouldThrowException()
         {
@@ -251,7 +296,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Test Result -----------------------
             Assert.Fail("Exception Not Throw");
         }
-       
+
+
     }
 
     public class DsfDropBoxUploadActivityMock : DsfDropBoxUploadActivity
@@ -283,6 +329,16 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                 return FileMetadata;
             }
         }
+
+        #region Overrides of DsfDropBoxUploadActivity
+
+        // ReSharper disable once RedundantOverridenMember
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            base.ExecuteTool(dataObject, update);
+        }
+
+        #endregion
 
         public void SetBaseMetadata(FileMetadata metadata)
         {
@@ -317,6 +373,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var perfomBaseExecution = base.PerformExecution(dictionaryValues);
             return perfomBaseExecution;
         }
+
+        #region Overrides of DsfNativeActivity<string>
+
+        
+
+        #endregion
 
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
