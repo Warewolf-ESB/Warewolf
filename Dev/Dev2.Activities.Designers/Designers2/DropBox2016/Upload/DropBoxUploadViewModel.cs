@@ -22,7 +22,7 @@ using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.DropBox2016.Upload
 {
-    public class DropBoxUploadViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
+    public class DropBoxUploadViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
         private ObservableCollection<OauthSource> _sources;
         private readonly IEnvironmentModel _environmentModel;
@@ -32,7 +32,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         private string _result;
         private bool _overWriteMode;
         private bool _addMode;
-        private string _fileSuccesResult;
 
         [ExcludeFromCodeCoverage]
         public DropBoxUploadViewModel(ModelItem modelItem)
@@ -41,7 +40,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         }
 
         public DropBoxUploadViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
-            : base(modelItem)
+            : base(modelItem,"File Or Folder", String.Empty)
         {
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
@@ -185,21 +184,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
-        public string FileSuccesResult
-        {
-            get
-            {
-                _fileSuccesResult = GetModelPropertyName().ToString();
-                return _fileSuccesResult;
-            }
-            set
-            {
-                _fileSuccesResult = value;
-                SetModelItemProperty(_fileSuccesResult);
-                OnPropertyChanged();
-            }
-        }
+      
 
         private void EditDropBoxSource()
         {
@@ -212,6 +197,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
             _sources = LoadOAuthSources();
             IsDropboxSourceWizardSourceMessagePulished = true;
+            OnPropertyChanged("Sources");
         }
         [ExcludeFromCodeCoverage]
         //Used by specs

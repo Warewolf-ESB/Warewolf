@@ -125,7 +125,7 @@ namespace Dev2.Studio.ActivityDesigners
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                  { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                  { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
-                 { typeof(DsfDropBoxUploadAcivtity), typeof(Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner) },
+                 { typeof(DsfDropBoxUploadActivity), typeof(Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },

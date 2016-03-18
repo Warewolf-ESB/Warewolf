@@ -297,9 +297,9 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             } 
-            else if (activityType == typeof(DsfDropBoxUploadAcivtity))
+            else if (activityType == typeof(DsfDropBoxUploadActivity))
             {
-                var maAct = activity as DsfDropBoxUploadAcivtity;
+                var maAct = activity as DsfDropBoxUploadActivity;
                 if (maAct != null)
                 {
                   /*  if (maAct.Inputs != null)
