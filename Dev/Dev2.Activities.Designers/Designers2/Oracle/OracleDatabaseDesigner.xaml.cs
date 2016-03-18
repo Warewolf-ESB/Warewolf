@@ -24,8 +24,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         protected override OracleDatabaseDesignerViewModel CreateViewModel()
         {
-            var designerManagementService = Context.Services.GetService<IDesignerManagementService>();
-            return new OracleDatabaseDesignerViewModel(ModelItem, designerManagementService.GetRootResourceModel());
+            return new OracleDatabaseDesignerViewModel(ModelItem);
         }
 
     }
