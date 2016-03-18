@@ -3303,14 +3303,14 @@ Data
   <data name="WebRequestToolTipTimeOut" xml:space="preserve">
     <value>The length of time to wait for a web request to complete before failing</value>
   </data>
-  <data name="RabbitMQToolTipMailSource" xml:space="preserve">
-    <value>Select a preconfigured RabbitMQ source or "New RabbitMQ Source..." to add a new one.</value>
+  <data name="RabbitMQToolTipSource" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.</value>
   </data>
-  <data name="RabbitMQHelpMailSource" xml:space="preserve">
-    <value>Select a preconfigured RabbitMQ source or "New RabbitMQ Source..." to add a new one.
+  <data name="RabbitMQSourceHelp" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.
 
 Allowed:
-Select a preconfigured RabbitMQ source or "New RabbitMQ Source..." to add a new one.</value>
+Select a preconfigured RabbitMQ source or add a new one.</value>
   </data>
   <data name="RabbitMQToolTipQueueName" xml:space="preserve">
     <value>Provide a meaningful name for the queue.</value>
