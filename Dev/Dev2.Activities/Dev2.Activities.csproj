@@ -213,7 +213,6 @@
     <Compile Include="Activities\DsfNumberFormatActivity.cs" />
     <Compile Include="Activities\DsfRandomActivity.cs" />
     <Compile Include="Activities\DsfReplaceActivity.cs" />
-    <Compile Include="Activities\DsfPublishRabbitMQActivity.cs" />
     <Compile Include="Activities\DsfSendEmailActivity.cs" />
     <Compile Include="Activities\DsfSequenceActivity.cs" />
     <Compile Include="Activities\DsfSortRecordsActivity.cs" />
@@ -241,6 +240,7 @@
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
+    <Compile Include="Activities\RabbitMQ\Publish\DsfPublishRabbitMQActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointDeleteListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />

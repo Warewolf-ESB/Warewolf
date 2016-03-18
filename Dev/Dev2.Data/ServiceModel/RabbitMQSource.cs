@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
@@ -19,7 +20,7 @@ using Warewolf.Security.Encryption;
 namespace Dev2.Data.ServiceModel
 {
     // ReSharper disable InconsistentNaming
-    public class RabbitMQSource : Resource
+    public class RabbitMQSource : Resource, IRabbitMQSource
     // ReSharper restore InconsistentNaming
     {
         private const int DefaultPort = 5672;
