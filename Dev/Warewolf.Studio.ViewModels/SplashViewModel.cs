@@ -113,10 +113,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 ServerVersion = "Version " + Server.GetServerVersion();
                 StudioVersion = "Version " + Utils.FetchVersionInfo();
-                var serverVersionInformation = Server.GetServerInformationalVersion().Split(' ');
-                ServerInformationalVersion = "Committed on " + serverVersionInformation[0] + " at " + serverVersionInformation[1] + " as " + serverVersionInformation[2];
-                var studioVersionInformation = Utils.FetchInformationalVersionInfo().Split(' ');
-                StudioInformationalVersion = "Committed on " + studioVersionInformation[0] + " at " + studioVersionInformation[1] + " as " + studioVersionInformation[2];
+                //var serverVersionInformation = Server.GetServerInformationalVersion().Split(' ');
+                //ServerInformationalVersion = "Committed on " + serverVersionInformation[0] + " at " + serverVersionInformation[1] + " as " + serverVersionInformation[2];
+                //var studioVersionInformation = Utils.FetchInformationalVersionInfo().Split(' ');
+                //StudioInformationalVersion = "Committed on " + studioVersionInformation[0] + " at " + studioVersionInformation[1] + " as " + studioVersionInformation[2];
             });
             
         }

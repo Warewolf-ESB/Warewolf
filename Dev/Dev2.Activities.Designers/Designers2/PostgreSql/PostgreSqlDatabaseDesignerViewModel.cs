@@ -116,15 +116,14 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
             InitializeProperties();
 
-            //if (OutputsRegion != null && OutputsRegion.IsVisible)
+            if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
-              //      OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
                 }
             }
-            //ReCalculateHeight();
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -189,7 +188,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            //if (!OutputsRegion.IsVisible)
+            if (!OutputsRegion.OutputMappingEnabled)
             {
                 Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
             }
@@ -273,8 +272,9 @@ namespace Dev2.Activities.Designers2.PostgreSql
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 
+                ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
                 GenerateOutputsVisible = true;
-                //ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }
@@ -349,12 +349,12 @@ namespace Dev2.Activities.Designers2.PostgreSql
             {
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.PostgreSql) { SourceChangedAction = () =>
                 {
-                    //OutputsRegion.IsVisible = false;
+                    OutputsRegion.IsEnabled = false;
                 } };
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () =>
                 {
-                    //OutputsRegion.IsVisible = false;
+                    OutputsRegion.IsEnabled = false;
                 } };
                 regions.Add(ActionRegion);
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
@@ -363,33 +363,20 @@ namespace Dev2.Activities.Designers2.PostgreSql
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
-                    //OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
 
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
-                SourceRegion.Dependants.Add(InputArea);
-                SourceRegion.Dependants.Add(OutputsRegion);
+                SourceRegion.Dependants.Add(ActionRegion);
+                ActionRegion.Dependants.Add(InputArea);
+                ActionRegion.Dependants.Add(OutputsRegion);
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                //toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }
-            //ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
-        {
-            //ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -454,20 +441,19 @@ namespace Dev2.Activities.Designers2.PostgreSql
                 _generateOutputsVisible = value;
                 if (value)
                 {
-                    //ManageServiceInputViewModel.InputArea.IsVisible = true;
-                    //ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(false);
 
                 }
                 else
                 {
-                    //ManageServiceInputViewModel.InputArea.IsVisible = false;
-                    //ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(true);
                 }
 
                 OnPropertyChanged();
-                //ReCalculateHeight();
             }
         }
 
@@ -495,7 +481,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         public void ValidateTestComplete()
         {
-            //OutputsRegion.IsVisible = true;
+            OutputsRegion.IsEnabled = true;
         }
 
         public void SetDisplayName(string outputFieldName)
@@ -517,17 +503,6 @@ namespace Dev2.Activities.Designers2.PostgreSql
             {
                 DisplayName = displayName + outputFieldName;
             }
-        }
-
-        private IList<IServiceInput> InputsFromModel()
-        {
-            var dt = new List<IServiceInput>();
-            foreach (var nameValue in InputArea.Inputs)
-            {
-                GetValue(nameValue.Name, dt);
-                GetValue(nameValue.Value, dt);
-            }
-            return dt;
         }
 
         private static void GetValue(string s, List<IServiceInput> dt)
@@ -555,37 +530,11 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         void SetRegionVisibility(bool value)
         {
-            //InputArea.IsVisible = value;
-            //OutputsRegion.IsVisible = value && OutputsRegion.Outputs.Count > 0;
-            //ErrorRegion.IsVisible = value;
-            //SourceRegion.IsVisible = value;
+            InputArea.IsEnabled = value;
+            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
+            ErrorRegion.IsEnabled = value;
+            SourceRegion.IsEnabled = value;
         }
-
-//        public override void ReCalculateHeight()
-//        {
-//            if (_regions != null)
-//            {
-//                bool isInputVisible = false;
-//                foreach (var toolRegion in _regions)
-//                {
-//                    if (toolRegion.ToolRegionName == "DatabaseInputRegion")
-//                    {
-//                        isInputVisible = toolRegion.IsVisible;
-//                    }
-//                }
-//
-//                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-//                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-//                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-//
-//                if (isInputVisible && !GenerateOutputsVisible)
-//                {
-//                    DesignMaxHeight += 30;
-//                    DesignHeight += 30;
-//                    DesignMinHeight += 30;
-//                }
-//            }
-//        }
 
         #endregion
     }

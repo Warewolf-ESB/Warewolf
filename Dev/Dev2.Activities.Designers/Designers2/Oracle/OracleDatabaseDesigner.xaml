@@ -7,8 +7,10 @@
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.Oracle"
+                       xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                       xmlns:oracle="clr-namespace:Dev2.Activities.Designers2.Oracle"
                        mc:Ignorable="d"
-                       d:DataContext="{d:DesignInstance local:OracleDatabaseDesignerViewModel}"
+                       d:DataContext="{d:DesignInstance oracle:OracleDatabaseDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>
@@ -24,7 +26,7 @@
                 </Style.Triggers>
             </Style>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </sap:ActivityDesigner.Resources>
