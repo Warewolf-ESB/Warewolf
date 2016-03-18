@@ -2,7 +2,7 @@
 	In order to convert base encoding types
 	As a Warewolf user
 	I want a tool that converts data from one base econding to another
-	
+
 Scenario: Convert from text to text 
 	Given I have a convert variable "[[var]]" with a value of "AA"
 	And I convert a variable "[[var]]" from type "Text" to type "Text" 

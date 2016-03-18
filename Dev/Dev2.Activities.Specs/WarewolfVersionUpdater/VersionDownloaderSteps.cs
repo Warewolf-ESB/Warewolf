@@ -16,7 +16,6 @@ using Dev2.Common.Wrappers;
 using Dev2.Helpers;
 using Dev2.Studio.Core.Helpers;
 using TechTalk.SpecFlow;
-using Warewolf.Core;
 
 namespace Dev2.Activities.Specs
 {
@@ -26,7 +25,8 @@ namespace Dev2.Activities.Specs
         [Given(@"the version of the software on the server is ""(.*)""")]
         public void GivenTheVersionOfTheSoftwareOnTheServerIs(string p0)
         {
-            VersionChecker checker = new VersionChecker(new WarewolfWebClient(new WebClient()), (() => new Version(p0)));
+
+            VersionChecker checker = new VersionChecker(new Dev2WebClient(new WebClient()),new FileWrapper(), (a=>new Version(p0)));
         }
         
         [Given(@"the current version is ""(.*)""")]
