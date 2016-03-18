@@ -100,12 +100,13 @@ let rec DoReplace (text:string)  (caretPosition:int ) (replacement:string) =
     match parsed with 
         |   ComplexExpression a ->  let caret = GetCaretPosition a caretPosition "" 0
                                     let b =  Array.ofList a  
-                                    
-                                    let str = takeNonAlphabets (languageExpressionToString b.[caret]) ""
+                                    let bcaret = languageExpressionToString b.[caret]
+                                    let app = if bcaret.EndsWith(" ") then " " else "" 
+                                    let str = takeNonAlphabets (bcaret) ""
                                     let rep = match b.[caret] with
                                                     | RecordSetExpression xs -> fst (DoReplace (languageExpressionToString b.[caret])  (GetCaretPositionInString a caretPosition "" 0 0 ) replacement)
                                                     |_ -> replacement                                    
-                                    b.[caret] <- (LanguageAST.WarewolfAtomAtomExpression ( DataASTMutable.DataString (str+ rep) ))
+                                    b.[caret] <- (LanguageAST.WarewolfAtomAtomExpression ( DataASTMutable.DataString (str+ rep+app) ))
                                     
                                     if caret >0 && (languageExpressionToString b.[caret-1]) = "[[" then  b.[caret-1] <-(LanguageAST.WarewolfAtomAtomExpression ( DataASTMutable.DataString ("") ))
                                     let x = Array.map languageExpressionToString b |> fun ax -> System.String.Join("",ax) 
