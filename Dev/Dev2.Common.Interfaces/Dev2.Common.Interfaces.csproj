@@ -242,6 +242,7 @@
     <Compile Include="IPluginSource.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IQueryManager.cs" />
+    <Compile Include="IRabbitMQSource.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />

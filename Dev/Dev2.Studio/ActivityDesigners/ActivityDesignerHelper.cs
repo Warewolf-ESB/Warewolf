@@ -1,16 +1,13 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Activities.Designers2.Calculate;
@@ -40,6 +37,7 @@ using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.MySqlDatabase;
 using Dev2.Activities.Designers2.Net_DLL;
+using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
@@ -58,18 +56,20 @@ using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
-using Dev2.Activities.Designers2.WebServiceGet;
 using Dev2.Activities.Designers2.Web_Service_Delete;
 using Dev2.Activities.Designers2.Web_Service_Post;
 using Dev2.Activities.Designers2.Web_Service_Put;
+using Dev2.Activities.Designers2.WebServiceGet;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
 using Dev2.Activities.DropBox2016.UploadActivity;
+using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
+using System;
+using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Activities.Designers2.RabbitMQ.Publish;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -137,8 +137,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
                 { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
-                //{ typeof(DsfFlowDecisionActivity), typeof(DecisionDesigner) },
-                //{ typeof(DsfSwitch), typeof(ConfigureSwitch) }
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
             };
 
