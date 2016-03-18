@@ -634,14 +634,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                //var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != null);
                 await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
-                //Children = explorerItemViewModels;
-
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
-
+                
                 return IsLoaded;
             }
             return false;
@@ -653,9 +650,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                //var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
                 await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
-                //Children = explorerItemViewModels;
 
                 IsLoaded = true;
                 IsConnecting = false;
