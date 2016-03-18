@@ -165,6 +165,7 @@
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropBoxFailureResultShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropBoxSuccessResultShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxSoureFileValidatorShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
