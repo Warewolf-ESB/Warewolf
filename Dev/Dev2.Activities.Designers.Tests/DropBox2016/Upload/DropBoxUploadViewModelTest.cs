@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
 
         private ModelItem CreateModelItem()
         {
-            var modelItem = ModelItemUtils.CreateModelItem(new DsfDropBoxUploadAcivtity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfDropBoxUploadActivity());
             return modelItem;
         }
     

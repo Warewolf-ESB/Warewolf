@@ -43,8 +43,5 @@
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Local File"/>
         <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding FromPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FromPath}"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Result" />
-        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding FileSuccesResult}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FileSuccesResult}"/>
-
     </Grid>
 </core:ActivityDesignerTemplate>

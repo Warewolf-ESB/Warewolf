@@ -21,6 +21,8 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public DropBoxUpload(WriteMode writeMode, string dropboxPath, string fromPath)
         {
+            if (string.IsNullOrEmpty(fromPath) || string.IsNullOrEmpty(dropboxPath))
+                throw new ArgumentException("The file paths should all be specified");
             _writeMode = writeMode;
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
@@ -36,14 +38,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             try
             {
-                if (!IsValid)
-                    return null;
                 using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
                 {
                     FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
                     return new DropboxSuccessResult(uploadAsync);
                 }
-
             }
             catch (Exception exception)
             {

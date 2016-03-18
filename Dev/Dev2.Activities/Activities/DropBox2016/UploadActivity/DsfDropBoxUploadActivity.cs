@@ -16,7 +16,7 @@ using Warewolf.Core;
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     [ToolDescriptorInfo("DropBoxLogo", "Upload to Drop Box", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Connectors", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
-    public class DsfDropBoxUploadAcivtity : DsfBaseActivity
+    public class DsfDropBoxUploadActivity : DsfBaseActivity
     {
         private DropboxClient _client;
         private bool _addMode;
@@ -25,10 +25,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         protected Exception Exception;
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
-        public DsfDropBoxUploadAcivtity()
+        public DsfDropBoxUploadActivity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
-            DisplayName = "Upload to Drop Box";
+            DisplayName = "Upload to Dropbox";
             OverWriteMode = true;
         }
 
@@ -67,17 +67,15 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
         }
         // ReSharper disable once MemberCanBeProtected.Global
-        [Outputs("Upload Status")]
-        public string FileSuccesResult { get; set; }
 
         [ExcludeFromCodeCoverage]
-        private DropboxClient GetClient()
+        protected virtual DropboxClient GetClient()
         {
             if (_client != null)
             {
 
                 return _client;
-        }
+            }
             var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
             {
                 Timeout = TimeSpan.FromMinutes(20)
@@ -92,31 +90,28 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             return enFindMissingType.StaticActivity;
         }
+
+        [ExcludeFromCodeCoverage]
+        //All units used here has been unit tested seperately 
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            try
+
+            var writeMode = GetWriteMode();
+            DropboxSingleExecutor = new DropBoxUpload(writeMode, ToPath, FromPath);
+            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
+            if (dropboxSuccessResult != null)
             {
-                var writeMode = GetWriteMode();
-                DropboxSingleExecutor = new DropBoxUpload(writeMode, ToPath, FromPath);
-                var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
-                var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
-                if (dropboxSuccessResult != null)
-                {
-                    FileMetadata = dropboxSuccessResult.GerFileMetadata();
-                    return FileMetadata.PathDisplay;
-                }
-                if((dropboxExecutionResult as DropboxFailureResult)!=null)
-                {
-                    Exception = (dropboxExecutionResult as DropboxFailureResult).GetException();
-                    return Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
-                }
-                throw new Exception("An unkown exception occurred");
+                FileMetadata = dropboxSuccessResult.GerFileMetadata();
+                return FileMetadata.PathDisplay;
             }
-            catch (Exception e)
+            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
+            if (dropboxFailureResult != null)
             {
-                Dev2Logger.Error(e.Message, e);
-                return e.Message;
+                Exception = dropboxFailureResult.GetException();
             }
+            var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
+            throw new Exception(executionError);
         }
 
         #region Overrides of DsfActivity
