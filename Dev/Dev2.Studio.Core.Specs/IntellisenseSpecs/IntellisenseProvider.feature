@@ -3,49 +3,6 @@
 	As a Warewolf user
 	I want to be able to select it from the intellisense drop down
 
-#FilterTypes: All, RecordsetsOnly, RecordsetFields
-#Providers: Calculate, File, DateTime, Default
-Scenario Outline: Insert for All FilterType and Default Provider
-	Given I have the following variable list '<varlist>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
-	Examples: 
-	| testName | varlist                               | filterType | input                  | index | dropDownList                                                                        | option          | result                      | provider | caretposition |
-	| 1        | <var/><var2/><rec><var/><var2/></rec> | All        | text var               | 8     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | text [[var]]                | Default  | 12            |
-	| 2        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[var              | 9     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var2]]        | text[[var2]]                | Default  | 12            |
-	| 3        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().var]]      | 15    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var2]]  | text[[rec().var2]]          | Default  | 16            |
-	| 4        | <var/><var2/><rec><var/><var2/></rec> | All        | [[                     | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var2]]        | [[var2]]                    | Default  | 8             |
-	| 5        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().[[var      | 17    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec(*).var2]] | text[[rec().[[rec(*).var2]] | Default  | 27            |
-	| 6        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().[[var]]    | 17    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var2]]  | text[[rec().[[rec().var2]]  | Default  | 26            |
-	| 7        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().[[var]]]]  | 17    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var]]   | text[[rec().[[rec().var]]]] | Default  | 25            |
-	| 8        | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]]v               | 8     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var]]   | [[var]][[rec().var]]        | Default  | 20            |
-	| 9        | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]][[              | 9     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[rec(*).var]]  | [[var]][[rec(*).var]]       | Default  | 21            |
-	| 10       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]][[var           | 12    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec(*).var2]] | [[var]][[rec(*).var2]]      | Default  | 22            |
-	| 11       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]][[var]]         | 12    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec(*).var1]] | [[var]][[rec(*).var1]]      | Default  | 22            |
-	| 12       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]]                | 7     |                                                                                     |                 | [[var]]                     | Default  | 7             |
-	| 13       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]] text           | 13    |                                                                                     |                 | [[var]] text                | Default  | 13            |
-	| 14       | <var/><var2/><rec><var/><var2/></rec> | All        | text[[var2]]text       | 10    | [[var2]],[[rec().var2]],[[rec(*).var2]]                                             | [[rec().var2]]  | text[[rec().var2]]text      | Default  | 18            |
-	| 15       | <var/><var2/><rec><var/><var2/></rec> | All        | r                      | 1     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[rec().var2]]  | [[rec().var2]]              | Default  | 14            |
-	| 16       | <var/><var2/><rec><var/><var2/></rec> | All        | re                     | 2     | [[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]                  | [[rec(          | [[rec(                      | Default  | 6             |
-	| 17       | <var/><var2/><rec><var/><var2/></rec> | All        | [[rec([[va]]).var]]    | 10    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[rec([[var]]).var]]        | Default  | 13            |
-	| 18       | <var/><var2/><rec><var/><var2/></rec> | All        | [[[[a]]]]              | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[[[var]]]]                 | Default  | 9             |
-	| 19       | <var/><var2/><rec><var/><var2/></rec> | All        | [[                     | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var]]         | [[var]]                     | Default  | 7             |
-#	| 20       | <a/><rec><a/><b/></rec>               | All        | [[rec().[[]]           | 10    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().[[[[a]]]]           | Default  | 15            |
-#	| 21       | <a/><rec><a/><b/></rec>               | All        | [[rec().a[[]]          | 11    | [[a]],[[rec]]                                                                       | [[a]]           | [[rec().a[[a]]]]            | Default  | 14            |
-#	| 22       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec()[[a]]           | 9     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[b]]           | [[rec()[[a]]a]]             | Default  | 12            |
-#	| 23       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec().a]]+[[rec().]] | 20    | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | [[rec().a]]+[[rec().[[a]]]] | Default  | 25            |
-#	| 24       | <a/><b/><rec><a/><b/></rec>           | All        | sin(45.)]]             | 7     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | sin(45.[[a]])               | Default  | 12            |
-#Bug 12133
-#	| 25       | <rec><a/><b/></rec><xs><a/><b/></xs>  | All        | [[().a]]              | 3     | [[xc(,[[xc().a]],[[xc(*).a]],[[x(,[[x().a]],[[x(*).a]]                              | [[x(            | [[xc().a]]                  | Default  | 5             |
-
-
-
 
 
 
@@ -63,16 +20,16 @@ Scenario Outline: Insert for All FilterType and DateTime Provider
 	Then the result text should be '<result>'
 	And the caret position will be '<caretposition>'
 	Examples: 
-	| testName | varlist                        | filterType | input     | index | dropDownList                                           | option          | result              | provider          | caretposition |
-	| 1        | <var/><var2/><rec><var/></rec> | All        | a         | 1     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],am/pm    | am/pm           | am/pm               | Default, DateTime | 5             |
-	| 2        | <ww/><min/><rec><minss/></rec> | All        | m         | 1     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM | min             | min                 | Default, DateTime | 3             |
-	| 3        | <ww/><min/><rec><minss/></rec> | All        | text[[m]] | 7     | [[min]],[[rec().minss]],[[rec(*).minss]]               | [[rec().minss]] | text[[rec().minss]] | Default, DateTime | 19            |
-	| 4        | <ww/><min/><rec><minss/></rec> | All        | [[        | 2     | [[ww]],[[min]],[[rec(,[[rec().minss]],[[rec(*).minss]] | [[rec(          | [[rec(              | Default, DateTime | 6             |
-	| 5        | <ww/><min/><rec><minss/></rec> | All        | text mi   | 7     | [[min]],[[rec().minss]],[[rec(*).minss]],min           | min             | text min            | Default, DateTime | 8             |
-	| 6        | <ww/><min/><rec><minss/></rec> | All        | text m    | 6     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM | min             | text min            | Default, DateTime | 8             |
-	| 7        | <ww/><min/><rec><minss/></rec> | All        | text mute | 6     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM | min             | text minute         | Default, DateTime | 8             |
-	| 8        | <ww/><min/><rec><minss/></rec> | All        | text mute | 6     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM | [[min]]         | text [[min]]ute     | Default, DateTime | 12            |
-	| 9        | <ww/><min/><rec><minss/></rec> | All        | [[min]]y  | 8     | yy,yyyy                                                | yy              | [[min]]yy           | Default, DateTime | 9             |
+	| testName | varlist                        | filterType | input     | index | dropDownList                                                             | option          | result              | provider          | caretposition |
+	| 1        | <var/><var2/><rec><var/></rec> | All        | a         | 1     | [[rec().var]],[[rec(*).var]],[[var]],[[var2]],am/pm                      | am/pm           | am/pm               | Default, DateTime | 5             |
+	| 2        | <ww/><min/><rec><minss/></rec> | All        | m         | 1     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM                   | min             | min                 | Default, DateTime | 3             |
+	| 3        | <ww/><min/><rec><minss/></rec> | All        | text[[m]] | 7     | [[min]],[[rec().minss]],[[rec(*).minss]]                                 | [[rec().minss]] | text[[rec().minss]] | Default, DateTime | 19            |
+	| 4        | <ww/><min/><rec><minss/></rec> | All        | [[        | 2     | [[min]],[[rec(,[[rec().minss]],[[rec()]],[[rec(*,[[rec(*).minss]],[[ww]] | [[rec(          | [[rec(              | Default, DateTime | 6             |
+	| 5        | <ww/><min/><rec><minss/></rec> | All        | text mi   | 7     | [[min]],[[rec().minss]],[[rec(*).minss]],min                             | min             | text min            | Default, DateTime | 8             |
+	| 6        | <ww/><min/><rec><minss/></rec> | All        | text m    | 6     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM                   | min             | text min            | Default, DateTime | 8             |
+	| 7        | <ww/><min/><rec><minss/></rec> | All        | text mute | 6     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM                   | min             | text min            | Default, DateTime | 8             |
+	| 8        | <ww/><min/><rec><minss/></rec> | All        | text mute | 6     | [[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM                   | [[min]]         | text [[min]]        | Default, DateTime | 12            |
+	| 9        | <ww/><min/><rec><minss/></rec> | All        | [[min]]y  | 8     | yy,yyyy                                                                  | yy              | [[min]]yy           | Default, DateTime | 9             |
 	
 Scenario Outline: Insert for All FilterType and File Provider
 	Given I have the following variable list '<varlist>'
@@ -86,18 +43,17 @@ Scenario Outline: Insert for All FilterType and File Provider
 	Then the result text should be '<result>'
 	And the caret position will be '<caretposition>'
 	Examples: 
-	| testName | pathStructure                       | varlist                       | filterType | input               | index | dropDownList                                        | option               | result                              | provider      | caretposition |
-	| 1        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil            | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[myfile]]           | c:\[[myfile]]                       | Default, File | 13            |
-	| 2        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil]]          | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[myfile]]           | c:\[[myfile]]                       | Default, File | 13            |
-	| 3        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil]]          | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[file().name]]      | c:\[[file().name]]                  | Default, File | 18            |
-	| 4        |                                     | <myfile/><file><name/></file> | All        | c:\[[myfile]][[     | 13    |                                                     |                      | c:\[[myfile]][[                     | Default, File | 13            |
-	| 5        |                                     | <myfile/><file><name/></file> | All        | c:\[[myfile]][[fil  | 18    | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[file().name]]      | c:\[[myfile]][[file().name]]        | Default, File | 28            |
-	| 6        |                                     | <myfile/><file><name/></file> | All        | [[myfile]].         | 11    |                                                     |                      | [[myfile]].                         | Default, File | 11            |
-	| 7        | c:\,c:\FolderA,c:\FolderA\FileA.txt |                               | All        | del c               | 5     | c:\,c:\FolderA,c:\FolderA\FileA.txt                 | c:\FolderA\FileA.txt | del c:\FolderA\FileA.txt            | Default, File | 24            |
-	| 8        | c:\,c:\FolderA,c:\FolderA\FileA.txt | <a/><ab/>                     | All        | del c:\[[myfile]]\a | 19    | [[a]],[[ab]]                                        | [[a]]                | del c:\[[myfile]]\[[a]]             | Default, File | 23            |
-	| 9        | c:\,c:\FolderA,c:\FolderA\FileA.txt |                               | All        | del c:\FolderA c    | 16    | c:\,c:\FolderA,c:\FolderA\FileA.txt                 | c:\FolderA\FileA.txt | del c:\FolderA c:\FolderA\FileA.txt | Default, File | 35            |
-	| 10       | c:\,c:\FolderA,c:\FolderA\FileA.txt | <c/><cd/>                     | All        | del c:\FolderA c    | 16    | [[c]],[[cd]],c:\,c:\FolderA,c:\FolderA\FileA.txt    | [[cd]]               | del c:\FolderA [[cd]]               | Default, File | 21            |
-	| 11       | c:\,c:\FolderA,c:\FolderA\FileA.txt | <c/><cd/>                     | All        | del c:\FolderA\     | 15    | c:\FolderA\FileA.txt                                | c:\FolderA\FileA.txt | del c:\FolderA\FileA.txt            | Default, File | 24            |
+	| testName | pathStructure                       | varlist                       | filterType | input               | index | dropDownList                                                            | option               | result                              | provider      | caretposition |
+	| 1        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil            | 8     | [[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]] | [[myfile]]           | c:\[[myfile]]                       | Default, File | 13            |
+	| 2        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil]]          | 8     | [[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]] | [[myfile]]           | c:\[[myfile]]                       | Default, File | 13            |
+	| 3        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil]]          | 8     | [[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]] | [[file().name]]      | c:\[[file().name]]                  | Default, File | 18            |
+	| 4        |                                     | <myfile/><file><name/></file> | All        | c:\[[myfile]][[     | 13    |                                                                         |                      | c:\[[myfile]][[                     | Default, File | 13            |
+	| 5        |                                     | <myfile/><file><name/></file> | All        | c:\[[myfile]][[fil  | 18    | [[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]] | [[file().name]]      | c:\[[myfile]][[file().name]]        | Default, File | 28            |
+	| 6        |                                     | <myfile/><file><name/></file> | All        | [[myfile]].         | 11    | [[file().name]],[[file(*).name]]                                        |                      | [[myfile]].                         | Default, File | 11            |
+	| 7        | c:\,c:\FolderA,c:\FolderA\FileA.txt |                               | All        | del c               | 5     | c:\,c:\FolderA,c:\FolderA\FileA.txt                                     | c:\FolderA\FileA.txt | del c:\FolderA\FileA.txt            | Default, File | 24            |
+	| 9        | c:\,c:\FolderA,c:\FolderA\FileA.txt |                               | All        | del c:\FolderA c    | 16    | c:\,c:\FolderA,c:\FolderA\FileA.txt                                     | c:\FolderA\FileA.txt | del c:\FolderA c:\FolderA\FileA.txt | Default, File | 35            |
+	| 10       | c:\,c:\FolderA,c:\FolderA\FileA.txt | <c/><cd/>                     | All        | del c:\FolderA c    | 16    | [[c]],[[cd]],c:\,c:\FolderA,c:\FolderA\FileA.txt                        | [[cd]]               | del c:\FolderA [[cd]]               | Default, File | 21            |
+	| 11       | c:\,c:\FolderA,c:\FolderA\FileA.txt | <c/><cd/>                     | All        | del c:\FolderA\     | 15    | c:\FolderA\FileA.txt                                                    | c:\FolderA\FileA.txt | del c:\FolderA\FileA.txt            | Default, File | 24            |
 
 Scenario Outline: Insert for All FilterType and Calculate Provider
 	Given I have the following variable list '<varlist>'
@@ -130,7 +86,7 @@ Scenario Outline: Recset only has no errors for valid variable indexes
 Examples: 	
 	| testName | varlist                            | expectError | input             |
 	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true       | [[sum([[x]])]]    |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | false        | [[sum([[assc]])]] |
+	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[assc]])]] |
 	
 
 
@@ -164,7 +120,7 @@ Examples:
 	| 15       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]] | All        | r                     | 1     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[rec().var2]]  | [[rec().var2]]         | Default  | 14            |
 	| 16       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]] | All        | re                    | 2     | [[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]                  | [[rec(          | [[rec(                 | Default  | 6             |
 	| 17       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]] | All        | [[rec([[va]]).var]]   | 10    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[rec([[var]]).var]]   | Default  | 13            |
-	| 18       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]] | All        | [[[[a]]]]             | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[[[var]]]]            | Default  | 9             |
+	| 18       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]] | All        | [[[[a]]]]             | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[var]]]]            | Default  | 7             |
 	| 19       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]] | All        | [[                    | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var]]         | [[var]]                | Default  | 7             |
 #	| 20       | [[a]],[[rec().a]],[[rec().b]][[rec()]]             | All        | [[rec().[[]]           | 10    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().[[[[a]]]]           | Default  | 15            |
 #	| 21       | [[a]],[[rec().a]],[[rec().b]][[rec()]]             | All        | [[rec().a[[]]          | 11    | [[a]],[[rec]]                                                                       | [[a]]           | [[rec().a[[a]]]]            | Default  | 14            |
@@ -227,4 +183,4 @@ Scenario Outline: Insert for RecordsetFields FilterType and Default Provider New
 	| 8        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | a a                     | 1     | [[rec().a]],[[rec(*).a]]                                        | [[rec(*).a]] | [[rec(*).a]] a          | Default  | 12            |
 	| 9        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | b b                     | 1     |                                                                 |              | b b                     | Default  | 1             |
 	| 10       | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec().a]],[[rec().a]] | 5     | [[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]        | [[rec().z]]  | [[rec().z]],[[rec().a]] | Default  | 11             |
-	| 11       | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec [[rec().a]]       | 5     | [[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]        | [[rec().z]]  | [[rec().z]] [[rec().a]] | Default  | 11            |
+	| 11       | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec [[rec().a]]       | 5     | [[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]        | [[rec().z]]  | [[rec().z]] [[rec().a]] | Default  | 12            |

@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Core.Tests;
+using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Intellisense;
@@ -55,6 +56,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             IDataListViewModel setupDatalist = new DataListViewModel();
             DataListSingleton.SetDataList(setupDatalist);
             DataListSingleton.ActiveDataList.InitializeDataListViewModel(resourceModel);
+            DataListSingleton.ActiveDataList.UpdateDataListItems(resourceModel, new List<IDataListVerifyPart>());
+
         }
 
 
