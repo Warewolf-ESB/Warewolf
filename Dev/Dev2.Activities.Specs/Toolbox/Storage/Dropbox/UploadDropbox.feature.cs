@@ -189,11 +189,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 50
  testRunner.And("I set Local File equals \"<local>\" with values \"<localValue>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
- testRunner.And(string.Format("I set Dropbox File equals \"{0}\" with values \"{1}\"", dropbox, dropboxValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table1.AddRow(new string[] {
+                        "Success"});
 #line 52
- testRunner.When("the Dropbox tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 53
- testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("debug output appears as", ((string)(null)), table2390, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -310,11 +313,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 72
  testRunner.And(string.Format("I set Dropbox File equals \"{0}\" with values \"{1}\"", dropbox, dropboxValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
- testRunner.When("the Dropbox tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2391 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table2391.AddRow(new string[] {
+                        string.Format("{0}", error)});
 #line 74
- testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 75
- testRunner.And(string.Format("the result is \"{0}\"", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("debug output appears as", ((string)(null)), table2391, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
