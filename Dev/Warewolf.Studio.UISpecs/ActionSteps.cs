@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow;
+using Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses;
 
 namespace Warewolf.Studio.UISpecs
 {
@@ -14,35 +15,61 @@ namespace Warewolf.Studio.UISpecs
         [Given(@"I '(.*)'")]
         [When(@"I '(.*)'")]
         [Then(@"I '(.*)'")]
-        public void PerformAnyRecordedAction(string p0)
+        public void ThenTheRecordedActionIsPerformed(string p0)
         {
-            List<Type> allTypes = Assembly.GetExecutingAssembly().GetTypes().ToList();
-            List<MethodInfo> allFoundMethods = new List<MethodInfo>();
-            List<Type> allFoundUIMapTypes = new List<Type>();
-            foreach (Type type in allTypes)
+            Type workflowDesignerMapType = Uimap.GetType();
+            Type outsideWorkflowDesignerMapType = OutsideWorkflowDesignSurfaceUiMap.GetType();
+            MethodInfo workflowDesignerAction = workflowDesignerMapType.GetMethod(p0);
+            MethodInfo outsideWorkflowDesignerAction = outsideWorkflowDesignerMapType.GetMethod(p0);
+            if (workflowDesignerAction != null && outsideWorkflowDesignerAction != null)
             {
-                if (type.GetMethod(p0) != null)
+                throw new InvalidOperationException("Cannot distinguish between duplicated action recordings, both named '" + p0 + "' in different UI maps.");
+            }
+            else
+            {
+                if (outsideWorkflowDesignerAction != null)
                 {
-                    allFoundMethods.Add(type.GetMethod(p0));
-                    allFoundUIMapTypes.Add(type);
+                    outsideWorkflowDesignerAction.Invoke(OutsideWorkflowDesignSurfaceUiMap, new object[] { });
+                }
+                if (workflowDesignerAction != null)
+                {
+                    workflowDesignerAction.Invoke(Uimap, new object[] { });
                 }
             }
+        }
 
-            var countAllMethods = allFoundMethods.Count();
-            if (countAllMethods == 1)
+        #region Properties and Fields
+
+        UIMap Uimap
+        {
+            get
             {
-                var foundActionRecording = allFoundMethods.First();
-                var foundUIMapType = allFoundUIMapTypes.First();
-                foundActionRecording.Invoke(Activator.CreateInstance(foundUIMapType), new object[] { });
-            }
-            else if (countAllMethods > 1)
-            {
-                throw new InvalidOperationException("Cannot distinguish between duplicated action recordings, named '" + p0 + "' in different UI maps.");
-            }
-            else if (countAllMethods <= 0)
-            {
-                throw new InvalidOperationException("Cannot find action recording named '" + p0 + "' in any UI map.");
+                if ((_uiMap == null))
+                {
+                    _uiMap = new UIMap();
+                }
+
+                return _uiMap;
             }
         }
+
+        private UIMap _uiMap;
+
+        OutsideWorkflowDesignSurfaceUIMap OutsideWorkflowDesignSurfaceUiMap
+        {
+            get
+            {
+                if ((_outsideWorkflowDesignSurfaceUiMap == null))
+                {
+                    _outsideWorkflowDesignSurfaceUiMap = new OutsideWorkflowDesignSurfaceUIMap();
+                }
+
+                return _outsideWorkflowDesignSurfaceUiMap;
+            }
+        }
+
+        private OutsideWorkflowDesignSurfaceUIMap _outsideWorkflowDesignSurfaceUiMap;
+
+        #endregion
     }
 }
