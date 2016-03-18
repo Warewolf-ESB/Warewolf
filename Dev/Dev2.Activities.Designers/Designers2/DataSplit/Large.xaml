@@ -123,6 +123,7 @@
 
         <CheckBox Grid.Row="2"
                   Grid.Column="1"
+                  Margin="-6,0,0,0"
                   Content="Skip blank rows"
                   IsChecked="{Binding ModelItem.SkipBlankRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipSkipBlankRows}"

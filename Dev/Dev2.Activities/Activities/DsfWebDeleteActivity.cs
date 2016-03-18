@@ -10,13 +10,13 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "Delete Web Service", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE68D4A9F2D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "DELETE", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE68D4A9F2D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebDeleteActivity : DsfWebActivityBase
     {
 
         // ReSharper disable once MemberCanBeProtected.Global
         public DsfWebDeleteActivity()
-            : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Delete, "Web Delete Request Connector", "Web Delete Request Connector"))
+            : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Delete, "DELETE Web Method", "DELETE Web Method"))
         {
 
         }

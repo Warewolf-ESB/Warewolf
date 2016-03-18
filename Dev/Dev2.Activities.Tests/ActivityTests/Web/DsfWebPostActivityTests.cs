@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //------------Execute Test---------------------------
             var dsfWebPostActivity = new DsfWebPostActivity();
             //------------Assert Results-------------------------
-            Assert.AreEqual("Web Post Request Connector", dsfWebPostActivity.DisplayName);
+            Assert.AreEqual("POST Web Method", dsfWebPostActivity.DisplayName);
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual(1, attributes.Length);
             var toolDescriptor = attributes[0] as ToolDescriptorInfo;
             Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("Post Web Service", toolDescriptor.Name);
+            Assert.AreEqual("POST", toolDescriptor.Name);
         }
 
         [TestMethod]
