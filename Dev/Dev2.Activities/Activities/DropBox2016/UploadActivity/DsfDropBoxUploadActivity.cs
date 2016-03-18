@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
@@ -91,13 +92,31 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             return enFindMissingType.StaticActivity;
         }
 
+        #region Overrides of DsfBaseActivity
+
+        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
+        {
+            if (string.IsNullOrEmpty(FromPath))
+            {
+                dataObject.Environment.AddError("Please confirm that the correct file location has been entered");
+                return;
+            }
+            if (string.IsNullOrEmpty(ToPath))
+            {
+                dataObject.Environment.AddError("Please confirm that the correct file destination has been entered");
+                return;
+            }
+            base.ExecuteTool(dataObject, update);
+        }
+
+        #endregion
+
         [ExcludeFromCodeCoverage]
         //All units used here has been unit tested seperately 
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-
             var writeMode = GetWriteMode();
-            DropboxSingleExecutor = new DropBoxUpload(writeMode, ToPath, FromPath);
+            DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
             var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
             if (dropboxSuccessResult != null)

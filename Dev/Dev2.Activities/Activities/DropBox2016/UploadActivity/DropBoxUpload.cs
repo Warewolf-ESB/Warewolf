@@ -14,19 +14,24 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
     public class DropBoxUpload : IDropBoxUpload
     {
+        private readonly IFilenameValidator _validator;
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private WriteMode _writeMode;
         private readonly string _dropboxPath;
         private readonly string _fromPath;
 
-        public DropBoxUpload(WriteMode writeMode, string dropboxPath, string fromPath)
+        private DropBoxUpload(IFilenameValidator validator)
         {
-            if (string.IsNullOrEmpty(fromPath) || string.IsNullOrEmpty(dropboxPath))
-                throw new ArgumentException("The file paths should all be specified");
+            _validator = validator;
+        }
+
+        public DropBoxUpload(WriteMode writeMode, string dropboxPath, string fromPath)
+            : this(new DropboxSoureFileValidator(fromPath))
+        {
+            _validator.Validate();
             _writeMode = writeMode;
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
-            Validate();
             InitializeCertPinning();
         }
 

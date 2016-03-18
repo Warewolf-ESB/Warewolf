@@ -48,6 +48,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
+            // ReSharper disable once VirtualMemberCallInContructor
             _sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             IsDropboxSourceWizardSourceMessagePulished = false;
@@ -83,24 +84,22 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             var propertyValue = ModelItem.GetProperty(propName);
             return propertyValue ?? string.Empty;
         }
-        [ExcludeFromCodeCoverage]
-        public ObservableCollection<OauthSource> Sources
+        public virtual ObservableCollection<OauthSource> Sources
         {
             get
             {
                 return _sources;
             }
-            private set
+            set
             {
                 SetProperty(value);
-                SetModelItemProperty(_sources);
+                _sources = value;
                 // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("Sources");
             }
         }
-        [ExcludeFromCodeCoverage]
+        
         public RelayCommand EditDropboxSourceCommand { get; private set; }
-        [ExcludeFromCodeCoverage]
         public bool IsDropboxSourceSelected
         {
             get
@@ -108,7 +107,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 return SelectedSource != null;
             }
         }
-        [ExcludeFromCodeCoverage]
         public string FromPath
         {
             get
@@ -124,7 +122,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public string ToPath
         {
             get
@@ -139,7 +136,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public string Result
         {
             get
@@ -154,7 +150,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public bool OverWriteMode
         {
             get
@@ -169,7 +164,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public bool AddMode
         {
             get
@@ -191,7 +185,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
 
         }
-        void CreateOAuthSource()
+
+        public void CreateOAuthSource()
         {
             IsDropboxSourceWizardSourceMessagePulished = false;
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
@@ -199,10 +194,10 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             IsDropboxSourceWizardSourceMessagePulished = true;
             OnPropertyChanged("Sources");
         }
-        [ExcludeFromCodeCoverage]
         //Used by specs
         public bool IsDropboxSourceWizardSourceMessagePulished { get; set; }
-        ObservableCollection<OauthSource> LoadOAuthSources()
+
+        public virtual ObservableCollection<OauthSource> LoadOAuthSources()
         {
             var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
             return oauthSources.ToObservableCollection();
