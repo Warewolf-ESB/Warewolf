@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
-using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -13,6 +12,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Services.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Activities.Designers2.DropBox2016.Upload;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
@@ -23,7 +23,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Given(@"I drag Upload Dropbox Tool onto the design surface")]
         public void GivenIDragWriteDropboxToolOntoTheDesignSurface()
         {
-            var dropBoxUploadTool = new DsfDropBoxUploadAcivtity();
+            var dropBoxUploadTool = new DropBoxUpload(null, "random.txt", "random.txt");
             var modelItem = ModelItemUtils.CreateModelItem(dropBoxUploadTool);
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
