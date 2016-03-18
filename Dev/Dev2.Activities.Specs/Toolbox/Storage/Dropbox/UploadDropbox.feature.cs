@@ -187,12 +187,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 51
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2390 = new TechTalk.SpecFlow.Table(new string[] {
                         "Result"});
-            table1.AddRow(new string[] {
+            table2390.AddRow(new string[] {
                         "Success"});
 #line 52
- testRunner.And("debug output appears as", ((string)(null)), table1, "And ");
+ testRunner.And("debug output appears as", ((string)(null)), table2390, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -299,12 +299,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 73
  testRunner.And("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2391 = new TechTalk.SpecFlow.Table(new string[] {
                         "Result"});
-            table2.AddRow(new string[] {
+            table2391.AddRow(new string[] {
                         string.Format("{0}", error)});
 #line 74
- testRunner.And("debug output appears as", ((string)(null)), table2, "And ");
+ testRunner.And("debug output appears as", ((string)(null)), table2391, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

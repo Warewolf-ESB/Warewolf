@@ -2,7 +2,7 @@ using System;
 
 namespace Dev2.Activities.DropBox2016
 {
-    public class DropboxFailureResult : Exception, IDropboxResult
+    public class DropboxFailureResult : IDropboxResult
     {
         private readonly Exception _exception;
 
