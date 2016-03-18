@@ -37,10 +37,10 @@
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Source"/>
         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedSource.ResourceName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedSource.ResourceName}" />
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Dropbox File"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Dropbox File"/>
         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ToPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding ToPath}"/>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Local File"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Local File"/>
         <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding FromPath}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FromPath}"/>
 
     </Grid>
