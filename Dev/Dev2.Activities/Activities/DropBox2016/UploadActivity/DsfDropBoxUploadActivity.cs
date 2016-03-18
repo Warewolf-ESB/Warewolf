@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
@@ -115,7 +116,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var writeMode = GetWriteMode();
-            DropboxSingleExecutor = new DropBoxUpload(writeMode, ToPath, FromPath);
+            DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
             var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
             if (dropboxSuccessResult != null)
