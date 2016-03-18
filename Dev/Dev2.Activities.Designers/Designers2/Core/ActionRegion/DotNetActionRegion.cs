@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (Method != null && Actions != null)
             {
                 IsActionEnabled = true;
-                SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
+                SelectedAction = Actions.FirstOrDefault(action => action.Method == Method.Method);
             }
             RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
             {
