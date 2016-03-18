@@ -3843,16 +3843,15 @@ Data
   </data>
   <data name="ChooseAttachmentsHelp" xml:space="preserve">
     <value>ChooseAttachmentsHelp</value>
-  </data>
-  
+  </data> 
   <data name="EditRabbitMQSourceHelp" xml:space="preserve">
-    <value>EditRabbitMQSourceHelp</value>
+    <value>Edit RabbitMQ Source</value>
   </data>
-  <data name="TestRabbitMQPublishHelp" xml:space="preserve">
-    <value>TestRabbitMQPublishHelp</value>
+  <data name="NewRabbitMQSourceHelp" xml:space="preserve">
+    <value>New RabbitMQ Source</value>
   </data>
-  <data name="RabbitMQHelpMailSource" xml:space="preserve">
-    <value>Select a preconfigured RabbitMQ source or "New RabbitMQ Source..." to add a new one.&lt;br /&gt;
+  <data name="RabbitMQSourceHelp" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
 </value>
   </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">

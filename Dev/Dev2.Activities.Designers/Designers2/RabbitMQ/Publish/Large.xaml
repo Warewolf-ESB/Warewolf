@@ -48,7 +48,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -58,6 +58,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <ComboBox x:Name="InitialFocusElement"
@@ -65,11 +66,11 @@
                       SelectedItem="{Binding SelectedRabbitMQSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding RabbitMQSources}"
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipMailSource}"
+                      ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipSource}"
                       DisplayMemberPath="ResourceName"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsRabbitMQSourceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQHelpMailSource}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQSourceHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="SelectedRabbitMQSource"
                                          SourcePropertyValue="{Binding SelectedRabbitMQSource, UpdateSourceTrigger=PropertyChanged}"
@@ -78,22 +79,34 @@
             </ComboBox>
             <Button Grid.Column="1"
                     Content="..."
+                    Width="Auto"
+                    Margin="{StaticResource ControlBorderRight}"
+                    ToolTip="{x:Static languages:Core.EditRabbitMQSourceHelp}"
                     Command="{Binding EditRabbitMQSourceCommand}"
-                    ToolTip="Edit RabbitMQ Source"
                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRabbitMQSourceBtn_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button Grid.Column="2"
+                    Content="{x:Static languages:Core.New}" 
+                    Width="Auto"
+                    Style="{StaticResource ButtonOrangeStyle}" 
+                    ToolTip="{x:Static languages:Core.NewRabbitMQSourceHelp}"
+                    Command="{Binding NewSourceCommand}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Queue Name" Margin="{StaticResource ActivityBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Queue Name" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="1"
                                 DefaultText="Queue Name"
                                 Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipQueueName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ActivityBorderTop}"
+                                Margin="{StaticResource ControlBorderTop}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsQueueNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -105,10 +118,10 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Is durable" Margin="0,-1,0,0" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Is durable" Margin="{StaticResource ControlBorderTop}" />
         <CheckBox Grid.Column="1"
                   Grid.Row="2"
-                  Margin="1,-1,0,0"
+                  Margin="-6,0,0,0"
                   Content="Durable"
                   IsChecked="{Binding IsDurable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipIsDurable}">
@@ -121,10 +134,10 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Is exclusive" Margin="0,-1,0,0" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Is exclusive" Margin="{StaticResource ControlBorderTop}" />
         <CheckBox Grid.Column="1"
                   Grid.Row="3"
-                  Margin="1,-1,0,0"
+                  Margin="-6,-4,0,0"
                   Content="Exclusive"
                   IsChecked="{Binding Path=IsExclusive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipIsExclusive}">
@@ -137,10 +150,10 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Is auto delete" Margin="0,-1,0,0" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Is auto delete" Margin="{StaticResource ControlBorderTop}" />
         <CheckBox Grid.Column="1"
                   Grid.Row="4"
-                  Margin="1,-1,0,0"
+                  Margin="-6,-4,0,0"
                   Content="Auto Delete"
                   IsChecked="{Binding Path=IsAutoDelete, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipIsAutoDelete}">
@@ -153,7 +166,7 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="Message" Margin="{StaticResource ActivityBorderTop}" />
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Message" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Stretch"
@@ -162,7 +175,7 @@
                                 AllowUserInsertLine="True"
                                 TextWrapping="Wrap"
                                 MinHeight="100"
-                                MaxHeight="100"
+                                Height="Auto"
                                 AcceptsTab="True"
                                 Padding="2,5,2,2"
                                 VerticalContentAlignment="Top"

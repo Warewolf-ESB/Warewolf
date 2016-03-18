@@ -3513,18 +3513,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or &quot;New RabbitMQ Source...&quot; to add a new one.
-        ///
-        ///Allowed:
-        ///Select a preconfigured RabbitMQ source or &quot;New RabbitMQ Source...&quot; to add a new one..
-        /// </summary>
-        public static string RabbitMQHelpMailSource {
-            get {
-                return ResourceManager.GetString("RabbitMQHelpMailSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The message goes in here.
         ///
         ///Allowed:
@@ -3573,6 +3561,18 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.
+        ///
+        ///Allowed:
+        ///Select a preconfigured RabbitMQ source or add a new one..
+        /// </summary>
+        public static string RabbitMQSourceHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make the queue auto delete..
         /// </summary>
         public static string RabbitMQToolTipIsAutoDelete {
@@ -3596,15 +3596,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string RabbitMQToolTipIsExclusive {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipIsExclusive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or &quot;New RabbitMQ Source...&quot; to add a new one..
-        /// </summary>
-        public static string RabbitMQToolTipMailSource {
-            get {
-                return ResourceManager.GetString("RabbitMQToolTipMailSource", resourceCulture);
             }
         }
         
@@ -3633,6 +3624,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string RabbitMQToolTipResult {
             get {
                 return ResourceManager.GetString("RabbitMQToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one..
+        /// </summary>
+        public static string RabbitMQToolTipSource {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipSource", resourceCulture);
             }
         }
         

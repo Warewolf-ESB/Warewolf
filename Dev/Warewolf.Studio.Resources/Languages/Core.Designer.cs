@@ -2042,7 +2042,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EditRabbitMQSourceHelp.
+        ///   Looks up a localized string similar to Edit RabbitMQ Source.
         /// </summary>
         public static string EditRabbitMQSourceHelp {
             get {
@@ -4243,6 +4243,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New RabbitMQ Source.
+        /// </summary>
+        public static string NewRabbitMQSourceHelp {
+            get {
+                return ResourceManager.GetString("NewRabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Remote Server....
         /// </summary>
         public static string NewServerLabel {
@@ -4597,16 +4606,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or &quot;New RabbitMQ Source...&quot; to add a new one.&lt;br /&gt;
-        ///.
-        /// </summary>
-        public static string RabbitMQHelpMailSource {
-            get {
-                return ResourceManager.GetString("RabbitMQHelpMailSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The message goes in here.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
@@ -4660,6 +4659,16 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQHelpResult {
             get {
                 return ResourceManager.GetString("RabbitMQHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+        ///.
+        /// </summary>
+        public static string RabbitMQSourceHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceHelp", resourceCulture);
             }
         }
         
@@ -6208,15 +6217,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TestHeader {
             get {
                 return ResourceManager.GetString("TestHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TestRabbitMQPublishHelp.
-        /// </summary>
-        public static string TestRabbitMQPublishHelp {
-            get {
-                return ResourceManager.GetString("TestRabbitMQPublishHelp", resourceCulture);
             }
         }
         

@@ -46,11 +46,11 @@
                       SelectedItem="{Binding SelectedRabbitMQSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding RabbitMQSources}"
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipMailSource}"
+                      ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipSource}"
                       DisplayMemberPath="ResourceName"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsRabbitMQSourceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQHelpMailSource}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQSourceHelp}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                         SourcePropertyName="SelectedRabbitMQSource"
                                         SourcePropertyValue="{Binding SelectedRabbitMQSource, UpdateSourceTrigger=PropertyChanged}"
