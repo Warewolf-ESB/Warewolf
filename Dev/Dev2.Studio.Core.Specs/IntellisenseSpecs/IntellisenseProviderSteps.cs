@@ -184,7 +184,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [Given(@"the suggestion list as '(.*)'")]
         public void GivenTheSuggestionListAs(string p0)
         {
-            Dev2TrieSugggestionProvider provider = new Dev2TrieSugggestionProvider(IntellisenseStringProvider.FilterOption.All, 1);
+            Dev2TrieSugggestionProvider provider = new Dev2TrieSugggestionProvider(1);
             provider.VariableList = new ObservableCollection<string>(ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
             var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.All;
             int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
