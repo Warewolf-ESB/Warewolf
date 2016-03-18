@@ -1057,7 +1057,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             //------------Assert Results-------------------------
 
-            Assert.AreEqual("some string [[obfsucationStaging]] some string", result);
+            Assert.AreEqual("some string [[obfsucationStaging]]", result);
         }
 
         [TestMethod]
@@ -1610,24 +1610,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual(exprected, actual);
         }
 
-        //Bug 8736
-        [TestMethod]
-        public void PerformResultInsertionWithPartialRecordsetAndFullRegionExpectedResultInsertsText()
-        {
-            DefaultIntellisenseProvider defaultIntellisenseProvider = new DefaultIntellisenseProvider();
-            IntellisenseProviderContext intellisenseProviderContext = new IntellisenseProviderContext
-            {
-                CaretPosition = 6,
-                InputText = "[[City(]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default,
-                State = true
-            };
-
-            const string expected = "[[City().GeoLocation]]";
-            string actual = defaultIntellisenseProvider.PerformResultInsertion("[[City().GeoLocation]]", intellisenseProviderContext);
-
-            Assert.AreEqual(expected, actual);
-        }
 
         //Bug 8736
         [TestMethod]
