@@ -1025,10 +1025,6 @@ Scenario: Scheduler
 Scenario: Settings
 	Given I 'Assert_Settings_Button_Exists_OnDesignSurface'
 	When I 'Click_Settings_Ribbon_Button'
-	#Ashley TODO: The test should end here.
-
-	#Ashley TODO: Use low level binding hooks for this step:
-	#Given The test is initialized using low level binding calls
 	Then I 'Assert_Settings_LoggingTab_Exists'
 	Then I 'Assert_Settings_ResourcePermissions_Exists'
 	Then I 'Assert_Settings_SecurityTab_Exists'
@@ -1080,10 +1076,6 @@ Scenario: Context Menu on Tab
 	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
 	When I 'Click_New_Workflow_Ribbon_Button'
 	Then I 'Assert_StartNode_Exists'
-	#Ashley TODO: The test should end here.
-
-	#Ashley TODO: Use low level binding hooks for this step:
-	#Given The test is initialized using low level binding calls
 	Then I 'Tab_Context_Menu'
 
 
@@ -1092,10 +1084,6 @@ Scenario: Debug Input window
 	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
 	When I 'Click_New_Workflow_Ribbon_Button'
 	Then I 'Assert_StartNode_Exists'
-	#Ashley TODO: The test should end here.
-
-	#Ashley TODO: Use low level binding hooks for this step:
-	#Given The test is initialized using low level binding calls
 	Then I 'Assert_DebugInput_Window_Exists'
 	Then I 'Assert_DebugInput_CancelButton_Exists'
 	Then I 'Assert_DebugInput_RememberCheckbox_Exists'
@@ -1112,9 +1100,6 @@ Scenario: Debug Input window
 Scenario: Deploy
 	Given I 'Assert_Deploy_Button_Exists_OnDesignSurface'
 	When I 'Click_Deploy_Ribbon_Button'
-	#Then 'Assert_Deploy_Exists'
-	#Ashley TODO: The test should end here.
-
 	Then I 'Assert_Source_Server_Name_Exists'
 	Then I 'Assert_Refresh_Button_Source_Server_Exists'
 	Then I 'Assert_Filter_Source_Server_Exists'
@@ -1164,7 +1149,7 @@ Scenario: Pin and unpin variable list
 	Given I 'Click_Toggle_Unpin_VariableList'
 	Then I 'Click_Toggle_Pin_VariableList'
 
-#Server splash screen missning
+#Server splash screen missing
 
 Scenario: Get Web Request tool
 	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
@@ -1182,8 +1167,3 @@ Scenario: Get Web Request tool
 	#Given The test is initialized using low level binding calls
 	#When I 'Open_Move_Tool_Large_View'
 	Then I 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface'
-
-Scenario: Test New Action Recording
-	#Given I 'Assert the control exists'
-	When I double click the 5th item in the explorer tree
-	#Then I 'Assert something happenned'

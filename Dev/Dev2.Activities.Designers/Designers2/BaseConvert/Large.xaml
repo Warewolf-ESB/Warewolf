@@ -18,8 +18,9 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="320"
-                               MinHeight="220"
-                               Height="220"
+                               MinWidth="320"
+                               MinHeight="175"
+                               Height="175"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
                                mc:Ignorable="d"
@@ -36,20 +37,21 @@
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
-                                     Margin="0,0,9,12"
+                                     Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
-                               MinHeight="56">
+                               Height="Auto"
+                               MaxHeight="Infinity">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
             <i:Interaction.Behaviors>
@@ -115,7 +117,7 @@
                                       SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipFromtype}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpFromType}"
+                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpFromType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FromType"
@@ -142,7 +144,7 @@
                                       SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipTotype}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpToType}"
+                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpToType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="ToType"

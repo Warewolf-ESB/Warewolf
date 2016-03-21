@@ -58,7 +58,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectDestinationButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectDestinationButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -75,7 +75,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -109,7 +109,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectControlDestination">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ConnectControlDestination">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -143,7 +143,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectControl">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceConnectControl">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -152,6 +152,23 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Connect_Control_SourceServer_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Database selector drop down list does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Database_Source_Dropdownlist_Exists">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -364,7 +381,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.DeployButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.DeployButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -381,7 +398,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditDestinationButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditDestinationButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -466,7 +483,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.FilterText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.FilterText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -568,7 +585,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourceHyperlink">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourceHyperlink">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -585,7 +602,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourcesText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.NewResourcesText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -619,7 +636,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideHyperlink">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideHyperlink">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -636,7 +653,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.OverrideText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -670,7 +687,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.FilesMenu.PositionButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.FilesMenu.PositionButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -704,7 +721,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.RefreshSourceServerButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.RefreshSourceServerButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -925,7 +942,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ServerComboBox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ServerComboBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -942,7 +959,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ConnectServerButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.ConnectServerButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -959,7 +976,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.EditServerButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ConnectControl.EditServerButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -976,7 +993,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -993,7 +1010,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1010,7 +1027,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.DisabledRadioButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.DisabledRadioButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1027,7 +1044,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1044,7 +1061,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.EnabledRadioButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.EnabledRadioButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1061,7 +1078,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ErrorMessageText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ErrorMessageText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1078,7 +1095,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NumOfHistoryTextBoxEdit">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NumOfHistoryTextBoxEdit">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1095,7 +1112,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NumberofHistoryText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NumberofHistoryText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1112,7 +1129,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.HistoryTable">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.HistoryTable">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1129,7 +1146,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NameTextbox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NameTextbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1146,7 +1163,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.NameText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.NameText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1163,7 +1180,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.PasswordTextBoxEdit">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.PasswordTextBoxEdit">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1180,7 +1197,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.PasswordText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.PasswordText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1197,7 +1214,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1214,7 +1231,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1231,7 +1248,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.NewTask.StatusCheckbox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.NewTask.StatusCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1248,7 +1265,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.StatusText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.StatusText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1265,7 +1282,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.TriggerText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.TriggerText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1282,7 +1299,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.TriggerValueText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.TriggerValueText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1299,7 +1316,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.UIRunasthefollowinguseText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.UIRunasthefollowinguseText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1316,7 +1333,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.UserNameTextBoxEdit">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.UserNameTextBoxEdit">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1333,7 +1350,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.UsernameText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.UsernameText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1350,7 +1367,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.WorkflowNameTextBox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.WorkflowNameTextBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1367,7 +1384,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.WorkflowText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.WorkflowText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1384,7 +1401,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServicesText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServicesText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1401,7 +1418,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServiceCountText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ServiceCountText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1418,7 +1435,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.ConnectControl.ConnectServerButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.ConnectServerButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1435,7 +1452,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.ConnectControl.EditServerButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.EditServerButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1452,7 +1469,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.ConnectControl.SettingsServerComboBox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.ConnectControl.SettingsServerComboBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1469,7 +1486,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.LoggingTab">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.LoggingTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1486,7 +1503,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1503,7 +1520,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1520,7 +1537,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1537,7 +1554,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.ShowDependenciesButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.ShowDependenciesButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1554,7 +1571,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.EditSourceButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1571,7 +1588,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.SourceServerName">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.SourceServerName">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1588,7 +1605,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceCountText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourceCountText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1605,7 +1622,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourcesText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SourcesText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1622,7 +1639,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1639,7 +1656,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1673,7 +1690,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.DeployTab.DestinationServer.SuccessMessageText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.DeployTab.DestinationServer.SuccessMessageText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1690,7 +1707,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.TabContextMenu">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1855,7 +1872,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetChildModelTreeItem.RecordsetNameChildScrolBarPane.RecordsetNameChildTextBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetChildModelTreeItem.RecordsetNameChildScrolBarPane.RecordsetNameChildTextBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1872,7 +1889,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetInputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetInputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1889,7 +1906,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetChildModelTreeItem.RecordsetChildInputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetChildModelTreeItem.RecordsetChildInputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1923,7 +1940,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetOutputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetOutputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1940,7 +1957,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetChildModelTreeItem.RecordsetChildOutputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetChildModelTreeItem.RecordsetChildOutputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1957,7 +1974,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetNameScrolBarPane.RecordsetNameTextBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetNameScrolBarPane.RecordsetNameTextBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -1991,7 +2008,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem.VariableInputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableInputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -2025,7 +2042,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem.VariableOutputCheckbox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableOutputCheckbox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -2042,7 +2059,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem.VariableNameScrolBarPane.VariableNameTextBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableNameScrolBarPane.VariableNameTextBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -2076,7 +2093,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -2284,7 +2301,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetInputCheckbox">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetInputCheckbox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2297,7 +2314,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem.VariableInputCheckbox">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableInputCheckbox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2436,7 +2453,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIItemCustom.UICreateanewdatabasecoButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.SideMenuBar.DatabaseConnectorButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2454,7 +2471,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIItemCustom.UICreateanewpluginconnButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.SideMenuBar.PluginConnectorButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2544,7 +2561,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem.RecordsetOutputCheckbox">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.RecordsetTreeItem.RecordsetModelTreeItem1.RecordsetOutputCheckbox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2557,7 +2574,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem.VariableOutputCheckbox">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariablesControl.VariableTreeView.VariableTreeItem.VariableModelTreeItem1.VariableOutputCheckbox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2570,7 +2587,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.FilesMenu.PositionButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.FilesMenu.PositionButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2624,7 +2641,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2642,7 +2659,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.DeleteTaskButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2660,7 +2677,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox">
       <ParameterName />
       <State>Normal</State>
     </SetStateAction>
@@ -2673,7 +2690,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.EditTriggerButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2691,7 +2708,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2704,7 +2721,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2722,7 +2739,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.ResourcePickerButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2758,7 +2775,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SchedulerTab.RunTaskCheckBox">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2771,7 +2788,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2784,7 +2801,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2797,7 +2814,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ServerPermissions.UIFalseCell">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2810,7 +2827,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -2823,7 +2840,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.ResourceCell.ResourcePickerButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.ResourceCell.ResourcePickerButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2859,7 +2876,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
+    <SetStateAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.SettingsTab.UIItemTabList.SecurityTab.SecurityWindow.ResourcePermissions.UIFalseCell">
       <ParameterName />
       <State>Checked</State>
     </SetStateAction>
@@ -3178,7 +3195,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.WorkflowTab.UIItemButton">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.UIItemButton">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3407,7 +3424,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3434,20 +3451,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.SourcesComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
       <Location X="228" Y="12" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIGreenPointCustom">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="187" Y="8" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
@@ -3461,7 +3469,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.ActionsComboBox">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.ActionsComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3488,7 +3496,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.NamespacesComboBox">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.NamespacesComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3515,7 +3523,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.SourcesComboBox">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.SourcesComboBox">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3542,7 +3550,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneLeft.SplitPaneContent.TabMan.TabContextMenu">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3702,6 +3710,32 @@
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
                     <PropertyCondition Name="HelpText">Create a new plugin source</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Button" Id="DatabaseConnectorButton" FriendlyName="Create a new database connector" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                    <PropertyCondition Name="HelpText">Create a new database connector</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Button" Id="PluginConnectorButton" FriendlyName="Create a new plugin connector" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                    <PropertyCondition Name="HelpText">Create a new plugin connector</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
@@ -4021,16 +4055,16 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Custom" Id="SplitPaneLeft" FriendlyName="SplitPaneLeft" SpecialControlType="None">
+                <UIObject ControlType="Custom" Id="SplitPaneLeft" FriendlyName="SplitPaneRight" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">Z2491f3201be64929a9cd6d35e96b4958</PropertyCondition>
+                    <PropertyCondition Name="Instance">2</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
@@ -5176,6 +5210,21 @@
                         </UIObject>
                       </Descendants>
                     </UIObject>
+                  </Descendants>
+                </UIObject>
+                <UIObject ControlType="Custom" Id="SplitPaneMiddle" FriendlyName="SplitPaneMiddle" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                    <PropertyCondition Name="Instance">3</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
                     <UIObject ControlType="Custom" Id="SplitPaneContent" FriendlyName="SplitPaneContent" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
@@ -7210,9 +7259,9 @@
                                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                 <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                                <PropertyCondition Name="Name">Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.DB.IDatabaseService]</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="Name">Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.ServerProxyLayer.IDbSource]</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
@@ -7229,6 +7278,47 @@
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
+                                    <UIObject ControlType="Custom" Id="SourcesComboBox" FriendlyName="SourcesComboBox" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Button" Id="SourceComboBoxDropdownButton" FriendlyName="ToggleButton" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Edit" Id="SourceTextBox" FriendlyName="TextBoxPresenter" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">TextBoxPresenter</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
                                     <UIObject ControlType="Custom" Id="NewDBConnectorWizard" FriendlyName="" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
@@ -7241,47 +7331,6 @@
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
-                                        <UIObject ControlType="Custom" Id="SourcesComboBox" FriendlyName="SourcesComboBox" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                            <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants>
-                                            <UIObject ControlType="Button" Id="SourceComboBoxDropdownButton" FriendlyName="ToggleButton" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                              </WindowTitles>
-                                              <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants />
-                                            </UIObject>
-                                            <UIObject ControlType="Edit" Id="SourceTextBox" FriendlyName="TextBoxPresenter" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                              </WindowTitles>
-                                              <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">TextBoxPresenter</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants />
-                                            </UIObject>
-                                          </Descendants>
-                                        </UIObject>
                                         <UIObject ControlType="Button" Id="EditButton" FriendlyName=" ... " SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
@@ -7515,20 +7564,6 @@
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                         <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                         <PropertyCondition Name="Name">Data Source</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Custom" Id="SourcesComboBox" FriendlyName="SourcesComboBox" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                        <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants />
@@ -9173,10 +9208,10 @@
                     <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">Z4ca1052fb5ae416e82580afe2b1150da</PropertyCondition>
+                    <PropertyCondition Name="Instance">1</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
@@ -9268,10 +9303,11 @@
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                     <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                    <PropertyCondition Name="Instance">1</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="TreeItem" Id="VariableModelTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                    <UIObject ControlType="TreeItem" Id="VariableModelTreeItem1" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
@@ -9283,6 +9319,295 @@
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                         <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                                         <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">1</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="VariableNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="VariableNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="VariableModelTreeItem2" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">2</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="VariableNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="VariableNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="VariableModelTreeItem3" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">3</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="VariableNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="VariableNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="VariableModelTreeItem4" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">4</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="VariableNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="VariableNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="VariableOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="VariableModelTreeItem5" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">5</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
@@ -9359,7 +9684,7 @@
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="TreeItem" Id="RecordsetModelTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                    <UIObject ControlType="TreeItem" Id="RecordsetModelTreeItem1" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
@@ -9371,6 +9696,583 @@
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                         <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
                                         <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">1</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="RecordsetNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="RecordsetNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="TreeItem" Id="RecordsetChildModelTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>Distinct</SearchConfiguration>
+                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                            <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Pane" Id="RecordsetNameChildScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Edit" Id="RecordsetNameChildTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="RecordsetModelTreeItem2" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">2</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="RecordsetNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="RecordsetNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="TreeItem" Id="RecordsetChildModelTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>Distinct</SearchConfiguration>
+                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                            <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Pane" Id="RecordsetNameChildScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Edit" Id="RecordsetNameChildTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="RecordsetModelTreeItem3" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">3</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="RecordsetNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="RecordsetNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="TreeItem" Id="RecordsetChildModelTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>Distinct</SearchConfiguration>
+                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                            <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Pane" Id="RecordsetNameChildScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Edit" Id="RecordsetNameChildTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="RecordsetModelTreeItem4" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">4</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="RecordsetNameScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Edit" Id="RecordsetNameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="CheckBox" Id="RecordsetOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="TreeItem" Id="RecordsetChildModelTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>Distinct</SearchConfiguration>
+                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                            <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Pane" Id="RecordsetNameChildScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Edit" Id="RecordsetNameChildTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildInputCheckbox" FriendlyName="UI_IsInputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsInputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                            <UIObject ControlType="CheckBox" Id="RecordsetChildOutputCheckbox" FriendlyName="UI_IsOutputCheckbox_AutoID" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">UI_IsOutputCheckbox_AutoID</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="TreeItem" Id="RecordsetModelTreeItem5" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                        <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
+                                        <PropertyCondition Name="Instance">5</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
@@ -9694,431 +10596,6 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="UIUI_DataListView_AutoCustom" FriendlyName="UI_DataListView_AutoID" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.DataListView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_DataListView_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Tree" Id="UIUI_VariableTreeView_Tree" FriendlyName="UI_VariableTreeView_AutoID" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_VariableTreeView_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UIItemTreeItem" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="TreeItem" Id="UIDev2StudioCoreModelsTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                          </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="Pane" Id="UIVarsScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
-                                <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants>
-                                <UIObject ControlType="Edit" Id="UIUI_NameTextBox_AutoIEdit" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Text" Id="UILabelTextText" FriendlyName="LabelText" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">LabelText</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Image" Id="UIDeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">DeleteDisabled</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Button" Id="UIDeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">DeleteButton</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="ScrollBar" Id="UIHorizontalScrollBarScrollBar" FriendlyName="HorizontalScrollBar" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">ScrollBar</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">HorizontalScrollBar</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="ScrollBar" Id="UIVerticalScrollBarScrollBar" FriendlyName="VerticalScrollBar" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">ScrollBar</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">VerticalScrollBar</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                              </Descendants>
-                            </UIObject>
-                          </Descendants>
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                    <UIObject ControlType="TreeItem" Id="UIItemTreeItem1" FriendlyName="" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="Instance">2</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="TreeItem" Id="UIDev2StudioCoreModelsTreeItem" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                          </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="Pane" Id="UIVarsScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Pane</PropertyCondition>
-                                <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants>
-                                <UIObject ControlType="ScrollBar" Id="UIVerticalScrollBarScrollBar" FriendlyName="VerticalScrollBar" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">ScrollBar</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">VerticalScrollBar</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="ScrollBar" Id="UIHorizontalScrollBarScrollBar" FriendlyName="HorizontalScrollBar" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">ScrollBar</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">HorizontalScrollBar</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
-                                </UIObject>
-                                <UIObject ControlType="Edit" Id="UIUI_NameTextBox_AutoIEdit" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Text" Id="UILabelTextText" FriendlyName="LabelText" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">LabelText</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Image" Id="UIDeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">DeleteDisabled</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="Button" Id="UIDeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">DeleteButton</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                              </Descendants>
-                            </UIObject>
-                            <UIObject ControlType="TreeItem" Id="UIDev2StudioCoreModelsTreeItem1" FriendlyName="Dev2.Studio.Core.Models.DataList.DataListItemModel" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                              </WindowTitles>
-                              <SearchConfigurations>
-                                <SearchConfiguration>Distinct</SearchConfiguration>
-                                <SearchConfiguration>Expand</SearchConfiguration>
-                              </SearchConfigurations>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                <PropertyCondition Name="Name">Dev2.Studio.Core.Models.DataList.DataListItemModel</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants>
-                                <UIObject ControlType="Pane" Id="UIVarsScrolBarPane" FriendlyName="varsScrolBar" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Pane</PropertyCondition>
-                                    <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Edit" Id="UIUI_NameTextBox_AutoIEdit" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants>
-                                        <UIObject ControlType="Text" Id="UILabelTextText" FriendlyName="LabelText" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">LabelText</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Image" Id="UIDeleteDisabledImage" FriendlyName="DeleteDisabled" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">DeleteDisabled</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Button" Id="UIDeleteButtonButton" FriendlyName="DeleteButton" SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">DeleteButton</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                      </Descendants>
-                                    </UIObject>
-                                    <UIObject ControlType="ScrollBar" Id="UIVerticalScrollBarScrollBar" FriendlyName="VerticalScrollBar" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">ScrollBar</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">VerticalScrollBar</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                    <UIObject ControlType="ScrollBar" Id="UIHorizontalScrollBarScrollBar" FriendlyName="HorizontalScrollBar" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">ScrollBar</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">HorizontalScrollBar</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                              </Descendants>
-                            </UIObject>
-                          </Descendants>
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Custom" Id="UIZ4ca1052fb5ae416e825Custom" FriendlyName="Z4ca1052fb5ae416e82580afe2b1150da" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
-                <PropertyCondition Name="AutomationId">Z4ca1052fb5ae416e82580afe2b1150da</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Custom" Id="UIOUTPUTCustom" FriendlyName="OUTPUT" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">OutputPane</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
           </Descendants>
         </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="MessageBoxWindow" FriendlyName="WarewolfMessageBox" SpecialControlType="None" SessionId="1116676">
@@ -10242,32 +10719,6 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Button" Id="UICreateanewdatabasecoButton" FriendlyName="Create a new database connector" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new database connector</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="Button" Id="UICreateanewpluginconnButton" FriendlyName="Create a new plugin connector" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="HelpText">Create a new plugin connector</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
                 <UIObject ControlType="Text" Id="UIItemText" FriendlyName=" " SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
@@ -12477,158 +12928,6 @@
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Button</PropertyCondition>
                 <PropertyCondition Name="AutomationId">CancelButton</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2LEROYWARWindow1" FriendlyName="Warewolf (DEV2\LEROY.WARNER)" SpecialControlType="None" SessionId="9313092">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\LEROY.WARNER)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Custom" Id="UIDebugOutputCustom" FriendlyName="DebugOutput" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.DebugOutputView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">DebugOutput</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2LEROYWARWindow2" FriendlyName="Warewolf (DEV2\LEROY.WARNER)" SpecialControlType="None" SessionId="32708012">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\LEROY.WARNER)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Custom" Id="UIUI_ExplorerControl_ACustom" FriendlyName="UI_ExplorerControl_AutoID" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ExplorerView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_ExplorerControl_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Tree" Id="UIExplorerTreeTree" FriendlyName="ExplorerTree" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ExplorerTree</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem1" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                          </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Distinct</SearchConfiguration>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="TreeItem" Id="UIInfragisticsControlsTreeItem11" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                          </WindowTitles>
-                          <SearchConfigurations>
-                            <SearchConfiguration>Expand</SearchConfiguration>
-                          </SearchConfigurations>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Infragistics.Controls.Menus.XamDataTreeNodeDataContext</PropertyCondition>
-                            <PropertyCondition Name="Instance">2</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2LEROYWARWindow3" FriendlyName="Warewolf (DEV2\LEROY.WARNER)" SpecialControlType="None" SessionId="7212134">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\LEROY.WARNER)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="ControlType">Window</PropertyCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />

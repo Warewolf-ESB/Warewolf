@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests.UtilsTests
 
         #endregion
 
-        #region Add Tests
+        #region AddMode Tests
 
         [TestMethod]
         public void NewWorkflowNamesAddNewNameToHashSetExpectedNameToBeAdded()

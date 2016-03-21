@@ -157,7 +157,10 @@ namespace Dev2.Network
                 return;
             }
             StartReconnectTimer();
-            OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
+            if (HubConnection.State != ConnectionStateWrapped.Disconnected)
+            {
+                OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
+            }
         }
 
         void OnWorkspaceIdReceived(Guid obj)
@@ -350,20 +353,21 @@ namespace Dev2.Network
                 application.Dispatcher.Invoke(() =>
                 {
                     res = popup.ShowConnectionTimeoutConfirmation(DisplayName);
+                    if (res == MessageBoxResult.Yes)
+                    {
+                        if (!HubConnection.Start().Wait(30000))
+                        {
+                            ConnectionRetry();
+                        }
+                    }
+                    else
+                    {
+                        throw new NotConnectedException();
+                    }
                 });
             }
 
-            if (res == MessageBoxResult.Yes)
-            {
-                if (!HubConnection.Start().Wait(30000))
-                {
-                    ConnectionRetry();
-                }
-            }
-            else
-            {
-                throw new NotConnectedException();
-            }
+            
         }
 
         bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)

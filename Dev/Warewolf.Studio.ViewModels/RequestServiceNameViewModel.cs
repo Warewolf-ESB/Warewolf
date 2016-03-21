@@ -151,12 +151,19 @@ namespace Warewolf.Studio.ViewModels
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
             _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
             {
-                HasLoaded = a.Result;                
+                HasLoaded = a.Result;
+                if (!string.IsNullOrEmpty(_selectedPath))
+                {
+                    _environmentViewModel.SelectItem(_selectedPath, b =>
+                    {
+                        _environmentViewModel.SelectAction(b);
+                        b.IsSelected = true;
+                    });
+                }
             },TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
-            SingleEnvironmentExplorerViewModel.SelectItem(_selectedPath);
             _view.ShowView();
 
             return ViewResult;

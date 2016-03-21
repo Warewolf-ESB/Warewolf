@@ -62,9 +62,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Windows.Design.Interaction">
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -230,6 +233,8 @@
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPasteView.cs" />
+    <Compile Include="IPerformanceCountersByMachine.cs" />
+    <Compile Include="IPerformanceCountersByResource.cs" />
     <Compile Include="IPluginAction.cs" />
     <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginServiceModel.cs" />
@@ -257,7 +262,10 @@
     <Compile Include="IWebLatestVersionDialog.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />
     <Compile Include="Monitoring\IPerformanceCounterPersistence.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterRepository.cs" />
+    <Compile Include="Monitoring\IPerformanceCounterTo.cs" />
     <Compile Include="Monitoring\IWarewolfPerformanceCounterRegister.cs" />
     <Compile Include="Monitoring\IWarewolfPerformanceCounterLocater.cs" />
     <Compile Include="Monitoring\WarewolfPerfCounterType.cs" />
@@ -307,6 +315,8 @@
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Threading\IAsyncWorker.cs" />
     <Compile Include="ToolBase\Database\IDatabaseServiceViewModel.cs" />
+    <Compile Include="ToolBase\DotNet\IDotNetViewModel.cs" />
+    <Compile Include="ToolBase\DotNet\INamespaceToolRegion.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IErrorRegion.cs" />
@@ -318,11 +328,14 @@
     <Compile Include="ToolBase\IToolRegion.cs" />
     <Compile Include="ToolBase\IWebDeleteInputArea.cs" />
     <Compile Include="ToolBase\IWebGetInputArea.cs" />
+    <Compile Include="ToolBase\IWebInput.cs" />
     <Compile Include="ToolBase\IWebPostInputArea.cs" />
+    <Compile Include="ToolBase\IWebPutInputArea.cs" />
     <Compile Include="ToolBase\IWebServiceBaseViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceDeleteViewModel.cs" />
     <Compile Include="ToolBase\IWebServiceGetViewModel.cs" />
     <Compile Include="ToolBase\IWebServicePostViewModel.cs" />
+    <Compile Include="ToolBase\IWebServicePutViewModel.cs" />
     <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
     <Compile Include="Toolbox\IToolboxModel.cs" />
     <Compile Include="Toolbox\IToolboxViewModel.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
@@ -27,14 +28,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
 
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
+            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(25, region.CurrentHeight);
-            Assert.AreEqual(25, region.MaxHeight);
-            Assert.AreEqual(25, region.MinHeight);
             Assert.AreEqual(1, region.Errors.Count);
-            Assert.IsTrue(region.IsVisible);
+            Assert.AreEqual(region.LabelWidth, 46);
         }
 
         [TestMethod]
@@ -50,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc });
 
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(dbsrc, region.SelectedSource);
@@ -72,7 +70,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             region.SomethingChanged += (a, b) => { evt = true; };
             region.SelectedSource = s2;
 
@@ -95,7 +93,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -109,8 +107,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             region.SelectedSource = dbsrc;
 
             //------------Assert Results-------------------------
-            dep1.Verify(a => a.RestoreRegion(clone1.Object));
-            dep2.Verify(a => a.RestoreRegion(clone2.Object));
+            dep1.Verify(a => a.RestoreRegion(clone1.Object),Times.Never);
+            dep2.Verify(a => a.RestoreRegion(clone2.Object), Times.Never);
         }
 
         [TestMethod]
@@ -128,7 +126,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -160,14 +158,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             var cloned = region.CloneRegion();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(cloned.CurrentHeight, region.CurrentHeight);
-            Assert.AreEqual(cloned.MaxHeight, region.MaxHeight);
-            Assert.AreEqual(cloned.IsVisible, region.IsVisible);
-            Assert.AreEqual(cloned.MinHeight, region.MinHeight);
             Assert.AreEqual(((DatabaseSourceRegion)cloned).SelectedSource, region.SelectedSource);
         }
 
@@ -185,23 +179,15 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             // ReSharper disable once UseObjectOrCollectionInitializer
-            DatabaseSourceRegion regionToRestore = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            regionToRestore.MaxHeight = 144;
-            regionToRestore.MinHeight = 133;
-            regionToRestore.CurrentHeight = 111;
-            regionToRestore.IsVisible = false;
+            DatabaseSourceRegion regionToRestore = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             regionToRestore.SelectedSource = s2;
 
             region.RestoreRegion(regionToRestore);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(region.MaxHeight, 144);
-            Assert.AreEqual(region.MinHeight, 133);
-            Assert.AreEqual(region.CurrentHeight, 111);
             Assert.AreEqual(region.SelectedSource, s2);
-            Assert.IsFalse(region.IsVisible);
         }
     }
 }

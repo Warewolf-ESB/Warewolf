@@ -34,8 +34,9 @@ namespace Dev2.Common.Interfaces
         event PermissionsChanged PermissionsChanged;
         event NetworkStateChanged NetworkStateChanged;
         event ItemAddedEvent ItemAddedEvent;
-       
+
         string GetServerVersion();
+        string GetServerInformationalVersion();
 
         void Connect();
         Task<bool> ConnectAsync();

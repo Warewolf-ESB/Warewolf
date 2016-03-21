@@ -80,7 +80,7 @@ namespace Dev2.Core.Tests.Workspaces
         }
 
         [TestMethod]
-        [Description("Update workspace item IsWorkflowSaved based on the resource")]
+        [Description("UpdateMode workspace item IsWorkflowSaved based on the resource")]
         [Owner("Huggs")]
         public void WorkspaceItemRepository_UnitTest_UpdateWorkspaceItemIsWorkflowSaved_ExpectSetsWorkspaceItemIsWorkflowSavedFalse()
         {

@@ -18,13 +18,14 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "Post Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebPostActivity:DsfActivity
     {
         public IList<INameValue> Headers { get; set; }
@@ -34,8 +35,8 @@ namespace Dev2.Activities
 
         public DsfWebPostActivity()
         {
-            Type = "Web Post Request Connector";
-            DisplayName = "Web Post Request Connector";
+            Type = "POST Web Method";
+            DisplayName = "POST Web Method";
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -117,6 +118,11 @@ namespace Dev2.Activities
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
                 i++;
+            }
+            if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+            {
+                dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
+                return;
             }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
             try

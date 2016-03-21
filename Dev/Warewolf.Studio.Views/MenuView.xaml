@@ -95,17 +95,23 @@
                    VerticalAlignment="Center"
                    Source="{StaticResource System-Spacer}" />
 
-            <Image x:Name="LogoImage"
-                   Grid.Row="1"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="3"
-                   Width="35"
-                   Height="35"
-                   Margin="12,0,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Source="{StaticResource System-Logo}"
-                   Stretch="Fill" />
+            <Button Grid.Row="1"
+                    Grid.Column="0"
+                    Style="{StaticResource ButtonTransparentStyle}"
+                    Height="35"
+                    Width="35"
+                    HorizontalAlignment="Left"
+                    Margin="12,0,0,0"
+                    Command="{Binding StartPageCommand}"
+                    Grid.ColumnSpan="3">
+                <Button.Content>
+                    <Image x:Name="LogoImage"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Source="{StaticResource System-Logo}"
+                           Stretch="Fill" />
+                </Button.Content>
+            </Button>
 
             <Separator Grid.Row="2"
                        Grid.Column="0"

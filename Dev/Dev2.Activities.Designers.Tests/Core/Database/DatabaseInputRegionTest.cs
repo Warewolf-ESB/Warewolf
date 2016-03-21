@@ -5,6 +5,7 @@ using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core.Activities.Utils;
@@ -28,15 +29,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
-            ActionRegion actionRegion = new ActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
+            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
-            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), actionRegion);
-            Assert.AreEqual(region.MaxHeight, 60);
-            Assert.AreEqual(region.MinHeight, 60);
-            Assert.AreEqual(region.CurrentHeight, 60);
-            Assert.AreEqual(region.IsVisible, false);
-            Assert.AreEqual(region.HeadersHeight, 30);
+            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
         }
 
@@ -49,10 +46,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
 
             var region = new DatabaseInputRegion();
-            Assert.AreEqual(region.MaxHeight, 60);
-            Assert.AreEqual(region.MinHeight, 60);
-            Assert.AreEqual(region.CurrentHeight, 60);
-            Assert.AreEqual(region.IsVisible, false);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
 
@@ -65,45 +59,18 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
-            ActionRegion actionRegion = new ActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
+            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
-            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), actionRegion);
-            Assert.AreEqual(region.MaxHeight, 60);
-            Assert.AreEqual(region.MinHeight, 60);
-            Assert.AreEqual(region.CurrentHeight, 60);
-            Assert.AreEqual(region.IsVisible, false);
-            Assert.AreEqual(region.HeadersHeight, 30);
+            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
+            Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
             var clone = region.CloneRegion() as DatabaseInputRegion;
             if (clone != null)
             {
-                Assert.AreEqual(clone.MaxHeight, 60);
-                Assert.AreEqual(clone.MinHeight, 60);
-                Assert.AreEqual(clone.CurrentHeight, 60);
-                Assert.AreEqual(clone.IsVisible, false);
-                Assert.AreEqual(clone.HeadersHeight, 60);
+                Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
             }
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("DatabaseInputRegion_Test")]
-        public void DatabaseInputRegion_Test_HeightChangedUpdatesMain()
-        {
-            var id = Guid.NewGuid();
-            var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
-            
-            bool called = false;
-            var src = new Mock<IDbServiceModel>();
-            src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
-            ActionRegion actionRegion = new ActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
-
-            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), actionRegion);
-            region.HeightChanged += (a, b) => { called = true; };
-            Assert.IsTrue(called);
         }
 
         [TestMethod]
@@ -115,14 +82,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
-            ActionRegion actionRegion = new ActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
+            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
-            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), actionRegion);
-            Assert.AreEqual(region.MaxHeight, 60);
-            Assert.AreEqual(region.MinHeight, 60);
-            Assert.AreEqual(region.CurrentHeight, 60);
-            Assert.AreEqual(region.IsVisible, false);
+            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
         [TestMethod]
@@ -134,14 +98,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
-            ActionRegion actionRegion = new ActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
+            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
-            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), actionRegion);
-            Assert.AreEqual(region.MaxHeight, 60);
-            Assert.AreEqual(region.MinHeight, 60);
-            Assert.AreEqual(region.CurrentHeight, 60);
-            Assert.AreEqual(region.IsVisible, false);
+            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
+            Assert.AreEqual(region.IsEnabled, false);
         }
 
 
@@ -155,23 +116,17 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
-            ActionRegion actionRegion = new ActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
+            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
-            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), actionRegion);
+            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             // ReSharper disable once UseObjectOrCollectionInitializer
             var regionToRestore = new DatabaseInputRegionClone();
-            regionToRestore.MinHeight = 60;
-            regionToRestore.MaxHeight = 60;
-            regionToRestore.CurrentHeight = 60;
-            regionToRestore.IsVisible = true;
+            regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore);
             //------------Assert Results-------------------------
 
-            Assert.AreEqual(region.MaxHeight, 60);
-            Assert.AreEqual(region.MinHeight, 60);
-            Assert.AreEqual(region.CurrentHeight, 60);
         }
 
 
@@ -186,13 +141,13 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var src = new Mock<IDbServiceModel>();
             var lst = new ObservableCollection<IDbSource>() { new DbSourceDefinition() { Name = "bravo" }, new DbSourceDefinition() { Name = "johnny" } };
             src.Setup(a => a.RetrieveSources()).Returns(lst);
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()));
-            ActionRegion actionRegion = new ActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
+            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
-            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), actionRegion);
+            var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
 
             sourceRegion.SelectedSource = lst[0];
-            Assert.AreEqual(region.Inputs, "Dave");
+            Assert.AreEqual(region.Inputs.Count, 0);
         }
     }
 }

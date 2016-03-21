@@ -46,6 +46,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
@@ -54,13 +58,13 @@
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\DropNet.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
@@ -125,10 +129,6 @@
       <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -163,8 +163,14 @@
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
-    <Compile Include="ActivityTests\DsfDropBoxFileActivityTest.cs" />
-    <Compile Include="ActivityTests\DsfWebDeleteActivityTests.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropBoxFailureResultShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropBoxSuccessResultShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxSoureFileValidatorShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
+    <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
+    <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
     <Compile Include="ActivityTests\DataMergeActivityTests.cs" />
     <Compile Include="ActivityTests\DataSplitActivityTest.cs" />
@@ -201,19 +207,20 @@
     <Compile Include="ActivityTests\TestActivityAbstract.cs" />
     <Compile Include="ActivityTests\DsfActivityTests.cs" />
     <Compile Include="ActivityTests\TestFlowNodeActivity.cs" />
-    <Compile Include="ActivityTests\HttpClientCredentialManagerTests.cs" />
+    <Compile Include="ActivityTests\Web\HttpClientCredentialManagerTests.cs" />
+    <Compile Include="ActivityTests\TestUtils.cs" />
     <Compile Include="ActivityTests\UniqueActivityTests.cs" />
     <Compile Include="ActivityTests\DsfDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\SqlBulkInserterTests.cs" />
     <Compile Include="ActivityTests\SqlBulkCopyWrapperTest.cs" />
-    <Compile Include="ActivityTests\DsfWebPostActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\DsfWebPostActivityTests.cs" />
     <Compile Include="ActivityTests\UnZipTests.cs" />
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
-    <Compile Include="ActivityTests\WebGetRequestActivityTests.cs" />
-    <Compile Include="ActivityTests\WebRequestDataDtoTests.cs" />
+    <Compile Include="ActivityTests\Web\WebGetRequestActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
-    <Compile Include="DsfWebBaseActivityTests.cs" />
+    <Compile Include="ActivityTests\Web\DsfWebBaseActivityTests.cs" />
     <Compile Include="FindMissingStrategyTest\DataGridActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\DsfActivityFindMissingStrategyTests.cs" />
     <Compile Include="FindMissingStrategyTest\ForEachActivityFindMissingStrategyTests.cs" />

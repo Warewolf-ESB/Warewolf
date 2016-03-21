@@ -10,10 +10,7 @@ namespace Dev2.Activities.Designers2.Core
         public ErrorRegion()
         {
             ToolRegionName = "ErrorRegion";
-            IsVisible = true;
-            MaxHeight = 125;
-            MinHeight = 125;
-            CurrentHeight = 125;
+            IsEnabled = true;
             Dependants = new List<IToolRegion>();
         }
 
@@ -26,10 +23,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight { get; set; }
-        public double CurrentHeight { get; set; }
-        public bool IsVisible { get; set; }
-        public double MaxHeight { get; set; }
+        public bool IsEnabled { get; set; }
 
         public IList<IToolRegion> Dependants { get; set; }
 
@@ -51,8 +45,6 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public event HeightChanged HeightChanged;
-
         #endregion
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -61,15 +53,6 @@ namespace Dev2.Activities.Designers2.Core
             if(handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        protected virtual void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if(handler != null)
-            {
-                handler(this, args);
             }
         }
     }

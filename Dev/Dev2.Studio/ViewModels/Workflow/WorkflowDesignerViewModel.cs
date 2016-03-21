@@ -309,7 +309,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get { return ResourceHelper.GetIconPath(ResourceModel); }
         }
 
-        //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
+        //2012.10.01: massimo.guerrera - AddMode Remove buttons made into one:)
         public IPopupController PopUp { get; set; }
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
@@ -1045,7 +1045,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ModelItem innerActivity = RecursiveForEachCheck(test);
                     if (innerActivity != null)
                     {
-                        selectedItem = innerActivity;
+                        //Commenting this out to allow for the Foreach tool to expand to large view.
+                        //Do not take out until we have finalized that this is not to be used
+                        //selectedItem = innerActivity;
                     }
                 }
                 Selection.Union(_wd.Context, selectedItem);

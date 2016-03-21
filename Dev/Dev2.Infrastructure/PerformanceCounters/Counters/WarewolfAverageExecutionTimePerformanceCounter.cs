@@ -83,9 +83,7 @@ namespace Dev2.PerformanceCounters.Counters
                 _counter = new PerformanceCounter(GlobalConstants.Warewolf, Name,GlobalConstants.GlobalCounterName)
                 {
                     MachineName = ".",
-                    ReadOnly = false,
-                
-
+                    ReadOnly = false,                
                 };
                 _baseCounter = new PerformanceCounter(GlobalConstants.Warewolf, "average time per operation base", GlobalConstants.GlobalCounterName)
                 {
@@ -95,6 +93,18 @@ namespace Dev2.PerformanceCounters.Counters
 
                 };
                 _started = true;
+            }
+        }
+
+        public void Reset()
+        {
+            if (_counter != null)
+            {
+                _counter.RawValue = 0;
+            }
+            if (_baseCounter != null)
+            {
+                _baseCounter.RawValue = 0;
             }
         }
 

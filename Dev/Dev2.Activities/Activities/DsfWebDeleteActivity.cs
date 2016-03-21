@@ -1,35 +1,25 @@
 ﻿using System;
-using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.ServiceModel.Security;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Core;
 using Warewolf.Storage;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "Delete Web Service", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE68D4A9F2D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "DELETE", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE68D4A9F2D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebDeleteActivity : DsfWebActivityBase
     {
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public DsfWebDeleteActivity()
-            : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Delete, "Web Delete Request Connector", "Web Delete Request Connector"))
+            : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Delete, "DELETE Web Method", "DELETE Web Method"))
         {
 
         }
-
-        #region Properties
-
-
-
-        #endregion
-
 
         #region Overrides
 
@@ -50,7 +40,7 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, postData: string.Empty);
+            var webRequestResult = PerformWebPostRequest(head, query, url, string.Empty);
             PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
 

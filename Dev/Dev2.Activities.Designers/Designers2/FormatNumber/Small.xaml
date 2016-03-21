@@ -12,7 +12,6 @@
                                xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="200"
                                MaxWidth="200"

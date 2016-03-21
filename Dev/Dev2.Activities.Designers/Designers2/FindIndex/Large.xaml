@@ -12,10 +12,14 @@
                                xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                mc:Ignorable="d"
                                Width="320"
+                               MinWidth="320"
+                               MinHeight="265"
+                               Height="265"
+                               MaxWidth="Infinity"
+                               MaxHeight="265"
                                d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance local:FindIndexDesignerViewModel}">
 
@@ -29,11 +33,12 @@
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
-                                     Margin="0,0,9,12"
+                                     Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
+    
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -134,7 +135,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.IsVisible)
+            if (!OutputsRegion.IsEnabled)
             {
                 Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Web get must be validated before minimising" } };
             }
@@ -216,15 +217,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
             InitializeProperties();
 
-            if (OutputsRegion != null && OutputsRegion.IsVisible)
+            if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
                 var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
                 if (recordsetItem != null)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
                 }
             }
-            ReCalculateHeight();
         }
 
         public int LabelWidth { get; set; }
@@ -256,8 +256,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                 ManageServiceInputViewModel.Model = service;
 
+                ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+                ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+
                 GenerateOutputsVisible = true;
-                ManageServiceInputViewModel.SetInitialVisibility();
                 SetDisplayName(OutputDisplayName);
             }
         }
@@ -351,7 +353,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsVisible = false; } };
+                SourceRegion = new WebSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 InputArea = new WebGetInputRegion(ModelItem, SourceRegion);
                 regions.Add(InputArea);
@@ -359,7 +361,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
                 {
-                    OutputsRegion.IsVisible = true;
+                    OutputsRegion.IsEnabled = true;
 
                 }
                 ErrorRegion = new ErrorRegion();
@@ -369,23 +371,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
-            foreach (var toolRegion in regions)
-            {
-                toolRegion.HeightChanged += toolRegion_HeightChanged;
-            }
-            ReCalculateHeight();
             return regions;
         }
         public ErrorRegion ErrorRegion { get; private set; }
-
-        void toolRegion_HeightChanged(object sender, IToolRegion args)
-        {
-            ReCalculateHeight();
-            if (TestInputCommand != null)
-            {
-                TestInputCommand.RaiseCanExecuteChanged();
-            }
-        }
 
         #endregion
 
@@ -438,7 +426,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 
         public void ValidateTestComplete()
         {
-            OutputsRegion.IsVisible = true;
+            OutputsRegion.IsEnabled = true;
         }
 
         public IWebService ToModel()
@@ -508,55 +496,28 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 _generateOutputsVisible = value;
                 if (value)
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = true;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(false);
 
                 }
                 else
                 {
-                    ManageServiceInputViewModel.InputArea.IsVisible = false;
-                    ManageServiceInputViewModel.OutputArea.IsVisible = false;
+                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
                     SetRegionVisibility(true);
                 }
 
                 OnPropertyChanged();
-                ReCalculateHeight();
             }
         }
 
         void SetRegionVisibility(bool value)
         {
-            InputArea.IsVisible = value;
-            OutputsRegion.IsVisible = value && OutputsRegion.Outputs.Count > 0;
-            ErrorRegion.IsVisible = value;
-            SourceRegion.IsVisible = value;
-        }
-
-        public override void ReCalculateHeight()
-        {
-            if (_regions != null)
-            {
-                bool isInputVisible = false;
-                foreach (var toolRegion in _regions)
-                {
-                    if (toolRegion.ToolRegionName == "GetInputRegion")
-                    {
-                        isInputVisible = toolRegion.IsVisible;
-                    }
-                }
-
-                DesignMinHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MinHeight);
-                DesignMaxHeight = _regions.Where(a => a.IsVisible).Sum(a => a.MaxHeight);
-                DesignHeight = _regions.Where(a => a.IsVisible).Sum(a => a.CurrentHeight);
-
-                if (isInputVisible && !GenerateOutputsVisible)
-                {
-                    DesignMaxHeight += BaseHeight;
-                    DesignHeight += BaseHeight;
-                    DesignMinHeight += BaseHeight;
-                }
-            }
+            InputArea.IsEnabled = value;
+            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
+            ErrorRegion.IsEnabled = value;
+            SourceRegion.IsEnabled = value;
         }
 
         #endregion

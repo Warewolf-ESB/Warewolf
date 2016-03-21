@@ -16,7 +16,6 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="350"
                                MinWidth="350"
@@ -39,7 +38,7 @@
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
-                                     Margin="0,0,9,12"
+                                     Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
@@ -84,7 +83,11 @@
                     Content="..."
                     Command="{Binding EditSharepointServerCommand}"
                     ToolTip="Edit Sharepoint Server Source"
-                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" />
+                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" >
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.SharepointEditServerHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
 
             <TextBlock Grid.Column="0" Grid.Row="1" Text="List" Margin="{StaticResource ControlBorderTop}" />
             <ComboBox Grid.Column="1"
@@ -112,6 +115,9 @@
                 <Button.Content>
                     <fa:FontAwesome Icon="Refresh" FontSize="16" />
                 </Button.Content>
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.SharepointRefreshListHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
             </Button>
             <customControls:CircularProgressBar Grid.Column="2" 
                                                 Grid.Row="1"
