@@ -86,12 +86,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1189 = new TechTalk.SpecFlow.Table(new string[] {
                         "Switch on"});
-            table1.AddRow(new string[] {
+            table1189.AddRow(new string[] {
                         "[[A]] =  30"});
 #line 11
- testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1189, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

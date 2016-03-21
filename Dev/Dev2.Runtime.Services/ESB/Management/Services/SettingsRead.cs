@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
@@ -31,6 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            var serializer = new Dev2JsonSerializer();
             var settings = new Settings();
             try
             {
@@ -38,8 +40,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var loggingSettingsRead = CreateLoggingSettingsReadEndPoint();
                 var jsonPermissions = securityRead.Execute(values, theWorkspace);
                 var jsonLoggingSettings = loggingSettingsRead.Execute(values, theWorkspace);
+                var permissionsRead = CreatePerfCounterReadEndPoint();
+                var perfsettings = permissionsRead.Execute(values, theWorkspace);
+
                 settings.Security = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
                 settings.Logging = JsonConvert.DeserializeObject<LoggingSettingsTo>(jsonLoggingSettings.ToString());
+                settings.PerfCounters = serializer.Deserialize<IPerformanceCounterTo>(perfsettings.ToString());
             }
             catch(Exception ex)
             {
@@ -49,8 +55,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);
             }
 
-            var serializer = new Dev2JsonSerializer();
+          
             return serializer.SerializeToBuilder(settings);
+        }
+
+        protected virtual IEsbManagementEndpoint CreatePerfCounterReadEndPoint()
+        {
+            return new FetchPerformanceCounters();
         }
 
         protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint()

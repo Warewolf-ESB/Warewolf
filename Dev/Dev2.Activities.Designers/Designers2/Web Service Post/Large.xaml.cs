@@ -37,7 +37,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
             if (viewModel != null)
             {
                 var dataContext = viewModel.InputArea;
-                if (dataContext.IsVisible)
+                if (dataContext.IsEnabled)
                 {
                     //MinHeight = dataContext.MinHeight + 25;
                     //MaxHeight += e.NewSize.Height;

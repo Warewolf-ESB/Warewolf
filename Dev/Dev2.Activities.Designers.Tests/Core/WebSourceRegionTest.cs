@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces.WebService;
 using Moq;
 using Dev2.Studio.Core.Activities.Utils;
@@ -27,11 +27,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
-            Assert.AreEqual(25,region.CurrentHeight);
-            Assert.AreEqual(25,region.MaxHeight);
-            Assert.AreEqual(25,region.MinHeight);
             Assert.AreEqual(1,region.Errors.Count);
-            Assert.IsTrue(region.IsVisible);
+            Assert.IsTrue(region.IsEnabled);
         }
         [TestMethod]
         public void CtorWitSelectedSrc()
@@ -126,10 +123,6 @@ namespace Dev2.Activities.Designers.Tests.Core
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             var cloned = region.CloneRegion();
-            Assert.AreEqual(cloned.CurrentHeight,region.CurrentHeight);
-            Assert.AreEqual(cloned.MaxHeight,region.MaxHeight);
-            Assert.AreEqual(cloned.IsVisible,region.IsVisible);
-            Assert.AreEqual(cloned.MinHeight,region.MinHeight);
             Assert.AreEqual(((WebSourceRegion) cloned).SelectedSource,region.SelectedSource);
         }
 
@@ -145,20 +138,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             // ReSharper disable once UseObjectOrCollectionInitializer
             WebSourceRegion regionToRestore = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            regionToRestore.MaxHeight = 144;
-            regionToRestore.MinHeight = 133;
-            regionToRestore.CurrentHeight = 111;
-            regionToRestore.IsVisible = false;
             regionToRestore.SelectedSource = s2;
 
             region.RestoreRegion(regionToRestore);
 
-            Assert.AreEqual(region.MaxHeight,144);
-            Assert.AreEqual(region.MinHeight,133);
-            Assert.AreEqual(region.CurrentHeight,111);
             Assert.AreEqual(region.SelectedSource,s2);
-            Assert.IsFalse(region.IsVisible);
         }
-
     }
 }

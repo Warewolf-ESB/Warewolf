@@ -1112,54 +1112,21 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once RedundantIfElseBlock
             else
             {
-
-
                 try
                 {
-
-                   await _explorerRepository.Move(this, destination);
-
-                    if (destination.ResourceType == ResourceType.Folder)
+                    if (Equals(this, destination))
                     {
-                        if (destination.Children.Any(a => a.ResourceName == ResourceName && a.ResourceType == ResourceType.Folder))
+                        return false;
+                    }
+                    if (Parent != null && destination.Parent != null)
+                    {
+                        if (Equals(Parent, destination))
                         {
-                            var destfolder = destination.Children.FirstOrDefault(a => a.ResourceName == ResourceName && a.ResourceType == ResourceType.Folder);
-                            foreach (var explorerItemViewModel in Children)
-                            {
-                                if (destfolder != null)
-                                {
-                                    explorerItemViewModel.ResourcePath = destfolder.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
-                                    destfolder.Children.Add(explorerItemViewModel);
-                                }
-                            }
-                        }
-                        else
-                        {
-
-
-                            destination.AddChild(this);
-                            RemoveChildFromParent();
-                            Parent = destination;
-                            foreach (var explorerItemViewModel in Children)
-                            {
-                                explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
-                            }
+                            return false;
                         }
                     }
-                    else if (destination.ResourceType <= ResourceType.Folder)
-                    {
-                        destination.AddChild(this);
-                        ResourcePath = destination.ResourcePath+  (destination.ResourcePath== String.Empty ?"":"\\" )+ ResourceName;
-
-                        RemoveChildFromParent();
-                    }
-                    else if (destination.Parent == null)
-                    {
-                        destination.AddChild(this);
-                        RemoveChildFromParent();
-                    }
-
-                    return true;
+                    RemoveChildFromParent();
+                    await _explorerRepository.Move(this, destination);
                 }
                 catch (Exception)
                 {
@@ -1170,6 +1137,7 @@ namespace Warewolf.Studio.ViewModels
                     Server.UpdateRepository.FireItemSaved();
                 }
             }
+            return true;
         }
         private void RemoveChildFromParent()
         {
@@ -1241,6 +1209,16 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
+            }
+            if (!String.IsNullOrEmpty(filter))
+            {
+                if (ResourceType == ResourceType.Folder)
+                    IsExpanded = true;
+            }
+            else
+            {
+                if (ResourceType == ResourceType.Folder)
+                    IsExpanded = false;
             }
             OnPropertyChanged(() => Children);
         }

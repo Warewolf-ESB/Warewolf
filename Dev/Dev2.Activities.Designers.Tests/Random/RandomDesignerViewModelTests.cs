@@ -33,6 +33,7 @@ namespace Dev2.Activities.Designers.Tests.Random
             var viewModel = new TestRandomDesignerViewModel(modelItem);
             Assert.AreEqual(enRandomType.Numbers, viewModel.RandomType);
             Assert.AreEqual("Numbers", viewModel.SelectedRandomType);
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]

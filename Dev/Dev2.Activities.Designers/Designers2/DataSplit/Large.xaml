@@ -17,12 +17,11 @@
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="350"
                                MinWidth="350"
-                               MinHeight="350"
-                               Height="350"
+                               MinHeight="300"
+                               Height="300"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
                                mc:Ignorable="d"
@@ -40,7 +39,7 @@
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
-                                     Margin="0,0,9,12"
+                                     Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
@@ -117,13 +116,14 @@
                          ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipProcessDirection}"
                          AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ProcessDirectionBackward_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpProcessDirection}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpProcessDirection}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </StackPanel>
 
         <CheckBox Grid.Row="2"
                   Grid.Column="1"
+                  Margin="-6,0,0,0"
                   Content="Skip blank rows"
                   IsChecked="{Binding ModelItem.SkipBlankRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipSkipBlankRows}"

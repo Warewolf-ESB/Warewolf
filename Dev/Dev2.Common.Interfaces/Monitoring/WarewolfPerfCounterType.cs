@@ -10,7 +10,6 @@ namespace Dev2.Common.Interfaces.Monitoring
         ExecutionErrors,
         ServicesNotFound,
         NotAuthorisedErrors,
-        WorkflowExecutionTime
     }
 
     public static class WarewolfPerfCounterTypeExtensions

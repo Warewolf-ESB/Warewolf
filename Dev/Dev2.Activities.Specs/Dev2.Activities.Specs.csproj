@@ -47,6 +47,14 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.DotMemoryUnit.2.1.20150828.125449\Lib\dotMemory.Unit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5918.26186, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.5\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
@@ -65,6 +73,10 @@
     </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -157,10 +169,6 @@
     <Reference Include="netDumbster">
       <HintPath>..\packages\netDumbster.1.3.0.7\lib\net40\netDumbster.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Nuane.SftpLite, Version=0.8.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
@@ -220,7 +228,7 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
-    <Compile Include="GetWebServiceToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -419,7 +427,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteWebConnectorTool.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Database\MySqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -431,6 +438,7 @@
       <DependentUpon>PluginConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Plugin\PluginConnectorToolSteps.cs" />
+    <Compile Include="Toolbox\Resources\Web\DeleteWebConnectoToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -452,6 +460,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GetWebConnector.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Resources\Web\PutWebConnectoToolSteps.cs" />
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -464,6 +473,37 @@
       <DependentUpon>Script.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Scripting\Script\ScriptSteps.cs" />
+    <Compile Include="Toolbox\Sharepoint\SharepointCreate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointCreate.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointDelete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointDelete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointRead.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointRead.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointUpdate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharepointUpdate.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReadDropbox.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\UploadDropbox.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UploadDropbox.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\UploadDropboxSteps.cs" />
     <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -694,6 +734,30 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Script.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Sharepoint\SharepointCreate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointCreate.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Sharepoint\SharepointDelete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointDelete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Sharepoint\SharepointRead.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointRead.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Sharepoint\SharepointUpdate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SharepointUpdate.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Storage\Dropbox\ReadDropbox.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ReadDropbox.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Storage\Dropbox\UploadDropbox.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>UploadDropbox.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Utility\Calculate\Calculate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Calculate.feature.cs</LastGenOutput>
@@ -771,6 +835,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>

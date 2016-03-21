@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -13,7 +12,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -95,7 +93,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenSourceIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.SourceRegion.IsVisible);
+            Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
         }
 
         private static SqlServerDatabaseDesignerViewModel GetViewModel()
@@ -117,7 +115,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenActionIsDisabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsFalse(viewModel.ActionRegion.IsVisible);
+            Assert.IsFalse(viewModel.ActionRegion.IsEnabled);
         }
 
         [Given(@"Inputs is Disabled")]
@@ -126,7 +124,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenInputsIsDisabled()
         {
             var viewModel = GetViewModel();
-            var hasNoInputs = viewModel.InputArea.Inputs == null || viewModel.InputArea.Inputs.Count == 0 || !viewModel.InputArea.IsVisible;
+            var hasNoInputs = viewModel.InputArea.Inputs == null || viewModel.InputArea.Inputs.Count == 0 || !viewModel.InputArea.IsEnabled;
             Assert.IsTrue(hasNoInputs);
         }
 
@@ -136,7 +134,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenOutputsIsDisabled()
         {
             var viewModel = GetViewModel();
-            var hasNoOutputs = viewModel.OutputsRegion.Outputs == null || viewModel.OutputsRegion.Outputs.Count == 0 || !viewModel.OutputsRegion.IsVisible;
+            var hasNoOutputs = viewModel.OutputsRegion.Outputs == null || viewModel.OutputsRegion.Outputs.Count == 0 || !viewModel.OutputsRegion.IsEnabled;
             Assert.IsTrue(hasNoOutputs);
         }
 
@@ -156,7 +154,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenActionIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.ActionRegion.IsVisible);
+            Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
         }
 
         [Given(@"Inputs is Enabled")]
@@ -165,7 +163,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
-            var hasInputs = viewModel.InputArea.Inputs != null  || viewModel.InputArea.IsVisible;
+            var hasInputs = viewModel.InputArea.Inputs != null  || viewModel.InputArea.IsEnabled;
             Assert.IsTrue(hasInputs);
         }
 

@@ -34,6 +34,14 @@ namespace Dev2.Diagnostics.Test
             PerfCounterType = WarewolfPerfCounterType.AverageExecutionTime;
         }
 
+        public TestCounter(WarewolfPerfCounterType warewolfPerfCounterType,bool isActive=true)
+        {
+            Category = "";
+            Name = "bob";
+            IsActive = isActive;
+            PerfCounterType = warewolfPerfCounterType;
+        }
+
         public void Increment()
         {
         }
@@ -62,6 +70,10 @@ namespace Dev2.Diagnostics.Test
         }
 
         #endregion
+
+        public void Reset()
+        {            
+        }
     }
 
     [TestClass]
@@ -180,7 +192,7 @@ namespace Dev2.Diagnostics.Test
             File.WriteAllText(fileName, serialiser.Serialize(counters));
 
             var persisted = obj.LoadOrCreateResourceCounters(fileName);
-            Assert.AreEqual(4,obj.DefaultResourceCounters.Count);
+            Assert.AreEqual(0,obj.DefaultResourceCounters.Count);
             Assert.AreEqual(persisted.Count, 1);
 
         }
@@ -205,8 +217,8 @@ namespace Dev2.Diagnostics.Test
             File.WriteAllText(fileName, serialiser.Serialize(counters));
 
             var persisted = obj.LoadOrCreateResourceCounters(fileName);
-            Assert.AreEqual(4, obj.DefaultResourceCounters.Count);
-            Assert.AreEqual(persisted.Count, 4);
+            Assert.AreEqual(0, obj.DefaultResourceCounters.Count);
+            Assert.AreEqual(persisted.Count, 0);
 
         }
 

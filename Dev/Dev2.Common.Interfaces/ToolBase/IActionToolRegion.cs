@@ -10,6 +10,7 @@ namespace Dev2.Common.Interfaces.ToolBase
         ICommand RefreshActionsCommand { get; }
         bool IsActionEnabled { get; set; }
         bool IsRefreshing { get; set; }
-        event SomethingChanged SomethingChanged; 
+        event SomethingChanged SomethingChanged;
+        double LabelWidth { get; set; }
     }
 }

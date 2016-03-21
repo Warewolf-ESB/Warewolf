@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Microsoft.Practices.Prism.Commands;
@@ -20,15 +19,11 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManageDatabaseServiceInputViewModel : IManageDatabaseInputViewModel
     {
-        IGenerateOutputArea _generateOutputArea;
-        IGenerateInputArea _generateInputArea;
-        double _minHeight;
-        double _currentHeight;
-        double _maxHeight;
-        bool _isVisible;
-        bool _pasteResponseAvailable;
-        IDatabaseServiceViewModel _viewmodel;
-        IDbServiceModel _serverModel;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
+        bool _isEnabled;
+        readonly IDatabaseServiceViewModel _viewmodel;
+        readonly IDbServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
         private bool _okSelected;
         private DataTable _testResults;
@@ -36,62 +31,54 @@ namespace Dev2.Activities.Designers2.Core
         private bool _isTestResultsEmptyRows;
         private bool _isTesting;
         private IDatabaseService _model;
-        private bool _pasteResponseVisible;
-        private const double BaseHeight = 60;
+        private bool _inputCountExpandAllowed;
+        private bool _outputCountExpandAllowed;
 
         public ManageDatabaseServiceInputViewModel(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
         {
-            PasteResponseAvailable = false;
-            PasteResponseVisible = false;
             IsTesting = false;
             CloseCommand = new DelegateCommand(ExecuteClose);
             OkCommand = new DelegateCommand(ExecuteOk);
             TestCommand = new DelegateCommand(ExecuteTest);
             _generateOutputArea = new GenerateOutputsRegion();
-            _generateOutputArea.HeightChanged += GenerateAreaHeightChanged;
             _generateInputArea = new GenerateInputsRegion();
-            _generateInputArea.HeightChanged += GenerateAreaHeightChanged;
             Errors = new List<string>();
             _viewmodel = model;
             _serverModel = serviceModel;
         }
 
-        private void SetInitialHeight()
+        public bool OutputCountExpandAllowed
         {
-            var maxInputHeight = _generateInputArea.IsVisible ? _generateInputArea.MaxHeight : 0;
-            var minInputHeight = _generateInputArea.IsVisible ? _generateInputArea.MinHeight : 0;
-            var inputHeight = _generateInputArea.IsVisible ? _generateInputArea.CurrentHeight : 0;
-
-            var maxOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MaxHeight : 0;
-            var minOutputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.MinHeight : 0;
-            var outputHeight = _generateOutputArea.IsVisible ? _generateOutputArea.CurrentHeight : 0;
-
-            IsGenerateInputsEmptyRows = false;
-            if (_generateInputArea.Inputs == null || _generateInputArea.Inputs.Count < 1)
+            get
             {
-                IsGenerateInputsEmptyRows = true;
-                maxInputHeight = BaseHeight;
-                minInputHeight = BaseHeight;
-                inputHeight = BaseHeight;
+                return _outputCountExpandAllowed;
             }
-
-            MaxHeight = BaseHeight + maxInputHeight + maxOutputHeight;
-            MinHeight = BaseHeight + minInputHeight + minOutputHeight;
-            CurrentHeight = BaseHeight + inputHeight + outputHeight;
+            set
+            {
+                _outputCountExpandAllowed = value;
+                OnPropertyChanged();
+            }
         }
 
-        void GenerateAreaHeightChanged(object sender, IToolRegion args)
+        public bool InputCountExpandAllowed
         {
-            SetInitialHeight();
-            OnHeightChanged(this);
+            get
+            {
+                return _inputCountExpandAllowed;
+            }
+            set
+            {
+                _inputCountExpandAllowed = value;
+                OnPropertyChanged();
+            }
         }
 
         void ResetOutputsView()
         {
-            IsVisible = false;
+            IsEnabled = false;
             _viewmodel.GenerateOutputsVisible = false;
-            InputArea.IsVisible = false;
-            OutputArea.IsVisible = false;
+            InputArea.IsEnabled = false;
+            OutputArea.IsEnabled = false;
             TestResults = new DataTable();
             TestResultsAvailable = false;
 
@@ -101,15 +88,13 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            _viewmodel.OutputsRegion.Outputs.Clear();
-            _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+            _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
             if (TestResults != null)
             {
                 TestResultsAvailable = TestResults != null;
                 IsTesting = false;
             }
             ResetOutputsView();
-            OnHeightChanged(this);
         }
 
         public void ExecuteOk()
@@ -117,12 +102,9 @@ namespace Dev2.Activities.Designers2.Core
             try
             {
                 _viewmodel.OutputsRegion.Outputs.Clear();
-                if (OutputArea != null)
+                if (TestResults != null)
                 {
-                    foreach (var serviceOutputMapping in OutputArea.Outputs)
-                    {
-                        _viewmodel.OutputsRegion.Outputs.Add(serviceOutputMapping);
-                    }
+                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
                 }
                 else
                 {
@@ -130,7 +112,8 @@ namespace Dev2.Activities.Designers2.Core
                 }
 
                 _viewmodel.OutputsRegion.Description = Description;
-                _viewmodel.OutputsRegion.IsVisible = _viewmodel.OutputsRegion.Outputs.Count > 0;
+                _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
+                OutputCountExpandAllowed = _viewmodel.OutputsRegion.Outputs.Count > 3;
                 ResetOutputsView();
             }
             catch (Exception e)
@@ -141,13 +124,30 @@ namespace Dev2.Activities.Designers2.Core
             }
 
             OkSelected = true;
-            OnHeightChanged(this);
+        }
+
+        List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
+        {
+            List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            var recordsetName = Model.Action.Name.Replace(".", "_");
+            _viewmodel.OutputsRegion.RecordsetName = recordsetName;
+            if (testResults != null)
+            {
+                for (int i = 0; i < testResults.Columns.Count; i++)
+                {
+                    var column = testResults.Columns[i];
+                    var dbOutputMapping = new ServiceOutputMapping(column.ToString(), column.ToString(), recordsetName);
+                    mappings.Add(dbOutputMapping);
+                }
+                return mappings;
+            }
+            return new List<IServiceOutputMapping>();
         }
 
         public void ExecuteTest()
         {
-            ViewErrors = new List<IActionableErrorInfo>();
-            OutputArea.IsVisible = true;
+            OutputArea.IsEnabled = true;
             TestResults = null;
             IsTesting = true;
 
@@ -158,7 +158,13 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     TestResultsAvailable = TestResults.Rows.Count != 0;
                     IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
-                    _generateOutputArea.IsVisible = true;
+                    _generateOutputArea.IsEnabled = true;
+                    OutputCountExpandAllowed = TestResults.Rows.Count > 3;
+
+                    if (!OutputCountExpandAllowed)
+                    {
+                        InputCountExpandAllowed = true;
+                    }
 
                     IsTesting = false;
                 }
@@ -167,11 +173,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 Errors.Add(e.Message);
                 IsTesting = false;
-                _generateOutputArea.IsVisible = false;
+                _generateOutputArea.IsEnabled = false;
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
             }
-            OnHeightChanged(this);
         }
 
         public bool IsGenerateInputsEmptyRows
@@ -187,74 +192,22 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        public List<IActionableErrorInfo> ViewErrors { get; set; }
 
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
-        public double MinHeight
+        public bool IsEnabled
         {
             get
             {
-                return _minHeight;
+                return _isEnabled;
             }
             set
             {
-
-                if (Math.Abs(_minHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _minHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public double CurrentHeight
-        {
-            get
-            {
-                return _currentHeight;
-            }
-            set
-            {
-                if (Math.Abs(_currentHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _currentHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public bool IsVisible
-        {
-            get
-            {
-                return _isVisible;
-            }
-            set
-            {
-                _isVisible = value;
-                OnHeightChanged(this);
+                _isEnabled = value;
                 OnPropertyChanged();
             }
         }
-        public double MaxHeight
-        {
-            get
-            {
-                return _maxHeight;
-            }
-            set
-            {
-                if (Math.Abs(_maxHeight - value) > GlobalConstants.DesignHeightTolerance)
-                {
-                    _maxHeight = value;
-                    OnHeightChanged(this);
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public event HeightChanged HeightChanged;
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors { get; private set; }
 
@@ -375,7 +328,7 @@ namespace Dev2.Activities.Designers2.Core
             [ExcludeFromCodeCoverage]
             set
             {
-                
+
             }
         }
         public IOutputDescription Description { get; set; }
@@ -388,55 +341,20 @@ namespace Dev2.Activities.Designers2.Core
             [ExcludeFromCodeCoverage]
             set
             {
-                
-            }
-        }
-        public bool PasteResponseVisible
-        {
-            get
-            {
-                return _pasteResponseVisible;
-            }
-            set
-            {
-                _pasteResponseVisible = value;
-                OnPropertyChanged();
-            }
-        }
 
-        public bool PasteResponseAvailable
-        {
-            get
-            {
-                return _pasteResponseAvailable;
-            }
-            set
-            {
-                _pasteResponseAvailable = value;
-                OnPropertyChanged();
             }
         }
 
         public void SetInitialVisibility()
         {
-            SetInitialHeight();
-            IsVisible = true;
-            InputArea.IsVisible = true;
-            OutputArea.IsVisible = false;
+            IsEnabled = true;
+            InputArea.IsEnabled = true;
+            OutputArea.IsEnabled = false;
         }
 
         #endregion
 
         #region Implementation of INotifyPropertyChanged
-
-        protected void OnHeightChanged(IToolRegion args)
-        {
-            var handler = HeightChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

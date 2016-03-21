@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
+// ReSharper disable UseObjectOrCollectionInitializer
 
 // ReSharper disable InconsistentNaming
 
@@ -85,32 +86,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //------------Execute Test---------------------------
             inputview.ExecuteTest();
             //------------Assert Results-------------------------
-            Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsTrue(inputview.OutputArea.IsVisible);
-            Assert.IsNotNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("Webget_MethodName")]
-        public void ManageDatabaseServiceInputViewModel_HeightChangedHandler()
-        {
-            //------------Setup for test--------------------------
-            var mod = new SqlServerModel();
-
-            var act = new DsfSqlServerDatabaseActivity();
-            var called = false;
-            var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
-            var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
-            inputview.HeightChanged += (sender, args) => called = true;
-            inputview.Model = new DatabaseService();
-            //------------Execute Test---------------------------
-            inputview.ExecuteTest();
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(called);
-
+            Assert.IsTrue(inputview.InputArea.IsEnabled);
+            Assert.IsTrue(inputview.OutputArea.IsEnabled);
 
         }
 
@@ -163,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         public void ManageDatabaseServiceInputViewModelTestAction_Exception()
         {
             //------------Setup for test--------------------------
-            var mod = new SqlServerModel();
+            var mod = new SqlServerModel(){ThrowsTestError = true};
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
@@ -234,24 +211,18 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var webget = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod);
             var inputview = new ManageDatabaseServiceInputViewModel(webget, mod);
-            inputview.Model = new DatabaseService();
+            inputview.Model = new DatabaseService(){Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
-            Assert.IsTrue(inputview.InputArea.IsVisible);
-            Assert.IsTrue(inputview.OutputArea.IsVisible);
-            Assert.IsNotNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(inputview.OutputArea.Outputs.Count > 0);
+
 
             inputview.ExecuteOk();
             //------------Execute Ok---------------------------
-            Assert.AreEqual(405, webget.DesignMaxHeight);
-            Assert.AreEqual(405, webget.DesignMinHeight);
-            Assert.AreEqual(405, webget.DesignHeight);
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsTrue(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -272,11 +243,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             inputview.ExecuteClose();
             //------------Execute Ok---------------------------
             Assert.IsNull(inputview.OutputArea.Outputs);
-            Assert.IsTrue(webget.SourceRegion.IsVisible);
-            Assert.IsFalse(webget.OutputsRegion.IsVisible);
-            Assert.IsTrue(webget.InputArea.IsVisible);
-            Assert.IsTrue(webget.ErrorRegion.IsVisible);
-            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsVisible);
+            Assert.IsTrue(webget.SourceRegion.IsEnabled);
+            Assert.IsFalse(webget.OutputsRegion.IsEnabled);
+            Assert.IsTrue(webget.InputArea.IsEnabled);
+            Assert.IsTrue(webget.ErrorRegion.IsEnabled);
+            Assert.IsFalse(webget.ManageServiceInputViewModel.InputArea.IsEnabled);
 
             //------------Assert Results-------------------------
         }
@@ -313,8 +284,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(vm.IsTestResultsEmptyRows);
             vm.IsTesting = true;
             Assert.IsTrue(vm.IsTesting);
-            vm.PasteResponseAvailable = false;
-            Assert.IsFalse(vm.PasteResponseAvailable);
             //var b = new DatabaseService() { Headers = new List<NameValue>() { new NameValue("a", "b") } };
             //vm.Model = b;
             Assert.IsNotNull(vm.Model);

@@ -71,9 +71,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
     </Reference>
-    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\DropNet.dll</HintPath>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FontAwesome.WPF">
       <HintPath>..\packages\FontAwesome.WPF.4.3.0.3\lib\FontAwesome.WPF.dll</HintPath>
@@ -195,9 +195,9 @@
     <Reference Include="Moq">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="policy.2.3.FSharp.Core">
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
@@ -388,12 +388,19 @@
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
     <Compile Include="Help\IHelpAdorner.cs" />
     <Compile Include="Settings\Logging\LogSettingsViewModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCountersToUtilities.cs" />
+    <Compile Include="Settings\Perfcounters\PerfCounterView.xaml.cs">
+      <DependentUpon>PerfCounterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByMachine.cs" />
+    <Compile Include="Settings\Perfcounters\PerformanceCountersByResource.cs" />
     <Compile Include="Settings\Scheduler\DummyResource.cs" />
     <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Scheduler\SchedulerViewModel.cs" />
     <Compile Include="Settings\Scheduler\ClientScheduledResourceModel.cs" />
+    <Compile Include="Settings\Perfcounters\PerfcounterViewModel.cs" />
     <Compile Include="Settings\SettingsItemViewModel.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
@@ -439,13 +446,13 @@
       <DependentUpon>ReportsViewerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\DropBox\CookieHelper.cs" />
-    <Compile Include="Views\DropBox\DropBoxHelper.cs" />
-    <Compile Include="Views\DropBox\DropBoxSource.xaml.cs">
+    <Compile Include="Views\DropBox2016\CookieHelper.cs" />
+    <Compile Include="Views\DropBox2016\DropBoxHelper.cs" />
+    <Compile Include="Views\DropBox2016\DropBoxSource.xaml.cs">
       <DependentUpon>DropBoxSource.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DropBox\DropBoxSourceViewModel.cs" />
-    <Compile Include="Views\DropBox\IDropBoxHelper.cs" />
+    <Compile Include="Views\DropBox2016\DropBoxSourceViewModel.cs" />
+    <Compile Include="Views\DropBox2016\IDropBoxHelper.cs" />
     <Compile Include="Views\Explorer\DragDropExtension.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
@@ -597,6 +604,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Settings\Perfcounters\PerfCounterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\Scheduler\SchedulerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -673,9 +684,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DropBox\DropBoxSource.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\DropBox2016\DropBoxSource.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ImageWindow.xaml">
       <SubType>Designer</SubType>
@@ -814,6 +825,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

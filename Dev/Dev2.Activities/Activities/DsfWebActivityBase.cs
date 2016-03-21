@@ -19,6 +19,7 @@ using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework.Converters.Graph;
+using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -26,20 +27,22 @@ namespace Dev2.Activities
 {
     public class DsfWebActivityBase : DsfActivity
     {
-
-        public IList<INameValue> Headers { get; set; }
-        public string QueryString { get; set; }
-        public IOutputDescription OutputDescription { get; set; }
-        private string _userAgent = "User-Agent";
-        private string _mediaType = "application/x-www-form-urlencoded";
         private readonly WebRequestMethod _method;
+        private MediaTypeWithQualityHeaderValue _mediaTypeWithQualityHeaderValue;
+        private const string MediaType = "application/x-www-form-urlencoded";
+        private const string UserAgent = "User-Agent";
 
-        public DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
+        protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
             _method = webRequestDataDto.WebRequestMethod;
             Type = webRequestDataDto.Type;
             DisplayName = webRequestDataDto.DisplayName;
         }
+
+        public IList<INameValue> Headers { get; set; }
+        public string QueryString { get; set; }
+        public IOutputDescription OutputDescription { get; set; }
+
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (env == null)
@@ -68,6 +71,7 @@ namespace Dev2.Activities
 
             return _debugInputs;
         }
+
         protected void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
         {
             if (OutputDescription == null)
@@ -80,6 +84,11 @@ namespace Dev2.Activities
             {
                 OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
                 i++;
+            }
+            if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+            {
+                dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
+                return;
             }
             var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
             try
@@ -109,16 +118,15 @@ namespace Dev2.Activities
                         TryConvert(children, outputDefs, indexCache, update, dataObj);
                     }
                 }
-
             }
             catch (Exception e)
             {
                 dataObj.Environment.AddError(e.Message);
                 Dev2Logger.Error(e.Message, e);
             }
-           
         }
-        public HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+
+        public virtual HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var httpClient = new HttpClient();
             if (source.AuthenticationType == AuthenticationType.User)
@@ -128,19 +136,23 @@ namespace Dev2.Activities
             }
 
             if (head != null)
-                foreach (var nameValue in head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value)))
+            {
+                IEnumerable<NameValue> nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
+                foreach (var nameValue in nameValues)
                 {
                     httpClient.DefaultRequestHeaders.Add(nameValue.Name, nameValue.Value);
                 }
+            }
 
-
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(_mediaType));
-            httpClient.DefaultRequestHeaders.Add(_userAgent, GlobalConstants.UserAgentString);
-
+            _mediaTypeWithQualityHeaderValue = new MediaTypeWithQualityHeaderValue(MediaType);
+            httpClient.DefaultRequestHeaders.Accept.Add(_mediaTypeWithQualityHeaderValue);
+            httpClient.DefaultRequestHeaders.Add(UserAgent, GlobalConstants.UserAgentString);
 
             var address = source.Address;
             if (!string.IsNullOrEmpty(query))
+            {
                 address = address + query;
+            }
             try
             {
                 var baseAddress = new Uri(address);
@@ -149,7 +161,7 @@ namespace Dev2.Activities
             catch (UriFormatException e)
             {
                 //CurrentDataObject.Environment.AddError(e.Message);// To investigate this
-                Dev2Logger.Error(e.Message, e);// Error must be added on the environment
+                Dev2Logger.Error(e.Message, e); // Error must be added on the environment
                 return httpClient;
             }
 
@@ -162,9 +174,10 @@ namespace Dev2.Activities
         }
 
         [ExcludeFromCodeCoverage]
-        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
+        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
-            var httpClient = CreateClient(head, query, source);
+            var headerValues = head as NameValue[] ?? head.ToArray();
+            var httpClient = CreateClient(headerValues, query, source);
             if (httpClient != null)
             {
                 var address = source.Address;
@@ -177,29 +190,32 @@ namespace Dev2.Activities
                     var taskOfString = httpClient.GetStringAsync(new Uri(address));
                     return taskOfString.Result;
                 }
-                else
+                Task<HttpResponseMessage> taskOfResponseMessage;
+                if (_method == WebRequestMethod.Delete)
                 {
-                    Task<HttpResponseMessage> taskOfResponseMessage;
-                    if (_method == WebRequestMethod.Delete)
-                    {
-                        taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
-                        bool ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
-                        return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
-
-                    }
-                    else if (_method == WebRequestMethod.Post)
-                    {
-                        taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(postData));
-                        var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
-                        return message;
-                    }
-                    else
-                    {
-                        taskOfResponseMessage = httpClient.PutAsync(new Uri(address), new StringContent(postData));
-                        var resultAsString =((StringContent) taskOfResponseMessage.Result.Content).ReadAsStringAsync().Result;
-                        return resultAsString;
-                    }
+                    taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
+                    bool ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
+                    return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
                 }
+                if (_method == WebRequestMethod.Post)
+                {
+                    taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(putData));
+                    var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
+                    return message;
+                }
+                HttpContent httpContent = new StringContent(putData,Encoding.UTF8);
+                var contentType = headerValues.FirstOrDefault(value => value.Name.ToLower() == "Content-Type".ToLower());
+                if (contentType != null)
+                {
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue(contentType.Value);
+                }
+                var httpRequest = new HttpRequestMessage(HttpMethod.Put, new Uri(address))
+                {
+                    Content = httpContent
+                };
+                taskOfResponseMessage = httpClient.SendAsync(httpRequest);
+                var resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
+                return resultAsString;
             }
             return null;
         }

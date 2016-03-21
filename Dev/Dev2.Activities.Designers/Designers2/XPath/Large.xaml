@@ -15,8 +15,8 @@
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:xPath="clr-namespace:Dev2.Activities.Designers2.XPath"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                Width="350"
                                MinWidth="350"
                                MinHeight="350"
@@ -77,8 +77,7 @@
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXML}"
-                                     DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXML}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.SourceString"
                                          SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
@@ -115,9 +114,7 @@
                                         Header="#">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={local:RowToIndexConverter}}" />
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={local:RowToIndexConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -137,7 +134,7 @@
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XpathHelpResults}"
+                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.XpathHelpResults}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="OutputVariable"
@@ -171,7 +168,7 @@
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsXpathVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXPath}"
+                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXPath}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="XPath"
@@ -193,8 +190,6 @@
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
 
-        <errors:OnError Grid.Column="0"
-                        Grid.Row="5"
-                        Grid.ColumnSpan="3" />
+        <errors:OnError Grid.Row="2" />
     </Grid>
 </core:ActivityDesignerTemplate>

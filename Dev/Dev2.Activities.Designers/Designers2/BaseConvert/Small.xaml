@@ -101,7 +101,7 @@
                                       SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipFromtype}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpFromType}"
+                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpFromType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FromType"
@@ -128,7 +128,7 @@
                                       SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipTotype}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpToType}"
+                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpToType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="ToType"

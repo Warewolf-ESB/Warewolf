@@ -3,7 +3,7 @@
 	As a Warewolf User
 	I want to be to backup/move files to a dropbox account
 
-@ignore
+
 Scenario: New Dropbox Source
 	Given I have open New Dropbox Source
 	Then "New Dropbox Source" tab is opened
