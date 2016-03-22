@@ -3,14 +3,65 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable PossibleNullReferenceException
 
 namespace WarewolfParsingTest
 {
     [TestClass]
     public class TestEvaluation
     {
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void AddToScalarsCreatesAscalar()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>() });
+            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+            Assert.AreEqual(added.JsonObjects["bob"].GetValue("Name").ToString(), "n");
+            var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
+            Assert.IsTrue(evalled.IsWarewolfAtomResult);
+            var res = (evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+            var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
+            Assert.AreEqual(str,j.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void AddToScalarsCreatesAscalarEval()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            var x = new[] { new Person() { Name = "n", Children = new List<Person>() }, new Person() { Name = "n", Children = new List<Person>() } };
+            var j = JArray.FromObject( x );
+            var q = j.SelectTokens("[*]");
+          //  var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            ////------------Execute Test---------------------------
+
+            ////------------Assert Results-------------------------
+            //Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+            //Assert.AreEqual(added.JsonObjects["bob"].GetValue("Name").ToString(), "n");
+            //var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
+            //Assert.IsTrue(evalled.IsWarewolfAtomResult);
+            //var res = (evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+            //var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
+            //Assert.AreEqual(str, j.ToString());
+        }
+
+
+
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
