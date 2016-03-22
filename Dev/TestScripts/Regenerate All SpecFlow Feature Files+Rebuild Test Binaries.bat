@@ -11,7 +11,7 @@ packages\SpecFlow.1.9.0\tools\specflow.exe generateAll Dev2.Studio.UISpecs\Dev2.
 packages\SpecFlow.1.9.0\tools\specflow.exe generateAll Dev2.Installer.Specs\Warewolf.AcceptanceTesting.Installer.csproj /force /verbose
 powershell -file BakeInVersion.ps1
 if not %errorlevel%==0 pause & exit 1
-"%vs120comntools%..\IDE\devenv.com" "%~dp0..\AcceptanceTesting.sln" /Build Debug
+"%vs120comntools%..\IDE\devenv.com" AcceptanceTesting.sln /Build Debug
 if not %errorlevel%==0 git checkout AssemblyCommonInfo.cs & git checkout AssemblyCommonInfo.fs & pause & exit 1
 powershell -file ReadOutVersion.ps1
 if not %errorlevel%==0 pause & exit 1
