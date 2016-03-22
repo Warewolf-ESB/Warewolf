@@ -14,6 +14,8 @@ namespace Dev2.Common.Interfaces
         ICommand WarewolfUrlCommand { get; }
         string ServerVersion { get; set; }
         string StudioVersion { get; set; }
+        string ServerInformationalVersion { get; set; }
+        string StudioInformationalVersion { get; set; }
         Uri DevUrl { get; set; }
         Uri WarewolfUrl { get; set; }
         Uri ContributorsUrl { get; set; }

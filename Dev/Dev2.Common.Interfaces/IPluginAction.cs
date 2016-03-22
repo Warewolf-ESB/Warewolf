@@ -12,7 +12,7 @@ namespace Dev2.Common.Interfaces
         Type ReturnType { get; set; }
         IList<INameValue> Variables { get; set; }
 
-        string GetHashCodeBySource();
+        string GetIdentifier();
     }
 
     public class PluginAction : IPluginAction
@@ -81,8 +81,9 @@ namespace Dev2.Common.Interfaces
             }
         }
 
-        public string GetHashCodeBySource()
+        public string GetIdentifier()
         {
+            //Rather add SourceId instead of full name
             return FullName + Method;
         }
 

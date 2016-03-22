@@ -66,10 +66,6 @@
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\DropNet.dll</HintPath>
-    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
@@ -173,9 +169,9 @@
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropBoxFailureResultShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropBoxSuccessResultShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxSoureFileValidatorShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
-    <Compile Include="ActivityTests\DsfDropBoxFileActivityTest.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Publish\DsfPublishRabbitMQActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
