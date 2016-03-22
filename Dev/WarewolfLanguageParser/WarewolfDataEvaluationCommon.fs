@@ -409,12 +409,54 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
         let buffer =  parseLanguageExpression lang update
                         
         match buffer with
-            | RecordSetExpression a -> WarewolfAtomListresult(  (evalRecordsSet a env) )
-            | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
-            | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
-            | RecordSetNameExpression x ->evalDataSetExpression env update x
+            | RecordSetExpression a when  env.RecordSets.ContainsKey a.Name -> WarewolfAtomListresult(  (evalRecordsSet a env) )
+            | ScalarExpression a  when  env.RecordSets.ContainsKey a  -> WarewolfAtomResult (evalScalar a env)
+            | WarewolfAtomAtomExpression a  -> WarewolfAtomResult a
+            | RecordSetNameExpression a when  env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
             | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
+            | _  -> evalJson env update buffer
 
+and languageExpressionToJPath (lang:LanguageExpression) = 
+    match lang with
+            | RecordSetExpression a ->
+                                        match a.Index with  
+                                            | IntIndex i -> "[[" + (i-1).ToString() + "]]."+a.Column
+                                            | Star  -> "[[*]]."+a.Column 
+                                            | Last  -> "[[(@.length-1)]]."+a.Column  
+                                            | _ ->failwith  "not supported for JSON types"
+            | ScalarExpression a -> "" 
+            | WarewolfAtomAtomExpression a  -> ""
+            | RecordSetNameExpression a -> 
+                                        match a.Index with  
+                                            | IntIndex i -> "[" + (i-1).ToString() + "]."
+                                            | Star  -> "[*]." 
+                                            | Last  -> "[(@.length-1)]."
+                                            | _ ->failwith  "not supported for JSON types"
+            | ComplexExpression  a ->  failwith  "not supported for JSON types"
+            | JsonIdentifierExpression a ->  jsonIdentifierToJsonPath a ""
+
+and jsonIdentifierToJsonPath (a:JsonIdentifierExpression) (acc:string)= 
+    match a with 
+    | NameExpression x -> acc + "." + x.Name
+    | NestedNameExpression x ->   (jsonIdentifierToJsonPath x.Next acc + "." + x.ObjectName )
+    | IndexNestedNameExpression x ->    let index =  match x.Index with  
+                                                        | IntIndex i -> "[" + (i-1).ToString() + "]."
+                                                        | Star  -> "[*]." 
+                                                        | Last  -> "[(@.length-1)]."
+                                                        | _ ->failwith  "not supported for JSON types"
+                                        (jsonIdentifierToJsonPath x.Next acc + index+ "." + x.ObjectName )
+    | Terminal -> acc
+and evalJson (env: WarewolfEnvironment)  (update:int) (lang:LanguageExpression) =
+    let jPath = languageExpressionToJPath(lang)
+    match lang with 
+    | ScalarExpression a -> if env.JsonObjects.ContainsKey a then WarewolfAtomResult  ( DataString  (env.JsonObjects.[a].ToString()) )else failwith "non existent recordset"
+    | RecordSetExpression a ->  if  env.JsonObjects.ContainsKey a.Name 
+                                then 
+                                    let jo =  env.JsonObjects.[a.Name]
+                                    
+                                    let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString (a.ToString() ) )  
+                                    WarewolfAtomListresult ( new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing, data))
+                                else failwith "non existent recordset"
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
 
@@ -601,14 +643,13 @@ and  evalIndexes  (env: WarewolfEnvironment) (update:int)  (lang:string) =
 //let Eval (env:Environment) (Tools: Tool list)
 let addToScalars (env:WarewolfEnvironment) (name:string) (value:WarewolfAtom)  =
     let rem = Map.remove name env.Scalar |> Map.add name value 
-    {       Scalar=rem;
-            RecordSets = env.RecordSets
+    { env with     Scalar=rem;
+
     }
 
 let addToRecordSets (env:WarewolfEnvironment) (name:string) (value:WarewolfRecordset) =
     let rem = Map.remove name env.RecordSets |> Map.add name value 
-    {       Scalar=env.Scalar;
-            RecordSets = rem
+    { env with RecordSets = rem
     }
 
 let addColumnValueToRecordset (destination:WarewolfRecordset) (name:string) (values: WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
