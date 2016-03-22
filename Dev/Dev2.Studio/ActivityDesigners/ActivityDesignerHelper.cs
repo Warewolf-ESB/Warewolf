@@ -24,7 +24,6 @@ using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DateTimeDifference;
 using Dev2.Activities.Designers2.Delete;
 using Dev2.Activities.Designers2.DeleteRecords;
-using Dev2.Activities.Designers2.DropBox.Upload;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Activities.Designers2.FindIndex;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
@@ -127,11 +126,10 @@ namespace Dev2.Studio.ActivityDesigners
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                  { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                  { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
-                 { typeof(DsfDropBoxUploadAcivtity), typeof(Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner) },
+                 { typeof(DsfDropBoxUploadActivity), typeof(Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
-                { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
                 { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },

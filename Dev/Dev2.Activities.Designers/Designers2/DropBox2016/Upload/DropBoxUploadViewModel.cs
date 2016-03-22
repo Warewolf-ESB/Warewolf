@@ -22,7 +22,7 @@ using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.DropBox2016.Upload
 {
-    public class DropBoxUploadViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
+    public class DropBoxUploadViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
         private ObservableCollection<OauthSource> _sources;
         private readonly IEnvironmentModel _environmentModel;
@@ -31,9 +31,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         private string _toPath;
         private string _result;
         private bool _overWriteMode;
-        private bool _updateMode;
         private bool _addMode;
-        private string _fileSuccesResult;
 
         [ExcludeFromCodeCoverage]
         public DropBoxUploadViewModel(ModelItem modelItem)
@@ -42,17 +40,20 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         }
 
         public DropBoxUploadViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
-            : base(modelItem)
+            : base(modelItem,"File Or Folder", String.Empty)
         {
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
-            EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource());
+            EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
+            // ReSharper disable once VirtualMemberCallInContructor
             _sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
-
+            IsDropboxSourceWizardSourceMessagePulished = false;
+            EditDropboxSourceCommand.RaiseCanExecuteChanged();
+            OverWriteMode = true;
 
         }
         public ICommand NewSourceCommand { get; set; }
@@ -84,24 +85,22 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             var propertyValue = ModelItem.GetProperty(propName);
             return propertyValue ?? string.Empty;
         }
-        [ExcludeFromCodeCoverage]
-        public ObservableCollection<OauthSource> Sources
+        public virtual ObservableCollection<OauthSource> Sources
         {
             get
             {
                 return _sources;
             }
-            private set
+            set
             {
                 SetProperty(value);
-                SetModelItemProperty(_sources);
+                _sources = value;
                 // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("Sources");
             }
         }
-        [ExcludeFromCodeCoverage]
+        
         public RelayCommand EditDropboxSourceCommand { get; private set; }
-        [ExcludeFromCodeCoverage]
         public bool IsDropboxSourceSelected
         {
             get
@@ -109,7 +108,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 return SelectedSource != null;
             }
         }
-        [ExcludeFromCodeCoverage]
         public string FromPath
         {
             get
@@ -125,7 +123,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public string ToPath
         {
             get
@@ -140,7 +137,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public string Result
         {
             get
@@ -155,7 +151,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
         public bool OverWriteMode
         {
             get
@@ -170,22 +165,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-        [ExcludeFromCodeCoverage]
-        public bool UpdateMode
-        {
-            get
-            {
-                _updateMode = Convert.ToBoolean(GetModelPropertyName());
-                return _updateMode;
-            }
-            set
-            {
-                _updateMode = value;
-                SetModelItemProperty(_updateMode);
-                OnPropertyChanged();
-            }
-        }
-        [ExcludeFromCodeCoverage]
         public bool AddMode
         {
             get
@@ -200,34 +179,26 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
                 OnPropertyChanged();
             }
         }
-         [ExcludeFromCodeCoverage]
-        public string FileSuccesResult
-        {
-            get
-            {
-                _fileSuccesResult = GetModelPropertyName().ToString();
-                return _fileSuccesResult;
-            } 
-             set 
-            {
-                _fileSuccesResult = value;
-                SetModelItemProperty(_fileSuccesResult);
-                OnPropertyChanged();
-            }
-        }
+      
 
         private void EditDropBoxSource()
         {
             CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
 
         }
-        void CreateOAuthSource()
+
+        public void CreateOAuthSource()
         {
+            IsDropboxSourceWizardSourceMessagePulished = false;
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
             _sources = LoadOAuthSources();
+            IsDropboxSourceWizardSourceMessagePulished = true;
+            OnPropertyChanged("Sources");
         }
+        //Used by specs
+        public bool IsDropboxSourceWizardSourceMessagePulished { get; set; }
 
-        ObservableCollection<OauthSource> LoadOAuthSources()
+        public virtual ObservableCollection<OauthSource> LoadOAuthSources()
         {
             var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
             return oauthSources.ToObservableCollection();
@@ -238,7 +209,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         public override void Validate()
         {
         }
-         [ExcludeFromCodeCoverage]
+        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();

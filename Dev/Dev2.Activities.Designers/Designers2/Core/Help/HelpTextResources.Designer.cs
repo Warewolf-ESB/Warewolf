@@ -2130,6 +2130,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a New DropBox connection..
+        /// </summary>
+        public static string DropBoxToolTipNewSource {
+            get {
+                return ResourceManager.GetString("DropBoxToolTipNewSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the path to the attachments you want to send separated by a semicolon ;
         ///
         ///Allowed:

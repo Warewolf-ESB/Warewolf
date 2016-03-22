@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using Vestris.ResourceLib;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -7,11 +8,22 @@ namespace Warewolf.Studio.AntiCorruptionLayer
     {
         public static string FetchVersionInfo()
         {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            var versionResource = new VersionResource();
-            string fileName = asm.Location;
-            versionResource.LoadFrom(fileName);
+            var versionResource = GetFileVersionInfo();
             return versionResource.FileVersion;
+        }
+
+        public static string FetchInformationalVersionInfo()
+        {
+            var versionResource = GetFileVersionInfo();
+            return versionResource.ProductVersion;
+        }
+
+        private static FileVersionInfo GetFileVersionInfo()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            var fileName = asm.Location;
+            var versionResource = FileVersionInfo.GetVersionInfo(fileName);
+            return versionResource;
         }
     }
 }

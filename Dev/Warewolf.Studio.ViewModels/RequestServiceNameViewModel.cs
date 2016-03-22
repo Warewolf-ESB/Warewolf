@@ -151,12 +151,19 @@ namespace Warewolf.Studio.ViewModels
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
             _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
             {
-                HasLoaded = a.Result;                
+                HasLoaded = a.Result;
+                if (!string.IsNullOrEmpty(_selectedPath))
+                {
+                    _environmentViewModel.SelectItem(_selectedPath, b =>
+                    {
+                        _environmentViewModel.SelectAction(b);
+                        b.IsSelected = true;
+                    });
+                }
             },TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             _view.DataContext = this;
-            SingleEnvironmentExplorerViewModel.SelectItem(_selectedPath);
             _view.ShowView();
 
             return ViewResult;
@@ -216,16 +223,16 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SingleEnvironmentExplorerViewModel != null)
             {
-            var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-            if (explorerTreeItem != null)
-            {
-                return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-            }
+                var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+                if (explorerTreeItem != null && explorerTreeItem.ResourceType == ResourceType.Folder)
+                {
+                    return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                }
                 if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
-            {
-                var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
-                return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-            }
+                {
+                    var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
+                    return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                }
             }
             return false;
         }

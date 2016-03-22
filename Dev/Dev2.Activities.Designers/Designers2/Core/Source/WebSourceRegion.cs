@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
@@ -236,24 +238,42 @@ namespace Dev2.Activities.Designers2.Core.Source
                     if(! String.IsNullOrEmpty(_selectedSource.HostName))
                         StorePreviousValues(_selectedSource.Id);
                 }
+                if(Dependants != null)
+                {
+                    var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
+                    var region = outputs as OutputsRegion;
+                    if (region != null)
+                    {
+                        region.Outputs = new ObservableCollection<IServiceOutputMapping>();
+                        region.RecordsetName = String.Empty;
 
-                if (IsAPreviousValue(value) && _selectedSource != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedSource(value);
+                    }
                 }
-                else
-                {
-                    SetSelectedSource(value);
-                    SourceChangedAction();
-                    OnSomethingChanged(this);
-                }
-                var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                if(delegateCommand != null)
-                {
-                    delegateCommand.RaiseCanExecuteChanged();
-                }
+                RestoreIfPrevious(value);
+                OnPropertyChanged();
             }
+        }
+
+        private void RestoreIfPrevious(IWebServiceSource value)
+        {
+            if (IsAPreviousValue(value) && _selectedSource != null)
+            {
+                RestorePreviousValues(value);
+                SetSelectedSource(value);
+            }
+            else
+            {
+                SetSelectedSource(value);
+                SourceChangedAction();
+                OnSomethingChanged(this);
+            }
+            var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+            if (delegateCommand != null)
+            {
+                delegateCommand.RaiseCanExecuteChanged();
+            }
+
+            _selectedSource = value;
         }
 
         private void SetSelectedSource(IWebServiceSource value)
