@@ -19,6 +19,8 @@ using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Services.Events;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using System;
@@ -38,6 +40,11 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
     {
         private readonly IEventAggregator _eventPublisher;
         private readonly IEnvironmentModel _environmentModel;
+
+        public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
+            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+        {
+        }
 
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
