@@ -321,6 +321,9 @@
     <Compile Include="ToolBase\Database\IDatabaseServiceViewModel.cs" />
     <Compile Include="ToolBase\DotNet\IDotNetViewModel.cs" />
     <Compile Include="ToolBase\DotNet\INamespaceToolRegion.cs" />
+    <Compile Include="ToolBase\ExchangeEmail\IExchangeServiceModel.cs" />
+    <Compile Include="ToolBase\ExchangeEmail\IExchangeServiceViewModel.cs" />
+    <Compile Include="ToolBase\ExchangeEmail\IExchangeSource.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IErrorRegion.cs" />
