@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -54,19 +55,10 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
-           Assert.AreEqual( added.JsonObjects["bob"].GetValue("Name").ToString(),"n");
+           Assert.AreEqual( ((JObject)added.JsonObjects["bob"]).GetValue("Name").ToString(),"n");
         }
 
 
     
-    }
-
-
-    public class Person
-    {
-
-        public string Name { get; set; }
-        public IList<Person> Children { get; set; }
-
     }
 }

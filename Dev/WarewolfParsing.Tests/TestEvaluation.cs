@@ -18,7 +18,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
-        public void AddToScalarsCreatesAscalar()
+        public void CreateJSONAndEvalEntireObject()
         {
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
@@ -28,12 +28,127 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
-            Assert.AreEqual(added.JsonObjects["bob"].GetValue("Name").ToString(), "n");
+            Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
             var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
             Assert.IsTrue(evalled.IsWarewolfAtomResult);
             var res = (evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
             var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
             Assert.AreEqual(str,j.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void CreateJSONAndEvalPartialObject()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>() });
+            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+            Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
+            var evalled = WarewolfDataEvaluationCommon.evalResultToString( WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Name]]"));
+
+            Assert.AreEqual(evalled, "n");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void CreateJSONAndEvalPartialObjectNested()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>(), Spouse = new Person() { Name = "o", Children = new List<Person>() } });
+            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+            Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
+            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Spouse.Name]]"));
+
+            Assert.AreEqual(evalled, "o");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void CreateJSONAndEvalPartialObjectNestedIndex()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
+            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+
+            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(1).Name]]"));
+
+            Assert.AreEqual(evalled, "p");
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void CreateJSONAndEvalPartialObjectNestedStar()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
+            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+
+            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*).Name]]"));
+
+            Assert.AreEqual(evalled, "p,q");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void CreateJSONAndEvalPartialObjectNestedStarAll()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
+            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+
+            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*)]]"));
+
+            Assert.AreEqual(evalled, "p,q");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
+        public void CreateJSONAndEvalPartialObjectNestedLast()
+        {
+            //------------Setup for test--------------------------
+            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
+            JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
+            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
+
+            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children().Name]]"));
+
+            Assert.AreEqual(evalled, "q");
         }
 
         [TestMethod]

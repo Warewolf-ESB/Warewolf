@@ -28,6 +28,8 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Newtonsoft.Json.Linq;
+using WarewolfParsingTest;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -208,6 +210,8 @@ namespace Dev2.Runtime.ESB.Execution
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource,int update)
         {
+            JContainer j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
+            dsfDataObject.Environment.AddToJsonObjects( "bob", j);
             if(resource == null)
             {
                 return;

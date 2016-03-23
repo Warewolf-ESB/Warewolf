@@ -168,9 +168,17 @@ and  languageExpressionToString  (x:LanguageExpression) =
         | RecordSetExpression a -> sprintf "[[%s(%s).%s]]" a.Name (IndexToString a.Index ) a.Column  
         | ScalarExpression a -> sprintf "[[%s]]" a
         | WarewolfAtomAtomExpression a -> atomtoString a
+        | JsonIdentifierExpression a -> jsonExpressionToString  a ""
         | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d ) "" a
         | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index ) 
-
+and jsonExpressionToString a acc =
+    match a with 
+        | NameExpression x -> if acc = "" then  x.Name else sprintf ".%s" x.Name
+        | NestedNameExpression x -> let current = if acc = "" then  x.ObjectName  else sprintf "%s.%s" acc x.ObjectName
+                                    jsonExpressionToString x.Next current
+        | IndexNestedNameExpression x ->   let current = if acc = "" then  x.ObjectName  else sprintf "%s.%s(%s)" acc x.ObjectName (IndexToString x.Index ) 
+                                           jsonExpressionToString x.Next current
+        | Terminal -> acc
 and  LanguageExpressionToStringWithoutStuff  (x:LanguageExpression) =
     match x with
         | RecordSetExpression a -> ""
@@ -237,6 +245,7 @@ and  Clean (buffer :LanguageExpression) =
         | ScalarExpression a -> ScalarExpression a
         | RecordSetNameExpression a -> RecordSetNameExpression a
         | WarewolfAtomAtomExpression a -> WarewolfAtomAtomExpression a
+        | JsonIdentifierExpression a -> JsonIdentifierExpression a
         | ComplexExpression  a ->  (List.filter (fun b -> "" <> (languageExpressionToString b)) a) |> (fun a -> if (List.length a) =1 then Clean a.[0] else ComplexExpression a)
 
 and parseAtom (lang:string) =
@@ -284,6 +293,7 @@ and ParseLanguageExpressionAndValidate  (lang:string) : (LanguageExpression*stri
             | ScalarExpression _ -> (res,"")
             | ComplexExpression x -> VerifyComplexExpression(x)
             | WarewolfAtomAtomExpression _ -> (res,"")
+            | JsonIdentifierExpression _ -> (res,"")
         with ex when ex.Message.ToLower() = "parse error" -> 
                                                                  if(lang.Length>2) then
                                                                     let startswithNum,_ = System.Int32.TryParse(lang.[2].ToString())
@@ -410,7 +420,7 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
                         
         match buffer with
             | RecordSetExpression a when  env.RecordSets.ContainsKey a.Name -> WarewolfAtomListresult(  (evalRecordsSet a env) )
-            | ScalarExpression a  when  env.RecordSets.ContainsKey a  -> WarewolfAtomResult (evalScalar a env)
+            | ScalarExpression a  when  env.Scalar.ContainsKey a  -> WarewolfAtomResult (evalScalar a env)
             | WarewolfAtomAtomExpression a  -> WarewolfAtomResult a
             | RecordSetNameExpression a when  env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
             | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
@@ -420,9 +430,9 @@ and languageExpressionToJPath (lang:LanguageExpression) =
     match lang with
             | RecordSetExpression a ->
                                         match a.Index with  
-                                            | IntIndex i -> "[[" + (i-1).ToString() + "]]."+a.Column
-                                            | Star  -> "[[*]]."+a.Column 
-                                            | Last  -> "[[(@.length-1)]]."+a.Column  
+                                            | IntIndex i -> "[" + (i-1).ToString() + "]."+a.Column
+                                            | Star  -> "[*]."+a.Column 
+                                            | Last  -> "[(@.length-1)]."+a.Column  
                                             | _ ->failwith  "not supported for JSON types"
             | ScalarExpression a -> "" 
             | WarewolfAtomAtomExpression a  -> ""
@@ -433,21 +443,38 @@ and languageExpressionToJPath (lang:LanguageExpression) =
                                             | Last  -> "[(@.length-1)]."
                                             | _ ->failwith  "not supported for JSON types"
             | ComplexExpression  a ->  failwith  "not supported for JSON types"
-            | JsonIdentifierExpression a ->  jsonIdentifierToJsonPath a ""
-
-and jsonIdentifierToJsonPath (a:JsonIdentifierExpression) (acc:string)= 
+            | JsonIdentifierExpression a ->  jsonIdentifierToJsonPathLevel1 a 
+and jsonIdentifierToJsonPath (a:JsonIdentifierExpression) (accx:string)= 
+    let acc = if accx=""  then "" else accx + "."
     match a with 
-    | NameExpression x -> acc + "." + x.Name
-    | NestedNameExpression x ->   (jsonIdentifierToJsonPath x.Next acc + "." + x.ObjectName )
+    | NameExpression x -> acc  + x.Name
+    | NestedNameExpression x ->   (jsonIdentifierToJsonPath x.Next (acc  + x.ObjectName) )
     | IndexNestedNameExpression x ->    let index =  match x.Index with  
-                                                        | IntIndex i -> "[" + (i-1).ToString() + "]."
-                                                        | Star  -> "[*]." 
-                                                        | Last  -> "[(@.length-1)]."
+                                                        | IntIndex i -> "[" + (i-1).ToString() + "]"
+                                                        | Star  -> "[*]" 
+                                                        | Last  -> "[-1:]"
                                                         | _ ->failwith  "not supported for JSON types"
-                                        (jsonIdentifierToJsonPath x.Next acc + index+ "." + x.ObjectName )
-    | Terminal -> acc
+                                        (jsonIdentifierToJsonPath x.Next (acc + x.ObjectName + "." + index  ) )
+    | Terminal -> accx
+
+
+and jsonIdentifierToJsonPathLevel1 (a:JsonIdentifierExpression) = 
+    
+    match a with 
+    | NameExpression x ->  x.Name
+    | NestedNameExpression x ->   (jsonIdentifierToJsonPath x.Next "" )
+    | IndexNestedNameExpression x ->   (jsonIdentifierToJsonPath x.Next "")
+    | Terminal -> ""
+
+and jsonIdentifierToName (a:JsonIdentifierExpression) = 
+    match a with 
+    | NameExpression x -> x.Name
+    | NestedNameExpression x ->  x.ObjectName 
+    | IndexNestedNameExpression x ->     x.ObjectName 
+    | Terminal -> ""
+
 and evalJson (env: WarewolfEnvironment)  (update:int) (lang:LanguageExpression) =
-    let jPath = languageExpressionToJPath(lang)
+    let jPath = "$." + languageExpressionToJPath(lang)
     match lang with 
     | ScalarExpression a -> if env.JsonObjects.ContainsKey a then WarewolfAtomResult  ( DataString  (env.JsonObjects.[a].ToString()) )else failwith "non existent recordset"
     | RecordSetExpression a ->  if  env.JsonObjects.ContainsKey a.Name 
@@ -457,6 +484,20 @@ and evalJson (env: WarewolfEnvironment)  (update:int) (lang:LanguageExpression) 
                                     let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString (a.ToString() ) )  
                                     WarewolfAtomListresult ( new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing, data))
                                 else failwith "non existent recordset"
+    | RecordSetNameExpression a ->  if  env.JsonObjects.ContainsKey a.Name 
+                                    then 
+                                        let jo =  env.JsonObjects.[a.Name]
+                                    
+                                        let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString (a.ToString() ) )  
+                                        WarewolfAtomListresult ( new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing, data))
+                                    else failwith "non existent recordset"
+    | JsonIdentifierExpression a ->  if  env.JsonObjects.ContainsKey (jsonIdentifierToName a)
+                                        then 
+                                            let jo =  env.JsonObjects.[(jsonIdentifierToName a)]
+                                    
+                                            let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString (a.ToString() ) )  
+                                            WarewolfAtomListresult ( new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing, data))
+                                        else failwith "non existent recordset"
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
 
