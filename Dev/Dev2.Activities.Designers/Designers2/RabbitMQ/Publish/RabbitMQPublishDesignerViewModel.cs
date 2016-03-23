@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
@@ -22,7 +23,6 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -38,49 +38,42 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
     public class RabbitMQPublishDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     // ReSharper restore InconsistentNaming
     {
-        private readonly IEventAggregator _eventPublisher;
+        private readonly IRabbitMQModel _model;
         private readonly IEnvironmentModel _environmentModel;
+        private readonly IEventAggregator _eventPublisher;
 
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, CustomContainer.CreateInstance<IRabbitMQModel>(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
         }
 
-        public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IRabbitMQModel model, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
 
+            _model = model;
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
 
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
 
-            EditRabbitMQSourceCommand = new RelayCommand(o => EditRabbitMQSource(), o => IsEditableRabbitMQSourceSelected);
+            EditRabbitMQSourceCommand = new RelayCommand(o => EditRabbitMQSource(), o => IsRabbitMQSourceSelected);
             NewRabbitMQSourceCommand = new RelayCommand(o => NewRabbitMQSource());
 
             RabbitMQSources = LoadRabbitMQSources();
-            SetSelectedRabbitMQSource(SelectedRabbitMQSource);
+            SetSelectedRabbitMQSource(null);
             AddTitleBarLargeToggle();
         }
 
         // ReSharper disable InconsistentNaming
-        public ObservableCollection<RabbitMQSource> RabbitMQSources { get; private set; }
+        public ObservableCollection<IRabbitMQSource> RabbitMQSources { get; private set; }
 
         public RelayCommand NewRabbitMQSourceCommand { get; private set; }
 
         public RelayCommand EditRabbitMQSourceCommand { get; private set; }
-
-        [ExcludeFromCodeCoverage]
-        private bool IsEditableRabbitMQSourceSelected
-        {
-            get
-            {
-                return SelectedRabbitMQSource != null;
-            }
-        }
 
         public bool IsRabbitMQSourceFocused { get { return (bool)GetValue(IsRabbitMQSourceFocusedProperty); } set { SetValue(IsRabbitMQSourceFocusedProperty, value); } }
         public static readonly DependencyProperty IsRabbitMQSourceFocusedProperty = DependencyProperty.Register("IsRabbitMQSourceFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
@@ -91,19 +84,28 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
         public bool IsMessageFocused { get { return (bool)GetValue(IsMessageFocusedProperty); } set { SetValue(IsMessageFocusedProperty, value); } }
         public static readonly DependencyProperty IsMessageFocusedProperty = DependencyProperty.Register("IsMessageFocused", typeof(bool), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public IRabbitMQSource SelectedRabbitMQSource { get { return (RabbitMQSource)GetValue(SelectedRabbitMQSourceProperty); } set { SetValue(SelectedRabbitMQSourceProperty, value); EditRabbitMQSourceCommand.RaiseCanExecuteChanged(); } }
-        public static readonly DependencyProperty SelectedRabbitMQSourceProperty = DependencyProperty.Register("SelectedRabbitMQSource", typeof(IRabbitMQSource), typeof(RabbitMQPublishDesignerViewModel), new PropertyMetadata(null, OnSelectedRabbitMQSourceChanged));
+        private IRabbitMQSource _selectedRabbitQueue;
 
-        private static void OnSelectedRabbitMQSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public IRabbitMQSource SelectedRabbitMQSource
         {
-            var viewModel = (RabbitMQPublishDesignerViewModel)d;
-            viewModel.OnRabbitMQSourceChanged();
-            viewModel.EditRabbitMQSourceCommand.RaiseCanExecuteChanged();
+            get
+            {
+                return _selectedRabbitQueue;
+            }
+            set
+            {
+                _selectedRabbitQueue = value;
+                RabbitMQSourceResourceId = _selectedRabbitQueue == null ? Guid.Empty : _selectedRabbitQueue.ResourceID;
+                OnPropertyChanged("IsRabbitMQSourceSelected");
+            }
         }
 
-        private void OnRabbitMQSourceChanged()
+        public bool IsRabbitMQSourceSelected
         {
-            RabbitMQSourceResourceId = SelectedRabbitMQSource.ResourceID;
+            get
+            {
+                return SelectedRabbitMQSource != null;
+            }
         }
 
         private Guid RabbitMQSourceResourceId
@@ -158,11 +160,9 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         // ReSharper disable InconsistentNaming
 
-        private ObservableCollection<RabbitMQSource> LoadRabbitMQSources()
+        private ObservableCollection<IRabbitMQSource> LoadRabbitMQSources()
         {
-            var rabbitMQSources = new[]
-            {
-                new RabbitMQSource()
+            IRabbitMQSource rabbitMQSource = new RabbitMQSource()
                 {
                     ResourceID = new Guid("00000000-0000-0000-0000-000000000001"),
                     ResourceType = ResourceType.RabbitMQSource,
@@ -170,12 +170,16 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
                     Host = "localhost",
                     UserName = "guest",
                     Password = "guest"
-                }
+                };
+
+            var rabbitMQSources = new[]
+            {
+                rabbitMQSource
             };
 
             // TODO: Remove the above stub and uncomment below when new RabbitMQSource has been implemented WOLF-1523
             //var rabbitMQSources = _environmentModel.ResourceRepository.FindSourcesByType<RabbitMQSource>(_environmentModel, enSourceType.RabbitMQSource);
-            //rabbitMQSources.Insert(0, NewRabbitMQSource);
+            //var rabbitMQSources = _model.RetrieveMqSources();
             return rabbitMQSources.ToObservableCollection();
         }
 
@@ -192,7 +196,8 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         private void NewRabbitMQSource()
         {
-            _eventPublisher.Publish(new ShowNewResourceWizard("RabbitMQSource"));
+            //_eventPublisher.Publish(new ShowNewResourceWizard("RabbitMQSource"));
+            _model.CreateNewSource();
             RabbitMQSources = LoadRabbitMQSources();
             IRabbitMQSource newRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.IsNewResource);
             SetSelectedRabbitMQSource(newRabbitMQSources);
