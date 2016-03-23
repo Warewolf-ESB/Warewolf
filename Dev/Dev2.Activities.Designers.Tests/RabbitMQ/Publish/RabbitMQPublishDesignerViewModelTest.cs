@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(null, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(null, null, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
             Assert.IsNull(vm);
@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, new Mock<IEventAggregator>().Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, null, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
             Assert.IsNull(vm);
@@ -59,7 +59,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IEnvironmentModel>().Object, null);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object, null);
 
             //------------Assert Results-------------------------
             Assert.IsNull(vm);
@@ -73,7 +73,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
             vm.QueueName = "Q1";
             vm.IsDurable = false;
             vm.IsExclusive = false;
@@ -112,7 +112,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         public void RabbitMQPublishDesignerViewModel_Validate()
         {
             //------------Setup for test--------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
             vm.QueueName = "";
             vm.Message = null;
             vm.SelectedRabbitMQSource = null;
@@ -136,7 +136,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         public void SharepointListDesignerViewModelBase_SetSelectedSharepointServer_EditCommand_ShouldCallOpenResource()
         {
             //------------Setup for test--------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
             Mock<IShellViewModel> mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>())).Verifiable();
             CustomContainer.Register(mockShellViewModel.Object);
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             ShowNewResourceWizard message = null;
             Mock<IEventAggregator> eventPublisher = new Mock<IEventAggregator>();
             eventPublisher.Setup(p => p.Publish(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IEnvironmentModel>().Object, eventPublisher.Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object, eventPublisher.Object);
 
             //------------Execute Test---------------------------
             vm.NewRabbitMQSourceCommand.Execute(null);
