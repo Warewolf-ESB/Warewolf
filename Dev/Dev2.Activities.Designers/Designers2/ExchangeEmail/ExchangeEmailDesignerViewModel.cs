@@ -7,7 +7,6 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.Source;
-using Dev2.Activities.Designers2.PostgreSql;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -36,6 +35,12 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public ExchangeEmailDesignerViewModel(ModelItem modelItem) : base(modelItem)
         {
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            Model = model;
+
+            SetupCommonProperties();
         }
 
         public ExchangeEmailDesignerViewModel(ModelItem modelItem, IList<IToolRegion> regions) : base(modelItem, regions)
@@ -54,6 +59,81 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         // ReSharper disable once ConvertPropertyToExpressionBody
         Guid UniqueId { get { return GetProperty<Guid>(); } }
         private IErrorInfo _worstDesignError;
+
+        private void SetupCommonProperties()
+        {
+            AddTitleBarMappingToggle();
+            //InitialiseViewModel(new ManageDatabaseServiceInputViewModel(this, Model));
+            NoError = new ErrorInfo
+            {
+                ErrorType = ErrorType.None,
+                Message = "Service Working Normally"
+            };
+            if (SourceRegion.SelectedSource == null)
+            {
+                UpdateLastValidationMemoWithSourceNotFoundError();
+            }
+            UpdateWorstError();
+        }
+
+        void AddTitleBarMappingToggle()
+        {
+            HasLargeView = true;
+        }
+
+        //private void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
+        //{
+        //    ManageServiceInputViewModel = manageServiceInputViewModel;
+
+        //    BuildRegions();
+
+        //    LabelWidth = 46;
+        //    ButtonDisplayValue = DoneText;
+
+        //    ShowLarge = true;
+        //    ThumbVisibility = Visibility.Visible;
+        //    ShowExampleWorkflowLink = Visibility.Collapsed;
+
+        //    DesignValidationErrors = new ObservableCollection<IErrorInfo>();
+        //    FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
+        //    {
+        //        FixErrors();
+        //        IsWorstErrorReadOnly = true;
+        //    });
+
+        //    SetDisplayName("");
+        //    InitializeImageSource();
+        //    OutputsRegion.OutputMappingEnabled = true;
+        //    TestInputCommand = new DelegateCommand(TestProcedure);
+
+        //    InitializeProperties();
+
+        //    if (OutputsRegion != null && OutputsRegion.IsEnabled)
+        //    {
+        //        var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
+        //        if (recordsetItem != null)
+        //        {
+        //            OutputsRegion.IsEnabled = true;
+        //        }
+        //    }
+        //}
+
+        void UpdateLastValidationMemoWithSourceNotFoundError()
+        {
+            var memo = new DesignValidationMemo
+            {
+                InstanceID = UniqueId,
+                IsValid = false,
+            };
+            memo.Errors.Add(new ErrorInfo
+            {
+                InstanceID = UniqueId,
+                ErrorType = ErrorType.Critical,
+                FixType = FixType.None,
+                Message = _sourceNotFoundMessage
+            });
+            UpdateDesignValidationErrors(memo.Errors);
+        }
 
         public override void Validate()
         {
@@ -170,7 +250,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             private set { SetValue(WorstErrorProperty, value); }
         }
         public static readonly DependencyProperty WorstErrorProperty =
-        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(PostgreSqlDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
+        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         public bool IsWorstErrorReadOnly
         {
@@ -200,7 +280,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new ExchangeSourceRegion(Model, ModelItem, enSourceType.PostgreSql)
+                SourceRegion = new ExchangeSourceRegion(Model, ModelItem, enSourceType.ExchangeEmailSource)
                 {
                     SourceChangedAction = () =>
                     {

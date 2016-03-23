@@ -156,7 +156,8 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         EmailSource,
         WebSource,
         OauthSource,
-        SharepointServerSource
+        SharepointServerSource,
+        ExchangeEmailSource
     }
 
     /// <summary>
