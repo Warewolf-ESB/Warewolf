@@ -3,6 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -16,6 +17,20 @@ namespace Dev2.Activities.Designers2.Core.Source
     {
         private Guid _sourceId;
         private readonly ModelItem _modelItem;
+
+        public IExchangeSource SelectedSource { get; set; }
+        public ICollection<IExchangeSource> Sources { get; set; }
+        public ICommand EditSourceCommand { get; }
+        public ICommand NewSourceCommand { get; }
+        public Action SourceChangedAction { get; set; }
+        public event SomethingChanged SomethingChanged;
+        public double LabelWidth { get; set; }
+        public string NewSourceHelpText { get; set; }
+        public string EditSourceHelpText { get; set; }
+        public string SourcesHelpText { get; set; }
+        public string NewSourceTooltip { get; set; }
+        public string EditSourceTooltip { get; set; }
+        public string SourcesTooltip { get; set; }
 
         public ExchangeSourceRegion()
         {
@@ -91,18 +106,24 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public IExchangeSource SelectedSource { get; set; }
-        public ICollection<IExchangeSource> Sources { get; set; }
-        public ICommand EditSourceCommand { get; }
-        public ICommand NewSourceCommand { get; }
-        public Action SourceChangedAction { get; set; }
-        public event SomethingChanged SomethingChanged;
-        public double LabelWidth { get; set; }
-        public string NewSourceHelpText { get; set; }
-        public string EditSourceHelpText { get; set; }
-        public string SourcesHelpText { get; set; }
-        public string NewSourceTooltip { get; set; }
-        public string EditSourceTooltip { get; set; }
-        public string SourcesTooltip { get; set; }
+        
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        protected virtual void OnSomethingChanged(IToolRegion args)
+        {
+            var handler = SomethingChanged;
+            if (handler != null)
+            {
+                handler(this, args);
+            }
+        }
     }
 }
