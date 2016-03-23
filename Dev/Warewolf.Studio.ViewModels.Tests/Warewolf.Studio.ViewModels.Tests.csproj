@@ -110,6 +110,7 @@
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
+    <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
     <Compile Include="ManagePluginSourceViewModellTests.cs" />
     <Compile Include="ManageWebSourceModellTests.cs" />
