@@ -33,7 +33,7 @@ let AddToScalars (env:WarewolfEnvironment) (name:string) (value:WarewolfAtom)  =
     {    env with   Scalar=rem;
     }
 
-let AddToJsonObjects (env:WarewolfEnvironment) (name:string) (value:JObject)  =
+let AddToJsonObjects (env:WarewolfEnvironment) (name:string) (value:JContainer)  =
     let rem = Map.remove name env.JsonObjects |> Map.add name value 
     {    env with   JsonObjects=rem;
     }
