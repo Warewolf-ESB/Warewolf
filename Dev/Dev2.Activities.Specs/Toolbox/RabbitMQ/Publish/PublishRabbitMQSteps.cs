@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using ActivityUnitTests;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Common.Interfaces.RabbitMQ;
@@ -12,7 +13,7 @@ using TechTalk.SpecFlow;
 namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
 {
     [Binding]
-    public class PublishRabbitMQSteps
+    public class PublishRabbitMQSteps : BaseActivityUnitTest
     {
         [Given(@"I drag RabbitMQPublish tool onto the design surface")]
         public void GivenIDragRabbitMQPublishToolOntoTheDesignSurface()
@@ -66,6 +67,30 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
         {
             var model = ScenarioContext.Current.Get<Mock<IRabbitMQModel>>("Model");
             model.Verify(a => a.CreateNewSource());
+        }
+
+        [Given(@"I Select ""(.*)"" as a Rabbit Source")]
+        public void GivenISelectAsARabbitSource(string resourceName)
+        {
+            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            vm.SelectedRabbitMQSource = vm.RabbitMQSources.FirstOrDefault(a => a.ResourceName == resourceName);
+        }
+
+        [When(@"the publish rabbitMQ tool is executed")]
+        public void WhenThePublishRabbitMQToolIsExecuted()
+        {
+            var publishRabbitMQActivity = ScenarioContext.Current.Get<DsfPublishRabbitMQActivity>("activity");
+
+            publishRabbitMQActivity.Result = "[[result]]";
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            ScenarioContext.Current.Add("result", result);
+        }
+
+        [Then(@"the result will be ""(.*)""")]
+        public void ThenTheResultWillBe(string expectedResult)
+        {
+            var result = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("result");
+            Assert.Equals(result, expectedResult);
         }
     }
 }
