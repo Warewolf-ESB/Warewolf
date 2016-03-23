@@ -103,7 +103,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
 
             //assert
             Assert.IsTrue(_changedProperties.Contains("IsEnabled"));
-            Assert.AreSame(expectedValue, value);
+            Assert.AreEqual(expectedValue, value);
         }
 
         #endregion Test properties
