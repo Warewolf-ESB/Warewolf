@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Activities.Annotations;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -77,13 +78,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public IList<IServiceInput> Inputs
