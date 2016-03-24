@@ -499,6 +499,12 @@ namespace Dev2.Activities.Specs.Composition
                         case "sqlserver database":
                             updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                             break;
+                        case "oracle database":
+                            updatedActivity = ActivityUtils.GetDsfOracleDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
+                        case "odbc database":
+                            updatedActivity = ActivityUtils.GetDsfODBCDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
                     }
                     CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
@@ -669,7 +675,10 @@ namespace Dev2.Activities.Specs.Composition
                 case "sqlserver database":
                     activity = new DsfDatabaseActivity();
                     break;
-                case "oracle":
+                case "oracle database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "odbc database":
                     activity = new DsfDatabaseActivity();
                     break;
                 case "plugin":
