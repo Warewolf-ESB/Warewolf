@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 
 namespace Dev2.Common.Interfaces
@@ -10,6 +11,7 @@ namespace Dev2.Common.Interfaces
     public interface IShellViewModel
     {
         void EditResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
+        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
 
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
 

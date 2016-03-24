@@ -38,6 +38,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Data.ServiceModel;
@@ -1008,6 +1009,25 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
             OpeningWorkflowsHelper.AddWorkflow(key);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            //var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker);
+            //var vm = new SourceViewModel<IExchangeSource>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl());
+
+            //if (workSurfaceKey == null)
+            //{
+            //    workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            //    workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+            //    workSurfaceKey.ResourceID = selectedSource.Id;
+            //    workSurfaceKey.ServerID = ActiveServer.ServerID;
+            //}
+
+            //var key = workSurfaceKey as WorkSurfaceKey;
+            //var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            //OpeningWorkflowsHelper.AddWorkflow(key);
+            //AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
