@@ -1,4 +1,4 @@
-﻿<core:ActivityDesigner x:TypeArguments="exchangeEmail:ExchangeEmailDesignerViewModel"
+﻿<core:ActivityDesigner x:TypeArguments="local:ExchangeEmailDesignerViewModel"
                        x:Class="Dev2.Activities.Designers2.ExchangeEmail.ExchangeEmailDesigner"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,9 +8,9 @@
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.ExchangeEmail"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                       xmlns:exchangeEmail="clr-namespace:Dev2.Activities.Designers2.ExchangeEmail"
+                     
                        mc:Ignorable="d"
-                       d:DataContext="{d:DesignInstance exchangeEmail:ExchangeEmailDesignerViewModel}"
+                       d:DataContext="{d:DesignInstance local:ExchangeEmailDesignerViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>

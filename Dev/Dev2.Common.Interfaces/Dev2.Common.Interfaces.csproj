@@ -168,6 +168,7 @@
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
+    <Compile Include="Exchange\IExchangeService.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
     <Compile Include="FileListing.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />

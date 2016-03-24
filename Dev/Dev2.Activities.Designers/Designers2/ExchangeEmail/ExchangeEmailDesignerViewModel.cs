@@ -2,6 +2,7 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
@@ -9,12 +10,16 @@ using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Exchange;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Microsoft.Practices.Prism.Commands;
+using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.ExchangeEmail
 {
@@ -43,14 +48,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             SetupCommonProperties();
         }
 
-        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IList<IToolRegion> regions) : base(modelItem, regions)
-        {
-        }
-
-        public ExchangeEmailDesignerViewModel(ModelItem modelItem, Action<Type> showExampleWorkflow, IList<IToolRegion> regions) : base(modelItem, showExampleWorkflow, regions)
-        {
-        }
-
+        public bool GenerateOutputsVisible { get; set; }
         public ISourceToolRegion<IExchangeSource> SourceRegion { get; set; }
         public IExchangeInputRegion InputArea { get; set; }
         public IOutputsToolRegion OutputsRegion { get; set; }
@@ -63,7 +61,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
-            //InitialiseViewModel(new ManageDatabaseServiceInputViewModel(this, Model));
+            InitialiseViewModel(new ManageExchangeServiceInputViewModel(this, Model));
             NoError = new ErrorInfo
             {
                 ErrorType = ErrorType.None,
@@ -76,47 +74,88 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             UpdateWorstError();
         }
 
+        [ExcludeFromCodeCoverage]
+        private void FixErrors()
+        {
+        }
+
+        void InitializeImageSource()
+        {
+        }
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
         }
 
-        //private void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
-        //{
-        //    ManageServiceInputViewModel = manageServiceInputViewModel;
+        public int LabelWidth { get; set; }
+        public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
+        public DelegateCommand TestInputCommand { get; set; }
+        private void InitialiseViewModel(IManageExchangeInputViewModel manageServiceInputViewModel)
+        {
+            ManageServiceInputViewModel = manageServiceInputViewModel;
 
-        //    BuildRegions();
+            BuildRegions();
 
-        //    LabelWidth = 46;
-        //    ButtonDisplayValue = DoneText;
+            LabelWidth = 46;
+            ButtonDisplayValue = DoneText;
 
-        //    ShowLarge = true;
-        //    ThumbVisibility = Visibility.Visible;
-        //    ShowExampleWorkflowLink = Visibility.Collapsed;
+            ShowLarge = true;
+            ThumbVisibility = Visibility.Visible;
+            ShowExampleWorkflowLink = Visibility.Collapsed;
 
-        //    DesignValidationErrors = new ObservableCollection<IErrorInfo>();
-        //    FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
-        //    {
-        //        FixErrors();
-        //        IsWorstErrorReadOnly = true;
-        //    });
+            DesignValidationErrors = new ObservableCollection<IErrorInfo>();
+            FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
+            {
+                FixErrors();
+                IsWorstErrorReadOnly = true;
+            });
 
-        //    SetDisplayName("");
-        //    InitializeImageSource();
-        //    OutputsRegion.OutputMappingEnabled = true;
-        //    TestInputCommand = new DelegateCommand(TestProcedure);
+            SetDisplayName("");
+            InitializeImageSource();
+            OutputsRegion.OutputMappingEnabled = true;
+            TestInputCommand = new DelegateCommand(TestProcedure);
 
-        //    InitializeProperties();
+            InitializeProperties();
 
-        //    if (OutputsRegion != null && OutputsRegion.IsEnabled)
-        //    {
-        //        var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
-        //        if (recordsetItem != null)
-        //        {
-        //            OutputsRegion.IsEnabled = true;
-        //        }
-        //    }
-        //}
+            if (OutputsRegion != null && OutputsRegion.IsEnabled)
+            {
+                var recordsetItem = OutputsRegion.Outputs.FirstOrDefault(mapping => !string.IsNullOrEmpty(mapping.RecordSetName));
+                if (recordsetItem != null)
+                {
+                    OutputsRegion.IsEnabled = true;
+                }
+            }
+        }
+
+        public void TestProcedure()
+        {
+
+            var service = ToModel();
+            ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
+            ManageServiceInputViewModel.Model = service;
+
+            ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
+            ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+            GenerateOutputsVisible = true;
+            SetDisplayName(OutputDisplayName);
+
+        }
+
+        public IExchangeService ToModel()
+        {
+            var databaseService = new ExchangeService()
+            {
+                Source = SourceRegion.SelectedSource,
+
+                Inputs = new List<IServiceInput>()
+            };
+            foreach (var serviceInput in InputArea.Inputs)
+            {
+                databaseService.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
+            }
+            return databaseService;
+        }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
         {
@@ -146,7 +185,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (!OutputsRegion.OutputMappingEnabled)
             {
-                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
+                Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Email must be validated before minimising" } };
             }
             if (SourceRegion.Errors.Count > 0)
             {
@@ -306,7 +345,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             return regions;
         }
 
-        public IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
+        public IManageExchangeInputViewModel ManageServiceInputViewModel { get; set; }
 
         public void ErrorMessage(Exception exception, bool hasError)
         {

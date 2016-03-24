@@ -29,6 +29,7 @@ using Dev2.Activities.Designers2.Delete;
 using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.DropBox.Upload;
 using Dev2.Activities.Designers2.Email;
+using Dev2.Activities.Designers2.ExchangeEmail;
 using Dev2.Activities.Designers2.FindIndex;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.Foreach;
@@ -72,6 +73,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.Oracle;
 using Dev2.Activities.Designers2.ODBC;
 using Dev2.Activities.Designers2.PostgreSql;
+using Dev2.Activities.Exchange;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -127,6 +129,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
                   { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                   { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
+                {typeof(DsfExchangeActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                  { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },

@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Common.Interfaces
 {
@@ -49,6 +50,7 @@ namespace Dev2.Common.Interfaces
         IList<string> GetComputerNames();
 
         IList<IDbSource> FetchDbSources();
+        IList<IExchangeSource> FetchExchangeSources();
 
         IList<IDbAction> FetchDbActions(IDbSource source);
 

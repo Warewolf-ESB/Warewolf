@@ -14,6 +14,7 @@ namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
         IOutputsToolRegion OutputsRegion { get; set; }
         void ErrorMessage(Exception exception, bool hasError);
         void SetDisplayName(string displayName);
+        bool GenerateOutputsVisible { get; set; }
     }
 
     public interface IExchangeInputRegion : IToolRegion
