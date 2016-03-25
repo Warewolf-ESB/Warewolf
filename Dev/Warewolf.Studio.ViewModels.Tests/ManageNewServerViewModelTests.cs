@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows;
 
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -17,13 +21,6 @@ using Moq;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
-    using System.Linq;
-
-    using Dev2;
-    using Dev2.Common.Interfaces.Help;
-    using Dev2.ConnectionHelpers;
-    using Dev2.Interfaces;
-
     [TestClass]
     public class ManageNewServerViewModelTests
     {
