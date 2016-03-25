@@ -118,6 +118,7 @@
     <Compile Include="ManageEmailSourceModelTests.cs" />
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
     <Compile Include="ManageNewServerSourceModelTests.cs" />
+    <Compile Include="ManageNewServerViewModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModellTests.cs" />
     <Compile Include="ManageWebSourceModellTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
