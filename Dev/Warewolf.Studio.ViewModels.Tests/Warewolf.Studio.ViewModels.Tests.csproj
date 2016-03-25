@@ -124,6 +124,7 @@
     <Compile Include="MenuViewModelTests.cs" />
     <Compile Include="RequestNameServiceViewModelTests.cs" />
     <Compile Include="RequestServiceNameViewModelTests.cs" />
+    <Compile Include="SharepointServerSourceModelTests.cs" />
     <Compile Include="SingleEnvironmentExplorerViewModelTests.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModelTests.cs" />
     <Compile Include="ToolBox\ToolboxViewModelTests.cs" />
