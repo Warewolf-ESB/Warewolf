@@ -208,6 +208,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task TestCancelTestCommandExecute()
         {
             //arrange
+            Task task = null;
             var isCancelled = false;
             _asyncWorkerMock.Setup(
                 it =>
@@ -217,9 +218,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                     It.IsAny<CancellationTokenSource>(),
                     It.IsAny<Action<Exception>>()))
                 .Callback<Action, Action, CancellationTokenSource, Action<Exception>>(
-                    async (progress, success, token, errorAction) =>
+                    (progress, success, token, errorAction) =>
                         {
-                            await Task.Factory.StartNew(
+                            task = Task.Factory.StartNew(
                                 () =>
                                     {
                                         while (!token.IsCancellationRequested) ;
@@ -231,6 +232,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.CancelTestCommand.Execute(null);
+            task.Wait();
 
             //assert
             Assert.IsTrue(isCancelled);
