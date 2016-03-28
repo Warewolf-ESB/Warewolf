@@ -86,6 +86,10 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ServiceStack.Text, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -121,7 +125,7 @@
     <Compile Include="ManageNewServerViewModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModellTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
-    <Compile Include="ManageWebSourceModellTests.cs" />
+    <Compile Include="ManageWebServiceViewModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
     <Compile Include="RequestNameServiceViewModelTests.cs" />
     <Compile Include="RequestServiceNameViewModelTests.cs" />
@@ -163,6 +167,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
       <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
