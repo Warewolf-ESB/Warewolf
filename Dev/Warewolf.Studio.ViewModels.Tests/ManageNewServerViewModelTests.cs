@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                                     {
                                         while (!token.IsCancellationRequested) ;
                                         isCancelled = true;
-                                    },token.Token);
+                                    });
                         });
             _target.Address = "http://localhost/";
             _target.TestCommand.Execute(null);
