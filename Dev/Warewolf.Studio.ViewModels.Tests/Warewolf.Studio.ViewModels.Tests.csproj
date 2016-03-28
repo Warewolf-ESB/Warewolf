@@ -123,6 +123,7 @@
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
     <Compile Include="ManageNewServerSourceModelTests.cs" />
     <Compile Include="ManageNewServerViewModelTests.cs" />
+    <Compile Include="ManagePluginSourceModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModellTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
     <Compile Include="ManageWebServiceViewModelTests.cs" />
