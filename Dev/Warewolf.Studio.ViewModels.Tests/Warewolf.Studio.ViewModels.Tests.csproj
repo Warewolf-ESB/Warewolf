@@ -124,7 +124,7 @@
     <Compile Include="ManageNewServerSourceModelTests.cs" />
     <Compile Include="ManageNewServerViewModelTests.cs" />
     <Compile Include="ManagePluginSourceModelTests.cs" />
-    <Compile Include="ManagePluginSourceViewModellTests.cs" />
+    <Compile Include="ManagePluginSourceViewModelTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
     <Compile Include="ManageWebServiceViewModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
