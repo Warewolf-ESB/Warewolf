@@ -223,16 +223,16 @@ namespace Warewolf.Studio.ViewModels
         {
             if (SingleEnvironmentExplorerViewModel != null)
             {
-            var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-            if (explorerTreeItem != null)
-            {
-                return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-            }
+                var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+                if (explorerTreeItem != null && explorerTreeItem.ResourceType == ResourceType.Folder)
+                {
+                    return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                }
                 if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
-            {
-                var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
-                return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
-            }
+                {
+                    var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
+                    return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                }
             }
             return false;
         }
