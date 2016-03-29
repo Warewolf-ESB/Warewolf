@@ -24,7 +24,7 @@ if ([string]::IsNullOrEmpty($FullVersionString)) {
     $FullVersionString = $FullVersionString.Trim()
     if ([string]::IsNullOrEmpty($FullVersionString)) {
         Write-Host No local tags found in git history. Setting version to `"0.0.0.0`".
-        $FullVersionString = 0.0.0.0
+        $FullVersionString = "0.0.0.0"
     }
 
     Write-Host Last version was `"$FullVersionString`". Generating next version...
