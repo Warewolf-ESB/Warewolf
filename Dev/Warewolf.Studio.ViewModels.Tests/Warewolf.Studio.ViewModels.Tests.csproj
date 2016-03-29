@@ -115,6 +115,7 @@
     <Compile Include="DeploySourceExplorerViewModelTests.cs" />
     <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="EmailAttachmentModelTests.cs" />
+    <Compile Include="EmailAttachmentVmTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
