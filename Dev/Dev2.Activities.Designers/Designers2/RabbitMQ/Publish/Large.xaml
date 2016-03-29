@@ -93,7 +93,7 @@
                     Width="Auto"
                     Style="{StaticResource ButtonOrangeStyle}" 
                     ToolTip="{x:Static languages:Core.NewRabbitMQSourceHelp}"
-                    Command="{Binding NewSourceCommand}">
+                    Command="{Binding NewRabbitMQSourceCommand}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
