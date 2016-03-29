@@ -9,6 +9,7 @@ Scenario: Open new RabbitMQ Publish Tool
     And New is Enabled
 	And Edit is Disabled
 	And RabbitMQ Source is Enabled
+	And Queue Name is Enabled
 	And Message is Enabled
 	And Result is Enabled
 	When I Click New
@@ -20,6 +21,7 @@ Scenario: Editing RabbitMQ Publish Tool Source
     And New is Enabled
 	And Edit is Disabled
 	And RabbitMQ Source is Enabled
+	And Queue Name is Enabled
 	And Message is Enabled
 	And Result is Enabled
 	When I Select "Test (localhost)" as the source
@@ -33,6 +35,7 @@ Scenario: Change RabbitMQ Publish Source
     And New is Enabled
 	And Edit is Disabled
 	And RabbitMQ Source is Enabled
+	And Queue Name is Enabled
 	And Message is Enabled
 	And Result is Enabled
 	When I Select "Test (localhost)" as the source
