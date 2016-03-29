@@ -25,6 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
 
             ScenarioContext.Current.Add("ViewModel", viewModel);
             ScenarioContext.Current.Add("Model", model);
+            ScenarioContext.Current.Add("Activity", publishActivity);
         }
 
         [Given(@"New Button is Enabled")]
@@ -74,23 +75,6 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
         {
             var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.SelectedRabbitMQSource = vm.RabbitMQSources.FirstOrDefault(a => a.ResourceName == resourceName);
-        }
-
-        [When(@"the publish rabbitMQ tool is executed")]
-        public void WhenThePublishRabbitMQToolIsExecuted()
-        {
-            var publishRabbitMQActivity = ScenarioContext.Current.Get<DsfPublishRabbitMQActivity>("activity");
-
-            publishRabbitMQActivity.Result = "[[result]]";
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
-            ScenarioContext.Current.Add("result", result);
-        }
-
-        [Then(@"the result will be ""(.*)""")]
-        public void ThenTheResultWillBe(string expectedResult)
-        {
-            var result = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("result");
-            Assert.Equals(result, expectedResult);
         }
     }
 }
