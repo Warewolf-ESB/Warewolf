@@ -14478,15 +14478,15 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database ODBCDB Database service using int indexes")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestODBCWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestODBCWFWithDBServiceMails3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestODBCWFWithDBServiceMails16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestODBCWFWithDBServiceMails16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "ODBCEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseODBCDBDatabaseServiceUsingIntIndexes_TestODBCWFWithDBServiceMails3()
+        public virtual void DatabaseODBCDBDatabaseServiceUsingIntIndexes_TestODBCWFWithDBServiceMails16()
         {
-            this.DatabaseODBCDBDatabaseServiceUsingIntIndexes("TestODBCWFWithDBServiceMails3", "ODBCEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
+            this.DatabaseODBCDBDatabaseServiceUsingIntIndexes("TestODBCWFWithDBServiceMails16", "ODBCEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
         }
         
         public virtual void DatabaseOracleDBDatabaseServiceUsingIntIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)
@@ -14537,15 +14537,15 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Database OracleDB Database service using int indexes")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "TestOracleWFWithDBServiceMails9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:WorkflowName", "TestOracleWFWithDBServiceMails9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ServiceName", "OracleEmail")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:nameVariable", "[[rec(1).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:emailVariable", "[[rec(1).email]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void DatabaseOracleDBDatabaseServiceUsingIntIndexes_TestOracleWFWithDBServiceMails3()
+        public virtual void DatabaseOracleDBDatabaseServiceUsingIntIndexes_TestOracleWFWithDBServiceMails9()
         {
-            this.DatabaseOracleDBDatabaseServiceUsingIntIndexes("TestOracleWFWithDBServiceMails3", "OracleEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
+            this.DatabaseOracleDBDatabaseServiceUsingIntIndexes("TestOracleWFWithDBServiceMails9", "OracleEmail", "[[rec(1).name]]", "[[rec(1).email]]", "NO", ((string[])(null)));
         }
         
         public virtual void DatabaseSqlDBServiceUsingLastIndexes(string workflowName, string serviceName, string nameVariable, string emailVariable, string errorOccured, string[] exampleTags)

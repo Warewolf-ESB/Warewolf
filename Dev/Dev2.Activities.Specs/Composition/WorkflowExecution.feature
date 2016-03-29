@@ -3957,7 +3957,7 @@ Scenario Outline: Database ODBCDB Database service using int indexes
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
     | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestODBCWFWithDBServiceMails3 | ODBCEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
+    | TestODBCWFWithDBServiceMails16 | ODBCEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 Scenario Outline: Database OracleDB Database service using int indexes
      Given I have a workflow "<WorkflowName>"
@@ -3973,7 +3973,7 @@ Scenario Outline: Database OracleDB Database service using int indexes
 	  | [[rec(1).email]] = dora@explorers.com |
 Examples: 
     | WorkflowName                   | ServiceName | nameVariable    | emailVariable    | errorOccured |
-    | TestOracleWFWithDBServiceMails3 | OracleEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
+    | TestOracleWFWithDBServiceMails9 | OracleEmail  | [[rec(1).name]] | [[rec(1).email]] | NO           |
 
 Scenario Outline: Database SqlDB  service using last indexes 
      Given I have a workflow "<WorkflowName>"
