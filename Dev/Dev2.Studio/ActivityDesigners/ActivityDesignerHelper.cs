@@ -27,6 +27,8 @@ using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DateTimeDifference;
 using Dev2.Activities.Designers2.Delete;
 using Dev2.Activities.Designers2.DeleteRecords;
+using Dev2.Activities.Designers2.DropBox2016.Download;
+using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Activities.Designers2.FindIndex;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
@@ -64,6 +66,7 @@ using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
+using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
@@ -125,7 +128,8 @@ namespace Dev2.Studio.ActivityDesigners
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                  { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                  { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
-                 { typeof(DsfDropBoxUploadActivity), typeof(Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner) },
+                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
+                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
