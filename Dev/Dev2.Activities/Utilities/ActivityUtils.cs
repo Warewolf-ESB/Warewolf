@@ -88,7 +88,7 @@ namespace Dev2.Utilities
             return dsfMySqlDatabaseActivity;
         }
 
-        public static DsfOracleDatabaseActivity GetDsfOracleDatabaseActivity(DsfDatabaseActivity dbActivity, DbSource source, DbService service)
+        public static DsfOracleDatabaseActivity GetDsfOracleDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             var DsfOracleDatabaseActivity = new DsfOracleDatabaseActivity
             {
@@ -120,7 +120,7 @@ namespace Dev2.Utilities
             return DsfOracleDatabaseActivity;
         }
 
-        public static DsfODBCDatabaseActivity GetDsfODBCDatabaseActivity(DsfDatabaseActivity dbActivity, DbSource source, DbService service)
+        public static DsfODBCDatabaseActivity GetDsfODBCDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
             var DsfODBCDatabaseActivity = new DsfODBCDatabaseActivity
             {
