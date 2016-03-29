@@ -259,7 +259,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedAuthenticationType = AuthenticationType.User;
-            var expectedServerName = "someServerName";
             var expectedPassword = "somePassword";
             var expectedUserName = "someUserName";
             var expectedName = "someExpectedName";
@@ -358,8 +357,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSaveCommandExecute_serverSourceNotNull()
         {
             //arrange
-            var resPath = "resPath";
-            var resName = "resName";
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedServer = "someServer";
             var expectedPassword = "somePassword";
@@ -397,8 +394,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSaveCommandExecute_serverSourceNull()
         {
             //arrange
-            var resPath = "resPath";
-            var resName = "resName";
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedServerName = "someServerName";
             var expectedPassword = "somePassword";
@@ -601,7 +596,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestIsWindowsNoChanges()
         {
             //arrange
-            var expectedValue = "userValue";
             _target.IsWindows = false;
             _changedProperties.Clear();
 
@@ -633,7 +627,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestIsUserNoChanges()
         {
             //arrange
-            var expectedValue = "userValue";
             _target.IsWindows = false;
             _changedProperties.Clear();
 
@@ -931,8 +924,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TesSave_serverSourceNull()
         {
             //arrange
-            var resPath = "resPath";
-            var resName = "resName";
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedServerName = "someServerName";
             var expectedPassword = "somePassword";
