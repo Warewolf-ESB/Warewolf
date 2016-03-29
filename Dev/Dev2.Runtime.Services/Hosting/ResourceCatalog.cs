@@ -43,6 +43,7 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
+using Warewolf.Core;
 using Warewolf.ResourceManagement;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -430,6 +431,9 @@ namespace Dev2.Runtime.Hosting
                     break;
                 case enSourceType.SharepointServerSource:
                     result = BuildSharepointSourceList(resources);
+                    break;
+                case enSourceType.ExchangeEmailSource:
+                    result = BuildExchangeList(resources);
                     break;
                 default:
                     result = null;
@@ -1127,6 +1131,11 @@ namespace Dev2.Runtime.Hosting
             return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new WebSource(xe)).ToList();
         }
 
+        private IEnumerable BuildExchangeList(IEnumerable<IResource> resources)
+        {
+            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new ExchangeSource(xe)).ToList();
+        }
+
         #endregion
 
         #region GetResources
@@ -1255,6 +1264,14 @@ namespace Dev2.Runtime.Hosting
                     return true;
                 }
                 if(typeof(T) == typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
+                {
+                    return true;
+                }
+                if (typeof(T) == typeof(ExchangeService) && resource.ResourceType != ResourceType.ExchangeService)
+                {
+                    return true;
+                }
+                if (typeof(T) == typeof(ExchangeSource) && resource.ResourceType != ResourceType.ExchangeSource)
                 {
                     return true;
                 }

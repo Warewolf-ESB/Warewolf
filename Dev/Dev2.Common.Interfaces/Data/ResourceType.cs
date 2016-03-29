@@ -38,6 +38,7 @@ namespace Dev2.Common.Interfaces.Data
         DependencyViewer = 131072,
         DeployViewer = 262144,
         DropboxSource = 524288,
-        Exchange = 1048576
+        ExchangeSource = 1048576,
+        ExchangeService = 2097152
     }
 }

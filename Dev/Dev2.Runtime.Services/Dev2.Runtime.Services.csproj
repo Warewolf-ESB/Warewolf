@@ -171,6 +171,7 @@
     <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
     <Compile Include="ESB\Management\Services\FetchDbActions.cs" />
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginNamespaces.cs" />
@@ -302,6 +303,7 @@
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\ServerSecurityService.cs" />
     <Compile Include="Security\SSLCertificateBuilder.cs" />
+    <Compile Include="ServiceModel\Data\ExchangeSource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
     <Compile Include="ServiceModel\Data\WebPermission.cs" />

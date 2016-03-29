@@ -14,5 +14,6 @@ namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
         string UserName { get; set; }
         string Password { get; set; }
         enSourceType Type { get; set; }
+        string Path { get; set; }
     }
 }
