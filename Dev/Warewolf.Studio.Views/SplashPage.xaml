@@ -58,15 +58,12 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Studio" FontSize="28" Style="{StaticResource SourceHeaderWhite}"></TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding StudioVersion}" Style="{StaticResource TextBlockWhiteStyle}"></TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding StudioInformationalVersion}" FontSize="8" Style="{StaticResource TextBlockWhiteStyle}"></TextBlock>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="Server" FontSize="28" Style="{StaticResource SourceHeaderWhite}"></TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ServerVersion}" Style="{StaticResource TextBlockWhiteStyle}"></TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ServerInformationalVersion}" FontSize="8" Style="{StaticResource TextBlockWhiteStyle}"></TextBlock>
             </Grid>
 
             <!-- WAREWOLF -->
