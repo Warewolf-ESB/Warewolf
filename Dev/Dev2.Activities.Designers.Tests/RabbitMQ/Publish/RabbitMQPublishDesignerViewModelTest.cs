@@ -171,7 +171,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("RabbitMQPublishDesignerViewModelTest_Commands")]
-        public void SRabbitMQPublishDesignerViewModel_NewRabbitMQSourceCommand_ShouldPublishShowNewResourceWizard()
+        public void RabbitMQPublishDesignerViewModel_NewRabbitMQSourceCommand_ShouldPublishShowNewResourceWizard()
         {
             Mock<IRabbitMQModel> model = new Mock<IRabbitMQModel>();
             RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
