@@ -100,10 +100,23 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            UpdateBasedOnNamespace();
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsEnabled");
+            try
+            {
+                Errors.Clear();
+
+                // ReSharper disable once ExplicitCallerInfoArgument
+                UpdateBasedOnNamespace();
+                // ReSharper disable once ExplicitCallerInfoArgument
+                OnPropertyChanged(@"IsEnabled");
+            }
+            catch(Exception e)
+            {
+                Errors.Add(e.Message);
+            }
+            finally
+            {
+                OnSomethingChanged(this);
+            }
         }
 
         private void UpdateBasedOnNamespace()
