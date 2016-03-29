@@ -21,7 +21,7 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
             var publishActivity = new DsfPublishRabbitMQActivity();
             var modelItem = ModelItemUtils.CreateModelItem(publishActivity);
             var model = new Mock<IRabbitMQModel>();
-            var viewModel = new RabbitMQPublishDesignerViewModel(modelItem, model.Object, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            var viewModel = new RabbitMQPublishDesignerViewModel(modelItem, model.Object, new Mock<IEnvironmentModel>().Object);
 
             ScenarioContext.Current.Add("ViewModel", viewModel);
             ScenarioContext.Current.Add("Model", model);
@@ -42,6 +42,13 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
             Assert.IsFalse(vm.EditRabbitMQSourceCommand.CanExecute(null));
         }
 
+        [Given(@"The QueueName and Message and Result are Disabled")]
+        public void GivenTheQueueNameAndMessageAndResultAreDisabled()
+        {
+            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            Assert.IsFalse(vm.IsRabbitMQSourceSelected);
+        }
+
         [When(@"I Select ""(.*)"" as a Rabbit Source")]
         public void WhenISelectAsARabbitSource(string resourceName)
         {
@@ -56,6 +63,20 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
             Assert.IsTrue(vm.IsRabbitMQSourceSelected);
         }
 
+        [Then(@"Edit Button is Enabled")]
+        public void ThenEditButtonIsEnabled()
+        {
+            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            Assert.IsTrue(vm.EditRabbitMQSourceCommand.CanExecute(null));
+        }
+
+        [Given(@"Edit Button is Enabled")]
+        public void GivenEditButtonIsEnabled()
+        {
+            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            Assert.IsTrue(vm.EditRabbitMQSourceCommand.CanExecute(null));
+        }
+
         [When(@"I Click New Source")]
         public void WhenIClickNewSource()
         {
@@ -63,11 +84,25 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
             vm.NewRabbitMQSourceCommand.Execute(null);
         }
 
-        [Then(@"A new tab is opened")]
-        public void ThenANewTabIsOpened()
+        [When(@"I Click Edit Source")]
+        public void WhenIClickEditSource()
+        {
+            var vm = ScenarioContext.Current.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
+            vm.EditRabbitMQSourceCommand.Execute(null);
+        }
+
+        [Then(@"CreateNewSource is executed")]
+        public void ThenCreateNewSourceIsExecuted()
         {
             var model = ScenarioContext.Current.Get<Mock<IRabbitMQModel>>("Model");
             model.Verify(a => a.CreateNewSource());
+        }
+
+        [Then(@"EditSource is executed")]
+        public void ThenEditSourceIsExecuted()
+        {
+            var model = ScenarioContext.Current.Get<Mock<IRabbitMQModel>>("Model");
+            model.Verify(a => a.EditSource());
         }
 
         [Given(@"I Select ""(.*)"" as a Rabbit Source")]

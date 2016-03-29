@@ -86,31 +86,63 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("Edit Button is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.When("I Select \"Test (localhost)\" as a Rabbit Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("The QueueName and Message and Result are Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
+ testRunner.When("I Select \"Test (localhost)\" as a Rabbit Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 13
  testRunner.Then("The QueueName and Message and Result are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.And("Edit Button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new Rabbit MQ Publish and Create New Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new RabbitMQ Publish and Create new source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PublishRabbitMQ")]
         public virtual void OpenNewRabbitMQPublishAndCreateNewSource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new Rabbit MQ Publish and Create New Source", ((string[])(null)));
-#line 14
-this.ScenarioSetup(scenarioInfo);
-#line 15
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new RabbitMQ Publish and Create new source", ((string[])(null)));
 #line 16
- testRunner.And("I drag RabbitMQPublish tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 17
-    testRunner.And("New Button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
- testRunner.When("I Click New Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I drag RabbitMQPublish tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.Then("A new tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.And("New Button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.When("I Click New Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
+ testRunner.Then("CreateNewSource is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new RabbitMQ Publish and Select a source and Edit")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PublishRabbitMQ")]
+        public virtual void OpenNewRabbitMQPublishAndSelectASourceAndEdit()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new RabbitMQ Publish and Select a source and Edit", ((string[])(null)));
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 24
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+ testRunner.And("I drag RabbitMQPublish tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+    testRunner.And("New Button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+ testRunner.And("Edit Button is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
+ testRunner.And("I Select \"Test (localhost)\" as a Rabbit Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+ testRunner.And("Edit Button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+ testRunner.When("I Click Edit Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 31
+ testRunner.Then("EditSource is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
