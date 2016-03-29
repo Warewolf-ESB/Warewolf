@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public ExchangeSourceRegion(IExchangeServiceModel model, ModelItem modelItem, enSourceType type)
         {
-            LabelWidth = 46;
+            LabelWidth = 70;
             ToolRegionName = "ExchangeSourceRegion";
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
@@ -105,9 +105,6 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SelectedSource = region.SelectedSource;
             }
         }
-
-        
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Common.Interfaces;
@@ -17,7 +12,6 @@ using Dev2.Common.Interfaces.Exchange;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Microsoft.Practices.Prism.Commands;
-using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -142,25 +136,6 @@ namespace Dev2.Activities.Designers2.Core
                 _generateOutputArea.Outputs = new List<IServiceOutputMapping>();
                 _viewmodel.ErrorMessage(e, true);
             }
-        }
-
-        List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
-        {
-            List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            //var recordsetName = Model.Action.Name.Replace(".", "_");
-            _viewmodel.OutputsRegion.RecordsetName = "Exchange";
-            if (testResults != null)
-            {
-                for (int i = 0; i < testResults.Columns.Count; i++)
-                {
-                    var column = testResults.Columns[i];
-                    var outputMapping = new ServiceOutputMapping(column.ToString(), column.ToString(), "Exchange");
-                    mappings.Add(outputMapping);
-                }
-                return mappings;
-            }
-            return new List<IServiceOutputMapping>();
         }
 
         void ResetOutputsView()

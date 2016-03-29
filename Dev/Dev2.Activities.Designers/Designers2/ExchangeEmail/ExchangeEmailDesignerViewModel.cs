@@ -25,6 +25,10 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 {
     public class ExchangeEmailDesignerViewModel : CustomToolWithRegionBase, IExchangeServiceViewModel
     {
+        private ISourceToolRegion<IExchangeSource> _sourceRegion;
+        private IOutputsToolRegion _outputsRegion;
+        private IExchangeInputRegion _inputArea;
+
         const string DoneText = "Done";
         const string FixText = "Fix";
         const string OutputDisplayName = " - Outputs";
@@ -46,12 +50,80 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             Model = model;
 
             SetupCommonProperties();
+            SetRegionVisibility(true);
         }
 
-        public bool GenerateOutputsVisible { get; set; }
-        public ISourceToolRegion<IExchangeSource> SourceRegion { get; set; }
-        public IExchangeInputRegion InputArea { get; set; }
-        public IOutputsToolRegion OutputsRegion { get; set; }
+        bool _generateOutputsVisible;
+        public bool GenerateOutputsVisible
+        {
+            get
+            {
+                return _generateOutputsVisible;
+            }
+            set
+            {
+                _generateOutputsVisible = value;
+                if (value)
+                {
+                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
+                    SetRegionVisibility(false);
+
+                }
+                else
+                {
+                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
+                    SetRegionVisibility(true);
+                }
+
+                OnPropertyChanged();
+            }
+        }
+
+        void SetRegionVisibility(bool value)
+        {
+            InputArea.IsEnabled = value;
+            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
+            ErrorRegion.IsEnabled = value;
+            SourceRegion.IsEnabled = value;
+        }
+        public ISourceToolRegion<IExchangeSource> SourceRegion
+        {
+            get
+            {
+                return _sourceRegion;
+            }
+            set
+            {
+                _sourceRegion = value;
+                OnPropertyChanged();
+            }
+        }
+        public IExchangeInputRegion InputArea
+        {
+            get
+            {
+                return _inputArea;
+            }
+            set
+            {
+                _inputArea = value;
+                OnPropertyChanged();
+            }
+        }
+        public IOutputsToolRegion OutputsRegion
+        {
+            get
+            {
+                return _outputsRegion;
+            }
+            set
+            {
+                _outputsRegion = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
         public string ButtonDisplayValue { get; set; }
         // ReSharper disable once ConvertPropertyToExpressionBody
@@ -114,7 +186,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             SetDisplayName("");
             InitializeImageSource();
             OutputsRegion.OutputMappingEnabled = true;
-            TestInputCommand = new DelegateCommand(TestProcedure);
+            TestInputCommand = new DelegateCommand(TestEmail);
 
             InitializeProperties();
 
@@ -128,33 +200,29 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        public void TestProcedure()
+        public void TestEmail()
         {
-
             var service = ToModel();
             ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
             ManageServiceInputViewModel.Model = service;
-
             ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
             ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
             GenerateOutputsVisible = true;
             SetDisplayName(OutputDisplayName);
-
         }
 
         public IExchangeService ToModel()
         {
-            var databaseService = new ExchangeService()
+            var exchangeService = new ExchangeService()
             {
                 Source = SourceRegion.SelectedSource,
-
                 Inputs = new List<IServiceInput>()
             };
             foreach (var serviceInput in InputArea.Inputs)
             {
-                databaseService.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
+                exchangeService.Inputs.Add(new ServiceInput(serviceInput.Name, ""));
             }
-            return databaseService;
+            return exchangeService;
         }
 
         void UpdateLastValidationMemoWithSourceNotFoundError()
@@ -327,7 +395,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                     }
                 };
                 regions.Add(SourceRegion);
-                
+
                 InputArea = new ExchangeInputRegion(ModelItem);
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem);

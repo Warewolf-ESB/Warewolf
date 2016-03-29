@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IExchangeSource> FetchExchangeSources()
         {
-            var comsController = CommunicationControllerFactory.CreateController("FetchPluginSources");
+            var comsController = CommunicationControllerFactory.CreateController("FetchExchangeSources");
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
