@@ -50,8 +50,10 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IRabbitMQModel model, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("modelItem", modelItem);
+            VerifyArgument.IsNotNull("model", model);
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
             _model = model;
             _environmentModel = environmentModel;
