@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -20,7 +19,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using System;
@@ -40,25 +38,22 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
     {
         private readonly IRabbitMQModel _model;
         private readonly IEnvironmentModel _environmentModel;
-        private readonly IEventAggregator _eventPublisher;
 
         [ExcludeFromCodeCoverage]
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, CustomContainer.CreateInstance<IRabbitMQModel>(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, CustomContainer.CreateInstance<IRabbitMQModel>(), EnvironmentRepository.Instance.ActiveEnvironment)
         {
         }
 
-        public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IRabbitMQModel model, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public RabbitMQPublishDesignerViewModel(ModelItem modelItem, IRabbitMQModel model, IEnvironmentModel environmentModel)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             VerifyArgument.IsNotNull("model", model);
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
             _model = model;
             _environmentModel = environmentModel;
-            _eventPublisher = eventPublisher;
 
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
@@ -194,12 +189,15 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
 
         private void EditRabbitMQSource()
         {
-            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedRabbitMQSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
+            //CustomContainer.Get<IShellViewModel>().OpenResource(SelectedRabbitMQSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
+            _model.EditSource();
+            RabbitMQSources = LoadRabbitMQSources();
+            IRabbitMQSource editedRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.ResourceID == RabbitMQSourceResourceId);
+            SetSelectedRabbitMQSource(editedRabbitMQSources);
         }
 
         private void NewRabbitMQSource()
         {
-            //_eventPublisher.Publish(new ShowNewResourceWizard("RabbitMQSource"));
             _model.CreateNewSource();
             RabbitMQSources = LoadRabbitMQSources();
             IRabbitMQSource newRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.IsNewResource);
