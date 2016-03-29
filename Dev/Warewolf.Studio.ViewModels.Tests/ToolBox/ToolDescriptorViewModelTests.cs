@@ -131,6 +131,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
             //assert
             var formats = value.GetFormats();
+            Assert.IsNotNull(formats);
             Assert.AreEqual(DragDropHelper.WorkflowItemTypeNameFormat, formats[0]);
             var name = typeof(DsfActivity).AssemblyQualifiedName;
             Assert.AreEqual(name, value.GetData(formats[0]));
@@ -148,6 +149,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
             //assert
             var formats = value.GetFormats();
+            Assert.IsNotNull(formats);
             Assert.AreEqual(DragDropHelper.WorkflowItemTypeNameFormat, formats[0]);
             var name = typeof(FlowDecision).AssemblyQualifiedName;
             Assert.AreEqual(name, value.GetData(formats[0]));
@@ -165,6 +167,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
             //assert
             var formats = value.GetFormats();
+            Assert.IsNotNull(formats);
             Assert.AreEqual(DragDropHelper.WorkflowItemTypeNameFormat, formats[0]);
             var name = typeof(FlowSwitch<string>).AssemblyQualifiedName;
             Assert.AreEqual(name, value.GetData(formats[0]));
