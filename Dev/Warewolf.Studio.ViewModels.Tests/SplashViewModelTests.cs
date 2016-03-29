@@ -276,21 +276,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("ServerVersion"));
         }
 
-        [TestMethod]
-        public void TestServerInformationalVersion()
-        {
-            //arrange
-            var expectedValue = "someResourceName";
-            _changedProperties.Clear();
-
-            //act
-            _target.ServerInformationalVersion = expectedValue;
-            var value = _target.ServerInformationalVersion;
-
-            //asert
-            Assert.AreEqual(expectedValue, value);
-            Assert.IsTrue(_changedProperties.Contains("ServerInformationalVersion"));
-        }
+//        [TestMethod]
+//        public void TestServerInformationalVersion()
+//        {
+//            //arrange
+//            var expectedValue = "someResourceName";
+//            _changedProperties.Clear();
+//
+//            //act
+//            _target.ServerInformationalVersion = expectedValue;
+//            var value = _target.ServerInformationalVersion;
+//
+//            //asert
+//            Assert.AreEqual(expectedValue, value);
+//            Assert.IsTrue(_changedProperties.Contains("ServerInformationalVersion"));
+//        }
 
         [TestMethod]
         public void TestStudioVersion()
@@ -308,22 +308,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("StudioVersion"));
         }
 
-        [TestMethod]
-        public void TestStudioInformationalVersion()
-        {
-            //arrange
-            var expectedValue = "someResourceName";
-            _changedProperties.Clear();
-
-            //act
-            _target.StudioInformationalVersion = expectedValue;
-            var value = _target.StudioInformationalVersion;
-
-            //asert
-            Assert.AreEqual(expectedValue, value);
-            Assert.IsTrue(_changedProperties.Contains("StudioInformationalVersion"));
-        }
-
         #endregion Test properties
 
         #region Test methods
@@ -333,7 +317,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed yesterday as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddDays(-1)));
@@ -343,15 +326,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
         public void TestShowServerVersion2DaysAgo()
         {
             //arrange
-            var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed 2 days ago as SomeVeryLo...";
+            const string ExpectedServerVersion = "Version 4.0.3 build 2";
+            const string ExpectedServerInformationalVersion = "committed 2 days ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddDays(-2)));
@@ -360,8 +342,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ShowServerVersion();
 
             //assert
-            Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
+            Assert.AreEqual(ExpectedServerVersion, _target.ServerVersion);
+            //Assert.AreEqual(ExpectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
   
         [TestMethod]
@@ -369,7 +351,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed one minute ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddMinutes(-1)));
@@ -379,7 +360,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -387,7 +367,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed 2 minutes ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddMinutes(-2)));
@@ -397,7 +376,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -405,7 +383,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed an hour ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddHours(-1)));
@@ -415,7 +392,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -423,7 +399,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed 2 hours ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddHours(-2)));
@@ -433,7 +408,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -441,7 +415,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed one month ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddMonths(-1).AddDays(-2)));
@@ -451,7 +424,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -459,7 +431,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed 2 months ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddMonths(-2)));
@@ -469,7 +440,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -477,7 +447,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed one year ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddYears(-1)));
@@ -487,7 +456,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -495,7 +463,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedServerVersion = "Version 4.0.3 build 2";
-            var expectedServerInformationalVersion = "committed 2 years ago as SomeVeryLo...";
             _serverMock.Setup(it => it.GetServerVersion()).Returns("4.0.3.2");
             _serverMock.Setup(it => it.GetServerInformationalVersion())
                 .Returns(string.Format("{0:MM/dd/yyyy hh:mm} SomeVeryLongLongExample", DateTime.Now.AddYears(-2)));
@@ -505,7 +472,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreEqual(expectedServerVersion, _target.ServerVersion);
-            Assert.AreEqual(expectedServerInformationalVersion, _target.ServerInformationalVersion);
         }
 
         [TestMethod]
@@ -520,7 +486,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(string.IsNullOrEmpty(_target.ServerVersion));
-            Assert.IsTrue(string.IsNullOrEmpty(_target.ServerInformationalVersion));
+            //Assert.IsTrue(string.IsNullOrEmpty(_target.ServerInformationalVersion));
         }
 
         #endregion Test methods

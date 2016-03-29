@@ -131,7 +131,6 @@
     <Compile Include="ManagePluginSourceModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModelTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
-    <Compile Include="ManageWebServiceViewModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
     <Compile Include="MessageBoxViewModelTests.cs" />
     <Compile Include="RequestNameServiceViewModelTests.cs" />

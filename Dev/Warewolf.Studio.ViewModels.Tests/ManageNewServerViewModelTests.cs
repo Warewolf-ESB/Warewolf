@@ -378,8 +378,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommandExecute_serverSourceNotNull()
         {
             //arrange
-            var resPath = "resPath";
-            var resName = "resName";
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedAddress = "http://somecomputer:8080";
             var expectedPassword = "somePassword";
@@ -419,8 +417,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommandExecute_serverSourceNull()
         {
             //arrange
-            var resPath = "resPath";
-            var resName = "resName";
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedAddress = "http://somecomputer:8080";
             var expectedPassword = "somePassword";
@@ -885,10 +881,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSave_serverSourceNotNull()
         {
             //arrange
-            var resPath = "resPath";
-            var resName = "resName";
             var expectedAuthenticationType = AuthenticationType.User;
-            var expectedAddress = "http://somecomputer:8080";
             var expectedPassword = "somePassword";
             var expectedUserName = "someUserName";
             var expectedName = "someExpectedName";
@@ -917,8 +910,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TesSave_serverSourceNull()
         {
             //arrange
-            var resPath = "resPath";
-            var resName = "resName";
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedAddress = "http://somecomputer:8080";
             var expectedPassword = "somePassword";
