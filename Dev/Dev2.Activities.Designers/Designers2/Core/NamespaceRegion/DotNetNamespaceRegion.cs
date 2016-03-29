@@ -29,6 +29,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         private bool _isRefreshing;
         private double _labelWidth;
         private bool _isNamespaceEnabled;
+        private IList<string> _errors;
 
         public DotNetNamespaceRegion()
         {
@@ -37,31 +38,40 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public DotNetNamespaceRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source)
         {
-            LabelWidth = 70;
-            ToolRegionName = "DotNetNamespaceRegion";
-            _modelItem = modelItem;
-            _model = model;
-            _source = source;
-            _source.SomethingChanged += SourceOnSomethingChanged;
-            Dependants = new List<IToolRegion>();
-            IsRefreshing = false;
-            UpdateBasedOnSource();
-            if (Namespace != null)
+            try
             {
-                SelectedNamespace = Namespaces.FirstOrDefault(item => item.FullName == Namespace.FullName);
-            }
-            RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
-            {
-                IsRefreshing = true;
-                if (_source.SelectedSource != null)
-                {
-                    Namespaces = model.GetNameSpaces(_source.SelectedSource);
-                }
-                IsRefreshing = false;
-            }, CanRefresh);
+                Errors = new List<string>();
 
-            IsEnabled = true;
-            _modelItem = modelItem;
+                LabelWidth = 70;
+                ToolRegionName = "DotNetNamespaceRegion";
+                _modelItem = modelItem;
+                _model = model;
+                _source = source;
+                _source.SomethingChanged += SourceOnSomethingChanged;
+                Dependants = new List<IToolRegion>();
+                IsRefreshing = false;
+                UpdateBasedOnSource();
+                if (Namespace != null)
+                {
+                    SelectedNamespace = Namespaces.FirstOrDefault(item => item.FullName == Namespace.FullName);
+                }
+                RefreshNamespaceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                {
+                    IsRefreshing = true;
+                    if (_source.SelectedSource != null)
+                    {
+                        Namespaces = model.GetNameSpaces(_source.SelectedSource);
+                    }
+                    IsRefreshing = false;
+                }, CanRefresh);
+
+                IsEnabled = true;
+                _modelItem = modelItem;
+            }
+            catch (Exception e)
+            {
+                Errors.Add(e.Message);
+            }
         }
         INamespaceItem Namespace
         {
@@ -258,7 +268,12 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         {
             get
             {
-                return SelectedNamespace == null ? new List<string> { "Invalid Namespace Selected" } : new List<string>();
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged();
             }
         }
 
