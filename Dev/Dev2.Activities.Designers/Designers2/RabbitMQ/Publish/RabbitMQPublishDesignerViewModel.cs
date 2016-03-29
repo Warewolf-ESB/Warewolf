@@ -42,6 +42,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
         private readonly IEnvironmentModel _environmentModel;
         private readonly IEventAggregator _eventPublisher;
 
+        [ExcludeFromCodeCoverage]
         public RabbitMQPublishDesignerViewModel(ModelItem modelItem)
             : this(modelItem, CustomContainer.CreateInstance<IRabbitMQModel>(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {

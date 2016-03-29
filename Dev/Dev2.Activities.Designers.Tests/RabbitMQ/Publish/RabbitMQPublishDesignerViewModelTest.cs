@@ -7,7 +7,6 @@ using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -149,7 +148,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("RabbitMQPublishDesignerViewModelTest_Commands")]
-        public void SharepointListDesignerViewModelBase_SetSelectedSharepointServer_EditCommand_ShouldCallOpenResource()
+        public void RabbitMQPublishDesignerViewModel_EditRabbitMQSourceCommand_ShouldCallOpenResource()
         {
             //------------Setup for test--------------------------
             RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IRabbitMQModel>().Object, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
@@ -165,24 +164,23 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
             Assert.IsNotNull(vm.SelectedRabbitMQSource);
+            Assert.IsTrue(vm.IsRabbitMQSourceSelected);
             mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
         }
 
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("RabbitMQPublishDesignerViewModelTest_Commands")]
-        public void SharepointListDesignerViewModelBase_SetSelectedSharepointServer_NewCommand_ShouldPublishShowNewResourceWizard()
+        public void SRabbitMQPublishDesignerViewModel_NewRabbitMQSourceCommand_ShouldPublishShowNewResourceWizard()
         {
-            ShowNewResourceWizard message = null;
-            Mock<IEventAggregator> eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IRabbitMQModel>().Object, new Mock<IEnvironmentModel>().Object, eventPublisher.Object);
+            Mock<IRabbitMQModel> model = new Mock<IRabbitMQModel>();
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
             vm.NewRabbitMQSourceCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            eventPublisher.Verify(p => p.Publish(It.IsAny<ShowNewResourceWizard>()));
+            model.Verify(p => p.CreateNewSource());
         }
 
         private static ModelItem CreateModelItem()
