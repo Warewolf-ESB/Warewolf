@@ -601,7 +601,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceId = otherSameId.ResourceId;
             _target.ResourceName = "Some res name";
 
-            Assert.IsFalse(_target.Equals((ExplorerItemViewModel)null));
+            Assert.IsFalse(_target.Equals(null));
             Assert.IsTrue(_target.Equals(_target));
             Assert.IsTrue(_target.Equals(otherSameId));
             Assert.IsFalse(_target.Equals(otherDifferentId));
@@ -610,7 +610,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.Equals((object)_target));
             Assert.IsTrue(_target.Equals((object)otherSameId));
             Assert.IsFalse(_target.Equals((object)otherDifferentId));
-            Assert.IsFalse(_target.Equals((object)otherDifferentType)); 
+            Assert.IsFalse(_target.Equals(otherDifferentType)); 
 
             Assert.IsFalse(_target == null);
             // ReSharper disable once EqualExpressionComparison
@@ -1411,7 +1411,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             permisson.SetupGet(it => it.Execute).Returns(true);
             permisson.SetupGet(it => it.View).Returns(true);
             permisson.SetupGet(it => it.Administrator).Returns(true);
-            var isDeploy = false;
             //act
             _target.SetPermissions(grpPermissions);
             //assert
@@ -1447,7 +1446,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             permisson.SetupGet(it => it.Execute).Returns(true);
             permisson.SetupGet(it => it.View).Returns(true);
             permisson.SetupGet(it => it.Administrator).Returns(true);
-            var isDeploy = false;
             //act
             _target.SetPermissions(grpPermissions);
             //assert

@@ -432,12 +432,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MySqlConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\Plugin\PluginConnector.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PluginConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Plugin\PluginConnectorToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectoToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
@@ -705,10 +699,6 @@
     <None Include="Toolbox\Resources\Database\MySqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MySqlConnector.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Plugin\PluginConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PluginConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\PostWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
