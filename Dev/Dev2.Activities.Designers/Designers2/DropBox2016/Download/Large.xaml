@@ -19,9 +19,9 @@
                                Width="340"
                                MinWidth="340"
                                MaxWidth="600"
-                               Height="210"
-                               MinHeight="210"
-                               MaxHeight="210"
+                               Height="230"
+                               MinHeight="230"
+                               MaxHeight="230"
                                mc:Ignorable="d"
                                d:DesignWidth="340"  
                                d:DataContext="{d:DesignInstance upload:DropBoxDownloadViewModel}">
@@ -106,7 +106,34 @@
             </Button>
         </Grid>
         <!-- Local File Implemantation-->
-       
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Local File" Margin="{StaticResource ControlBorderTop}"/>
+        <ui:IntellisenseTextBox x:Name="InitialFocusElement"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                FilterType="All"
+                                DefaultText="[[DownloadPath]]"
+                                WrapInBrackets="False"
+                                Margin="{StaticResource ControlBorderTop}"
+                                Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipFilename}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                attachedProperties1:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
+            </ui:IntellisenseTextBox.IntellisenseProvider>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.ReadFileHelpFilename}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="FromPath"
+                                     SourcePropertyValue="{Binding  FromPath, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
 
         <!--DropBox File Location-->
         <TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" />
@@ -116,7 +143,7 @@
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                DefaultText="Dropbox location"
+                                DefaultText="Dropbox File"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
