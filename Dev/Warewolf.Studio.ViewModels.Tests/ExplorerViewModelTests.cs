@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Studio.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2;
@@ -14,7 +11,6 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Interfaces;
-using Microsoft.Practices.Prism;
 using Moq;
 
 namespace Warewolf.Studio.ViewModels.Tests

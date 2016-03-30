@@ -355,7 +355,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             if (SelectedList != null)
             {
                 IsRefreshing = true;
-                Lists.Remove(SelectSharepointList);
                 SharepointList = SelectedList.FullName;
                 LoadListFields(true,() => { IsRefreshing = false; });
             }
