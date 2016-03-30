@@ -18,7 +18,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
-    [ToolDescriptorInfo("DropBoxLogo", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("DropBoxLogo", "DOWNLOAD", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDownloadActivity : DsfBaseActivity
     {
         private DropboxClient _client;
@@ -29,7 +29,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         public DsfDropBoxDownloadActivity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
-            DisplayName = "Download";
+            DisplayName = "DOWNLOAD from Dropbox";
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -73,6 +73,11 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            if (string.IsNullOrEmpty(FromPath))
+            {
+                dataObject.Environment.AddError("Please confirm that the correct file location has been entered");
+                return;
+            }
             if (string.IsNullOrEmpty(ToPath))
             {
                 dataObject.Environment.AddError("Please confirm that the correct file destination has been entered");
@@ -99,16 +104,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 {
                     File.WriteAllBytes(FromPath, bytes);
                 }
-                //This option does not make sense since only files can be downloaded anyway.
-                if (Response.Response.IsFolder)
-                {
-                    Stream result = Response.GetContentAsStreamAsync().Result;
-                    using(var a = new StreamReader(result))
-                    {
-                        Directory.CreateDirectory(FromPath);
-                        var folderMetadata = Response.Response.AsFolder;
-                    }
-                }
                 return Response.Response.Name;
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
@@ -117,6 +112,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 Exception = dropboxFailureResult.GetException();
             }
             var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
+            if (executionError.Contains("not_file"))
+            {
+                executionError = "Please specify the path of file in Dropbox";
+            }
             throw new Exception(executionError);
         }
 
