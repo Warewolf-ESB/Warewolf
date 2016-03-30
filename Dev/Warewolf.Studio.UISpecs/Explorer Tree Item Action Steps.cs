@@ -68,7 +68,7 @@ namespace Warewolf.Studio.UISpecs
         [Then("'(.*)' exists in the explorer tree")]
         public void AssertExistsInTheDropdownList(string ListItem)
         {
-            UITestControl getFromTreeItem = GetTreeItemFromPath(pathFrom);
+            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
             Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
         }
 
