@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetNamespaceRegion dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()), sourceRegion);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, dotNetNamespaceRegion.Errors.Count);
+            Assert.AreEqual(0, dotNetNamespaceRegion.Errors.Count);
             Assert.IsTrue(dotNetNamespaceRegion.IsEnabled);
         }
 

@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             vm.Validate();
 
-            Assert.AreEqual(3,vm.Errors.Count);
+            Assert.AreEqual(1,vm.Errors.Count);
 
         }
 
