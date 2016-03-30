@@ -350,6 +350,7 @@
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
     <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
+    <Compile Include="WorksurfaceKeyFactoryTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>
