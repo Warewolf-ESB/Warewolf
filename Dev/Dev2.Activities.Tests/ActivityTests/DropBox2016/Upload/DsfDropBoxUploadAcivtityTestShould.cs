@@ -55,7 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             Assert.IsNotNull(boxUploadAcivtity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("Upload to Dropbox", boxUploadAcivtity.DisplayName);
+            Assert.AreEqual("UPLOAD to Dropbox", boxUploadAcivtity.DisplayName);
 
         }
 
@@ -282,7 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(KeyNotFoundException))]
         public void PerformExecution_GivenNoPaths_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
