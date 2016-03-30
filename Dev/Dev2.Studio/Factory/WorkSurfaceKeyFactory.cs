@@ -39,7 +39,7 @@ namespace Dev2.Factory
             return new WorkSurfaceKey
                 {
                     WorkSurfaceContext = context,
-                    ResourceID = Guid.Empty,
+                    ResourceID = Guid.NewGuid(),
                     ServerID = Guid.Empty
                 };
         }
