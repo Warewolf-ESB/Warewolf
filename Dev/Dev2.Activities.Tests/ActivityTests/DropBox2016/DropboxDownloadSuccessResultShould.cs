@@ -1,25 +1,27 @@
-﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016.Result;
+using Dropbox.Api.Babel;
+using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
     [TestClass]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class DropBoxFailureResultShould
+    public class DropboxDownloadSuccessResultShould
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ConstructDropBoxFailureResult_GivenException_ShouldRetunNewFailureResult()
+        public void ConstructDropBoxSuccessResult_GivenFileMetadata_ShouldRetunNewSuccessResult()
         {
             //---------------Set up test pack-------------------
-            var failureResult = new DropboxFailureResult(new Exception("Message"));
+            var successResult = new DropboxDownloadSuccessResult(It.IsAny<IDownloadResponse<FileMetadata>>());
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.IsNotNull(failureResult);
+            Assert.IsNotNull(successResult);
         }
 
         [TestMethod]
@@ -27,14 +29,16 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         public void failureResult_GivenException_ShouldRetunNewFailureResult()
         {
             //---------------Set up test pack-------------------
-            var dpExc = new Exception("Message");
-            var failureResult = new DropboxFailureResult(dpExc);
+            var fileMetadata = new FileMetadata();
+            var mock = new Mock<IDownloadResponse<FileMetadata>>();
+
+            var failureResult = new DropboxDownloadSuccessResult(mock.Object);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(failureResult);
+
             //---------------Execute Test ----------------------
-            var exception = failureResult.GetException();
+            var expected = failureResult.GetDownloadResponse();
             //---------------Test Result -----------------------
-            Assert.AreEqual(exception, dpExc);
+            Assert.AreEqual(expected, mock.Object);
         }
     }
 }

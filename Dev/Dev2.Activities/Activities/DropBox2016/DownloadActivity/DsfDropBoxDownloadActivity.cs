@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Net.Http;
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Dropbox.Api;
+using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -15,11 +18,11 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
-    [ToolDescriptorInfo("DropBoxLogo", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("DropBoxLogo", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDownloadActivity : DsfBaseActivity
     {
         private DropboxClient _client;
-        protected FileMetadata FileMetadata;
+        protected IDownloadResponse<FileMetadata> Response;
         protected Exception Exception;
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
@@ -35,6 +38,11 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        [Inputs("Local File Path")]
+        [FindMissing]
+        public string FromPath { get; set; }
 
         // ReSharper disable once MemberCanBeProtected.Global
 
@@ -79,23 +87,37 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         //All units used here has been unit tested seperately 
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            /* var writeMode = GetWriteMode();
-             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
-             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
-             var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
-             if (dropboxSuccessResult != null)
-             {
-                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
-                 return FileMetadata.PathDisplay;
-             }
-             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-             if (dropboxFailureResult != null)
-             {
-                 Exception = dropboxFailureResult.GetException();
-             }
-             var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
-             throw new Exception(executionError);*/
-            return string.Empty;
+
+            DropboxSingleExecutor = new DropBoxDownLoad(evaluatedValues["ToPath"]);
+            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxDownloadSuccessResult;
+            if (dropboxSuccessResult != null)
+            {
+                Response = dropboxSuccessResult.GetDownloadResponse();
+                var bytes = Response.GetContentAsByteArrayAsync().Result;
+                if (Response.Response.IsFile)
+                {
+                    File.WriteAllBytes(FromPath, bytes);
+                }
+                //This option does not make sense since only files can be downloaded anyway.
+                if (Response.Response.IsFolder)
+                {
+                    Stream result = Response.GetContentAsStreamAsync().Result;
+                    using(var a = new StreamReader(result))
+                    {
+                        Directory.CreateDirectory(FromPath);
+                        var folderMetadata = Response.Response.AsFolder;
+                    }
+                }
+                return Response.Response.Name;
+            }
+            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
+            if (dropboxFailureResult != null)
+            {
+                Exception = dropboxFailureResult.GetException();
+            }
+            var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
+            throw new Exception(executionError);
         }
 
         #region Overrides of DsfActivity
@@ -104,5 +126,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         #endregion
     }
+
         #endregion
 }

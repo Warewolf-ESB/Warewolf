@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Security;
 
-namespace Dev2.Activities.DropBox2016.UploadActivity
+namespace Dev2.Activities.DropBox2016
 {
     public class DropboxSoureFileValidator : IFilenameValidator
     {
