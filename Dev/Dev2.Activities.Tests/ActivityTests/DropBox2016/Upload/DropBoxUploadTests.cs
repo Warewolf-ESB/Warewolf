@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.DropBox2016;
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dropbox.Api;
 using Dropbox.Api.Files;
@@ -16,7 +16,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         private Mock<IDropBoxUpload> CreateDropboxUploadMock()
         {
             var mock = new Mock<IDropBoxUpload>();
-            var fileMetadata = new DropboxSuccessResult(new FileMetadata());
+            var fileMetadata = new DropboxUploadSuccessResult(new FileMetadata());
             mock.Setup(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()))
                  .Returns(fileMetadata);
             return mock;

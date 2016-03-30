@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
@@ -117,7 +118,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             var writeMode = GetWriteMode();
             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
             if (dropboxSuccessResult != null)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();

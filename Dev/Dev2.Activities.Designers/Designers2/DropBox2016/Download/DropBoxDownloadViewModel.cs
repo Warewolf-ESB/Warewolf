@@ -29,6 +29,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         private readonly IEventAggregator _eventPublisher;
         private string _toPath;
         private string _result;
+        private string _fromPath;
 
         [ExcludeFromCodeCoverage]
         public DropBoxDownloadViewModel(ModelItem modelItem)
@@ -116,6 +117,22 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             {
                 _toPath = value;
                 SetModelItemProperty(_toPath);
+                OnPropertyChanged();
+            }
+        }
+
+        public string FromPath
+        {
+            get
+            {
+                _fromPath = GetModelPropertyName().ToString();
+                return _fromPath;
+
+            }
+            set
+            {
+                _fromPath = value;
+                SetModelItemProperty(_fromPath);
                 OnPropertyChanged();
             }
         }

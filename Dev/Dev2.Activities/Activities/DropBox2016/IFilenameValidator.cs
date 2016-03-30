@@ -1,4 +1,4 @@
-namespace Dev2.Activities.DropBox2016.UploadActivity
+namespace Dev2.Activities.DropBox2016
 {
     public interface IFilenameValidator
     {

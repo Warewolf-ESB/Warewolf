@@ -1,6 +1,6 @@
 using System;
 
-namespace Dev2.Activities.DropBox2016
+namespace Dev2.Activities.DropBox2016.Result
 {
     public class DropboxFailureResult : IDropboxResult
     {

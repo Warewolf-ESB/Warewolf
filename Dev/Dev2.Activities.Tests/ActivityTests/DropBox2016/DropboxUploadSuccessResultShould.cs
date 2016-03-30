@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.DropBox2016;
+using Dev2.Activities.DropBox2016.Result;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,14 +7,14 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
     [TestClass]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class DropBoxSuccessResultShould
+    public class DropboxUploadSuccessResultShould
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ConstructDropBoxSuccessResult_GivenFileMetadata_ShouldRetunNewSuccessResult()
         {
             //---------------Set up test pack-------------------
-            var successResult = new DropboxSuccessResult(new FileMetadata());
+            var successResult = new DropboxUploadSuccessResult(new FileMetadata());
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -28,7 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         {
             //---------------Set up test pack-------------------
             var fileMetadata = new FileMetadata();
-            var failureResult = new DropboxSuccessResult(fileMetadata);
+            var failureResult = new DropboxUploadSuccessResult(fileMetadata);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------

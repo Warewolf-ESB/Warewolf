@@ -1,26 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
-using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dropbox.Api;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
-
 // ReSharper disable InconsistentNaming
 
-namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
+namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class DsfDropBoxUploadAcivtityTestShould
+    public class DsfDropBoxDownloadAcivtityTestShould
     {
         private static DsfDropBoxUploadActivity CreateDropboxActivity()
         {
@@ -220,7 +217,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
             //---------------Execute Test ----------------------
@@ -243,7 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
             //---------------Execute Test ----------------------
@@ -265,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             dsfDropBoxUploadAcivtityMock.FromPath = "File.txt";
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
@@ -289,7 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object); {};
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
             //---------------Execute Test ----------------------
@@ -299,136 +296,5 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }
 
 
-    }
-
-    public class DsfDropBoxUploadActivityMock : DsfDropBoxUploadActivity
-    {
-
-        public DsfDropBoxUploadActivityMock(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
-        {
-            DropboxSingleExecutor = singleExecutor;
-        }
-        public void Execute(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
-        {
-            //ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
-            tmpErrors = new ErrorResultTO();
-        }
-
-        #region Overrides of DsfDropBoxUploadActivity
-
-        protected override DropboxClient GetClient()
-        {
-            return TestConstant.DropboxClientInstance.Value;
-        }
-
-        #endregion
-
-        public FileMetadata FileResult
-        {
-            get
-            {
-                return FileMetadata;
-            }
-        }
-
-        #region Overrides of DsfDropBoxUploadActivity
-
-        // ReSharper disable once RedundantOverridenMember
-        protected override void ExecuteTool(IDSFDataObject dataObject, int update)
-        {
-            base.ExecuteTool(dataObject, update);
-        }
-
-        #endregion
-
-        public void SetBaseMetadata(FileMetadata metadata)
-        {
-            FileMetadata = metadata;
-        }
-        public string PerfomMockExecution()
-        {
-
-            var mock = new Mock<IDropBoxUpload>();
-            mock.Setup(upload => upload.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-            .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-
-            DropboxSingleExecutor = mock.Object;
-            var dropboxExecutionResult = mock.Object.ExecuteTask(TestConstant.DropboxClientInstance.Value);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
-            if (dropboxSuccessResult != null)
-            {
-                FileMetadata = dropboxSuccessResult.GerFileMetadata();
-                return FileMetadata.PathDisplay;
-            }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
-            {
-                Exception = dropboxFailureResult.GetException();
-            }
-            var executionError = Exception.InnerException == null ? Exception.Message : Exception.InnerException.Message;
-            throw new Exception(executionError);
-        }
-
-        public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)
-        {
-            var perfomBaseExecution = base.PerformExecution(dictionaryValues);
-            return perfomBaseExecution;
-        }
-
-        #region Overrides of DsfNativeActivity<string>
-
-        
-
-        #endregion
-
-        protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
-        {
-            try
-            {
-                var dropboxResult = DropboxSingleExecutor.ExecuteTask(TestConstant.DropboxClientInstance.Value);
-                if (IsUplodValidSuccess)
-                {
-                    //FileSuccesResult = GlobalConstants.DropBoxSucces;
-                    FileMetadata = ((DropboxUploadSuccessResult)dropboxResult).GerFileMetadata();
-                }
-                else
-                {
-                    Exception = ((DropboxFailureResult)dropboxResult).GetException();
-                }
-
-                return String.Empty;
-            }
-            catch (Exception e)
-            {
-                //dataObject.Environment.AddError(e.Message);
-                Dev2Logger.Error(e.Message, e);
-                //FileSuccesResult = GlobalConstants.DropBoxFailure;
-                Exception = new DropboxFailureResult(new Exception()).GetException();
-                return String.Empty;
-            }
-        }
-
-        public bool IsUplodValidSuccess { get; set; }
-
-
-    }
-
-    public static class TestConstant
-    {
-        public static Lazy<FileMetadata> FileMetadataInstance = new Lazy<FileMetadata>(() =>
-        {
-            var mock = new Mock<FileMetadata>();
-            var fileMetadata = mock.Object;
-            return fileMetadata;
-        });
-
-        public static Lazy<Exception> ExceptionInstance = new Lazy<Exception>(() =>
-        {
-            var exception = new Exception(ErrorMessage);
-            return exception;
-        });
-
-        public static Lazy<DropboxClient> DropboxClientInstance = new Lazy<DropboxClient>(() => new DropboxClient("random.net"));
-        public static string ErrorMessage = "Error Messege";
     }
 }

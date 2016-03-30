@@ -1,12 +1,12 @@
 using Dropbox.Api.Files;
 
-namespace Dev2.Activities.DropBox2016
+namespace Dev2.Activities.DropBox2016.Result
 {
-    public class DropboxSuccessResult : IDropboxResult
+    public class DropboxUploadSuccessResult : IDropboxResult
     {
         private readonly FileMetadata _metadata;
 
-        public DropboxSuccessResult(FileMetadata metadata)
+        public DropboxUploadSuccessResult(FileMetadata metadata)
         {
             _metadata = metadata;
         }
