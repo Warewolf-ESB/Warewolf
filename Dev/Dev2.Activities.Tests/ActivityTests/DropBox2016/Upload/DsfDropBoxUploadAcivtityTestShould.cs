@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.DropBox2016;
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -54,7 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             Assert.IsNotNull(boxUploadAcivtity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("Upload to Dropbox", boxUploadAcivtity.DisplayName);
+            Assert.AreEqual("UPLOAD to Dropbox", boxUploadAcivtity.DisplayName);
 
         }
 
@@ -218,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxSuccessResult(TestConstant.FileMetadataInstance.Value));
+                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
@@ -241,7 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxSuccessResult(TestConstant.FileMetadataInstance.Value));
+                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
@@ -263,7 +264,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxSuccessResult(TestConstant.FileMetadataInstance.Value));
+                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             dsfDropBoxUploadAcivtityMock.FromPath = "File.txt";
             //---------------Assert Precondition----------------
@@ -281,13 +282,13 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(KeyNotFoundException))]
         public void PerformExecution_GivenNoPaths_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxSuccessResult(TestConstant.FileMetadataInstance.Value));
+                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
             var dsfDropBoxUploadAcivtityMock = new DsfDropBoxUploadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
@@ -349,11 +350,11 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
             var mock = new Mock<IDropBoxUpload>();
             mock.Setup(upload => upload.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-            .Returns(new DropboxSuccessResult(TestConstant.FileMetadataInstance.Value));
+            .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
 
             DropboxSingleExecutor = mock.Object;
             var dropboxExecutionResult = mock.Object.ExecuteTask(TestConstant.DropboxClientInstance.Value);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxSuccessResult;
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
             if (dropboxSuccessResult != null)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
@@ -388,7 +389,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                 if (IsUplodValidSuccess)
                 {
                     //FileSuccesResult = GlobalConstants.DropBoxSucces;
-                    FileMetadata = ((DropboxSuccessResult)dropboxResult).GerFileMetadata();
+                    FileMetadata = ((DropboxUploadSuccessResult)dropboxResult).GerFileMetadata();
                 }
                 else
                 {

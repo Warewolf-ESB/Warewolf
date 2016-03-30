@@ -29,7 +29,6 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -39,7 +38,6 @@ using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Common.Interfaces.WebServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
 using Dev2.Helpers;
@@ -1047,49 +1045,7 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(key);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-
-        public void EditResource(IWebService selectedSource, IWorkSurfaceKey workSurfaceKey = null)
-        {
-            var viewModel = new ManageWebServiceViewModel(new ManageWebServiceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this, ActiveServer), selectedSource);
-            var vm = new SourceViewModel<IWebService>(EventPublisher, viewModel, PopupProvider, new ManageWebserviceControl());
-
-            if (workSurfaceKey == null)
-            {
-                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
-                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
-                workSurfaceKey.ResourceID = selectedSource.Id;
-                workSurfaceKey.ServerID = ActiveServer.ServerID;
-            }
-
-            var key = workSurfaceKey as WorkSurfaceKey;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
-            OpeningWorkflowsHelper.AddWorkflow(key);
-            AddAndActivateWorkSurface(workSurfaceContextViewModel);
-        }
-
-        public void EditResource(IPluginService selectedSource, IWorkSurfaceKey workSurfaceKey = null)
-        {
-            var viewModel = new ManagePluginServiceViewModel(new ManagePluginServiceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this, ActiveServer), selectedSource);
-            var vm = new SourceViewModel<IPluginService>(EventPublisher, viewModel, PopupProvider, new ManagePluginServiceControl());
-
-            if (workSurfaceKey == null)
-            {
-                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
-                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
-                workSurfaceKey.ResourceID = selectedSource.Id;
-                workSurfaceKey.ServerID = ActiveServer.ServerID;
-            }
-
-            var key = workSurfaceKey as WorkSurfaceKey;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
-            OpeningWorkflowsHelper.AddWorkflow(key);
-            AddAndActivateWorkSurface(workSurfaceContextViewModel);
-        }
-
-        public void EditResource(IDatabaseService selectedSource, IWorkSurfaceKey workSurfaceKey = null)
-        {
-        }
-
+        
         public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var emailSourceViewModel = new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource);
