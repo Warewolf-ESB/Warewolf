@@ -14,7 +14,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         private readonly string _path;
 
         public DropBoxDownLoad(string path)
-            :this(new DropboxSoureFileValidator(path))
+            : this(new DropboxSoureFileValidator(path))
         {
             _validator.Validate();
             _path = path;
@@ -39,7 +39,17 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             catch (Exception exception)
             {
                 Dev2Logger.Error(exception.Message);
-                return exception.InnerException != null ? new DropboxFailureResult(exception.InnerException) : new DropboxFailureResult(exception);
+
+                var hasInnerExc = exception.InnerException != null;
+                if (hasInnerExc)
+                {
+                    if (exception.InnerException.Message.Contains("not_found"))
+                    {
+                        return new DropboxFailureResult(new DropboxFileNotFoundException());
+                    }
+                    return exception.InnerException.Message.Contains("not_file") ? new DropboxFailureResult(new DropboxPathNotFileFoundException()) : new DropboxFailureResult(exception.InnerException);
+                }
+                return new DropboxFailureResult(exception);
             }
         }
 
