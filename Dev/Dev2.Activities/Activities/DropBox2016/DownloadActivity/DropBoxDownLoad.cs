@@ -35,7 +35,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 var downloadArg = new DownloadArg(_path);
                 IDownloadResponse<FileMetadata> uploadAsync = client.Files.DownloadAsync(downloadArg).Result;
                 return new DropboxDownloadSuccessResult(uploadAsync);
-                
             }
             catch (Exception exception)
             {
