@@ -41,7 +41,14 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="RabbitMQ Source" />
-        <ComboBox x:Name="InitialFocusElement" Grid.Column="1" Grid.Row="0"
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox x:Name="InitialFocusElement"
                       ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
                       SelectedItem="{Binding SelectedRabbitMQSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding RabbitMQSources}"
@@ -49,14 +56,36 @@
                       ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipSource}"
                       DisplayMemberPath="ResourceName"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsRabbitMQSourceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQSourceHelp}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                        SourcePropertyName="SelectedRabbitMQSource"
-                                        SourcePropertyValue="{Binding SelectedRabbitMQSource, UpdateSourceTrigger=PropertyChanged}"
-                                        Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ComboBox>
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQSourceHelp}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="SelectedRabbitMQSource"
+                                         SourcePropertyValue="{Binding SelectedRabbitMQSource, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button Grid.Column="1"
+                    Content="..."
+                    Width="Auto"
+                    Margin="{StaticResource ControlBorderRight}"
+                    ToolTip="{x:Static languages:Core.EditRabbitMQSourceHelp}"
+                    Command="{Binding EditRabbitMQSourceCommand}"
+                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditRabbitMQSourceBtn_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button Grid.Column="2"
+                    Content="{x:Static languages:Core.New}" 
+                    Width="Auto"
+                    Style="{StaticResource ButtonOrangeStyle}" 
+                    ToolTip="{x:Static languages:Core.NewRabbitMQSourceHelp}"
+                    Command="{Binding NewRabbitMQSourceCommand}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Queue Name" Margin="{StaticResource ActivityBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="1"

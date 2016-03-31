@@ -468,6 +468,9 @@ namespace Dev2.Common.Common
 
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {
+            if (enumerable == null)
+                return new ObservableCollection<T>();
+
             var col = new ObservableCollection<T>();
             foreach (T cur in enumerable)
             {

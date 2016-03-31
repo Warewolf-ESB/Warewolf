@@ -1,9 +1,9 @@
 ﻿using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.RabbitMQ.Publish;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -11,10 +11,11 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 
+// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
     public class RabbitMQPublishDesignerViewModelTest
     {
         [TestMethod]
@@ -26,22 +27,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(null, new Mock<IRabbitMQModel>().Object, new Mock<IEnvironmentModel>().Object);
-
-            //------------Assert Results-------------------------
-            Assert.IsNull(vm);
-        }
-
-        [TestMethod]
-        [Owner("Clint Stedman")]
-        [TestCategory("RabbitMQPublishDesignerViewModelTest_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void RabbitMQPublishDesignerViewModel_Constructor_IEnvironmentModelIsNull_ThrowsArgumentNullException()
-        {
-            //------------Setup for test--------------------------
-
-            //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IRabbitMQModel>().Object, null);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(null, new Mock<IRabbitMQSourceModel>().Object);
 
             //------------Assert Results-------------------------
             Assert.IsNull(vm);
@@ -56,7 +42,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), null);
 
             //------------Assert Results-------------------------
             Assert.IsNull(vm);
@@ -65,12 +51,14 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("RabbitMQPublishDesignerViewModelTest_Constructor")]
-        public void RabbitMQPublishDesignerViewModel_Constructor()
+        public void RabbitMQPublishDesignerViewModel_Constructor1()
         {
             //------------Setup for test--------------------------
+            Mock<IRabbitMQSourceModel> model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
 
             //------------Execute Test---------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IRabbitMQModel>().Object, new Mock<IEnvironmentModel>().Object);
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object);
             vm.QueueName = "Q1";
             vm.IsDurable = false;
             vm.IsExclusive = false;
@@ -105,11 +93,14 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
 
         [TestMethod]
         [Owner("Clint Stedman")]
-        [TestCategory("RabbitMQPublishDesignerViewModelTest_Constructor")]
+        [TestCategory("RabbitMQPublishDesignerViewModelTest_Validate")]
         public void RabbitMQPublishDesignerViewModel_Validate()
         {
             //------------Setup for test--------------------------
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), new Mock<IRabbitMQModel>().Object, new Mock<IEnvironmentModel>().Object);
+            Mock<IRabbitMQSourceModel> model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object);
             vm.QueueName = "";
             vm.Message = null;
             vm.SelectedRabbitMQSource = null;
@@ -133,15 +124,15 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         public void RabbitMQPublishDesignerViewModel_EditRabbitMQSourceCommand_ShouldCallOpenResource()
         {
             //------------Setup for test--------------------------
-            Mock<IRabbitMQModel> model = new Mock<IRabbitMQModel>();
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object, new Mock<IEnvironmentModel>().Object);
+            Mock<IRabbitMQSourceModel> model = new Mock<IRabbitMQSourceModel>();
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object);
             //------------Execute Test---------------------------
 
             vm.EditRabbitMQSourceCommand.Execute(null);
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
-            model.Verify(p => p.EditSource());
+            model.Verify(p => p.EditSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
         }
 
         [TestMethod]
@@ -149,8 +140,8 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         [TestCategory("RabbitMQPublishDesignerViewModelTest_Commands")]
         public void RabbitMQPublishDesignerViewModel_NewRabbitMQSourceCommand_ShouldPublishShowNewResourceWizard()
         {
-            Mock<IRabbitMQModel> model = new Mock<IRabbitMQModel>();
-            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object, new Mock<IEnvironmentModel>().Object);
+            Mock<IRabbitMQSourceModel> model = new Mock<IRabbitMQSourceModel>();
+            RabbitMQPublishDesignerViewModel vm = new RabbitMQPublishDesignerViewModel(CreateModelItem(), model.Object);
 
             //------------Execute Test---------------------------
             vm.NewRabbitMQSourceCommand.Execute(null);
@@ -167,6 +158,4 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
             return ModelItemUtils.CreateModelItem(new DsfPublishRabbitMQActivity());
         }
     }
-
-    // ReSharper restore InconsistentNaming
 }

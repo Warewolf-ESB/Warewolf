@@ -3491,6 +3491,69 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Publish the test message.
+        /// </summary>
+        public static string ManagePublishTooltip {
+            get {
+                return ResourceManager.GetString("ManagePublishTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue name.
+        /// </summary>
+        public static string ManageQueueNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageQueueNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RabbitMQ server name.
+        /// </summary>
+        public static string ManageRabbitMQHostTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password for the RabbitMQ server.
+        /// </summary>
+        public static string ManageRabbitMQPasswordTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port used by the RabbitMQ server.
+        /// </summary>
+        public static string ManageRabbitMQPortTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name for the RabbitMQ server.
+        /// </summary>
+        public static string ManageRabbitMQUserNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Virtual host.
+        /// </summary>
+        public static string ManageRabbitMQVirtualHostTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQVirtualHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel this action.
         /// </summary>
         public static string ManageWebPasteCancelTooltip {
@@ -4567,6 +4630,26 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name of the Queue to publish the message too&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///The queue name canot be blank..
+        /// </summary>
+        public static string QueueNameHelp {
+            get {
+                return ResourceManager.GetString("QueueNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queue Name.
+        /// </summary>
+        public static string QueueNameLabel {
+            get {
+                return ResourceManager.GetString("QueueNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make the queue auto delete.&lt;br/&gt;
         ///        &lt;br /&gt;
         ///
@@ -4669,6 +4752,81 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string RabbitMQSourceHelp {
             get {
                 return ResourceManager.GetString("RabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Host name of the server you want to use for publishing messages.
+        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+        ///e.g.&lt;br/&gt;
+        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
+        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/ [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string RabbitMQSourceHostHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceHostHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New RabbitMQ Source.
+        /// </summary>
+        public static string RabbitMQSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;style type=&quot;text/css&quot;&gt;
+        ///#smtptable td
+        ///{
+        ///text-align:center;
+        ///border:0px;
+        ///}
+        ///&lt;/style&gt;
+        ///The Port of the RabbitMQ server.
+        ///&lt;br/&gt;
+        ///e.g.&lt;br/&gt;
+        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
+        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string RabbitMQSourcePortHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourcePortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;style type=&quot;text/css&quot;&gt;
+        ///#smtptable td
+        ///{
+        ///text-align:center;
+        ///border:0px;
+        ///}
+        ///&lt;/style&gt;
+        ///The Virtual Host of the RabbitMQ server.
+        ///&lt;br/&gt;
+        ///e.g.&lt;br/&gt;
+        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
+        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string RabbitMQSourceVirtualHostHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceVirtualHostHelp", resourceCulture);
             }
         }
         
@@ -6543,6 +6701,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ViewInBrowserLabel {
             get {
                 return ResourceManager.GetString("ViewInBrowserLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Virtual Host.
+        /// </summary>
+        public static string VirtualHostLabel {
+            get {
+                return ResourceManager.GetString("VirtualHostLabel", resourceCulture);
             }
         }
         

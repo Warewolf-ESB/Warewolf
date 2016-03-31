@@ -9,7 +9,6 @@
 */
 
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
@@ -17,18 +16,18 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
+// ReSharper disable InconsistentNaming
+
 namespace Dev2.Data.ServiceModel
 {
-    // ReSharper disable InconsistentNaming
-    public class RabbitMQSource : Resource, IRabbitMQSource
-    // ReSharper restore InconsistentNaming
+    public class RabbitMQSource : Resource
     {
         private const int DefaultPort = 5672;
         private const string DefaultVirtualHost = "/";
 
         #region Properties
 
-        public string Host { get; set; }
+        public string HostName { get; set; }
         public int Port { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -54,7 +53,7 @@ namespace Dev2.Data.ServiceModel
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "Host", string.Empty },
+                { "HostName", string.Empty },
                 { "Port", string.Empty },
                 { "UserName", string.Empty },
                 { "Password", string.Empty },
@@ -65,7 +64,7 @@ namespace Dev2.Data.ServiceModel
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             ParseProperties(connectionString, properties);
 
-            Host = properties["Host"];
+            HostName = properties["HostName"];
             UserName = properties["UserName"];
             Password = properties["Password"];
 
@@ -82,7 +81,7 @@ namespace Dev2.Data.ServiceModel
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("Host={0}", Host),
+                string.Format("HostName={0}", HostName),
                 string.Format("Port={0}", Port),
                 string.Format("UserName={0}", UserName),
                 string.Format("Password={0}", Password),

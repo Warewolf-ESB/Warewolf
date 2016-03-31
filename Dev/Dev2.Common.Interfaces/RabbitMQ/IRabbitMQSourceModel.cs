@@ -11,15 +11,20 @@
 
 using System.Collections.Generic;
 
+// ReSharper disable InconsistentNaming
+
 namespace Dev2.Common.Interfaces.RabbitMQ
 {
-    // ReSharper disable once InconsistentNaming
-    public interface IRabbitMQModel
+    public interface IRabbitMQSourceModel
     {
-        ICollection<IRabbitMQSource> RetrieveMqSources();
-
-        void EditSource();
+        ICollection<IRabbitMQServiceSourceDefinition> RetrieveSources();
 
         void CreateNewSource();
+
+        void EditSource(IRabbitMQServiceSourceDefinition source);
+
+        string TestSource(IRabbitMQServiceSourceDefinition source);
+
+        void SaveSource(IRabbitMQServiceSourceDefinition source);
     }
 }

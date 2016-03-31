@@ -1,15 +1,18 @@
 ﻿using Dev2.Activities.RabbitMQ.Publish;
-using Dev2.Common.Interfaces;
+using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RabbitMQ.Client;
+using System;
 using System.Collections.Generic;
 using System.Text;
+
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
     public class DsfPublishRabbitMQActivityTests
     {
         [TestMethod]
@@ -36,27 +39,27 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             const string queueName = "Q1", message = "Test Message";
             byte[] body = Encoding.UTF8.GetBytes(message);
-            Mock<IRabbitMQSource> rabbitMQSource = new Mock<IRabbitMQSource>();
+            Mock<IResourceCatalog> resourceCatalog = new Mock<IResourceCatalog>();
+            Mock<RabbitMQSource> rabbitMQSource = new Mock<RabbitMQSource>();
             Mock<IConnectionFactory> connectionFactory = new Mock<IConnectionFactory>();
             Mock<IConnection> connection = new Mock<IConnection>();
             Mock<IModel> channel = new Mock<IModel>();
 
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
             connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
-
             connection.Setup(c => c.CreateModel()).Returns(channel.Object);
             channel.Setup(c => c.QueueDeclare(queueName, false, false, false, null));
             channel.Setup(c => c.BasicPublish(string.Empty, queueName, null, body));
 
             PrivateObject p = new PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
-            p.SetProperty("Connection", connection.Object);
-            p.SetProperty("Channel", channel.Object);
-            p.SetProperty("RabbitMQSource", rabbitMQSource.Object);
+            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName }, { "Message", message } });
 
             //------------Assert Results-------------------------
+            resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
             connectionFactory.Verify(c => c.CreateConnection(), Times.Once);
             connection.Verify(c => c.CreateModel(), Times.Once);
             channel.Verify(c => c.QueueDeclare(queueName, false, false, false, null), Times.Once);
@@ -72,11 +75,11 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             //------------Setup for test--------------------------
             DsfPublishRabbitMQActivity dsfPublishRabbitMQActivity = new DsfPublishRabbitMQActivity();
 
-            var fakeRabbitMQSourceCatalog = new Mock<IFakeRabbitMQSourceCatalog>();
-            fakeRabbitMQSourceCatalog.Setup(f => f.GetRabbitMQSourceStub()).Returns<IRabbitMQSource>(null);
+            Mock<IResourceCatalog> resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns<RabbitMQSource>(null);
 
             PrivateObject p = new PrivateObject(dsfPublishRabbitMQActivity);
-            p.SetProperty("FakeRabbitMQSourceCatalog", fakeRabbitMQSourceCatalog.Object);
+            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string>());
@@ -92,7 +95,14 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         {
             //------------Setup for test--------------------------
             DsfPublishRabbitMQActivity dsfPublishRabbitMQActivity = new DsfPublishRabbitMQActivity();
+
+            Mock<IResourceCatalog> resourceCatalog = new Mock<IResourceCatalog>();
+            Mock<RabbitMQSource> rabbitMQSource = new Mock<RabbitMQSource>();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
+
             PrivateObject p = new PrivateObject(dsfPublishRabbitMQActivity);
+            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string>());
@@ -108,7 +118,14 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         {
             //------------Setup for test--------------------------
             DsfPublishRabbitMQActivity dsfPublishRabbitMQActivity = new DsfPublishRabbitMQActivity();
+
+            Mock<IResourceCatalog> resourceCatalog = new Mock<IResourceCatalog>();
+            Mock<RabbitMQSource> rabbitMQSource = new Mock<RabbitMQSource>();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
+
             PrivateObject p = new PrivateObject(dsfPublishRabbitMQActivity);
+            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } });
@@ -125,26 +142,24 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             //------------Setup for test--------------------------
             DsfPublishRabbitMQActivity dsfPublishRabbitMQActivity = new DsfPublishRabbitMQActivity();
 
+            Mock<IResourceCatalog> resourceCatalog = new Mock<IResourceCatalog>();
+            Mock<RabbitMQSource> rabbitMQSource = new Mock<RabbitMQSource>();
             Mock<IConnectionFactory> connectionFactory = new Mock<IConnectionFactory>();
-            Mock<IConnection> connection = new Mock<IConnection>();
-            Mock<IModel> channel = new Mock<IModel>();
 
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
             connectionFactory.Setup(c => c.CreateConnection()).Returns<IConnection>(null);
 
             PrivateObject p = new PrivateObject(dsfPublishRabbitMQActivity);
             p.SetProperty("ConnectionFactory", connectionFactory.Object);
+            p.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
 
             //------------Assert Results-------------------------
+            resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
             connectionFactory.Verify(c => c.CreateConnection(), Times.Once);
-            connection.Verify(c => c.CreateModel(), Times.Never);
-            channel.Verify(c => c.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()), Times.Never);
-            channel.Verify(c => c.BasicPublish(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IBasicProperties>(), It.IsAny<byte[]>()), Times.Never);
             Assert.AreEqual(result.ToString(), "Failure");
         }
     }
-
-    // ReSharper restore InconsistentNaming
 }
