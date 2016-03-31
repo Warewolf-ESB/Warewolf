@@ -1100,6 +1100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestToModelItemNull()
         {
             //arrange
+            var gd = Guid.NewGuid();
             _target.Item = null;
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedName = "someName";
@@ -1114,7 +1115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Protocol = expectedProtocol;
             _target.ResourceName = expectedName;
             _target.Password = expectedPassword;
-
+            _target.SelectedGuid = gd;
             //act
             var value = _target.ToModel();
 
@@ -1125,6 +1126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedPassword, value.Password);
             Assert.AreEqual(expectedName, value.Name);
             Assert.AreNotEqual(Guid.Empty, value.ID);
+            Assert.AreEqual(value.ID,gd);
         }
 
         [TestMethod]
