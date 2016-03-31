@@ -90,8 +90,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             vm.Validate();
 
-            Assert.AreEqual(vm.Errors.Count,1);
-            Assert.AreEqual("Plugin get must be validated before minimising",vm.Errors[0].Message);
+            Assert.AreEqual(1,vm.Errors.Count);
 
         }
 
@@ -246,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
           var inf =   p.GetProperty("WorstDesignError") as ErrorInfo;
             //------------Assert Results-------------------------
 
-
+            Assert.IsNotNull(inf);
             Assert.AreEqual("bob error", inf.Message);
         }
 

@@ -167,8 +167,12 @@
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
+    <Compile Include="ActivityTests\DropBox2016\Download\DropBoxDownloadTests.cs" />
+    <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxDownloadAcivtityTestShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxUploadAcivtityTestShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxDownloadSuccessResultShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropBoxFailureResultShould.cs" />
-    <Compile Include="ActivityTests\DropBox2016\DropBoxSuccessResultShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxUploadSuccessResultShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropboxSoureFileValidatorShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />

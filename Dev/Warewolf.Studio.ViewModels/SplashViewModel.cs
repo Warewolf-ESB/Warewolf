@@ -13,8 +13,6 @@ namespace Warewolf.Studio.ViewModels
     {
         string _serverVersion;
         string _studioVersion;
-        string _serverInformationalVersion;
-        string _studioInformationalVersion;
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
@@ -61,18 +59,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged("ServerVersion");
             }
         }
-        public string ServerInformationalVersion
-        {
-            get
-            {
-                return _serverInformationalVersion;
-            }
-            set
-            {
-                _serverInformationalVersion = value;
-                OnPropertyChanged("ServerInformationalVersion");
-            }
-        }
 
         public string StudioVersion
         {
@@ -84,18 +70,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _studioVersion = value;
                 OnPropertyChanged("StudioVersion");
-            }
-        }
-        public string StudioInformationalVersion
-        {
-            get
-            {
-                return _studioInformationalVersion;
-            }
-            set
-            {
-                _studioInformationalVersion = value;
-                OnPropertyChanged("StudioInformationalVersion");
             }
         }
 
@@ -113,21 +87,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 ServerVersion = FormatVersionString(Server.GetServerVersion());
                 StudioVersion = FormatVersionString(Utils.FetchVersionInfo());
-                ServerInformationalVersion = FormatInformationalVersionString(Server.GetServerInformationalVersion());
-                StudioInformationalVersion = FormatInformationalVersionString(Utils.FetchInformationalVersionInfo());
             });
-            
-        }
-
-        private static string FormatInformationalVersionString(string serverVersionInformation)
-        {
-            var infoVersionParts = serverVersionInformation.Split(' ');
-            if (infoVersionParts.Length >= 3)
-            {
-                var commitTime = DateTime.Parse(infoVersionParts[0] + " " + infoVersionParts[1]);
-                return "committed " + TimeSinceCommit(commitTime) + " as " + infoVersionParts[2].Substring(0, 10) + "...";
-            }
-            return null;
         }
 
         private static string FormatVersionString(string rawVersionString)

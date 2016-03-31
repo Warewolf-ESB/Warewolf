@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dropbox.Api;
 using Dropbox.Api.Files;
@@ -46,7 +47,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
                 {
                     FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
-                    return new DropboxSuccessResult(uploadAsync);
+                    return new DropboxUploadSuccessResult(uploadAsync);
                 }
             }
             catch (Exception exception)

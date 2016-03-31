@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, dbActionRegion.Errors.Count);
+            Assert.AreEqual(0, dbActionRegion.Errors.Count);
             Assert.IsTrue(dbActionRegion.IsEnabled);
         }
 

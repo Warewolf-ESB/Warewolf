@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Dev2.Activities.DropBox2016.UploadActivity;
+using Dev2.Activities.DropBox2016;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
