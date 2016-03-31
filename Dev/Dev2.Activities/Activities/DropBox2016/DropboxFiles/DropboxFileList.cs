@@ -5,6 +5,7 @@ using Dropbox.Api.Files;
 
 namespace Dev2.Activities.DropBox2016.DropboxFiles
 {
+    //To Use this class to get all dropbox files and folders
     public class DropboxFileList
     {
         private readonly DropboxClient _client;
