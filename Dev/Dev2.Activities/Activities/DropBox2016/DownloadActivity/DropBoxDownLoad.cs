@@ -17,6 +17,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             : this(new DropboxSoureFileValidator(path))
         {
             _validator.Validate();
+            if(!path.StartsWith(@"/"))
+                path = string.Concat(@"/", path);
             _path = path;
         }
 
@@ -32,6 +34,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             try
             {
+
                 var downloadArg = new DownloadArg(_path);
                 IDownloadResponse<FileMetadata> uploadAsync = client.Files.DownloadAsync(downloadArg).Result;
                 return new DropboxDownloadSuccessResult(uploadAsync);

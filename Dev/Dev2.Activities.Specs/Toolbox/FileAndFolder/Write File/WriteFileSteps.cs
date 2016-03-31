@@ -69,7 +69,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
 
             var fileContents = broker.Get(sourceEndPoint);
 
-            bool does = fileContents.Contains(expectedContents);
+            bool does = fileContents.Contains(expectedContents.Replace("\n","\r\n"));
             Assert.IsTrue(does);
         }
 
