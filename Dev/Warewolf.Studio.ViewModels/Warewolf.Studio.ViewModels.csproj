@@ -142,12 +142,15 @@
     <Compile Include="IDockViewModel.cs" />
     <Compile Include="ManageDatabaseSourceModel.cs" />
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
+    <Compile Include="ManageDbServiceModel.cs" />
     <Compile Include="ManageEmailSourceModel.cs" />
     <Compile Include="ManageEmailSourceViewModel.cs" />
     <Compile Include="ManageNewServerSourceModel.cs" />
     <Compile Include="ManageNewServerViewModel.cs" />
+    <Compile Include="ManagePluginServiceModel.cs" />
     <Compile Include="ManagePluginSourceModel.cs" />
     <Compile Include="ManagePluginSourceViewModel.cs" />
+    <Compile Include="ManageWebServiceModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />
     <Compile Include="ManageWebserviceSourceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
