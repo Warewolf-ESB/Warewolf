@@ -42,6 +42,7 @@ namespace Dev2.Interfaces
         AuthorizeCommand SchedulerCommand { get; }
         IToolboxViewModel ToolboxViewModel { get; }
         IHelpWindowViewModel HelpViewModel { get; }
+        ICommand ShowStartPageCommand { get; }
 
         void EditServer(IServerSource serverSource);
         void ShowAboutBox();

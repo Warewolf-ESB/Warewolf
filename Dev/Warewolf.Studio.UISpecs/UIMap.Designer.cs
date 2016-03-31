@@ -1322,14 +1322,14 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dotNetDll = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
-            WpfCustom uIFlowchartCustom3 = this.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom3;
+            WpfListItem dataConnector = this.MainStudioWindow.ToolBox.ToolListBox.ResourceTools.DataConnector;
+            WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DsfDotNetDllActivity' custom control to 'Flowchart' custom control
-            uIFlowchartCustom3.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(dotNetDll, new Point(16, 25));
-            Mouse.StopDragging(uIFlowchartCustom3, new Point(308, 127));
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(308, 127));
+            Mouse.StartDragging(dataConnector, new Point(16, 25));
+            Mouse.StopDragging(flowchart, new Point(308, 127));
         }
         
         /// <summary>
@@ -1338,14 +1338,14 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_GetWeb_RequestTool_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfCustom webGet = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet;
-            WpfCustom uIFlowchartCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom4;
+            WpfListItem webRequest = this.MainStudioWindow.ToolBox.ToolListBox.UtilityTools.WebRequest;
+            WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DsfWebGetActivity' custom control to 'Flowchart' custom control
-            uIFlowchartCustom4.EnsureClickable(new Point(305, 124));
-            Mouse.StartDragging(webGet, new Point(675, 913));
-            Mouse.StopDragging(uIFlowchartCustom4, new Point(305, 124));
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(305, 124));
+            Mouse.StartDragging(webRequest, new Point(675, 913));
+            Mouse.StopDragging(flowchart, new Point(305, 124));
         }
         
         /// <summary>
@@ -1387,13 +1387,13 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Variable Declarations
             WpfCustom webPost = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost;
-            WpfCustom uIFlowchartCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom4;
+            WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'DsfWebPostActivity' custom control to 'Flowchart' custom control
-            uIFlowchartCustom4.EnsureClickable(new Point(306, 128));
+            flowchart.EnsureClickable(new Point(306, 128));
             Mouse.StartDragging(webPost, new Point(20, 35));
-            Mouse.StopDragging(uIFlowchartCustom4, new Point(306, 128));
+            Mouse.StopDragging(flowchart, new Point(306, 128));
         }
         
         /// <summary>
@@ -10372,10 +10372,66 @@ namespace Warewolf.Studio.UISpecs
                 return this.mRow1;
             }
         }
+        
+        public Row2 Row2
+        {
+            get
+            {
+                if ((this.mRow2 == null))
+                {
+                    this.mRow2 = new Row2(this);
+                }
+                return this.mRow2;
+            }
+        }
+        
+        public Row3 Row3
+        {
+            get
+            {
+                if ((this.mRow3 == null))
+                {
+                    this.mRow3 = new Row3(this);
+                }
+                return this.mRow3;
+            }
+        }
+        
+        public Row4 Row4
+        {
+            get
+            {
+                if ((this.mRow4 == null))
+                {
+                    this.mRow4 = new Row4(this);
+                }
+                return this.mRow4;
+            }
+        }
+        
+        public Row5 Row5
+        {
+            get
+            {
+                if ((this.mRow5 == null))
+                {
+                    this.mRow5 = new Row5(this);
+                }
+                return this.mRow5;
+            }
+        }
         #endregion
         
         #region Fields
         private Row1 mRow1;
+        
+        private Row2 mRow2;
+        
+        private Row3 mRow3;
+        
+        private Row4 mRow4;
+        
+        private Row5 mRow5;
         #endregion
     }
     
@@ -10467,6 +10523,482 @@ namespace Warewolf.Studio.UISpecs
     {
         
         public EmptyIsNullColum(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Empty Is Null";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Row2 : WpfRow
+    {
+        
+        public Row2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputDataColum1 InputDataColum
+        {
+            get
+            {
+                if ((this.mInputDataColum == null))
+                {
+                    this.mInputDataColum = new InputDataColum1(this);
+                }
+                return this.mInputDataColum;
+            }
+        }
+        
+        public EmptyIsNullColum1 EmptyIsNullColum
+        {
+            get
+            {
+                if ((this.mEmptyIsNullColum == null))
+                {
+                    this.mEmptyIsNullColum = new EmptyIsNullColum1(this);
+                }
+                return this.mEmptyIsNullColum;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputDataColum1 mInputDataColum;
+        
+        private EmptyIsNullColum1 mEmptyIsNullColum;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class InputDataColum1 : WpfCell
+    {
+        
+        public InputDataColum1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input Data or [[Variable]]";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class EmptyIsNullColum1 : WpfCell
+    {
+        
+        public EmptyIsNullColum1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Empty Is Null";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Row3 : WpfRow
+    {
+        
+        public Row3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputDataColum2 InputDataColum
+        {
+            get
+            {
+                if ((this.mInputDataColum == null))
+                {
+                    this.mInputDataColum = new InputDataColum2(this);
+                }
+                return this.mInputDataColum;
+            }
+        }
+        
+        public EmptyIsNullColum2 EmptyIsNullColum
+        {
+            get
+            {
+                if ((this.mEmptyIsNullColum == null))
+                {
+                    this.mEmptyIsNullColum = new EmptyIsNullColum2(this);
+                }
+                return this.mEmptyIsNullColum;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputDataColum2 mInputDataColum;
+        
+        private EmptyIsNullColum2 mEmptyIsNullColum;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class InputDataColum2 : WpfCell
+    {
+        
+        public InputDataColum2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input Data or [[Variable]]";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class EmptyIsNullColum2 : WpfCell
+    {
+        
+        public EmptyIsNullColum2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Empty Is Null";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Row4 : WpfRow
+    {
+        
+        public Row4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "4";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputDataColum3 InputDataColum
+        {
+            get
+            {
+                if ((this.mInputDataColum == null))
+                {
+                    this.mInputDataColum = new InputDataColum3(this);
+                }
+                return this.mInputDataColum;
+            }
+        }
+        
+        public EmptyIsNullColum3 EmptyIsNullColum
+        {
+            get
+            {
+                if ((this.mEmptyIsNullColum == null))
+                {
+                    this.mEmptyIsNullColum = new EmptyIsNullColum3(this);
+                }
+                return this.mEmptyIsNullColum;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputDataColum3 mInputDataColum;
+        
+        private EmptyIsNullColum3 mEmptyIsNullColum;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class InputDataColum3 : WpfCell
+    {
+        
+        public InputDataColum3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input Data or [[Variable]]";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class EmptyIsNullColum3 : WpfCell
+    {
+        
+        public EmptyIsNullColum3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Empty Is Null";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox CheckBox
+        {
+            get
+            {
+                if ((this.mCheckBox == null))
+                {
+                    this.mCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCheckBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Row5 : WpfRow
+    {
+        
+        public Row5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "5";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputDataColum4 InputDataColum
+        {
+            get
+            {
+                if ((this.mInputDataColum == null))
+                {
+                    this.mInputDataColum = new InputDataColum4(this);
+                }
+                return this.mInputDataColum;
+            }
+        }
+        
+        public EmptyIsNullColum4 EmptyIsNullColum
+        {
+            get
+            {
+                if ((this.mEmptyIsNullColum == null))
+                {
+                    this.mEmptyIsNullColum = new EmptyIsNullColum4(this);
+                }
+                return this.mEmptyIsNullColum;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputDataColum4 mInputDataColum;
+        
+        private EmptyIsNullColum4 mEmptyIsNullColum;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class InputDataColum4 : WpfCell
+    {
+        
+        public InputDataColum4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input Data or [[Variable]]";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class EmptyIsNullColum4 : WpfCell
+    {
+        
+        public EmptyIsNullColum4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -15044,6 +15576,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mDataConnector = new WpfListItem(this);
                     #region Search Criteria
                     this.mDataConnector.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDataConnector.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
                     this.mDataConnector.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }

@@ -55,7 +55,7 @@ namespace Warewolf.Storage
         HashSet<string> AllErrors { get; } 
         void AddError(string error);
 
-
+      
 
         void AssignDataShape(string p);
 

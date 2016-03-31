@@ -1720,11 +1720,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.ToolBox.ToolListBox.ResourceTools.DataConnector">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <TargetElementName>UIMap.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom3</TargetElementName>
+      <TargetElementName>UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
       <MouseButton>Left</MouseButton>
       <StartLocation X="16" Y="25" />
       <StopLocation X="308" Y="127" />
@@ -1738,11 +1738,11 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.ToolBox.ToolListBox.UtilityTools.WebRequest">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <TargetElementName>UIMap.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom4</TargetElementName>
+      <TargetElementName>UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
       <MouseButton>Left</MouseButton>
       <StartLocation X="675" Y="913" />
       <StopLocation X="305" Y="124" />
@@ -1796,7 +1796,7 @@
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <TargetElementName>UIMap.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom4</TargetElementName>
+      <TargetElementName>UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
       <MouseButton>Left</MouseButton>
       <StartLocation X="20" Y="35" />
       <StopLocation X="306" Y="128" />
@@ -10367,9 +10367,10 @@
                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                           </WindowTitles>
                           <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                            <PropertyCondition Name="Instance">1</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants />

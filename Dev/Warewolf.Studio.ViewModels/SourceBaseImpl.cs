@@ -75,6 +75,9 @@ namespace Warewolf.Studio.ViewModels
         public abstract void UpdateHelpDescriptor(string helpText);
         
         public abstract void Save();
+
+        public Guid SelectedGuid { get; set; }
+
         public void Dispose()
         {
             OnDispose();

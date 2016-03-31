@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -32,6 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="FontAwesome.WPF, Version=4.3.0.34879, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.WPF.4.3.0.3\lib\FontAwesome.WPF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Composition, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
@@ -80,38 +88,77 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ServiceStack.Text, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectControlViewModelTests.cs" />
-    <Compile Include="DeployViewModelTests.cs" />
-    <Compile Include="EmailAttachmentModelTests.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ConnectControlViewModelTests.cs" />
+    <Compile Include="DeployDestinationViewModelTests.cs" />
+    <Compile Include="DeploySourceExplorerViewModelTests.cs" />
+    <Compile Include="DeployViewModelTests.cs" />
+    <Compile Include="EmailAttachmentModelTests.cs" />
+    <Compile Include="EmailAttachmentVmTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
+    <Compile Include="ExplorerViewModelTests.cs" />
+    <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
+    <Compile Include="Help\HelpModelTests.cs" />
+    <Compile Include="Help\HelpWindowViewModelTests.cs" />
+    <Compile Include="ManageDatabaseSourceModelTests.cs" />
+    <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
+    <Compile Include="ManageEmailSourceModelTests.cs" />
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
-    <Compile Include="ManagePluginSourceViewModellTests.cs" />
-    <Compile Include="ManageWebSourceModellTests.cs" />
+    <Compile Include="ManageNewServerSourceModelTests.cs" />
+    <Compile Include="ManageNewServerViewModelTests.cs" />
+    <Compile Include="ManagePluginSourceModelTests.cs" />
+    <Compile Include="ManagePluginSourceViewModelTests.cs" />
+    <Compile Include="ManageWebServiceSourceModelTests.cs" />
+    <Compile Include="MenuViewModelTests.cs" />
+    <Compile Include="MessageBoxViewModelTests.cs" />
     <Compile Include="RequestNameServiceViewModelTests.cs" />
     <Compile Include="RequestServiceNameViewModelTests.cs" />
+    <Compile Include="SharepointServerSourceModelTests.cs" />
+    <Compile Include="SharepointServerSourceViewModelTests.cs" />
+    <Compile Include="SingleEnvironmentExplorerViewModelTests.cs" />
+    <Compile Include="SplashViewModelTests.cs" />
+    <Compile Include="ToolBox\ToolBoxCategoryViewModelTests.cs" />
+    <Compile Include="ToolBox\ToolboxViewModelTests.cs" />
+    <Compile Include="ToolBox\ToolDescriptorViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
@@ -128,9 +175,21 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
+      <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
+      <Name>Dev2.Studio.Core.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
       <Project>{CC1B89CD-3222-4019-A0D1-58664F92CC47}</Project>

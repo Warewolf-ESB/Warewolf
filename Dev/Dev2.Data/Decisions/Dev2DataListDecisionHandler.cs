@@ -102,7 +102,7 @@ namespace Dev2.Data.Decision
                                 // Treat Errors special
                                 if(typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
                                 {
-                                    dd.Col1 = String.Join("", env.Errors);
+                                    dd.Col1 = env.FetchErrors();
                                 }
 
                                 IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
@@ -251,6 +251,11 @@ namespace Dev2.Data.Decision
             {
                 //This is allow for decisions.
             }
+            catch(Exception err)
+            {
+                env.Errors.Add(err.Message);
+            }
+            
             return warewolfEvalResult;
         }
 

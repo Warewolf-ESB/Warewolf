@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -7,7 +7,6 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Vestris.ResourceLib;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -16,7 +15,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            return serialiser.SerializeToBuilder(GetVersion().ToString());
+            return serialiser.SerializeToBuilder(GetVersion());
         }
 
         public DynamicService CreateServiceEntry()
@@ -35,14 +34,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        static Version GetVersion()
+        static string GetVersion()
         {
             var asm = Assembly.GetExecutingAssembly();
-            var versionResource = new VersionResource();
             var fileName = asm.Location;
-            versionResource.LoadFrom(fileName);
-            Version v = new Version(versionResource.FileVersion);
-            return v;
+            var versionResource = FileVersionInfo.GetVersionInfo(fileName);
+            return versionResource.FileVersion;
         }
     }
 }

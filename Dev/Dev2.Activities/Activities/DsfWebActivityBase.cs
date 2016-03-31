@@ -28,8 +28,6 @@ namespace Dev2.Activities
     public class DsfWebActivityBase : DsfActivity
     {
         private readonly WebRequestMethod _method;
-        private MediaTypeWithQualityHeaderValue _mediaTypeWithQualityHeaderValue;
-        private const string MediaType = "application/x-www-form-urlencoded";
         private const string UserAgent = "User-Agent";
 
         protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
@@ -144,8 +142,6 @@ namespace Dev2.Activities
                 }
             }
 
-            _mediaTypeWithQualityHeaderValue = new MediaTypeWithQualityHeaderValue(MediaType);
-            httpClient.DefaultRequestHeaders.Accept.Add(_mediaTypeWithQualityHeaderValue);
             httpClient.DefaultRequestHeaders.Add(UserAgent, GlobalConstants.UserAgentString);
 
             var address = source.Address;

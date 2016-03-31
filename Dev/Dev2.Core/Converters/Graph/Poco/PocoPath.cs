@@ -11,8 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Dev2;
 using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
@@ -75,9 +73,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             return pathSegment;
         }
 
-        public IPathSegment CreatePathSegment(PropertyInfo property)
+        public IPathSegment CreatePathSegment(string name, bool isEnumerable)
         {
-            return new PocoPathSegment(property.Name, property.PropertyType.IsEnumerable());
+            return new PocoPathSegment(name, isEnumerable);
         }
 
         #endregion Methods

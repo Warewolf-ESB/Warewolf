@@ -1,53 +1,81 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Threading.Tasks;
+using System.Net;
+using Dev2.Activities.DropBox2016.Result;
+using Dev2.Common;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    public class DropBoxUpload : IDropboxSingleExecutor<FileMetadata>
+    public interface IDropBoxUpload : IDropboxSingleExecutor<IDropboxResult>
     {
-        private readonly bool _mute;
-        private readonly DateTime? _clientModified;
-        private readonly bool _autoRename;
+    }
+
+    public class DropBoxUpload : IDropBoxUpload
+    {
+        private readonly IFilenameValidator _validator;
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private WriteMode _writeMode;
         private readonly string _dropboxPath;
         private readonly string _fromPath;
 
-        public DropBoxUpload(bool mute, DateTime? clientModified, bool autoRename, WriteMode writeMode, string dropboxPath, string fromPath)
+        private DropBoxUpload(IFilenameValidator validator)
         {
-            _mute = mute;
-            _clientModified = clientModified;
-            _autoRename = autoRename;
-            _writeMode = writeMode;
-            _dropboxPath = dropboxPath;
-            _fromPath = fromPath;
+            _validator = validator;
         }
 
-        #region Implementation of IDropboxSingleExecutor
+        public DropBoxUpload(WriteMode writeMode, string dropboxPath, string fromPath)
+            : this(new DropboxSoureFileValidator(fromPath))
+        {
+            _validator.Validate();
+            _writeMode = writeMode;
+            if (!dropboxPath.StartsWith(@"/"))
+                dropboxPath = string.Concat(@"/", dropboxPath);
+            _dropboxPath = dropboxPath;
+            _fromPath = fromPath;
+            InitializeCertPinning();
+        }
 
-        public FileMetadata ExecuteTask(DropboxClient client)
+        public bool IsValid { get; set; }
+
+        #region Implementation of IDropboxSingleExecutor
+        [ExcludeFromCodeCoverage]
+        public IDropboxResult ExecuteTask(DropboxClient client)
         {
             try
             {
-                if (_writeMode == null)
-                    _writeMode = WriteMode.Add.Instance;
                 using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
                 {
-                    //var commitInfo = new CommitInfo("/" + _dropboxPath, _writeMode, _autoRename, _mute);
-                    FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
-                    return uploadAsync;
+                    FileMetadata uploadAsync = client.Files.UploadAsync(_dropboxPath, _writeMode, true, null, false, stream).Result;
+                    return new DropboxUploadSuccessResult(uploadAsync);
                 }
-
             }
-            catch (AggregateException exception)
+            catch (Exception exception)
             {
-                var innerException = exception.InnerExceptions[0];
-                return null;
+                Dev2Logger.Error(exception.Message);
+                return exception.InnerException != null ? new DropboxFailureResult(exception.InnerException) : new DropboxFailureResult(exception);
             }
         }
 
         #endregion
+
+        public void Validate()
+        {
+            if (_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
+                IsValid = true;
+        }
+        [ExcludeFromCodeCoverage]
+        private void InitializeCertPinning()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
+            {
+                var root = chain.ChainElements[chain.ChainElements.Count - 1];
+                var publicKey = root.Certificate.GetPublicKeyString();
+
+                return DropboxCertHelper.IsKnownRootCertPublicKey(publicKey);
+            };
+        }
     }
 }

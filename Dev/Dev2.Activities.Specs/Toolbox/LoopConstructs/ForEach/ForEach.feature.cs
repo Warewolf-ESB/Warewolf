@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ForEach", "In order to loop through constructs\r\nAs a Warewolf user\r\nI want to a tool that wi" +
-                    "ll allow me to execute other tools in an loop", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ForEach", "In order to loop through constructs\nAs a Warewolf user\nI want to a tool that will" +
+                    " allow me to execute other tools in an loop", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -196,7 +196,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 65
  testRunner.Then("the foreach executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 66
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

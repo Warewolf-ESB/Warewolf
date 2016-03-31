@@ -243,7 +243,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                         Lists.Add(listTo);
                     }
                 }
-                if (continueWith != null)
+                if (continueWith != null && Lists.Count!=0)
                 {
                     continueWith();
                 }
@@ -355,7 +355,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             if (SelectedList != null)
             {
                 IsRefreshing = true;
-                Lists.Remove(SelectSharepointList);
                 SharepointList = SelectedList.FullName;
                 LoadListFields(true,() => { IsRefreshing = false; });
             }

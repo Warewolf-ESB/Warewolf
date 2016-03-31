@@ -53,10 +53,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
     </Reference>
-    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\DropNet.dll</HintPath>
-    </Reference>
     <Reference Include="FSharp.Core, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
@@ -354,6 +350,7 @@
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
     <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
+    <Compile Include="WorksurfaceKeyFactoryTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>

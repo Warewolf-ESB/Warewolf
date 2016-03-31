@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetActionRegion dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()), sourceRegion, dotNetNamespaceRegion);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, dotNetActionRegion.Errors.Count);
+            Assert.AreEqual(0, dotNetActionRegion.Errors.Count);
             Assert.IsTrue(dotNetActionRegion.IsEnabled);
         }
 

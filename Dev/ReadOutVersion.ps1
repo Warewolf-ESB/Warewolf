@@ -35,5 +35,7 @@ if ($countReadVersions -gt 1) {
 }
 if ($countReadVersions -lt 1) {
 	throw "ERROR! No versions read from assemblies!`nAssembly definition:`nif (($file.Name.EndsWith(`".dll`") -or $file.Name.EndsWith(`".exe`")) -and ($file.Name.StartsWith(`"Dev2.`") -or $file.Name.StartsWith(`"Warewolf.`"))) {"
+} else {
+	"FullVersionString=$AllReadVersionsConcatinated" | Out-File -LiteralPath FullVersionString -Encoding utf8
 }
 Write-Host Compile has completed successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
