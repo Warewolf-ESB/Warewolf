@@ -693,7 +693,7 @@ Scenario: Assign a variable to another variable
 	| # | Variable   | New Value |
 	| 1 | [[x]]  =   | a         |
 	| 2 | [[b]] =    | x         |
-	| 3 | [[var]] = | [[[[b]]]] = a |
+	| 3 | [[var]] = | [[b]] = x |
 	And the debug output as
     | # |             |
     | 1 | [[x]] = a   |

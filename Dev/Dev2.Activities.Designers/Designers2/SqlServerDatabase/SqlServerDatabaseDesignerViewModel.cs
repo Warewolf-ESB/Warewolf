@@ -345,6 +345,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
                 } };
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion.SomethingChanged += ActionRegion_SomethingChanged;
                 regions.Add(ActionRegion);
            
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
@@ -366,6 +367,11 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
             return regions;
+        }
+
+        void ActionRegion_SomethingChanged(object sender, IToolRegion args)
+        {
+            Validate();
         }
         public ErrorRegion ErrorRegion { get; private set; }
 

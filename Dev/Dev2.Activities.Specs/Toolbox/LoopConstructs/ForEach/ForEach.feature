@@ -63,7 +63,7 @@ Scenario: Execute a foreach over a tool for range 0 to 0
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the foreach executes 0 times
-	And the execution has "NO" error
+	And the execution has "AN" error
 
 Scenario: Execute a foreach over a tool for range 1 to 5
 	And I have selected the foreach type as "InRange" from 1 to 5

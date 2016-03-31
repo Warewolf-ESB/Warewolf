@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Assign", "In order to use variables \r\nAs a Warewolf user\r\nI want a tool that assigns data t" +
-                    "o variables", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Assign", "In order to use variables \nAs a Warewolf user\nI want a tool that assigns data to " +
+                    "variables", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -3268,7 +3268,7 @@ this.ScenarioSetup(scenarioInfo);
             table61.AddRow(new string[] {
                         "3",
                         "[[var]] =",
-                        "[[[[b]]]] = a"});
+                        "[[b]] = x"});
 #line 692
  testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
 #line hidden

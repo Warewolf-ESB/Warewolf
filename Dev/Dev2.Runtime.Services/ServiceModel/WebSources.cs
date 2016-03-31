@@ -268,12 +268,12 @@ namespace Dev2.Runtime.ServiceModel
 
         static void EnsureContentType(WebClient client)
         {
-            var contentType = client.Headers["Content-Type"];
-            if (string.IsNullOrEmpty(contentType))
-            {
-                contentType = "application/x-www-form-urlencoded";
-            }
-            client.Headers["Content-Type"] = contentType;
+//            var contentType = client.Headers["Content-Type"];
+//            if (string.IsNullOrEmpty(contentType))
+//            {
+//                contentType = "application/x-www-form-urlencoded";
+//            }
+//            client.Headers["Content-Type"] = contentType;
         }
 
         #endregion
@@ -313,6 +313,7 @@ namespace Dev2.Runtime.ServiceModel
                         source.Client.Headers.Add(header.Trim());
                     }
                 }
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; }; 
             }
         }
 

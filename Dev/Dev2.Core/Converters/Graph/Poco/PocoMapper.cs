@@ -33,7 +33,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         public IEnumerable<IPath> Map(object data)
         {
-            var propertyStack = new Stack<Tuple<PropertyInfo, bool, object>>();
+            var propertyStack = new Stack<Tuple<string, bool, bool, object>>();
             return BuildPaths(data, propertyStack, data);
         }
 
@@ -41,7 +41,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         #region Private Methods
 
-        private IEnumerable<IPath> BuildPaths(object data, Stack<Tuple<PropertyInfo, bool, object>> propertyStack,
+        private IEnumerable<IPath> BuildPaths(object data, Stack<Tuple<string,bool, bool, object>> propertyStack,
             object root)
         {
             var paths = new List<IPath>();
@@ -51,8 +51,24 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 //
                 // Handle if the poco mapper is used to map to an raw enumerable
                 //
-                paths.Add(new PocoPath(PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol,
-                    PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
+//                paths.Add(new PocoPath("UnnamedArray"+PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol,
+//                    "UnnamedArray" + PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
+
+                var enumerableData = data as IEnumerable;
+
+                if (enumerableData != null)
+                {
+                    IEnumerator enumerator = enumerableData.GetEnumerator();
+                    enumerator.Reset();
+                    if (enumerator.MoveNext())
+                    {
+                        propertyStack.Push(new Tuple<string, bool, bool, object>("UnnamedArray", true, true, enumerableData));
+                        MapData(enumerator.Current, propertyStack, root, paths);
+                        propertyStack.Pop();
+
+                        
+                    }
+                }
             }
 
             if (propertyStack.Count == 0 && data.GetType().IsPrimitive())
@@ -65,93 +81,97 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             }
             else
             {
-                PropertyInfo[] dataProperties = data.GetType()
-                    .GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
-                foreach (PropertyInfo propertyInfo in dataProperties.Where(p => p.PropertyType.IsPrimitive()))
-                {
-                    object propertyData;
-
-                    try
-                    {
-                        propertyData = propertyInfo.GetValue(data, null);
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error(ex);
-                        propertyData = null;
-                        //TODO When an exception is encountered stop discovery for this path and write to log
-                    }
-
-                    if (propertyData != null)
-                    {
-                        paths.Add(BuildPath(propertyStack, propertyInfo, root));
-                    }
-                }
-
-                foreach (PropertyInfo propertyInfo in dataProperties.Where(p => !p.PropertyType.IsPrimitive()))
-                {
-                    object propertyData;
-
-                    try
-                    {
-                        propertyData = propertyInfo.GetValue(data, null);
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error(ex);
-                        propertyData = null;
-                        //TODO When an exception is encountered stop discovery for this path and write to log
-                    }
-
-                    if (propertyData != null)
-                    {
-                        if (propertyInfo.PropertyType.IsEnumerable())
-                        {
-                            var enumerableData = propertyData as IEnumerable;
-
-                            if (enumerableData != null)
-                            {
-                                propertyStack.Push(new Tuple<PropertyInfo, bool, object>(propertyInfo, false, data));
-                                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                                propertyStack.Pop();
-
-                                IEnumerator enumerator = enumerableData.GetEnumerator();
-                                enumerator.Reset();
-                                if (enumerator.MoveNext())
-                                {
-                                    propertyData = enumerator.Current;
-
-                                    propertyStack.Push(new Tuple<PropertyInfo, bool, object>(propertyInfo, true, data));
-                                    paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                                    propertyStack.Pop();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            propertyStack.Push(new Tuple<PropertyInfo, bool, object>(propertyInfo, true, data));
-                            paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                            propertyStack.Pop();
-                        }
-                    }
-                }
+                MapData(data, propertyStack, root, paths);
             }
 
             return paths;
         }
 
-        private IPath BuildPath(Stack<Tuple<PropertyInfo, bool, object>> propertyStack, PropertyInfo property,
+        private void MapData(object data, Stack<Tuple<string,bool, bool, object>> propertyStack, object root, List<IPath> paths)
+        {
+            PropertyInfo[] dataProperties = data.GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            foreach(PropertyInfo propertyInfo in dataProperties.Where(p => p.PropertyType.IsPrimitive()))
+            {
+                object propertyData;
+
+                try
+                {
+                    propertyData = propertyInfo.GetValue(data, null);
+                }
+                catch(Exception ex)
+                {
+                    Dev2Logger.Error(ex);
+                    propertyData = null;
+                }
+
+                if(propertyData != null)
+                {
+                    paths.Add(BuildPath(propertyStack, propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable(), root));
+                }
+            }
+
+            foreach(PropertyInfo propertyInfo in dataProperties.Where(p => !p.PropertyType.IsPrimitive()))
+            {
+                object propertyData;
+
+                try
+                {
+                    propertyData = propertyInfo.GetValue(data, null);
+                }
+                catch(Exception ex)
+                {
+                    Dev2Logger.Error(ex);
+                    propertyData = null;
+                    //TODO When an exception is encountered stop discovery for this path and write to log
+                }
+
+                if(propertyData != null)
+                {
+                    if(propertyInfo.PropertyType.IsEnumerable())
+                    {
+                        var enumerableData = propertyData as IEnumerable;
+
+                        if(enumerableData != null)
+                        {
+                            propertyStack.Push(new Tuple<string,bool, bool, object>(propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable(), false, data));
+                            paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                            propertyStack.Pop();
+
+                            IEnumerator enumerator = enumerableData.GetEnumerator();
+                            enumerator.Reset();
+                            if(enumerator.MoveNext())
+                            {
+                                propertyData = enumerator.Current;
+
+                                propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
+                                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                                propertyStack.Pop();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
+                        paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                        propertyStack.Pop();
+                    }
+                }
+            }
+        }
+
+        private IPath BuildPath(Stack<Tuple<string,bool, bool, object>> propertyStack, string name,bool isEnumerable,
             object root)
         {
             var path = new PocoPath();
 
             path.ActualPath = string.Join(PocoPath.SeperatorSymbol,
-                propertyStack.Reverse().Select(p => path.CreatePathSegment(p.Item1).ToString(p.Item2)));
+                propertyStack.Reverse().Select(p => path.CreatePathSegment(p.Item1,p.Item2).ToString(p.Item3)));
 
             List<Tuple<IPathSegment, bool>> displayPathSegments =
                 propertyStack.Reverse()
-                    .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2))
+                    .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1, p.Item2), p.Item3))
                     .ToList();
             bool recordsetEncountered = false;
 
@@ -179,24 +199,10 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 path.DisplayPath += PocoPath.SeperatorSymbol;
             }
 
-            path.ActualPath += path.CreatePathSegment(property).ToString();
-            path.DisplayPath += path.CreatePathSegment(property).ToString();
-            path.SampleData = GetSampleData(root, path);
+            path.ActualPath += path.CreatePathSegment(name,isEnumerable).ToString();
+            path.DisplayPath += path.CreatePathSegment(name, isEnumerable).ToString();
 
             return path;
-        }
-
-        private string GetSampleData(object root, IPath path)
-        {
-            var navigator = new PocoNavigator(root);
-            return string.Join(GlobalConstants.AnythingToXmlPathSeperator,
-                navigator.SelectEnumerable(path)
-                    .Select(
-                        o =>
-                            o.ToString()
-                                .Replace(GlobalConstants.AnythingToXmlPathSeperator,
-                                    GlobalConstants.AnytingToXmlCommaToken))
-                    .Take(10));
         }
 
         #endregion Private Methods

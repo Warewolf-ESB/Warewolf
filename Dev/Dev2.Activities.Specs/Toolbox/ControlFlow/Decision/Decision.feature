@@ -1191,9 +1191,7 @@ Scenario: Executing Decision with malformed variables
 	And is "[[[[a]]" "IsEqual" "1"	
 	When the decision tool is executed
 	Then the decision result should be "False"
-	Then the execution has "AN" error
-	Then the debug inputs as  
-	|           | Statement | Require All decisions to be True |
+	Then the execution has "NO" error
 	And the debug output as 
 	|    |
 	| NO | 
@@ -1203,9 +1201,7 @@ Scenario: Executing Decision with malformed recordset
 	And is "[[[[rec().a]]" "IsEqual" "1"	
 	When the decision tool is executed
 	Then the decision result should be "False"
-	Then the execution has "AN" error
-	Then the debug inputs as  
-	|                 | Statement | Require All decisions to be True |
+	Then the execution has "NO" error
 	And the debug output as 
 	|    |
 	| NO | 
@@ -1280,7 +1276,7 @@ Scenario Outline: Ensuring all inputs work as expected
 Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	Given a decision variable "[[A]]" value "30"
 	And  a decision variable "[[B]]" value "\"
-	And is "[[A]]" "Equals" "[[B]]"	
+	And is "[[A]]" "IsEqual" "[[B]]"	
 	When the decision tool is executed
 	#Then the decision result should be "False"
 	Then the execution has "NO" error
@@ -1290,7 +1286,7 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	| [[B]] = \ | String    | YES                              |
 	And the debug output as 
 	|       |
-	| False |
+	| NO |
 
 @ignore
 #Complex Types WOLF-1042

@@ -276,6 +276,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
                     var src = ToDbSource();
+
                     src.Path = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
                     Save(src);
                     _dbSource = src;
@@ -403,7 +404,7 @@ namespace Warewolf.Studio.ViewModels
                     Path = Path,
                     Name = ResourceName,
                     DbName = DatabaseName,
-                    Id = _dbSource == null ? Guid.NewGuid() : _dbSource.Id
+                    Id = _dbSource == null ? SelectedGuid : _dbSource.Id
                 };
             // ReSharper disable once RedundantIfElseBlock
             else

@@ -48,6 +48,8 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand IsNotOverLockCommand { get; }
         ICommand SupportCommand { get; }
         bool IsProcessing { get; set; }
+        ICommand StartPageCommand { get; }
+
         void UpdateHelpDescriptor(string helpText);
         void Lock();
     }

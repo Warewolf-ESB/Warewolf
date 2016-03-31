@@ -1,3 +1,4 @@
+using Dev2.Common;
 using Dev2.Runtime.WebServer.Responses;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -7,7 +8,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            var result = GetFileFromPath("warewolf-Server.log");
+            var result = GetFileFromPath(EnvironmentVariables.ServerLogFile);
 
             ctx.Send(result);
         }

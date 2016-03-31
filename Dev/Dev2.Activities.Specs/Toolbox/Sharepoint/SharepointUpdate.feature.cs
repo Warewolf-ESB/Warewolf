@@ -189,35 +189,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.And("App is selected as the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2388 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[Variable",
                         "To Field",
                         "Type"});
-            table1.AddRow(new string[] {
+            table2388.AddRow(new string[] {
                         "[[appdata(*).ContentType]]",
                         "Content Type",
                         "Text"});
-            table1.AddRow(new string[] {
+            table2388.AddRow(new string[] {
                         "[[appdata(*).Title",
                         "Title",
                         "Text"});
-            table1.AddRow(new string[] {
+            table2388.AddRow(new string[] {
                         "[[appdata(*).Attachments]]",
                         "Attachments",
                         "Text"});
 #line 53
- testRunner.And("Sharepoint Update variables are", ((string)(null)), table1, "And ");
+ testRunner.And("Sharepoint Update variables are", ((string)(null)), table2388, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2389 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Match Type",
                         "Value"});
-            table2.AddRow(new string[] {
+            table2389.AddRow(new string[] {
                         "Title",
                         "=",
                         string.Format("{0}", value)});
 #line 58
- testRunner.And("Sharepoint Update Input variables are", ((string)(null)), table2, "And ");
+ testRunner.And("Sharepoint Update Input variables are", ((string)(null)), table2389, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

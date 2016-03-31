@@ -6,11 +6,13 @@ if "%1"=="" (git -C "%~dp0..\.." pull) else (git -C "%~dp0..\.." checkout %1)
 if not %errorlevel%==0 pause & exit 1
 "%~dp0..\.nuget\nuget.exe" restore "%~dp0..\AcceptanceTesting.sln"
 if not %errorlevel%==0 pause & exit 1
-powershell -file "%~dp0..\BakeInVersion.ps1"
+powershell -ExecutionPolicy ByPass -File "%~dp0..\BakeInVersion.ps1"
 if not %errorlevel%==0 pause & exit 1
-"%vs120comntools%..\IDE\devenv.com" "%~dp0..\AcceptanceTesting.sln" /Build Debug
+IF EXIST "%vs120comntools%..\IDE\devenv.com" ( "%vs120comntools%..\IDE\devenv.com" "%~dp0..\AcceptanceTesting.sln" /Build Debug
+) else (
+IF EXIST "%vs140comntools%..\IDE\devenv.com" "%vs140comntools%..\IDE\devenv.com" "%~dp0..\AcceptanceTesting.sln" /Build Debug )
 if not %errorlevel%==0 git -C "%~dp0.." checkout "AssemblyCommonInfo.cs" & git -C "%~dp0.." checkout "AssemblyCommonInfo.fs" & pause & exit 1
-powershell -file "%~dp0..\ReadOutVersion.ps1"
+powershell -ExecutionPolicy ByPass -File "%~dp0..\ReadOutVersion.ps1"
 if not %errorlevel%==0 pause & exit 1
 git -C "%~dp0.." checkout "AssemblyCommonInfo.cs"
 if not %errorlevel%==0 pause & exit 1

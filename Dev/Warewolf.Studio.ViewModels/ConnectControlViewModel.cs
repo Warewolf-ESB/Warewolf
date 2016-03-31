@@ -13,6 +13,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
@@ -366,7 +367,11 @@ namespace Warewolf.Studio.ViewModels
                         var popupController = CustomContainer.Get<IPopupController>();
                         if(popupController != null)
                         {
-                            popupController.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                            var result = popupController.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                await Connect(connection);
+                            }
                         }
                     }
                     OnPropertyChanged(() => connection.IsConnected);

@@ -77,7 +77,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataSplit.{0}",
                                                 fileName);
             var stringToSplit = ReadFile(resourceName);
-            ScenarioContext.Current.Add("stringToSplit", stringToSplit);
+            ScenarioContext.Current.Add("stringToSplit", stringToSplit.Replace("\n","\r\n"));
         }
 
         [Given(@"Skip Blanks rows is ""(.*)""")]

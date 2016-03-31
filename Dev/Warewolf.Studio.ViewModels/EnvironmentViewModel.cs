@@ -41,6 +41,7 @@ namespace Warewolf.Studio.ViewModels
         bool _showContextMenu;
         readonly IPopupController _controller;
         private bool _isLoading;
+        private bool _canDrag;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {
@@ -95,6 +96,8 @@ namespace Warewolf.Studio.ViewModels
             IsVisible = true;
             SetPropertiesForDialogFromPermissions(new WindowsGroupPermission());
             SelectAll = () => { };
+            CanDrag = false;
+            CanDrop = false;
 
         }
 
@@ -380,6 +383,19 @@ namespace Warewolf.Studio.ViewModels
 
         public ResourceType ResourceType { get; set; }
         public string ResourcePath { get; set; }
+        public bool CanDrop { get; set; }
+        public bool CanDrag
+        {
+            get
+            {
+                return _canDrag && (ResourceType == ResourceType.Server || ResourceType == ResourceType.ServerSource) && string.IsNullOrWhiteSpace(ResourcePath);
+            }
+            set
+            {
+                _canDrag = value;
+                OnPropertyChanged(() => CanDrag);
+            }
+        }
 
         public string ResourceName { get; set; }
         public Guid ResourceId { get; set; }
@@ -634,14 +650,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                //var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != null);
                 await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != null, Children.Any(a => AllowResourceCheck));
-                //Children = explorerItemViewModels;
-
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
-
+                
                 return IsLoaded;
             }
             return false;
@@ -653,9 +666,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                //var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
                 await CreateExplorerItems(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
-                //Children = explorerItemViewModels;
 
                 IsLoaded = true;
                 IsConnecting = false;
@@ -869,6 +880,9 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanView = false;
             itemCreated.CanExecute = false;
             itemCreated.CanShowDependencies = false;
+            itemCreated.CanDrag = false;
+            itemCreated.CanDrop = false;
+            itemCreated.CanRename = false;
         }
 
         public string RefreshToolTip
