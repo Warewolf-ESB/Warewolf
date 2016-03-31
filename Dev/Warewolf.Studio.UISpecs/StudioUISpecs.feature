@@ -932,6 +932,13 @@ Scenario: Debug Output Window
 
 
 Scenario: Connectors and Sources cannot be dragged onto the design surface
+	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
+	When I 'Click_New_Workflow_Ribbon_Button'
+	Then I 'Assert_StartNode_Exists'
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
 	When I 'Drag_Database_Connector_Onto_DesignSurface'
 	#Then 'Some Post-assert'
 	#Ashley TODO: The test should end here.
