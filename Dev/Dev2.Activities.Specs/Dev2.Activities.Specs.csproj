@@ -488,10 +488,12 @@
       <DependentUpon>SharepointUpdate.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>ReadDropbox.feature</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\ReadDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\UploadDropbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
