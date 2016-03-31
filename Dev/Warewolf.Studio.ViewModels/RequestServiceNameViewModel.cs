@@ -86,6 +86,8 @@ namespace Warewolf.Studio.ViewModels
             return ret.InitializeAsync(environmentViewModel, selectedPath, header);
         }
 
+        public Guid IdToSave { get; set; }
+
         private void CloseView()
         {
             _view.RequestClose();
