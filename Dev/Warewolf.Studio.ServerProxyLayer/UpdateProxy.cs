@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -325,6 +326,17 @@ namespace Warewolf.Studio.ServerProxyLayer
             var comsController = CommunicationControllerFactory.CreateController("SaveEmailServiceSource");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(model));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        public void SaveExchangeSource(IExchangeSource model, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveExchangeServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ExchangeServiceSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);

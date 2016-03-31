@@ -341,6 +341,44 @@
             </Button>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="NewExchangeInputsGrid">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="Inputs" />
+               
+                <TextBlock Grid.Row="1" Text="None" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       Margin="0,0,0,-5"
+                       Style="{StaticResource MenuTextBlockStyle}"
+                       Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}" />
+            </Grid>
+            <Button x:Name="TestInputButton"
+                    Grid.Row="1" 
+                    Content="Generate Outputs" 
+                    Width="Auto" 
+                    IsEnabled="{Binding InputArea.IsEnabled}"
+                    Margin="{StaticResource ControlBorderTop}"
+                    ToolTip="{x:Static languages:Core.ServiceTestActionTooltip}"
+                    HorizontalAlignment="Right"
+                    Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.InputGenerateOutputsDefaultHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
+    </ControlTemplate>
     <ControlTemplate x:Key="NewOutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
         <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
             <Grid.ColumnDefinitions>

@@ -17,12 +17,37 @@ namespace Dev2.Activities.Designers2.Core.Source
     {
         private Guid _sourceId;
         private readonly ModelItem _modelItem;
+        private Action _sourceChangedAction;
+        private IExchangeSource _selectedSource;
+        private ICollection<IExchangeSource> _sources;
+        public ICommand EditSourceCommand { get; set; }
+        public ICommand NewSourceCommand { get; set; }
 
-        public IExchangeSource SelectedSource { get; set; }
-        public ICollection<IExchangeSource> Sources { get; set; }
-        public ICommand EditSourceCommand { get; }
-        public ICommand NewSourceCommand { get; }
-        public Action SourceChangedAction { get; set; }
+        public Action SourceChangedAction
+        {
+            get
+            {
+                return _sourceChangedAction ?? (() => { });
+            }
+            set
+            {
+                _sourceChangedAction = value;
+            }
+        }
+
+        public ICollection<IExchangeSource> Sources
+        {
+            get
+            {
+                return _sources;
+            }
+            set
+            {
+                _sources = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event SomethingChanged SomethingChanged;
         public double LabelWidth { get; set; }
         public string NewSourceHelpText { get; set; }
@@ -49,13 +74,13 @@ namespace Dev2.Activities.Designers2.Core.Source
             IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
-            SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceTypesHelp;
-            EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceEditSourceHelp;
-            NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceNewSourceHelp;
+            SourcesHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceSourceTypesHelp;
+            EditSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceEditSourceHelp;
+            NewSourceHelpText = Warewolf.Studio.Resources.Languages.Core.ExchangeServiceNewSourceHelp;
 
-            SourcesTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceSourcesTooltip;
-            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceEditSourceTooltip;
-            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageDbServiceNewSourceTooltip;
+            SourcesTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceSourcesTooltip;
+            EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceEditSourceTooltip;
+            NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceNewSourceTooltip;
 
             if (SourceId != Guid.Empty)
             {
@@ -120,6 +145,48 @@ namespace Dev2.Activities.Designers2.Core.Source
             if (handler != null)
             {
                 handler(this, args);
+            }
+        }
+
+        public IExchangeSource SelectedSource
+        {
+            get
+            {
+                return _selectedSource;
+            }
+            set
+            {
+                SetSelectedSource(value);
+                SourceChangedAction();
+                OnSomethingChanged(this);
+                var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                if (delegateCommand != null)
+                {
+                    delegateCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        private void SetSelectedSource(IExchangeSource value)
+        {
+            if (value != null)
+            {
+                _selectedSource = value;
+                SavedSource = value;
+                SourceId = value.Id;
+            }
+            OnPropertyChanged("SelectedSource");
+        }
+
+        public IExchangeSource SavedSource
+        {
+            get
+            {
+                return _modelItem.GetProperty<IExchangeSource>("SavedSource");
+            }
+            set
+            {
+                _modelItem.SetProperty("SavedSource", value);
             }
         }
     }

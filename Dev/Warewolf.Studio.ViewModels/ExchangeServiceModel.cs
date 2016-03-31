@@ -48,9 +48,9 @@ namespace Warewolf.Studio.ViewModels
             return new List<IServiceOutputMapping>();
         }
 
-        public void SaveService(IExchangeService model)
+        public void SaveService(IExchangeSource model)
         {
-            //_updateRepository.Save(model);
+            _updateRepository.Save(model);
         }
 
         public IStudioUpdateManager UpdateRepository

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces
@@ -17,7 +18,8 @@ namespace Dev2.Common.Interfaces
         void Save(IPluginSource source);
         void Save(IEmailServiceSource emailServiceSource);
         void Save(ISharepointServerSource sharePointServiceSource);
-
+        void Save(IExchangeSource exchangeSource);
+    
         void TestConnection(IServerSource serverSource);
         void TestConnection(IWebServiceSource serverSource);
         void TestConnection(ISharepointServerSource sharePointServiceSource);

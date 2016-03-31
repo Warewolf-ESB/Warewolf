@@ -24,6 +24,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private bool _isInputsEmptyRows;
         private readonly ModelItem _modelItem;
         private IList<IServiceInput> _inputs;
+
         public ExchangeInputRegion(ModelItem modelItem)
         {
             ToolRegionName = "ExchangeInputRegion";

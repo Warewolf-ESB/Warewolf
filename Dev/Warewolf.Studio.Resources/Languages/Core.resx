@@ -646,11 +646,20 @@ You need Administrator permission.</value>
   <data name="ManageDbServiceSourcesTooltip" xml:space="preserve">
     <value>Select the database you want to use</value>
   </data>
+  <data name="ManageExchangeServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the connection you want to use</value>
+  </data>
   <data name="ManageDbServiceEditSourceTooltip" xml:space="preserve">
     <value>Edits the selected database source</value>
   </data>
+  <data name="ManageExchangeServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected connection source</value>
+  </data>
   <data name="ManageDbServiceNewSourceTooltip" xml:space="preserve">
     <value>Create a new connection to a database</value>
+  </data>
+  <data name="ManageExchangeServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a exchange server</value>
   </data>
   <data name="ManageDbServiceActionsTooltip" xml:space="preserve">
     <value>Select the procedure or function you want to perform on the database</value>
@@ -1021,6 +1030,9 @@ Alternatively, the URL for your online Server, such as Azure SQL.</value>
   <data name="DatabaseServiceSourceTypesHelp" xml:space="preserve">
     <value>The available database connections. To create a new connection, click New.</value>
   </data>
+  <data name="ExchangeServiceSourceTypesHelp" xml:space="preserve">
+    <value>The available exchange connections. To create a new connection, click New.</value>
+  </data>
   <data name="DatabaseServiceEditSourceHelp" xml:space="preserve">
     <value>Change the connection string properties of the selected Database.&lt;br&gt;
 &lt;br/&gt;
@@ -1028,8 +1040,18 @@ Change the connection string from, say, a development database to a live databas
 &lt;br/&gt;
 &lt;a href="http://warewolf.io/knowledge-base/data-connectors" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
+  <data name="ExchangeServiceEditSourceHelp" xml:space="preserve">
+    <value>Change the connection string properties of the selected connection.&lt;br&gt;
+&lt;br/&gt;
+Change the connection string from, say, a development database to a live database.&lt;br/&gt;
+&lt;br/&gt;
+&lt;a href="http://warewolf.io/knowledge-base/data-connectors" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
+  </data>
   <data name="DatabaseServiceNewSourceHelp" xml:space="preserve">
     <value>Create a connection to a new database server.</value>
+  </data>
+  <data name="ExchangeServiceNewSourceHelp" xml:space="preserve">
+    <value>Create a connection to a new exchange server.</value>
   </data>
   <data name="DatabaseServiceSelectActionHelp" xml:space="preserve">
     <value>The available database actions you can perform such as stored procedures or function calls.</value>

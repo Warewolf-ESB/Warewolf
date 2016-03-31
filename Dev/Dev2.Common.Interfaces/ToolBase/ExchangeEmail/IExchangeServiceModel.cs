@@ -12,7 +12,7 @@ namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
         void EditSource(IExchangeSource selectedSource);
         string TestService(IExchangeService inputValues);
         IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IExchangeSource source);
-        void SaveService(IExchangeService model);
+        void SaveService(IExchangeSource model);
 
         IStudioUpdateManager UpdateRepository { get; }
     }

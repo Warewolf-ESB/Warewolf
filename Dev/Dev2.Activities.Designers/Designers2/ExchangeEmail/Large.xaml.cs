@@ -18,16 +18,34 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public Large()
         {
             InitializeComponent();
-            SetInitialFocus();
+            Loaded += OnLoaded;
         }
 
-        #region Overrides of ActivityDesignerTemplate
+        ExchangeEmailDesignerViewModel ViewModel { get { return DataContext as ExchangeEmailDesignerViewModel; } }
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return MainGrid;
+            return InitialFocusElement;
         }
 
-        #endregion
+        public string ThePassword { get { return ThePasswordBox.Password; } set { ThePasswordBox.Password = value; } }
+
+        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var viewModel = ViewModel;
+            if (viewModel != null)
+            {
+                ThePassword = viewModel.Password;
+            }
+        }
+
+        void OnPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var viewModel = ViewModel;
+            if (viewModel != null)
+            {
+                viewModel.Password = ThePassword;
+            }
+        }
     }
 }
