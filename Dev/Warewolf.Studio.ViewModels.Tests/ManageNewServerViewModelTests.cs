@@ -434,7 +434,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetRequestServiceViewModel.ServerName = new ComputerName() { Name = "somecomputer" };
             _targetRequestServiceViewModel.Protocol = "http";
             _targetRequestServiceViewModel.SelectedPort = "8080";
-
+            _targetRequestServiceViewModel.SelectedGuid = Guid.NewGuid();
             //act
             _targetRequestServiceViewModel.OkCommand.Execute(null);
 
@@ -449,7 +449,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedName, _targetRequestServiceViewModel.Item.Name);
             Assert.AreEqual(expectedPath, _targetRequestServiceViewModel.Item.ResourcePath);
             Assert.AreNotEqual(Guid.Empty, _targetRequestServiceViewModel.Item.ID);
-            _updateManagerMock.Verify(it => it.Save(It.IsAny<IServerSource>()));
+
             Assert.AreEqual(expectedHeaderText, _targetRequestServiceViewModel.HeaderText);
             Assert.AreEqual(expectedHeader, _targetRequestServiceViewModel.Header);
         }
