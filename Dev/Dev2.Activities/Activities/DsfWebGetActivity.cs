@@ -223,13 +223,7 @@ namespace Dev2.Activities
             {
                 webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
-
-            var contentType = webclient.Headers["Content-Type"];
-            if (string.IsNullOrEmpty(contentType))
-            {
-                contentType = "application/x-www-form-urlencoded";
-            }
-            webclient.Headers["Content-Type"] = contentType;
+          
             webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
             webclient.BaseAddress = source.Address + query;
             return webclient;

@@ -198,7 +198,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         public void TestOkCommandCanExecuteAssemblyNameIsNotGacDll()
         {
+
             //arrange
+            
             var selectedDllMock = new Mock<IDllListingModel>();
             _target.SelectedDll = selectedDllMock.Object;
             _target.AssemblyName = "someAssemblyName";
@@ -551,13 +553,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedPath = "somePath";
             var expectedName = "someName";
             var selectedDllMock = new Mock<IDllListingModel>();
+            var correctGuid = false;
             selectedDllMock.SetupGet(it => it.FullName).Returns(_selectedDllFullName);
             _targetRequestServiceNameViewModel.SelectedDll = selectedDllMock.Object;
             _requestServiceNameViewModelMock.Setup(it => it.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             _requestServiceNameViewModelMock.SetupGet(it => it.ResourceName)
                 .Returns(new ResourceName(expectedPath, expectedName));
             _changedPropertiesRequestServiceNameViewModel.Clear();
-
+            var gd = Guid.NewGuid();
+            _targetRequestServiceNameViewModel.SelectedGuid = gd;
+            _updateManagerMock.Setup(a => a.Save(It.IsAny<IPluginSource>())).Callback((IPluginSource a) => { correctGuid = a.Id ==gd; });
             //act
             _targetRequestServiceNameViewModel.Save();
 
@@ -571,6 +576,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(selectedDllMock.Object, _targetRequestServiceNameViewModel.Item.SelectedDll);
             Assert.AreEqual(_targetRequestServiceNameViewModel.HeaderText, _targetRequestServiceNameViewModel.ResourceName);
             Assert.AreEqual(_targetRequestServiceNameViewModel.Header, _targetRequestServiceNameViewModel.ResourceName);
+            _updateManagerMock.Verify(a=>a.Save(It.IsAny<IPluginSource>()));
+            Assert.IsTrue(correctGuid);
         }
 
         [TestMethod]
