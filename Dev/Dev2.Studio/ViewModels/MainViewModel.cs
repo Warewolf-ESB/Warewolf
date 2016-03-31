@@ -16,6 +16,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -106,7 +107,6 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<DisplayMessageBoxMessage>, IShellViewModel
     {
         #region Fields
-
         private IEnvironmentModel _activeEnvironment;
         private WorkSurfaceContextViewModel _previousActive;
         private bool _disposed;
@@ -1044,7 +1044,11 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(key);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-        
+
+        public void EditResource(IDatabaseService selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+        }
+
         public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var emailSourceViewModel = new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource);
