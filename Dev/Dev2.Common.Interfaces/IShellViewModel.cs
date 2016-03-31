@@ -29,6 +29,8 @@ namespace Dev2.Common.Interfaces
 
         string OpenPasteWindow(string current);
 
+        void OpenResource(Guid resourceId, Guid environmentId);
+
         void OpenResource(Guid resourceId, IServer server);
 
         void OpenResourceAsync(Guid resourceId, IServer server);
@@ -52,5 +54,7 @@ namespace Dev2.Common.Interfaces
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
 
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
+
+        void CloseResource(Guid resourceId, Guid environmentId);
     }
 }
