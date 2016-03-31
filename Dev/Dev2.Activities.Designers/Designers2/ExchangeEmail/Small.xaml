@@ -3,11 +3,17 @@
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.ExchangeEmail"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               MinWidth="250"
+                               Width="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
@@ -20,62 +26,137 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
-    
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <ItemsControl Grid.Column="0"
-                      Grid.IsSharedSizeScope="True"
-                      ItemsSource="{Binding Path=Properties}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid Margin="0,-4,0,-4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="A" />
-                            <ColumnDefinition SharedSizeGroup="B" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="Mail Source" />
 
-        <ContentControl Grid.Column="1"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Right">
-            <ContentControl.ToolTip>
-                <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}"
-                              ItemTemplate="{StaticResource ErrorListTemplate}" />
-            </ContentControl.ToolTip>
-            <Grid>
-                <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
-                       Visibility="{Binding Path=IsWorstErrorReadOnly, Converter={StaticResource BoolToVisibilityConverter}}"
-                       Height="16"
-                       Width="16"
-                       Margin="0,0,4,4"
-                       AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID" />
-                <Button Command="{Binding Path=FixErrorsCommand}"
-                        Visibility="{Binding Path=IsWorstErrorReadOnly, Converter={StaticResource BoolToVisibilityConverterInverse}}"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                        AutomationProperties.AutomationId="UI_FixErrors_AutoID">
-                    <Button.ToolTip>
-                        <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}" ItemTemplate="{StaticResource ErrorListTemplate}" />
-                    </Button.ToolTip>
-                    <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
-                           Height="16"
-                           Width="16"
-                           AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID" />
-                </Button>
-                <AutomationProperties.AutomationId>
-                    <MultiBinding StringFormat="[UI_{0}_FixBtn_AutoID]">
-                        <Binding Path="ModelItem.ServiceName" RelativeSource="{RelativeSource Self}" />
-                    </MultiBinding>
-                </AutomationProperties.AutomationId>
-            </Grid>
-        </ContentControl>
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox x:Name="InitialFocusElement"
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding EmailSources}"
+                      Margin="{StaticResource ControlBorderRight}"
+                      ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"
+                      DisplayMemberPath="ResourceName">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpMailSource}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="TheSelectedEmailSource"
+                                         SourcePropertyValue="{Binding SelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button Grid.Column="1"
+                    Content="..."
+                    Command="{Binding EditEmailSourceCommand}"
+                    ToolTip="Edit Email Source"
+                    Style="{StaticResource ButtonStyle}" >
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.EditEmailSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="To" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="1"
+                                Margin="{StaticResource ControlBorderTop}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                DefaultText="Account or email address"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipTo}"
+                                Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpTo}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.To"
+                                     SourcePropertyValue="{Binding ModelItem.To, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Subject" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="2"
+                                DefaultText="Message Subject"
+                                Margin="{StaticResource ControlBorderTop}"
+                                Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipSubject}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_subjecttxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpSubject}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Subject"
+                                     SourcePropertyValue="{Binding ModelItem.Subject, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Body" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="3"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipBody}"
+                                Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowMultilinePaste="True"
+                                Margin="{StaticResource ControlBorderTop}"
+                                AcceptsReturn="True"
+                                AllowUserInsertLine="True"
+                                MaxHeight="52"
+                                Height="25"
+                                Padding="2,5,2,2"
+                                TextWrapping="Wrap"
+                                AcceptsTab="True"
+                                VerticalContentAlignment="Top"
+                                MinLines="2"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_bodytxt_AutoID}">
+            <ui:IntellisenseTextBox.DefaultText>
+                <TextBlock Text="Email Content" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
+            </ui:IntellisenseTextBox.DefaultText>
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpBody}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ModelItem.Body"
+                                     SourcePropertyValue="{Binding ModelItem.Body, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+
+        </ui:IntellisenseTextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Result" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1"
+                                Grid.Row="4"                               
+                                DefaultText="[[EmailSuccess]]"
+                                Margin="{StaticResource ControlBorderTop}"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipResult}"
+                                Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                WrapInBrackets="True"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resultstxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpResult}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName=" ModelItem.Result"
+                                     SourcePropertyValue="{Binding  ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
     </Grid>
 </core:ActivityDesignerTemplate>

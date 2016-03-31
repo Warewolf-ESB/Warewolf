@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using Caliburn.Micro;
-using Dev2.Activities.Designers2.Oracle;
 using Dev2.Activities.Designers2.PostgreSql;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -14,11 +12,9 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources

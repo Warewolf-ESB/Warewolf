@@ -17,11 +17,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         {
             InitializeComponent();
         }
-
-        protected override ExchangeEmailDesignerViewModel CreateViewModel()
-        {
-            return new ExchangeEmailDesignerViewModel(ModelItem);
-        }
     }
 }
     

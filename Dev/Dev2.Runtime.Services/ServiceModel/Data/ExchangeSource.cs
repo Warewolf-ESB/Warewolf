@@ -1,42 +1,115 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
     public class ExchangeSource : Resource
     {
+        public static int DefaultTimeout = 100000; // (100 seconds)
+        public static int DefaultPort = 25;
+        public static int SslPort = 465;
+        public static int TlsPort = 587;
+
+        #region Properties
+
+        public string Host { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public int Port { get; set; }
+        public bool EnableSsl { get; set; }
+        public int Timeout { get; set; }
+
+        /// <summary>
+        /// This must NEVER be persisted - here for JSON transport only!
+        /// </summary>
+        public string TestFromAddress { get; set; }
+
+        /// <summary>
+        /// This must NEVER be persisted - here for JSON transport only!
+        /// </summary>
+        public string TestToAddress { get; set; }
+
+        public new string DataList
+        {
+            get
+            {
+                var stringBuilder = base.DataList;
+                return stringBuilder != null ? stringBuilder.ToString() : null;
+            }
+            set
+            {
+                base.DataList = value.ToStringBuilder();
+            }
+        }
+
+        #endregion
+
         #region CTOR
 
         public ExchangeSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.ExchangeSource;
+            ResourceType = ResourceType.EmailSource;
+            Timeout = DefaultTimeout;
+            Port = DefaultPort;
         }
 
         public ExchangeSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.ExchangeSource;
+            ResourceType = ResourceType.EmailSource;
+            Timeout = DefaultTimeout;
+            Port = DefaultPort;
 
-            AssemblyLocation = xml.AttributeSafe("AssemblyLocation");
-            AssemblyName = xml.AttributeSafe("AssemblyName");
+            var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Host", string.Empty },
+                { "UserName", string.Empty },
+                { "Password", string.Empty },
+                { "Port", string.Empty },
+                { "EnableSsl", string.Empty },
+                { "Timeout", string.Empty },
+            };
+
+            var conString = xml.AttributeSafe("ConnectionString");
+            var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            ParseProperties(connectionString, properties);
+
+            Host = properties["Host"];
+            UserName = properties["UserName"];
+            Password = properties["Password"];
+
+            int port;
+            Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
+
+            bool enableSsl;
+            EnableSsl = bool.TryParse(properties["EnableSsl"], out enableSsl) && enableSsl;
+
+            int timeout;
+            Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
         }
 
-        #endregion
-
-        #region Properties
-
-        public string AssemblyLocation { get; set; }
-        public string AssemblyName { get; set; }
-
+        public void Send(MailMessage mailMessage)
+        {
+            var userParts = UserName.Split('@');
+            using (var smtp = new SmtpClient(Host, Port)
+            {
+                Credentials = new NetworkCredential(userParts[0], Password),
+                EnableSsl = EnableSsl,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Timeout = Timeout
+            })
+            {
+                smtp.Send(mailMessage);
+            }
+        }
         #endregion
 
         #region ToXml
@@ -44,12 +117,21 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override XElement ToXml()
         {
             var result = base.ToXml();
-            result.Add(
-                new XAttribute("AssemblyLocation", AssemblyLocation ?? string.Empty),
-                new XAttribute("AssemblyName", AssemblyName ?? string.Empty),
-                new XAttribute("Type", enSourceType.ExchangeEmailSource),
-                new XElement("TypeOf", enSourceType.ExchangeEmailSource)
+            var connectionString = string.Join(";",
+                string.Format("Host={0}", Host),
+                string.Format("UserName={0}", UserName),
+                string.Format("Password={0}", Password),
+                string.Format("Port={0}", Port),
+                string.Format("EnableSsl={0}", EnableSsl),
+                string.Format("Timeout={0}", Timeout)
                 );
+
+            result.Add(
+                new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
+                new XAttribute("Type", ResourceType),
+                new XElement("TypeOf", ResourceType)
+                );
+
             return result;
         }
 
