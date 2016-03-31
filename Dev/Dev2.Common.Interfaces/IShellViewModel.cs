@@ -52,9 +52,5 @@ namespace Dev2.Common.Interfaces
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
 
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
-
-        void OpenResource(Guid resourceId, Guid environmentId);
-
-        void CloseResource(Guid resourceId, Guid environmentId);
     }
 }

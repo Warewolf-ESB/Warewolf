@@ -347,7 +347,7 @@ namespace Dev2.Network
             IPopupController popup = CustomContainer.Get<IPopupController>();
 
             var application = Application.Current;
-            MessageBoxResult res = MessageBoxResult.No;
+            MessageBoxResult res;
             if (application != null && application.Dispatcher != null)
             {
                 application.Dispatcher.Invoke(() =>

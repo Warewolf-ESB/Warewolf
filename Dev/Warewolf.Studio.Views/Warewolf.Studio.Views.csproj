@@ -168,9 +168,6 @@
     <Compile Include="ManageEmailSourceControl.xaml.cs">
       <DependentUpon>ManageEmailSourceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManagePluginServiceControl.xaml.cs">
-      <DependentUpon>ManagePluginServiceControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ManagePluginSourceControl.xaml.cs">
       <DependentUpon>ManagePluginSourceControl.xaml</DependentUpon>
     </Compile>
@@ -179,9 +176,6 @@
     </Compile>
     <Compile Include="ManageServerControl.xaml.cs">
       <DependentUpon>ManageServerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ManageWebserviceControl.xaml.cs">
-      <DependentUpon>ManageWebserviceControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ManageWebservicePasteView.xaml.cs">
       <DependentUpon>ManageWebservicePasteView.xaml</DependentUpon>
@@ -254,10 +248,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ManagePluginServiceControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ManagePluginSourceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,10 +259,6 @@
     <Page Include="ManageServerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ManageWebserviceControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManageWebservicePasteView.xaml">
       <SubType>Designer</SubType>
