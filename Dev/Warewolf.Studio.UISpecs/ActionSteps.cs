@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow;
@@ -17,6 +19,14 @@ namespace Warewolf.Studio.UISpecs
         [Then(@"I '(.*)'")]
         public void ThenTheRecordedActionIsPerformed(string p0)
         {
+            var UITestingScreenshotsDirectory = Path.Combine(Environment.ExpandEnvironmentVariables(@"%programdata%"), "Warewolf", "UITestingScreenshots");
+            if (!Directory.Exists(UITestingScreenshotsDirectory)){
+                Directory.CreateDirectory(UITestingScreenshotsDirectory);
+            }
+            var screenshotFullPath = Path.Combine(UITestingScreenshotsDirectory, String.Concat(ScenarioContext.Current.ScenarioInfo.Title.Replace(" ", string.Empty), "_", p0));
+
+            UITestControl.Desktop.CaptureImage().Save(screenshotFullPath + "_Before.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+
             Type workflowDesignerMapType = Uimap.GetType();
             Type outsideWorkflowDesignerMapType = OutsideWorkflowDesignSurfaceUiMap.GetType();
             MethodInfo workflowDesignerAction = workflowDesignerMapType.GetMethod(p0);
@@ -36,6 +46,8 @@ namespace Warewolf.Studio.UISpecs
                     workflowDesignerAction.Invoke(Uimap, new object[] { });
                 }
             }
+
+            UITestControl.Desktop.CaptureImage().Save(screenshotFullPath + "_After.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
         }
 
         #region Properties and Fields
