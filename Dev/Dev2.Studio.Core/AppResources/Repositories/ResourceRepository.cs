@@ -479,6 +479,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 case ResourceType.PluginSource:                
                 case ResourceType.SharepointServerSource:
                 case ResourceType.WebSource:
+                case ResourceType.RabbitMQSource:
                     return Enums.ResourceType.Source;
                 case ResourceType.ServerSource:
                 case ResourceType.Server:

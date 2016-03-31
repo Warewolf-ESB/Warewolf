@@ -3914,4 +3914,92 @@ Data
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
+  <data name="ManageRabbitMQHostTooltip" xml:space="preserve">
+    <value>RabbitMQ server name</value>
+  </data>
+  <data name="ManageRabbitMQPortTooltip" xml:space="preserve">
+    <value>Port used by the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQUserNameTooltip" xml:space="preserve">
+    <value>User name for the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQPasswordTooltip" xml:space="preserve">
+    <value>Password for the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQVirtualHostTooltip" xml:space="preserve">
+    <value>Virtual host</value>
+  </data>
+  <data name="ManageQueueNameTooltip" xml:space="preserve">
+    <value>Queue name</value>
+  </data>
+  <data name="VirtualHostLabel" xml:space="preserve">
+    <value>Virtual Host</value>
+  </data>
+  <data name="QueueNameLabel" xml:space="preserve">
+    <value>Queue Name</value>
+  </data>
+  <data name="ManagePublishTooltip" xml:space="preserve">
+    <value>Publish the test message</value>
+  </data>
+  <data name="RabbitMQSourceNewHeaderLabel" xml:space="preserve">
+    <value>New RabbitMQ Source</value>
+  </data>
+  <data name="RabbitMQSourceHostHelp" xml:space="preserve">
+    <value>The Host name of the server you want to use for publishing messages.
+&lt;style type="text/css"&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+e.g.&lt;br/&gt;
+&lt;table border="1" id="smtptable"&gt;
+&lt;tr align="center"&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;live&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</value>
+  </data>
+  <data name="RabbitMQSourcePortHelp" xml:space="preserve">
+    <value>&lt;style type="text/css"&gt;
+#smtptable td
+{
+text-align:center;
+border:0px;
+}
+&lt;/style&gt;
+The Port of the RabbitMQ server.
+&lt;br/&gt;
+e.g.&lt;br/&gt;
+&lt;table border="1" id="smtptable"&gt;
+&lt;tr align="center"&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;live&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</value>
+  </data>
+  <data name="RabbitMQSourceVirtualHostHelp" xml:space="preserve">
+    <value>&lt;style type="text/css"&gt;
+#smtptable td
+{
+text-align:center;
+border:0px;
+}
+&lt;/style&gt;
+The Virtual Host of the RabbitMQ server.
+&lt;br/&gt;
+e.g.&lt;br/&gt;
+&lt;table border="1" id="smtptable"&gt;
+&lt;tr align="center"&gt;&lt;th&gt;Host&lt;/th&gt;&lt;th&gt;Require SSL&lt;/th&gt;&lt;th&gt;Port&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;live&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</value>
+  </data>
+  <data name="QueueNameHelp" xml:space="preserve">
+    <value>The name of the Queue to publish the message too&lt;br/&gt;
+&lt;br/&gt;
+The queue name canot be blank.</value>
+  </data>
 </root>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -15,31 +9,37 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Security;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class EnvironmentViewModel : BindableBase, IEnvironmentViewModel
     {
-        ObservableCollection<IExplorerItemViewModel> _children;
-        bool _isConnecting;
-        bool _isConnected;
-        bool _isServerIconVisible;
-        bool _isServerUnavailableIconVisible;
-        bool _canCreateServerSource;
+        private ObservableCollection<IExplorerItemViewModel> _children;
+        private bool _isConnecting;
+        private bool _isConnected;
+        private bool _isServerIconVisible;
+        private bool _isServerUnavailableIconVisible;
+        private bool _canCreateServerSource;
         private bool _isExpanded;
         private bool _isSelected;
-        bool _canCreateFolder;
-        bool _canShowServerVersion;
+        private bool _canCreateFolder;
+        private bool _canShowServerVersion;
         private bool _canCreateWorkflowService;
-        readonly IShellViewModel _shellViewModel;
-        readonly bool _isDialog;
-        bool _allowEdit;
-        bool _allowResourceCheck;
-        bool? _isResourceChecked;
-        bool _isVisible;
-        bool _showContextMenu;
-        readonly IPopupController _controller;
+        private readonly IShellViewModel _shellViewModel;
+        private readonly bool _isDialog;
+        private bool _allowEdit;
+        private bool _allowResourceCheck;
+        private bool? _isResourceChecked;
+        private bool _isVisible;
+        private bool _showContextMenu;
+        private readonly IPopupController _controller;
         private bool _isLoading;
         private bool _canDrag;
 
@@ -70,7 +70,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     await Load();
                 }
-
             });
             IsServerIconVisible = true;
             SelectAction = selectAction ?? (a => { });
@@ -98,7 +97,6 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
-
         }
 
         public IShellViewModel ShellViewModel
@@ -108,6 +106,7 @@ namespace Warewolf.Studio.ViewModels
                 return _shellViewModel;
             }
         }
+
         public int ChildrenCount
         {
             get
@@ -162,7 +161,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool AreVersionsVisible { get; set; }
 
-       public void CreateFolder()
+        public void CreateFolder()
         {
             IsExpanded = true;
             var id = Guid.NewGuid();
@@ -184,6 +183,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanCreateDbSource = false;
                 child.CanCreateDropboxSource = false;
                 child.CanCreateEmailSource = false;
+                child.CanCreateRabbitMQSource = false;
                 child.CanCreateServerSource = false;
                 child.CanCreateSharePointSource = false;
                 child.CanCreatePluginSource = false;
@@ -203,6 +203,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanRename = true;
                 child.CanCreatePluginSource = CanCreatePluginSource;
                 child.CanCreateEmailSource = CanCreateEmailSource;
+                child.CanCreateRabbitMQSource = CanCreateRabbitMQSource;
                 child.CanCreateDropboxSource = CanCreateDropboxSource;
                 child.CanCreateSharePointSource = CanCreateSharePointSource;
                 child.CanCreateServerSource = CanCreateServerSource;
@@ -211,7 +212,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanCreateWorkflowService = CanCreateWorkflowService;
 
                 child.ShowContextMenu = ShowContextMenu;
-             }
+            }
             _children.Insert(0, child);
             OnPropertyChanged(() => Children);
         }
@@ -219,6 +220,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand ShowServerVersionCommand { get; set; }
 
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
+
         public bool? IsFolderChecked
         {
             get
@@ -234,7 +236,9 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsVisible);
             }
         }
+
         public bool? IsResourceUnchecked { get; set; }
+
         public bool IsVisible
         {
             get
@@ -247,6 +251,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsVisible);
             }
         }
+
         public System.Action SelectAll { get; set; }
 
         public void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction)
@@ -284,7 +289,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
         public void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions)
         {
             AllowResourceCheck = false;
@@ -293,6 +297,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = permissions.Contribute;
             CanCreatePluginSource = permissions.Contribute;
             CanCreateEmailSource = permissions.Contribute;
+            CanCreateRabbitMQSource = permissions.Contribute;
             CanCreateDropboxSource = permissions.Contribute;
             CanCreateSharePointSource = permissions.Contribute;
             CanCreateServerSource = permissions.Contribute;
@@ -315,6 +320,7 @@ namespace Warewolf.Studio.ViewModels
                 CanCreateDbSource = false;
                 CanCreateDropboxSource = false;
                 CanCreateEmailSource = false;
+                CanCreateRabbitMQSource = false;
                 CanCreateServerSource = false;
                 CanCreateSharePointSource = false;
                 CanCreatePluginSource = false;
@@ -331,6 +337,7 @@ namespace Warewolf.Studio.ViewModels
                 CanCreateFolder = true;
                 CanCreatePluginSource = true;
                 CanCreateEmailSource = true;
+                CanCreateRabbitMQSource = true;
                 CanCreateDropboxSource = true;
                 CanCreateSharePointSource = true;
                 CanCreateServerSource = true;
@@ -369,6 +376,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IExplorerTreeItem Parent { get; set; }
+
         public void AddChild(IExplorerItemViewModel child)
         {
             _children.Add(child);
@@ -384,6 +392,7 @@ namespace Warewolf.Studio.ViewModels
         public ResourceType ResourceType { get; set; }
         public string ResourcePath { get; set; }
         public bool CanDrop { get; set; }
+
         public bool CanDrag
         {
             get
@@ -410,17 +419,21 @@ namespace Warewolf.Studio.ViewModels
             {
             }
         }
+
         public ICommand NewCommand
         {
             get;
             set;
         }
+
         public ICommand DeployCommand
         {
             get;
             set;
         }
+
         public bool CanCreateDbSource { get; set; }
+
         public bool CanCreateServerSource
         {
             get
@@ -433,13 +446,16 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanCreateServerSource);
             }
         }
+
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginSource { get; set; }
         public bool CanCreateEmailSource { get; set; }
+        public bool CanCreateRabbitMQSource { get; set; }
         public bool CanCreateDropboxSource { get; set; }
         public bool CanCreateSharePointSource { get; set; }
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
+
         public bool CanCreateFolder
         {
             get
@@ -455,7 +471,9 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
         public bool CanDeploy { get; set; }
+
         public bool CanShowVersions
         {
             get { return false; }
@@ -463,6 +481,7 @@ namespace Warewolf.Studio.ViewModels
             {
             }
         }
+
         public bool CanRollback { get; set; }
 
         public bool IsExpanded
@@ -499,6 +518,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanShowServerVersion);
             }
         }
+
         public bool AllowResourceCheck
         {
             get
@@ -511,6 +531,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AllowResourceCheck);
             }
         }
+
         public bool? IsResourceChecked
         {
             get
@@ -528,12 +549,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void ShowServerVersionAbout()
+        private void ShowServerVersionAbout()
         {
             ShellViewModel.ShowAboutBox();
         }
 
-        string GetChildNameFromChildren()
+        private string GetChildNameFromChildren()
         {
             const string NewFolder = "New Folder";
             int count = 0;
@@ -551,11 +572,13 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
+
         public string DisplayName
         {
             get;
             set;
         }
+
         public bool IsConnected
         {
             get
@@ -568,6 +591,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsConnected);
             }
         }
+
         public bool AllowEdit
         {
             get
@@ -580,6 +604,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AllowEdit);
             }
         }
+
         public bool IsLoaded { get; private set; }
 
         public bool Connect()
@@ -625,9 +650,7 @@ namespace Warewolf.Studio.ViewModels
                 finally
                 {
                     IsLoading = false;
-
                 }
-
             }
             return false;
         }
@@ -654,7 +677,7 @@ namespace Warewolf.Studio.ViewModels
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
-                
+
                 return IsLoaded;
             }
             return false;
@@ -685,6 +708,7 @@ namespace Warewolf.Studio.ViewModels
 
             OnPropertyChanged(() => Children);
         }
+
         public void Filter(Func<IExplorerItemViewModel, bool> filter)
         {
             Children.Apply(a => a.IsVisible = filter(a));
@@ -694,6 +718,7 @@ namespace Warewolf.Studio.ViewModels
             }
             OnPropertyChanged(() => Children);
         }
+
         public ICollection<IExplorerItemViewModel> AsList()
         {
             return AsList(Children);
@@ -704,6 +729,7 @@ namespace Warewolf.Studio.ViewModels
         {
             return rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
         }
+
         public void SetItemCheckedState(Guid id, bool state)
         {
             var resource = AsList().FirstOrDefault(a => a.ResourceId == id);
@@ -727,6 +753,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand RefreshCommand { get; set; }
+
         public bool IsServerIconVisible
         {
             get
@@ -739,6 +766,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsServerIconVisible);
             }
         }
+
         public bool IsServerUnavailableIconVisible
         {
             get
@@ -754,6 +782,7 @@ namespace Warewolf.Studio.ViewModels
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
 #pragma warning disable 1998
+
         public async Task<ObservableCollection<IExplorerItemViewModel>> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
 #pragma warning restore 1998
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
@@ -775,11 +804,11 @@ namespace Warewolf.Studio.ViewModels
                     ResourcePath = explorerItem.ResourcePath,
                     AllowResourceCheck = isDeploy,
                     ShowContextMenu = !isDeploy,
-   
+
                     //Inputs = explorerItem.Inputs,
                     //Outputs = explorerItem.Outputs
                 };
-                if(isDeploy)
+                if (isDeploy)
                 {
                     itemCreated.CanExecute = false;
                     itemCreated.CanEdit = false;
@@ -808,8 +837,9 @@ namespace Warewolf.Studio.ViewModels
             //return explorerItemModels;
             return null;
         }
+
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
+        private void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return;
@@ -829,11 +859,11 @@ namespace Warewolf.Studio.ViewModels
                     ResourcePath = explorerItem.ResourcePath,
                     AllowResourceCheck = isDeploy,
                     ShowContextMenu = !isDeploy,
- 
+
                     //Inputs = explorerItem.Inputs,
                     //Outputs = explorerItem.Outputs
                 };
-                if(isDeploy)
+                if (isDeploy)
                 {
                     itemCreated.CanExecute = false;
                     itemCreated.CanView = false;
@@ -861,6 +891,7 @@ namespace Warewolf.Studio.ViewModels
             }
             //return explorerItemModels;
         }
+
         private static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
         {
             itemCreated.AllowResourceCheck = false;
@@ -868,6 +899,7 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanCreateDbSource = false;
             itemCreated.CanCreatePluginSource = false;
             itemCreated.CanCreateEmailSource = false;
+            itemCreated.CanCreateRabbitMQSource = false;
             itemCreated.CanCreateDropboxSource = false;
             itemCreated.CanCreateSharePointSource = false;
             itemCreated.CanCreateServerSource = false;

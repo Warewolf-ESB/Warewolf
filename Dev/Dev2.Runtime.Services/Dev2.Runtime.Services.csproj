@@ -105,6 +105,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -165,6 +169,7 @@
     <Compile Include="ESB\Management\Services\FetchPluginNamespaces.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginSources.cs" />
     <Compile Include="ESB\Management\Services\FetchServerPermissions.cs" />
+    <Compile Include="ESB\Management\Services\FetchRabbitMQServiceSources.cs" />
     <Compile Include="ESB\Management\Services\FetchWebSources.cs" />
     <Compile Include="ESB\Management\Services\GetComputeNames.cs" />
     <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
@@ -220,6 +225,7 @@
     <Compile Include="ESB\Management\Services\SaveServerSource.cs" />
     <Compile Include="ESB\Management\Services\SaveSharePointServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebService.cs" />
+    <Compile Include="ESB\Management\Services\SaveRabbitMQServiceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveWebserviceSource.cs" />
     <Compile Include="ESB\Management\Services\SecurityEncryption.cs" />
     <Compile Include="ESB\Management\Services\SecurityRead.cs" />
@@ -231,6 +237,7 @@
     <Compile Include="ESB\Management\Services\TestDbSourceService.cs" />
     <Compile Include="ESB\Management\Services\TestPluginService.cs" />
     <Compile Include="ESB\Management\Services\TestWebService.cs" />
+    <Compile Include="ESB\Management\Services\TestRabbitMQServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestWebserviceSourceService.cs" />
     <Compile Include="ESB\Management\Services\TestEmailServiceSource.cs" />
     <Compile Include="ESB\Management\Services\TestSharepointServerService.cs" />
@@ -347,6 +354,7 @@
     <Compile Include="ServiceModel\Data\HelpDictionary.cs" />
     <Compile Include="ServiceModel\Services.cs" />
     <Compile Include="Configuration\SettingsProvider.cs" />
+    <Compile Include="ServiceModel\RabbitMQSources.cs" />
     <Compile Include="ServiceModel\WebSources.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Workspaces\Workspace.cs" />
