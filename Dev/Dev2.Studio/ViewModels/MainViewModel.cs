@@ -1175,25 +1175,37 @@ namespace Dev2.Studio.ViewModels
 
         void AddNewServerSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
         {
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource) as WorkSurfaceKey, new SourceViewModel<IServerSource>(EventPublisher, new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()), PopupProvider, new ManageServerControl()));
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IServerSource>(EventPublisher, new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()){SelectedGuid = key.ResourceID.Value}, PopupProvider, new ManageServerControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         void AddNewDbSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
         {
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource) as WorkSurfaceKey, new SourceViewModel<IDbSource>(EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker), PopupProvider, new ManageDatabaseSourceControl()));
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker){SelectedGuid = key.ResourceID.Value}, PopupProvider, new ManageDatabaseSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         void AddNewWebSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
         {
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource) as WorkSurfaceKey, new SourceViewModel<IWebServiceSource>(EventPublisher, new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()), PopupProvider, new ManageWebserviceSourceControl()));
+            var key =(WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IWebServiceSource>(EventPublisher, new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManageWebserviceSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         void AddNewPluginSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
         {
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource) as WorkSurfaceKey, new SourceViewModel<IPluginSource>(EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker), PopupProvider, new ManagePluginSourceControl()));
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
+            key.ServerID = ActiveServer.ServerID;
+            // ReSharper disable once PossibleInvalidOperationException
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManagePluginSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -1206,7 +1218,6 @@ namespace Dev2.Studio.ViewModels
         public void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, bool shouldAuthorise = true)
         {
             var resource = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
-            //SaveDropBoxSource(activeEnvironment, resourceType, resourcePath, resource, shouldAuthorise);
             SaveDropBox2016Source(activeEnvironment, resourceType, resourcePath, resource, shouldAuthorise);
 
         }
@@ -2126,6 +2137,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        // ReSharper disable once CyclomaticComplexity
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false)
         {
             bool remove = true;
