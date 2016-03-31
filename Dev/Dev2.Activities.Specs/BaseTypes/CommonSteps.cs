@@ -61,7 +61,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             bool expectedError = anError.Equals("AN",StringComparison.OrdinalIgnoreCase);
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            string fetchErrors = string.Join(Environment.NewLine, result.Environment.AllErrors);
+            string fetchErrors =  result.Environment.FetchErrors();
             bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);

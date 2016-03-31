@@ -326,7 +326,7 @@ namespace Warewolf.Studio.ViewModels
                     UserName = UserName,
                     DefaultQuery = DefaultQuery,
                     Name = ResourceName,
-                    Id = _webServiceSource == null ? Guid.NewGuid() : _webServiceSource.Id
+                    Id = _webServiceSource == null ?  SelectedGuid : _webServiceSource.Id
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock

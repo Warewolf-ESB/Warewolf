@@ -31,6 +31,8 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             _validator.Validate();
             _writeMode = writeMode;
+            if (!dropboxPath.StartsWith(@"/"))
+                dropboxPath = string.Concat(@"/", dropboxPath);
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
             InitializeCertPinning();
@@ -46,7 +48,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             {
                 using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
                 {
-                    FileMetadata uploadAsync = client.Files.UploadAsync("/" + _dropboxPath, _writeMode, true, null, false, stream).Result;
+                    FileMetadata uploadAsync = client.Files.UploadAsync(_dropboxPath, _writeMode, true, null, false, stream).Result;
                     return new DropboxUploadSuccessResult(uploadAsync);
                 }
             }
