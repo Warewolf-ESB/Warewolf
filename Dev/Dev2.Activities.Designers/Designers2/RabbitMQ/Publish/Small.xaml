@@ -82,7 +82,7 @@
                     ToolTip="{x:Static languages:Core.NewRabbitMQSourceHelp}"
                     Command="{Binding NewRabbitMQSourceCommand}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.EditRabbitMQSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Core.NewRabbitMQSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
