@@ -171,6 +171,7 @@
     <Compile Include="Activities\DropBox2016\DownloadActivity\DsfDropBoxDownloadActivity.cs" />
     <Compile Include="Activities\DropBox2016\DownloadActivity\IDropboxDownload.cs" />
     <Compile Include="Activities\DropBox2016\DropboxFiles\DropboxFileList.cs" />
+    <Compile Include="Activities\DropBox2016\ILocalPathManager.cs" />
     <Compile Include="Activities\DropBox2016\Result\DropboxFailureResult.cs" />
     <Compile Include="Activities\DropBox2016\Result\DropboxUploadSuccessResult.cs" />
     <Compile Include="Activities\DropBox2016\Result\DropboxDownloadSuccessResult.cs" />

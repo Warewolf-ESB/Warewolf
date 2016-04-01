@@ -47,24 +47,24 @@ namespace Warewolf.Studio.UISpecs
         public static void WaitForStudioStart()
         {
             Playback.Initialize();
-            var sleepTimer = 60;
+            var sleepTimer = 5;
             while (true)
             {
-                var getStudioWindow = new UIMap().MainStudioWindow;
                 try
                 {
-                    getStudioWindow.WaitForControlReady(1000);
+                    WpfWindow getStudioWindow = new UIMap().MainStudioWindow;
+                    getStudioWindow.WaitForControlExist(100);
                     if (getStudioWindow.Exists)
                     {
                         break;
                     }
                 }
-                catch(UITestControlNotFoundException)
+                catch (UITestControlNotFoundException)
                 {
-                    if (sleepTimer-- <= 0)
-                    {
-                        throw new InvalidOperationException("Warewolf studio not running.");
-                    }
+                }
+                if (sleepTimer-- <= 0)
+                {
+                    throw new InvalidOperationException("Warewolf studio not running.");
                 }
             }
         }
