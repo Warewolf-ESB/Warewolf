@@ -128,6 +128,30 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("QueryManagerProxy_FetchFiles")]
+        public void QueryManagerProxy_FetchFilesroot()
+        {
+            var message = new ExecuteMessage();
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
+            RunTestStringArgs("GetFiles", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> {  }, a => Assert.AreEqual(a.Count, 0), a => a.FetchFiles());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("QueryManagerProxy_FetchFiles")]
+        [ExpectedException(typeof(WarewolfSupportServiceException))]
+        public void QueryManagerProxy_FetchFilesroot_error()
+        {
+            var message = new ExecuteMessage();
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
+            RunTestStringArgs("GetFiles", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> {  }, a => Assert.AreEqual(a.Count, 0), a => a.FetchFiles());
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("QueryManagerProxy_FetchNamespaces")]
         public void QueryManagerProxy_FetchNamespaces()
         {
