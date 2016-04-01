@@ -148,8 +148,10 @@
     <Compile Include="ManageEmailSourceViewModel.cs" />
     <Compile Include="ManageNewServerSourceModel.cs" />
     <Compile Include="ManageNewServerViewModel.cs" />
+    <Compile Include="ManagePluginServiceModel.cs" />
     <Compile Include="ManagePluginSourceModel.cs" />
     <Compile Include="ManagePluginSourceViewModel.cs" />
+    <Compile Include="ManageWebServiceModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />
     <Compile Include="ManageWebserviceSourceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />

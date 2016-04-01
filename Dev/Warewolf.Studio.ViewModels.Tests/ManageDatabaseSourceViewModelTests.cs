@@ -927,7 +927,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerRequestServiceName.Path = expectedPath;
             _targetUpdateManagerRequestServiceName.ResourceName = expectedName;
             _targetUpdateManagerRequestServiceName.DatabaseName = expectedDbName;
-
+            _targetUpdateManagerRequestServiceName.SelectedGuid = Guid.NewGuid();
             //act
             _targetUpdateManagerRequestServiceName.OkCommand.Execute(null);
 
@@ -1015,6 +1015,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestToModelItemNull()
         {
             //arrange
+            var gd = Guid.NewGuid();
             _targetAsyncWorker.Item = null;
             var expectedAuthenticationType = AuthenticationType.User;
             _targetAsyncWorker.AuthenticationType = expectedAuthenticationType;
@@ -1032,7 +1033,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetAsyncWorker.ResourceName = expectedName;
             var expectedDbName = "someDbName";
             _targetAsyncWorker.DatabaseName = expectedDbName;
-            
+            _targetAsyncWorker.SelectedGuid = gd;
             //act
             var value = _targetAsyncWorker.ToModel();
         
@@ -1046,7 +1047,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedPath, value.Path);
             Assert.AreEqual(expectedName, value.Name);
             Assert.AreEqual(expectedDbName, value.DbName);
-            Assert.AreNotEqual(Guid.Empty, value.Id);
+            Assert.AreEqual(gd, value.Id);
+
         }
 
         [TestMethod]

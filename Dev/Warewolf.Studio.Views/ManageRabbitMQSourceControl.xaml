@@ -42,10 +42,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
                 <StackPanel Grid.Row="0" 
                             Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                             Background="{StaticResource WareWolfMenuBrush}" 
@@ -59,7 +57,6 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -94,7 +91,7 @@
                              ToolTip="{x:Static languages:Core.ManageRabbitMQUserNameTooltip}"
                              Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.UserNameAuthenticationHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourceUserNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                     <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Text="{Binding PasswordLabel}" Margin="{StaticResource ControlBorderTop}"/>
@@ -106,7 +103,7 @@
                                  customControls:PasswordBoxAssistant.BindPassword="true"
                                  customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.PasswordAuthenticationHelp}" DataContext="{Binding}" />
+                            <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourcePasswordHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </PasswordBox>
                     <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Text="{Binding VirtualHostLabel}" Margin="{StaticResource ControlBorderTop}"/>
@@ -129,8 +126,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" 
                                 Grid.Column="0" 
@@ -139,21 +134,9 @@
                                 Background="{StaticResource WareWolfMenuBrush}" 
                                 HorizontalAlignment="Stretch" 
                                 Orientation="Horizontal">
-                        <TextBlock Margin="5" Text="Send Test Message" Style="{StaticResource SourceHeader}" />
+                        <TextBlock Margin="5" Text="Publish Test Message" Style="{StaticResource SourceHeader}" />
                     </StackPanel>
-
-                    <!--<TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="{Binding QueueNameLabel}" Margin="{StaticResource ElementBorderTop}"/>
-                    <TextBox x:Name="QueueNameTextBox" 
-                             Grid.Row="1" 
-                             Grid.Column="1" 
-                             ToolTip="{x:Static languages:Core.ManageQueueNameTooltip}"
-                             Margin="{StaticResource ElementBorderTop}"
-                             Text="{Binding QueueName, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.QueueNameHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </TextBox>-->
-                    <StackPanel Grid.Column="1" Grid.Row="3" 
+                    <StackPanel Grid.Column="1" Grid.Row="1" 
                                 Margin="{StaticResource ControlBorderTop}"
                                 Orientation="Horizontal" 
                                 HorizontalAlignment="Right" 
