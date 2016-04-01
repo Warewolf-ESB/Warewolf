@@ -60,6 +60,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="QueryManagerProxyTest.cs" />
+    <Compile Include="UpdateProxyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
