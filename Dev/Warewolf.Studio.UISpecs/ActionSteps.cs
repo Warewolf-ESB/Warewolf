@@ -56,7 +56,7 @@ namespace Warewolf.Studio.UISpecs
                     getStudioWindow.WaitForControlExist(100);
                     if (getStudioWindow.Exists)
                     {
-                        break;
+                        continue;
                     }
                 }
                 catch (UITestControlNotFoundException)
