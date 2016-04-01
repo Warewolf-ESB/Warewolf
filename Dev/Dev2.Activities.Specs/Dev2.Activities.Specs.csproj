@@ -229,9 +229,9 @@
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>PublishRabbitMQ.feature</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
