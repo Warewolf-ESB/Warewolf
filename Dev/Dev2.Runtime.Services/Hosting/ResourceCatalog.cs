@@ -1200,9 +1200,13 @@ namespace Dev2.Runtime.Hosting
 
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new()
         {
-            var resourceContents = ResourceContents<T>(workspaceID, resourceName);
-            if(resourceContents == null || resourceContents.Length == 0) return null;
-            return GetResource<T>(resourceContents);
+            if(resourceName != null)
+            {
+                var resourceContents = ResourceContents<T>(workspaceID, resourceName);
+                if(resourceContents == null || resourceContents.Length == 0) return null;
+                return GetResource<T>(resourceContents);
+            }
+            return null;
         }
 
         public string GetResourcePath(Guid id)
