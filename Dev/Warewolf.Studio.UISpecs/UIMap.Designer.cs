@@ -1322,13 +1322,13 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_DotNet_DLL_Connector_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dotNetDll = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll;
+            WpfListItem dataConnector = this.MainStudioWindow.ToolBox.ToolListBox.ResourceTools.DataConnector;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DsfDotNetDllActivity' custom control to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 127));
-            Mouse.StartDragging(dotNetDll, new Point(16, 25));
+            Mouse.StartDragging(dataConnector, new Point(16, 25));
             Mouse.StopDragging(flowchart, new Point(308, 127));
         }
         
@@ -15576,6 +15576,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mDataConnector = new WpfListItem(this);
                     #region Search Criteria
                     this.mDataConnector.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDataConnector.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
                     this.mDataConnector.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }

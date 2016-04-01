@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.DropBox2016;
+using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
@@ -19,9 +19,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
     [ExcludeFromCodeCoverage]
     public class DsfDropBoxDownloadAcivtityTestShould
     {
-        private static DsfDropBoxUploadActivity CreateDropboxActivity()
+        private static DsfDropBoxDownloadActivity CreateDropboxActivity()
         {
-            return new DsfDropBoxUploadActivity();
+            return new DsfDropBoxDownloadActivity();
         }
 
         private static IExecutionEnvironment CreateExecutionEnvironment()
@@ -52,7 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             Assert.IsNotNull(boxUploadAcivtity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("Upload to Dropbox", boxUploadAcivtity.DisplayName);
+            Assert.AreEqual("DOWNLOAD from Dropbox", boxUploadAcivtity.DisplayName);
 
         }
 
@@ -72,33 +72,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetWriteMode_GivenOverwritemodeIsTrue_ShouldReturnOverwriteModeInstance()
-        {
-            //---------------Set up test pack-------------------
-            var boxUploadAcivtity = CreateDropboxActivity();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var writeMode = boxUploadAcivtity.GetWriteMode();
-            //---------------Test Result -----------------------
-            Assert.AreEqual(WriteMode.Overwrite.Instance, writeMode);
-        }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetWriteMode_GivenAddmodeIsTrue_ShouldReturnAddModeInstance()
-        {
-            //---------------Set up test pack-------------------
-            var boxUploadAcivtity = CreateDropboxActivity();
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            boxUploadAcivtity.AddMode = true;
-            var writeMode = boxUploadAcivtity.GetWriteMode();
-            //---------------Test Result -----------------------
-            Assert.IsTrue(boxUploadAcivtity.AddMode);
-            Assert.AreEqual(WriteMode.Add.Instance, writeMode);
-        }
+
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -107,7 +83,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Set up test pack-------------------
             var boxUploadAcivtity = CreateDropboxActivity();
             //---------------Assert Precondition----------------
-            Assert.AreEqual(WriteMode.Overwrite.Instance, boxUploadAcivtity.GetWriteMode());
             //---------------Execute Test ----------------------
             var debugInputs = boxUploadAcivtity.GetDebugInputs(null, 0);
             //---------------Test Result -----------------------
@@ -122,7 +97,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var boxUploadAcivtity = CreateDropboxActivity();
             boxUploadAcivtity.FromPath = "Random.txt";
             //---------------Assert Precondition----------------
-            Assert.AreEqual(WriteMode.Overwrite.Instance, boxUploadAcivtity.GetWriteMode());
 
             //---------------Execute Test ----------------------
             var debugInputs = boxUploadAcivtity.GetDebugInputs(CreateExecutionEnvironment(), 0);
@@ -138,7 +112,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var boxUploadAcivtity = CreateDropboxActivity();
             boxUploadAcivtity.ToPath = "Random.txt";
             //---------------Assert Precondition----------------
-            Assert.AreEqual(WriteMode.Overwrite.Instance, boxUploadAcivtity.GetWriteMode());
 
             //---------------Execute Test ----------------------
             var debugInputs = boxUploadAcivtity.GetDebugInputs(CreateExecutionEnvironment(), 0);
@@ -155,7 +128,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             boxUploadAcivtity.ToPath = "Random.txt";
             boxUploadAcivtity.FromPath = "Random.txt";
             //---------------Assert Precondition----------------
-            Assert.AreEqual(WriteMode.Overwrite.Instance, boxUploadAcivtity.GetWriteMode());
 
             //---------------Execute Test ----------------------
             var debugInputs = boxUploadAcivtity.GetDebugInputs(environment, 0);
@@ -217,17 +189,17 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
+            Assert.IsNotNull(dropBoxDownloadActivityMock);
             //---------------Execute Test ----------------------
             var esbChannel = new Mock<IEsbChannel>().Object;
             var datObj = new Mock<IDSFDataObject>().Object;
             var executionEnvironment = new Mock<IExecutionEnvironment>().Object;
             // ReSharper disable once RedundantAssignment
             var errorResultTO = new ErrorResultTO();
-            dsfDropBoxUploadAcivtityMock.Execute(esbChannel, datObj, String.Empty, String.Empty, out  errorResultTO, 0);
-            var debugOutputs = dsfDropBoxUploadAcivtityMock.GetDebugOutputs(executionEnvironment, 0);
+            dropBoxDownloadActivityMock.Execute(esbChannel, datObj, String.Empty, String.Empty, out  errorResultTO, 0);
+            var debugOutputs = dropBoxDownloadActivityMock.GetDebugOutputs(executionEnvironment, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugOutputs.Count);
         }
@@ -239,21 +211,21 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
+                .Returns(new DropboxDownloadSuccessResult(TestConstant.FileDownloadResponseInstance.Value));
+            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
+            Assert.IsNotNull(dropBoxDownloadActivityMock);
             //---------------Execute Test ----------------------
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             // ReSharper disable once RedundantAssignment
             IDSFDataObject dataObject = datObj.Object;
-            dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
+            dropBoxDownloadActivityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file location has been entered"));
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteTool_GivenNoToPath_ShouldAddError()
@@ -262,17 +234,16 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { IsUplodValidSuccess = true };
-            dsfDropBoxUploadAcivtityMock.FromPath = "File.txt";
+            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object) { FromPath = "File.txt" };
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
+            Assert.IsNotNull(dropBoxDownloadActivityMock);
             //---------------Execute Test ----------------------
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             // ReSharper disable once RedundantAssignment
             IDSFDataObject dataObject = datObj.Object;
-            dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
+            dropBoxDownloadActivityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file destination has been entered"));
         }
@@ -285,14 +256,18 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
-                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
-            var dsfDropBoxUploadAcivtityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object); {};
+                .Returns(new DropboxDownloadSuccessResult(TestConstant.FileDownloadResponseInstance.Value));
+            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock(mockExecutor.Object); { }
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dsfDropBoxUploadAcivtityMock);
+            Assert.IsNotNull(dropBoxDownloadActivityMock);
             //---------------Execute Test ----------------------
-            dsfDropBoxUploadAcivtityMock.PerfomBaseExecution(new Dictionary<string, string>());
+            dropBoxDownloadActivityMock.PerfomBaseExecution(new Dictionary<string, string>()
+            {
+                {"FromPath",""},
+                {"ToPath",""}
+            });
             //---------------Test Result -----------------------
-            Assert.Fail("Exception Not Throw");
+            Assert.Fail("Exception Not Thrown");
         }
 
 

@@ -434,7 +434,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetRequestServiceViewModel.ServerName = new ComputerName() { Name = "somecomputer" };
             _targetRequestServiceViewModel.Protocol = "http";
             _targetRequestServiceViewModel.SelectedPort = "8080";
-
+            _targetRequestServiceViewModel.SelectedGuid = Guid.NewGuid();
             //act
             _targetRequestServiceViewModel.OkCommand.Execute(null);
 
@@ -449,7 +449,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedName, _targetRequestServiceViewModel.Item.Name);
             Assert.AreEqual(expectedPath, _targetRequestServiceViewModel.Item.ResourcePath);
             Assert.AreNotEqual(Guid.Empty, _targetRequestServiceViewModel.Item.ID);
-            _updateManagerMock.Verify(it => it.Save(It.IsAny<IServerSource>()));
+
             Assert.AreEqual(expectedHeaderText, _targetRequestServiceViewModel.HeaderText);
             Assert.AreEqual(expectedHeader, _targetRequestServiceViewModel.Header);
         }
@@ -1100,6 +1100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestToModelItemNull()
         {
             //arrange
+            var gd = Guid.NewGuid();
             _target.Item = null;
             var expectedAuthenticationType = AuthenticationType.User;
             var expectedName = "someName";
@@ -1114,7 +1115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Protocol = expectedProtocol;
             _target.ResourceName = expectedName;
             _target.Password = expectedPassword;
-
+            _target.SelectedGuid = gd;
             //act
             var value = _target.ToModel();
 
@@ -1125,6 +1126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedPassword, value.Password);
             Assert.AreEqual(expectedName, value.Name);
             Assert.AreNotEqual(Guid.Empty, value.ID);
+            Assert.AreEqual(value.ID,gd);
         }
 
         [TestMethod]

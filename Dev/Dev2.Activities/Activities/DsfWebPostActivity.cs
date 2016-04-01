@@ -248,6 +248,7 @@ namespace Dev2.Activities
 
         public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
+            ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             var webclient = new WebClient();
             if (head != null)
             {
@@ -263,12 +264,6 @@ namespace Dev2.Activities
                 webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
 
-            var contentType = webclient.Headers["Content-Type"];
-            if (string.IsNullOrEmpty(contentType))
-            {
-                contentType = "application/x-www-form-urlencoded";
-            }
-            webclient.Headers["Content-Type"] = contentType;
             webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
             var address = source.Address;
             if (query != null)

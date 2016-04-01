@@ -17,16 +17,12 @@ namespace Warewolf.Studio.Views
 
         public bool GetControlEnabled(string controlName)
         {
-            switch (controlName)
-            {
-                case "Save":
-                    var viewModel = DataContext as ManageRabbitMQSourceViewModel;
-                    return viewModel != null && viewModel.OkCommand.CanExecute(null);
-                //case "Test Connection":
-                //    return TestConnectionButton.Command.CanExecute(null);
-                //case "TestQuery":
-                //    return TestDefault.IsEnabled;
-            }
+            //switch (controlName)
+            //{
+            //    case "Save":
+            //        var viewModel = DataContext as ManageRabbitMQSourceViewModel;
+            //        return viewModel != null && viewModel.OkCommand.CanExecute(null);
+            //}
             return false;
         }
 
