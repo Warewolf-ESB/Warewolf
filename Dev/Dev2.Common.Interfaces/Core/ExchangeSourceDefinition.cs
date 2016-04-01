@@ -12,14 +12,15 @@ namespace Dev2.Common.Interfaces.Core
     {
         public bool Equals(IExchangeSource other)
         {
-            return string.Equals(Name, other.Name) && Id.Equals(other.Id) && string.Equals(Path, other.Path);
+            return string.Equals(Name, other.Name) && ResourceID.Equals(other.ResourceID) && string.Equals(Path, other.Path);
         }
 
-        public Guid Id { get; set; }
+        public Guid ResourceID { get; set; }
         public string Name { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public enSourceType Type { get; set; }
         public string Path { get; set; }
+        public int Timeout { get; set; }
     }
 }

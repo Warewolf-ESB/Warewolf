@@ -22,6 +22,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -1009,25 +1010,6 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
             OpeningWorkflowsHelper.AddWorkflow(key);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
-        }
-
-        public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
-        {
-            //var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker);
-            //var vm = new SourceViewModel<IExchangeSource>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl());
-
-            //if (workSurfaceKey == null)
-            //{
-            //    workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
-            //    workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
-            //    workSurfaceKey.ResourceID = selectedSource.Id;
-            //    workSurfaceKey.ServerID = ActiveServer.ServerID;
-            //}
-
-            //var key = workSurfaceKey as WorkSurfaceKey;
-            //var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
-            //OpeningWorkflowsHelper.AddWorkflow(key);
-            //AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)

@@ -7,12 +7,14 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common.Common;
+using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.Util;
@@ -29,22 +31,31 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Validation;
-
+using Action = System.Action;
+// ReSharper disable NotAccessedField.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UseNullPropagation
 // ReSharper disable ConvertPropertyToExpressionBody
 // ReSharper disable ArrangeTypeMemberModifiers
 
 namespace Dev2.Activities.Designers2.ExchangeEmail
 {
-    public class ExchangeEmailDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>
+    public class ExchangeEmailDesignerViewModel : CustomToolWithRegionBase
     {
-        static readonly ExchangeSource NewEmailSource = new ExchangeSource { ResourceID = Guid.NewGuid(), ResourceName = "New Email Source..." };
-        static readonly ExchangeSource SelectEmailSource = new ExchangeSource { ResourceID = Guid.NewGuid(), ResourceName = "Select an Email Source..." };
+        // ReSharper disable UnusedMember.Local
+        readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
+
+        readonly string _sourceNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotSelected;
+        readonly string _methodNotSelectedMessage = Warewolf.Studio.Resources.Languages.Core.PluginServiceMethodNotSelected;
+        readonly string _serviceExecuteOnline = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteOnline;
+        readonly string _serviceExecuteLoginPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteLoginPermission;
+        readonly string _serviceExecuteViewPermission = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceExecuteViewPermission;
+        // ReSharper restore UnusedMember.Local
 
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
         readonly IAsyncWorker _asyncWorker;
-
+        private ISourceToolRegion<IExchangeSource> _sourceRegion;
         public ObservableCollection<ExchangeSource> EmailSources { get; private set; }
         public ObservableCollection<enMailPriorityEnum> Priorities { get; private set; }
 
@@ -72,72 +83,50 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
             EmailSources = new ObservableCollection<ExchangeSource>();
             Priorities = new ObservableCollection<enMailPriorityEnum> { enMailPriorityEnum.High, enMailPriorityEnum.Normal, enMailPriorityEnum.Low };
-
-            EditEmailSourceCommand = new RelayCommand(o => EditEmailSource(), o => IsEmailSourceSelected);
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
-            RefreshSources(true);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var server = shellViewModel.ActiveServer;
+            var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
+            Model = model;
         }
 
-        public static readonly DependencyProperty SelectedEmailSourceProperty = DependencyProperty.Register("SelectedEmailSource", typeof(ExchangeSource), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(null, OnSelectedEmailSourceChanged));
-
-        public ExchangeSource SelectedEmailSource
+        public ISourceToolRegion<IExchangeSource> SourceRegion
         {
             get
             {
-                return (ExchangeSource)GetValue(SelectedEmailSourceProperty);
+                return _sourceRegion;
             }
             set
             {
-                SetValue(SelectedEmailSourceProperty, value);
-                EditEmailSourceCommand.RaiseCanExecuteChanged();
+                _sourceRegion = value;
+                OnPropertyChanged();
             }
         }
 
-        protected virtual void OnSelectedEmailSourceChanged()
+        private IExchangeServiceModel Model { get; set; }
+        public override IList<IToolRegion> BuildRegions()
         {
-            if (SelectedEmailSource == NewEmailSource)
-            {
-                CreateEmailSource();
-                return;
-            }
+            IList<IToolRegion> regions = new List<IToolRegion>();
 
-            IsRefreshing = true;
+            SourceRegion = new ExchangeSourceRegion(Model,ModelItem, enSourceType.EmailSource);
+            regions.Add(SourceRegion);
 
-            if (SelectedEmailSource != SelectEmailSource)
-            {
-                EmailSources.Remove(SelectEmailSource);
-            }
-            EmailSource = SelectedEmailSource;
-            EditEmailSourceCommand.RaiseCanExecuteChanged();
+            return regions;
         }
 
-        static void OnSelectedEmailSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = (ExchangeEmailDesignerViewModel)d;
-
-            viewModel.OnSelectedEmailSourceChanged();
-        }
-
-        public void CreateEmailSource()
-        {
-            _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
-            RefreshSources();
-        }
-
-        public bool IsEmailSourceSelected
+        private Action _sourceChangedAction;
+        public Action SourceChangedAction
         {
             get
             {
-                return SelectedEmailSource != SelectEmailSource;
+                return _sourceChangedAction ?? (() => { });
             }
-        }
-
-        public void EditEmailSource()
-        {
-            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedEmailSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
-
+            set
+            {
+                _sourceChangedAction = value;
+            }
         }
 
         public static readonly DependencyProperty CanTestEmailAccountProperty = DependencyProperty.Register("CanTestEmailAccount", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(true));
@@ -198,7 +187,8 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
             CanTestEmailAccount = false;
 
-            var testSource = new ExchangeSource(SelectedEmailSource.ToXml());
+            //Todo Implement Exchange Logic
+            var testSource = new ExchangeSource();
             if (!string.IsNullOrEmpty(FromAccount))
             {
                 testSource.UserName = FromAccount;
@@ -308,82 +298,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             _eventPublisher.Publish(message);
         }
 
-        public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
-        public static readonly DependencyProperty IsRefreshingProperty = DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-        bool _isInitializing;
-
-        ExchangeSource EmailSource
-        {
-            // ReSharper disable ExplicitCallerInfoArgument
-            get { return GetProperty<ExchangeSource>("SelectedEmailSource"); }
-            // ReSharper restore ExplicitCallerInfoArgument
-            set
-            {
-                if (!_isInitializing)
-                {
-                    // ReSharper disable ExplicitCallerInfoArgument
-                    SetProperty(value, "SelectedEmailSource");
-                    // ReSharper restore ExplicitCallerInfoArgument
-                }
-            }
-        }
-
-        void RefreshSources(bool isInitializing = false)
-        {
-            IsRefreshing = true;
-            var selectedEmailSource = EmailSource;
-            if (isInitializing)
-            {
-                _isInitializing = true;
-            }
-            LoadSources(() =>
-            {
-                SetSelectedEmailSource(selectedEmailSource);
-                IsRefreshing = false;
-                if (isInitializing)
-                {
-                    _isInitializing = false;
-                }
-            });
-        }
-
-        void SetSelectedEmailSource(Resource source)
-        {
-            var selectedSource = source == null ? null : EmailSources.FirstOrDefault(d => d.ResourceID == source.ResourceID);
-            if (selectedSource == null)
-            {
-                if (EmailSources.FirstOrDefault(d => d.Equals(SelectEmailSource)) == null)
-                {
-                    EmailSources.Insert(0, SelectEmailSource);
-                }
-                selectedSource = SelectEmailSource;
-            }
-            SelectedEmailSource = selectedSource;
-        }
-
-        void LoadSources(System.Action continueWith = null)
-        {
-            EmailSources.Clear();
-            EmailSources.Add(NewEmailSource);
-
-            _asyncWorker.Start(() => GetEmailSources().OrderBy(r => r.ResourceName), sources =>
-            {
-                foreach (var source in sources)
-                {
-                    EmailSources.Add(source);
-                }
-                if (continueWith != null)
-                {
-                    continueWith();
-                }
-            });
-        }
-
-        IEnumerable<ExchangeSource> GetEmailSources()
-        {
-            return _environmentModel.ResourceRepository.FindSourcesByType<ExchangeSource>(_environmentModel, enSourceType.ExchangeEmailSource);
-        }
-
         public override void Validate()
         {
             var result = new List<IActionableErrorInfo>();
@@ -439,9 +353,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
             switch (propertyName)
             {
-                case "EmailSource":
-                    ruleSet.Add(new IsNullRule(() => EmailSource));
-                    break;
                 case "FromAccount":
                     var fromExprRule = new IsValidExpressionRule(() => FromAccount, datalist, "user@test.com");
                     ruleSet.Add(fromExprRule);
@@ -486,23 +397,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             if (mainViewModel != null)
             {
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);
-            }
-        }
-
-        public void Handle(UpdateResourceMessage message)
-        {
-            var selectedSource = new ExchangeSource(message.ResourceModel.WorkflowXaml.ToXElement());
-            if (EmailSource == null)
-            {
-                EmailSource = selectedSource;
-            }
-            else
-            {
-                if (selectedSource.ResourceID == EmailSource.ResourceID)
-                {
-                    EmailSource = null;
-                    EmailSource = selectedSource;
-                }
             }
         }
     }

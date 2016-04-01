@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void EditSource(IExchangeSource selectedSource)
         {
-            _shell.EditResource(selectedSource);
+           
         }
 
         public string TestService(IExchangeService inputValues)

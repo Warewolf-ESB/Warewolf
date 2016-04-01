@@ -11,7 +11,6 @@ namespace Dev2.Common.Interfaces
     public interface IShellViewModel
     {
         void EditResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
 
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
 
