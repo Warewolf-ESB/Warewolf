@@ -97,6 +97,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
                 _selectedRabbitMQSource = value;
                 RabbitMQSourceResourceId = _selectedRabbitMQSource == null ? Guid.Empty : _selectedRabbitMQSource.ResourceID;
                 OnPropertyChanged("IsRabbitMQSourceSelected");
+                EditRabbitMQSourceCommand.RaiseCanExecuteChanged();
             }
         }
 

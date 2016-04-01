@@ -729,6 +729,10 @@ namespace Dev2.Studio.ViewModels
                     ShowEditResourceWizard(resourceModel);
                     break;
 
+                case "RabbitMQSource":
+                    EditRabbitMQSource(resourceModel);
+                    break;
+
                 case "Server":
                 case "ServerSource":
                     var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
@@ -812,6 +816,28 @@ namespace Dev2.Studio.ViewModels
                 UserName = db.UserName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        private void EditRabbitMQSource(IContextualResourceModel resourceModel)
+        {
+            var source = new RabbitMQSource(resourceModel.WorkflowXaml.ToXElement());
+            var def = new RabbitMQServiceSourceDefinition()
+            {
+                ResourceID = source.ResourceID,
+                ResourceName = source.ResourceName,
+                ResourcePath = source.ResourcePath,
+                HostName = source.HostName,
+                Port = source.Port,
+                UserName = source.UserName,
+                Password = source.Password,
+                VirtualHost = source.VirtualHost
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.RabbitMQSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
