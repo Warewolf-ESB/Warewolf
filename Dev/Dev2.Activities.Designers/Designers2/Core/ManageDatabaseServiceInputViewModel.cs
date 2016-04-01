@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers2.Core
             OutputArea.IsEnabled = true;
             TestResults = null;
             IsTesting = true;
-
+            Errors = new List<string>();
             try
             {
                 TestResults = _serverModel.TestService(Model);
