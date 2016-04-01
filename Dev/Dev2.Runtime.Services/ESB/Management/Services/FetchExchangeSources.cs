@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     return new ExchangeSourceDefinition()
                     {
-                        Id = res.ResourceID,
+                        ResourceID = res.ResourceID,
                         Name = res.ResourceName,
                         Path = res.ResourcePath,
                     };

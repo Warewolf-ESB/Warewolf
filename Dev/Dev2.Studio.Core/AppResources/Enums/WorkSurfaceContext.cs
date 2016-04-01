@@ -57,7 +57,8 @@ namespace Dev2.Studio.Core.AppResources.Enums
         WebService,
         PluginSource,
         PluginService,
-        SharepointServerSource
+        SharepointServerSource,
+        Exchange
     }
 
 }

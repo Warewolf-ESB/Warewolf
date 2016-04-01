@@ -84,7 +84,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
             if (SourceId != Guid.Empty)
             {
-                SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
+                SelectedSource = Sources.FirstOrDefault(source => source.ResourceID == SourceId);
             }
         }
 
@@ -173,7 +173,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             {
                 _selectedSource = value;
                 SavedSource = value;
-                SourceId = value.Id;
+                SourceId = value.ResourceID;
             }
             OnPropertyChanged("SelectedSource");
         }

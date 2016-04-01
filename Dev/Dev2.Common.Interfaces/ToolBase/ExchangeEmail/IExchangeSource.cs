@@ -7,13 +7,14 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
 {
-    public interface IExchangeSource : IEquatable<IExchangeSource>
+    public interface IExchangeSource
     {
-        Guid Id { get; set; }
+        Guid ResourceID { get; set; }
         string Name { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
         enSourceType Type { get; set; }
         string Path { get; set; }
+        int Timeout { get; set; }
     }
 }
