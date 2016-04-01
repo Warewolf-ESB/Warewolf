@@ -19,9 +19,9 @@
                                Width="340"
                                MinWidth="340"
                                MaxWidth="600"
-                               Height="230"
-                               MinHeight="230"
-                               MaxHeight="230"
+                               Height="260"
+                               MinHeight="260"
+                               MaxHeight="260"
                                mc:Ignorable="d"
                                d:DesignWidth="340"  
                                d:DataContext="{d:DesignInstance upload:DropBoxDownloadViewModel}">
