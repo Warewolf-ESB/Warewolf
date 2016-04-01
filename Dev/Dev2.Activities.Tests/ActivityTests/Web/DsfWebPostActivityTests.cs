@@ -459,7 +459,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, new WebSource());
             //---------------Test Result -----------------------
             var actualHeaderCount = webClient.Headers.Count;
-            Assert.AreEqual(2, actualHeaderCount);
+            Assert.AreEqual(1, actualHeaderCount);
         }
 
 
@@ -476,17 +476,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, new WebSource());
             //---------------Assert Precondition----------------
             var actualHeaderCount = webClient.Headers.Count;
-            Assert.AreEqual(2, actualHeaderCount);
+            Assert.AreEqual(1, actualHeaderCount);
             //---------------Execute Test ----------------------
 
             var userAgentHeader = webClient.Headers.AllKeys.Single(header => header == userAgent);
-            var contentTypeHeader = webClient.Headers.AllKeys.Single(header => header == contentType);
             //---------------Test Result -----------------------
             Assert.IsNotNull(userAgentHeader);
-            Assert.IsNotNull(contentTypeHeader);
             Assert.AreEqual(userAgent, userAgentHeader);
-            Assert.AreEqual(contentType, contentTypeHeader);
-            Assert.AreEqual("application/x-www-form-urlencoded", webClient.Headers[contentType]);
         }
 
 
@@ -576,7 +572,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var webClient = dsfWebPostActivity.CreateClient(headers, String.Empty, new WebSource());
             //---------------Test Result -----------------------
             var actualHeaderCount = webClient.Headers.Count;
-            Assert.AreEqual(3, actualHeaderCount);
+            Assert.AreEqual(2, actualHeaderCount);
             Assert.AreEqual("text/json", webClient.Headers["Content"]);
         }
 

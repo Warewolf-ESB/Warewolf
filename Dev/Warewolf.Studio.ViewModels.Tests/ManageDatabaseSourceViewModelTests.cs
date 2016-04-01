@@ -927,7 +927,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetUpdateManagerRequestServiceName.Path = expectedPath;
             _targetUpdateManagerRequestServiceName.ResourceName = expectedName;
             _targetUpdateManagerRequestServiceName.DatabaseName = expectedDbName;
-
+            _targetUpdateManagerRequestServiceName.SelectedGuid = Guid.NewGuid();
             //act
             _targetUpdateManagerRequestServiceName.OkCommand.Execute(null);
 
