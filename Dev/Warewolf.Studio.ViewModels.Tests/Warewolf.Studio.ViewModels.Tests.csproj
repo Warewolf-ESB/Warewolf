@@ -130,6 +130,7 @@
     <Compile Include="ManageNewServerViewModelTests.cs" />
     <Compile Include="ManagePluginSourceModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModelTests.cs" />
+    <Compile Include="ManageRabbitMqSourceModelTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
     <Compile Include="MessageBoxViewModelTests.cs" />
