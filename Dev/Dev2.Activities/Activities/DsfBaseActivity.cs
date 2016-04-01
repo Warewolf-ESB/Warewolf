@@ -89,7 +89,10 @@ namespace Dev2.Activities
                         evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
                     }
                     var result = PerformExecution(evaluatedValues);
-                    dataObject.Environment.Assign(Result, result, update);
+                    if(!string.IsNullOrEmpty(Result))
+                    {
+                        dataObject.Environment.Assign(Result, result, update);
+                    }
                 }
 
                 allErrors.MergeErrors(errors);
@@ -117,7 +120,10 @@ namespace Dev2.Activities
                     DisplayAndWriteError(DisplayName, allErrors);
                     var errorList = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorList);
-                    dataObject.Environment.Assign(Result, null, update);
+                    if(DisplayName.ToUpper().Contains("Dropbox".ToUpper()))
+                        dataObject.Environment.Assign(Result, GlobalConstants.DropBoxFailure, update);
+                    else
+                        dataObject.Environment.Assign(Result, null, update);
                 }
                 if(dataObject.IsDebugMode())
                 {
