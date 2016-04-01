@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.RabbitMQ.Publish;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -20,8 +21,8 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
         {
             var publishActivity = new DsfPublishRabbitMQActivity();
             var modelItem = ModelItemUtils.CreateModelItem(publishActivity);
-            var model = new Mock<IRabbitMQModel>();
-            var viewModel = new RabbitMQPublishDesignerViewModel(modelItem, model.Object, new Mock<IEnvironmentModel>().Object);
+            var model = new Mock<IRabbitMQSourceModel>();
+            var viewModel = new RabbitMQPublishDesignerViewModel(modelItem, model.Object);
 
             ScenarioContext.Current.Add("ViewModel", viewModel);
             ScenarioContext.Current.Add("Model", model);
@@ -94,15 +95,15 @@ namespace Dev2.Activities.Specs.Toolbox.RabbitMQ.Publish
         [Then(@"CreateNewSource is executed")]
         public void ThenCreateNewSourceIsExecuted()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQModel>>("Model");
+            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
             model.Verify(a => a.CreateNewSource());
         }
 
         [Then(@"EditSource is executed")]
         public void ThenEditSourceIsExecuted()
         {
-            var model = ScenarioContext.Current.Get<Mock<IRabbitMQModel>>("Model");
-            model.Verify(a => a.EditSource());
+            var model = ScenarioContext.Current.Get<Mock<IRabbitMQSourceModel>>("Model");
+            model.Verify(a => a.EditSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
         }
 
         [Given(@"I Select ""(.*)"" as a Rabbit Source")]
