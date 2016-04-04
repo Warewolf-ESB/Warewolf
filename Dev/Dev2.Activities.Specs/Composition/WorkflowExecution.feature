@@ -4171,20 +4171,6 @@ Scenario: SQL Mapped To Recordsets incorrect
 	  |                               |
 	  | Error: Sql Error: parse error |
 
-
-
-#Needs Work
-Scenario: Parameter not found in the collection
-	Given I have a workflow "BadMySqlParameterName"
-	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
-	     |                            | `p_startswith` | false         |
-	When "BadMySqlParameterName" is executed
-	Then the workflow execution has "An" error
-	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
-	  |                                                      |
-	  | Parameter 'p_startswith' not found in the collection |
-
 	  
 
 Scenario: SQL Recordset has invalid character
