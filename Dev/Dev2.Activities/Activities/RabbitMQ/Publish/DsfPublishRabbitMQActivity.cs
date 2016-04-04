@@ -56,9 +56,9 @@ namespace Dev2.Activities.RabbitMQ.Publish
         public string Message { get; set; }
 
         [NonSerialized]
-        private IConnectionFactory _connectionFactory;
+        private ConnectionFactory _connectionFactory;
 
-        internal IConnectionFactory ConnectionFactory
+        internal ConnectionFactory ConnectionFactory
         {
             get
             {
@@ -97,22 +97,22 @@ namespace Dev2.Activities.RabbitMQ.Publish
                     return "Failure: Queue Name and Message are required.";
                 }
 
+                ConnectionFactory.HostName = RabbitMQSource.HostName;
+                ConnectionFactory.Port = RabbitMQSource.Port;
+                ConnectionFactory.UserName = RabbitMQSource.UserName;
+                ConnectionFactory.Password = RabbitMQSource.Password;
+                ConnectionFactory.VirtualHost = RabbitMQSource.VirtualHost;
+
                 using (Connection = ConnectionFactory.CreateConnection())
                 {
                     using (Channel = Connection.CreateModel())
                     {
-                        Channel.QueueDeclare(queue: queueName,
-                                                durable: IsDurable,
-                                                exclusive: IsExclusive,
-                                                autoDelete: IsAutoDelete,
-                                                arguments: null);
+                        Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
+                        Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
+                        Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
 
-                        byte[] body = Encoding.UTF8.GetBytes(message);
-
-                        Channel.BasicPublish(exchange: "",
-                            routingKey: queueName,
-                            basicProperties: null,
-                            body: body);
+                        IBasicProperties basicProperties = Channel.CreateBasicProperties();
+                        Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }
                 Dev2Logger.Debug(String.Format("Message published to queue {0}", queueName));

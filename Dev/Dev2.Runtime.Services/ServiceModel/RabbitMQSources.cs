@@ -95,21 +95,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Test
 
-        // POST: Service/WebSources/Test
-        //public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
-        //{
-        //    try
-        //    {
-        //        var source = JsonConvert.DeserializeObject<RabbitMQSource>(args);
-        //        return CanConnectServer(source);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        RaiseError(ex);
-        //        return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
-        //    }
-        //}
-
         public ValidationResult Test(RabbitMQSource source)
         {
             try
@@ -131,7 +116,15 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                IConnectionFactory connectionFactory = new ConnectionFactory();
+                IConnectionFactory connectionFactory = new ConnectionFactory()
+                {
+                    HostName = rabbitMQSource.HostName,
+                    Port = rabbitMQSource.Port,
+                    UserName = rabbitMQSource.UserName,
+                    Password = rabbitMQSource.Password,
+                    VirtualHost = rabbitMQSource.VirtualHost
+                };
+
                 using (IConnection connection = connectionFactory.CreateConnection())
                 {
                     using (IModel channel = connection.CreateModel())
@@ -142,12 +135,10 @@ namespace Dev2.Runtime.ServiceModel
                                                 autoDelete: false,
                                                 arguments: null);
 
-                        byte[] body = Encoding.UTF8.GetBytes("Test Message");
-
                         channel.BasicPublish(exchange: "",
                             routingKey: "TestRabbitMQServiceSource",
                             basicProperties: null,
-                            body: body);
+                            body: Encoding.UTF8.GetBytes("Test Message"));
 
                         channel.QueueDeleteNoWait("TestRabbitMQServiceSource", true, false);
                     }

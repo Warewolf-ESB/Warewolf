@@ -1,5 +1,4 @@
 ﻿using Dev2;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
@@ -61,6 +60,7 @@ namespace Warewolf.Studio.ViewModels
             : this(rabbitMQSourceModel)
         {
             VerifyArgument.IsNotNull("rabbitMQServiceSource", rabbitMQServiceSource);
+
             _rabbitMQServiceSource = rabbitMQServiceSource;
             SetupHeaderTextFromExisting();
             FromModel(rabbitMQServiceSource);
@@ -86,8 +86,8 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_rabbitMQServiceSource != null)
             {
-                HeaderText = (_rabbitMQServiceSource.ResourceName ?? ResourceName).Trim();
-                Header = (_rabbitMQServiceSource.ResourceName ?? ResourceName).Trim();
+                string headerText = _rabbitMQServiceSource.ResourceName ?? ResourceName;
+                HeaderText = Header = !string.IsNullOrWhiteSpace(headerText) ? headerText.Trim() : "";
             }
         }
 
@@ -148,26 +148,30 @@ namespace Warewolf.Studio.ViewModels
                     var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
 
                     if (res == MessageBoxResult.OK)
-                    {
-                        var src = ToSource();
-                        src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
-                        src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
-                        Save(src);
-                        Item = src;
-                        _rabbitMQServiceSource = src;
-                        _resourceName = _rabbitMQServiceSource.ResourceName;
-                        SetupHeaderTextFromExisting();
+                    {                        
+                        SaveAndSetItem();
+                        if (_rabbitMQServiceSource != null)
+                        {
+                            _rabbitMQServiceSource.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                            _rabbitMQServiceSource.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                            _resourceName = _rabbitMQServiceSource.ResourceName;
+                        }
                     }
                 }
             }
             else
             {
-                var src = ToSource();
-                Save(src);
-                Item = src;
-                _rabbitMQServiceSource = src;
-                SetupHeaderTextFromExisting();
+                SaveAndSetItem();
             }
+        }
+
+        private void SaveAndSetItem()
+        {
+            IRabbitMQServiceSourceDefinition source = ToSource();
+            Save(source);
+            Item = source;
+            _rabbitMQServiceSource = source;
+            SetupHeaderTextFromExisting();
         }
 
         private void Save(IRabbitMQServiceSourceDefinition source)
@@ -185,7 +189,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                ResourceName = ResourceName;
+                ResourceName = value;
             }
         }
 
@@ -226,11 +230,6 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _port)
                 {
                     _port = value;
-                    if (!_port.ToString().IsNumeric())
-                    {
-                        OkCommand.CanExecute(false);
-                    }
-
                     OnPropertyChanged(() => Port);
                     OnPropertyChanged(() => Header);
                     ViewModelUtils.RaiseCanExecuteChanged(PublishCommand);
@@ -293,7 +292,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _testing;
             }
-            private set
+            set
             {
                 _testing = value;
                 OnPropertyChanged(() => Testing);
