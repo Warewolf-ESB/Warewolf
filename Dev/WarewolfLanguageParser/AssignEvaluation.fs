@@ -5,7 +5,7 @@ open WarewolfDataEvaluationCommon
 open Dev2.Common.Interfaces
 open LanguageAST
 open Newtonsoft.Json.Linq
-
+open CommonFunctions
 
 
 
@@ -240,4 +240,4 @@ let RemoveFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
 
-let AtomtoString a = WarewolfDataEvaluationCommon.atomtoString a;
+let AtomtoString a = atomtoString a;

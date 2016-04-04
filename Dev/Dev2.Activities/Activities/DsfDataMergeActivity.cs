@@ -176,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
                     }
                     var finalString = string.Join("", atomList);
-                    var inputListResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
+                    var inputListResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing, atomList));
                     if(DataListUtil.IsFullyEvaluated(finalString))
                     {
                         inputListResult = dataObject.Environment.Eval(finalString, update);

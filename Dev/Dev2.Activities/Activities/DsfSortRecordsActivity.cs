@@ -123,12 +123,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(SortField), update,false);
                 if(data.IsWarewolfAtomListresult)
                 {
-                    var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                     AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", SortField, "", "", "="));
                 }
                 else if (data.IsWarewolfAtomResult)
                 {
-                    var atomData = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    var atomData = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                     if (atomData != null && atomData.Item.IsNothing)
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
@@ -144,13 +144,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var data =  env.Eval(env.ToStar( expression), update,false);
             if (data.IsWarewolfAtomListresult)
             {
-                var lst = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 AddDebugInputItem(new DebugItemWarewolfAtomListResult(lst,"","",expression, labelText,"","="));
                 AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
             }
             else if (data.IsWarewolfAtomResult)
             {
-                var atomData = data as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                var atomData = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (atomData != null && atomData.Item.IsNothing)
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams("", expression, labelText, "="));

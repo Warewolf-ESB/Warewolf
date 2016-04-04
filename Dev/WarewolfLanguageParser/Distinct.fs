@@ -8,6 +8,8 @@ open WarewolfParserInterop
 open WarewolfDataEvaluationCommon
 open Where
 open Microsoft.FSharp.Linq
+open CommonFunctions
+
 let DistinctIndexes (recset:WarewolfRecordset) (columnName:string) =
     let positions = Seq.zip [0..recset.Data.[PositionColumn].Count] recset.Data.[columnName] 
     Seq.distinctBy (fun (a,b) -> b.GetHashCode()) positions |> Seq.map fst

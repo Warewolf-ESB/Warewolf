@@ -220,7 +220,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
          
             if (warewolfEvalResult.IsWarewolfAtomResult)
             {
-                var result = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if(result != null)
                 {
                     var calcExpression = ExecutionEnvironment.WarewolfAtomToString(result.Item);
@@ -253,7 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
-                var result = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (result != null)
                 {
                     
@@ -276,7 +276,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
-                        var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (scalarResult != null)
                         {
                             AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item),assignValue.Value, environment.EvalToExpression(assignValue.Name, update),"", VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -290,7 +290,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            var recSetResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                            var recSetResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                             if (recSetResult != null)
                             {
                                 AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -305,8 +305,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomResult)
                     {
-                        var valueResult = newValueResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-                        var scalarResult = oldValueResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var valueResult = newValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                        var scalarResult = oldValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (valueResult != null && scalarResult!=null)
                         {
                             AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), ExecutionEnvironment.WarewolfAtomToString(valueResult.Item),assignValue.Name, environment.EvalToExpression(assignValue.Value, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -322,7 +322,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else if (oldValueResult.IsWarewolfAtomListresult && newValueResult.IsWarewolfAtomListresult)
                     {
-                        var recSetResult = oldValueResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        var recSetResult = oldValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, newValueResult, environment.EvalToExpression(assignValue.Value, update), assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
                     }
                 }                
@@ -346,7 +346,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (newValueResult.IsWarewolfAtomResult)
                     {
-                        var valueResult = newValueResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var valueResult = newValueResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (valueResult != null)
                         {
                             AddDebugItem(new DebugItemWarewolfAtomResult("", ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), environment.EvalToExpression(assignValue.Name, update), assignValue.Value, VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -379,7 +379,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
-                        var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (scalarResult != null)
                         {
                             AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -387,7 +387,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else if (evalResult.IsWarewolfAtomListresult)
                     {
-                        var recSetResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        var recSetResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         if (recSetResult != null)
                         {
                             AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, "", "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -400,7 +400,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
-                        var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (scalarResult != null)
                         {
                             AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), "", environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
@@ -409,7 +409,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var evalResult2 = environment.Eval(assignValue.Value, update);                                  
                     if (evalResult.IsWarewolfAtomListresult)
                     {
-                        var recSetResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        var recSetResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         if (recSetResult != null)
                         {
                             // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression

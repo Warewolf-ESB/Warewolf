@@ -10,14 +10,14 @@ namespace Dev2.Data
 {
     public class WarewolfIterator : IWarewolfIterator
     {
-        WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult _listResult;
-        WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
+        CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult _listResult;
+        CommonFunctions.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
         readonly int _maxValue;
         int _currentValue;
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public WarewolfIterator(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        public WarewolfIterator(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
         {
             SetupListResult(warewolfEvalResult);
             SetupScalarResult(warewolfEvalResult);
@@ -26,11 +26,11 @@ namespace Dev2.Data
             _currentValue = 0;
         }
 
-        void SetupForWarewolfRecordSetResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        void SetupForWarewolfRecordSetResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
         {
             if (warewolfEvalResult.IsWarewolfRecordSetResult)
             {
-                var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
                 if (listResult != null)
                 {
                     var stringValue = "";
@@ -38,7 +38,7 @@ namespace Dev2.Data
                     {
                         if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
                         {
-                            var data = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                            var data = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                             var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
                             if (string.IsNullOrEmpty(stringValue))
                             {
@@ -50,24 +50,24 @@ namespace Dev2.Data
                             }
                         }
                     }
-                    _scalarResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(stringValue)) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    _scalarResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(stringValue)) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 }
             }
         }
 
-        void SetupScalarResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        void SetupScalarResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
         {
             if (warewolfEvalResult.IsWarewolfAtomResult)
             {
-                _scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                _scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             }
         }
 
-        void SetupListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult)
+        void SetupListResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
         {
             if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
-                var warewolfAtomListresult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var warewolfAtomListresult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (warewolfAtomListresult != null)
                 {
                     warewolfAtomListresult.Item.ResetCurrentEnumerator();

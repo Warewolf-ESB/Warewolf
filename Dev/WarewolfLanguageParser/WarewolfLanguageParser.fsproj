@@ -99,7 +99,9 @@
     <Compile Include="WarewolfLanguage.fs" />
     <Compile Include="WarewolfLanguageLex.fs" />
     <Compile Include="ToolAst.fs" />
+    <Compile Include="CommonFunctions.fs" />
     <Compile Include="WarewolfDataEvaluationCommon.fs" />
+    <Compile Include="DataMergeFunctions.fs" />
     <Compile Include="AssignEvaluation.fs" />
     <Compile Include="Where.fs" />
     <Compile Include="UpdateInPlace.fs" />

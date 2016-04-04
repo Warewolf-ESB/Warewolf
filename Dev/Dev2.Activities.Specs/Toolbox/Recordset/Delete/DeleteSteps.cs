@@ -151,7 +151,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             if (recordSets.IsWarewolfAtomListresult)
             {
                 // ReSharper disable PossibleNullReferenceException
-                var recordSetValues = (recordSets as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
+                var recordSetValues = (recordSets as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
                 // ReSharper restore PossibleNullReferenceException
                 Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 

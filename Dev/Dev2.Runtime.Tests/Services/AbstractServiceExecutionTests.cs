@@ -187,7 +187,7 @@ namespace Dev2.Tests.Runtime.Services
             webServiceMock.MockExecuteImpl(out errors);
             //------------Assert Results-------------------------
             Assert.IsFalse(errors.HasErrors(), "Error while parsing object json");
-            var warewolfEvalResult = webServiceMock.DataObj.Environment.Eval("[[CommsEngineCommunicationToSend().MessageContent]]",0) as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+            var warewolfEvalResult = webServiceMock.DataObj.Environment.Eval("[[CommsEngineCommunicationToSend().MessageContent]]",0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             Assert.IsNotNull(warewolfEvalResult);
             var actual = warewolfEvalResult.Item[0].ToString();
             Assert.AreEqual("Hi there!  Your  debit order didn't go through this month. Please give us a shout on 087 357 6529 so we can make sure we've got your details right. Love, The Unlimited",actual);

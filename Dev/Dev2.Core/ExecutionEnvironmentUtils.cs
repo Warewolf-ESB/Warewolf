@@ -35,7 +35,7 @@ namespace Dev2
                 Dictionary<string, IWarewolfIterator> iterators = new Dictionary<string, IWarewolfIterator>();
                 foreach (var name in groupedRecSet)
                 {
-                    var warewolfEvalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                    var warewolfEvalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
                     try
                     {
                         warewolfEvalResult = environment.Eval(name, update,false);
@@ -86,7 +86,7 @@ namespace Dev2
                 var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update,false);
                 if (evalResult.IsWarewolfAtomResult)
                 {
-                    var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                     if (scalarResult != null && !scalarResult.Item.IsNothing)
                     {
                         result.Append("<");
@@ -181,7 +181,7 @@ namespace Dev2
                 var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update,false);
                 if (evalResult.IsWarewolfAtomResult)
                 {
-                    var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                     if (scalarResult != null && !scalarResult.Item.IsNothing)
                     {
                         result.Append("\"");
@@ -383,7 +383,7 @@ namespace Dev2
                 var evalResult = environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(output), update);
                 if (evalResult.IsWarewolfAtomResult)
                 {
-                    var scalarResult = evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    var scalarResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                     if (scalarResult != null && !scalarResult.Item.IsNothing)
                     {
                         result.Append("<");

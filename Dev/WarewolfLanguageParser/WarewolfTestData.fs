@@ -4,6 +4,7 @@ open WarewolfDataEvaluationCommon
 //open LanguageEval
 open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
+open CommonFunctions
 
 let PositionColumn = "WarewolfPositionColumn"
 
