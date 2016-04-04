@@ -27,7 +27,7 @@ if ($countReadVersions -gt 1) {
 	# Display each Warewolf assembly's version for debugging.
 	Write-Host ERROR! Not all assembly versions are equal!
 	foreach ($file in Get-ChildItem -recurse $WarewolfGitRepoDirectory) {
-		if (($file.Name.EndsWith(".dll") -or ($file.Name.EndsWith(".exe") -and -Not $file.Name.EndsWith(".vshost.exe")) -and ($file.Name.StartsWith("Dev2") -or $file.Name.StartsWith("Warewolf") -or $file.Name.StartsWith("WareWolf"))) {
+		if (($file.Name.EndsWith(".dll") -or ($file.Name.EndsWith(".exe") -and -Not $file.Name.EndsWith(".vshost.exe"))) -and ($file.Name.StartsWith("Dev2") -or $file.Name.StartsWith("Warewolf") -or $file.Name.StartsWith("WareWolf"))) {
 			$FullAssemblyPath = $file.FullName
 			# go get the fileversion
 			$ReadVersion = [system.diagnostics.fileversioninfo]::GetVersionInfo($FullAssemblyPath).FileVersion
@@ -43,7 +43,7 @@ if ($countReadVersions -gt 1) {
 }
 # If there is less than one unique version.
 if ($countReadVersions -lt 1) {
-	throw "ERROR! No versions read from assemblies!`nAssembly definition:`n((FileName.EndsWith(".dll") -or (FileName.EndsWith(".exe") -and -Not FileName.EndsWith(".vshost.exe")) -and (FileName.StartsWith("Dev2") -or FileName.StartsWith("Warewolf") -or FileName.StartsWith("WareWolf")))"
+	throw "ERROR! No versions read from assemblies!`nAssembly definition:`n((FileName.EndsWith(`".dll`") -or (FileName.EndsWith(`".exe`") -and -Not FileName.EndsWith(`".vshost.exe`")) -and (FileName.StartsWith(`"Dev2`") -or FileName.StartsWith(`"Warewolf`") -or FileName.StartsWith(`"WareWolf`")))"
 } else {
 	"FullVersionString=$AllReadVersionsConcatinated" | Out-File -LiteralPath FullVersionString -Encoding utf8
 }
