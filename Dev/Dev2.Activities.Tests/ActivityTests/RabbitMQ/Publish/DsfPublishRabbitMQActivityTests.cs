@@ -41,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             byte[] body = Encoding.UTF8.GetBytes(message);
             Mock<IResourceCatalog> resourceCatalog = new Mock<IResourceCatalog>();
             Mock<RabbitMQSource> rabbitMQSource = new Mock<RabbitMQSource>();
-            Mock<IConnectionFactory> connectionFactory = new Mock<IConnectionFactory>();
+            Mock<ConnectionFactory> connectionFactory = new Mock<ConnectionFactory>();
             Mock<IConnection> connection = new Mock<IConnection>();
             Mock<IModel> channel = new Mock<IModel>();
 
@@ -62,8 +62,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
             connectionFactory.Verify(c => c.CreateConnection(), Times.Once);
             connection.Verify(c => c.CreateModel(), Times.Once);
-            channel.Verify(c => c.QueueDeclare(queueName, false, false, false, null), Times.Once);
-            channel.Verify(c => c.BasicPublish(string.Empty, queueName, null, body), Times.Once);
+            channel.Verify(c => c.ExchangeDeclare(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()), Times.Once);
+            channel.Verify(c => c.QueueDeclare(It.IsAny<String>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<IDictionary<string, object>>()), Times.Once);
+            channel.Verify(c => c.BasicPublish(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<IBasicProperties>(), It.IsAny<byte[]>()), Times.Once);
             Assert.AreEqual(result.ToString(), "Success");
         }
 
@@ -144,7 +145,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
 
             Mock<IResourceCatalog> resourceCatalog = new Mock<IResourceCatalog>();
             Mock<RabbitMQSource> rabbitMQSource = new Mock<RabbitMQSource>();
-            Mock<IConnectionFactory> connectionFactory = new Mock<IConnectionFactory>();
+            Mock<ConnectionFactory> connectionFactory = new Mock<ConnectionFactory>();
 
             resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
             connectionFactory.Setup(c => c.CreateConnection()).Returns<IConnection>(null);
