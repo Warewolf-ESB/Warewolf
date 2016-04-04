@@ -248,23 +248,9 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                if (!Equals(value, _selectedSource) && _selectedSource != null)
-                {
-                    if (!String.IsNullOrEmpty(_selectedSource.Name))
-                        StorePreviousValues(_selectedSource.Id);
-                }
-
-                if (IsAPreviousValue(value) && _selectedSource != null)
-                {
-                    RestorePreviousValues(value);
-                    SetSelectedSource(value);
-                }
-                else
-                {
-                    SetSelectedSource(value);
-                    SourceChangedAction();
-                    OnSomethingChanged(this);
-                }
+                SetSelectedSource(value);
+                SourceChangedAction();
+                OnSomethingChanged(this);
                 var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 if (delegateCommand != null)
                 {
@@ -282,26 +268,6 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SourceId = value.Id;
             }
             OnPropertyChanged("SelectedSource");
-        }
-
-        private void StorePreviousValues(Guid id)
-        {
-            _previousRegions.Remove(id);
-            _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
-        }
-
-        private void RestorePreviousValues(IPluginSource value)
-        {
-            var toRestore = _previousRegions[value.Id];
-            foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
-            {
-                toolRegion.Item1.RestoreRegion(toolRegion.Item2);
-            }
-        }
-
-        private bool IsAPreviousValue(IPluginSource value)
-        {
-            return _previousRegions.Keys.Any(a => a == value.Id);
         }
 
         public ICollection<IPluginSource> Sources
