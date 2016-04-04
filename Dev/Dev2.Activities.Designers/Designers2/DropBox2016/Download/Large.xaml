@@ -137,6 +137,7 @@
         <CheckBox Grid.Column="1"
                   Grid.Row="2"
                   Content="Overwrite"
+                  Margin="-6,0,0,0"
                   IsChecked="{Binding Path=ModelItem.OverwriteFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static help:HelpTextResources.CreateToolTipForceOverWrite}">
             <i:Interaction.Behaviors>
@@ -148,7 +149,7 @@
             </i:Interaction.Behaviors>
         </CheckBox>
         <!--DropBox File Location-->
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" Height="24" VerticalAlignment="Top" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" Height="24" />
         <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
                                 Grid.Column="1"
                                 Grid.Row="4"
