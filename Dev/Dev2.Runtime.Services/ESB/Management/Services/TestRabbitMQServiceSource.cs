@@ -43,6 +43,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Password = rabbitMQServiceSourceDefinition.Password,
                     VirtualHost = rabbitMQServiceSourceDefinition.VirtualHost
                 });
+                
+                if (!result.IsValid)
+                {
+                    msg.HasError = true;
+                    msg.Message = new StringBuilder(result.ErrorMessage);
+                }
             }
             catch (Exception err)
             {
