@@ -82,8 +82,9 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SavePluginService(IPluginService toDbSource);
 
         string TestEmailServiceSource(IEmailServiceSource emailServiceSource);
+        string TestExchangeServiceSource(IExchangeServiceSource emailServiceSource);
 
         void SaveEmailServiceSource(IEmailServiceSource emailServiceSource, Guid serverWorkspaceID);
-        void SaveExchangeSource(IExchangeSource exchangeSource, Guid serverWorkspaceID);
+        void SaveExchangeSource(IExchangeServiceSource exchangeSource, Guid serverWorkspaceID);
     }
 }

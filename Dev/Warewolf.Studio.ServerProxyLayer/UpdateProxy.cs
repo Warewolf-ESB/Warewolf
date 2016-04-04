@@ -320,6 +320,20 @@ namespace Warewolf.Studio.ServerProxyLayer
             return output.Message.ToString();
         }
 
+        public string TestExchangeServiceSource(IExchangeServiceSource emailServiceSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestExchangeServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ExchangeServiceSource", serialiser.SerializeToBuilder(emailServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return output.Message.ToString();
+        }
+
         public void SaveEmailServiceSource(IEmailServiceSource model, Guid serverWorkspaceID)
         {
             var con = Connection;
@@ -331,7 +345,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
-        public void SaveExchangeSource(IExchangeSource model, Guid serverWorkspaceID)
+        public void SaveExchangeSource(IExchangeServiceSource model, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveExchangeServiceSource");

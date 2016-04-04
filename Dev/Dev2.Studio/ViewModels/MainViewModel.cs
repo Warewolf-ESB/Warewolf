@@ -22,7 +22,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Activities.Designers2.Core;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -39,7 +38,6 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Data.ServiceModel;
@@ -1175,6 +1173,11 @@ namespace Dev2.Studio.ViewModels
             {
                 AddNewSharePointServerSource(saveViewModel);
             }
+
+            else if (resourceType == "ExchangeSource")
+            {
+                AddExchangeWorkSurface(saveViewModel);
+            }
             else
             {
                 var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
@@ -1472,6 +1475,13 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.EmailSource) as WorkSurfaceKey, new SourceViewModel<IEmailServiceSource>(EventPublisher, new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()), PopupProvider, new ManageEmailSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
 
+        }
+
+        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
+        void AddExchangeWorkSurface(Task<IRequestServiceNameViewModel> saveViewModel)
+        {
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange) as WorkSurfaceKey, new SourceViewModel<IExchangeServiceSource>(EventPublisher, new ManageExchangeSourceViewModel(new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()), PopupProvider, new ManageExchangeSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         async void AddHelpTabWorkSurface(string uriToDisplay)
