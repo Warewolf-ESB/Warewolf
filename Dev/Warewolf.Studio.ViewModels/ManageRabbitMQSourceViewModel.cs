@@ -36,7 +36,6 @@ namespace Warewolf.Studio.ViewModels
         private string _headerText;
 
         private IRabbitMQServiceSourceDefinition _rabbitMQServiceSource;
-
         private readonly IRabbitMQSourceModel _rabbitMQSourceModel;
 
         public ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
@@ -101,6 +100,26 @@ namespace Warewolf.Studio.ViewModels
             ResourceName = rabbitMQServiceSource.ResourceName;
         }
 
+        public override IRabbitMQServiceSourceDefinition ToModel()
+        {
+            if (Item == null)
+            {
+                Item = ToSource();
+                return Item;
+            }
+            return new RabbitMQServiceSourceDefinition
+            {
+                ResourceID = Item.ResourceID,
+                ResourceName = Item.ResourceName,
+                ResourcePath = Item.ResourcePath,
+                HostName = HostName,
+                Port = Port,
+                UserName = UserName,
+                Password = Password,
+                VirtualHost = VirtualHost
+            };
+        }
+
         public override bool CanSave()
         {
             return TestPassed;
@@ -148,35 +167,79 @@ namespace Warewolf.Studio.ViewModels
                     var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
 
                     if (res == MessageBoxResult.OK)
-                    {                        
-                        SaveAndSetItem();
-                        if (_rabbitMQServiceSource != null)
-                        {
-                            _rabbitMQServiceSource.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
-                            _rabbitMQServiceSource.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
-                            _resourceName = _rabbitMQServiceSource.ResourceName;
-                        }
+                    {
+                        ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                        IRabbitMQServiceSourceDefinition source = ToSource();
+                        source.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        Save(source);
+                        Item = source;
+                        _rabbitMQServiceSource = source;
+                        SetupHeaderTextFromExisting();
                     }
                 }
             }
             else
             {
-                SaveAndSetItem();
+                IRabbitMQServiceSourceDefinition source = ToSource();
+                Save(source);
+                Item = source;
+                _rabbitMQServiceSource = source;
+                SetupHeaderTextFromExisting();
             }
-        }
-
-        private void SaveAndSetItem()
-        {
-            IRabbitMQServiceSourceDefinition source = ToSource();
-            Save(source);
-            Item = source;
-            _rabbitMQServiceSource = source;
-            SetupHeaderTextFromExisting();
         }
 
         private void Save(IRabbitMQServiceSourceDefinition source)
         {
             _rabbitMQSourceModel.SaveSource(source);
+        }
+
+        private void TestConnection()
+        {
+            try
+            {
+                TestErrorMessage = "";
+                _rabbitMQSourceModel.TestSource(ToNewSource());
+                TestPassed = true;
+                TestFailed = false;
+            }
+            catch (Exception e)
+            {
+                TestPassed = false;
+                TestFailed = true;
+                TestErrorMessage = "Failed: " + e.Message;
+            }
+        }
+
+        private IRabbitMQServiceSourceDefinition ToSource()
+        {
+            if (_rabbitMQServiceSource == null)
+            {
+                return ToNewSource();
+            }
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                _rabbitMQServiceSource.HostName = HostName;
+                _rabbitMQServiceSource.Port = Port;
+                _rabbitMQServiceSource.UserName = UserName;
+                _rabbitMQServiceSource.Password = Password;
+                _rabbitMQServiceSource.VirtualHost = VirtualHost;
+                return _rabbitMQServiceSource;
+            }
+        }
+
+        private IRabbitMQServiceSourceDefinition ToNewSource()
+        {
+            return new RabbitMQServiceSourceDefinition
+            {
+                ResourceName = ResourceName,
+                HostName = HostName,
+                Port = Port,
+                UserName = UserName,
+                Password = Password,
+                VirtualHost = VirtualHost,
+                ResourceID = _rabbitMQServiceSource == null ? Guid.NewGuid() : _rabbitMQServiceSource.ResourceID
+            };
         }
 
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
@@ -321,7 +384,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testFailed = value;
                 OnPropertyChanged(() => TestFailed);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
             }
         }
 
@@ -393,70 +455,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 return Resources.Languages.Core.VirtualHostLabel;
             }
-        }
-
-        private void TestConnection()
-        {
-            try
-            {
-                TestErrorMessage = "";
-                _rabbitMQSourceModel.TestSource(ToNewSource());
-                TestPassed = true;
-            }
-            catch (Exception e)
-            {
-                TestPassed = false;
-                TestErrorMessage = "Failed: " + e.Message;
-            }
-        }
-
-        private IRabbitMQServiceSourceDefinition ToNewSource()
-        {
-            return new RabbitMQServiceSourceDefinition
-            {
-                HostName = HostName,
-                Port = Port,
-                UserName = UserName,
-                Password = Password,
-                VirtualHost = VirtualHost,
-                ResourceID = _rabbitMQServiceSource == null ? Guid.NewGuid() : _rabbitMQServiceSource.ResourceID
-            };
-        }
-
-        private IRabbitMQServiceSourceDefinition ToSource()
-        {
-            if (_rabbitMQServiceSource == null)
-            {
-                return ToNewSource();
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                _rabbitMQServiceSource.HostName = HostName;
-                _rabbitMQServiceSource.Port = Port;
-                _rabbitMQServiceSource.UserName = UserName;
-                _rabbitMQServiceSource.Password = Password;
-                _rabbitMQServiceSource.VirtualHost = VirtualHost;
-                return _rabbitMQServiceSource;
-            }
-        }
-
-        public override IRabbitMQServiceSourceDefinition ToModel()
-        {
-            if (Item == null)
-            {
-                Item = ToSource();
-                return Item;
-            }
-            return new RabbitMQServiceSourceDefinition
-                {
-                    HostName = HostName,
-                    Port = Port,
-                    UserName = UserName,
-                    Password = Password,
-                    VirtualHost = VirtualHost,
-                    ResourceID = _rabbitMQServiceSource == null ? Guid.NewGuid() : _rabbitMQServiceSource.ResourceID
-                };
         }
     }
 }
