@@ -156,6 +156,10 @@ namespace Dev2.Activities.Designers2.Core
                 TestResults = _serverModel.TestService(Model);
                 if (TestResults != null)
                 {
+                    if (TestResults.Columns.Count < 1)
+                    {
+                        throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
+                    }
                     TestResultsAvailable = TestResults.Rows.Count != 0;
                     IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
                     _generateOutputArea.IsEnabled = true;
