@@ -7,6 +7,7 @@ open DataASTMutable
 open WarewolfDataEvaluationCommon
 open Dev2.Common.Interfaces
 open Where
+open CommonFunctions
 
 let PositionColumn = "WarewolfPositionColumn"
 
@@ -55,12 +56,7 @@ let RecordsetToSearchTo (recordset:WarewolfRecordset) =
     let dataToWorkWith  = (Map.filter (fun a b-> a= PositionColumn) cols)|>Map.toSeq 
     Seq.map snd dataToWorkWith  |> Seq.map (Seq.zip data)  |> Seq.collect (fun a -> a) |> Seq.map (fun (a,b) -> innerConvert a b )
 
-let EvalEnvExpressionWithPositions (exp:string) (update:int) (env:WarewolfEnvironment) =
-     let data = WarewolfDataEvaluationCommon.evalWithPositions env update exp
-     match data with
-     | WarewolfAtomListresult  a -> AtomListToSearchTo a
-     | WarewolfRecordSetResult b -> RecordsetToSearchTo b
-     | WarewolfAtomResult a -> Seq.ofList [new Dev2.Common.RecordSetSearchPayload( 1,atomtoString a)]
+
 
 let EvalRecordSetIndexes (exp:string) (update:int) (env:WarewolfEnvironment) =
      WarewolfDataEvaluationCommon.eval env update exp
@@ -88,7 +84,7 @@ let RemoveFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
 
-let AtomtoString a = WarewolfDataEvaluationCommon.atomtoString a;
+let AtomtoString a = atomtoString a;
 
 
 let getIndexes (name:string) (update:int) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.evalIndexes  env update name

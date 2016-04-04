@@ -71,7 +71,7 @@ namespace Dev2.Activities.Sharepoint
                 startSearchTerm+="<Values>";
                 if(warewolfEvalResult.IsWarewolfAtomListresult)
                 {
-                    var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                    var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                     if (listResult != null)
                     {
                         foreach(var warewolfAtom in listResult.Item)
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Sharepoint
                     }
                 }else
                 {
-                    var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                    var scalarResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                     if(scalarResult!=null)
                     {
                         var valueString = scalarResult.Item.ToString();

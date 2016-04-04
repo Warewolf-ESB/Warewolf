@@ -11,18 +11,18 @@ namespace Dev2.Activities.Debug
 {
     public class DebugItemWarewolfAtomListResult : DebugOutputBase
     {
-        readonly WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult _warewolfAtomListresult;
+        readonly CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult _warewolfAtomListresult;
         readonly string _labelText;
         readonly string _operand;
         readonly string _variable;
         readonly DebugItemResultType _type;
         readonly string _rightLabel;
         readonly string _leftLabel;
-        readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _oldValue;
+        readonly CommonFunctions.WarewolfEvalResult _oldValue;
         readonly string _assignedToVariableName;
         readonly string _newValue;
 
-        public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, WarewolfDataEvaluationCommon.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
         {
             _labelText = "";
             _operand = operand;
@@ -35,7 +35,7 @@ namespace Dev2.Activities.Debug
             _assignedToVariableName = assignedToVariableName;
         }
 
-        public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
         {
             _labelText = "";
             _operand = operand;
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Debug
                 {
                     if (_oldValue.IsWarewolfAtomResult)
                     {
-                        var scalarResult = _oldValue as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var scalarResult = _oldValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (scalarResult != null)
                         {
                             results.Add(new DebugItemResult
@@ -185,7 +185,7 @@ namespace Dev2.Activities.Debug
                     }
                     else if (_oldValue.IsWarewolfAtomListresult)
                     {
-                        var recSetResult = _oldValue as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                        var recSetResult = _oldValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                         string groupName = null;
                         int grpIdx = 0;
                         if (recSetResult != null)

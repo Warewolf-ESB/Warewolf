@@ -139,7 +139,7 @@ namespace Dev2.Activities
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
                         int timeoutval;
-                        if (int.TryParse(WarewolfDataEvaluationCommon.evalResultToString(dataObject.Environment.Eval(TimeOutText,update)), out timeoutval))
+                        if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText,update)), out timeoutval))
                         {
                             if (timeoutval < 0)
                             {

@@ -12,9 +12,9 @@ namespace Warewolf.Storage
 
     public interface IExecutionEnvironment
     {
-        WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp,int update,bool throwsifnotexists=true);
+        CommonFunctions.WarewolfEvalResult Eval(string exp,int update,bool throwsifnotexists=true);
 
-        WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp, int update);
+        CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update);
         void Assign(string exp, string value, int update);
 
 
@@ -31,11 +31,11 @@ namespace Warewolf.Storage
 
         IList<string> EvalAsListOfStrings(string expression, int update);
 
-        void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
+        void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
 
-        void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update);
+        void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update);
 
-        void EvalAssignFromNestedNumeric(string rawValue, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
+        void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
 
         void EvalDelete(string exp, int update);
 
@@ -66,11 +66,11 @@ namespace Warewolf.Storage
 
         string EvalToExpression(string exp, int update);
 
-        IEnumerable<WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp, int update);
+        IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update);
 
         void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList,int update);
 
-        WarewolfDataEvaluationCommon.WarewolfEvalResult EvalForJson(string exp);
+        CommonFunctions.WarewolfEvalResult EvalForJson(string exp);
 
         void AddToJsonObjects(string bob, JContainer jContainer);
     }
@@ -85,7 +85,7 @@ namespace Warewolf.Storage
             AllErrors = new HashSet<string>(); 
         }
 
-        public WarewolfDataEvaluationCommon.WarewolfEvalResult Eval(string exp, int update,bool throwsifnotexists = false)
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update,bool throwsifnotexists = false)
         {
       
             try
@@ -99,17 +99,17 @@ namespace Warewolf.Storage
             catch (Exception e)
             {
                 if (throwsifnotexists||e is IndexOutOfRangeException || e.Message.Contains("index was not an int")) throw;
-                return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
 
         }
 
 
-          public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalForJson(string exp)
+          public CommonFunctions.WarewolfEvalResult EvalForJson(string exp)
         {
             if (string.IsNullOrEmpty(exp))
             {
-                return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
             try
             {
@@ -126,9 +126,9 @@ namespace Warewolf.Storage
                 {
                    var res =  new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing);
                     res.AddNothing();
-                    return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomListresult(res);    
+                    return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(res);    
                 }
-                    return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                    return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
 
         }
@@ -171,9 +171,9 @@ namespace Warewolf.Storage
             _env = AssignEvaluation.AddToJsonObjects(_env, "bob", j);
         }
 
-        public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
+        public IEnumerable< CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
         {
-            return WarewolfDataEvaluationCommon.evalForDataMerge( _env, update,exp);
+            return DataMergeFunctions.evalForDataMerge( _env, update,exp);
         }
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)
@@ -182,7 +182,7 @@ namespace Warewolf.Storage
            _env = output;
         }
 
-        public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalStrict(string exp,int update)
+        public CommonFunctions.WarewolfEvalResult EvalStrict(string exp,int update)
         {
             var res =  Eval(exp, update);
             if(IsNothing( res))
@@ -263,13 +263,13 @@ namespace Warewolf.Storage
             if (result.IsWarewolfAtomResult)
             {
                 // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
                 // ReSharper restore PossibleNullReferenceException
                 return new List<string> { WarewolfAtomToString(x) };
             }
                 // ReSharper disable PossibleNullReferenceException
                 // ReSharper disable PossibleNullReferenceException
-                var warewolfAtomListresult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if(warewolfAtomListresult != null)
                 {
                     var x = warewolfAtomListresult.Item;
@@ -339,13 +339,13 @@ namespace Warewolf.Storage
             return false;
         }
 
-        public static string WarewolfEvalResultToString(WarewolfDataEvaluationCommon.WarewolfEvalResult result)
+        public static string WarewolfEvalResultToString(CommonFunctions.WarewolfEvalResult result)
         {
          
             if (result.IsWarewolfAtomResult)
             {
                 // ReSharper disable PossibleNullReferenceException
-                var warewolfAtomResult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if(warewolfAtomResult != null)
                 {
                     var x = warewolfAtomResult.Item;
@@ -360,7 +360,7 @@ namespace Warewolf.Storage
                 // ReSharper restore RedundantIfElseBlock
             {
                 // ReSharper disable PossibleNullReferenceException
-                var warewolfAtomListresult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if(warewolfAtomListresult != null)
                 {
                     var x = warewolfAtomListresult.Item;
@@ -383,11 +383,11 @@ namespace Warewolf.Storage
             }
         }
 
-        public void EvalAssignFromNestedStar(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update)
+        public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update)
         {
             AssignWithFrameAndList(exp, recsetResult.Item, false, update);
         }
-        public void EvalAssignFromNestedLast(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update)
+        public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update)
         {
             bool exists = PublicFunctions.RecordsetExpressionExists(exp, _env);
             if (!exists)
@@ -403,7 +403,7 @@ namespace Warewolf.Storage
 
 
 
-        public void EvalAssignFromNestedNumeric(string exp, WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update)
+        public void EvalAssignFromNestedNumeric(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult,int update)
         {
             if( recsetResult.Item.Any())
                 AssignWithFrame(new AssignValue(exp, WarewolfAtomToString(recsetResult.Item.Last())), update);
@@ -455,7 +455,7 @@ namespace Warewolf.Storage
             if (result.IsWarewolfAtomResult)
             {
                 // ReSharper disable PossibleNullReferenceException
-                var warewolfAtomResult = result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if(warewolfAtomResult != null)
                 {
                     var x = warewolfAtomResult.Item;
@@ -470,7 +470,7 @@ namespace Warewolf.Storage
             {
                 // ReSharper disable PossibleNullReferenceException
                 // ReSharper disable PossibleNullReferenceException
-                var x = (result as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
+                var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item;
                 // ReSharper restore PossibleNullReferenceException
                 return x.ToList();
             }
@@ -563,7 +563,7 @@ namespace Warewolf.Storage
             }
         }
 
-        public static bool IsNothing(WarewolfDataEvaluationCommon.WarewolfEvalResult evalInp1)
+        public static bool IsNothing(CommonFunctions.WarewolfEvalResult evalInp1)
         {
             return WarewolfDataEvaluationCommon.isNothing(evalInp1);
         }

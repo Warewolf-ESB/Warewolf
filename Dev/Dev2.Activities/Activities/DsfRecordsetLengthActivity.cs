@@ -98,7 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"), update);
                             if(warewolfEvalResult.IsWarewolfRecordSetResult)
                             {
-                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult;
+                                var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
                                 if(recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
@@ -106,7 +106,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             if(warewolfEvalResult.IsWarewolfAtomListresult)
                             {
-                                var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                                var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                                 if(recsetResult != null)
                                 {
                                     AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment, update));

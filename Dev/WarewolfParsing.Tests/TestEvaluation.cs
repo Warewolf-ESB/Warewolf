@@ -31,7 +31,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
             var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
             Assert.IsTrue(evalled.IsWarewolfAtomResult);
-            var res = (evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+            var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
             var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
             Assert.AreEqual(str,j.ToString());
         }
@@ -50,7 +50,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString( WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Name]]"));
+            var evalled = CommonFunctions.evalResultToString( WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Name]]"));
 
             Assert.AreEqual(evalled, "n");
         }
@@ -69,7 +69,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Spouse.Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Spouse.Name]]"));
 
             Assert.AreEqual(evalled, "o");
         }
@@ -88,7 +88,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(1).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(1).Name]]"));
 
             Assert.AreEqual(evalled, "p");
         }
@@ -109,7 +109,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*).Name]]"));
 
             Assert.AreEqual(evalled, "p,q");
         }
@@ -127,7 +127,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*)]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*)]]"));
 
             Assert.AreEqual(evalled, "p,q");
         }
@@ -146,7 +146,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children().Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children().Name]]"));
 
             Assert.AreEqual(evalled, "q");
         }
@@ -169,7 +169,7 @@ namespace WarewolfParsingTest
             //Assert.AreEqual(added.JsonObjects["bob"].GetValue("Name").ToString(), "n");
             //var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
             //Assert.IsTrue(evalled.IsWarewolfAtomResult);
-            //var res = (evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+            //var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
             //var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
             //Assert.AreEqual(str, j.ToString());
         }

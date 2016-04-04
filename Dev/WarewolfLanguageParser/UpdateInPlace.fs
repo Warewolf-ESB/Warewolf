@@ -6,7 +6,7 @@ open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 open WarewolfParserInterop
 open WarewolfDataEvaluationCommon
-
+open CommonFunctions
 let rec  EvalUpdate  (env: WarewolfEnvironment) (lang:string) (update:int) (func: WarewolfAtom->WarewolfAtom) : WarewolfEnvironment=
    
     let exp = ParseCache.TryFind lang
