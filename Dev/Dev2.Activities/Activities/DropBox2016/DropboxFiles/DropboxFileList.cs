@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dropbox.Api;
 using Dropbox.Api.Files;
@@ -6,6 +7,7 @@ using Dropbox.Api.Files;
 namespace Dev2.Activities.DropBox2016.DropboxFiles
 {
     //To Use this class to get all dropbox files and folders
+    [ExcludeFromCodeCoverage]
     public class DropboxFileList
     {
         private readonly DropboxClient _client;
