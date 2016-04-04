@@ -45,11 +45,12 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var id = Guid.NewGuid();
             var act = new DsfPluginActivity() { SourceId = id };
             var src = new Mock<IPluginServiceModel>();
-            var pluginSrc = new PluginSourceDefinition() { Id = id };
+            var pluginSrc = new PluginSourceDefinition() { Id = id, Name = "johnny"};
             var namespaceItem = new NamespaceItem { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc });
 
             DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()));
+            sourceRegion.SelectedSource = pluginSrc;
 
             //------------Execute Test---------------------------
             DotNetNamespaceRegion dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);

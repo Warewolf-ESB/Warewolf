@@ -9,6 +9,7 @@ namespace Dev2.Activities.DropBox2016
     {
         string GetDirectoryName();
         string GetFullFileName();
+        bool FileExist();
     }
 
     public class LocalPathManager : ILocalPathManager
