@@ -126,6 +126,7 @@
                     </i:Interaction.Behaviors>
                 </RadioButton>
                 <RadioButton x:Name="UserRadioButton" 
+                             IsEnabled="{Binding Path=CanSelectUser}"
                              ToolTip="{x:Static languages:Core.UserAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
