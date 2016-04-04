@@ -16,7 +16,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    [ToolDescriptorInfo("DropBoxLogo", "UPLOAD", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("DropBoxLogo", "Dropbox Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxUploadActivity : DsfBaseActivity
     {
         private DropboxClient _client;
@@ -29,7 +29,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         public DsfDropBoxUploadActivity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
-            DisplayName = "UPLOAD to Dropbox";
+            DisplayName = "Upload to Dropbox";
             OverWriteMode = true;
         }
 
@@ -122,7 +122,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             if (dropboxSuccessResult != null)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
-                return FileMetadata.PathDisplay;
+                return GlobalConstants.DropBoxSucces;
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
             if (dropboxFailureResult != null)

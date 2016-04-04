@@ -89,6 +89,7 @@ namespace Dev2.Activities.Designers2.Core
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
+            Errors = new List<string>();
             OutputArea.IsEnabled = true;
             TestResults = null;
             IsTesting = true;
