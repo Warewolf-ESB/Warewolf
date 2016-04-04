@@ -4568,16 +4568,6 @@ Scenario: ForEach using * and Database Connector
 	  |                   |
 	  | [[Result]] = pass |
 
-
-#Wolf-1370
-Scenario: Mixing Scalar And Recordset bug 2
-	Given I have a workflow "OutterWorkflow"
-	And "OutterWorkflow" contains "Testing/Mappings" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-      | [[reg(*).a]]     | [[a]]         | [[rec().a]]         | [[re]]      |
-	When "OutterWorkflow" is executed
-	Then the workflow execution has "NO" error
-
 #Wolf-1034
 Scenario: Get Request returns text
 	  Given I have a workflow "Wolf-1034-GetReturnsText"

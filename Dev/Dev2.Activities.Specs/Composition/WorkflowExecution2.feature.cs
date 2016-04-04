@@ -16546,18 +16546,18 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Mixing Scalar And Recordset bug 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Get Request returns text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        public virtual void MixingScalarAndRecordsetBug2()
+        public virtual void GetRequestReturnsText()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mixing Scalar And Recordset bug 2", ((string[])(null)));
-#line 4573
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Request returns text", ((string[])(null)));
+#line 4572
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4574
- testRunner.Given("I have a workflow \"OutterWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4573
+   testRunner.Given("I have a workflow \"Wolf-1034-GetReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table873 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -16565,59 +16565,24 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
             table873.AddRow(new string[] {
-                        "[[reg(*).a]]",
-                        "[[a]]",
-                        "[[rec().a]]",
-                        "[[re]]"});
-#line 4575
- testRunner.And("\"OutterWorkflow\" contains \"Testing/Mappings\" from server \"localhost\" with mapping" +
-                    " as", ((string)(null)), table873, "And ");
-#line 4578
- testRunner.When("\"OutterWorkflow\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4579
- testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Get Request returns text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
-        public virtual void GetRequestReturnsText()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Request returns text", ((string[])(null)));
-#line 4582
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line 4583
-   testRunner.Given("I have a workflow \"Wolf-1034-GetReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table874 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Input to Service",
-                        "From Variable",
-                        "Output from Service",
-                        "To Variable"});
-            table874.AddRow(new string[] {
                         "",
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4584
+#line 4574
    testRunner.And("\"Wolf-1034-ReturnsText\" contains \"Web/TestingReturnText\" from server \"localhost\" " +
-                    "with mapping as", ((string)(null)), table874, "And ");
-#line 4587
+                    "with mapping as", ((string)(null)), table873, "And ");
+#line 4577
    testRunner.When("\"Wolf-1034-ReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4588
+#line 4578
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table875 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table874 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table875.AddRow(new string[] {
+            table874.AddRow(new string[] {
                         "[[Result]] = 0.6.0.301"});
-#line 4589
-   testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-ReturnsText\' debug outputs as", ((string)(null)), table875, "And ");
+#line 4579
+   testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-ReturnsText\' debug outputs as", ((string)(null)), table874, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -16629,38 +16594,38 @@ this.FeatureBackground();
         public virtual void PostRequestReturnsText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post Request returns text", ((string[])(null)));
-#line 4594
+#line 4584
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4595
+#line 4585
    testRunner.Given("I have a workflow \"Wolf-1034-PostReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table876 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table875 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table876.AddRow(new string[] {
+            table875.AddRow(new string[] {
                         "",
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4596
+#line 4586
    testRunner.And("\"Wolf-1034-PostReturnsText\" contains \"Web/TestingReturnText\" from server \"localho" +
-                    "st\" with mapping as", ((string)(null)), table876, "And ");
-#line 4599
+                    "st\" with mapping as", ((string)(null)), table875, "And ");
+#line 4589
    testRunner.When("\"Wolf-1034-PostReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4600
+#line 4590
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table877 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table876 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table877.AddRow(new string[] {
+            table876.AddRow(new string[] {
                         "[[Result]] = 0.6.0.301"});
-#line 4601
+#line 4591
    testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-PostReturnsText\' debug outputs" +
-                    " as", ((string)(null)), table877, "And ");
+                    " as", ((string)(null)), table876, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -16672,38 +16637,38 @@ this.FeatureBackground();
         public virtual void PutRequestReturnsText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Put Request returns text", ((string[])(null)));
-#line 4606
+#line 4596
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4607
+#line 4597
    testRunner.Given("I have a workflow \"Wolf-1034-PutReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table878 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table877 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table878.AddRow(new string[] {
+            table877.AddRow(new string[] {
                         "",
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4608
+#line 4598
    testRunner.And("\"Wolf-1034-PutReturnsText\" contains \"Web/TestingReturnText\" from server \"localhos" +
-                    "t\" with mapping as", ((string)(null)), table878, "And ");
-#line 4611
+                    "t\" with mapping as", ((string)(null)), table877, "And ");
+#line 4601
    testRunner.When("\"Wolf-1034-PutReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4612
+#line 4602
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table879 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table878 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table879.AddRow(new string[] {
+            table878.AddRow(new string[] {
                         "[[Result]] = 0.6.0.301"});
-#line 4613
+#line 4603
    testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-PutReturnsText\' debug outputs " +
-                    "as", ((string)(null)), table879, "And ");
+                    "as", ((string)(null)), table878, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -16715,38 +16680,38 @@ this.FeatureBackground();
         public virtual void DeleteRequestReturnsText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete Request returns text", ((string[])(null)));
-#line 4618
+#line 4608
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 4619
+#line 4609
    testRunner.Given("I have a workflow \"Wolf-1034-DeleteReturnsText\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table880 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table879 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-            table880.AddRow(new string[] {
+            table879.AddRow(new string[] {
                         "",
                         "",
                         "Result",
                         "[[Result]]"});
-#line 4620
+#line 4610
    testRunner.And("\"Wolf-1034-DeleteReturnsText\" contains \"Web/TestingReturnText\" from server \"local" +
-                    "host\" with mapping as", ((string)(null)), table880, "And ");
-#line 4623
+                    "host\" with mapping as", ((string)(null)), table879, "And ");
+#line 4613
    testRunner.When("\"Wolf-1034-DeleteReturnsText\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 4624
+#line 4614
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table881 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table880 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table881.AddRow(new string[] {
+            table880.AddRow(new string[] {
                         "[[Result]] = 0.6.0.301"});
-#line 4625
+#line 4615
    testRunner.And("the \'Web/TestingReturnText\' in Workflow \'Wolf-1034-DeleteReturnsText\' debug outpu" +
-                    "ts as", ((string)(null)), table881, "And ");
+                    "ts as", ((string)(null)), table880, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
