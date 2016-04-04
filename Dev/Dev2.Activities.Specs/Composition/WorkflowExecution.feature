@@ -4108,19 +4108,6 @@ Scenario: MYSQL Mapped To Recordsets incorrect
 
 
 
-Scenario: MYSQL Parameter not found in the collection
-	Given I have a workflow "BadMySqlParameterName"
-	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
-	     |                            | `p_startswith` | false         |
-	When "BadMySqlParameterName" is executed
-	Then the workflow execution has "An" error
-	And the 'Testing/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
-	  |                                                      |
-	  | Parameter 'p_startswith' not found in the collection |
-
-
-
 Scenario: MYSQL Recordset has invalid character
 	Given I have a workflow "RenameRecordsetIncorrectly"
 	And "RenameRecordsetIncorrectly" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
