@@ -190,6 +190,7 @@
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
+    <Compile Include="IExchangeServiceSource.cs" />
     <Compile Include="IExecutionToken.cs" />
     <Compile Include="IExplorerHelpDescriptorBuilder.cs" />
     <Compile Include="IExplorerItemNodeViewModel.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageEmailSourceViewModel.cs" />
+    <Compile Include="IManageExchangeSourceViewModel.cs" />
     <Compile Include="IManageNewServerViewModel.cs" />
     <Compile Include="IManagePluginServiceInputViewModel.cs" />
     <Compile Include="IManagePluginSourceModel.cs" />

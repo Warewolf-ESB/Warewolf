@@ -10,9 +10,10 @@ namespace Dev2.Activities.Exchange
     {
         private readonly IExchangeSource _source;
 
+        public ExchangeEmailSender() { }
         public ExchangeEmailSender(IExchangeSource source)
         {
-            this._source = source;
+            _source = source;
         }
 
         private void Initialize(ExchangeService service)

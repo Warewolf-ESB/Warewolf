@@ -90,6 +90,8 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
+
+            BuildRegions();
         }
 
         public ISourceToolRegion<IExchangeSource> SourceRegion

@@ -50,7 +50,6 @@ namespace Dev2.Common.Interfaces
         IList<string> GetComputerNames();
 
         IList<IDbSource> FetchDbSources();
-        IList<IExchangeSource> FetchExchangeSources();
 
         IList<IDbAction> FetchDbActions(IDbSource source);
 

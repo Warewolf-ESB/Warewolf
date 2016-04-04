@@ -132,24 +132,6 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<IList<IDbSource>>(result.Message.ToString());
         }
 
-        public IList<IExchangeSource> FetchExchangeSources()
-        {
-            var comsController = CommunicationControllerFactory.CreateController("FetchExchangeSources");
-
-            var workspaceId = Connection.WorkspaceID;
-            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
-            if (result == null || result.HasError)
-            {
-                if (result != null)
-                {
-                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
-                }
-                throw new WarewolfSupportServiceException("Service does not exist", null);
-            }
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.Deserialize<IList<IExchangeSource>>(result.Message.ToString());
-        }
-
         public IList<IDbAction> FetchDbActions(IDbSource source)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

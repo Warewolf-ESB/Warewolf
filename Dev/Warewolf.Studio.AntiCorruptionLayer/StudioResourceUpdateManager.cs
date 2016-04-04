@@ -98,7 +98,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
         }
 
-        public void Save(IExchangeSource exchangeSource)
+        public void Save(IExchangeServiceSource exchangeSource)
         {
             UpdateManagerProxy.SaveExchangeSource(exchangeSource, GlobalConstants.ServerWorkspaceID);
             if (ExchangedServiceSourceSaved != null)
@@ -120,6 +120,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public string TestConnection(IEmailServiceSource emailServiceSource)
         {
             return UpdateManagerProxy.TestEmailServiceSource(emailServiceSource);
+        }
+
+        public string TestConnection(IExchangeServiceSource emailServiceSourceSource)
+        {
+            return UpdateManagerProxy.TestExchangeServiceSource(emailServiceSourceSource);
         }
 
         public void TestConnection(IWebServiceSource resource)
@@ -225,7 +230,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public event Action<IDbSource> DatabaseServiceSourceSaved;
         public event Action<IPluginSource> PluginServiceSourceSaved;
         public event Action<IEmailServiceSource> EmailServiceSourceSaved;
-        public event Action<IExchangeSource> ExchangedServiceSourceSaved;
+        public event Action<IExchangeServiceSource> ExchangedServiceSourceSaved;
 
         public event Action<ISharepointServerSource> SharePointServiceSourceSaved;
 

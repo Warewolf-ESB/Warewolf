@@ -17,13 +17,14 @@ namespace Dev2.Common.Interfaces
         void Save(IDatabaseService toDbSource);
         void Save(IPluginSource source);
         void Save(IEmailServiceSource emailServiceSource);
+        void Save(IExchangeServiceSource emailServiceSource);
         void Save(ISharepointServerSource sharePointServiceSource);
-        void Save(IExchangeSource exchangeSource);
     
         void TestConnection(IServerSource serverSource);
         void TestConnection(IWebServiceSource serverSource);
         void TestConnection(ISharepointServerSource sharePointServiceSource);
         string TestConnection(IEmailServiceSource emailServiceSourceSource);
+        string TestConnection(IExchangeServiceSource emailServiceSourceSource);
         IList<string> TestDbConnection(IDbSource serverSource);
         DataTable TestDbService(IDatabaseService inputValues);
         string TestWebService(IWebService inputValues);
