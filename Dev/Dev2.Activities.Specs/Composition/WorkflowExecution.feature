@@ -4185,7 +4185,7 @@ Scenario: Parameter not found in the collection
 	  |                                                      |
 	  | Parameter 'p_startswith' not found in the collection |
 
-
+	  
 
 Scenario: SQL Recordset has invalid character
 	Given I have a workflow "MappingHasIncorrectCharacter"
@@ -4500,7 +4500,7 @@ Scenario: Xml Serialisation bug when returning xml
 
 Scenario: Mixing Scalar And Recordset bug 
 	Given I have a workflow "MixingScalarAndRecordset"
-	And "MixingScalarAndRecordset" contains "Testing/Bugs/wolf-860" from server "localhost" with mapping as
+	And "MixingScalarAndRecordset" contains "Testing/Bugs/Wolf-860" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	When "MixingScalarAndRecordset" is executed
