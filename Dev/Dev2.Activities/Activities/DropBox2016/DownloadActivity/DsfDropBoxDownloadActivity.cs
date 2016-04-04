@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Net.Http;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Dropbox.Api;
@@ -21,18 +22,47 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
     [ToolDescriptorInfo("DropBoxLogo", "Dropbox Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDownloadActivity : DsfBaseActivity
     {
-        private DropboxClient _client;
-        protected IDownloadResponse<FileMetadata> Response;
-        protected Exception Exception;
-        protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
         public DsfDropBoxDownloadActivity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = "Download from Dropbox";
             OverwriteFile = false;
+            // ReSharper disable once VirtualMemberCallInContructor
+            DropboxFile = new FileWrapper();
         }
 
+      
+        public virtual IFile DropboxFile { get; set; }
+        private DropboxClient _client;
+        protected IDownloadResponse<FileMetadata> Response;
+        protected Exception Exception;
+        private ILocalPathManager _localPathManager;
+
+        public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
+        {
+            return singleExecutor;
+        }
+
+        public virtual ILocalPathManager LocalPathManager
+        {
+            set
+            {
+                _localPathManager = value;
+            }
+            get
+            {
+                return GetLocalPathManager();
+            }
+        }
+
+        public virtual ILocalPathManager GetLocalPathManager()
+        {
+            return _localPathManager;
+        }
+
+      
+      
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public OauthSource SelectedSource { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -91,13 +121,12 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         #endregion
 
-        [ExcludeFromCodeCoverage]
         //All units used here has been unit tested seperately 
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-
-            DropboxSingleExecutor = new DropBoxDownLoad(evaluatedValues["ToPath"]);
-            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
+            IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(evaluatedValues["ToPath"]);
+            var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
+            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(GetClient());
             var dropboxSuccessResult = dropboxExecutionResult as DropboxDownloadSuccessResult;
             if (dropboxSuccessResult != null)
             {
@@ -105,12 +134,12 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 var bytes = Response.GetContentAsByteArrayAsync().Result;
                 if (Response.Response.IsFile)
                 {
-                    var localPathManager = new LocalPathManager(evaluatedValues["FromPath"]);
-                    var validFolder = localPathManager.GetFullFileName();
-                    var fileExist = localPathManager.FileExist();
+                    LocalPathManager = new LocalPathManager(evaluatedValues["FromPath"]);
+                    var validFolder = LocalPathManager.GetFullFileName();
+                    var fileExist = LocalPathManager.FileExist();
                     if(fileExist && !OverwriteFile)
                         throw new Exception("Destination File already exists and overwrite is set to false");
-                    File.WriteAllBytes(validFolder, bytes);
+                    DropboxFile.WriteAllBytes(validFolder, bytes);
                 }
                 return GlobalConstants.DropBoxSucces;
             }

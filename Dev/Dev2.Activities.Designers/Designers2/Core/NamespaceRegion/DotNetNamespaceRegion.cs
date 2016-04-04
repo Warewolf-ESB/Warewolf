@@ -131,7 +131,8 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public bool CanRefresh()
         {
-            return SelectedNamespace != null;
+            IsNamespaceEnabled = _source.SelectedSource != null;
+            return _source.SelectedSource != null;
         }
 
         public INamespaceItem SelectedNamespace
