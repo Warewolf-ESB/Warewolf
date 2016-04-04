@@ -43,7 +43,7 @@ if ($countReadVersions -gt 1) {
 }
 # If there is less than one unique version.
 if ($countReadVersions -lt 1) {
-	throw "ERROR! No versions read from assemblies!`nAssembly definition:`n((FileName.EndsWith(".dll") -or (FileName.EndsWith(".exe") -and -Not FileName.EndsWith(".vshost.exe")) -and (FileName.StartsWith("Dev2") -or FileName.StartsWith("Warewolf") -or FileName.StartsWith("WareWolf")))"
+	throw "ERROR! No versions read from assemblies!`nAssembly definition:`n((FileName.EndsWith(`".dll`") -or (FileName.EndsWith(`".exe`") -and -Not FileName.EndsWith(`".vshost.exe`")) -and (FileName.StartsWith(`"Dev2`") -or FileName.StartsWith(`"Warewolf`") -or FileName.StartsWith(`"WareWolf`")))
 } else {
 	"FullVersionString=$AllReadVersionsConcatinated" | Out-File -LiteralPath FullVersionString -Encoding utf8
 }
