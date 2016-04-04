@@ -4108,19 +4108,6 @@ Scenario: MYSQL Mapped To Recordsets incorrect
 
 
 
-Scenario: MYSQL Parameter not found in the collection
-	Given I have a workflow "BadMySqlParameterName"
-	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
-	     |                            | `p_startswith` | false         |
-	When "BadMySqlParameterName" is executed
-	Then the workflow execution has "An" error
-	And the 'Testing/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
-	  |                                                      |
-	  | Parameter 'p_startswith' not found in the collection |
-
-
-
 Scenario: MYSQL Recordset has invalid character
 	Given I have a workflow "RenameRecordsetIncorrectly"
 	And "RenameRecordsetIncorrectly" contains "Acceptance Testing Resources/mysqlSource" from server "localhost" with mapping as
@@ -4184,21 +4171,7 @@ Scenario: SQL Mapped To Recordsets incorrect
 	  |                               |
 	  | Error: Sql Error: parse error |
 
-
-
-#Needs Work
-Scenario: Parameter not found in the collection
-	Given I have a workflow "BadMySqlParameterName"
-	And "BadMySqlParameterName" contains "Testing/MySqlParameters" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
-	     |                            | `p_startswith` | false         |
-	When "BadMySqlParameterName" is executed
-	Then the workflow execution has "An" error
-	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
-	  |                                                      |
-	  | Parameter 'p_startswith' not found in the collection |
-
-
+	  
 
 Scenario: SQL Recordset has invalid character
 	Given I have a workflow "MappingHasIncorrectCharacter"
@@ -4513,7 +4486,7 @@ Scenario: Xml Serialisation bug when returning xml
 
 Scenario: Mixing Scalar And Recordset bug 
 	Given I have a workflow "MixingScalarAndRecordset"
-	And "MixingScalarAndRecordset" contains "Testing/Bugs/wolf-860" from server "localhost" with mapping as
+	And "MixingScalarAndRecordset" contains "Testing/Bugs/Wolf-860" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service | To Variable |
 	  |                  |               | Result              | [[Result]]  |
 	When "MixingScalarAndRecordset" is executed
@@ -4567,16 +4540,6 @@ Scenario: ForEach using * and Database Connector
 	  And the 'ForeachDBCon' in Workflow 'DBConnInForEach_3' debug outputs as
 	  |                   |
 	  | [[Result]] = pass |
-
-
-#Wolf-1370
-Scenario: Mixing Scalar And Recordset bug 2
-	Given I have a workflow "OutterWorkflow"
-	And "OutterWorkflow" contains "Testing/Mappings" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable |
-      | [[reg(*).a]]     | [[a]]         | [[rec().a]]         | [[re]]      |
-	When "OutterWorkflow" is executed
-	Then the workflow execution has "NO" error
 
 #Wolf-1034
 Scenario: Get Request returns text

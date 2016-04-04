@@ -547,7 +547,9 @@ namespace Dev2.Activities.Specs.Composition
             {
                 EnsureEnvironmentConnected(remoteEnvironment, _environmentConnectionTimeout);
                 remoteEnvironment.ForceLoadResources();
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf || model.Category== remoteWf, true);
+                var splitNameAndCat = remoteWf.Split(new char[]{'/'});
+                var resName = splitNameAndCat[splitNameAndCat.Length-1];
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName || model.Category == remoteWf.Replace('/', '\\'), true);
                 if(remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -608,8 +610,10 @@ namespace Dev2.Activities.Specs.Composition
             }
             foreach(var tableRow in mappings.Rows)
             {
-                var output = tableRow["Output from Service"];
-                var toVariable = tableRow["To Variable"];
+                string output = null;
+                tableRow.TryGetValue("Output from Service", out output);
+                string toVariable = null;
+                tableRow.TryGetValue("To Variable", out toVariable);
                 if(!string.IsNullOrEmpty(output) && !string.IsNullOrEmpty(toVariable))
                 {
                     var inputOutputViewModel = dataMappingViewModel.Outputs.FirstOrDefault(model => model.DisplayName == output);
@@ -630,8 +634,10 @@ namespace Dev2.Activities.Specs.Composition
                     }
                 }
 
-                var input = tableRow["Input to Service"];
-                var fromVariable = tableRow["From Variable"];
+                string input = null;
+                tableRow.TryGetValue("Input to Service", out input);
+                string fromVariable = null;
+                tableRow.TryGetValue("From Variable", out fromVariable);
 
                 if(!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(fromVariable))
                 {
