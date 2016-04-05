@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract

@@ -1,10 +1,9 @@
-﻿namespace WpfControls.Editors
+﻿using System.Diagnostics;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+
+namespace WpfControls.Editors
 {
-
-    using System.Diagnostics;
-    using System.Windows.Controls.Primitives;
-    using System.Windows.Input;
-
     public class SelectionAdapter
     {
 
