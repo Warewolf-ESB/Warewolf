@@ -10,10 +10,15 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2.Common.Interfaces;
 using Dev2.Core.Tests;
+using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Intellisense;
 using Dev2.Intellisense.Helper;
 using Dev2.Intellisense.Provider;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -25,6 +30,7 @@ using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using WpfControls;
 
 namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 {
@@ -50,7 +56,19 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             IDataListViewModel setupDatalist = new DataListViewModel();
             DataListSingleton.SetDataList(setupDatalist);
             DataListSingleton.ActiveDataList.InitializeDataListViewModel(resourceModel);
+            DataListSingleton.ActiveDataList.UpdateDataListItems(resourceModel, new List<IDataListVerifyPart>());
+
         }
+
+
+        [Given(@"I have the following intellisense options '(.*)'")]
+        public void GivenIHaveTheFollowingIntellisenseOptions(string p0)
+        {
+            ScenarioContext.Current["datalistOptions"] = p0.Split( new char[]{','});
+        }
+
+
+
 
         [Given(@"the filter type is '(.*)'")]
         public void GivenTheFilterTypeIs(string filterType)
@@ -92,6 +110,9 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             ScenarioContext.Current.Add("IsInCalculate", providerName.Contains("Calc"));
             ScenarioContext.Current.Add("provider", provider);
         }
+
+
+
 
         [Given(@"the file path structure is '(.*)'")]
         public void GivenTheFilePathStructureIs(string pathStructure)
@@ -155,6 +176,40 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             Assert.AreEqual(!actualist.Any(),bool.Parse(p0));
         }
 
+        [Given(@"the options as '(.*)'")]
+        public void GivenTheOptionsAs(string option)
+        {
+            //Dev2TrieSugggestionProvider provider = new Dev2TrieSugggestionProvider(IntellisenseStringProvider.FilterOption.All,1);
+            //provider.VariableList = new ObservableCollection<string>( ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
+            //provider.GetSuggestions(option);
+        }
+
+        [Given(@"the suggestion list as '(.*)'")]
+        public void GivenTheSuggestionListAs(string p0)
+        {
+            Dev2TrieSugggestionProvider provider = new Dev2TrieSugggestionProvider(1);
+            provider.VariableList = new ObservableCollection<string>(ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
+            var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.All;
+            int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
+            var options = provider.GetSuggestions(ScenarioContext.Current["inputText"].ToString(), caretpos, true,filterType);
+            var selected = p0.Split(new char[] { ',' });
+             if(p0=="" && !options.Any())
+                 return;
+            bool all = true;
+            foreach(var a in selected)
+            {
+                if(!String.IsNullOrEmpty(a)&& !options.Contains(a))
+                {
+                    all = false;
+                    break;
+                }
+            }
+            Assert.IsTrue(all);
+            ScenarioContext.Current["stringOptions"] = options;
+        }
+
+
+
         [Given(@"the drop down list as '(.*)'")]
         public void GivenTheDropDownListAs(string dropDownList)
         {
@@ -207,6 +262,26 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             ScenarioContext.Current.Add("result", result);
         }
 
+
+        [When(@"I select the following string option '(.*)'")]
+        public void WhenISelectTheFollowingStringOption(string option)
+        { 
+            string originalText =ScenarioContext.Current["inputText"].ToString();
+             int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
+            if(option=="")
+            {
+                ScenarioContext.Current["stringResult"] = new IntellisenseStringResult(originalText,caretpos) ;
+                return;
+            }
+
+            var options =ScenarioContext.Current["stringOptions"] as IEnumerable<string>;
+            Assert.IsTrue(options.Contains(option));
+           
+            IntellisenseStringResultBuilder builder = new IntellisenseStringResultBuilder();
+            var res = builder.Build(option,caretpos, originalText,originalText);
+            ScenarioContext.Current["stringResult"] = res;
+        }
+
         [Then(@"the result text should be '(.*)'")]
         public void ThenTheResultTextShouldBe(string result)
         {
@@ -220,6 +295,16 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var context = ScenarioContext.Current.Get<IntellisenseProviderContext>("context");
             Assert.AreEqual(caretpostion, context.CaretPosition);
         }
+
+        [Then(@"the result text should be ""(.*)"" with caret position will be '(.*)'")]
+        public void ThenTheResultTextShouldBeWithCaretPositionWillBe(string p0, int p1)
+        {
+           var res =  ScenarioContext.Current["stringResult"] as IIntellisenseStringResult;
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.AreEqual(res.Result,p0);
+            Assert.AreEqual(p1,res.CaretPosition);
+        }
+
 
     }
 }
