@@ -50,11 +50,11 @@ Foreach-Object{
 		Continue
 	}
 	foreach( $TestName in $playlistContent.Playlist.Add) {
-		$TestList += "," + $TestName.Test
+		$TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
 	}
 }
 if ($TestList.length -gt 0) {
-	$TestList = $TestList -replace "^.", " "
+	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
 
