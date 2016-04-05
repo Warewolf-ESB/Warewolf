@@ -138,6 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("DsfPublishRabbitMQActivity_Execute")]
+        [ExpectedException(typeof(Exception))]
         public void DsfPublishRabbitMQActivity_Execute_Failure_NullException()
         {
             //------------Setup for test--------------------------
@@ -158,9 +159,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "Q1" }, { "Message", "Test message" } });
 
             //------------Assert Results-------------------------
-            resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
-            connectionFactory.Verify(c => c.CreateConnection(), Times.Once);
-            Assert.AreEqual(result.ToString(), "Failure");
+            Assert.Fail("Exception not thrown");
         }
     }
 }
