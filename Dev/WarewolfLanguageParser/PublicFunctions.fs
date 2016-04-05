@@ -2,11 +2,11 @@
 
 open LanguageAST
 //open LanguageEval
-open Microsoft.FSharp.Text.Lexing
+
 open DataASTMutable
-open WarewolfDataEvaluationCommon
+
 open Dev2.Common.Interfaces
-open Where
+
 open CommonFunctions
 
 let PositionColumn = "WarewolfPositionColumn"
@@ -53,7 +53,7 @@ let AtomListToSearchTo (atoms :WarewolfAtom seq) =
 let RecordsetToSearchTo (recordset:WarewolfRecordset) =
     let cols = recordset.Data
     let data = Seq.map atomToInt cols.[PositionColumn] 
-    let dataToWorkWith  = (Map.filter (fun a b-> a= PositionColumn) cols)|>Map.toSeq 
+    let dataToWorkWith  = (Map.filter (fun a _-> a= PositionColumn) cols)|>Map.toSeq 
     Seq.map snd dataToWorkWith  |> Seq.map (Seq.zip data)  |> Seq.collect (fun a -> a) |> Seq.map (fun (a,b) -> innerConvert a b )
 
 
@@ -81,18 +81,18 @@ let EvalAssignWithFrame (value :IAssignValue ) (update:int) (env:WarewolfEnviron
 let EvalAssignFromList (value :string ) (data:WarewolfAtom seq) (env:WarewolfEnvironment) (update:int) (shouldUseLast:bool) = AssignEvaluation.evalMultiAssignList env data value update shouldUseLast
 
 let RemoveFraming  (env:WarewolfEnvironment) =
-        let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
+        let recsets = Map.map (fun _ b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
 
 let AtomtoString a = atomtoString a;
 
 
-let getIndexes (name:string) (update:int) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.evalIndexes  env update name
+let GetIndexes (name:string) (update:int) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.evalIndexes  env update name
 
-let EvalDelete (exp:string) (update:int) (env:WarewolfEnvironment) = WarewolfDataEvaluationCommon.evalDelete exp update env
+let EvalDelete (exp:string) (update:int) (env:WarewolfEnvironment) = Delete.evalDelete exp update env
 
 
-let SortRecset (exp:string) (desc:bool) (update:int) (env:WarewolfEnvironment)  = WarewolfDataEvaluationCommon.sortRecset exp desc update env 
+let SortRecset (exp:string) (desc:bool) (update:int) (env:WarewolfEnvironment)  = Sort.sortRecset exp desc update env 
 
 
 let EvalWhere (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.Func<WarewolfAtom,bool>) = Where.evalWhere env exp update (fun a-> func.Invoke( a))
@@ -106,9 +106,9 @@ let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.eval
 let IsValidRecsetExpression (exp:string) = 
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
     match parsed with 
-        | LanguageExpression.WarewolfAtomAtomExpression a -> true
-        | LanguageExpression.ComplexExpression b -> true
-        | ScalarExpression b -> true
+        | LanguageExpression.WarewolfAtomAtomExpression _ -> true
+        | LanguageExpression.ComplexExpression _ -> true
+        | ScalarExpression _ -> true
         | RecordSetExpression recset -> match recset.Index with
                                             | IntIndex int -> if int<0 then false else true
                                             | Last -> true
@@ -125,9 +125,9 @@ let IsValidRecsetExpression (exp:string) =
 let RecordsetExpressionExists (exp:string) (env:WarewolfEnvironment) =
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
     match parsed with 
-        | LanguageExpression.WarewolfAtomAtomExpression a -> false
-        | LanguageExpression.ComplexExpression b -> false
-        | ScalarExpression b -> false
+        | LanguageExpression.WarewolfAtomAtomExpression _ -> false
+        | LanguageExpression.ComplexExpression _ -> false
+        | ScalarExpression _ -> false
         | RecordSetExpression recset ->  if env.RecordSets.ContainsKey recset.Name then
                                             env.RecordSets.[recset.Name].Data.ContainsKey recset.Column
                                          else false

@@ -101,6 +101,8 @@
     <Compile Include="ToolAst.fs" />
     <Compile Include="CommonFunctions.fs" />
     <Compile Include="WarewolfDataEvaluationCommon.fs" />
+    <Compile Include="Sort.fs" />
+	<Compile Include="Delete.fs" />
     <Compile Include="DataMergeFunctions.fs" />
     <Compile Include="AssignEvaluation.fs" />
     <Compile Include="Where.fs" />
@@ -111,6 +113,7 @@
     <Compile Include="EvalTools.fs" />
     <Compile Include="IntellisenseStringProvider.fs" />
     <None Include="app.config" />
+
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

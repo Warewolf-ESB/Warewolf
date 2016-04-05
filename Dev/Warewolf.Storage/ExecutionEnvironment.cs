@@ -240,7 +240,7 @@ namespace Warewolf.Storage
         public IList<int> EvalRecordSetIndexes(string recordsetName, int update)
         {
            
-            return PublicFunctions.getIndexes(recordsetName, update, _env).ToList();
+            return PublicFunctions.GetIndexes(recordsetName, update, _env).ToList();
         }
 
         public bool HasRecordSet(string recordsetName)

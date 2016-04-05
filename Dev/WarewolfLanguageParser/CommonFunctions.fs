@@ -133,3 +133,35 @@ let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifie
     match index with 
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
     | IndexDoesNotExist -> raise (new Dev2.Common.Common.NullValueInVariableException("index not found",identifier.Name))
+
+let  LanguageExpressionToStringWithoutStuff  (x:LanguageExpression) =
+    match x with
+        | RecordSetExpression _ -> ""
+        | ScalarExpression _ -> ""
+        | WarewolfAtomAtomExpression a -> atomtoString a
+        | ComplexExpression _ -> ""
+        | RecordSetNameExpression _ -> ""
+        | JsonIdentifierExpression _ -> ""
+
+let isNotAtomAndNotcomplex  (b:LanguageExpression list) (a:LanguageExpression) =
+    let set = b|> List.map LanguageExpressionToStringWithoutStuff |> Set.ofList
+    let reserved =  ["[[";"]]"] |> Set.ofList
+    if not (Set.intersect set reserved|> Set.isEmpty)
+        then 
+            match a with
+            | WarewolfAtomAtomExpression _ -> false
+            |_ -> true
+        else
+            false
+
+let compare (left:WarewolfAtom) (right:WarewolfAtom) =
+    match (left,right) with
+    | (Nothing,Nothing) -> 0
+    | ( Int a, Int b ) -> a.CompareTo(b)
+    | (Float a, Float b ) -> a.CompareTo(b)
+    | (a,b) -> (atomtoString a).CompareTo(atomtoString b)
+
+let isNothing (a:WarewolfEvalResult) =
+   match a with
+   | WarewolfAtomResult a -> a=Nothing
+   | _-> false
