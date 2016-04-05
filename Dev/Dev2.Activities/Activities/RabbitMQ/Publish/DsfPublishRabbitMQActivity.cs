@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
@@ -121,7 +122,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
             catch (Exception ex)
             {
                 Dev2Logger.Error("PublishRabbitMQActivity", ex);
-                return "Failure";
+                throw new Exception(ex.GetAllMessages());
             }
         }
 
