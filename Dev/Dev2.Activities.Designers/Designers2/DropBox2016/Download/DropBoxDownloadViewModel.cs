@@ -49,7 +49,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             // ReSharper disable once VirtualMemberCallInContructor
             _sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
-            IsDropboxSourceWizardSourceMessagePulished = false;
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
 
         }
@@ -161,14 +160,11 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
         public void CreateOAuthSource()
         {
-            IsDropboxSourceWizardSourceMessagePulished = false;
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
             _sources = LoadOAuthSources();
-            IsDropboxSourceWizardSourceMessagePulished = true;
             OnPropertyChanged("Sources");
         }
         //Used by specs
-        public bool IsDropboxSourceWizardSourceMessagePulished { get; set; }
 
         public virtual ObservableCollection<OauthSource> LoadOAuthSources()
         {
