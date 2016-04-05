@@ -17,7 +17,7 @@ namespace WpfControls
             }
             try
             {
-                var rep = IntellisenseStringProvider.DoReplace(originalText, originalCaret, selectedOption);
+                var rep = IntellisenseStringProvider.doReplace(originalText, originalCaret, selectedOption);
                 return new IntellisenseStringResult(rep.Item1, rep.Item2);
             }
             catch (Exception)

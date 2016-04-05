@@ -178,7 +178,7 @@ namespace Warewolf.Storage
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)
         {
-           var output =  Distinct.EvalDistinct(_env, distinctList, valueList,update,resList);
+           var output =  Distinct.evalDistinct(_env, distinctList, valueList,update,resList);
            _env = output;
         }
 

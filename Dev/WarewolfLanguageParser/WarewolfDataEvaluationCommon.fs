@@ -252,7 +252,7 @@ and languageExpressionToJPath (lang:LanguageExpression) =
                                             | Star  -> "[*]." 
                                             | Last  -> "[(@.length-1)]."
                                             | _ ->failwith  "not supported for JSON types"
-            | ComplexExpression  a ->  failwith  "not supported for JSON types"
+            | ComplexExpression  _ ->  failwith  "not supported for JSON types"
             | JsonIdentifierExpression a ->  jsonIdentifierToJsonPathLevel1 a 
 
 and jsonIdentifierToJsonPath (a:JsonIdentifierExpression) (accx:string)= 
@@ -267,7 +267,6 @@ and jsonIdentifierToJsonPath (a:JsonIdentifierExpression) (accx:string)=
                                                         | _ ->failwith  "not supported for JSON types"
                                         (jsonIdentifierToJsonPath x.Next (acc + x.ObjectName + "." + index  ) )
     | Terminal -> accx
-
 
 and jsonIdentifierToJsonPathLevel1 (a:JsonIdentifierExpression) = 
     
@@ -339,8 +338,6 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
         | JsonIdentifierExpression _ -> failwith "no current use case please contact the warewolf product owner " 
 
-
-
 and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
     let exp = ParseCache.TryFind lang
@@ -361,11 +358,6 @@ and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) 
                                                                 |_->     sprintf "[[%s(%s).%s]]" a.Name (eval  env update  (languageExpressionToString exp)|> evalResultToString) a.Column  
                                     | _->lang
         | _ -> lang
-
-
-
-
-
 
 and  evalToExpression  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
@@ -418,9 +410,6 @@ and  evalWithPositions  (env: WarewolfEnvironment)  (update:int)  (lang:string) 
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
 
-
-
-
 and evalRecordSetIndexes (env:WarewolfEnvironment) (recset:RecordSetName) : int seq =
     match recset.Index with
     | IntIndex _ -> {1..1}
@@ -450,13 +439,14 @@ and  evalIndexes  (env: WarewolfEnvironment) (update:int)  (lang:string) =
 
 let addToScalars (env:WarewolfEnvironment) (name:string) (value:WarewolfAtom)  =
     let rem = Map.remove name env.Scalar |> Map.add name value 
-    { env with     Scalar=rem;
-
+    { 
+        env with     Scalar=rem;
     }
 
 let addToRecordSets (env:WarewolfEnvironment) (name:string) (value:WarewolfRecordset) =
     let rem = Map.remove name env.RecordSets |> Map.add name value 
-    { env with RecordSets = rem
+    { 
+        env with RecordSets = rem
     }
 
 let addColumnValueToRecordset (destination:WarewolfRecordset) (name:string) (values: WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
@@ -480,8 +470,6 @@ let addToList (lst:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) (
 let addNothingToList (lst:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
     lst.AddNothing()
     lst    
-
-
 
 let addAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (position:int) =
     let col = rset.Data.TryFind columnName
@@ -584,13 +572,8 @@ let addAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
                           addedAtEnd.[PositionColumn].[len-1] <- Int position
                           { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Frame = frame ; Optimisations = WarewolfAttribute.Fragmented }
 
-
-
-
-
 let createFilled (count:int) (value: WarewolfAtom):WarewolfColumnData=
    new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing,seq {for _ in 1 .. count do yield value }) 
-
 
 let updateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom)=
     if rset.Count = 0 then
@@ -605,7 +588,6 @@ let updateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: W
             rset 
         else 
         {rset with Data=  Map.add columnName ( createFilled rset.Count value)  rset.Data    }
-
 
 let getIndexes (name:string) (env:WarewolfEnvironment) = evalIndexes  env 0 name
 

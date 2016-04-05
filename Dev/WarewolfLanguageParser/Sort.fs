@@ -1,12 +1,7 @@
 ﻿module Sort
 
-open DataASTMutable
 open LanguageAST
-//open LanguageEval
-open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
-open WarewolfParserInterop
-open CommonFunctions
 open WarewolfDataEvaluationCommon
 
 
@@ -17,10 +12,10 @@ let rec sortRecst (recset:WarewolfRecordset) (colName:string) (desc:bool)=
     let interpolated = Seq.map2 (fun a b ->  a,  b) data positions
     let sorted = if not desc then Seq.sortBy (fun x ->  (fst x)  ) interpolated else Seq.sortBy (fun x ->  (fst x)   ) interpolated |> List.ofSeq |>List.rev |> Seq.ofList
     let indexes = Seq.map snd sorted  |> Array.ofSeq
-    let data = Map.map (fun a b -> ApplyIndexes b indexes a) recset.Data
+    let data = Map.map (fun a b -> applyIndexes b indexes a) recset.Data
     {recset with Data = data; Optimisations =Ordinal ; LastIndex = positions.Length  }
 
-and ApplyIndexes (data:WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (indexes : int[]) (name:string) =
+and applyIndexes (data:WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (indexes : int[]) (name:string) =
     let newdata = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)
     if name = PositionColumn then
         for x in [1..data.Count] do

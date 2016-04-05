@@ -1,10 +1,6 @@
 ﻿module DataMergeFunctions
-open DataASTMutable
 open LanguageAST
-//open LanguageEval
-open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
-open WarewolfParserInterop
 open CommonFunctions
 open WarewolfDataEvaluationCommon
 

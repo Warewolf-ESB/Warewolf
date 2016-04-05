@@ -1,5 +1,4 @@
 ﻿module AssignEvaluation
-open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 open WarewolfDataEvaluationCommon
 open Dev2.Common.Interfaces
@@ -143,7 +142,7 @@ and evalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
     let shouldUseLast =  match rightParse with
                             | RecordSetExpression a ->
                                         match a.Index with
-                                            | IntIndex a-> true
+                                            | IntIndex _-> true
                                             | Star -> false
                                             | Last -> true
                                             | _-> true
