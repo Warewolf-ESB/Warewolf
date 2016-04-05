@@ -879,10 +879,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoComplete\WpfControls.CS\WpfControls.CS.csproj">
-      <Project>{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}</Project>
-      <Name>WpfControls.CS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>

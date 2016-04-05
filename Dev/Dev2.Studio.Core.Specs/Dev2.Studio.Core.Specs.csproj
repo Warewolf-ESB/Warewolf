@@ -103,10 +103,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoComplete\WpfControls.CS\WpfControls.CS.csproj">
-      <Project>{bb2abb74-ba58-4812-83aa-ec8171f42df4}</Project>
-      <Name>WpfControls.CS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
