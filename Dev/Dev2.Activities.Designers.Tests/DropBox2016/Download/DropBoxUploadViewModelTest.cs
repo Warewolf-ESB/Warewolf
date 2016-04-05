@@ -105,18 +105,6 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsTrue(string.IsNullOrEmpty(downloadViewModel.Result));
-        } 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OverwriteFile_GivenActivityIsNew_ShouldBefalse()
-        {
-            //---------------Set up test pack-------------------
-            var downloadViewModel = CreateMockViewModel();
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(string.IsNullOrEmpty(downloadViewModel.ToPath));
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.IsFalse(downloadViewModel.OverwriteFile);
         }
 
         [TestMethod]
@@ -260,34 +248,6 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             }
             var modelPropertyValue = property.ComputedValue;
             Assert.AreEqual("A", modelPropertyValue);
-        }   
-        
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void OverwriteFile_GivenIsSet_ShouldSetModelItemProperty()
-        {
-            var env = new Mock<IEnvironmentModel>();
-            var res = new Mock<IResourceRepository>();
-            var agg = new Mock<IEventAggregator>();
-            env.Setup(a => a.ResourceRepository).Returns(res.Object);
-            var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
-            var model = CreateModelItem();
-            //------------Setup for test--------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, env.Object, agg.Object);
-
-            //------------Execute Test---------------------------
-            boxUploadViewModel.OverwriteFile = true;
-            //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["OverwriteFile"];
-            if (property == null)
-            {
-                Assert.Fail("Property Does not exist");
-            }
-            var modelPropertyValue = property.ComputedValue;
-            Assert.AreEqual(true, modelPropertyValue);
         }
 
         [TestMethod]

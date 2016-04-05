@@ -4,6 +4,7 @@ open DataASTMutable
 open WarewolfDataEvaluationCommon
 open Dev2.Common.Interfaces
 open LanguageAST
+open Newtonsoft.Json.Linq
 
 
 
@@ -29,8 +30,12 @@ let AddRecsetToEnv (name:string) (env:WarewolfEnvironment) =
 
 let AddToScalars (env:WarewolfEnvironment) (name:string) (value:WarewolfAtom)  =
     let rem = Map.remove name env.Scalar |> Map.add name value 
-    {       Scalar=rem;
-            RecordSets = env.RecordSets
+    {    env with   Scalar=rem;
+    }
+
+let AddToJsonObjects (env:WarewolfEnvironment) (name:string) (value:JContainer)  =
+    let rem = Map.remove name env.JsonObjects |> Map.add name value 
+    {    env with   JsonObjects=rem;
     }
 
 let rec AddToRecordSet (env:WarewolfEnvironment) (name:RecordSetIdentifier) (update:int) (value:WarewolfAtom)  =
