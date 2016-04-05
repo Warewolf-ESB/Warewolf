@@ -12,7 +12,7 @@ namespace Dev2.Activities.DropBox2016.Result
             _uploadAsync = uploadAsync;
         }
 
-        public virtual IDownloadResponse<FileMetadata> GetDownloadResponse()
+        public IDownloadResponse<FileMetadata> GetDownloadResponse()
         {
             return _uploadAsync;
         }

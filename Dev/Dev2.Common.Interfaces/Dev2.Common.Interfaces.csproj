@@ -161,6 +161,7 @@
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
+    <Compile Include="enIntellisensePartType.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
@@ -196,6 +197,8 @@
     <Compile Include="IExternalProcessExecutor.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IHelpView.cs" />
+    <Compile Include="IIntellisenseStringResult.cs" />
+    <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageEmailSourceViewModel.cs" />
@@ -231,6 +234,7 @@
     <Compile Include="Infrastructure\SharedModels\IDbColumn.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
+    <Compile Include="IntellisenseStringResult.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPasteView.cs" />
     <Compile Include="IPerformanceCountersByMachine.cs" />
@@ -250,6 +254,7 @@
     <Compile Include="ISplashView.cs" />
     <Compile Include="ISplashViewModel.cs" />
     <Compile Include="IStudioUpdateManager.cs" />
+    <Compile Include="ISuggestionProvider.cs" />
     <Compile Include="IToolboxView.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="ISharepointListTo.cs" />
@@ -272,6 +277,7 @@
     <Compile Include="NameValue.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="PluginServiceDefinition.cs" />
     <Compile Include="PopupController\IDev2MessageBoxViewModel.cs" />
     <Compile Include="PopupController\IMessage.cs" />
