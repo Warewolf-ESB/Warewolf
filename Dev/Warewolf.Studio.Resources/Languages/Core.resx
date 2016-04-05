@@ -3859,4 +3859,17 @@ Data
   <data name="ChooseAttachmentsHelp" xml:space="preserve">
     <value>ChooseAttachmentsHelp</value>
   </data>
+
+  <data name="SelectAndApplyDataSourceToolTip" xml:space="preserve">
+    <value>SelectAndApplyDataSourceToolTip</value>
+  </data>
+  <data name="SelectAndApplyDataSourceHelpText" xml:space="preserve">
+    <value>SelectAndApplyDataSourceHelpText</value>
+  </data>
+  <data name="SelectAndApplyAliasToolTip" xml:space="preserve">
+    <value>SelectAndApplyAliasToolTip</value>
+  </data>
+  <data name="SelectAndApplyAliasHelpText" xml:space="preserve">
+    <value>SelectAndApplyAliasHelpText</value>
+  </data>
 </root>

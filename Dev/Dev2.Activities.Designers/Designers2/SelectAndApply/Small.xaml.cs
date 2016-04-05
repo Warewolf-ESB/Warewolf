@@ -21,50 +21,38 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         public Small()
         {
             InitializeComponent();
-            DropPoint.PreviewDrop += DoDrop;
-            DropPoint.PreviewDragOver += DropPointOnDragEnter;
+            DropPoint.PreviewDragOver += DropPoint_OnDragOver;
+            DropPoint.PreviewDrop += DropPoint_OnPreviewDrop;
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        SelectAndApplyDesignerViewModel ViewModel
+        void AllowDrag(DragEventArgs e)
         {
-            get
-            {
-                return DataContext as SelectAndApplyDesignerViewModel;
-            }
-        }
-
-        void DoDrop(object sender, DragEventArgs e)
-        {
-            var dataObject = e.Data;
-            bool multipleItemsToSequence = ViewModel.MultipleItemsToSequence(dataObject);
-            if(multipleItemsToSequence)
-            {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-            }
-
-        }
-
-        void DropPointOnDragEnter(object sender, DragEventArgs e)
-        {
-            if(_dropEnabledActivityDesignerUtils != null)
+            if (_dropEnabledActivityDesignerUtils != null)
             {
                 var dropEnabled = _dropEnabledActivityDesignerUtils.LimitDragDropOptions(e.Data);
-                if(!dropEnabled)
+                if (!dropEnabled)
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
                 }
-                else
-                {
-                    if(ViewModel.MultipleItemsToSequence(e.Data))
-                    {
-                        e.Effects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                }
             }
+        }
+
+        void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
+        {
+            var viewModel = DataContext as SelectAndApplyDesignerViewModel;
+            if (viewModel != null)
+            {
+                viewModel.DoDrop(e.Data);
+            }
+            DropPoint.Item = null;
+        }
+
+        void DropPoint_OnDragOver(object sender, DragEventArgs e)
+        {
+            AllowDrag(e);
+            OnDragOver(e);
         }
 
 
