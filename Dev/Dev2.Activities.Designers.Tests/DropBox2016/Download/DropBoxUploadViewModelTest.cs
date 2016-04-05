@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsTrue(string.IsNullOrEmpty(downloadViewModel.Result));
-        } 
+        }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OverwriteFile_GivenActivityIsNew_ShouldBefalse()
@@ -260,8 +260,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             }
             var modelPropertyValue = property.ComputedValue;
             Assert.AreEqual("A", modelPropertyValue);
-        }   
-        
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void OverwriteFile_GivenIsSet_ShouldSetModelItemProperty()

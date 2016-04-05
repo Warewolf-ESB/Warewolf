@@ -69,424 +69,28 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void InsertForAllFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and Default Provider", exampleTags);
-#line 8
-this.ScenarioSetup(scenarioInfo);
-#line 9
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 10
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 16
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 17
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text var")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text [[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_1()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("1", "<var/><var2/><rec><var/><var2/></rec>", "All", "text var", "8", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var]]", "text [[var]]", "Default", "12", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[var")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_2()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("2", "<var/><var2/><rec><var/><var2/></rec>", "All", "text[[var", "9", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var2]]", "text[[var2]]", "Default", "12", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_3()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("3", "<var/><var2/><rec><var/><var2/></rec>", "All", "text[[rec().var]]", "15", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec().var2]]", "text[[rec().var2]]", "Default", "16", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-            "]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "8")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_4()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("4", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[", "2", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-                    "]]", "[[var2]]", "[[var2]]", "Default", "8", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "27")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_5()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("5", "<var/><var2/><rec><var/><var2/></rec>", "All", "text[[rec().[[var", "17", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(*).var2]]", "text[[rec().[[rec(*).var2]]", "Default", "27", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[rec().var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "26")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_6()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("6", "<var/><var2/><rec><var/><var2/></rec>", "All", "text[[rec().[[var]]", "17", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec().var2]]", "text[[rec().[[rec().var2]]", "Default", "26", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var]]]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[rec().var]]]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "25")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_7()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("7", "<var/><var2/><rec><var/><var2/></rec>", "All", "text[[rec().[[var]]]]", "17", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec().var]]", "text[[rec().[[rec().var]]]]", "Default", "25", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]]v")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec().var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_8()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("8", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[var]]v", "8", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec().var]]", "[[var]][[rec().var]]", "Default", "20", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-            "]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "21")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_9()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("9", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[var]][[", "9", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-                    "]]", "[[rec(*).var]]", "[[var]][[rec(*).var]]", "Default", "21", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[var")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_10()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("10", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[var]][[var", "12", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(*).var2]]", "[[var]][[rec(*).var2]]", "Default", "22", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_11()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("11", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[var]][[var]]", "12", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(*).var1]]", "[[var]][[rec(*).var1]]", "Default", "22", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_12()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("12", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[var]]", "7", "", "", "[[var]]", "Default", "7", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]] text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]] text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_13()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("13", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[var]] text", "13", "", "", "[[var]] text", "Default", "13", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[var2]]text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var2]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().var2]]text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "18")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_14()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("14", "<var/><var2/><rec><var/><var2/></rec>", "All", "text[[var2]]text", "10", "[[var2]],[[rec().var2]],[[rec(*).var2]]", "[[rec().var2]]", "text[[rec().var2]]text", "Default", "18", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "r")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-            "]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_15()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("15", "<var/><var2/><rec><var/><var2/></rec>", "All", "r", "1", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-                    "]]", "[[rec().var2]]", "[[rec().var2]]", "Default", "14", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "16")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "re")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec(")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "6")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_16()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("16", "<var/><var2/><rec><var/><var2/></rec>", "All", "re", "2", "[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(", "[[rec(", "Default", "6", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec([[va]]).var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec([[var]]).var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_17()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("17", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[rec([[va]]).var]]", "10", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var]]", "[[rec([[var]]).var]]", "Default", "13", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "18")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[[[a]]]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[[[var]]]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "9")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_18()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("18", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[[[a]]]]", "5", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var]]", "[[[[var]]]]", "Default", "9", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "19")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<var/><var2/><rec><var/><var2/></rec>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-            "]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
-        public virtual void InsertForAllFilterTypeAndDefaultProvider_19()
-        {
-            this.InsertForAllFilterTypeAndDefaultProvider("19", "<var/><var2/><rec><var/><var2/></rec>", "All", "[[", "2", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
-                    "]]", "[[var]]", "[[var]]", "Default", "7", ((string[])(null)));
-        }
-        
         public virtual void InsertForAllFilterTypeAndDateTimeProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and DateTime Provider", exampleTags);
-#line 55
+#line 12
 this.ScenarioSetup(scenarioInfo);
-#line 56
+#line 13
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 57
+#line 14
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 15
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 16
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 17
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 18
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 19
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 63
+#line 20
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 64
+#line 21
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -501,14 +105,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],am/pm")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[rec().var]],[[rec(*).var]],[[var]],[[var2]],am/pm")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "am/pm")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "am/pm")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, DateTime")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "5")]
         public virtual void InsertForAllFilterTypeAndDateTimeProvider_1()
         {
-            this.InsertForAllFilterTypeAndDateTimeProvider("1", "<var/><var2/><rec><var/></rec>", "All", "a", "1", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],am/pm", "am/pm", "am/pm", "Default, DateTime", "5", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDateTimeProvider("1", "<var/><var2/><rec><var/></rec>", "All", "a", "1", "[[rec().var]],[[rec(*).var]],[[var]],[[var2]],am/pm", "am/pm", "am/pm", "Default, DateTime", "5", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -558,14 +162,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[ww]],[[min]],[[rec(,[[rec().minss]],[[rec(*).minss]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[min]],[[rec(,[[rec().minss]],[[rec()]],[[rec(*,[[rec(*).minss]],[[ww]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec(")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, DateTime")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "6")]
         public virtual void InsertForAllFilterTypeAndDateTimeProvider_4()
         {
-            this.InsertForAllFilterTypeAndDateTimeProvider("4", "<ww/><min/><rec><minss/></rec>", "All", "[[", "2", "[[ww]],[[min]],[[rec(,[[rec().minss]],[[rec(*).minss]]", "[[rec(", "[[rec(", "Default, DateTime", "6", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDateTimeProvider("4", "<ww/><min/><rec><minss/></rec>", "All", "[[", "2", "[[min]],[[rec(,[[rec().minss]],[[rec()]],[[rec(*,[[rec(*).minss]],[[ww]]", "[[rec(", "[[rec(", "Default, DateTime", "6", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -617,12 +221,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "min")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text minute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text min")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, DateTime")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "8")]
         public virtual void InsertForAllFilterTypeAndDateTimeProvider_7()
         {
-            this.InsertForAllFilterTypeAndDateTimeProvider("7", "<ww/><min/><rec><minss/></rec>", "All", "text mute", "6", "[[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM", "min", "text minute", "Default, DateTime", "8", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDateTimeProvider("7", "<ww/><min/><rec><minss/></rec>", "All", "text mute", "6", "[[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM", "min", "text min", "Default, DateTime", "8", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -636,12 +240,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[min]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text [[min]]ute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text [[min]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, DateTime")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
         public virtual void InsertForAllFilterTypeAndDateTimeProvider_8()
         {
-            this.InsertForAllFilterTypeAndDateTimeProvider("8", "<ww/><min/><rec><minss/></rec>", "All", "text mute", "6", "[[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM", "[[min]]", "text [[min]]ute", "Default, DateTime", "12", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDateTimeProvider("8", "<ww/><min/><rec><minss/></rec>", "All", "text mute", "6", "[[min]],[[rec().minss]],[[rec(*).minss]],m,M,min,mm,MM", "[[min]]", "text [[min]]", "Default, DateTime", "12", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -666,27 +270,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertForAllFilterTypeAndFileProvider(string testName, string pathStructure, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and File Provider", exampleTags);
-#line 77
+#line 34
 this.ScenarioSetup(scenarioInfo);
-#line 78
+#line 35
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 79
+#line 36
  testRunner.And(string.Format("the file path structure is \'{0}\'", pathStructure), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 37
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 38
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 39
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 40
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 41
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 42
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 86
+#line 43
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 87
+#line 44
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -702,14 +306,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "c:\\[[fil")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "c:\\[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
         public virtual void InsertForAllFilterTypeAndFileProvider_1()
         {
-            this.InsertForAllFilterTypeAndFileProvider("1", "", "<myfile/><file><name/></file>", "All", "c:\\[[fil", "8", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]", "[[myfile]]", "c:\\[[myfile]]", "Default, File", "13", ((string[])(null)));
+            this.InsertForAllFilterTypeAndFileProvider("1", "", "<myfile/><file><name/></file>", "All", "c:\\[[fil", "8", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]", "[[myfile]]", "c:\\[[myfile]]", "Default, File", "13", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -722,14 +326,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "c:\\[[fil]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "c:\\[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
         public virtual void InsertForAllFilterTypeAndFileProvider_2()
         {
-            this.InsertForAllFilterTypeAndFileProvider("2", "", "<myfile/><file><name/></file>", "All", "c:\\[[fil]]", "8", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]", "[[myfile]]", "c:\\[[myfile]]", "Default, File", "13", ((string[])(null)));
+            this.InsertForAllFilterTypeAndFileProvider("2", "", "<myfile/><file><name/></file>", "All", "c:\\[[fil]]", "8", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]", "[[myfile]]", "c:\\[[myfile]]", "Default, File", "13", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -742,14 +346,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "c:\\[[fil]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[file().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "c:\\[[file().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "18")]
         public virtual void InsertForAllFilterTypeAndFileProvider_3()
         {
-            this.InsertForAllFilterTypeAndFileProvider("3", "", "<myfile/><file><name/></file>", "All", "c:\\[[fil]]", "8", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]", "[[file().name]]", "c:\\[[file().name]]", "Default, File", "18", ((string[])(null)));
+            this.InsertForAllFilterTypeAndFileProvider("3", "", "<myfile/><file><name/></file>", "All", "c:\\[[fil]]", "8", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]", "[[file().name]]", "c:\\[[file().name]]", "Default, File", "18", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -782,14 +386,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "c:\\[[myfile]][[fil")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "18")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[file().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "c:\\[[myfile]][[file().name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "28")]
         public virtual void InsertForAllFilterTypeAndFileProvider_5()
         {
-            this.InsertForAllFilterTypeAndFileProvider("5", "", "<myfile/><file><name/></file>", "All", "c:\\[[myfile]][[fil", "18", "[[myfile]],[[file(,[[file().name]],[[file(*).name]]", "[[file().name]]", "c:\\[[myfile]][[file().name]]", "Default, File", "28", ((string[])(null)));
+            this.InsertForAllFilterTypeAndFileProvider("5", "", "<myfile/><file><name/></file>", "All", "c:\\[[myfile]][[fil", "18", "[[file(,[[file().name]],[[file()]],[[file(*,[[file(*).name]],[[myfile]]", "[[file().name]]", "c:\\[[myfile]][[file().name]]", "Default, File", "28", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -802,14 +406,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[myfile]].")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[file().name]],[[file(*).name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[myfile]].")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
         public virtual void InsertForAllFilterTypeAndFileProvider_6()
         {
-            this.InsertForAllFilterTypeAndFileProvider("6", "", "<myfile/><file><name/></file>", "All", "[[myfile]].", "11", "", "", "[[myfile]].", "Default, File", "11", ((string[])(null)));
+            this.InsertForAllFilterTypeAndFileProvider("6", "", "<myfile/><file><name/></file>", "All", "[[myfile]].", "11", "[[file().name]],[[file(*).name]]", "", "[[myfile]].", "Default, File", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -830,26 +434,6 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertForAllFilterTypeAndFileProvider_7()
         {
             this.InsertForAllFilterTypeAndFileProvider("7", "c:\\,c:\\FolderA,c:\\FolderA\\FileA.txt", "", "All", "del c", "5", "c:\\,c:\\FolderA,c:\\FolderA\\FileA.txt", "c:\\FolderA\\FileA.txt", "del c:\\FolderA\\FileA.txt", "Default, File", "24", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and File Provider")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:pathStructure", "c:\\,c:\\FolderA,c:\\FolderA\\FileA.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><ab/>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "del c:\\[[myfile]]\\a")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "19")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[a]],[[ab]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "del c:\\[[myfile]]\\[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default, File")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "23")]
-        public virtual void InsertForAllFilterTypeAndFileProvider_8()
-        {
-            this.InsertForAllFilterTypeAndFileProvider("8", "c:\\,c:\\FolderA,c:\\FolderA\\FileA.txt", "<a/><ab/>", "All", "del c:\\[[myfile]]\\a", "19", "[[a]],[[ab]]", "[[a]]", "del c:\\[[myfile]]\\[[a]]", "Default, File", "23", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -915,25 +499,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertForAllFilterTypeAndCalculateProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and Calculate Provider", exampleTags);
-#line 102
+#line 58
 this.ScenarioSetup(scenarioInfo);
-#line 103
+#line 59
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
+#line 60
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 61
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 62
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 63
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 64
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 65
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 110
+#line 66
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 111
+#line 67
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1094,19 +678,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RecsetOnlyHasNoErrorsForValidVariableIndexes(string testName, string varlist, string expectError, string input, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recset only has no errors for valid variable indexes", exampleTags);
-#line 123
+#line 79
 this.ScenarioSetup(scenarioInfo);
-#line 124
+#line 80
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 125
+#line 81
  testRunner.And("the filter type is \'RecordsetsOnly\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 82
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 83
  testRunner.And("the cursor is at index \'11\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 84
  testRunner.And("the provider used is \'Default\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
+#line 85
  testRunner.Then(string.Format("the result has \'{0}\' errors", expectError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1131,46 +715,438 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<x/><sum><b/></sum><mus><b/></mus>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum([[assc]])]]")]
         public virtual void RecsetOnlyHasNoErrorsForValidVariableIndexes_Variant1()
         {
-            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("1", "<x/><sum><b/></sum><mus><b/></mus>", "false", "[[sum([[assc]])]]", ((string[])(null)));
+            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("1", "<x/><sum><b/></sum><mus><b/></mus>", "true", "[[sum([[assc]])]]", ((string[])(null)));
         }
         
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetsOnly FilterType and Default Provider", exampleTags);
-#line 145
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and Default Provider New", exampleTags);
+#line 95
 this.ScenarioSetup(scenarioInfo);
-#line 146
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 147
+#line 96
+ testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 97
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 98
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 99
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 100
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 153
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 154
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+ testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 103
+ testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text var")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text [[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_1()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("1", "[[var]],[[var2]],[[rec()]],[[rec().var]],[[rec().var2]]", "All", "text var", "8", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var]]", "text [[var]]", "Default", "12", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[var")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_2()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("2", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "text[[var", "9", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var2]]", "text[[var2]]", "Default", "12", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "18")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_3()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("3", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "text[[rec().var]]", "15", "[[rec().var]],[[rec().var2]]", "[[rec().var2]]", "text[[rec().var2]]", "Default", "18", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+            "]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "8")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_4()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("4", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[", "2", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+                    "]]", "[[var2]]", "[[var2]]", "Default", "8", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_5()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("5", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "text[[rec().[[var", "17", "[[var]],[[var2]]", "[[var2]]", "text[[rec().[[var2]]", "Default", "20", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_6()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("6", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "text[[rec().[[var]]", "17", "[[var]],[[var2]]", "[[var2]]", "text[[rec().[[var2]]", "Default", "20", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[var2]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_7()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("7", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "text[[rec().[[var]]]]", "17", "[[var]],[[var2]]", "[[var2]]", "text[[rec().[[var2]]]]", "Default", "20", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]]v")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_8()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("8", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[var]]v", "8", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec().var]]", "[[var]][[rec().var]]", "Default", "20", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+            "]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "21")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_9()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("9", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[var]][[", "9", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+                    "]]", "[[rec(*).var]]", "[[var]][[rec(*).var]]", "Default", "21", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[var")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_10()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("10", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[var]][[var", "12", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(*).var2]]", "[[var]][[rec(*).var2]]", "Default", "22", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_11()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("11", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[var]][[var]]", "12", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(*).var2]]", "[[var]][[rec(*).var2]]", "Default", "22", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_12()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("12", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[var]]", "7", "", "", "[[var]]", "Default", "7", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]] text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]] text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_13()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("13", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[var]] text", "13", "", "", "[[var]] text", "Default", "13", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[var2]]text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var2]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().var2]]text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "18")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_14()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("14", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "text[[var2]]text", "10", "[[var2]],[[rec().var2]],[[rec(*).var2]]", "[[rec().var2]]", "text[[rec().var2]]text", "Default", "18", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "r")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+            "]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_15()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("15", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "r", "1", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+                    "]]", "[[rec().var2]]", "[[rec().var2]]", "Default", "14", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "re")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec(")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "6")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_16()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("16", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "re", "2", "[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(", "[[rec(", "Default", "6", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec([[va]]).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec([[var]]).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_17()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("17", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[rec([[va]]).var]]", "10", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var]]", "[[rec([[var]]).var]]", "Default", "13", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[[[a]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_18()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("18", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[[[a]]]]", "5", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[var]]", "[[var]]]]", "Default", "7", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+            "]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderNew_19()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderNew("19", "[[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "[[", "2", "[[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2" +
+                    "]]", "[[var]]", "[[var]]", "Default", "7", ((string[])(null)));
+        }
+        
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetsOnly FilterType and Default Provider new", exampleTags);
+#line 134
+this.ScenarioSetup(scenarioInfo);
+#line 135
+ testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 136
+  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 137
+ testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 138
+ testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 139
+ testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 140
+ testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 141
+ testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 142
+ testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "u")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
@@ -1179,17 +1155,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "9")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_1()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_1()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("1", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "u", "1", "[[sum()]],[[mus()]]", "[[sum()]]", "[[sum()]]", "Default", "9", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("1", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "u", "1", "[[sum()]],[[mus()]]", "[[sum()]]", "[[sum()]]", "Default", "9", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
@@ -1198,17 +1174,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "1")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_2()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_2()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("2", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "b", "1", "", "", "b", "Default", "1", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("2", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "b", "1", "", "", "b", "Default", "1", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "3")]
@@ -1217,17 +1193,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "3")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_3()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_3()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("3", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "[[()]]", "3", "", "", "[[()]]", "Default", "3", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("3", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "[[()]]", "3", "", "", "[[()]]", "Default", "3", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum()]] s")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "11")]
@@ -1236,17 +1212,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum()]] s")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_4()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_4()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("4", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "[[sum()]] s", "11", "[[sum()]],[[mus()]]", "", "[[sum()]] s", "Default", "11", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("4", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "[[sum()]] s", "11", "[[sum()]],[[mus()]]", "", "[[sum()]] s", "Default", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum()]] [[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
@@ -1255,17 +1231,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum()]] [[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "19")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_5()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_5()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("5", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "[[sum()]] [[", "12", "[[sum()]],[[mus()]]", "[[mus()]]", "[[sum()]] [[mus()]]", "Default", "19", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("5", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "[[sum()]] [[", "12", "[[sum()]],[[mus()]]", "[[mus()]]", "[[sum()]] [[mus()]]", "Default", "19", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "rec s")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
@@ -1274,36 +1250,36 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "rec [[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_6()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_6()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("6", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "rec s", "5", "[[sum()]],[[mus()]]", "[[mus()]]", "rec [[mus()]]", "Default", "13", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("6", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "rec s", "5", "[[sum()]],[[mus()]]", "[[mus()]]", "rec [[mus()]]", "Default", "13", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum().b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[sum().b]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "10")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_7()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_7()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("7", "<b/><sum><b/><ba/></sum><mus><b/></mus>", "RecordsetFields", "[[sum().b]]", "9", "[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]", "[[sum().ba]]", "[[sum().ba]]", "Default", "10", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("7", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "RecordsetFields", "[[sum().b]]", "9", "[[sum().b]],[[sum().ba]]", "[[sum().ba]]", "[[sum().ba]]", "Default", "12", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum(b).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
@@ -1313,56 +1289,56 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum([[b]]).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_8()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_8()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("8", "<b/><sum><b/><ba/></sum><mus><b/></mus>", "All", "[[sum(b).b]]", "7", "[[b]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]" +
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("8", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "All", "[[sum(b).b]]", "7", "[[b]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]" +
                     "]", "[[b]]", "[[sum([[b]]).b]]", "Default", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum([[b]]).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[b]],[[ba]],[[sum().b]],[[sum().ba]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[ba]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum([[b]]).[[ba]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[sum().b]],[[sum().ba]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[sum().ba]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "19")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_9()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_9()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("9", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>", "All", "[[sum([[b]]).b]]", "14", "[[b]],[[ba]],[[sum().b]],[[sum().ba]]", "[[ba]]", "[[sum([[b]]).[[ba]]]]", "Default", "19", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("9", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "All", "[[sum([[b]]).b]]", "14", "[[sum().b]],[[sum().ba]]", "[[sum().ba]]", "[[sum().ba]]", "Default", "12", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum([[b]]).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[b]],[[ba]],[[sum().b]],[[sum().ba]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[sum().ba]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum([[b]]).ba]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[sum([[b]]).b]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[sum([[b]]).b]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum([[b]]).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_10()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_10()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("10", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>", "All", "[[sum([[b]]).b]]", "14", "[[b]],[[ba]],[[sum().b]],[[sum().ba]]", "[[sum().ba]]", "[[sum([[b]]).ba]]", "Default", "15", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("10", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "All", "[[sum([[b]]).b]]", "14", "[[sum([[b]]).b]]", "[[sum([[b]]).b]]", "[[sum([[b]]).b]]", "Default", "16", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "u u")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "3")]
@@ -1371,17 +1347,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "u [[sum()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_11()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_11()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("11", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "u u", "3", "[[sum()]],[[mus()]]", "[[sum()]]", "u [[sum()]]", "Default", "11", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("11", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "u u", "3", "[[sum()]],[[mus()]]", "[[sum()]]", "u [[sum()]]", "Default", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "12")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum()]] s")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "11")]
@@ -1390,17 +1366,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum()]] [[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "19")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_12()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_12()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("12", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "[[sum()]] s", "11", "[[sum()]],[[mus()]]", "[[mus()]]", "[[sum()]] [[mus()]]", "Default", "19", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("12", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "[[sum()]] s", "11", "[[sum()]],[[mus()]]", "[[mus()]]", "[[sum()]] [[mus()]]", "Default", "19", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "13")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum().b]][[sum().b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "20")]
@@ -1408,18 +1384,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum().b]][[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "21")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_13()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "23")]
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_13()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("13", "<b/><sum><b/><ba/></sum><mus><b/></mus>", "RecordsetFields", "[[sum().b]][[sum().b]]", "20", "[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]", "[[sum().ba]]", "[[sum().b]][[sum().ba]]", "Default", "21", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("13", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "RecordsetFields", "[[sum().b]][[sum().b]]", "20", "[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]", "[[sum().ba]]", "[[sum().b]][[sum().ba]]", "Default", "23", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum(b).b]][[sum(b).b]] some more")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "19")]
@@ -1428,59 +1404,57 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum(b).b]][[sum([[b]]).b]] some more")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "23")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_14()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "28")]
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_14()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("14", "<b/><sum><b/><ba/></sum><mus><b/></mus>", "All", "[[sum(b).b]][[sum(b).b]] some more", "19", "[[b]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]" +
-                    "]", "[[b]]", "[[sum(b).b]][[sum([[b]]).b]] some more", "Default", "23", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("14", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "All", "[[sum(b).b]][[sum(b).b]] some more", "19", "[[b]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]" +
+                    "]", "[[b]]", "[[sum(b).b]][[sum([[b]]).b]] some more", "Default", "28", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "15")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum([[b]]).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "14")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[b]],[[ba]],[[sum().b]],[[sum().ba]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[ba]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum([[b]]).[[ba]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[sum([[b]]).b]],[[sum([[b]]).ba]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[sum([[b]]).ba]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum([[b]]).ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "19")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_15()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "17")]
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_15()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("15", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>", "All", "[[sum([[b]]).b]]", "14", "[[b]],[[ba]],[[sum().b]],[[sum().ba]]", "[[ba]]", "[[sum([[b]]).[[ba]]]]", "Default", "19", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("15", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "All", "[[sum([[b]]).b]]", "14", "[[sum([[b]]).b]],[[sum([[b]]).ba]]", "[[sum([[b]]).ba]]", "[[sum([[b]]).ba]]", "Default", "17", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "16")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum().b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[b]],[[ba]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mu" +
-            "s(*).b]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[ba]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum().[[ba]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[sum().b]],[[sum().ba]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[sum().ba]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_16()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_16()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("16", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>", "All", "[[sum().b]]", "9", "[[b]],[[ba]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mu" +
-                    "s(*).b]]", "[[ba]]", "[[sum().[[ba]]]]", "Default", "14", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("16", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "All", "[[sum().b]]", "9", "[[sum().b]],[[sum().ba]]", "[[sum().ba]]", "[[sum().ba]]", "Default", "12", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[sum().b]]b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
@@ -1490,18 +1464,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[sum().b]][[ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "17")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_17()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_17()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("17", "<b/><ba/><sum><b/><ba/></sum><mus><b/></mus>", "All", "[[sum().b]]b", "12", "[[b]],[[ba]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mu" +
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("17", "[[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]", "All", "[[sum().b]]b", "12", "[[b]],[[ba]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mu" +
                     "s(*).b]]", "[[ba]]", "[[sum().b]][[ba]]", "Default", "17", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetsOnly FilterType and Default Provider new")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "18")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<b/><sum><b/></sum><mus><b/></mus>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetsOnly")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "=u")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
@@ -1510,44 +1484,43 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "=[[sum()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "10")]
-        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider_18()
+        public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew_18()
         {
-            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProvider("18", "<b/><sum><b/></sum><mus><b/></mus>", "RecordsetsOnly", "=u", "2", "[[sum()]],[[mus()]]", "[[sum()]]", "=[[sum()]]", "Default", "10", ((string[])(null)));
+            this.InsertForRecordsetsOnlyFilterTypeAndDefaultProviderNew("18", "[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]", "RecordsetsOnly", "=u", "2", "[[sum()]],[[mus()]]", "[[sum()]]", "=[[sum()]]", "Default", "10", ((string[])(null)));
         }
         
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetFields FilterType and Default Provider", exampleTags);
-#line 177
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetFields FilterType and Default Provider New", exampleTags);
+#line 165
 this.ScenarioSetup(scenarioInfo);
-#line 178
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 179
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 166
+ testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 167
+  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 168
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 169
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 170
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 185
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 186
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 171
+ testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 172
+ testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 173
+ testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/></rec><set><z/></set>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+            ")]],[[set(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
@@ -1556,17 +1529,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_1()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_1()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("1", "<a/><rec><a/></rec><set><z/></set>", "RecordsetFields", "a", "1", "[[rec().a]],[[rec(*).a]]", "[[rec(*).a]]", "[[rec(*).a]]", "Default", "12", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("1", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+                    ")]],[[set(*).z]]", "RecordsetFields", "a", "1", "[[rec().a]],[[rec(*).a]]", "[[rec(*).a]]", "[[rec(*).a]]", "Default", "12", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/></rec><set><z/></set>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+            ")]],[[set(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
@@ -1575,17 +1550,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "1")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_2()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_2()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("2", "<a/><rec><a/></rec><set><z/></set>", "RecordsetFields", "b", "1", "", "", "b", "Default", "1", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("2", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+                    ")]],[[set(*).z]]", "RecordsetFields", "b", "1", "", "", "b", "Default", "1", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/></rec><set><z/></set>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+            ")]],[[set(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "3")]
@@ -1594,17 +1571,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "3")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_3()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_3()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("3", "<a/><rec><a/></rec><set><z/></set>", "RecordsetFields", "[[()]]", "3", "", "", "[[()]]", "Default", "3", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("3", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+                    ")]],[[set(*).z]]", "RecordsetFields", "[[()]]", "3", "", "", "[[()]]", "Default", "3", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/></rec><set><z/></set>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+            ")]],[[set(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "11")]
@@ -1613,17 +1592,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_4()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_4()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("4", "<a/><rec><a/></rec><set><z/></set>", "RecordsetFields", "[[rec().a]]", "11", "", "", "[[rec().a]]", "Default", "11", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("4", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+                    ")]],[[set(*).z]]", "RecordsetFields", "[[rec().a]]", "11", "", "", "[[rec().a]]", "Default", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/><z/></rec>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
@@ -1631,18 +1611,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "5")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_5()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_5()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("5", "<a/><rec><a/><z/></rec>", "RecordsetFields", "[[rec().a]]", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]]", "Default", "5", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("5", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]", "RecordsetFields", "[[rec().a]]", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]]", "Default", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "6")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/><z/></rec>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
@@ -1651,17 +1631,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_6()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_6()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("6", "<a/><rec><a/><z/></rec>", "RecordsetFields", "[[rec", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]]", "Default", "11", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("6", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]", "RecordsetFields", "[[rec", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]]", "Default", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/></rec><set><z/></set>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+            ")]],[[set(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "rec e")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
@@ -1670,17 +1651,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "rec [[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_7()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_7()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("7", "<a/><rec><a/></rec><set><z/></set>", "RecordsetFields", "rec e", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[set(,[[set().z]],[[set(*).z]]", "[[rec().a]]", "rec [[rec().a]]", "Default", "15", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("7", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+                    ")]],[[set(*).z]]", "RecordsetFields", "rec e", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[set(,[[set().z]],[[set(*).z]]", "[[rec().a]]", "rec [[rec().a]]", "Default", "15", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/></rec><set><z/></set>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+            ")]],[[set(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "a a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
@@ -1689,17 +1672,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec(*).a]] a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_8()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_8()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("8", "<a/><rec><a/></rec><set><z/></set>", "RecordsetFields", "a a", "1", "[[rec().a]],[[rec(*).a]]", "[[rec(*).a]]", "[[rec(*).a]] a", "Default", "12", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("8", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+                    ")]],[[set(*).z]]", "RecordsetFields", "a a", "1", "[[rec().a]],[[rec(*).a]]", "[[rec(*).a]]", "[[rec(*).a]] a", "Default", "12", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "9")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/></rec><set><z/></set>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+            ")]],[[set(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "b b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
@@ -1708,17 +1693,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "b b")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "1")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_9()
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_9()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("9", "<a/><rec><a/></rec><set><z/></set>", "RecordsetFields", "b b", "1", "", "", "b b", "Default", "1", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("9", "[[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*" +
+                    ")]],[[set(*).z]]", "RecordsetFields", "b b", "1", "", "", "b b", "Default", "1", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/><z/></rec>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec().a]],[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
@@ -1726,18 +1712,18 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().z]],[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "5")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_10()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_10()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("10", "<a/><rec><a/><z/></rec>", "RecordsetFields", "[[rec().a]],[[rec().a]]", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]],[[rec().a]]", "Default", "5", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("10", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]", "RecordsetFields", "[[rec().a]],[[rec().a]]", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]],[[rec().a]]", "Default", "11", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for RecordsetFields FilterType and Default Provider New")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<a/><rec><a/><z/></rec>")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "RecordsetFields")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec [[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
@@ -1745,10 +1731,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().z]] [[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
-        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_11()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew_11()
         {
-            this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("11", "<a/><rec><a/><z/></rec>", "RecordsetFields", "[[rec [[rec().a]]", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]] [[rec().a]]", "Default", "11", ((string[])(null)));
+            this.InsertForRecordsetFieldsFilterTypeAndDefaultProviderNew("11", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]", "RecordsetFields", "[[rec [[rec().a]]", "5", "[[rec(,[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]] [[rec().a]]", "Default", "12", ((string[])(null)));
         }
     }
 }
