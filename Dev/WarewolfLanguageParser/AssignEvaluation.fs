@@ -179,53 +179,54 @@ and evalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                 |   _ -> failwith "assigning an entire recordset to a variable is not defined"
 
 and evalAssignToJson (env:WarewolfEnvironment) (update:int)  (value :IAssignValue ) =
-    let l = WarewolfDataEvaluationCommon.evalToExpression env update value.Name |> fun a -> (WarewolfDataEvaluationCommon.parseLanguageExpression a update)
-    let left = match l with 
-                    |ComplexExpression a -> failwith "Complex expression in nested json not supported"
-                    | _-> l
-    let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
-                     else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value  update
-    
-    let right = if value.Value=null then WarewolfAtomResult Nothing
-                else WarewolfDataEvaluationCommon.eval env update value.Value 
-    let shouldUseLast =  match rightParse with
-                            | RecordSetExpression a ->
-                                        match a.Index with
-                                            | IntIndex a-> true
-                                            | Star -> false
-                                            | Last -> true
-                                            | _-> true
-                            | _->true                  
-    match right with 
-                | WarewolfAtomResult x -> 
-                            match left with 
-                            |   ScalarExpression a -> let str = JObject.Parse( x.ToString())
-                                                      addToJsonObjects env a str
-                            |   RecordSetExpression b -> addToRecordSetFramed env b 
-                            |   WarewolfAtomAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
-                            |   _ -> let expression = (evalToExpression env update value.Name)
-                                     if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
-                                        env
-                                     else
-                                        evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
-                | WarewolfAtomListresult x -> 
-                        match left with 
-                        |   ScalarExpression a -> addToScalars env a (Seq.last x)
-                        |   RecordSetExpression b ->    match b.Index with 
-                                                        | Star -> addToRecordSetFramedWithAtomList env b  x shouldUseLast update (Some value)
-                                                        | _ ->      try
-                                                                        addToRecordSetFramed env b x.[0]                  
-                                                                    with
-                                                                        | :? Dev2.Common.Common.NullValueInVariableException as ex -> raise( new  Dev2.Common.Common.NullValueInVariableException("The expression result is  null", value.Value ) )    // added 0 here!
- 
-
-                        |   WarewolfAtomAtomExpression _ ->  failwith "invalid variabe assigned to"
-                        |    _ -> let expression = (evalToExpression env update value.Name)
-                                  if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
-                                        env
-                                  else
-                                        evalMultiAssignOp env  update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
-                |   _ -> failwith "assigning an entire recordset to a variable is not defined"
+    update
+//    let l = WarewolfDataEvaluationCommon.evalToExpression env update value.Name |> fun a -> (WarewolfDataEvaluationCommon.parseLanguageExpression a update)
+//    let left = match l with 
+//                    |ComplexExpression a -> failwith "Complex expression in nested json not supported"
+//                    | _-> l
+//    let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
+//                     else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value  update
+//    
+//    let right = if value.Value=null then WarewolfAtomResult Nothing
+//                else WarewolfDataEvaluationCommon.eval env update value.Value 
+//    let shouldUseLast =  match rightParse with
+//                            | RecordSetExpression a ->
+//                                        match a.Index with
+//                                            | IntIndex a-> true
+//                                            | Star -> false
+//                                            | Last -> true
+//                                            | _-> true
+//                            | _->true                  
+//    match right with 
+//                | WarewolfAtomResult x -> 
+//                            match left with 
+//                            |   ScalarExpression a -> let str = JObject.Parse( x.ToString())
+//                                                      addToJsonObjects env a str
+//                            |   RecordSetExpression b -> addToRecordSetFramed env b 
+//                            |   WarewolfAtomAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
+//                            |   _ -> let expression = (evalToExpression env update value.Name)
+//                                     if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
+//                                        env
+//                                     else
+//                                        evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
+//                | WarewolfAtomListresult x -> 
+//                        match left with 
+//                        |   ScalarExpression a -> addToScalars env a (Seq.last x)
+//                        |   RecordSetExpression b ->    match b.Index with 
+//                                                        | Star -> addToRecordSetFramedWithAtomList env b  x shouldUseLast update (Some value)
+//                                                        | _ ->      try
+//                                                                        addToRecordSetFramed env b x.[0]                  
+//                                                                    with
+//                                                                        | :? Dev2.Common.Common.NullValueInVariableException as ex -> raise( new  Dev2.Common.Common.NullValueInVariableException("The expression result is  null", value.Value ) )    // added 0 here!
+// 
+//
+//                        |   WarewolfAtomAtomExpression _ ->  failwith "invalid variabe assigned to"
+//                        |    _ -> let expression = (evalToExpression env update value.Name)
+//                                  if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
+//                                        env
+//                                  else
+//                                        evalMultiAssignOp env  update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
+//                |   _ -> failwith "assigning an entire recordset to a variable is not defined"
 
 and evalMultiAssignList (env:WarewolfEnvironment)  (value :WarewolfAtom seq ) (exp :string) (update:int) (shouldUseLast: bool)=
     let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
