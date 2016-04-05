@@ -1,7 +1,7 @@
 ﻿using System;
 using Dev2.Common.Interfaces;
 
-namespace WpfControls
+namespace Dev2.Intellisense
 {
     public class IntellisenseStringResultBuilder : IIntellisenseStringResultBuilder
     {

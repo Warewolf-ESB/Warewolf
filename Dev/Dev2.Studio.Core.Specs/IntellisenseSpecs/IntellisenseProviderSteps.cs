@@ -30,7 +30,7 @@ using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using WpfControls;
+
 
 namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 {
