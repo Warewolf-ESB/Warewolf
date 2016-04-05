@@ -177,12 +177,13 @@ and evalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                                         evalMultiAssignOp env  update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
                 |   _ -> failwith "assigning an entire recordset to a variable is not defined"
 
-and evalAssignToJson (env:WarewolfEnvironment) (update:int)  (value :IAssignValue ) =
-    update
+//and evalAssignToJson (env:WarewolfEnvironment) (update:int)  (value :IAssignValue )   =
+//    
 //    let l = WarewolfDataEvaluationCommon.evalToExpression env update value.Name |> fun a -> (WarewolfDataEvaluationCommon.parseLanguageExpression a update)
 //    let left = match l with 
-//                    |ComplexExpression a -> failwith "Complex expression in nested json not supported"
-//                    | _-> l
+//                   |ComplexExpression a -> failwith "Complex expression in nested json not supported"
+//                   | _-> l
+//  
 //    let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
 //                     else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value  update
 //    
@@ -226,6 +227,8 @@ and evalAssignToJson (env:WarewolfEnvironment) (update:int)  (value :IAssignValu
 //                                  else
 //                                        evalMultiAssignOp env  update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
 //                |   _ -> failwith "assigning an entire recordset to a variable is not defined"
+
+
 
 and evalMultiAssignList (env:WarewolfEnvironment)  (value :WarewolfAtom seq ) (exp :string) (update:int) (shouldUseLast: bool)=
     let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
@@ -290,4 +293,48 @@ let removeFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun _ b -> {b with Frame = 0 }) env.RecordSets
         {env with RecordSets = recsets}
 
-let atomtoString a = atomtoString a;
+let atomtoString a = atomtoString a
+
+let addAtomicPropertyToJson (obj:Newtonsoft.Json.Linq.JObject) (name:string) (value:WarewolfAtom)  =
+    let props = obj.Properties()
+    let theProp = Seq.tryFind (fun (a:JProperty)-> a.Name=name) props
+    match theProp with 
+        | None -> obj.Add(new JProperty(name, (atomtoString value))) |> ignore    
+                  obj
+        | Some a -> a.Value <- new JValue( atomtoString value)
+                    obj
+let addArrayPropertyToJson (obj:Newtonsoft.Json.Linq.JObject) (name:string) (value:WarewolfAtom seq)  =
+    let props = obj.Properties()
+    let valuesAsStrings = Seq.map atomtoString value
+    let theProp = Seq.tryFind (fun (a:JProperty)-> a.Name=name) props
+    match theProp with 
+                    | None -> obj.Add(new JProperty(name, new JArray(valuesAsStrings))) |> ignore    
+                              obj
+                    | Some a -> a.Value <-  new JArray(valuesAsStrings)     
+                                obj
+let toJObject (obj:JContainer) =
+     match obj with
+       | :? JObject as x -> x
+       |_ -> failwith "expected jObject but got something else"
+
+let objectFromExpression (exp:JsonIdentifierExpression)  (res : WarewolfEvalResult) (obj:JContainer) =
+        match exp with                               
+        | IndexNestedNameExpression b ->  failwith "top level assign cannot be a n"
+        | NameExpression a -> let asJObj = toJObject obj
+                              let myValue = evalResultToString res |> DataString
+                              addAtomicPropertyToJson asJObj a.Name myValue |> ignore
+                              asJObj
+
+        | _ -> failwith "top level assign cannot be a n
+        ested expresssion"
+
+
+let assignGivenAValue (env:WarewolfEnvironment) (res : WarewolfEvalResult) (exp:JsonIdentifierExpression) : WarewolfEnvironment=
+    match exp with 
+        | NestedNameExpression a -> let addedenv = addToJsonObjects env a.ObjectName (new JObject())
+                                    let obj = addedenv.JsonObjects.[a.ObjectName]
+                                    objectFromExpression a.Next res obj |> ignore
+                                    addedenv
+        | IndexNestedNameExpression b -> let addedenv = addToJsonObjects env b.ObjectName (new JObject())
+                                         addedenv
+        | _ -> failwith "top level assign cannot be a nested expresssion"
