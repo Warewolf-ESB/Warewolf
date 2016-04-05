@@ -5236,6 +5236,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SelectAndApplyAliasHelpText.
+        /// </summary>
+        public static string SelectAndApplyAliasHelpText {
+            get {
+                return ResourceManager.GetString("SelectAndApplyAliasHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SelectAndApplyAliasToolTip.
+        /// </summary>
+        public static string SelectAndApplyAliasToolTip {
+            get {
+                return ResourceManager.GetString("SelectAndApplyAliasToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SelectAndApplyDataSourceHelpText.
+        /// </summary>
+        public static string SelectAndApplyDataSourceHelpText {
+            get {
+                return ResourceManager.GetString("SelectAndApplyDataSourceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SelectAndApplyDataSourceToolTip.
+        /// </summary>
+        public static string SelectAndApplyDataSourceToolTip {
+            get {
+                return ResourceManager.GetString("SelectAndApplyDataSourceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.&lt;br/&gt;
         ///        To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.&lt;br /&gt;
         ///        Error handling operates as a catch all for all items in the sequence.&lt;br/&gt;.

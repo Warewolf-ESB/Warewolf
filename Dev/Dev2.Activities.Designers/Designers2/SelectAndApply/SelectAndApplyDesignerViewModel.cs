@@ -10,153 +10,188 @@
 */
 
 using System;
+using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.Data.Enums;
+using Dev2.Common;
 using Dev2.Interfaces;
+using Dev2.Models;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Utils;
+using Microsoft.CSharp.RuntimeBinder;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.SelectAndApply
 {
-    public class SelectAndApplyDesignerViewModel : ActivityDesignerViewModel
+    public class SelectAndApplyDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
+        private string _dataSource;
+        private string _alias;
+        private Activity _applyActivity;
+
         public SelectAndApplyDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
-            SelectedForeachType = Dev2EnumConverter.ConvertEnumValueToString(ForEachType);
             AddTitleBarLargeToggle();
+
         }
 
-        public string DataSource { get; set; }
-
-        public Visibility Visibility
+        private void SetModelItemProperty(object value, [CallerMemberName]string propName = null)
         {
-            get { return (Visibility)GetValue(VisibilityProperty); }
-            set { SetValue(VisibilityProperty, value); }
+            ModelItem.SetProperty(propName, value);
         }
-
-        public static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
-
-        public Visibility FromVisibility
+        private object GetModelPropertyName([CallerMemberName]string propName = null)
         {
-            get { return (Visibility)GetValue(FromVisibilityProperty); }
-            set { SetValue(FromVisibilityProperty, value); }
+            var propertyValue = ModelItem.GetProperty(propName);
+            return propertyValue ?? string.Empty;
         }
-
-        public static readonly DependencyProperty FromVisibilityProperty =
-            DependencyProperty.Register("FromVisibility", typeof(Visibility), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
-
-        public Visibility ToVisibility
+        public string DataSource
         {
-            get { return (Visibility)GetValue(ToVisibilityProperty); }
-            set { SetValue(ToVisibilityProperty, value); }
-        }
-
-        public static readonly DependencyProperty ToVisibilityProperty =
-            DependencyProperty.Register("ToVisibility", typeof(Visibility), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
-
-        public Visibility CsvIndexesVisibility
-        {
-            get { return (Visibility)GetValue(CsvIndexesVisibilityProperty); }
-            set { SetValue(CsvIndexesVisibilityProperty, value); }
-        }
-
-        public static readonly DependencyProperty CsvIndexesVisibilityProperty =
-            DependencyProperty.Register("CsvIndexesVisibility", typeof(Visibility), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
-
-        public Visibility NumberVisibility
-        {
-            get { return (Visibility)GetValue(NumberVisibilityProperty); }
-            set { SetValue(NumberVisibilityProperty, value); }
-        }
-
-        public static readonly DependencyProperty NumberVisibilityProperty =
-            DependencyProperty.Register("NumberVisibility", typeof(Visibility), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
-
-        public Visibility RecordsetVisibility
-        {
-            get { return (Visibility)GetValue(RecordsetVisibilityProperty); }
-            set { SetValue(RecordsetVisibilityProperty, value); }
-        }
-
-        public static readonly DependencyProperty RecordsetVisibilityProperty =
-            DependencyProperty.Register("RecordsetVisibility", typeof(Visibility), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
-
-        public string SelectedForeachType
-        {
-            get { return (string)GetValue(SelectedForeachTypeProperty); }
-            set { SetValue(SelectedForeachTypeProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedForeachTypeProperty =
-            DependencyProperty.Register("SelectedForeachType", typeof(string), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata("", OnSelectedForeachTypeChanged));
-
-        static void OnSelectedForeachTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var viewModel = (SelectAndApplyDesignerViewModel)d;
-            var value = e.NewValue as string;
-
-            if(!string.IsNullOrWhiteSpace(value))
+            get
             {
-                switch(value)
-                {
-                    case "* in Range":
-                        viewModel.FromVisibility = Visibility.Visible;
-                        viewModel.ToVisibility = Visibility.Visible;
-                        viewModel.CsvIndexesVisibility = Visibility.Hidden;
-                        viewModel.NumberVisibility = Visibility.Hidden;
-                        viewModel.RecordsetVisibility = Visibility.Hidden;
-                        break;
-
-                    case "* in CSV":
-                        viewModel.FromVisibility = Visibility.Hidden;
-                        viewModel.ToVisibility = Visibility.Hidden;
-                        viewModel.CsvIndexesVisibility = Visibility.Visible;
-                        viewModel.NumberVisibility = Visibility.Hidden;
-                        viewModel.RecordsetVisibility = Visibility.Hidden;
-                        break;
-
-                    case "* in Recordset":
-                        viewModel.FromVisibility = Visibility.Hidden;
-                        viewModel.ToVisibility = Visibility.Hidden;
-                        viewModel.CsvIndexesVisibility = Visibility.Visible;
-                        viewModel.NumberVisibility = Visibility.Hidden;
-                        viewModel.RecordsetVisibility = Visibility.Visible;
-                        break;
-
-                    default:
-                        viewModel.FromVisibility = Visibility.Hidden;
-                        viewModel.ToVisibility = Visibility.Hidden;
-                        viewModel.CsvIndexesVisibility = Visibility.Hidden;
-                        viewModel.NumberVisibility = Visibility.Visible;
-                        viewModel.RecordsetVisibility = Visibility.Hidden;
-                        break;
-
-                }
-                viewModel.ForEachType = (enForEachType)Dev2EnumConverter.GetEnumFromStringDiscription(value, typeof(enForEachType));
+                _dataSource = GetModelPropertyName().ToString();
+                return _dataSource;
             }
+            set
+            {
+                _dataSource = value;
+                SetModelItemProperty(value);
+                OnPropertyChanged();
+            }
+        }
+        public string Alias
+        {
+            get
+            {
+                _alias = GetModelPropertyName().ToString();
+                return _alias;
+            }
+            set
+            {
+                _alias = value;
+                SetModelItemProperty(value);
+                OnPropertyChanged();
+            }
+        }
+
+        public Activity ApplyActivity
+        {
+            get
+            {
+                return _applyActivity;
+            }
+            set
+            {
+                _applyActivity = value;
+                ModelProperty modelProperty = ModelItem.Properties["ApplyActivity"];
+                if(modelProperty != null)
+                {
+                    modelProperty.SetValue(value);
+                }
+                OnPropertyChanged();
+            }
+        }
+
+
+        public bool DoDrop(IDataObject dataObject)
+        {
+            var formats = dataObject.GetFormats();
+            if (!formats.Any())
+            {
+                return false;
+            }
+            dynamic mi = ModelItem;
+            ModelItemCollection activitiesCollection = mi.Activities;
+            var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
+            if (!String.IsNullOrEmpty(modelItemString))
+            {
+                var objectData = dataObject.GetData(modelItemString);
+                var data = objectData as List<ModelItem>;
+                if (data != null && data.Count >= 1)
+                {
+                    foreach (var item in data)
+                    {
+                        activitiesCollection.Insert(activitiesCollection.Count, item);
+                    }
+                    return true;
+                }
+            }
+            return SetModelItemForServiceTypes(dataObject);
+        }
+
+        public bool SetModelItemForServiceTypes(IDataObject dataObject)
+        {
+            if (dataObject != null && dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat))
+            {
+                var explorerItemModel = dataObject.GetData(GlobalConstants.ExplorerItemModelFormat);
+                try
+                {
+                    ExplorerItemModel itemModel = explorerItemModel as ExplorerItemModel;
+                    if (itemModel != null)
+                    {
+                        IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == itemModel.EnvironmentId);
+                        if (environmentModel != null)
+                        {
+                            var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == itemModel.ResourceId) as IContextualResourceModel;
+
+                            if (resource != null)
+                            {
+                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, true);
+                                d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                                d.IconPath = resource.IconPath;
+                                if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                {
+                                    dynamic mvm = Application.Current.MainWindow.DataContext;
+                                    if (mvm != null && mvm.ActiveItem != null)
+                                    {
+                                        WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                                    }
+                                }
+
+                                ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
+                                if (modelItem != null)
+                                {
+                                    dynamic mi = ModelItem;
+                                    ModelItemCollection activitiesCollection = mi.Activities;
+                                    activitiesCollection.Insert(activitiesCollection.Count, d);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (RuntimeBinderException e)
+                {
+                    Dev2Logger.Error(e);
+                }
+            }
+            return false;
         }
 
         public bool MultipleItemsToSequence(IDataObject dataObject)
         {
-            if(dataObject != null)
+            if (dataObject != null)
             {
                 var formats = dataObject.GetFormats();
-                if(!formats.Any())
+                if (!formats.Any())
                 {
                     return false;
                 }
                 var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
-                if(!String.IsNullOrEmpty(modelItemString))
+                if (!String.IsNullOrEmpty(modelItemString))
                 {
                     var objectData = dataObject.GetData(modelItemString);
                     var data = objectData as List<ModelItem>;
 
-                    if(data != null && data.Count > 1)
+                    if (data != null && data.Count > 1)
                     {
 
                         return true; //This is to short circuit the multiple activities to Sequence re-introduce when we tackle this issue
@@ -179,7 +214,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        enForEachType ForEachType { set { SetProperty(value); } get { return GetProperty<enForEachType>(); } }
 
 
         public override void Validate()
@@ -192,6 +226,17 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             if (mainViewModel != null)
             {
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
