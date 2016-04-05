@@ -55,9 +55,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WarewolfLanguageParser">
-      <HintPath>..\..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -115,6 +112,10 @@
     <ProjectReference Include="..\..\Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj">
       <Project>{17125877-2CF0-42B2-89D3-418E40BDE5D0}</Project>
       <Name>Gma.DataStructures.StringSearch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
