@@ -5,9 +5,10 @@ using System.Windows.Input;
 // ReSharper disable once CheckNamespace
 namespace Dev2.Common.Interfaces.SaveDialog
 {
-    public interface IRequestServiceNameViewModel:IDisposable
+    public interface IRequestServiceNameViewModel : IDisposable
     {
         MessageBoxResult ShowSaveDialog();
+
         ResourceName ResourceName { get; }
         string Name { get; set; }
         string ErrorMessage { get; set; }
@@ -19,8 +20,8 @@ namespace Dev2.Common.Interfaces.SaveDialog
 
     public class ResourceName
     {
-        readonly string _name;
-        readonly string _path;
+        private readonly string _name;
+        private readonly string _path;
 
         public ResourceName(string path, string name)
         {
@@ -34,7 +35,6 @@ namespace Dev2.Common.Interfaces.SaveDialog
             {
                 return _name;
             }
-
         }
 
         public string Path
@@ -43,7 +43,6 @@ namespace Dev2.Common.Interfaces.SaveDialog
             {
                 return _path;
             }
-  
         }
     }
 }
