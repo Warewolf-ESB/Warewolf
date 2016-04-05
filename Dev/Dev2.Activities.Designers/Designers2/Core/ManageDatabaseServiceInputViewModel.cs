@@ -104,6 +104,10 @@ namespace Dev2.Activities.Designers2.Core
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (TestResults != null)
                 {
+                    if (TestResults.Columns.Count < 1)
+                    {
+                        throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
+                    }
                     _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
                 }
                 else
