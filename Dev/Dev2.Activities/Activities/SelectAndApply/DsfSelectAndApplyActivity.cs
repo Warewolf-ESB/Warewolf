@@ -13,14 +13,14 @@ namespace Dev2.Activities.SelectAndApply
         public DsfSelectAndApplyActivity()
         {
             DisplayName = "Select and apply";
-
-
         }
+
+       
 
         #region Overrides of DsfNativeActivity<bool>
         public string DataSource { get; set; }
         public string Alias { get; set; }
-        public Activity ApplyActivity { get; set; }
+        public object ApplyActivity { get; set; }
 
         /// <summary>
         /// When overridden runs the activity's execution logic 
