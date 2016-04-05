@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,13 +34,16 @@ namespace Dev2.Activities.Designers2.SelectAndApply
     {
         private string _dataSource;
         private string _alias;
-        private Activity _applyActivity;
+        private object _applyActivity;
 
         public SelectAndApplyDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             AddTitleBarLargeToggle();
-
+            ModelProperty modelProperty = ModelItem.Properties["ApplyActivity"];
+            if(modelProperty != null)
+                if(modelProperty.Value != null)
+                    _applyActivity = modelProperty.Value;
         }
 
         private void SetModelItemProperty(object value, [CallerMemberName]string propName = null)
@@ -82,7 +84,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             }
         }
 
-        public Activity ApplyActivity
+        public object ApplyActivity
         {
             get
             {
