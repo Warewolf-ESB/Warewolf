@@ -23,7 +23,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>() });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -44,7 +44,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>() });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -63,7 +63,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>(), Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -82,7 +82,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -103,7 +103,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -121,7 +121,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -140,7 +140,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -161,7 +161,7 @@ namespace WarewolfParsingTest
             var x = new[] { new Person() { Name = "n", Children = new List<Person>() }, new Person() { Name = "n", Children = new List<Person>() } };
             var j = JArray.FromObject( x );
             var q = j.SelectTokens("[*]");
-          //  var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+          //  var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             ////------------Execute Test---------------------------
 
             ////------------Assert Results-------------------------

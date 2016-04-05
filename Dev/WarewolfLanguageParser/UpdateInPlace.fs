@@ -18,7 +18,7 @@ let rec  EvalUpdate  (env: WarewolfEnvironment) (lang:string) (update:int) (func
     match buffer with
         | RecordSetExpression a ->   (evalRecordsSetExpressionUpdate a env update func) 
         | ScalarExpression a ->  let data = evalScalar a env |> func
-                                 AssignEvaluation.EvalAssign (languageExpressionToString ( ScalarExpression a)) (data.ToString()) update env
+                                 AssignEvaluation.evalAssign (languageExpressionToString ( ScalarExpression a)) (data.ToString()) update env
         | WarewolfAtomAtomExpression a -> failwith "invalid convert"
         | RecordSetNameExpression x -> let data = env.RecordSets.[x.Name].Data
                                        let newData = Map.map (fun a b->   (ApplyStarToColumn func env {Name=x.Name;Column =a; Index=Star} )) data
@@ -42,7 +42,7 @@ and evalRecordsSetExpressionUpdate (recset:RecordSetIdentifier) (env: WarewolfEn
     else
             match recset.Index with
                 | IntIndex value ->  let data = WarewolfDataEvaluationCommon.eval env update  (languageExpressionToString (RecordSetExpression recset)) |> evalResultToString |> DataString |> func
-                                     AssignEvaluation.EvalAssign (languageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env  
+                                     AssignEvaluation.evalAssign (languageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env  
 
 
                 | Star ->  let column = env.RecordSets.[recset.Name].Data.[recset.Column]
@@ -50,14 +50,14 @@ and evalRecordsSetExpressionUpdate (recset:RecordSetIdentifier) (env: WarewolfEn
                            env
                 | Last ->  let data = WarewolfDataEvaluationCommon.eval env update  (languageExpressionToString (RecordSetExpression recset)) |> evalResultToString |> DataString |> func
                            let index = sprintf "[[%s(%i)%s" recset.Name env.RecordSets.[recset.Name].LastIndex recset.Column
-                           AssignEvaluation.EvalAssign (languageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env  
+                           AssignEvaluation.evalAssign (languageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env  
                 | IndexExpression b -> 
                                    let res = eval env update (languageExpressionToString b) |> evalResultToString
                                    match b with 
                                         | WarewolfAtomAtomExpression atom ->
                                                     match atom with
                                                     | Int a ->  let data = WarewolfDataEvaluationCommon.eval env update   (languageExpressionToString (RecordSetExpression recset)) |> evalResultToString |> DataString |> func
-                                                                AssignEvaluation.EvalAssign (languageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env 
+                                                                AssignEvaluation.evalAssign (languageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env 
                                                     |  a -> failwith "Invalid index"
                                         | _ ->   EvalUpdate env  ( sprintf "[[%s(%s).%s]]" recset.Name res recset.Column) update func
 
