@@ -25,23 +25,23 @@ let AssignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) 
     match parsed with 
         | LanguageExpression.WarewolfAtomAtomExpression a -> env
         | LanguageExpression.ComplexExpression b -> failwith "this method is not intended for use with complex expressions"
-        | ScalarExpression b -> AssignEvaluation.EvalAssign exp (System.String.Join("," ,data)) update env
+        | ScalarExpression b -> AssignEvaluation.evalAssign exp (System.String.Join("," ,data)) update env
         | RecordSetExpression recset -> match recset.Index with
-                                            | IntIndex int -> if int<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" int) else  AssignEvaluation.EvalAssign exp (Seq.last data) update env
+                                            | IntIndex int -> if int<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" int) else  AssignEvaluation.evalAssign exp (Seq.last data) update env
                                             | Last -> let start = match Map.tryFind recset.Name startPositions with
                                                                     | Some a -> a
                                                                     | None -> 0
                                                       for i in [0.. (Seq.length data)-1] do
-                                                         env<-  AssignEvaluation.EvalAssign (sprintf "[[%s(%i).%s]]" recset.Name  (1+i+start) recset.Column) data.[i] update env
+                                                         env<-  AssignEvaluation.evalAssign (sprintf "[[%s(%i).%s]]" recset.Name  (1+i+start) recset.Column) data.[i] update env
                                                       env
                                             | Star -> for i in [0.. (Seq.length data)-1] do
-                                                         env<-  AssignEvaluation.EvalAssign (sprintf "[[%s(%i).%s]]" recset.Name  (1+i) recset.Column) data.[i] update env
+                                                         env<-  AssignEvaluation.evalAssign (sprintf "[[%s(%i).%s]]" recset.Name  (1+i) recset.Column) data.[i] update env
                                                       env
 
                                             | IndexExpression indexp ->  match indexp with 
                                                                             |  WarewolfAtomAtomExpression atom -> let inval = atomToInt atom
 
-                                                                                                                  if inval<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" inval) else AssignEvaluation.EvalAssign exp (Seq.last data) update env
+                                                                                                                  if inval<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" inval) else AssignEvaluation.evalAssign exp (Seq.last data) update env
                                                                             | _ -> failwith "this method is not intended for use with complex expressions"
         | _ -> failwith "only recsets and scalars allowed" 
 

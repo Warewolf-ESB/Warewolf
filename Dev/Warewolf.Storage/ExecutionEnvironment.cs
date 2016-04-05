@@ -168,7 +168,7 @@ namespace Warewolf.Storage
                     Children = new List<Person>()
                 }
             });
-            _env = AssignEvaluation.AddToJsonObjects(_env, "bob", j);
+            _env = AssignEvaluation.addToJsonObjects(_env, "bob", j);
         }
 
         public IEnumerable< CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
@@ -589,5 +589,9 @@ namespace Warewolf.Storage
             return PublicFunctions.IsValidRecsetExpression(exp);
         }
 
+
+        public void AssignJson(List<IAssignValue> personFirsname)
+        {
+        }
     }
 }

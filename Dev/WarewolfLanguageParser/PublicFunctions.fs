@@ -63,22 +63,22 @@ let EvalRecordSetIndexes (exp:string) (update:int) (env:WarewolfEnvironment) =
 
 
     
-let EvalAssign (exp:string) (value:string) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.EvalAssign exp value  update env
+let EvalAssign (exp:string) (value:string) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.evalAssign exp value  update env
    
 
 
 
 
-let EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignValue ) = AssignEvaluation.EvalMultiAssignOp env update value
+let EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignValue ) = AssignEvaluation.evalMultiAssignOp env update value
    
 
 
-let EvalMultiAssign (values :IAssignValue seq) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.EvalMultiAssign values update env
+let EvalMultiAssign (values :IAssignValue seq) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.evalMultiAssign values update env
 
 
-let EvalAssignWithFrame (value :IAssignValue ) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.EvalAssignWithFrame value update env
+let EvalAssignWithFrame (value :IAssignValue ) (update:int) (env:WarewolfEnvironment) = AssignEvaluation.evalAssignWithFrame value update env
 
-let EvalAssignFromList (value :string ) (data:WarewolfAtom seq) (env:WarewolfEnvironment) (update:int) (shouldUseLast:bool) = AssignEvaluation.EvalMultiAssignList env data value update shouldUseLast
+let EvalAssignFromList (value :string ) (data:WarewolfAtom seq) (env:WarewolfEnvironment) (update:int) (shouldUseLast:bool) = AssignEvaluation.evalMultiAssignList env data value update shouldUseLast
 
 let RemoveFraming  (env:WarewolfEnvironment) =
         let recsets = Map.map (fun a b -> {b with Frame = 0 }) env.RecordSets
@@ -101,7 +101,7 @@ let EvalWhere (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.
 let EvalUpdate (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.Func<WarewolfAtom,WarewolfAtom>) = UpdateInPlace.EvalUpdate  env exp update (fun a-> func.Invoke( a))
 //let EvalDistinct (exp:string list)  (env:WarewolfEnvironment)  = Where.EvalDistinct env exp
 
-let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.EvalDataShape exp 0 env
+let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.evalDataShape exp 0 env
 
 let IsValidRecsetExpression (exp:string) = 
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
