@@ -104,10 +104,6 @@ namespace Dev2.Activities.Designers2.Core
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (TestResults != null)
                 {
-                    if (TestResults.Columns.Count < 1)
-                    {
-                        throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
-                    }
                     _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
                 }
                 else
@@ -134,10 +130,15 @@ namespace Dev2.Activities.Designers2.Core
         {
             List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            var recordsetName = Model.Action.Name.Replace(".", "_");
-            _viewmodel.OutputsRegion.RecordsetName = recordsetName;
             if (testResults != null)
             {
+                if (testResults.Columns.Count < 1)
+                {
+                    _viewmodel.OutputsRegion.RecordsetName = String.Empty;
+                    throw new Exception("Invalid table returned. Please check parameter or stored procedure.");
+                }
+                var recordsetName = Model.Action.Name.Replace(".", "_");
+                _viewmodel.OutputsRegion.RecordsetName = recordsetName;
                 for (int i = 0; i < testResults.Columns.Count; i++)
                 {
                     var column = testResults.Columns[i];
