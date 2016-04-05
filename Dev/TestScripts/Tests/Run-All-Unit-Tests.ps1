@@ -1,10 +1,35 @@
-﻿$SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
+﻿# Read playlists.
+$TestList = ""
+Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+Foreach-Object{
+	[xml]$playlistContent = Get-Content $_.FullName
+	if ($playlistContent.Playlist.Add.count -le 0) {
+		Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+		Continue
+	}
+	foreach( $TestName in $playlistContent.Playlist.Add) {
+		$TestList += "," + $TestName.Test
+	}
+}
+if ($TestList.length -gt 0) {
+	$TestList = $TestList -replace "^.", " "
+}
+
+
+# Create assemblies list.
+$SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 $TestAssembliesList = ''
 foreach ($file in Get-ChildItem $SolutionDir | ? {$_.PSIsContainer -and (($_.Name.StartsWith("Dev2.") -or $_.Name.StartsWith("Warewolf.")) -and $_.Name.EndsWith(".Tests"))} ) {
     $TestAssembliesList = "`"$SolutionDir\" + $file.Name + "\bin\Debug\" + $file.Name + ".dll`" " + $TestAssembliesList 
 }
-$TestAssembliesList = $TestAssembliesList + "/logger:trx"
-Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList $TestAssembliesList -verb RunAs -WorkingDirectory $SolutionDir -Wait
+
+# Create full VSTest argument string.
+$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+
+# Display full command including full argument string.
+Write-Host $SolutionDir> `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+
+Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList $FullArgsList -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
 Write-Host Writing all test failures in `"$testResultsFolder`" to a playlist file
