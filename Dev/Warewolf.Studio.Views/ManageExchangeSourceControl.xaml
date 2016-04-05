@@ -70,7 +70,7 @@
                              Grid.Row="0" 
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Core.ManageEmailHostNameTooltip}"
-                             Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding AutoDiscoverUrl, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:Core.EmailSourceHostNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
@@ -100,49 +100,6 @@
                             <core:HelpSetter Text="{x:Static languages:Core.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </PasswordBox>
-
-                    <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Text="{Binding EnableSslLabel}" x:Name="EnableSsl" />
-                    <Grid Grid.Column="1" Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <RadioButton Padding="0,0,5,0" 
-                                     x:Name="EnableSslYes"
-                                     VerticalAlignment="Center" 
-                                     HorizontalAlignment="Left" 
-                                     ToolTip="{x:Static languages:Core.ManageEmailEnableSslYesTooltip}"
-                                     Margin="{StaticResource ControlBorderRight}"
-                                     IsChecked="{Binding EnableSslYes, UpdateSourceTrigger=PropertyChanged}">Yes
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.EmailSourceEnableSslHelp}" DataContext="{Binding}" />
-                            </i:Interaction.Behaviors>
-                        </RadioButton>
-                        <RadioButton Grid.Column="1" 
-                                     Padding="0,0,5,0" 
-                                     x:Name="EnableSslNo"
-                                     VerticalAlignment="Center" 
-                                     HorizontalAlignment="Left" 
-                                     ToolTip="{x:Static languages:Core.ManageEmailEnableSslNoTooltip}"
-                                     Margin="{StaticResource ControlBorderRight}"
-                                     IsChecked="{Binding EnableSslNo, UpdateSourceTrigger=PropertyChanged}">No
-                            <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.EmailSourceEnableSslHelp}" DataContext="{Binding}" />
-                            </i:Interaction.Behaviors>
-                        </RadioButton>
-                    </Grid>
-
-                    <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Text="{Binding PortLabel}"/>
-                    <TextBox x:Name="PortTextBox" 
-                             Grid.Row="4" 
-                             Grid.Column="1" 
-                             ToolTip="{x:Static languages:Core.ManageEmailPortTooltip}"
-                             Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.EmailSourcePortHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-
                     <TextBlock Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Text="{Binding TimeoutLabel}" Margin="{StaticResource ControlBorderTop}"/>
                     <TextBox x:Name="TimeoutTextBox" 
                              Grid.Row="5" 

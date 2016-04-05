@@ -4,7 +4,6 @@ using System.Data;
 using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer

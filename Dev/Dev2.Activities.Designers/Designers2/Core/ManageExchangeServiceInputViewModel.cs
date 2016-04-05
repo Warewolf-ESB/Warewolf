@@ -66,33 +66,14 @@ namespace Dev2.Activities.Designers2.Core
 
         public void ExecuteClose()
         {
-            _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
-            if (TestResults != null)
-            {
-                TestResultsAvailable = TestResults != null;
-                IsTesting = false;
-            }
-            ResetOutputsView();
+            
         }
 
         public void ExecuteOk()
         {
             try
             {
-                _viewmodel.OutputsRegion.Outputs.Clear();
-                if (TestResults != null)
-                {
-                   // _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(GetDbOutputMappingsFromTable(TestResults));
-                }
-                else
-                {
-                    throw new Exception("No Outputs detected");
-                }
-
-                _viewmodel.OutputsRegion.Description = Description;
-                _viewmodel.OutputsRegion.IsEnabled = _viewmodel.OutputsRegion.Outputs.Count > 0;
-                OutputCountExpandAllowed = _viewmodel.OutputsRegion.Outputs.Count > 3;
-                ResetOutputsView();
+               
             }
             catch (Exception e)
             {

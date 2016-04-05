@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Common.Interfaces;
+﻿using Dev2.Common.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ManageExchangeSourceModel : IManageExchangeSourceModel
     {
         readonly IStudioUpdateManager _updateRepository;
+        // ReSharper disable once NotAccessedField.Local
         readonly IQueryManager _queryProxy;
 
         public ManageExchangeSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)

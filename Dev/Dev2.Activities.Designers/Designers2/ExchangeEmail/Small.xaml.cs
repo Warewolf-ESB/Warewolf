@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return InitialFocusElement;
+            return this;
         }
     }
 }

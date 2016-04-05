@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Exchange;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Warewolf.Studio.ViewModels
@@ -32,23 +28,12 @@ namespace Warewolf.Studio.ViewModels
             _shell.NewResource(ResourceType.ExchangeSource.ToString(), "");
         }
 
-        public void EditSource(IExchangeSource selectedSource)
+        public void EditSource(IExchangeServiceSource selectedSource)
         {
-           
+            _shell.EditResource(selectedSource);
         }
 
-        public string TestService(IExchangeService inputValues)
-        {
-            //return _updateRepository.TestDbService(inputValues);
-            return "Ok";
-        }
-
-        public IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IExchangeSource action)
-        {
-            return new List<IServiceOutputMapping>();
-        }
-
-        public void SaveService(IExchangeSource model)
+        public void SaveService(IExchangeServiceSource model)
         {
             _updateRepository.Save(model);
         }

@@ -46,7 +46,7 @@ namespace Dev2.Common.Interfaces
 
         IList<IToolDescriptor> FetchTools();
 
-
+        IList<IExchangeSource> FetchExchangeSources();
         IList<string> GetComputerNames();
 
         IList<IDbSource> FetchDbSources();

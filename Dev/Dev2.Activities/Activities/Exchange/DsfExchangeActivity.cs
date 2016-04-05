@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Net.Mail;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
@@ -23,12 +23,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
-using Attachment = System.Net.Mail.Attachment;
 using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 
 namespace Dev2.Activities.Exchange
 {
-    [ToolDescriptorInfo("Utility-SendMail", "ExchangeEmail", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Utility-SendMail", "Email", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Exchange", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfExchangeActivity : DsfActivityAbstract<string>
     {
         public DsfExchangeActivity()

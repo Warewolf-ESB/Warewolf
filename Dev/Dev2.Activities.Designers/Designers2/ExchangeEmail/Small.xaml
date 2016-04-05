@@ -40,36 +40,45 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Mail Source" />
-
-        <Grid Grid.Column="1" Grid.Row="0">
+       <Grid x:Name="SourcesGrid">
+           
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{Binding SourceRegion.LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
-            <ComboBox x:Name="InitialFocusElement"
-                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ItemsSource="{Binding EmailSources}"
-                      Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"
-                      DisplayMemberPath="ResourceName">
+            <TextBlock x:Name="SourceLabel" Text="Source" />
+            <ComboBox x:Name="SourcesComboBox"
+                          Grid.Column="1"
+                          DisplayMemberPath="Name" 
+                          Margin="{StaticResource ControlBorderRight}"
+                          ToolTip="{Binding SourceRegion.SourcesTooltip}"
+                          ItemsSource="{Binding SourceRegion.Sources}"
+                          SelectedItem="{Binding SourceRegion.SelectedSource , Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpMailSource}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="TheSelectedEmailSource"
-                                         SourcePropertyValue="{Binding SelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
+                    <core1:HelpSetter Text="{Binding SourceRegion.SourcesHelpText}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
-            <Button Grid.Column="1"
-                    Content="..."
-                    Command="{Binding EditEmailSourceCommand}"
-                    ToolTip="Edit Email Source"
-                    Style="{StaticResource ButtonStyle}" >
+            <Button x:Name="SourceEditButton" 
+                        Grid.Column="2"
+                        Margin="{StaticResource ControlBorderRight}"
+                        Content="..."
+                        ToolTip="{Binding SourceRegion.EditSourceTooltip}"
+                        Command="{Binding Path=SourceRegion.EditSourceCommand, Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.EditEmailSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{Binding SourceRegion.EditSourceHelpText}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button x:Name="SourceNewButton" 
+                        Grid.Column="3"
+                        Content="{x:Static languages:Core.New}" 
+                        Width="Auto"
+                        Style="{StaticResource ButtonOrangeStyle}" 
+                        ToolTip="{Binding SourceRegion.NewSourceTooltip}"
+                        Command="{Binding Path=SourceRegion.NewSourceCommand, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{Binding SourceRegion.NewSourceHelpText}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>

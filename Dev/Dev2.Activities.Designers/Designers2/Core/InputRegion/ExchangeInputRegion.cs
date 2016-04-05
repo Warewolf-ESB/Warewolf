@@ -14,7 +14,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
-    public class ExchangeInputRegion : IExchangeInputRegion
+    public class ExchangeInputRegion 
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string ToolRegionName { get; set; }

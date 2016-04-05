@@ -9,7 +9,7 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Threading;
@@ -40,7 +40,7 @@ using Action = System.Action;
 
 namespace Dev2.Activities.Designers2.ExchangeEmail
 {
-    public class ExchangeEmailDesignerViewModel : CustomToolWithRegionBase
+    public class ExchangeEmailDesignerViewModel : CustomToolWithRegionBase, IExchangeServiceViewModel
     {
         // ReSharper disable UnusedMember.Local
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
@@ -62,6 +62,9 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public RelayCommand EditEmailSourceCommand { get; private set; }
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
+        private IErrorInfo _worstDesignError;
+        const string DoneText = "Done";
+        const string FixText = "Fix";
 
         public ExchangeEmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
@@ -90,8 +93,98 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
+            SetupCommonProperties();
+        }
 
+        private IErrorInfo NoError { get; set; }
+        private void SetupCommonProperties()
+        {
+            AddTitleBarMappingToggle();
+            InitialiseViewModel(new ManageExchangeServiceInputViewModel(this, Model));
+        }
+
+        public string ButtonDisplayValue { get; set; }
+        public bool IsWorstErrorReadOnly
+        {
+            get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
+            private set
+            {
+                ButtonDisplayValue = value ? DoneText : FixText;
+                SetValue(IsWorstErrorReadOnlyProperty, value);
+            }
+        }
+        public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
+            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(false));
+
+        public ErrorType WorstError
+        {
+            get { return (ErrorType)GetValue(WorstErrorProperty); }
+            private set { SetValue(WorstErrorProperty, value); }
+        }
+
+        public static readonly DependencyProperty WorstErrorProperty =
+        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(ErrorType.None));
+        IErrorInfo WorstDesignError
+        {
+            // ReSharper disable once UnusedMember.Local
+            get { return _worstDesignError; }
+            set
+            {
+                if (_worstDesignError != value)
+                {
+                    _worstDesignError = value;
+                    IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
+                    WorstError = value == null ? ErrorType.None : value.ErrorType;
+                }
+            }
+        }
+        public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
+        void UpdateWorstError()
+        {
+            if (DesignValidationErrors.Count == 0)
+            {
+                DesignValidationErrors.Add(NoError);
+            }
+
+            IErrorInfo[] worstError = { DesignValidationErrors[0] };
+
+            foreach (var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
+            {
+                worstError[0] = error;
+                if (error.ErrorType == ErrorType.Critical)
+                {
+                    break;
+                }
+            }
+            WorstDesignError = worstError[0];
+        }
+
+        void AddTitleBarMappingToggle()
+        {
+            HasLargeView = true;
+        }
+
+        public IManageExchangeInputViewModel ManageServiceInputViewModel { get; set; }
+        private void InitialiseViewModel(IManageExchangeInputViewModel manageServiceInputViewModel)
+        {
+            ManageServiceInputViewModel = manageServiceInputViewModel;
             BuildRegions();
+            InitializeProperties();
+        }
+
+        public List<KeyValuePair<string, string>> Properties { get; private set; }
+        void InitializeProperties()
+        {
+            Properties = new List<KeyValuePair<string, string>>();
+            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
+        }
+
+        void AddProperty(string key, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                Properties.Add(new KeyValuePair<string, string>(key, value));
+            }
         }
 
         public ISourceToolRegion<IExchangeSource> SourceRegion
@@ -107,12 +200,24 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
+        public void ErrorMessage(Exception exception, bool hasError)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetDisplayName(string displayName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GenerateOutputsVisible { get; set; }
+
         private IExchangeServiceModel Model { get; set; }
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
 
-            SourceRegion = new ExchangeSourceRegion(Model,ModelItem, enSourceType.EmailSource);
+            SourceRegion = new ExchangeSourceRegion(Model,ModelItem, ResourceType.ExchangeSource);
             regions.Add(SourceRegion);
 
             return regions;

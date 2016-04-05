@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Studio.Core.Activities.Utils;
@@ -62,15 +62,15 @@ namespace Dev2.Activities.Designers2.Core.Source
             
         }
 
-        public ExchangeSourceRegion(IExchangeServiceModel model, ModelItem modelItem, enSourceType type)
+        public ExchangeSourceRegion(IExchangeServiceModel model, ModelItem modelItem, ResourceType type)
         {
             LabelWidth = 70;
             ToolRegionName = "ExchangeSourceRegion";
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
-            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
+            //EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
-            Sources = sources.Where(source => source != null && source.Type == type).ToObservableCollection();
+            Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
