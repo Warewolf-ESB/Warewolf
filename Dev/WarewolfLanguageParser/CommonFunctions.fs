@@ -1,13 +1,8 @@
 ﻿module CommonFunctions
 
 open LanguageAST
-//open LanguageEval
-open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
-open WarewolfParserInterop
-open Microsoft.FSharp.Text.Lexing
-open DataASTMutable
-open WarewolfParserInterop
+
 
 
 type WarewolfEvalResult = 
@@ -42,7 +37,7 @@ let parseAtom (lang:string) =
 
 let IsAtomExpression (a:LanguageExpression ) =
     match a with
-    |WarewolfAtomAtomExpression a -> true
+    |WarewolfAtomAtomExpression _ -> true
     |_-> false
 
 let atomtoString (x:WarewolfAtom )=

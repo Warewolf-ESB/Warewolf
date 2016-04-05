@@ -99,7 +99,7 @@ let SortRecset (exp:string) (desc:bool) (update:int) (env:WarewolfEnvironment)  
 let EvalWhere (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.Func<WarewolfAtom,bool>) = Where.evalWhere env exp update (fun a-> func.Invoke( a))
 
 
-let EvalUpdate (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.Func<WarewolfAtom,WarewolfAtom>) = UpdateInPlace.EvalUpdate  env exp update (fun a-> func.Invoke( a))
+let EvalUpdate (exp:string) (env:WarewolfEnvironment) (update:int)  (func:System.Func<WarewolfAtom,WarewolfAtom>) = UpdateInPlace.evalUpdate  env exp update (fun a-> func.Invoke( a))
 //let EvalDistinct (exp:string list)  (env:WarewolfEnvironment)  = Where.EvalDistinct env exp
 
 let EvalDataShape (exp:string) (env:WarewolfEnvironment) = AssignEvaluation.evalDataShape exp 0 env

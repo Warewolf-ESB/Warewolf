@@ -1,6 +1,5 @@
 ﻿module DataASTMutable
 
-open System.Collections.Generic;
 let PositionColumn = "WarewolfPositionColumn"
 
 
@@ -30,7 +29,7 @@ type WarewolfAtom =
                             | Int a -> a.ToString()
                             | DataString a -> a
                             | Nothing -> ""
-                            | PositionedValue (a,b) -> b.ToString()
+                            | PositionedValue (_,b) -> b.ToString()
     override x.Equals y = x.ToString() = y.ToString()
     override x.GetHashCode() = x.ToString().GetHashCode()
     interface System.IComparable with
