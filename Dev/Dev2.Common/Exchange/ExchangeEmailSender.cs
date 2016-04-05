@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Exchange.WebServices.Data;
 
-namespace Dev2.Activities.Exchange
+namespace Dev2.Common.Exchange
 {
     public class ExchangeEmailSender : IExchangeEmailSender
     {

@@ -10,7 +10,7 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class ExchangeSourceDefinition : IExchangeServiceSource, IEquatable<ExchangeSourceDefinition>
     {
-        public string HostName { get; set; }
+        public string AutoDiscoverUrl { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool EnableSsl { get; set; }
@@ -40,7 +40,7 @@ namespace Dev2.Common.Interfaces.Core
             {
                 return true;
             }
-            return string.Equals(HostName, other.HostName) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
+            return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
                 && EnableSsl == other.EnableSsl && string.Equals(Port, other.Port) && string.Equals(Timeout, other.Timeout);
         }
 
@@ -90,7 +90,7 @@ namespace Dev2.Common.Interfaces.Core
         {
             unchecked
             {
-                var hashCode = HostName != null ? HostName.GetHashCode() : 0;
+                var hashCode = AutoDiscoverUrl != null ? AutoDiscoverUrl.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
                 return hashCode;

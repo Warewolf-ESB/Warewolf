@@ -12,7 +12,7 @@ namespace Dev2.Common.Interfaces
         /// <summary>
         /// The Host Name
         /// </summary>
-        string HostName { get; set; }
+        string AutoDiscoverUrl { get; set; }
         /// <summary>
         /// User Name
         /// </summary>

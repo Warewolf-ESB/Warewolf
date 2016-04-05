@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Exchange;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Microsoft.Exchange.WebServices.Data;
 using Warewolf.Security.Encryption;
+using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
     public class ExchangeSource : Resource, IExchangeSource
     {
+        private ExchangeService _exchangeService;
+        // ReSharper disable once NotAccessedField.Local
+        private IExchangeEmailSender _emailSender;
+
         public static int DefaultTimeout = 100000; // (100 seconds)
         public static int DefaultPort = 25;
         public static int SslPort = 465;
@@ -21,13 +27,15 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Properties
 
-        public string Host { get; set; }
+        public string AutoDiscoverUrl { get; set; }
         public string Name { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public enSourceType Type { get; set; }
         public string Path { get; set; }
         public int Timeout { get; set; }
+        public string EmailFrom { get; set; }
+        public string EmailTo { get; set; }
 
         /// <summary>
         /// This must NEVER be persisted - here for JSON transport only!
@@ -71,10 +79,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "Host", string.Empty },
+                { "AutoDiscoverUrl", string.Empty },
                 { "UserName", string.Empty },
                 { "Password", string.Empty },
-                { "EnableSsl", string.Empty },
                 { "Timeout", string.Empty },
             };
 
@@ -82,7 +89,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             ParseProperties(connectionString, properties);
 
-            Host = properties["Host"];
+            AutoDiscoverUrl = properties["AutoDiscoverUrl"];
             UserName = properties["UserName"];
             Password = properties["Password"];
 
@@ -90,11 +97,22 @@ namespace Dev2.Runtime.ServiceModel.Data
             Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
         }
 
-        public void Send(MailMessage mailMessage)
+        public void Send(IExchangeSource source, string message, string from, string to)
         {
-            
+            InitializeService();
+
+            _emailSender = new ExchangeEmailSender(source);
+
+            var emailMessage = new EmailMessage(_exchangeService) {Body = message};
+            emailMessage.ToRecipients.Add(to);
+           // _emailSender.Send(_exchangeService,emailMessage);
         }
         #endregion
+
+        private void InitializeService()
+        {
+            _exchangeService = new ExchangeServiceFactory().Create();
+        }
 
         #region ToXml
 
@@ -102,7 +120,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("Host={0}", Host),
+                string.Format("AutoDiscoverUrl={0}", AutoDiscoverUrl),
                 string.Format("UserName={0}", UserName),
                 string.Format("Password={0}", Password),
                 string.Format("Timeout={0}", Timeout)
@@ -118,5 +136,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
+
+        public bool Equals(IExchangeSource other)
+        {
+            return true;
+        }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.Exchange;
+﻿using System.Collections.ObjectModel;
 
 namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
 {
@@ -9,11 +6,8 @@ namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
     {
         ObservableCollection<IExchangeSource> RetrieveSources();
         void CreateNewSource();
-        void EditSource(IExchangeSource selectedSource);
-        string TestService(IExchangeService inputValues);
-        IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IExchangeSource source);
-        void SaveService(IExchangeSource model);
-
+        void EditSource(IExchangeServiceSource selectedSource);
+        void SaveService(IExchangeServiceSource model);
         IStudioUpdateManager UpdateRepository { get; }
     }
 }

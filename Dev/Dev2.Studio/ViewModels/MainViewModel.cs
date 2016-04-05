@@ -38,6 +38,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Data.ServiceModel;
@@ -1109,6 +1110,25 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void EditResource(IExchangeServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var emailSourceViewModel = new ManageExchangeSourceViewModel(new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource);
+            var vm = new SourceViewModel<IExchangeServiceSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageEmailSourceControl());
+
+            if (workSurfaceKey == null)
+            {
+                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+                workSurfaceKey.ResourceID = selectedSource.Id;
+                workSurfaceKey.ServerID = ActiveServer.ServerID;
+            }
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
         public void EditResource(ISharepointServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var viewModel = new SharepointServerSourceViewModel(new SharepointServerSourceModel(ActiveServer.UpdateRepository, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker, null);
@@ -1193,6 +1213,9 @@ namespace Dev2.Studio.ViewModels
             switch (resourceType.ToLower())
             {
                 case "emailsource":
+                    header = Warewolf.Studio.Resources.Languages.Core.EmailSourceNewHeaderLabel;
+                    break;
+                case "exchangesource":
                     header = Warewolf.Studio.Resources.Languages.Core.EmailSourceNewHeaderLabel;
                     break;
                 case "dropboxsource":

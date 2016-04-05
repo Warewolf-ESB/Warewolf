@@ -432,7 +432,7 @@ namespace Dev2.Runtime.Hosting
                 case enSourceType.SharepointServerSource:
                     result = BuildSharepointSourceList(resources);
                     break;
-                case enSourceType.ExchangeEmailSource:
+                case enSourceType.ExchangeSource:
                     result = BuildExchangeList(resources);
                     break;
                 default:

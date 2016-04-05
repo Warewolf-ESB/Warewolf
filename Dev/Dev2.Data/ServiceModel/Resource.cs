@@ -46,6 +46,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.PluginService, "Service" },
             { ResourceType.PluginSource, "Source" },
             { ResourceType.EmailSource, "Source" },
+            { ResourceType.ExchangeSource, "Source" },
             { ResourceType.WebSource, "Source" },
             { ResourceType.WebService, "Service" },
             { ResourceType.WorkflowService, "Service" },
