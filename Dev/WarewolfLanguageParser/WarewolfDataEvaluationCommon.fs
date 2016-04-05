@@ -1,4 +1,4 @@
-﻿module WarewolfDataEvaluationCommon
+﻿module  WarewolfDataEvaluationCommon
 
 
 open LanguageAST
@@ -240,15 +240,15 @@ and languageExpressionToJPath (lang:LanguageExpression) =
     match lang with
             | RecordSetExpression a ->
                                         match a.Index with  
-                                            | IntIndex i -> "[" + (i-1).ToString() + "]."+a.Column
+                                            | IntIndex i -> sprintf "[%i].%s"  (i-1)  a.Column
                                             | Star  -> "[*]."+a.Column 
                                             | Last  -> "[(@.length-1)]."+a.Column  
                                             | _ ->failwith  "not supported for JSON types"
-            | ScalarExpression a -> "" 
-            | WarewolfAtomAtomExpression a  -> ""
+            | ScalarExpression _ -> "" 
+            | WarewolfAtomAtomExpression _  -> ""
             | RecordSetNameExpression a -> 
                                         match a.Index with  
-                                            | IntIndex i -> "[" + (i-1).ToString() + "]."
+                                            | IntIndex i ->  sprintf "[%i]." (i-1)
                                             | Star  -> "[*]." 
                                             | Last  -> "[(@.length-1)]."
                                             | _ ->failwith  "not supported for JSON types"
@@ -261,7 +261,7 @@ and jsonIdentifierToJsonPath (a:JsonIdentifierExpression) (accx:string)=
     | NameExpression x -> acc  + x.Name
     | NestedNameExpression x ->   (jsonIdentifierToJsonPath x.Next (acc  + x.ObjectName) )
     | IndexNestedNameExpression x ->    let index =  match x.Index with  
-                                                        | IntIndex i -> "[" + (i-1).ToString() + "]"
+                                                        | IntIndex i -> sprintf "[%i]" (i-1)
                                                         | Star  -> "[*]" 
                                                         | Last  -> "[-1:]"
                                                         | _ ->failwith  "not supported for JSON types"

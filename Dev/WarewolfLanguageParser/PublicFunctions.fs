@@ -8,6 +8,7 @@ open DataASTMutable
 open Dev2.Common.Interfaces
 
 open CommonFunctions
+open Delete;
 
 let PositionColumn = "WarewolfPositionColumn"
 
