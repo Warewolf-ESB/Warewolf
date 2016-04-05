@@ -9,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 
 // ReSharper disable InconsistentNaming
 
@@ -180,6 +181,21 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _manageRabbitMQSourceViewModelWithTask.PublishCommand.Execute(null);
+        }
+
+        [TestMethod]
+        public void TestPublishCommand_Execute_Exception()
+        {
+            //arrange
+            _rabbitMQSourceModel.Setup(x => x.TestSource(It.IsAny<IRabbitMQServiceSourceDefinition>())).Throws(new Exception());
+
+            //act
+            _manageRabbitMQSourceViewModelWithTask.PublishCommand.Execute(null);
+
+            //assert
+            Assert.IsFalse(_manageRabbitMQSourceViewModelWithTask.TestPassed);
+            Assert.IsTrue(_manageRabbitMQSourceViewModelWithTask.TestFailed);
+            Assert.IsNotNull(_manageRabbitMQSourceViewModelWithTask.TestErrorMessage);
         }
 
         [TestMethod]
@@ -536,7 +552,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedUserName, result.UserName);
             Assert.AreEqual(expectedPassword, result.Password);
             Assert.AreEqual(expectedVirtualHost, result.VirtualHost);
-            Assert.AreNotEqual(Guid.Empty, result.ResourceID);
+            Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
         [TestMethod]
@@ -587,11 +603,32 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("ManageRabbitMQSourceViewModel_Methods")]
-        public void TestSave1()
+        public void TestSaveNewSource()
         {
+            //arrange
+            string expectedResourceName = "ResourceName";
+            string expectedResourcePath = "ResourcePath";
+
+            _requestServiceNameViewModel.Setup(x => x.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            _requestServiceNameViewModel.SetupGet(it => it.ResourceName).Returns(new ResourceName(expectedResourcePath, expectedResourceName));
+
             //act
             _manageRabbitMQSourceViewModelWithTask.Save();
 
+            //assert
+            Assert.IsFalse(_manageRabbitMQSourceViewModelWithTask.TestPassed);
+            Assert.AreEqual(_manageRabbitMQSourceViewModelWithTask.HeaderText, expectedResourceName);
+            Assert.AreEqual(_manageRabbitMQSourceViewModelWithTask.ResourceName, expectedResourceName);
+            _rabbitMQSourceModel.Verify(x => x.SaveSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
+        }
+
+        [TestMethod]
+        [Owner("Clint Stedman")]
+        [TestCategory("ManageRabbitMQSourceViewModel_Methods")]
+        public void TestSave()
+        {
+            //act
+            _manageRabbitMQSourceViewModelWithTask.Save();
 
             // MessageBoxResult
             //assert
