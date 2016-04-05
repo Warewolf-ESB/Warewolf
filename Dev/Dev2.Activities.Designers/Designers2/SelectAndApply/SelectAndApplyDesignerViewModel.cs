@@ -13,6 +13,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -103,7 +104,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         }
 
 
-        public bool DoDrop(IDataObject dataObject)
+        public virtual bool DoDrop(IDataObject dataObject)
         {
             var formats = dataObject.GetFormats();
             if (!formats.Any())
@@ -121,7 +122,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
                 {
                     foreach (var item in data)
                     {
-                        activitiesCollection.Insert(activitiesCollection.Count, item);
+                        _applyActivity = item;
                     }
                     return true;
                 }
@@ -162,8 +163,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
                                 if (modelItem != null)
                                 {
                                     dynamic mi = ModelItem;
-                                    ModelItemCollection activitiesCollection = mi.Activities;
-                                    activitiesCollection.Insert(activitiesCollection.Count, d);
+                                    _applyActivity = mi.ApplyActivity;
                                     return true;
                                 }
                             }
@@ -178,50 +178,12 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             return false;
         }
 
-        public bool MultipleItemsToSequence(IDataObject dataObject)
-        {
-            if (dataObject != null)
-            {
-                var formats = dataObject.GetFormats();
-                if (!formats.Any())
-                {
-                    return false;
-                }
-                var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
-                if (!String.IsNullOrEmpty(modelItemString))
-                {
-                    var objectData = dataObject.GetData(modelItemString);
-                    var data = objectData as List<ModelItem>;
-
-                    if (data != null && data.Count > 1)
-                    {
-
-                        return true; //This is to short circuit the multiple activities to Sequence re-introduce when we tackle this issue
-                        //                        DsfSequenceActivity dsfSequenceActivity = new DsfSequenceActivity();
-                        //                        foreach(var item in data)
-                        //                        {
-                        //                            object currentValue = item.GetCurrentValue();
-                        //                            var activity = currentValue as Activity;
-                        //                            if(activity != null)
-                        //                            {
-                        //                                dsfSequenceActivity.Activities.AddMode(activity);
-                        //                            }
-                        //                        }
-                        //                        ModelItem modelItem = ModelItemUtils.CreateModelItem(dsfSequenceActivity);
-                        //                        return modelItem;
-                    }
-                }
-            }
-            return false;
-        }
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
-
-
+        [ExcludeFromCodeCoverage]
         public override void Validate()
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
@@ -233,6 +195,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [ExcludeFromCodeCoverage]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
