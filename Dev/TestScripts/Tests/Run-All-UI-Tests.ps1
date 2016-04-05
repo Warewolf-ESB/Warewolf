@@ -3,7 +3,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
 $SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
-<TestSettings name=`"UI Test`" id=`"6091E338-CE48-49F7-BC78-B459A768335A`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+<TestSettings name=`"UI Test`" id=`"" + [guid]::NewGuid() + @"`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
 		<DeploymentItem filename=`"Dev2.Server\bin\Debug\`" outputDirectory=`"Server`" />
@@ -46,12 +46,12 @@ Foreach-Object{
 		Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
 		Continue
 	}
-	foreach( $TestName in $playlistContent.Playlist.Add) {
-		$TestList += "," + $TestName.Test
+	foreach ($TestName in $playlistContent.Playlist.Add) {
+		$TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
 	}
 }
 if ($TestList.length -gt 0) {
-	$TestList = $TestList -replace "^.", " "
+	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
 # Create full VSTest argument string.

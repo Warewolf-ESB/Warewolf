@@ -8,13 +8,12 @@ Foreach-Object{
 		Continue
 	}
 	foreach( $TestName in $playlistContent.Playlist.Add) {
-		$TestList += "," + $TestName.Test
+		$TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
 	}
 }
 if ($TestList.length -gt 0) {
-	$TestList = $TestList -replace "^.", " "
+	$TestList = $TestList -replace "^.", " /Tests:"
 }
-
 
 # Create assemblies list.
 $SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
@@ -29,7 +28,7 @@ $FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSetting
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
 
-Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList $FullArgsList -verb RunAs -WorkingDirectory $SolutionDir -Wait
+Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
 Write-Host Writing all test failures in `"$testResultsFolder`" to a playlist file
