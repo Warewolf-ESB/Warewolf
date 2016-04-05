@@ -9,12 +9,13 @@
     <OutputType>Library</OutputType>
     <RootNamespace>WarewolfLanguageParser</RootNamespace>
     <AssemblyName>WarewolfLanguageParser</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <Name>WarewolfLanguageParser</Name>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>63219277</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -102,7 +103,7 @@
     <Compile Include="CommonFunctions.fs" />
     <Compile Include="WarewolfDataEvaluationCommon.fs" />
     <Compile Include="Sort.fs" />
-	<Compile Include="Delete.fs" />
+    <Compile Include="Delete.fs" />
     <Compile Include="DataMergeFunctions.fs" />
     <Compile Include="AssignEvaluation.fs" />
     <Compile Include="Where.fs" />
@@ -113,7 +114,6 @@
     <Compile Include="EvalTools.fs" />
     <Compile Include="IntellisenseStringProvider.fs" />
     <None Include="app.config" />
-
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

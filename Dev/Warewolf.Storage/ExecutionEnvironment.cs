@@ -565,7 +565,7 @@ namespace Warewolf.Storage
 
         public static bool IsNothing(CommonFunctions.WarewolfEvalResult evalInp1)
         {
-            return WarewolfDataEvaluationCommon.isNothing(evalInp1);
+            return CommonFunctions.isNothing(evalInp1);
         }
 
         public static string GetPositionColumnExpression(string recordset)
