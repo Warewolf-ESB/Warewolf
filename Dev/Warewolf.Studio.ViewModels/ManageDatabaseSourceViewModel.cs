@@ -60,6 +60,7 @@ namespace Warewolf.Studio.ViewModels
         string _emptyServerName;
         private bool _canSelectWindows;
         private bool _canSelectServer;
+        private bool _canSelectUser;
         public IComputerNameProvider Provider { get;  set; }
 
         public bool CanSelectWindows
@@ -72,6 +73,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canSelectWindows = value;
                 OnPropertyChanged(()=>CanSelectWindows);
+            }
+        }
+        public bool CanSelectUser
+        {
+            get
+            {
+                return _canSelectUser;
+            }
+            set
+            {
+                _canSelectUser = value;
+                OnPropertyChanged(() => CanSelectUser);
             }
         }
         public bool CanSelectServer
@@ -510,14 +523,23 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
                 if (ServerType.Value == enSourceType.ODBC.ToString())
                 {
-                    CanSelectWindows = false;
+                    CanSelectUser = false;
+                    CanSelectWindows = true;
                     CanSelectServer = false;
                     ServerName.Name = "Localhost";
                     EmptyServerName = "Localhost";
+                    AuthenticationType = AuthenticationType.Windows;
                 }
-                else
-                {
-                    CanSelectWindows = ServerType.Value != enSourceType.PostgreSql.ToString(); 
+                else if (ServerType.Value == enSourceType.Oracle.ToString()) {
+                    CanSelectWindows = false;
+                    CanSelectServer = true;
+                    ServerName.Name = "";
+                    AuthenticationType = AuthenticationType.User;
+                    CanSelectUser = true;
+                }
+                else {
+                    CanSelectWindows = ServerType.Value != enSourceType.PostgreSql.ToString();
+                    CanSelectUser = ServerType.Value != enSourceType.PostgreSql.ToString();
                     CanSelectServer = true;
                     ServerName.Name = "";
                 }
