@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -30,16 +31,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = Resources.GetResource<ExchangeSource>(GlobalConstants.ServerWorkspaceID, a.ResourceID);
                 if (res != null)
                 {
-                    return new ExchangeSource()
+                    return new ExchangeSourceDefinition()
                     {
                         ResourceID = res.ResourceID,
-                        ResourceName = res.Name,
+                        ResourceName = res.ResourceName,
+                        Name = res.ResourceName,
                         Path = res.Path,
                         UserName = res.UserName,
                         Password = res.Password,
                         AutoDiscoverUrl = res.AutoDiscoverUrl,
                         Timeout = res.Timeout,
-                        Type = res.Type
+                        Type = res.Type,
+                        ResourceType = res.ResourceType
                     };
                 }
                 return null;

@@ -28,10 +28,10 @@ using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 namespace Dev2.Activities.Exchange
 {
     [ToolDescriptorInfo("Utility-SendMail", "Email", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Exchange", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
-    public class DsfExchangeActivity : DsfActivityAbstract<string>
+    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>
     {
-        public DsfExchangeActivity()
-            : base("ExchangeEmail")
+        public DsfExchangeEmailActivity()
+            : base("Exchange Email")
         {
             FromAccount = string.Empty;
             To = string.Empty;
@@ -190,7 +190,7 @@ namespace Dev2.Activities.Exchange
             InitializeDebug(dataObject);
             try
             {
-                var runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
+                var runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, dataObject.ResourceID);
 
                 if (runtimeSource == null)
                 {

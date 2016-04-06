@@ -13,7 +13,7 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               Width="350"
+                               Width="400"
                                MinWidth="350"
                                MinHeight="500"
                                MaxWidth="Infinity"
@@ -42,8 +42,10 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -59,18 +61,12 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid x:Name="SourcesGrid">
-           
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding SourceRegion.LabelWidth}"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="SourceLabel" Text="Source" />
-            <ComboBox x:Name="SourcesComboBox"
-                          Grid.Column="1"
+      
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Name="SourceLabel" Text="Source" />
+            <ComboBox Grid.Column="1" Grid.Row="0" x:Name="SourcesComboBox"
+                        
                           DisplayMemberPath="Name" 
                           Margin="{StaticResource ControlBorderRight}"
                           ToolTip="{Binding SourceRegion.SourcesTooltip}"
@@ -80,8 +76,7 @@
                     <core1:HelpSetter Text="{Binding SourceRegion.SourcesHelpText}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
-            <Button x:Name="SourceEditButton" 
-                        Grid.Column="2"
+        <Button Grid.Column="2" Grid.Row="0" x:Name="SourceEditButton" 
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
                         ToolTip="{Binding SourceRegion.EditSourceTooltip}"
@@ -90,10 +85,8 @@
                     <core1:HelpSetter Text="{Binding SourceRegion.EditSourceHelpText}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <Button x:Name="SourceNewButton" 
-                        Grid.Column="3"
+        <Button Grid.Column="3" Grid.Row="0" x:Name="SourceNewButton" 
                         Content="{x:Static languages:Core.New}" 
-                        Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
                         ToolTip="{Binding SourceRegion.NewSourceTooltip}"
                         Command="{Binding Path=SourceRegion.NewSourceCommand, Mode=TwoWay}">
@@ -101,61 +94,8 @@
                     <core1:HelpSetter Text="{Binding SourceRegion.NewSourceHelpText}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-        </Grid>
+    
         
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="From Address" Margin="{StaticResource ActivityBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="1"                                
-                                DefaultText="Account or email address"
-                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipFromAddress}"
-                                Text="{Binding ModelItem.FromAccount,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ActivityBorderTop}"
-                                attachedProperties:FocusSetter.IsFocused="{Binding IsFromAccountFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fromAcctxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpFromAddress}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.FromAccount"
-                                     SourcePropertyValue="{Binding ModelItem.FromAccount, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-
-        </ui:IntellisenseTextBox>
-
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ActivityBorderTop}" />
-        <Grid Grid.Column="1" Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <PasswordBox Grid.Column="0"
-                         x:Name="ThePasswordBox"
-                         ToolTip="{x:Static help:HelpTextResources.EmailToolTipPassword}"
-                         PasswordChanged="OnPasswordChanged"
-                         Margin="0,2,3,0"
-                         attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Password_AutoID}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpPassword}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="ModelItem.Password"
-                                         SourcePropertyValue="{Binding ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </PasswordBox>
-            <Button Grid.Column="1"
-                    Width="40"
-                    Content="Test"
-                    Margin="{StaticResource ActivityBorderTop}"
-                    Command="{Binding TestEmailAccountCommand}"
-                    ToolTip="Test Password">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.TestEmailAccountHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-        </Grid>
-
         <TextBlock Grid.Column="0" Grid.Row="3" Text="To" Margin="{StaticResource ActivityBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
@@ -296,10 +236,27 @@
             </i:Interaction.Behaviors>
 
         </ui:IntellisenseTextBox>
+        <TextBlock Grid.Column="0" Grid.Row="11" Text="Test" Margin="{StaticResource ActivityBorderTop}" />
+        <Grid Grid.Column="1" Grid.Row="11">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+                    Width="40"
+                    Content="Test"
+                    Margin="{StaticResource ActivityBorderTop}"
+                    Command="{Binding TestEmailAccountCommand}"
+                    ToolTip="Test Email">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.TestEmailAccountHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
 
-        <TextBlock Grid.Column="0" Grid.Row="11" Text="Result" />
+        <TextBlock Grid.Column="0" Grid.Row="12" Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="11"
+                                Grid.Row="12"
                                 DefaultText="[[EmailSuccess]]"
                                 WrapInBrackets="True"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -317,6 +274,6 @@
         </ui:IntellisenseTextBox>
 
 
-        <errors:OnError Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <errors:OnError Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2"/>
     </Grid>
 </core:ActivityDesignerTemplate>

@@ -11,28 +11,26 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
+// ReSharper disable MergeConditionalExpression
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageExchangeSourceViewModel : SourceBaseImpl<IExchangeServiceSource>, IManageExchangeSourceViewModel
+    public class ManageExchangeSourceViewModel : SourceBaseImpl<IExchangeSource>, IManageExchangeSourceViewModel
     {
         private string _autoDiscoverUrl;
         private string _userName;
         private string _password;
-        private int _port;
         private int _timeout;
         private string _testMessage;
         private string _emailFrom;
         private string _emailTo;
         string _resourceName;
-        private bool _enableSsl;
-        private bool _enableSslYes;
-        private bool _enableSslNo;
 
-        private IExchangeServiceSource _emailServiceSource;
+        private IExchangeSource _emailServiceSource;
         private readonly IManageExchangeSourceModel _updateManager;
         CancellationTokenSource _token;
         bool _testPassed;
@@ -48,21 +46,21 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             _updateManager = updateManager;
             RequestServiceNameViewModel = requestServiceNameViewModel;
-            HeaderText = Resources.Languages.Core.EmailSourceNewHeaderLabel;
-            Header = Resources.Languages.Core.EmailSourceNewHeaderLabel;
+            HeaderText = Resources.Languages.Core.ExchangeSourceNewHeaderLabel;
+            Header = Resources.Languages.Core.ExchangeSourceNewHeaderLabel;
             AutoDiscoverUrl = String.Empty;
             UserName = String.Empty;
             Password = String.Empty;
             Timeout = 10000;
         }
 
-        public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator, IExchangeServiceSource emailServiceSource)
+        public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator, IExchangeSource exchangeSource)
             : this(updateManager, aggregator)
         {
-            VerifyArgument.IsNotNull("emailServiceSource", emailServiceSource);
-            _emailServiceSource = emailServiceSource;
+            VerifyArgument.IsNotNull("exchangeSource", exchangeSource);
+            _emailServiceSource = exchangeSource;
             // ReSharper disable once VirtualMemberCallInContructor
-            FromModel(emailServiceSource);
+            FromModel(exchangeSource);
             SetupHeaderTextFromExisting();
         }
 
@@ -85,25 +83,6 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public override void FromModel(IExchangeServiceSource emailServiceSource)
-        {
-            AutoDiscoverUrl = emailServiceSource.AutoDiscoverUrl;
-            UserName = emailServiceSource.UserName;
-            Password = emailServiceSource.Password;
-            if (EnableSsl)
-            {
-                EnableSslYes = EnableSsl;
-            }
-            else
-            {
-                EnableSslNo = true;
-            }
-            Timeout = emailServiceSource.Timeout;
-            EmailFrom = emailServiceSource.EmailFrom;
-            EmailTo = emailServiceSource.EmailTo;
-            ResourceName = emailServiceSource.ResourceName;
-        }
-
         public override string Name
         {
             get
@@ -116,12 +95,20 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public override void FromModel(IExchangeSource emailServiceSource)
+        {
+            AutoDiscoverUrl = emailServiceSource.AutoDiscoverUrl;
+            UserName = emailServiceSource.UserName;
+            Password = emailServiceSource.Password;
+            Timeout = emailServiceSource.Timeout;
+        }
+
         void SetupHeaderTextFromExisting()
         {
             if (_emailServiceSource != null)
             {
-                HeaderText = (_emailServiceSource.ResourceName ?? ResourceName).Trim();
-                Header = (_emailServiceSource.ResourceName ?? ResourceName).Trim();
+                HeaderText = (_emailServiceSource.Name ?? ResourceName).Trim();
+                Header = (_emailServiceSource.Name ?? ResourceName).Trim();
             }
         }
 
@@ -182,12 +169,12 @@ namespace Warewolf.Studio.ViewModels
                 if (res == MessageBoxResult.OK)
                 {
                     var src = ToSource();
-                    src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                    src.Name = RequestServiceNameViewModel.Result.ResourceName.Name;
                     src.Path = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
                     Save(src);
                     Item = src;
                     _emailServiceSource = src;
-                    ResourceName = _emailServiceSource.ResourceName;
+                    ResourceName = _emailServiceSource.Name;
                     SetupHeaderTextFromExisting();
                 }
             }
@@ -195,7 +182,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var src = ToSource();
                 src.Path = Item.Path ?? "";
-                src.ResourceName = Item.ResourceName;
+                src.Name = Item.Name;
                 Save(src);
                 Item = src;
                 _emailServiceSource = src;
@@ -206,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
 
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 
-        void Save(IExchangeServiceSource source)
+        void Save(IExchangeSource source)
         {
             _updateManager.Save(source);
         }
@@ -263,91 +250,6 @@ namespace Warewolf.Studio.ViewModels
                     TestMessage = String.Empty;
 
                     OnPropertyChanged(() => Password);
-                    OnPropertyChanged(() => Header);
-                    OnPropertyChanged(() => TestMessage);
-                    TestPassed = false;
-                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
-                }
-            }
-        }
-
-        public bool EnableSsl
-        {
-            get { return _enableSsl; }
-            set
-            {
-                if (value != _enableSsl)
-                {
-                    _enableSsl = value;
-                    TestMessage = String.Empty;
-
-                    OnPropertyChanged(() => EnableSsl);
-                    OnPropertyChanged(() => Header);
-                    OnPropertyChanged(() => TestMessage);
-                    TestPassed = false;
-                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
-                }
-            }
-        }
-
-        public bool EnableSslYes
-        {
-            get { return _enableSslYes; }
-            set
-            {
-                _enableSslYes = value;
-                if (_enableSslYes)
-                {
-                    EnableSsl = true;
-                }
-
-                OnPropertyChanged(() => EnableSslYes);
-                OnPropertyChanged(() => EnableSsl);
-                OnPropertyChanged(() => Header);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
-            }
-        }
-
-        public bool EnableSslNo
-        {
-            get { return _enableSslNo; }
-            set
-            {
-                _enableSslNo = value;
-                if (_enableSslNo)
-                {
-                    EnableSsl = false;
-                }
-
-                OnPropertyChanged(() => EnableSslNo);
-                OnPropertyChanged(() => EnableSsl);
-                OnPropertyChanged(() => Header);
-                TestPassed = false;
-                ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
-            }
-        }
-
-        public int Port
-        {
-            get { return _port; }
-            set
-            {
-                if (value != _port)
-                {
-                    _port = value;
-                    TestMessage = String.Empty;
-
-                    if (!_port.ToString().IsNumeric())
-                    {
-                        OkCommand.CanExecute(false);
-                    }
-
-                    OnPropertyChanged(() => Port);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => TestMessage);
                     TestPassed = false;
@@ -513,23 +415,23 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        IExchangeServiceSource ToNewSource()
+        IExchangeSource ToNewSource()
         {
             return new ExchangeSourceDefinition()
             {
                 AutoDiscoverUrl = AutoDiscoverUrl,
                 Password = Password,
                 UserName = UserName,
-                Port = Port,
                 Timeout = Timeout,
-                EnableSsl = EnableSsl,
                 EmailFrom = EmailFrom,
                 EmailTo = EmailTo,
-                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.Id
+                ResourceName = Name,
+                ResourceType = ResourceType.ExchangeSource,
+                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID
             };
         }
 
-        IExchangeServiceSource ToSource()
+        IExchangeSource ToSource()
         {
             if (_emailServiceSource == null)
                 return new ExchangeSourceDefinition()
@@ -537,12 +439,13 @@ namespace Warewolf.Studio.ViewModels
                     AutoDiscoverUrl = AutoDiscoverUrl,
                     Password = Password,
                     UserName = UserName,
-                    Port = Port,
                     Timeout = Timeout,
-                    EnableSsl = EnableSsl,
                     EmailFrom = EmailFrom,
                     EmailTo = EmailTo,
-                    Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.Id
+                    ResourceName = Name,
+                    ResourceType = ResourceType.ExchangeSource,
+                    Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
+                    ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock
@@ -552,14 +455,14 @@ namespace Warewolf.Studio.ViewModels
                 _emailServiceSource.UserName = UserName;
                 _emailServiceSource.Password = Password;
                 _emailServiceSource.Timeout = Timeout;
-                _emailServiceSource.EmailFrom = EmailFrom;
-                _emailServiceSource.EmailTo = EmailTo;
+                _emailServiceSource.ResourceType = ResourceType.ExchangeSource;
+                _emailServiceSource.Name = Name;
                 return _emailServiceSource;
 
             }
         }
 
-        public override IExchangeServiceSource ToModel()
+        public override IExchangeSource ToModel()
         {
             if (Item == null)
             {
@@ -571,12 +474,13 @@ namespace Warewolf.Studio.ViewModels
                 AutoDiscoverUrl = AutoDiscoverUrl,
                 Password = Password,
                 UserName = UserName,
-                Port = Port,
                 Timeout = Timeout,
-                EnableSsl = EnableSsl,
                 EmailFrom = EmailFrom,
                 EmailTo = EmailTo,
-                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.Id
+                ResourceType = ResourceType.ExchangeSource,
+                ResourceName = ResourceName,
+                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
+                ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
             };
         }
 
@@ -633,11 +537,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         [ExcludeFromCodeCoverage]
-        public string HostNameLabel
+        public string AutoDiscoverLabel
         {
             get
             {
-                return Resources.Languages.Core.HostNameLabel;
+                return Resources.Languages.Core.AutoDiscoverLabel;
             }
         }
 
@@ -660,25 +564,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        [ExcludeFromCodeCoverage]
-        public string EnableSslLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.EmailSourceEnableSslLabel;
-
-            }
-        }
-
-        [ExcludeFromCodeCoverage]
-        public string PortLabel
-        {
-            get
-            {
-                return Resources.Languages.Core.PortLabel;
-            }
-        }
-
+        
         [ExcludeFromCodeCoverage]
         public string TimeoutLabel
         {

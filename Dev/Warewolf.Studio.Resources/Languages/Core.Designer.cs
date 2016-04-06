@@ -160,6 +160,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AutoDiscover Url.
+        /// </summary>
+        public static string AutoDiscoverLabel {
+            get {
+                return ResourceManager.GetString("AutoDiscoverLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and data goes in here.&lt;br /&gt;
         ///        To convert Text, Hex, Binary and Base64, put the data to be converted in here.&lt;br /&gt;
         ///        &lt;br /&gt;
@@ -2550,6 +2559,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ExchangeServiceSourceTypesHelp {
             get {
                 return ResourceManager.GetString("ExchangeServiceSourceTypesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Exchange Source.
+        /// </summary>
+        public static string ExchangeSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("ExchangeSourceNewHeaderLabel", resourceCulture);
             }
         }
         

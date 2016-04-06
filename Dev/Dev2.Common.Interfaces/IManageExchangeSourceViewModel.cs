@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Common.Interfaces
 {
@@ -21,11 +17,6 @@ namespace Dev2.Common.Interfaces
         /// Password
         /// </summary>
         string Password { get; set; }
-
-        /// <summary>
-        /// Port
-        /// </summary>
-        int Port { get; set; }
         /// <summary>
         /// Timeout
         /// </summary>
@@ -65,7 +56,7 @@ namespace Dev2.Common.Interfaces
         /// <summary>
         /// The localized text for the Host name label
         /// </summary>
-        string HostNameLabel { get; }
+        string AutoDiscoverLabel { get; }
         /// <summary>
         /// Localized text for the UserName label
         /// </summary>
@@ -74,14 +65,6 @@ namespace Dev2.Common.Interfaces
         /// Localized text for the Password label
         /// </summary>
         string PasswordLabel { get; }
-        /// <summary>
-        /// Localized text for the Enable SSL label
-        /// </summary>
-        string EnableSslLabel { get; }
-        /// <summary>
-        /// Localized text for the Port label
-        /// </summary>
-        string PortLabel { get; }
         /// <summary>
         /// Localized text for the Timeout label
         /// </summary>
@@ -103,16 +86,12 @@ namespace Dev2.Common.Interfaces
         /// Command for send
         /// </summary>
         ICommand SendCommand { get; set; }
-
-        bool EnableSsl { get; set; }
-        bool EnableSslYes { get; set; }
-        bool EnableSslNo { get; set; }
     }
 
     public interface IManageExchangeSourceModel
     {
-        string TestConnection(IExchangeServiceSource resource);
-        void Save(IExchangeServiceSource toDbSource);
+        string TestConnection(IExchangeSource resource);
+        void Save(IExchangeSource toDbSource);
         string ServerName { get; }
     }
 }

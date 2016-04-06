@@ -68,7 +68,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             ToolRegionName = "ExchangeSourceRegion";
             Dependants = new List<IToolRegion>();
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
-            //EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
+            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
@@ -113,6 +113,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty
         public IList<string> Errors { get; }
         public IToolRegion CloneRegion()
         {
@@ -175,6 +176,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SourceId = value.ResourceID;
             }
+            // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged("SelectedSource");
         }
 

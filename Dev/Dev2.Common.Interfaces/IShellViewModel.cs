@@ -19,7 +19,7 @@ namespace Dev2.Common.Interfaces
         void EditResource(IDatabaseService selectedSource, IWorkSurfaceKey key = null);
 
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IExchangeServiceSource selectedSource, IWorkSurfaceKey key = null);
+        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
 
         void NewResource(string resourceType,string resourcePath);
 

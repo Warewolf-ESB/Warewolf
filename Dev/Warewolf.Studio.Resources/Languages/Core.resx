@@ -1249,11 +1249,17 @@ Change the connection string from, say, a development dll to a live dll.&lt;br/&
   <data name="EmailSourceNewHeaderLabel" xml:space="preserve">
     <value>New Email Source</value>
   </data>
+  <data name="ExchangeSourceNewHeaderLabel" xml:space="preserve">
+    <value>New Exchange Source</value>
+  </data>
   <data name="EmailSourceEditHeaderLabel" xml:space="preserve">
     <value>Edit </value>
   </data>
   <data name="HostNameLabel" xml:space="preserve">
     <value>Host</value>
+  </data>
+  <data name="AutoDiscoverLabel" xml:space="preserve">
+    <value>AutoDiscover Url</value>
   </data>
   <data name="EmailSourceEnableSslLabel" xml:space="preserve">
     <value>Enable SSL</value>

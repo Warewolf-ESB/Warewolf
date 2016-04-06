@@ -129,7 +129,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
                   { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                   { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
-                {typeof(DsfExchangeActivity),typeof(ExchangeEmailDesigner) },
+                {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                  { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },

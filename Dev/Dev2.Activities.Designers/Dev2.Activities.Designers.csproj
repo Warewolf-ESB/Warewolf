@@ -228,7 +228,6 @@
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\ExchangeInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
-    <Compile Include="Designers2\Core\ManageExchangeServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
