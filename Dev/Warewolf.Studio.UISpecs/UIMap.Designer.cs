@@ -3934,7 +3934,7 @@ namespace Warewolf.Studio.UISpecs
         public void Test_Connector_Calculate_Outputs()
         {
             #region Variable Declarations
-            WpfEdit uITestdataEdit = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom1.UIInputsListList.UIWarewolfCoreServiceIListItem.UITestdataEdit;
+            WpfEdit uITestdataEdit = this.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.UIInputsListList.UIWarewolfCoreServiceIListItem.UITestdataEdit;
             WpfButton uITestButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UITestButton;
             #endregion
 
@@ -11532,6 +11532,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public UIInputsListList UIInputsListList
+        {
+            get
+            {
+                if ((this.mUIInputsListList == null))
+                {
+                    this.mUIInputsListList = new UIInputsListList(this);
+                }
+                return this.mUIInputsListList;
+            }
+        }
+        
         public SourcesComboBox SourcesComboBox
         {
             get
@@ -11594,6 +11606,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private UIInputsListList mUIInputsListList;
+        
         private SourcesComboBox mSourcesComboBox;
         
         private EditButton mEditButton;
@@ -11603,6 +11617,74 @@ namespace Warewolf.Studio.UISpecs
         private ActionsComboBox mActionsComboBox;
         
         private MappingsView mMappingsView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIInputsListList : WpfList
+    {
+        
+        public UIInputsListList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWarewolfCoreServiceIListItem UIWarewolfCoreServiceIListItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfCoreServiceIListItem == null))
+                {
+                    this.mUIWarewolfCoreServiceIListItem = new UIWarewolfCoreServiceIListItem(this);
+                }
+                return this.mUIWarewolfCoreServiceIListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWarewolfCoreServiceIListItem mUIWarewolfCoreServiceIListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfCoreServiceIListItem : WpfListItem
+    {
+        
+        public UIWarewolfCoreServiceIListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Core.ServiceInput";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITestdataEdit
+        {
+            get
+            {
+                if ((this.mUITestdataEdit == null))
+                {
+                    this.mUITestdataEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITestdataEdit.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
+                    this.mUITestdataEdit.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mUITestdataEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITestdataEdit;
         #endregion
     }
     
@@ -16576,26 +16658,12 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIActionsComboBoxCustom;
             }
         }
-        
-        public UIInputsListList UIInputsListList
-        {
-            get
-            {
-                if ((this.mUIInputsListList == null))
-                {
-                    this.mUIInputsListList = new UIInputsListList(this);
-                }
-                return this.mUIInputsListList;
-            }
-        }
         #endregion
         
         #region Fields
         private UISourcesComboBoxCustom mUISourcesComboBoxCustom;
         
         private UIActionsComboBoxCustom mUIActionsComboBoxCustom;
-        
-        private UIInputsListList mUIInputsListList;
         #endregion
     }
     
@@ -16670,74 +16738,6 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfButton mUIToggleButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInputsListList : WpfList
-    {
-        
-        public UIInputsListList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWarewolfCoreServiceIListItem UIWarewolfCoreServiceIListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfCoreServiceIListItem == null))
-                {
-                    this.mUIWarewolfCoreServiceIListItem = new UIWarewolfCoreServiceIListItem(this);
-                }
-                return this.mUIWarewolfCoreServiceIListItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWarewolfCoreServiceIListItem mUIWarewolfCoreServiceIListItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfCoreServiceIListItem : WpfListItem
-    {
-        
-        public UIWarewolfCoreServiceIListItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Core.ServiceInput";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UITestdataEdit
-        {
-            get
-            {
-                if ((this.mUITestdataEdit == null))
-                {
-                    this.mUITestdataEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUITestdataEdit.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
-                    this.mUITestdataEdit.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITestdataEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUITestdataEdit;
         #endregion
     }
     
