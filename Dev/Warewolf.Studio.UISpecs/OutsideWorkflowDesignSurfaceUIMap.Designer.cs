@@ -1070,6 +1070,32 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Assert_Server_Version_Exists - Use 'Assert_Server_Version_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Server_Version_Exists()
+        {
+            #region Variable Declarations
+            WpfWindow splashPageWindow = this.SplashPageWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'SplashPage' window equals 'True'
+            Assert.AreEqual(this.Assert_Server_Version_ExistsExpectedValues.SplashPageWindowExists, splashPageWindow.Exists, "Server version splash page does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Exists_OnDesignSurface - Use 'Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfWindow servicePickerWindow = this.ServicePickerWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues.ServicePickerWindowExists, servicePickerWindow.Exists, "Services Picker tool on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Assert_ServiceLabel_DestinationServer_Exists - Use 'Assert_ServiceLabel_DestinationServer_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_ServiceLabel_DestinationServer_Exists()
@@ -1660,38 +1686,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Click '' label
             Mouse.Click(deployIcon, new Point(16, 11));
-        }
-        
-        /// <summary>
-        /// Click_Dock_DebugOutput
-        /// </summary>
-        public void Click_Dock_DebugOutput()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(63, 85));
-            Mouse.StartDragging(uIItemCustom4, new Point(176, 13));
-            Mouse.StopDragging(uIItemCustom, new Point(63, 85));
-        }
-        
-        /// <summary>
-        /// Click_Dock_Documentor
-        /// </summary>
-        public void Click_Dock_Documentor()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(54, 96));
-            Mouse.StartDragging(uIItemCustom4, new Point(260, 12));
-            Mouse.StopDragging(uIItemCustom, new Point(54, 96));
         }
         
         /// <summary>
@@ -3701,6 +3695,30 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public virtual Assert_Server_Version_ExistsExpectedValues Assert_Server_Version_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Server_Version_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Server_Version_ExistsExpectedValues = new Assert_Server_Version_ExistsExpectedValues();
+                }
+                return this.mAssert_Server_Version_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues = new Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
         public virtual Assert_ServiceLabel_DestinationServer_ExistsExpectedValues Assert_ServiceLabel_DestinationServer_ExistsExpectedValues
         {
             get
@@ -4516,6 +4534,30 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mSaveDialogWindow;
             }
         }
+        
+        public ServicePickerWindow ServicePickerWindow
+        {
+            get
+            {
+                if ((this.mServicePickerWindow == null))
+                {
+                    this.mServicePickerWindow = new ServicePickerWindow();
+                }
+                return this.mServicePickerWindow;
+            }
+        }
+        
+        public SplashPageWindow SplashPageWindow
+        {
+            get
+            {
+                if ((this.mSplashPageWindow == null))
+                {
+                    this.mSplashPageWindow = new SplashPageWindow();
+                }
+                return this.mSplashPageWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -4679,6 +4721,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private Assert_Scheduler_WorkflowLabel_ExistsExpectedValues mAssert_Scheduler_WorkflowLabel_ExistsExpectedValues;
         
+        private Assert_Server_Version_ExistsExpectedValues mAssert_Server_Version_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues;
+        
         private Assert_ServiceLabel_DestinationServer_ExistsExpectedValues mAssert_ServiceLabel_DestinationServer_ExistsExpectedValues;
         
         private Assert_ServicesCount_Label_ExistsExpectedValues mAssert_ServicesCount_Label_ExistsExpectedValues;
@@ -4814,6 +4860,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private UIWpfWindow mUIWpfWindow;
         
         private SaveDialogWindow mSaveDialogWindow;
+        
+        private ServicePickerWindow mServicePickerWindow;
+        
+        private SplashPageWindow mSplashPageWindow;
         #endregion
     }
     
@@ -6014,6 +6064,36 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// Verify that the 'Exists' property of 'Workflow' label equals 'True'
         /// </summary>
         public bool WorkflowTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Server_Version_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Server_Version_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SplashPage' window equals 'True'
+        /// </summary>
+        public bool SplashPageWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool ServicePickerWindowExists = true;
         #endregion
     }
     
@@ -22296,5 +22376,33 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #region Fields
         private WpfTreeItem mExplorerTreeItem;
         #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ServicePickerWindow : WpfWindow
+    {
+        
+        public ServicePickerWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class SplashPageWindow : WpfWindow
+    {
+        
+        public SplashPageWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "SplashPage";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("SplashPage");
+            #endregion
+        }
     }
 }
