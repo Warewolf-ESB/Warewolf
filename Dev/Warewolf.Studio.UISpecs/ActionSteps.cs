@@ -70,12 +70,14 @@ namespace Warewolf.Studio.UISpecs
             }
         }
 
+        [BeforeScenario]
         [Scope(Tag = "NeedsBlankWorkflow")]
         public static void InitializeABlankWorkflow()
         {
-            OutsideWorkflowDesignSurfaceUiMap.Assert_NewWorkFlow_RibbonButton_Exists();
-            OutsideWorkflowDesignSurfaceUiMap.Click_New_Workflow_Ribbon_Button();
-            Uimap.Assert_StartNode_Exists();
+            var outsideWorkflowDesignSurfaceUiMap = new OutsideWorkflowDesignSurfaceUIMap();
+            outsideWorkflowDesignSurfaceUiMap.Assert_NewWorkFlow_RibbonButton_Exists();
+            outsideWorkflowDesignSurfaceUiMap.Click_New_Workflow_Ribbon_Button();
+            new UIMap().Assert_StartNode_Exists();
         }
 
         #region Properties and Fields
