@@ -14874,18 +14874,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public DataTools DataTools
-        {
-            get
-            {
-                if ((this.mDataTools == null))
-                {
-                    this.mDataTools = new DataTools(this);
-                }
-                return this.mDataTools;
-            }
-        }
-        
         public FlowTools FlowTools
         {
             get
@@ -14898,6 +14886,30 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public DataTools DataTools
+        {
+            get
+            {
+                if ((this.mDataTools == null))
+                {
+                    this.mDataTools = new DataTools(this);
+                }
+                return this.mDataTools;
+            }
+        }
+        
+        public Database Database
+        {
+            get
+            {
+                if ((this.mDatabase == null))
+                {
+                    this.mDatabase = new Database(this);
+                }
+                return this.mDatabase;
+            }
+        }
+        
         public FileAndFTP FileAndFTP
         {
             get
@@ -14907,6 +14919,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mFileAndFTP = new FileAndFTP(this);
                 }
                 return this.mFileAndFTP;
+            }
+        }
+        
+        public HTTPWebMethods HTTPWebMethods
+        {
+            get
+            {
+                if ((this.mHTTPWebMethods == null))
+                {
+                    this.mHTTPWebMethods = new HTTPWebMethods(this);
+                }
+                return this.mHTTPWebMethods;
             }
         }
         
@@ -14996,11 +15020,15 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private DataTools mDataTools;
-        
         private FlowTools mFlowTools;
         
+        private DataTools mDataTools;
+        
+        private Database mDatabase;
+        
         private FileAndFTP mFileAndFTP;
+        
+        private HTTPWebMethods mHTTPWebMethods;
         
         private LoopTools mLoopTools;
         
@@ -15015,6 +15043,80 @@ namespace Warewolf.Studio.UISpecs
         private UtilityTools mUtilityTools;
         
         private ConnectorTools mConnectorTools;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class FlowTools : WpfGroup
+    {
+        
+        public FlowTools(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Control Flow";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem Decision
+        {
+            get
+            {
+                if ((this.mDecision == null))
+                {
+                    this.mDecision = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDecision.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDecision.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDecision;
+            }
+        }
+        
+        public WpfListItem Switch
+        {
+            get
+            {
+                if ((this.mSwitch == null))
+                {
+                    this.mSwitch = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSwitch.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mSwitch.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mSwitch.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSwitch;
+            }
+        }
+        
+        public WpfListItem Sequence
+        {
+            get
+            {
+                if ((this.mSequence == null))
+                {
+                    this.mSequence = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSequence.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mSequence.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mSequence.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSequence;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mDecision;
+        
+        private WpfListItem mSwitch;
+        
+        private WpfListItem mSequence;
         #endregion
     }
     
@@ -15169,76 +15271,77 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class FlowTools : WpfGroup
+    public class Database : WpfGroup
     {
         
-        public FlowTools(UITestControl searchLimitContainer) : 
+        public Database(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Control Flow";
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Database";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfListItem Decision
+        public WpfListItem MySQL
         {
             get
             {
-                if ((this.mDecision == null))
+                if ((this.mMySQL == null))
                 {
-                    this.mDecision = new WpfListItem(this);
+                    this.mMySQL = new WpfListItem(this);
                     #region Search Criteria
-                    this.mDecision.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mDecision.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mMySQL.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mMySQL.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mMySQL.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mDecision;
+                return this.mMySQL;
             }
         }
         
-        public WpfListItem Switch
+        public WpfListItem SQLBulkInsert
         {
             get
             {
-                if ((this.mSwitch == null))
+                if ((this.mSQLBulkInsert == null))
                 {
-                    this.mSwitch = new WpfListItem(this);
+                    this.mSQLBulkInsert = new WpfListItem(this);
                     #region Search Criteria
-                    this.mSwitch.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mSwitch.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mSwitch.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mSQLBulkInsert.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mSQLBulkInsert.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mSQLBulkInsert.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mSwitch;
+                return this.mSQLBulkInsert;
             }
         }
         
-        public WpfListItem Sequence
+        public WpfListItem SQLServer
         {
             get
             {
-                if ((this.mSequence == null))
+                if ((this.mSQLServer == null))
                 {
-                    this.mSequence = new WpfListItem(this);
+                    this.mSQLServer = new WpfListItem(this);
                     #region Search Criteria
-                    this.mSequence.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mSequence.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
-                    this.mSequence.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mSQLServer.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mSQLServer.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mSQLServer.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mSequence;
+                return this.mSQLServer;
             }
         }
         #endregion
         
         #region Fields
-        private WpfListItem mDecision;
+        private WpfListItem mMySQL;
         
-        private WpfListItem mSwitch;
+        private WpfListItem mSQLBulkInsert;
         
-        private WpfListItem mSequence;
+        private WpfListItem mSQLServer;
         #endregion
     }
     
@@ -15446,6 +15549,100 @@ namespace Warewolf.Studio.UISpecs
         private WpfListItem mUnZip;
         
         private WpfListItem mZip;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class HTTPWebMethods : WpfGroup
+    {
+        
+        public HTTPWebMethods(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "HTTP Web Methods";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem DELETE
+        {
+            get
+            {
+                if ((this.mDELETE == null))
+                {
+                    this.mDELETE = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDELETE.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDELETE.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mDELETE.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDELETE;
+            }
+        }
+        
+        public WpfListItem GET
+        {
+            get
+            {
+                if ((this.mGET == null))
+                {
+                    this.mGET = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mGET.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mGET.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mGET.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mGET;
+            }
+        }
+        
+        public WpfListItem POST
+        {
+            get
+            {
+                if ((this.mPOST == null))
+                {
+                    this.mPOST = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mPOST.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mPOST.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mPOST.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mPOST;
+            }
+        }
+        
+        public WpfListItem PUT
+        {
+            get
+            {
+                if ((this.mPUT == null))
+                {
+                    this.mPUT = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mPUT.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mPUT.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
+                    this.mPUT.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mPUT;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mDELETE;
+        
+        private WpfListItem mGET;
+        
+        private WpfListItem mPOST;
+        
+        private WpfListItem mPUT;
         #endregion
     }
     
