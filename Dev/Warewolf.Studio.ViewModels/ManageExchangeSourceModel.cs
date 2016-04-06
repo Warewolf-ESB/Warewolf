@@ -1,4 +1,5 @@
 ﻿using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -22,12 +23,12 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IManageDatabaseSourceModel
 
-        public string TestConnection(IExchangeServiceSource resource)
+        public string TestConnection(IExchangeSource resource)
         {
             return _updateRepository.TestConnection(resource);
         }
 
-        public void Save(IExchangeServiceSource toDbSource)
+        public void Save(IExchangeSource toDbSource)
         {
             _updateRepository.Save(toDbSource);
         }

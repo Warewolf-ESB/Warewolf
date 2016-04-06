@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 
-                values.TryGetValue("ExchangeServiceSource", out resourceDefinition);
+                values.TryGetValue("ExchangeSource", out resourceDefinition);
 
                 var src = serializer.Deserialize<ExchangeSourceDefinition>(resourceDefinition);
 
@@ -36,7 +36,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Timeout = src.Timeout,
                 };
 
-                con.Send(con, "Test Exchange email service source", src.EmailFrom, src.EmailTo);
+                var testMessage = new ExchangeTestMessage()
+                {
+                    To = src.EmailTo,
+                    CC = string.Empty,
+                    BCC = string.Empty,
+                    Body = "Test Exchange email service source",
+                    Attachment = string.Empty
+                };
+
+                con.Send(con, testMessage);
             }
             catch (Exception err)
             {

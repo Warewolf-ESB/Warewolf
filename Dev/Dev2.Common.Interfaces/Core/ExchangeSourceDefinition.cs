@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+// ReSharper disable NonReadonlyMemberInGetHashCode
+// ReSharper disable MergeConditionalExpression
 
 namespace Dev2.Common.Interfaces.Core
 {
-    public class ExchangeSourceDefinition : IExchangeServiceSource, IEquatable<ExchangeSourceDefinition>
+    public class ExchangeSourceDefinition : IExchangeSource, IEquatable<ExchangeSourceDefinition>
     {
+        public Guid ResourceID { get; set; }
         public string AutoDiscoverUrl { get; set; }
+        public string Name { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public enSourceType Type { get; set; }
+        public ResourceType ResourceType { get; set; }
         public bool EnableSsl { get; set; }
         public int Port { get; set; }
         public int Timeout { get; set; }
@@ -51,7 +54,8 @@ namespace Dev2.Common.Interfaces.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(IExchangeServiceSource other)
+
+        public bool Equals(IExchangeSource other)
         {
             return Equals(other as ExchangeSourceDefinition);
         }

@@ -6,7 +6,6 @@ using System.Windows.Media;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Exchange;
-using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Common.Interfaces

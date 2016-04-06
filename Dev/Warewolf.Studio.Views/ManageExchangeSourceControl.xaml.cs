@@ -60,20 +60,12 @@ namespace Warewolf.Studio.Views
         {
             switch (controlName)
             {
-                case "Host":
-                    return HostTextBox.Text;
+                case "AutoDiscoverUrl":
+                    return AutoDiscoverUrlTxtBox.Text;
                 case "User Name":
                     return UserNameTextBox.Text;
                 case "Password":
                     return PasswordTextBox.Password;
-                case "Enable SSL":
-                    if (EnableSslYes.IsChecked == true)
-                    {
-                        return "True";
-                    }
-                    return "False";
-                case "Port":
-                    return PortTextBox.Text;
                 case "Timeout":
                     return TimeoutTextBox.Text;
                 case "From":
@@ -100,7 +92,7 @@ namespace Warewolf.Studio.Views
 
         public void EnterHostName(string hostname)
         {
-            HostTextBox.Text = hostname;
+            AutoDiscoverUrlTxtBox.Text = hostname;
         }
 
         public void EnterUserName(string username)

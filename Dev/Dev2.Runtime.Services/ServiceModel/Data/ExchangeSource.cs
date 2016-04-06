@@ -97,15 +97,30 @@ namespace Dev2.Runtime.ServiceModel.Data
             Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
         }
 
-        public void Send(IExchangeSource source, string message, string from, string to)
+        public void Send(IExchangeSource source, ExchangeTestMessage testMessage)
         {
             InitializeService();
 
             _emailSender = new ExchangeEmailSender(source);
 
-            var emailMessage = new EmailMessage(_exchangeService) {Body = message};
-            emailMessage.ToRecipients.Add(to);
-           // _emailSender.Send(_exchangeService,emailMessage);
+            var emailMessage = new EmailMessage(_exchangeService) {Body = testMessage.Body};
+
+            emailMessage.ToRecipients.Add(testMessage.To);
+
+            if (!string.IsNullOrEmpty(testMessage.Attachment))
+            {
+                emailMessage.Attachments.AddFileAttachment(testMessage.Attachment);
+            }
+            if (!string.IsNullOrEmpty(testMessage.CC))
+            {
+                emailMessage.CcRecipients.Add(testMessage.CC);
+            }
+            if (!string.IsNullOrEmpty(testMessage.BCC))
+            {
+                emailMessage.BccRecipients.Add(testMessage.BCC);
+            }
+
+           _emailSender.Send(_exchangeService,emailMessage);
         }
         #endregion
 
@@ -141,5 +156,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             return true;
         }
+    }
+
+    public class ExchangeTestMessage
+    {
+        public string To { get; set; }
+        public string CC { get; set; }
+        public string BCC { get; set; }
+        public string Attachment { get; set; }
+        public string Body { get; set; }
     }
 }

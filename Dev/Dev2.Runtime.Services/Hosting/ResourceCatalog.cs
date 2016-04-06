@@ -1267,14 +1267,6 @@ namespace Dev2.Runtime.Hosting
                 {
                     return true;
                 }
-                if (typeof(T) == typeof(ExchangeService) && resource.ResourceType != ResourceType.ExchangeService)
-                {
-                    return true;
-                }
-                if (typeof(T) == typeof(ExchangeSource) && resource.ResourceType != ResourceType.ExchangeSource)
-                {
-                    return true;
-                }
             }
             return false;
         }

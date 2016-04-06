@@ -29,9 +29,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
-using Dev2.Util;
 using Dev2.Validation;
-using Action = System.Action;
 // ReSharper disable NotAccessedField.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UseNullPropagation
@@ -59,12 +57,9 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public ObservableCollection<ExchangeSource> EmailSources { get; private set; }
         public ObservableCollection<enMailPriorityEnum> Priorities { get; private set; }
 
-        public RelayCommand EditEmailSourceCommand { get; private set; }
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
-        private IErrorInfo _worstDesignError;
-        const string DoneText = "Done";
-        const string FixText = "Fix";
 
         public ExchangeEmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
@@ -96,78 +91,20 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             SetupCommonProperties();
         }
 
-        private IErrorInfo NoError { get; set; }
         private void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
-            InitialiseViewModel(new ManageExchangeServiceInputViewModel(this, Model));
+            InitialiseViewModel();
         }
-
-        public string ButtonDisplayValue { get; set; }
-        public bool IsWorstErrorReadOnly
-        {
-            get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
-            private set
-            {
-                ButtonDisplayValue = value ? DoneText : FixText;
-                SetValue(IsWorstErrorReadOnlyProperty, value);
-            }
-        }
-        public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
-            DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(false));
-
-        public ErrorType WorstError
-        {
-            get { return (ErrorType)GetValue(WorstErrorProperty); }
-            private set { SetValue(WorstErrorProperty, value); }
-        }
-
-        public static readonly DependencyProperty WorstErrorProperty =
-        DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(ErrorType.None));
-        IErrorInfo WorstDesignError
-        {
-            // ReSharper disable once UnusedMember.Local
-            get { return _worstDesignError; }
-            set
-            {
-                if (_worstDesignError != value)
-                {
-                    _worstDesignError = value;
-                    IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value == null ? ErrorType.None : value.ErrorType;
-                }
-            }
-        }
-        public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
-        void UpdateWorstError()
-        {
-            if (DesignValidationErrors.Count == 0)
-            {
-                DesignValidationErrors.Add(NoError);
-            }
-
-            IErrorInfo[] worstError = { DesignValidationErrors[0] };
-
-            foreach (var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
-            {
-                worstError[0] = error;
-                if (error.ErrorType == ErrorType.Critical)
-                {
-                    break;
-                }
-            }
-            WorstDesignError = worstError[0];
-        }
+        
 
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
         }
 
-        public IManageExchangeInputViewModel ManageServiceInputViewModel { get; set; }
-        private void InitialiseViewModel(IManageExchangeInputViewModel manageServiceInputViewModel)
+        private void InitialiseViewModel()
         {
-            ManageServiceInputViewModel = manageServiceInputViewModel;
             BuildRegions();
             InitializeProperties();
         }
@@ -202,12 +139,12 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public void ErrorMessage(Exception exception, bool hasError)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void SetDisplayName(string displayName)
         {
-            throw new NotImplementedException();
+            
         }
 
         public bool GenerateOutputsVisible { get; set; }
@@ -223,30 +160,11 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             return regions;
         }
 
-        private Action _sourceChangedAction;
-        public Action SourceChangedAction
-        {
-            get
-            {
-                return _sourceChangedAction ?? (() => { });
-            }
-            set
-            {
-                _sourceChangedAction = value;
-            }
-        }
-
         public static readonly DependencyProperty CanTestEmailAccountProperty = DependencyProperty.Register("CanTestEmailAccount", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(true));
-
         public bool IsEmailSourceFocused { get { return (bool)GetValue(IsEmailSourceFocusedProperty); } set { SetValue(IsEmailSourceFocusedProperty, value); } }
         public static readonly DependencyProperty IsEmailSourceFocusedProperty = DependencyProperty.Register("IsEmailSourceFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-
         public bool IsFromAccountFocused { get { return (bool)GetValue(IsFromAccountFocusedProperty); } set { SetValue(IsFromAccountFocusedProperty, value); } }
         public static readonly DependencyProperty IsFromAccountFocusedProperty = DependencyProperty.Register("IsFromAccountFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-
-        public bool IsPasswordFocused { get { return (bool)GetValue(IsPasswordFocusedProperty); } set { SetValue(IsPasswordFocusedProperty, value); } }
-        public static readonly DependencyProperty IsPasswordFocusedProperty = DependencyProperty.Register("IsPasswordFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-
         public bool IsToFocused { get { return (bool)GetValue(IsToFocusedProperty); } set { SetValue(IsToFocusedProperty, value); } }
         public static readonly DependencyProperty IsToFocusedProperty = DependencyProperty.Register("IsToFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
@@ -261,9 +179,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public bool IsAttachmentsFocused { get { return (bool)GetValue(IsAttachmentsFocusedProperty); } set { SetValue(IsAttachmentsFocusedProperty, value); } }
         public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-
-        public string Password { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        string FromAccount { get { return GetProperty<string>(); } }
         string To { get { return GetProperty<string>(); } }
         string Cc { get { return GetProperty<string>(); } }
         string Bcc { get { return GetProperty<string>(); } }
@@ -294,24 +209,28 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
             CanTestEmailAccount = false;
 
-            //Todo Implement Exchange Logic
-            var testSource = new ExchangeSource();
-            if (!string.IsNullOrEmpty(FromAccount))
+            var testSource = new ExchangeSource()
             {
-                testSource.UserName = FromAccount;
-                testSource.Password = Password;
-            }
-            testSource.TestFromAddress = testSource.UserName;
-            testSource.TestToAddress = testEmailAccount;
+                AutoDiscoverUrl = SourceRegion.SelectedSource.AutoDiscoverUrl,
+                Password = SourceRegion.SelectedSource.Password,
+                UserName = SourceRegion.SelectedSource.UserName,
+            };
+
             if (EmailAddresssIsAVariable(testEmailAccount))
             {
                 return;
             }
-            Uri uri = new Uri(new Uri(AppSettings.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
-            var jsonData = testSource.ToString();
 
-            var requestInvoker = CreateWebRequestInvoker();
-            requestInvoker.ExecuteRequest("POST", uri.ToString(), jsonData, null, OnTestCompleted);
+            var testMessage = new ExchangeTestMessage()
+            {
+                To = testEmailAccount,
+                CC = Cc,
+                BCC = Bcc,
+                Body = Body,
+                Attachment = Attachments
+            };
+
+            testSource.Send(testSource,testMessage);
         }
 
         string GetTestEmailAccount()
@@ -332,19 +251,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 postResult += "Variable " + testEmailAccount + " cannot be used while testing.";
                 hasVariable = true;
             }
-            if (DataListUtil.IsFullyEvaluated(FromAccount))
-            {
-                var errorMessage = "Variable " + FromAccount + " cannot be used while testing.";
-                if (string.IsNullOrEmpty(postResult))
-                {
-                    postResult += errorMessage;
-                }
-                else
-                {
-                    postResult += Environment.NewLine + errorMessage;
-                }
-                hasVariable = true;
-            }
+            
             if (hasVariable)
             {
                 var validationResult = new ValidationResult
@@ -424,10 +331,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Password", GetDatalistString()).ValidateRules("'Password'", () => IsPasswordFocused = true))
-            {
-                yield return error;
-            }
             foreach (var error in GetRuleSet("Recipients", GetDatalistString()).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
             {
                 yield return error;
@@ -460,14 +363,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
             switch (propertyName)
             {
-                case "FromAccount":
-                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, datalist, "user@test.com");
-                    ruleSet.Add(fromExprRule);
-                    ruleSet.Add(new IsValidEmailAddressRule(() => fromExprRule.ExpressionValue));
-                    break;
-                case "Password":
-                    ruleSet.Add(new IsRequiredWhenOtherIsNotEmptyRule(() => Password, () => FromAccount));
-                    break;
                 case "To":
                     var toExprRule = new IsValidExpressionRule(() => To, datalist, "user@test.com");
                     ruleSet.Add(toExprRule);

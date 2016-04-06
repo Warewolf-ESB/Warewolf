@@ -28,12 +28,12 @@ namespace Warewolf.Studio.ViewModels
             _shell.NewResource(ResourceType.ExchangeSource.ToString(), "");
         }
 
-        public void EditSource(IExchangeServiceSource selectedSource)
+        public void EditSource(IExchangeSource selectedSource)
         {
             _shell.EditResource(selectedSource);
         }
 
-        public void SaveService(IExchangeServiceSource model)
+        public void SaveService(IExchangeSource model)
         {
             _updateRepository.Save(model);
         }
