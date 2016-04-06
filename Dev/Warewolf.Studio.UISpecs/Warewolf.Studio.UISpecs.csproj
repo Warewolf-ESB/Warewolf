@@ -69,6 +69,11 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="WorkflowDesignSurfaceTools.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowDesignSurfaceTools.feature</DependentUpon>
+    </Compile>
     <Compile Include="Dropdown List Item Action Steps.cs" />
     <Compile Include="Explorer Tree Item Action Steps.cs" />
     <Compile Include="OutsideWorkflowDesignSurfaceUIMap.cs">
@@ -93,6 +98,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="WorkflowDesignSurfaceTools.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowDesignSurfaceTools.feature.cs</LastGenOutput>
+    </None>
     <None Include="OutsideWorkflowDesignSurfaceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
