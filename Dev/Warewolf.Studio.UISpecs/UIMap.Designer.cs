@@ -1514,7 +1514,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Copy_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem copy = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.Copy;
+            WpfListItem copy = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.Copy;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1546,7 +1546,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Create_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem create = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.Create;
+            WpfListItem create = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.Create;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1646,7 +1646,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Delete_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem delete = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.Delete;
+            WpfListItem delete = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.Delete;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1806,7 +1806,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Move_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem move = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.Move;
+            WpfListItem move = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.Move;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1870,7 +1870,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Read_File_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem readFile = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.ReadFile;
+            WpfListItem readFile = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.ReadFile;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1886,7 +1886,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Read_Folder_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem readFolder = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.ReadFolder;
+            WpfListItem readFolder = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.ReadFolder;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -1902,7 +1902,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Rename_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem rename = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.Rename;
+            WpfListItem rename = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.Rename;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -2146,7 +2146,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Unzip_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem unZip = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.UnZip;
+            WpfListItem unZip = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.UnZip;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -2178,7 +2178,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Write_File_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem writeFolder = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.WriteFolder;
+            WpfListItem writeFolder = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.WriteFolder;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -2210,7 +2210,7 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Zip_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem zip = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFolderTools.Zip;
+            WpfListItem zip = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.Zip;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
@@ -14816,15 +14816,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public FileAndFolderTools FileAndFolderTools
+        public FileAndFTP FileAndFTP
         {
             get
             {
-                if ((this.mFileAndFolderTools == null))
+                if ((this.mFileAndFTP == null))
                 {
-                    this.mFileAndFolderTools = new FileAndFolderTools(this);
+                    this.mFileAndFTP = new FileAndFTP(this);
                 }
-                return this.mFileAndFolderTools;
+                return this.mFileAndFTP;
             }
         }
         
@@ -14918,7 +14918,7 @@ namespace Warewolf.Studio.UISpecs
         
         private FlowTools mFlowTools;
         
-        private FileAndFolderTools mFileAndFolderTools;
+        private FileAndFTP mFileAndFTP;
         
         private LoopTools mLoopTools;
         
@@ -15161,14 +15161,14 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class FileAndFolderTools : WpfGroup
+    public class FileAndFTP : WpfGroup
     {
         
-        public FileAndFolderTools(UITestControl searchLimitContainer) : 
+        public FileAndFTP(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "File & Folder";
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "File, FTP, FTPS & SFTP";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
