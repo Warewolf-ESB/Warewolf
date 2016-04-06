@@ -118,6 +118,7 @@
                                 MaxHeight="50"
                                 AcceptsTab="True"
                                 Padding="2,5,2,2"
+                                Margin="{StaticResource ActivityBorderTop}"
                                 VerticalContentAlignment="Top"
                                 VerticalScrollBarVisibility="Auto"
                                 HorizontalScrollBarVisibility="Auto"
