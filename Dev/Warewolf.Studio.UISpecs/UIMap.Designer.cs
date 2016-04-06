@@ -1318,7 +1318,7 @@ namespace Warewolf.Studio.UISpecs
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(305, 124));
-            Mouse.StartDragging(webRequest, new Point(675, 913));
+            Mouse.StartDragging(webRequest, new Point(12, 3));
             Mouse.StopDragging(flowchart, new Point(305, 124));
         }
         
@@ -3542,23 +3542,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Right-Click 'DsfZip' custom control
             Mouse.Click(zip, MouseButtons.Right, ModifierKeys.None, new Point(95, 12));
-        }
-        
-        /// <summary>
-        /// Select_Action_Droplist
-        /// </summary>
-        public void Select_Action_Droplist()
-        {
-            #region Variable Declarations
-            WpfCustom actionsComboBox = this.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox;
-            WpfCustom uIDboPr_CitiesGetCountCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDboPr_CitiesGetCountCustom;
-            #endregion
-
-            // Click 'ActionsComboBox' custom control
-            Mouse.Click(actionsComboBox, new Point(226, 6));
-
-            // Click 'dbo.Pr_CitiesGetCountries' custom control
-            Mouse.Click(uIDboPr_CitiesGetCountCustom, new Point(156, 10));
         }
         
         /// <summary>
@@ -15806,47 +15789,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public UIItemCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        
-        public UIItemCustom1 UIItemCustom1
-        {
-            get
-            {
-                if ((this.mUIItemCustom1 == null))
-                {
-                    this.mUIItemCustom1 = new UIItemCustom1(this);
-                }
-                return this.mUIItemCustom1;
-            }
-        }
-        
-        public WpfCustom UIGreenPointCustom
-        {
-            get
-            {
-                if ((this.mUIGreenPointCustom == null))
-                {
-                    this.mUIGreenPointCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIGreenPointCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mUIGreenPointCustom.SearchProperties[WpfControl.PropertyNames.Name] = "GreenPoint";
-                    this.mUIGreenPointCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIGreenPointCustom;
-            }
-        }
-        
         public WpfCustom UIDboPr_CitiesGetCountCustom
         {
             get
@@ -16052,12 +15994,6 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private UIItemCustom mUIItemCustom;
-        
-        private UIItemCustom1 mUIItemCustom1;
-        
-        private WpfCustom mUIGreenPointCustom;
-        
         private WpfCustom mUIDboPr_CitiesGetCountCustom;
         
         private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
@@ -16087,180 +16023,6 @@ namespace Warewolf.Studio.UISpecs
         private UIExplorerEnvironmentMMenu mUIExplorerEnvironmentMMenu;
         
         private UIEXPLORERCustom mUIEXPLORERCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom : WpfCustom
-    {
-        
-        public UIItemCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UICreateanewdatabasecoButton
-        {
-            get
-            {
-                if ((this.mUICreateanewdatabasecoButton == null))
-                {
-                    this.mUICreateanewdatabasecoButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUICreateanewdatabasecoButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new database connector";
-                    this.mUICreateanewdatabasecoButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUICreateanewdatabasecoButton;
-            }
-        }
-        
-        public WpfButton UICreateanewpluginconnButton
-        {
-            get
-            {
-                if ((this.mUICreateanewpluginconnButton == null))
-                {
-                    this.mUICreateanewpluginconnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUICreateanewpluginconnButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Create a new plugin connector";
-                    this.mUICreateanewpluginconnButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUICreateanewpluginconnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUICreateanewdatabasecoButton;
-        
-        private WpfButton mUICreateanewpluginconnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom1 : WpfCustom
-    {
-        
-        public UIItemCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseServiceControl";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISourcesComboBoxCustom UISourcesComboBoxCustom
-        {
-            get
-            {
-                if ((this.mUISourcesComboBoxCustom == null))
-                {
-                    this.mUISourcesComboBoxCustom = new UISourcesComboBoxCustom(this);
-                }
-                return this.mUISourcesComboBoxCustom;
-            }
-        }
-        
-        public UIActionsComboBoxCustom UIActionsComboBoxCustom
-        {
-            get
-            {
-                if ((this.mUIActionsComboBoxCustom == null))
-                {
-                    this.mUIActionsComboBoxCustom = new UIActionsComboBoxCustom(this);
-                }
-                return this.mUIActionsComboBoxCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISourcesComboBoxCustom mUISourcesComboBoxCustom;
-        
-        private UIActionsComboBoxCustom mUIActionsComboBoxCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UISourcesComboBoxCustom : WpfCustom
-    {
-        
-        public UISourcesComboBoxCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourcesComboBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIToggleButtonButton
-        {
-            get
-            {
-                if ((this.mUIToggleButtonButton == null))
-                {
-                    this.mUIToggleButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mUIToggleButtonButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIToggleButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIToggleButtonButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIActionsComboBoxCustom : WpfCustom
-    {
-        
-        public UIActionsComboBoxCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActionsComboBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIToggleButtonButton
-        {
-            get
-            {
-                if ((this.mUIToggleButtonButton == null))
-                {
-                    this.mUIToggleButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mUIToggleButtonButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIToggleButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIToggleButtonButton;
         #endregion
     }
     
