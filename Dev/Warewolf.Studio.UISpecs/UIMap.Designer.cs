@@ -3934,12 +3934,12 @@ namespace Warewolf.Studio.UISpecs
         public void Test_Connector_Calculate_Outputs()
         {
             #region Variable Declarations
-            WpfEdit uITestdataEdit = this.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.UIInputsListList.UIWarewolfCoreServiceIListItem.UITestdataEdit;
+            WpfEdit testDataTextbox = this.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestDataTextbox;
             WpfButton uITestButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UITestButton;
             #endregion
 
             // Type 's' in 'Test data' text box
-            uITestdataEdit.Text = this.Test_Connector_Calculate_OutputsParams.UITestdataEditText;
+            testDataTextbox.Text = this.Test_Connector_Calculate_OutputsParams.TestDataTextboxText;
 
             // Click 'Test' button
             Mouse.Click(uITestButton, new Point(47, 18));
@@ -7147,7 +7147,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Type 's' in 'Test data' text box
         /// </summary>
-        public string UITestdataEditText = "s";
+        public string TestDataTextboxText = "s";
         #endregion
     }
     
@@ -11532,15 +11532,15 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public UIInputsListList UIInputsListList
+        public InputsList InputsList
         {
             get
             {
-                if ((this.mUIInputsListList == null))
+                if ((this.mInputsList == null))
                 {
-                    this.mUIInputsListList = new UIInputsListList(this);
+                    this.mInputsList = new InputsList(this);
                 }
-                return this.mUIInputsListList;
+                return this.mInputsList;
             }
         }
         
@@ -11606,7 +11606,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private UIInputsListList mUIInputsListList;
+        private InputsList mInputsList;
         
         private SourcesComboBox mSourcesComboBox;
         
@@ -11621,10 +11621,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInputsListList : WpfList
+    public class InputsList : WpfList
     {
         
-        public UIInputsListList(UITestControl searchLimitContainer) : 
+        public InputsList(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -11634,29 +11634,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public UIWarewolfCoreServiceIListItem UIWarewolfCoreServiceIListItem
+        public ListItem ListItem
         {
             get
             {
-                if ((this.mUIWarewolfCoreServiceIListItem == null))
+                if ((this.mListItem == null))
                 {
-                    this.mUIWarewolfCoreServiceIListItem = new UIWarewolfCoreServiceIListItem(this);
+                    this.mListItem = new ListItem(this);
                 }
-                return this.mUIWarewolfCoreServiceIListItem;
+                return this.mListItem;
             }
         }
         #endregion
         
         #region Fields
-        private UIWarewolfCoreServiceIListItem mUIWarewolfCoreServiceIListItem;
+        private ListItem mListItem;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfCoreServiceIListItem : WpfListItem
+    public class ListItem : WpfListItem
     {
         
-        public UIWarewolfCoreServiceIListItem(UITestControl searchLimitContainer) : 
+        public ListItem(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -11666,25 +11666,25 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfEdit UITestdataEdit
+        public WpfEdit TestDataTextbox
         {
             get
             {
-                if ((this.mUITestdataEdit == null))
+                if ((this.mTestDataTextbox == null))
                 {
-                    this.mUITestdataEdit = new WpfEdit(this);
+                    this.mTestDataTextbox = new WpfEdit(this);
                     #region Search Criteria
-                    this.mUITestdataEdit.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
-                    this.mUITestdataEdit.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    this.mTestDataTextbox.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
+                    this.mTestDataTextbox.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
-                return this.mUITestdataEdit;
+                return this.mTestDataTextbox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfEdit mUITestdataEdit;
+        private WpfEdit mTestDataTextbox;
         #endregion
     }
     
