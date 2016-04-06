@@ -1231,22 +1231,22 @@ Change the connection string from, say, a development dll to a live dll.&lt;br/&
     <value>Edit </value>
   </data>
   <data name="HostNameLabel" xml:space="preserve">
-    <value>Host</value>
+    <value>Host:</value>
   </data>
   <data name="EmailSourceEnableSslLabel" xml:space="preserve">
-    <value>Enable SSL</value>
+    <value>Enable SSL:</value>
   </data>
   <data name="PortLabel" xml:space="preserve">
-    <value>Port</value>
+    <value>Port:</value>
   </data>
   <data name="EmailSourceTimeoutLabel" xml:space="preserve">
     <value>Timeout</value>
   </data>
   <data name="EmailSourceEmailFromLabel" xml:space="preserve">
-    <value>From</value>
+    <value>From:</value>
   </data>
   <data name="EmailSourceEmailToLabel" xml:space="preserve">
-    <value>To</value>
+    <value>To:</value>
   </data>
   <data name="EmailSourceHostNameHelp" xml:space="preserve">
     <value>The Host name of the server you want to use for sending emails.
@@ -3930,7 +3930,7 @@ Data
     <value>Virtual host for the RabbitMQ server</value>
   </data>
   <data name="VirtualHostLabel" xml:space="preserve">
-    <value>Virtual Host</value>
+    <value>Virtual Host:</value>
   </data>
   <data name="ManagePublishTooltip" xml:space="preserve">
     <value>Publish the test message</value>

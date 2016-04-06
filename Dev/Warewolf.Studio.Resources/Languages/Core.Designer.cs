@@ -2269,7 +2269,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From.
+        ///   Looks up a localized string similar to From:.
         /// </summary>
         public static string EmailSourceEmailFromLabel {
             get {
@@ -2287,7 +2287,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To.
+        ///   Looks up a localized string similar to To:.
         /// </summary>
         public static string EmailSourceEmailToLabel {
             get {
@@ -2314,7 +2314,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable SSL.
+        ///   Looks up a localized string similar to Enable SSL:.
         /// </summary>
         public static string EmailSourceEnableSslLabel {
             get {
@@ -2982,7 +2982,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Host.
+        ///   Looks up a localized string similar to Host:.
         /// </summary>
         public static string HostNameLabel {
             get {
@@ -4612,7 +4612,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Port.
+        ///   Looks up a localized string similar to Port:.
         /// </summary>
         public static string PortLabel {
             get {
@@ -6655,7 +6655,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Virtual Host.
+        ///   Looks up a localized string similar to Virtual Host:.
         /// </summary>
         public static string VirtualHostLabel {
             get {

@@ -63,7 +63,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="{Binding HostNameLabel}" Margin="{StaticResource ControlBorderTop}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="{Binding HostNameLabel}" />
                     <TextBox x:Name="HostTextBox" 
                              Grid.Row="0" 
                              Grid.Column="1" 
@@ -73,10 +73,11 @@
                             <core:HelpSetter Text="{x:Static languages:Core.RabbitMQSourceHostHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
-                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="{Binding PortLabel}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="{Binding PortLabel}" Margin="{StaticResource ControlBorderTop}"/>
                     <TextBox x:Name="PortTextBox" 
                              Grid.Row="1" 
                              Grid.Column="1" 
+                             Margin="{StaticResource ControlBorderTop}"
                              ToolTip="{x:Static languages:Core.ManageRabbitMQPortTooltip}"
                              Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>

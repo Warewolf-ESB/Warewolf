@@ -364,6 +364,7 @@ namespace Warewolf.Studio.ViewModels
                     CanRename = CanRename,
                     CanCreatePluginSource = CanCreatePluginSource,
                     CanCreateEmailSource = CanCreateEmailSource,
+                    CanCreateRabbitMQSource = CanCreateRabbitMQSource,
                     CanCreateDropboxSource = CanCreateDropboxSource,
                     CanCreateSharePointSource = CanCreateSharePointSource,
                     CanCreateServerSource = CanCreateServerSource,
@@ -540,6 +541,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbSource = serverPermission.Contribute;
             CanCreatePluginSource = serverPermission.Contribute;
             CanCreateEmailSource = serverPermission.Contribute;
+            CanCreateRabbitMQSource = serverPermission.Contribute;
             CanCreateDropboxSource = serverPermission.Contribute;
             CanCreateSharePointSource = serverPermission.Contribute;
             CanCreateServerSource = serverPermission.Contribute;
@@ -560,6 +562,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbSource = resourcePermission.Contribute;
             CanCreatePluginSource = resourcePermission.Contribute;
             CanCreateEmailSource = resourcePermission.Contribute;
+            CanCreateRabbitMQSource = resourcePermission.Contribute;
             CanCreateDropboxSource = resourcePermission.Contribute;
             CanCreateSharePointSource = resourcePermission.Contribute;
             CanCreateServerSource = resourcePermission.Contribute;
@@ -1018,6 +1021,7 @@ namespace Warewolf.Studio.ViewModels
                         ShowContextMenu = true,
                         CanCreatePluginSource = false,
                         CanCreateEmailSource = false,
+                        CanCreateRabbitMQSource = false,
                         CanCreateDropboxSource = false,
                         CanCreateSharePointSource = false,
                         CanCreateDbSource = false,

@@ -46,6 +46,8 @@ namespace Warewolf.Studio.Core
                         return _dict[CustomMenuIcons.PluginSource] as DrawingImage;
                     case ResourceType.EmailSource:
                         return _dict[CustomMenuIcons.EmailSource] as DrawingImage;
+                    case ResourceType.RabbitMQSource:
+                        return _dict[CustomMenuIcons.RabbitMqSource] as DrawingImage;
                     case ResourceType.WebService:
                         return _dict[CustomMenuIcons.WebService] as DrawingImage;
                     case ResourceType.DbSource:
