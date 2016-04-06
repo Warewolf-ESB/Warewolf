@@ -2168,7 +2168,7 @@ namespace Warewolf.Studio.UISpecs
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(308, 128));
-            Mouse.StartDragging(webRequest, new Point(14, -3));
+            Mouse.StartDragging(webRequest, new Point(14, 3));
             Mouse.StopDragging(flowchart, new Point(308, 128));
         }
         
@@ -16211,7 +16211,6 @@ namespace Warewolf.Studio.UISpecs
                     #region Search Criteria
                     this.mWebRequest.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
                     this.mWebRequest.SearchProperties[WpfListItem.PropertyNames.Instance] = "8";
-                    this.mWebRequest.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
                 return this.mWebRequest;

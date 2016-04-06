@@ -279,11 +279,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 136
  testRunner.When("I \'Drag_GetWeb_RequestTool_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 137
- testRunner.Then("I \'Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 142
- testRunner.When("I \'Open_GetWeb_RequestTool_small_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 143
  testRunner.Then("I \'Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 142
+ testRunner.When("I \'Open_WebRequest_LargeView\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 143
+ testRunner.Then("I \'Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
