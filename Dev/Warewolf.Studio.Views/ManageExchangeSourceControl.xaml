@@ -133,17 +133,6 @@
                         <TextBlock Margin="5" Text="Send Test Email" Style="{StaticResource SourceHeader}" />
                     </StackPanel>
 
-                    <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="{Binding EmailFromLabel}" Margin="{StaticResource ElementBorderTop}"/>
-                    <TextBox x:Name="FromTextBox" 
-                             Grid.Row="1" 
-                             Grid.Column="1" 
-                             ToolTip="{x:Static languages:Core.ManageEmailFromTooltip}"
-                             Margin="{StaticResource ElementBorderTop}"
-                             Text="{Binding EmailFrom, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <core:HelpSetter Text="{x:Static languages:Core.EmailSourceEmailFromHelp}" DataContext="{Binding}" />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
                     <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Text="{Binding EmailToLabel}" Margin="{StaticResource ControlBorderTop}"/>
                     <TextBox x:Name="ToTextBox" 
                              Grid.Row="2" 

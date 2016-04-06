@@ -68,8 +68,6 @@ namespace Warewolf.Studio.Views
                     return PasswordTextBox.Password;
                 case "Timeout":
                     return TimeoutTextBox.Text;
-                case "From":
-                    return FromTextBox.Text;
                 case "To":
                     return ToTextBox.Text;
             }
@@ -108,11 +106,6 @@ namespace Warewolf.Studio.Views
         public void EnterEmailTo(string emailTo)
         {
             ToTextBox.Text = emailTo;
-        }
-
-        public void EnterEmailFrom(string emailFrom)
-        {
-            FromTextBox.Text = emailFrom;
         }
     }
 }

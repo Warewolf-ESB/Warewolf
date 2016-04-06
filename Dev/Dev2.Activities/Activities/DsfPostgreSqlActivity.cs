@@ -13,7 +13,7 @@ namespace Dev2.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
-
+   
         public DsfPostgreSqlActivity()
         {
             Type = "PostgreSql Database Connector";

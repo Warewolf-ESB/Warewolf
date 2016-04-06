@@ -41,6 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     To = src.EmailTo,
                     CC = string.Empty,
                     BCC = string.Empty,
+                    Subject = "Exchange Email Test",
                     Body = "Test Exchange email service source",
                     Attachment = string.Empty
                 };

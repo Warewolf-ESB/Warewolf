@@ -21,8 +21,18 @@ namespace Dev2.Common.Exchange
             service.UseDefaultCredentials = false;
             service.TraceEnabled = false;
             service.TraceFlags = TraceFlags.None;
+
+            if (!string.IsNullOrEmpty(_source.AutoDiscoverUrl))
+            {
+                service.Url = new Uri(_source.AutoDiscoverUrl);
+            }
+            else
+            {
+                service.AutodiscoverUrl(_source.UserName, RedirectionUrlValidationCallback);
+            }
+            //service.Url = new Uri("https://outlook.office365.com/EWS/Exchange.asmx");
+            //https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml
             
-            service.AutodiscoverUrl(_source.UserName, RedirectionUrlValidationCallback);
         }
 
         private static bool RedirectionUrlValidationCallback(string redirectionUrl)
