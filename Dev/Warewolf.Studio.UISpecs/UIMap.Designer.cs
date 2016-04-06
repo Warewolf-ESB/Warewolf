@@ -1839,13 +1839,13 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Variable Declarations
             WpfCustom mySqlDatabase = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase;
-            WpfCustom uIFlowchartCustom = this.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
+            WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'DsfMySqlDatabaseActivity' custom control to 'Flowchart' custom control
-            uIFlowchartCustom.EnsureClickable(new Point(306, 130));
+            flowchart.EnsureClickable(new Point(306, 130));
             Mouse.StartDragging(mySqlDatabase, new Point(4, 2));
-            Mouse.StopDragging(uIFlowchartCustom, new Point(306, 130));
+            Mouse.StopDragging(flowchart, new Point(306, 130));
         }
         
         /// <summary>
@@ -2079,13 +2079,13 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Variable Declarations
             WpfCustom sqlServerDatabase = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
-            WpfCustom uIFlowchartCustom = this.UIWarewolfDEV2LEROYWARWindow.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom;
+            WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'DsfSqlServerDatabaseActivity' custom control to 'Flowchart' custom control
-            uIFlowchartCustom.EnsureClickable(new Point(304, 127));
+            flowchart.EnsureClickable(new Point(304, 127));
             Mouse.StartDragging(sqlServerDatabase, new Point(10, -7));
-            Mouse.StopDragging(uIFlowchartCustom, new Point(304, 127));
+            Mouse.StopDragging(flowchart, new Point(304, 127));
         }
         
         /// <summary>
