@@ -1016,7 +1016,7 @@ namespace Warewolf.Studio.UISpecs
             #endregion
 
             // Verify that the 'Exists' property of 'DsfSqlServerDatabaseActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_SQL_Server_Database_Large_View_Exists_OnDesignSurfaceExpectedValues.SqlServerDatabaseExists, sqlServerDatabase.Exists, "Sql Server Database tool large view does not exist on the design surface");
+            Assert.AreEqual(this.Assert_SQL_Server_Database_Large_View_Exists_OnDesignSurfaceExpectedValues.SqlServerDatabaseExists, sqlServerDatabase.Exists, "SQL Server Database does not exist on the design surface");
         }
         
         /// <summary>
@@ -2078,13 +2078,13 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfCustom sqlServerDatabase = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase;
+            WpfListItem sQLServer = this.MainStudioWindow.ToolBox.ToolListBox.Database.SQLServer;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'DsfSqlServerDatabaseActivity' custom control to 'Flowchart' custom control
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(304, 127));
-            Mouse.StartDragging(sqlServerDatabase, new Point(10, -7));
+            Mouse.StartDragging(sQLServer, new Point(10, -7));
             Mouse.StopDragging(flowchart, new Point(304, 127));
         }
         
@@ -5313,6 +5313,18 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIWarewolfDEV2LEROYWARWindow1;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -5543,6 +5555,8 @@ namespace Warewolf.Studio.UISpecs
         private SplashPageWindow mSplashPageWindow;
         
         private UIWarewolfDEV2LEROYWARWindow1 mUIWarewolfDEV2LEROYWARWindow1;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -9064,8 +9078,8 @@ namespace Warewolf.Studio.UISpecs
                     this.mSqlServerDatabase = new WpfCustom(this);
                     #region Search Criteria
                     this.mSqlServerDatabase.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SqlServerDatabaseDesigner";
-                    this.mSqlServerDatabase.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Sql Server Database Connector(SqlServerDatabaseDesigner)";
-                    this.mSqlServerDatabase.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    this.mSqlServerDatabase.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SQL Server Database(SqlServerDatabaseDesigner)";
+                    this.mSqlServerDatabase.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
                 return this.mSqlServerDatabase;
@@ -19079,6 +19093,76 @@ namespace Warewolf.Studio.UISpecs
         private WpfCustom mUIFlowchartCustom;
         
         private WpfCustom mUIFlowchartCustom1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWorkflowItemPresenteCustom2 UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom2(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWorkflowItemPresenteCustom2 mUIWorkflowItemPresenteCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWorkflowItemPresenteCustom2 : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 2(FlowchartDesigner)";
+                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIFlowchartCustom;
         #endregion
     }
 }

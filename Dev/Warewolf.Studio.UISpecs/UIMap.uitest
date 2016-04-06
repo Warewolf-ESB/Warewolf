@@ -1320,7 +1320,7 @@
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Sql Server Database tool large view does not exist on the design surface</MessageOnValidationFailure>
+      <MessageOnValidationFailure>SQL Server Database does not exist on the design surface</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
@@ -2575,7 +2575,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.ToolBox.ToolListBox.Database.SQLServer">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6273,13 +6273,13 @@
                                                 <UIObject ControlType="Custom" Id="SqlServerDatabase" FriendlyName="DsfSqlServerDatabaseActivity" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                                     <PropertyCondition Name="ClassName">Uia.SqlServerDatabaseDesigner</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">Sql Server Database Connector(SqlServerDatabaseDesigner)</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">SQL Server Database(SqlServerDatabaseDesigner)</PropertyCondition>
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants />
@@ -12503,6 +12503,50 @@
                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                     <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
                     <PropertyCondition Name="AutomationId">Unsaved 8(FlowchartDesigner)</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2ASHLEYLEWindow" FriendlyName="Warewolf (DEV2\ASHLEY.LEWIS)" SpecialControlType="None" SessionId="5113762">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\ASHLEY.LEWIS)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIWorkflowItemPresenteCustom" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.WorkflowItemPresenter</PropertyCondition>
+                <PropertyCondition Name="AutomationId">WorkflowItemPresenter</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">Unsaved 2(FlowchartDesigner)</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />
