@@ -134,13 +134,13 @@ Scenario: Drag toolbox Get Web Request Tool onto a new workflow
 	#Ashley TODO: Use low level binding hooks for this step:
 	#Given The test is initialized using low level binding calls
 	When I 'Drag_GetWeb_RequestTool_Onto_DesignSurface'
-	Then I 'Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface'
+	Then I 'Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface'
 	#Ashley TODO: The test should end here.
 
 	#Ashley TODO: Use low level binding hooks for this step:
 	#Given The test is initialized using low level binding calls
-	When I 'Open_GetWeb_RequestTool_small_View'
-	Then I 'Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface'
+	When I 'Open_WebRequest_LargeView'
+	Then I 'Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface'
 	
 @ignore
 Scenario: Drag toolbox Post Web Request Tool onto a new workflow
