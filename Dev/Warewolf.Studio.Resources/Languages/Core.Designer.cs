@@ -2392,7 +2392,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout.
+        ///   Looks up a localized string similar to Timeout:.
         /// </summary>
         public static string EmailSourceTimeoutLabel {
             get {

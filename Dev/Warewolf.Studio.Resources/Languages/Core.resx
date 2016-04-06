@@ -1240,7 +1240,7 @@ Change the connection string from, say, a development dll to a live dll.&lt;br/&
     <value>Port:</value>
   </data>
   <data name="EmailSourceTimeoutLabel" xml:space="preserve">
-    <value>Timeout</value>
+    <value>Timeout:</value>
   </data>
   <data name="EmailSourceEmailFromLabel" xml:space="preserve">
     <value>From:</value>
