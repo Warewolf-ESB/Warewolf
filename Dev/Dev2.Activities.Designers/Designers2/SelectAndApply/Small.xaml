@@ -106,7 +106,7 @@
                                        HintText="Drop Activity Here"
                                        BorderBrush="Black"
                                        BorderThickness="2"
-                                       Item="{Binding ApplyActivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Item="{Binding ModelItem.ApplyActivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ModelItemToActivityConverter}}"
                                        MinHeight="50"
                                        attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>

@@ -46,7 +46,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             {
                 viewModel.DoDrop(e.Data);
             }
-            DropPoint.Item = null;
         }
 
         void DropPoint_OnDragOver(object sender, DragEventArgs e)
