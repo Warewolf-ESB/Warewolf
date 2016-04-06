@@ -227,6 +227,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 CC = Cc,
                 BCC = Bcc,
                 Body = Body,
+                Subject = Subject,
                 Attachment = Attachments
             };
 

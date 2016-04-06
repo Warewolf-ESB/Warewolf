@@ -26,7 +26,6 @@ namespace Warewolf.Studio.ViewModels
         private string _password;
         private int _timeout;
         private string _testMessage;
-        private string _emailFrom;
         private string _emailTo;
         string _resourceName;
 
@@ -226,7 +225,6 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _userName)
                 {
                     _userName = value;
-                    EmailFrom = _userName;
                     TestMessage = String.Empty;
 
                     OnPropertyChanged(() => UserName);
@@ -284,37 +282,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string EmailFrom
-        {
-            get { return _emailFrom; }
-            set
-            {
-                if (value != _emailFrom)
-                {
-                    _emailFrom = value;
-                    TestMessage = String.Empty;
-
-                    EnableSend = true;
-                    if (!_emailFrom.IsEmail())
-                    {
-                        EnableSend = false;
-                    }
-                    if (EmailTo == null || !EmailTo.IsEmail())
-                    {
-                        EnableSend = false;
-                    }
-
-                    OnPropertyChanged(() => EmailFrom);
-                    OnPropertyChanged(() => Header);
-                    OnPropertyChanged(() => EnableSend);
-                    OnPropertyChanged(() => TestMessage);
-                    TestPassed = false;
-                    ViewModelUtils.RaiseCanExecuteChanged(SendCommand);
-                    ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
-                }
-            }
-        }
-
         public string EmailTo
         {
             get { return _emailTo; }
@@ -330,11 +297,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         EnableSend = false;
                     }
-                    if (EmailFrom == null || !EmailFrom.IsEmail())
-                    {
-                        EnableSend = false;
-                    }
-
+                    
                     OnPropertyChanged(() => EmailTo);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => EnableSend);
@@ -423,11 +386,11 @@ namespace Warewolf.Studio.ViewModels
                 Password = Password,
                 UserName = UserName,
                 Timeout = Timeout,
-                EmailFrom = EmailFrom,
                 EmailTo = EmailTo,
                 ResourceName = Name,
                 ResourceType = ResourceType.ExchangeSource,
-                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID
+                Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
+                ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
             };
         }
 
@@ -440,7 +403,6 @@ namespace Warewolf.Studio.ViewModels
                     Password = Password,
                     UserName = UserName,
                     Timeout = Timeout,
-                    EmailFrom = EmailFrom,
                     EmailTo = EmailTo,
                     ResourceName = Name,
                     ResourceType = ResourceType.ExchangeSource,
@@ -475,7 +437,6 @@ namespace Warewolf.Studio.ViewModels
                 Password = Password,
                 UserName = UserName,
                 Timeout = Timeout,
-                EmailFrom = EmailFrom,
                 EmailTo = EmailTo,
                 ResourceType = ResourceType.ExchangeSource,
                 ResourceName = ResourceName,

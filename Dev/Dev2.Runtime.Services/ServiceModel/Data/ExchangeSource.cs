@@ -103,7 +103,11 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             _emailSender = new ExchangeEmailSender(source);
 
-            var emailMessage = new EmailMessage(_exchangeService) {Body = testMessage.Body};
+            var emailMessage = new EmailMessage(_exchangeService)
+            {
+                Body = testMessage.Body,
+                Subject = testMessage.Subject
+            };
 
             emailMessage.ToRecipients.Add(testMessage.To);
 
@@ -165,5 +169,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string BCC { get; set; }
         public string Attachment { get; set; }
         public string Body { get; set; }
+        public string Subject { get; set; }
     }
 }

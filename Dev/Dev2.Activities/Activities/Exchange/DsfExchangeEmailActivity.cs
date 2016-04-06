@@ -47,10 +47,8 @@ namespace Dev2.Activities.Exchange
 
         #region Fields
 
-        IExchangeEmailSender _emailSender;
         IDSFDataObject _dataObject;
         string _password;
-        IExchangeSource _selectedEmailSource;
         private IExchangeServiceFactory _exchangeServiceFactory;
         private ExchangeService _exchangeService;
 
@@ -61,23 +59,9 @@ namespace Dev2.Activities.Exchange
         /// </summary>
 
         // ReSharper disable MemberCanBePrivate.Global
-        public IExchangeSource SelectedEmailSource
-        {
-            get
-            {
-                return _selectedEmailSource;
-            }
-            set
-            {
-                _selectedEmailSource = value;
-                if (_selectedEmailSource != null)
-                {
-                    var resourceId = _selectedEmailSource.ResourceID;
-                    _selectedEmailSource = null;
-                    _selectedEmailSource = new ExchangeSource { ResourceID = resourceId };
-                }
-            }
-        }
+        public IExchangeSource SavedSource { get; set; }
+
+
         // ReSharper restore MemberCanBePrivate.Global
         [FindMissing]
         public string FromAccount { get; set; }
@@ -141,19 +125,8 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public new string Result { get; set; }
 
-        public IExchangeEmailSender EmailSender
-        {
-            get
-            {
-                return _emailSender ?? (_emailSender = new ExchangeEmailSender(SelectedEmailSource));
-            }
-            set
-            {
-                _emailSender = value;
-            }
-        }
-
-
+        public IExchangeEmailSender EmailSender { get; set; }
+        
         #region Overrides of DsfNativeActivity<string>
 
         private bool IsDebug
@@ -176,6 +149,7 @@ namespace Dev2.Activities.Exchange
         // ReSharper restore MethodTooLong
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+   
             ExecuteTool(dataObject, 0);
         }
 
@@ -190,7 +164,7 @@ namespace Dev2.Activities.Exchange
             InitializeDebug(dataObject);
             try
             {
-                var runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, dataObject.ResourceID);
+                var runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, SavedSource.ResourceID);
 
                 if (runtimeSource == null)
                 {
@@ -199,24 +173,11 @@ namespace Dev2.Activities.Exchange
                 }
                 if (IsDebug)
                 {
-                    var fromAccount = FromAccount;
-                    if (String.IsNullOrEmpty(fromAccount))
-                    {
-                        fromAccount = runtimeSource.UserName;
-                        AddDebugInputItem(fromAccount, "From Account");
-                    }
-                    else
-                    {
-                        AddDebugInputItem(new DebugEvalResult(FromAccount, "From Account", dataObject.Environment, update));
-                    }
                     AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment, update));
                     AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment, update));
                     AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment, update));
                 }
                 var colItr = new WarewolfListIterator();
-
-                var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty, update));
-                colItr.AddVariableToIterateOn(fromAccountItr);
 
                 var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword, update));
                 colItr.AddVariableToIterateOn(passwordItr);
@@ -244,7 +205,7 @@ namespace Dev2.Activities.Exchange
                     while (colItr.HasMoreData())
                     {
                         ErrorResultTO errors;
-                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = SendEmail(runtimeSource, colItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
                         allErrors.MergeErrors(errors);
                         if (!allErrors.HasErrors())
                         {
@@ -332,7 +293,7 @@ namespace Dev2.Activities.Exchange
         }
 
         // ReSharper disable TooManyArguments
-        string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator fromAccountItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
+        string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
         // ReSharper restore TooManyArguments
         {
             InitializeService();
@@ -365,7 +326,10 @@ namespace Dev2.Activities.Exchange
             string result;
             try
             {
+                EmailSender = new ExchangeEmailSender(runtimeSource);
+
                 EmailSender.Send(_exchangeService,mailMessage);
+
                 result = "Success";
             }
             catch (Exception e)

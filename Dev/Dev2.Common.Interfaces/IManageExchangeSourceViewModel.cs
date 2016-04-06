@@ -45,10 +45,6 @@ namespace Dev2.Common.Interfaces
         bool TestPassed { get; set; }
 
         /// <summary>
-        /// EmailFrom
-        /// </summary>
-        string EmailFrom { get; set; }
-        /// <summary>
         /// EmailTo
         /// </summary>
         string EmailTo { get; set; }
