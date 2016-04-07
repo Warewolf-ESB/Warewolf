@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Dev2.Common.Interfaces;
-
-namespace WpfControls.Editors
+﻿namespace WpfControls.Editors
 {
 
-
+    using System;
+    using System.Collections;
     public class SuggestionProvider : ISuggestionProvider
     {
 
 
         #region Private Fields
 
-        private Func<string,int,bool, IEnumerable<string>> _method;
+        private Func<string, IEnumerable> _method;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public SuggestionProvider(Func<string,int,bool, IEnumerable<string>> method,enIntellisensePartType type)
+        public SuggestionProvider(Func<string, IEnumerable> method)
         {
             if (method == null)
             {
@@ -32,22 +28,12 @@ namespace WpfControls.Editors
 
         #region Public Methods
 
-        public IEnumerable<string> GetSuggestions(string filter, int a , bool b)
+        public System.Collections.IEnumerable GetSuggestions(string filter)
         {
-            return _method(filter,a,b);
+            return _method(filter);
         }
 
         #endregion Public Methods
 
-        #region Implementation of ISuggestionProvider
-
-        public IEnumerable<string> GetSuggestions(string filter, int caretPosition, bool tokenise, enIntellisensePartType type)
-        {
-            yield break;
-        }
-
-        public ObservableCollection<string> VariableList { get; set; }
-
-        #endregion
     }
 }

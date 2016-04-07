@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
@@ -15,13 +16,11 @@ using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
+    [ExcludeFromCodeCoverage]
     public class DsfDropBoxDownloadActivityMock : DsfDropBoxDownloadActivity
     {
 
-        public DsfDropBoxDownloadActivityMock(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
-        {
-            DropboxSingleExecutor = singleExecutor;
-        }
+        
         public void Execute(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             //ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
@@ -66,7 +65,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             mock.Setup(upload => upload.ExecuteTask(TestConstant.DropboxClientInstance.Value))
             .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
 
-            DropboxSingleExecutor = mock.Object;
             var dropboxExecutionResult = mock.Object.ExecuteTask(TestConstant.DropboxClientInstance.Value);
             var dropboxSuccessResult = dropboxExecutionResult as DropboxDownloadSuccessResult;
             if (dropboxSuccessResult != null)
@@ -99,7 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         {
             try
             {
-                var dropboxResult = DropboxSingleExecutor.ExecuteTask(TestConstant.DropboxClientInstance.Value);
+                var dropboxResult = GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()).ExecuteTask(TestConstant.DropboxClientInstance.Value);
                 if (IsUplodValidSuccess)
                 {
                     //FileSuccesResult = GlobalConstants.DropBoxSucces;

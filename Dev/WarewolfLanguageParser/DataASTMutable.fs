@@ -74,7 +74,6 @@ type WarewolfEnvironment =
     {
        RecordSets : Map<string,WarewolfRecordset>;
        Scalar : Map<string,WarewolfAtom>; 
-       JsonObjects: Map<string,Newtonsoft.Json.Linq.JContainer>;
     }
 
 

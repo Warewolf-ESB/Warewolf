@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;

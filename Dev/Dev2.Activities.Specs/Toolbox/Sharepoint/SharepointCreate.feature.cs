@@ -189,16 +189,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.And("App is selected as the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2385 = new TechTalk.SpecFlow.Table(new string[] {
                         "Content Type",
                         "Title",
                         "Attachments"});
-            table1.AddRow(new string[] {
+            table2385.AddRow(new string[] {
                         string.Format("{0}", content),
                         string.Format("{0}", title),
                         string.Format("{0}", attachments)});
 #line 53
- testRunner.And("Sharepoint Create Input variables are", ((string)(null)), table1, "And ");
+ testRunner.And("Sharepoint Create Input variables are", ((string)(null)), table2385, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
