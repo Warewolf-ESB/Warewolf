@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -389,6 +390,67 @@ namespace WarewolfParsingTest
             Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "{\r\n  \"Child\": {\r\n    \"Name\": \"2\"\r\n  }\r\n}");
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_ExpressionToObject")]
+        public void AssignEvaluation_ExpressionToObject_Terminal_Returns_Object()
+        {
+            //------------Setup for test--------------------------
+            var obj = new JObject();
+            
+            //------------Execute Test---------------------------
+            var jobj = AssignEvaluation.expressionToObject(obj, LanguageAST.JsonIdentifierExpression.Terminal, CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing));
+            //------------Assert Results-------------------------
+            Assert.IsTrue( ReferenceEquals(obj,jobj));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_MethodName")]
+        public void AssignEvaluation_MethodName_Scenerio_Result()
+        {
+            //------------Setup for test--------------------------
+            var assignEvaluation = new AssignEvaluation();
+            
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_AddPropertyToJsonValue")]
+        public void AssignEvaluation_AddPropertyToJsonValue_ReturnsPropertyIfItExists()
+        {
+            //------------Setup for test--------------------------
+            
+            JObject a = new JObject();
+            var x = new JValue("a");
+            a.Add("Bob",x );
+            //------------Execute Test---------------------------
+            var res=AssignEvaluation.addPropertyToJsonNoValue(a, "Bob");
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(ReferenceEquals(x,res));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_FailsIfExpressionIsNotOfCorrectType()
+        {
+            var env = CreateTestEnvWithData();
+        
+
+            var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
+              var val = LanguageAST.JsonIdentifierExpression.Terminal;
+            AssignEvaluation.assignGivenAValue(env, result, val);
+
+         }
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("AssignEvaluation_assignGivenAValue")]
@@ -554,6 +616,50 @@ namespace WarewolfParsingTest
             Assert.AreEqual(x2.Name,"Name");
            
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_LanguageExpressionToJsonExpression_Scalar()
+        {
+
+            var parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Child]]");
+            var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_LanguageExpressionToJsonExpression_CompleteRecset()
+        {
+
+            var parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Child()]]");
+            var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_LanguageExpressionToJsonExpression_Atom()
+        {
+
+            var parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("bob");
+            var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_LanguageExpressionToJsonExpression_Complex()
+        {
+
+            var parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[[[bob]]]]");
+            var exp = AssignEvaluation.languageExpressionToJsonIdentifier(parsed);
+        }
+
 
 
 
