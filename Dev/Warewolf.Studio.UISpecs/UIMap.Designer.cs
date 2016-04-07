@@ -357,6 +357,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Decision_Dialog_Done_Button - Use 'Assert_Decision_Dialog_Done_ButtonExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Decision_Dialog_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Assert_Decision_Dialog_Done_ButtonExpectedValues.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Decision_Exists_OnDesignSurface - Use 'Assert_Decision_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Decision_Exists_OnDesignSurface()
@@ -375,11 +388,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Decision_Window_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfWindow uIWpfWindow = this.UIWpfWindow;
+            WpfWindow decisionDialog = this.DecisionDialog;
             #endregion
 
             // Verify that the 'Exists' property of 'Wpf' window equals 'True'
-            Assert.AreEqual(this.Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues.UIWpfWindowExists, uIWpfWindow.Exists, "Decision Tool window does not exist");
+            Assert.AreEqual(this.Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues.DecisionDialogExists, decisionDialog.Exists, "Decision Tool window does not exist");
         }
         
         /// <summary>
@@ -1026,11 +1039,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Switch_Window_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfWindow uIWpfWindow = this.UIWpfWindow;
+            WpfWindow decisionDialog = this.DecisionDialog;
             #endregion
 
             // Verify that the 'Exists' property of 'Wpf' window equals 'True'
-            Assert.AreEqual(this.Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues.UIWpfWindowExists, uIWpfWindow.Exists, "Switch Window does not exist");
+            Assert.AreEqual(this.Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues.DecisionDialogExists, decisionDialog.Exists, "Switch Window does not exist");
         }
         
         /// <summary>
@@ -1229,33 +1242,16 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_Yes_DeleteConfirmDialog
+        /// Click_Decision_Dialog_Done_Button
         /// </summary>
-        public void Click_Yes_DeleteConfirmDialog()
+        public void Click_Decision_Dialog_Done_Button()
         {
             #region Variable Declarations
-            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
-            // Click 'Yes' button
-            Mouse.Click(yesButton, new Point(36, 6));
-        }
-        
-        /// <summary>
-        /// Close_New_Workflow_Tab_Without_Saving
-        /// </summary>
-        public void Close_New_Workflow_Tab_Without_Saving()
-        {
-            #region Variable Declarations
-            WpfButton yesButton = this.MessageBoxWindow.YesButton;
-            WpfButton nOButton = this.MessageBoxWindow.NOButton;
-            #endregion
-
-            // Click 'Yes' button
-            Mouse.Click(yesButton, new Point(12, 7));
-
-            // Click 'No' button
-            Mouse.Click(nOButton, new Point(32, 5));
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(10, 14));
         }
         
         /// <summary>
@@ -1602,16 +1598,12 @@ namespace Warewolf.Studio.UISpecs
             #region Variable Declarations
             WpfListItem decision = this.MainStudioWindow.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton uIDoneButton = this.UIWpfWindow.UIDoneButton;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(309, 128));
             Mouse.StartDragging(decision, new Point(26, 21));
             Mouse.StopDragging(flowchart, new Point(309, 128));
-
-            // Click 'Done' button
-            Mouse.Click(uIDoneButton, new Point(10, 14));
         }
         
         /// <summary>
@@ -2070,7 +2062,7 @@ namespace Warewolf.Studio.UISpecs
             #region Variable Declarations
             WpfListItem switch1 = this.MainStudioWindow.ToolBox.ToolListBox.FlowTools.Switch;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton uIDoneButton = this.UIWpfWindow.UIDoneButton;
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
@@ -2079,7 +2071,7 @@ namespace Warewolf.Studio.UISpecs
             Mouse.StopDragging(flowchart, new Point(303, 126));
 
             // Click 'Done' button
-            Mouse.Click(uIDoneButton, new Point(24, 7));
+            Mouse.Click(doneButton, new Point(24, 7));
         }
         
         /// <summary>
@@ -4203,6 +4195,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Decision_Dialog_Done_ButtonExpectedValues Assert_Decision_Dialog_Done_ButtonExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Decision_Dialog_Done_ButtonExpectedValues == null))
+                {
+                    this.mAssert_Decision_Dialog_Done_ButtonExpectedValues = new Assert_Decision_Dialog_Done_ButtonExpectedValues();
+                }
+                return this.mAssert_Decision_Dialog_Done_ButtonExpectedValues;
+            }
+        }
+        
         public virtual Assert_Decision_Exists_OnDesignSurfaceExpectedValues Assert_Decision_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -5199,15 +5203,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public UIWpfWindow UIWpfWindow
+        public DecisionDialog DecisionDialog
         {
             get
             {
-                if ((this.mUIWpfWindow == null))
+                if ((this.mDecisionDialog == null))
                 {
-                    this.mUIWpfWindow = new UIWpfWindow();
+                    this.mDecisionDialog = new DecisionDialog();
                 }
-                return this.mUIWpfWindow;
+                return this.mDecisionDialog;
             }
         }
         #endregion
@@ -5262,6 +5266,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Date_And_Time_Exists_OnDesignSurfaceExpectedValues mAssert_Date_And_Time_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_DateTime_Difference_Conversion_Exists_OnDesignSurfaceExpectedValues mAssert_DateTime_Difference_Conversion_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Decision_Dialog_Done_ButtonExpectedValues mAssert_Decision_Dialog_Done_ButtonExpectedValues;
         
         private Assert_Decision_Exists_OnDesignSurfaceExpectedValues mAssert_Decision_Exists_OnDesignSurfaceExpectedValues;
         
@@ -5429,7 +5435,7 @@ namespace Warewolf.Studio.UISpecs
         
         private UIWarewolfDEV2LEROYWARWindow mUIWarewolfDEV2LEROYWARWindow;
         
-        private UIWpfWindow mUIWpfWindow;
+        private DecisionDialog mDecisionDialog;
         #endregion
     }
     
@@ -5809,6 +5815,21 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Decision_Dialog_Done_Button'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Decision_Dialog_Done_ButtonExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Decision_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -5834,7 +5855,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
         /// </summary>
-        public bool UIWpfWindowExists = true;
+        public bool DecisionDialogExists = true;
         #endregion
     }
     
@@ -6584,7 +6605,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
         /// </summary>
-        public bool UIWpfWindowExists = true;
+        public bool DecisionDialogExists = true;
         #endregion
     }
     
@@ -18021,10 +18042,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWpfWindow : WpfWindow
+    public class DecisionDialog : WpfWindow
     {
         
-        public UIWpfWindow()
+        public DecisionDialog()
         {
             #region Search Criteria
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
@@ -18032,24 +18053,24 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WpfButton UIDoneButton
+        public WpfButton DoneButton
         {
             get
             {
-                if ((this.mUIDoneButton == null))
+                if ((this.mDoneButton == null))
                 {
-                    this.mUIDoneButton = new WpfButton(this);
+                    this.mDoneButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
                     #endregion
                 }
-                return this.mUIDoneButton;
+                return this.mDoneButton;
             }
         }
         #endregion
         
         #region Fields
-        private WpfButton mUIDoneButton;
+        private WpfButton mDoneButton;
         #endregion
     }
 }
