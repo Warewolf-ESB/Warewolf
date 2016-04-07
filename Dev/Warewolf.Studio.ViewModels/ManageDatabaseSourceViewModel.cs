@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -745,6 +746,17 @@ namespace Warewolf.Studio.ViewModels
         {
             _names = computerNames;
         }
+
+        #region Implementation of ISuggestionProvider
+
+        public IEnumerable<string> GetSuggestions(string filter, int caretPosition, bool tokenise, enIntellisensePartType type)
+        {
+            yield break;
+        }
+
+        public ObservableCollection<string> VariableList { get; set; }
+
+        #endregion
     }
 
 }

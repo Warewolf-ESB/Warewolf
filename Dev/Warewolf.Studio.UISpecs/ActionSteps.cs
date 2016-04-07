@@ -20,7 +20,7 @@ namespace Warewolf.Studio.UISpecs
         [Given(@"I '(.*)'")]
         [When(@"I '(.*)'")]
         [Then(@"I '(.*)'")]
-        public void ThenTheRecordedActionIsPerformed(string p0)
+        public void TheRecordedActionIsPerformed(string p0)
         {
             Type workflowDesignerMapType = Uimap.GetType();
             Type outsideWorkflowDesignerMapType = OutsideWorkflowDesignSurfaceUiMap.GetType();
@@ -43,7 +43,7 @@ namespace Warewolf.Studio.UISpecs
             }
         }
 
-        [BeforeFeature]
+        [BeforeTestRun]
         public static void WaitForStudioStart()
         {
             Playback.Initialize();
@@ -61,12 +61,23 @@ namespace Warewolf.Studio.UISpecs
                 }
                 catch (UITestControlNotFoundException)
                 {
+                    Thread.Sleep(100);
                 }
                 if (sleepTimer-- <= 0)
                 {
-                    throw new InvalidOperationException("Warewolf studio not running.");
+                    throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
                 }
             }
+        }
+
+        [BeforeScenario]
+        [Scope(Tag = "NeedsBlankWorkflow")]
+        public static void InitializeABlankWorkflow()
+        {
+            var outsideWorkflowDesignSurfaceUiMap = new OutsideWorkflowDesignSurfaceUIMap();
+            outsideWorkflowDesignSurfaceUiMap.Assert_NewWorkFlow_RibbonButton_Exists();
+            outsideWorkflowDesignSurfaceUiMap.Click_New_Workflow_Ribbon_Button();
+            new UIMap().Assert_StartNode_Exists();
         }
 
         #region Properties and Fields

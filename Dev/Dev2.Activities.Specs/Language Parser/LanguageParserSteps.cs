@@ -13,11 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Language_Parser
 {
@@ -97,6 +99,62 @@ namespace Dev2.Activities.Specs.Language_Parser
             ScenarioContext.Current.Add("results", results);
         }
 
+
+        [When(@"I Parse")]
+        public void WhenIParse()
+        {
+            try
+            {
+                var variable = ScenarioContext.Current.Get<string>("variable");
+                var result = WarewolfDataEvaluationCommon.ParseLanguageExpressionAndValidate(variable);
+                if (result.Item2 != String.Empty)
+                {
+                    ScenarioContext.Current.Add("error", result.Item2);
+                }
+            }
+            catch (Exception err)
+            {
+                
+                ScenarioContext.Current.Add("error",err.Message);
+            }
+
+
+        }
+        [Then(@"the error  will be '(.*)'")]
+        public void ThenTheErrorWillBe(string p0)
+        {
+            if (ScenarioContext.Current.ContainsKey("error"))
+                Assert.AreEqual(p0,  ScenarioContext.Current.Get<string>("error"));
+            else
+            {
+                Assert.AreEqual(string.Empty,p0);
+            }
+        }
+
+        [Then(@"error will be '(.*)'\.")]
+        public void ThenErrorWillBe_(string p0)
+        {
+            if (ScenarioContext.Current.ContainsKey("error"))
+                Assert.IsFalse(String.IsNullOrEmpty( ScenarioContext.Current.Get<string>("error")));
+            else
+            {
+                Assert.AreEqual("false", p0);
+            }
+        }
+
+
+        [Then(@"the new error  will be '(.*)'")]
+        public void ThenTheNewErrorWillBe(string p0)
+        {
+            if (ScenarioContext.Current.ContainsKey("error"))
+                Assert.AreEqual(p0, ScenarioContext.Current.Get<string>("error"));
+            else
+            {
+                Assert.AreEqual(string.Empty, p0);
+            }
+        }
+
+
         [Then(@"has error will be '(.*)'\.")]
         public void ThenHasErrorWillBe_(string error)
         {
@@ -105,6 +163,8 @@ namespace Dev2.Activities.Specs.Language_Parser
             var expected = !string.IsNullOrEmpty(error) && error.ToLower().Equals("true");
             Assert.AreEqual(expected, actual);
         }
+
+
 
         [Then(@"the error message will be '(.*)'")]
         public void ThenTheErrorMessageWillBe(string errorMessage)

@@ -26,6 +26,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
@@ -314,6 +315,11 @@ namespace Dev2.Activities.Designers2.Core
         protected void AddTitleBarLargeToggle()
         {
             HasLargeView = true;
+        }
+
+        public ISuggestionProvider RecordSetProvider
+        {
+            get { return DataListSingleton.ActiveDataList.Provider; }
         }
 
         public bool HasLargeView { get; set; }

@@ -33,7 +33,7 @@
         <ResourceDictionary Source="Elements/ToolTip.xaml" />
 
         <ResourceDictionary Source="Elements/AutoCompleteBox.xaml" />
-
+      <ResourceDictionary Source="Elements/AutoCompleteTextBox.xaml" />
         <ResourceDictionary Source="Elements/TreeView.xaml" />
         <ResourceDictionary Source="Elements/Window.xaml" />
         <ResourceDictionary Source="Elements/TabControl.xaml" />

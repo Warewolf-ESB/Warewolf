@@ -192,59 +192,59 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.And("App is selected as the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2387 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "From Field",
                         "[[Variable]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "ID",
                         "[[appdata(*).ID]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Content Type",
                         "[[appdata(*).ContentType]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Title",
                         "[[appdata(*).Title]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Modified",
                         "[[appdata(*).Modified]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Create",
                         "[[appdata(*).Created]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Created By",
                         "[[appdata(*).CreatedBy]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Modified By",
                         "[[appdata(*).ModifiedBy]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Version",
                         "[[appdata(*).Version]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Attachments",
                         "[[appdata(*).Attachments]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Edit",
                         "[[appdata(*).Edit]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Title",
                         "[[appdata(*).Title]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Type",
                         "[[appdata(*).Type]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Item Child Count",
                         "[[appdata(*).ItemChildCount]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Folder Child Count",
                         "[[appdata(*).FolderChildCount]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "App Create By",
                         "[[appdata(*).AppCreatedBy]]"});
-            table2387.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "App Modified By",
                         "[[appdata(*).AppModifiedBy]]"});
 #line 53
- testRunner.And("Sharepoint Read variables are", ((string)(null)), table2387, "And ");
+ testRunner.And("Sharepoint Read variables are", ((string)(null)), table1, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

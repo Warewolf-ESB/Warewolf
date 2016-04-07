@@ -21,6 +21,7 @@ using System.Text;
 using ActivityUnitTests;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.PathOperations.Enums;

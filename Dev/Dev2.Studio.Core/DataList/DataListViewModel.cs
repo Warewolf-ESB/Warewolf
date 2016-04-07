@@ -37,6 +37,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
+using Warewolf.Storage;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
@@ -50,6 +51,8 @@ namespace Dev2.Studio.ViewModels.DataList
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IDataListItemModel> _recsetCollection;
         private ObservableCollection<IDataListItemModel> _scalarCollection;
+
+        public ISuggestionProvider Provider { get; private set; }
         private string _searchText;
         private RelayCommand _sortCommand;
         private bool _viewSortDelete;
@@ -140,6 +143,44 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        private IList<string> RefreshTries(List<IDataListItemModel> toList, string parent, IList<string> accList)
+        {
+            foreach (var dataListItemModel in toList)
+            {
+                accList.Add("[["+dataListItemModel.DisplayName+"]]");
+            }
+            return accList;
+        }
+
+
+        private IList<string> RefreshRecordSets(List<IDataListItemModel> toList, string parent, IList<string> accList)
+        {
+            foreach (var dataListItemModel in toList)
+            {
+                var recset = "[[" + dataListItemModel.DisplayName + "]]";
+                accList.Add(recset);
+                foreach (var listItemModel in dataListItemModel.Children)
+                {
+                    var rec = "[[" + listItemModel.DisplayName + "]]";
+                    if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
+                    {
+                        accList.Add(rec);
+                    }
+                }
+                foreach (var listItemModel in ScalarCollection)
+                {
+                    var rec = "[[" + listItemModel.DisplayName + "]]";
+                    if (ExecutionEnvironment.IsScalar(rec))
+                    {
+                        accList.Add(rec);
+                    }
+                }
+               
+            }
+            return accList;
+        }
+
+
         void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if(args.NewItems != null)
@@ -217,6 +258,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }, CanDelete);
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
+            Provider = new Dev2TrieSugggestionProvider(0);
         }
 
         bool CanDelete(Object itemx)
@@ -455,6 +497,9 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 AddBlankRow(null);
             }
+
+            var items = RefreshTries(_scalarCollection.ToList(), "", new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), "", new List<string>()));
+            Provider.VariableList = new ObservableCollection<string>(items);
         }
 
         #endregion Add/Remove Missing Methods
@@ -471,6 +516,8 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 throw new Exception(errorString);
             }
+            var items = RefreshTries(_scalarCollection.ToList(), "", new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), "", new List<string>()));
+            Provider.VariableList = new ObservableCollection<string>(items);
         }
         public void InitializeDataListViewModel()
         {
