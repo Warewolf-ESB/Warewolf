@@ -360,6 +360,7 @@ namespace Warewolf.Studio.ViewModels
                     CanRename = CanRename,
                     CanCreatePluginSource = CanCreatePluginSource,
                     CanCreateEmailSource = CanCreateEmailSource,
+                    CanCreateExchangeSource = CanCreateExchangeSource,
                     CanCreateDropboxSource = CanCreateDropboxSource,
                     CanCreateSharePointSource = CanCreateSharePointSource,
                     CanCreateServerSource = CanCreateServerSource,
@@ -536,6 +537,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbSource = serverPermission.Contribute;
             CanCreatePluginSource = serverPermission.Contribute;
             CanCreateEmailSource = serverPermission.Contribute;
+            CanCreateExchangeSource = serverPermission.Contribute;
             CanCreateDropboxSource = serverPermission.Contribute;
             CanCreateSharePointSource = serverPermission.Contribute;
             CanCreateServerSource = serverPermission.Contribute;
@@ -556,6 +558,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbSource = resourcePermission.Contribute;
             CanCreatePluginSource = resourcePermission.Contribute;
             CanCreateEmailSource = resourcePermission.Contribute;
+            CanCreateExchangeSource = resourcePermission.Contribute;
             CanCreateDropboxSource = resourcePermission.Contribute;
             CanCreateSharePointSource = resourcePermission.Contribute;
             CanCreateServerSource = resourcePermission.Contribute;
@@ -850,6 +853,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginSource { get; set; }
         public bool CanCreateEmailSource { get; set; }
+        public bool CanCreateExchangeSource { get; set; }
         public bool CanCreateDropboxSource { get; set; }
         public bool CanCreateSharePointSource { get; set; }
         // ReSharper disable MemberCanBePrivate.Global
@@ -1013,6 +1017,7 @@ namespace Warewolf.Studio.ViewModels
                         ShowContextMenu = true,
                         CanCreatePluginSource = false,
                         CanCreateEmailSource = false,
+                        CanCreateExchangeSource = false,
                         CanCreateDropboxSource = false,
                         CanCreateSharePointSource = false,
                         CanCreateDbSource = false,
