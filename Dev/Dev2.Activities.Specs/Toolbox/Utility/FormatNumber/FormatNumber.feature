@@ -193,8 +193,6 @@ Scenario: Format number with negative recordset index for decimals to show
 	Then the execution has "AN" error
 
 
-#Audit Wolf-1419 
-@ignore
 Scenario: Format number with unknown scalar for rounding
 	Given I have a formatnumber variable "[[int]]" equal to ""
 	And I have a number ""
@@ -202,7 +200,6 @@ Scenario: Format number with unknown scalar for rounding
 	And I want to show "[[decimal]]" decimals with value "2" 
 	When the format number is executed
 	Then the execution has "AN" error
-	And the execution has "Unable to format '' because it is'nt a number" error
 
 Scenario: Format number rounding with unknown scalar decimals value to show 
 	Given I have a number 788.894564545645
@@ -213,30 +210,10 @@ Scenario: Format number rounding with unknown scalar decimals value to show
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Number           | Rounding | Rounding Value | Decimals to show |
-	| 788.894564545645 | Normal   | 0              |                  |
+	| 788.894564545645 | Normal   | 0              | ""               |
 	And the debug output as 
 	|                   |
 	| [[result]] = 789 |
-
-Scenario Outline: Format number using recordsets 
-	Given I have a number '<Number>'
-	And I selected rounding '<Rounding>' to '<RoundingValue>' 
-	And I want to show '<Decimals>' decimals with value '<DecimalVal>'
-	When the format number is executed
-	Then the result '<result>' will be returned
-	And the execution has "NO" error
-	And the debug inputs as  
-	| Number   | Rounding | RoundingValue | Decimals to show |
-	| <Number> | Normal   | 0              |                  |
-	And the debug output as 
-	|                   |
-	| <Result> |
-Examples: 
-| Number                                             | Rounding | RoundingValue                       | Decimals                       | DecimalVal | Result                                |
-| 788.894564545645                                   | Normal   | [[rs([[int]]).set]] = 0, [[int]]= 1 | [[rj().a]]                     | 0          | [[rec(2).a]] = 789                    |
-| 788.894564545645                                   | Normal   | [[rs(*).set]] = 0                   | [[rj(1).a]]                    | 0          | [[rec().a]] = 789                     |
-| [[rec(*).a]] = 788.894564545645                    | Normal   | [[rs(1).set]] =  0                  | [[rj([[int]]).a]], [[int]] = 1 | 0          | [[rec(*).a]] = 789                    |
-| [[rec([[int]]).a]] = 788.894564545645, [[int]] = 2 | Normal   | [[rs().set]] =  0                   | [[a]]                          | 0          | [[rec([[int]]).a]] = 789, [[int]] = 1 |
 
 @ignore
 #Complex Types WOLF-1042

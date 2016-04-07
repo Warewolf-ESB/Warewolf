@@ -224,22 +224,6 @@ Scenario Outline:Executing with Incorrect Recordsets
 	| [[rec&^]][[rec&^]] is not a valid variable |                                           |
 
 @ignore
-#Audit Wolf-1419
-Scenario Outline: Assign a DateTime into a recordset
-	Given I have a variable '<variable>' and I selected '<Type>'	
-	When the gather system infomartion tool is executed
-	Then the value of the variable '<variable>' is a valid "DateTime"
-	And the execution has "NO" error
-	And the debug output as 
-	| # | Variable   | Type   | results  |
-	| 1 | <variable> | <Type> | <output> |
-	Examples: 
-	| variable                      | Type     | output                     |
-	| [[rec().a]]                   | DateTime | 2015/08/05 11:40:36.975 AM |
-	| [[rec(*).a]]                  | DateTime | 2015/08/05 11:41:40.775 AM |
-	| [[rec([[int]]).a]],[[int]] =2 | DateTime | 2015/08/05 11:42:36.934 AM |
-
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Assign a DateTime into a complex types
 	Given I have a variable '<object>' and I selected '<Type>'	

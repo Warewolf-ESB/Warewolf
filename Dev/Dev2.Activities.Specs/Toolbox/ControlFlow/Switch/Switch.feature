@@ -19,22 +19,20 @@ Scenario: Ensure that a negative index throws an error
 	Then the execution has "AN" error
 
 
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Ensure that a variable/recordset evaluates to the value on the datalist
 	Given I need to switch on variable "<variable>" with the value "<val>"		
 	When the switch tool is executed
 	Then the variable "<variable>" will evaluate to "<val>"
 	Then the execution has "NO" error
-	And the debug inputs as "<switch>"
+	And the debug inputs as
+	| Switch on  |
+	| "<switch>" |
 Examples: 
-| variable                        | val | switch          |
-| " "                             |     |                 |
-| [[a]]                           |     |                 |
-| [[rec().a]]                     | 3   | [[rec().a]] = 3 |
-| [[rec(1).a]]                    | 3   | [[rec().a]] = 3 |
-| [[rec(*).a]]                    | 3   | [[rec().a]] = 3 |
-| [[rec([[int]]).a]] ,[[int]] = 1 | 3   | [[rec().a]] = 3 |
+| variable     | val | switch           |
+| [[a]]        |     | [[a]] =          |
+| [[rec().a]]  | 3   | [[rec().a]] = 3  |
+| [[rec(1).a]] | 3   | [[rec(1).a]] = 3 |
+| [[rec(*).a]] | 3   | [[rec(*).a]] = 3 |
 
 #error on [[rec(*).a]] - unable to varify tool not working
 

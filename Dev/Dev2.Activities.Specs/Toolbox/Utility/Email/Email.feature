@@ -240,9 +240,6 @@ Scenario: Send Email with an attachment
 	And I click "Attachments"
 	Then the webs file chooser dialog opens 
 
-
-@ignore
-	#Audit Wolf-1419
 Scenario Outline: Sending an email 
 	Given the from account is '<from>'
 	And to address is '<To>'

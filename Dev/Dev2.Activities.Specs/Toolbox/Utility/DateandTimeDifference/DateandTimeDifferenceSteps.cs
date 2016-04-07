@@ -38,6 +38,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
+            string resVar;
+            if (!ScenarioContext.Current.TryGetValue("resultVar", out resVar))
+            {
+                resVar = ResultVariable;
+            }
+
             string inputFormat;
             ScenarioContext.Current.TryGetValue("inputFormat", out inputFormat);
             string input1;
@@ -49,7 +55,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
 
             var dateTimeDifference = new DsfDateTimeDifferenceActivity
                 {
-                    Result = ResultVariable,
+                    Result = resVar,
                     InputFormat = string.IsNullOrEmpty(inputFormat) ? "" : inputFormat,
                     Input1 = string.IsNullOrEmpty(input1) ? "" : input1,
                     Input2 = string.IsNullOrEmpty(input2) ? "" : input2,
@@ -61,6 +67,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
                     Action = dateTimeDifference
                 };
             ScenarioContext.Current.Add("activity", dateTimeDifference);
+        }
+
+        [Given(@"DateTimeDifference result variable is ""(.*)""")]
+        public void GivenDateTimeDifferenceResultVariableIs(string p0)
+        {
+            ScenarioContext.Current.Add("resultVar", p0);
         }
 
         [Given(@"I have a first date ""(.*)""")]
@@ -134,7 +146,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(result.Environment, ResultVariable,
+            string resVar;
+            if (!ScenarioContext.Current.TryGetValue("resultVar", out resVar))
+            {
+                resVar = ResultVariable;
+            }
+            GetScalarValueFromEnvironment(result.Environment, resVar,
                                        out actualValue, out error);
             if (string.IsNullOrEmpty(expectedResult))
             {

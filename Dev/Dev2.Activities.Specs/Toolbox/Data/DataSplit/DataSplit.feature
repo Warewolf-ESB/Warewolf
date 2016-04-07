@@ -216,7 +216,6 @@ Scenario: Split CSV file format into recordset - some fields blank
 	| vowels().name | NAME   |
 	| vowels().name | Barney |
 	| vowels().name | Tshepo |
-	| vowels().name |        |
 	| vowels().name | Mo     |
 	Then the split recordset "[[rec(*).phone]]" will be
 	| rs             | value |
@@ -224,13 +223,11 @@ Scenario: Split CSV file format into recordset - some fields blank
 	| vowels().phone | 1234  |
 	| vowels().phone | 5678  |
 	| vowels().phone |       |
-	| vowels().phone |       |
 	Then the split recordset "[[rec(*).id]]" will be
 	| rs          | value |
 	| vowels().id | ID    |
 	| vowels().id | 1     |
 	| vowels().id | 2     |
-	| vowels().id |       |
 	| vowels().id | 3     |
 	And the execution has "NO" error
 	And the debug inputs as  
@@ -244,19 +241,16 @@ Scenario: Split CSV file format into recordset - some fields blank
 	| 1 | [[rec(1).id]] = ID       |
 	|   | [[rec(2).id]] = 1        |
 	|   | [[rec(3).id]] = 2        |
-	|   | [[rec(4).id]] =          |
-	|   | [[rec(5).id]] = 3        |
+	|   | [[rec(4).id]] = 3        |
 	| 2 | [[rec(1).name]] = NAME   |
 	|   | [[rec(2).name]] = Barney |
 	|   | [[rec(3).name]] = Tshepo |
-	|   | [[rec(4).name]] =        |
-	|   | [[rec(5).name]] = Mo     |
+	|   | [[rec(4).name]] = Mo     |
 	| 3 |                          |
 	| 4 | [[rec(1).phone]] = PHONE | 
 	|   | [[rec(2).phone]] = 1234  | 
 	|   | [[rec(3).phone]] = 5678  | 
 	|   | [[rec(4).phone]] =       | 
-	|   | [[rec(5).phone]] =       | 
 
 Scenario: Split CSV file format into recordset - Skip blank rows selected
 	Given A file "CSVExample.txt" to split	
@@ -576,30 +570,21 @@ Examples:
 	 | 89 | [[rec(-1).a                               |
 	 | 90 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] |
 
-
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Split data using scalars and recordsets
-	Given A string to split with value '<String>'	
-	And assign to variable '<Variable>' split type '<Type>' at '<Using>' and Include 'Selected' and Escape ''
+	Given A string to split with value "<String>"
+	And assign to variable '<Variable>' split type "<Type>" at '<Using>' and Include 'Selected' and Escape ''
 	When the data split tool is executed
-	Then the execution has '<ErrorOccured>' error
+	Then the execution has "<ErrorOccured>" error
 	And the debug inputs as  
-	| String to Split | Process Direction | Skip blank rows | # | Result        | With  | Using   | Include | Escape   |
-	| <String>        | Forward           | No              | 1 | <Variable>  = | Index | <Using> | Yes     | <Escape> |
+	| String to Split | Process Direction | Skip blank rows | # |               | With   | Using   | Include | Escape |
+	| <String>        | Forward           | No              | 1 | <Variable>  = | <Type> | <Using> | Yes     |        |
 	And the debug output as
 	| # |          |
 Examples: 
-	 | No | String                                             | Variable    | Type  | using                                               | Escape                          | ErrorOccured |
-	 | 1  | [[var]]                                            | ""          | Index | 1                                                   | [[rs([[int]]).a]] = ,[[int]] =1 | No           |
-	 | 2  | Warewolf                                           | [[var]]     |       | 1                                                   | [[var]]                         | No           |
-	 | 3  | Warewolf                                           | [[a]] = ""  |       | 1                                                   | [[var]] = "/"                   | No           |
-	 | 4  | [[rc().string]] = Dave Chappel                     | [[rec().p]] | Space |                                                     | 89                              | No           |
-	 | 5  | [[rc(*).string]] = Dave Chappel                    | [[rec().p]] | Index | [rec().n]]  =5                                      | [[rs(*).a]]                     | No           |
-	 | 6  | [[rc([[int]]).string]] = Dave Chappel, [[int]] = 1 | [[rec().p]] | Index | [rec(1).n]]      =5                                 | [[rs(1).a]] = t                 | No           |
-	 | 7  | Dave Chappel                                       | [[rec().p]] | Index | [rec([[int]]).n]] = 6, [[int]]=2                    | [[rs().a]] = "-"                | No           |
-	 | 8  | Dave Chappel                                       | [[rec().p]] | Index | [rec(*).n]], [[rec(1).n]] = 2, [[rec(2).n]] = 3 |                                 | No           |
-
+	 | No | String       | Variable    | Type  | Using                                           | Escape | ErrorOccured |
+	 | 1  | [[var]]      | ""          | Index | 1                                               |        | AN           |
+	 | 2  | Warewolf     | [[var]]     |       | 1                                               |        | AN           |
+	 | 3  | Warewolf     | [[a]] = ""  |       | 1                                               |        | AN           |	
 
 Scenario Outline: Debug output Validation errors x
 	Given A string to split with value "[[rec(1).set]]"	

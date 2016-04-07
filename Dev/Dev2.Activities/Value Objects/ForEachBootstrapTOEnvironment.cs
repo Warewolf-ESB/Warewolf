@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     int intExNum;
                     var numOfExItr = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(numberOfExecutes, update));
 
-                    if (!int.TryParse(numOfExItr, out intExNum))
+                    if (!int.TryParse(numOfExItr, out intExNum) || intExNum<1)
                     {
                         errors.AddError("Number of executes must be a whole number from 1 onwards.");
                     }

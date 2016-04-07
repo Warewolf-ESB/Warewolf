@@ -164,33 +164,7 @@ Scenario Outline: Unzip file validation
 		| 79 | [[sourcePath]]                 | ""            | ""          | c:\copyfile80.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP88            | integrationtester | I73573r0     | True     | [[rec(@).a]]           | ""              | ""      | AN           | True             | Result - Recordset index [[@]] contains invalid character(s)                  | 1.Result - Recordset index [[@]] contains invalid character(s)                        |
 		| 80 | [[sourcePath]]                 | ""            | ""          | c:\copyfile81.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP89            | integrationtester | I73573r0     | True     | [[rec"()".a]]          | ""              | ""      | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)             | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                   |
 		| 81 | [[sourcePath]]                 | ""            | ""          | c:\copyfile82.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP90            | integrationtester | I73573r0     | True     | [[rec([[[[b]]]]).a]]   | ""              | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
-															
-@ignore
-#Audit Wolf-1419
-Scenario Outline: Unzip file at location with invalid directories
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And zip credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
-    When the Unzip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
-	And the execution has "AN" error
-	And the execution has "<ErrorMessage>" error
-	And the debug inputs as
-         | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password |
-         | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | String           |         
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-	Examples: 
-	| No | Name           | source | sourceLocation | username | password | destination | destinationLocation | destUsername | destPassword | selected | archivepassword | resultVar  | result | ErrorMessage                                                                                                           |
-	| 1  | Local to Local | [[a]]  | ""             | ""       | ""       | [[path1]]   | c:\ZIP0             | ""           | ""           | True     | ""              | [[result]] | Error  | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 2  | UNC to Local   | [[b]]  |                | ""       | ""       | [[path1]]   | c:\ZIP1             | ""           | ""           | True     | ""              | [[result]] | Error  | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 3  | FTP to Local   | 121    | 121            | ""       | ""       | [[path1]]   | c:\ZIP2             | ""           | ""           | True     | ""              | [[result]] | Error  | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-															
+																													
 @ignore
 #Complex Types WOLF-1042
 Scenario Outline: Unzip file at location using complex types

@@ -376,27 +376,6 @@ Scenario: Edit DB Source
 	When I click "Edit"
 	Then the "DemoDB" tab is opened
 
-#Audit Wolf-1419
-@ignore
-Scenario Outline: Saving results in recordsets
-	Given I have "DB Source" as "DemoDB"
-	And table as "dbo.[Country]"
-	And I have this data
-	| InputData                  | ToField     | Type        |
-	| [[Country(*).CountryID]]   | CountryID   | int         |
-	| [[Country(*).Description]] | Description | varchar(50) |
-	And "skip blank rows" is checked by default
-	And The result variable '<result>' equals '<value>'
-	When the tool is executed
-	And the execution has "NO" error 
-	Examples: 
-	| result                        | value   |
-	| [[rec().a]]                   | Success |
-	| [[rec(1).a]]                  | Success |
-	| [[rec(*).a]]                  | Success |
-	| [[rec([[int]]).a]],[[int]] =3 | Success |
-
-
 #Complex Types WOLF-1042
 @ignore
 Scenario Outline: Saving results in complex types

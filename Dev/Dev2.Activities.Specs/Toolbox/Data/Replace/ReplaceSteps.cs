@@ -43,6 +43,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             string replaceWith;
             ScenarioContext.Current.TryGetValue("replaceWith", out replaceWith);
 
+            string resultVar;
+            ScenarioContext.Current.TryGetValue("resultVar", out resultVar);
+
+            if (string.IsNullOrEmpty(resultVar))
+            {
+                resultVar = ResultVariable;
+            }
+
             string sentence;
             if(ScenarioContext.Current.TryGetValue("sentence", out sentence))
             {
@@ -51,7 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
 
             var replace = new DsfReplaceActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVar,
                     FieldsToSearch = _inFields,
                     Find = find,
                     ReplaceWith = replaceWith
@@ -69,6 +77,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         {
             ScenarioContext.Current.Add("sentence", sentence);
         }
+
+        [Given(@"replace result is ""(.*)""")]
+        public void GivenReplaceResultIs(string resultVar)
+        {
+            ScenarioContext.Current.Add("resultVar", resultVar);
+        }
+
 
         [Given(@"I have a replace variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAReplaceVariableEqualTo(string variable, string value)

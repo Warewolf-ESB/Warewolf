@@ -266,26 +266,6 @@ Scenario: Date and Time output format without inputs must return correct format
 	Then the datetime result should contain milliseconds
 	And the execution has "NO" error
 
-#Audit Wolf-1419
-@ignore
-Scenario Outline: Ensure Date and Time Input and outputs accept variables and recordsets
-       Given I have a date '<Date>'  with '<DateVal>'
-       And the input format as '<Input>' with '<value>'
-       And the output format as '<Output>' with '<val>'
-	   And I selected Add time as "Years" with a value of '<years>'
-       When the datetime tool is executed
-       Then the execution has "NO" error
-	   And the result variable '<res>' will be '<result>'
-Examples: 
-	| Date                      | Dateval    | Input                     | value      | years       | Output                    | val       | res                                 | result     |
-	| [[rec(1).a]]              | 31/07/2015 | [[rs([[a]]).st]], [[a]]=1 | dd/mm/yyyy | 0           | [[rs().st]]               | mm-dd-yyy | [[rec(3).a]]                        | 31-07-2015 |
-	| [[rec().a]]               | 31/07/2015 | [[rs(1).st]]              | dd/mm/yyyy | 0           | [[rs([[b]]).st]], [[b]]=2 | mm-dd-yyy | [[rec([[f]]).a]], [[f]]=3           | 31-07-2015 |
-	| [[rec(*).a]]              | 31/07/2015 | [[rs().st]]               | dd/mm/yyyy | 0           | [[j]]                     |           | [[rj(1).a]],[[rj(2).a]],[[rj(3).a]] | 31-07-2015 |
-	| [[rec([[a]]).a]], [[a]]=1 | 31/07/2015 | [[rs(*).st]]              | dd/mm/yyyy | 0           | [[rs(*).s]]               | mm-dd-yyy | [[rj(*)]]                           | 31-07-2015 |
-	| [[b]]                     | 31/07/2015 | [[a]]                     | dd/mm/yyyy | [[rd(*).b]] | [[d]]                     | mm-dd-yyy | [[c]]                               | 31-07-2015 |
-	| [[b]]                     |            | [[a]]                     |            |             | [[d]]                     |           | [[c]]                               | 07-31-2015 |
-
-
 #Complex Types WOLF-1042
 @ignore
 Scenario Outline: Ensure Date and Time Input and outputs accepts complex types
