@@ -277,20 +277,9 @@ let toJOArray (obj:JToken) =
        |_ -> failwith "expected jObject but got something else"
 
 
-let getArrayPropertyFromJson (obj:JObject) (name:string) =
-      obj.Property(name) |> toJOArray
 
-let addValueToJArray (arr:JArray) ( ind:int)  (value:WarewolfAtom)=
-    let index = ind-1
-    if(ind>arr.Count)
-    then
-        let x = arr.Count
-        for _ in x .. ind-1 do
-            arr.Add(null)
-        arr.[index] <- new JValue( atomtoString( value))
-        arr
-    else
-        arr
+
+
 
 let addEmptyValueToJArray (arr:JArray) ( ind:int)  (value:JObject) =
     let index = ind-1
@@ -371,8 +360,7 @@ and objectFromExpression (exp:JsonIdentifierExpression)  (res : WarewolfEvalResu
                               addAtomicPropertyToJson asJObj a.Name myValue |> ignore
                               asJObj :> JToken
 
-        | _ -> failwith "top level assign cannot be a n
-        ested expresssion"
+        | _ -> failwith "top level assign cannot be a nested expresssion"
 
 
 

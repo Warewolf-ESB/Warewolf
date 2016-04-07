@@ -305,7 +305,34 @@ namespace WarewolfParsingTest
 
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_ToJObj")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_ToJObj_ErrorIfWrongType()
+        {
+            //------------Setup for test--------------------------
+            AssignEvaluation.toJObject(new JArray(""));
+            
+            //------------Execute Test---------------------------
 
+            //------------Assert Results-------------------------
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_ToJObj")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_ToJArray_ErrorIfWrongType()
+        {
+            //------------Setup for test--------------------------
+            AssignEvaluation.toJOArray(new JObject());
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [Ignore]
         [TestCategory("AssignEvaluation_assignGivenAValue")]
