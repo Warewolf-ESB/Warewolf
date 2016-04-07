@@ -34,6 +34,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         {
             BuildShapeAndTestData();
 
+            string privateKeyFile;
+            ScenarioContext.Current.TryGetValue(CommonSteps.DestinationPrivateKeyFile,out privateKeyFile);
             var create = new DsfPathCreate
             {
                 OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
@@ -41,7 +43,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
                 Password = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
                 Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
                 Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
-                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+                PrivateKeyFile = privateKeyFile
             };
 
             TestStartNode = new FlowStep

@@ -231,8 +231,6 @@ Scenario: Use XPath with a non existent variable as output
 	When the xpath tool is executed
 	Then the execution has "AN" error
 
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Use XPath to get data off XML using recordsets
 	Given I have this xml '<Xmlvalue>'
 	And The result variable is '<Xml>' 

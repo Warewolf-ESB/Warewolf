@@ -334,27 +334,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 #	| 168                 | FALSE                                                      | FALSE                    |
 #	| 169                 | TRUE                                                       | TRUE                     |
 
-@Ignore
-	#Audit Wolf-1419
-Scenario: Calculate using Recordset ([[val]]) input in an agregate function like SUM
-	Given I have a calculate variable "[[var([[val]]).int]]" equal to 
-	| var().int	|
-	| 1			|
-	| 2			|
-	| 3			|
-	And I have a calculate variable "[[val]]" equal to "2"
-	And I have the formula "SUM([[var([[val]]).int]])"
-	When the calculate tool is executed
-	Then the calculate result should be "2"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| fx =                             |
-	| SUM([[var([[val]]).int]]) = SUM(2) |	
-	And the debug output as 
-	|                       |
-	| [[rs([[val]]).a]] = 2 |
-
-Scenario Outline: Calculate using Recordset () input in an agregate function like SUM
+Scenario Outline: Calculate using Recordset input in an agregate function like SUM
 	Given I have a calculate variable "[[var().int]]" equal to 
 	| var().int	|
 	| 1			|
@@ -363,13 +343,13 @@ Scenario Outline: Calculate using Recordset () input in an agregate function lik
 	And I have a calculate variable "[[val]]" equal to "3"
 	And I have the formula "<fx>"
 	When the calculate tool is executed
+	Then the calculate result should be "<value>"
 	And the execution has "NO" error
-	Then the calculate "<result>" should be "<value>"
 	Examples: 
-		| No | fx                                             | result      | value |
-		| 1  | SUM([[var([[val]]).int]])                      | [[rs().a]]  | 3     |
-		| 2  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) | [[rs(*).a]] | 6     |
-		| 3  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) | [[rs(4).a]] | 6     |
+		| No | fx                                             |  value |
+		| 1  | SUM([[var([[val]]).int]])                      |  3     |
+		| 2  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) |  6     |
+		| 3  | SUM([[var([[val]]).int]],[[var([[val]]).int]]) |  6     |
 
 Scenario: Calculate using variables with a null value
 	Given I have a calculate variable "[[a]]" equal to "NULL"

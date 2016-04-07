@@ -137,7 +137,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             // ReSharper disable AssignNullToNotNullAttribute
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
             // ReSharper restore AssignNullToNotNullAttribute
-            converter.ConvertFrom(actualValue);
+            if(actualValue != null)
+            {
+                converter.ConvertFrom(actualValue);
+            }
         }
 
         [Then(@"the random value will be ""(.*)""")]

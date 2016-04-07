@@ -31,13 +31,15 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
         {
             BuildShapeAndTestData();
 
+            string privateKeyFile;
+            ScenarioContext.Current.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile,out privateKeyFile);
             var delete = new DsfPathDelete
             {
                 InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
                 Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
                 Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
                 Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
-                PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
+                PrivateKeyFile = privateKeyFile
             };
 
             TestStartNode = new FlowStep

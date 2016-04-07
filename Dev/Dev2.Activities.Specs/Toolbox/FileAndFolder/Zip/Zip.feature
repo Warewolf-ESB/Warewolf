@@ -104,34 +104,6 @@ Scenario Outline: Zip file at location Null
 		| 2  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | Default | [[result]] | Success | NO           | 1.71              |
 		| 3  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestSpeed | [[result]] | Success | NO           | 1.66              |
 		| 4  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestCompression | [[result]] | Success | NO           | 1.71              |
-
-@ignore
-#Audit Wolf-1419
-Scenario Outline: Zip file at location with invalid directories
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>' for zip tests
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
-	And the Compression as '<compression>'
-    When the Zip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
-	And the execution has "An" error
-	And the execution has "<ErrorMessage>" error
-	And the debug inputs as
-         | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password  | Compression Ratio |
-         | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> | <archivepassword> | <compression>     |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-	Examples: 
-		| No | Name           | source | sourceLocation | username | password | destination | destinationLocation | destUsername | destPassword | selected | archivepassword | compression | resultVar  | result | ErrorMessage                                                                                                           |
-		| 1  | Local to Local | [[a]]  |                | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | None        | [[result]] | Error  | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-		| 2  | UNC to Local   | [[r]]  | ""             | ""       | ""       | [[path1]]   | c:\My New1.zip      | ""           | ""           | True     |                 | BestSpeed   | [[result]] | Error  | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-		| 3  | FTP to Local   | 4554   | 4554           | ""       | ""       | [[path1]]   | c:\My New2.zip      | ""           | ""           | True     |                 | Default     | [[result]] | Error  | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-
 	
 #Complex Types	WOLF-1042	
 @ignore												

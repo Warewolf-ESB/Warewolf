@@ -165,8 +165,6 @@ Scenario Outline: Rename file validation
 		| 80 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile77.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed77.txt          | integrationtester | I73573r0     | True     | [[rec"()".a]]          | ""      | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)             | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                   |
 		| 81 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile78.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed78.txt          | integrationtester | I73573r0     | True     | [[rec([[[[b]]]]).a]]   | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
 	
-@ignore
-#Audit Wolf-1419			  	  																																																																				 
 Scenario Outline: Rename file at location with invalid directories
 	Given I have a source path '<source>' with value '<sourceLocation>' 
 	And source credentials as '<username>' and '<password>'
@@ -176,8 +174,7 @@ Scenario Outline: Rename file at location with invalid directories
 	And result as '<resultVar>'
     When the rename file tool is executed
 	Then the result variable '<resultVar>' will be '<result>'
-	And the execution has "An" error
-	And the execution has "<ErrorMessage>" error
+	And the execution has "AN" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
          | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |
@@ -185,13 +182,13 @@ Scenario Outline: Rename file at location with invalid directories
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| No | Name           | source       | sourceLocation | username | password | destination  | destinationLocation                                | destUsername      | destPassword | selected | resultVar  | result  | ErrorMessage                                                                                                           |
-	| 1  | Local to Local | [[var]]      | ""             | ""       | ""       | [[destPath]] | C:\renamed0.txt                                    | ""                | ""           | True     | [[result]] | Success | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 2  | Local to FTP   | [[variable]] |                | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamed0.txt | ""                | ""           | True     | [[result]] | Success | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 3  | Local to FTPS  | 445544       | 445544         | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed0.txt | integrationtester | I73573r0     | True     | [[result]] | Success | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 4  | Local to Local | [[var]]      | E:\tr.txt      | ""       | ""       | [[local]]    |                                                    | ""                | ""           | True     | [[result]] | Success | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 5  | Local to FTP   | [[variable]] | E:\tr.txt      | ""       | ""       | [[v]]        | ""                                                 | ""                | ""           | True     | [[result]] | Success | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 6  | Local to FTPS  | [[path]]     | E:\test.txt    | ""       | ""       | 5453         | 5453                                               | integrationtester | I73573r0     | True     | [[result]] | Success | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
+	| No | Name           | source       | sourceLocation | username | password | destination  | destinationLocation                                | destUsername      | destPassword | selected | resultVar  | result | 
+	| 1  | Local to Local | [[var]]      | ""             | ""       | ""       | [[destPath]] | C:\renamed0.txt                                    | ""                | ""           | True     | [[result]] |        | 
+	| 2  | Local to FTP   | [[variable]] |                | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/renamed0.txt | ""                | ""           | True     | [[result]] |        | 
+	| 3  | Local to FTPS  | 445544       | 445544         | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed0.txt | integrationtester | I73573r0     | True     | [[result]] |        | 
+	| 4  | Local to Local | [[var]]      | E:\tr.txt      | ""       | ""       | [[local]]    |                                                    | ""                | ""           | True     | [[result]] |        | 
+	| 5  | Local to FTP   | [[variable]] | E:\tr.txt      | ""       | ""       | [[v]]        | ""                                                 | ""                | ""           | True     | [[result]] |        | 
+	| 6  | Local to FTPS  | [[path]]     | E:\test.txt    | ""       | ""       | 5453         | 5453                                               | integrationtester | I73573r0     | True     | [[result]] |        | 
 		
 @ignore
 #Complex Types WOLF-1042

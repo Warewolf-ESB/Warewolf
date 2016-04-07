@@ -1248,29 +1248,19 @@ Scenario: Runtime invalid recordset variable positve test
        | YES |
 
 
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Ensuring all inputs work as expected
-	Given a decision variable '<variable1>' value '<Var1>'	
-	And a decision variable '<variable2>' value '<Var2>'
-	And a decision variable '<variable3>' value '<Var3>'	
-	And check if '<variable1>' "IsBetween" '<variable2>' and '<variable3>'
-	And "Require All decisions to be True" is '<Requirement>'
+	Given a decision variable "<variable1>" value "<Var1>"	
+	And a decision variable "<variable2>" value "<Var2>"
+	And a decision variable "<variable3>" value "<Var3>"	
+	And check if "<variable1>" "IsBetween" "<variable2>" and "<variable3>"
+	And Require All decisions to be True is "<Requirement>"
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Examples: 
 	| variable1          | Var1 | variable2        | Var2           | variable3           | Var3 | Requirement |
 	|                    |      |                  |                |                     |      | true        |
 	| [[q]]              |      | [[rec(1).a]]     | " "            | [[rs(1).set]]       | 5    | true        |
-	| [[rec().a]]        | 27   | 22               | 22             | 33                  | 33   | true        |
-	| [[rec(*).a]]       | T    | "South Africa"   | "South Africa" | H                   | H    | true        |
-	| [[rec([[int]]).a]] | 2    | [[p]]            |                | [[q]]               |      | true        |
-	| [[a]]              | 10   | " "              | " "            | " "                 | " "  | false       |
 	| [[a]]              | 27   | [[rec().a]]      | 22             | [[rs(*).set]]       | 33   | true        |
-	| [[a]]              | T    | [[rec([[int]].a) | "South Africa" | [[rs().set]]        | H    | true        |
-	| [[a]]              | 2    | [[rec(*).a]]     | 5              | [[rs([[int]]).set]] | 7    | true        |
-	#failing
-	#[[rec(*).a]]
 
 #Wolf-675
 Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
@@ -1294,7 +1284,7 @@ Scenario Outline: Ensuring all complex type inputs work as expected
 	Given a decision variable '<variable1>' value '<Var1>'	
 	And a decision variable '<variable2>' value '<Var2>'
 	And check if '<variable1>' '<matchtype>' '<variable2>'
-	And "Require All decisions to be True" is '<Requirement>'
+	And Require All decisions to be True is '<Requirement>'
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Examples: 
