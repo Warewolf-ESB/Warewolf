@@ -71,6 +71,12 @@ namespace Warewolf.Studio.UISpecs
         }
 
         [BeforeScenario]
+        public static void LogComputerName()
+        {
+            Console.WriteLine("Test \"" +ScenarioContext.Current.ScenarioInfo.Title + "\" starting on " + System.Environment.MachineName);
+        }
+
+        [BeforeScenario]
         [Scope(Tag = "NeedsBlankWorkflow")]
         public static void InitializeABlankWorkflow()
         {
@@ -78,6 +84,16 @@ namespace Warewolf.Studio.UISpecs
             outsideWorkflowDesignSurfaceUiMap.Assert_NewWorkFlow_RibbonButton_Exists();
             outsideWorkflowDesignSurfaceUiMap.Click_New_Workflow_Ribbon_Button();
             new UIMap().Assert_StartNode_Exists();
+        }
+
+        [AfterScenario]
+        [Scope(Tag = "NeedsBlankWorkflow")]
+        public static void CleanupWorkflow()
+        {
+            var uiMap = new UIMap();
+            uiMap.Assert_Close_Tab_Button_Exists();
+            uiMap.Click_Close_Tab_Button();
+            new OutsideWorkflowDesignSurfaceUIMap().Click_No_Save_Dialog();
         }
 
         #region Properties and Fields
