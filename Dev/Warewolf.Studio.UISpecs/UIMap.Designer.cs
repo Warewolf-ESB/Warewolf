@@ -123,6 +123,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Close_Tab_Button_Exists - Use 'Assert_Close_Tab_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Close_Tab_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Close_Tab_Button_ExistsExpectedValues.CloseButtonExists, closeButton.Exists, "Close tab button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_CMD_Line_Exists_OnDesignSurface - Use 'Assert_CMD_Line_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_CMD_Line_Exists_OnDesignSurface()
@@ -357,19 +370,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Delete_Exists_OnDesignSurface - Use 'Assert_Delete_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Delete_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfCustom pathDelete = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
-            #endregion
-
-            // Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Delete_Exists_OnDesignSurfaceExpectedValues.PathDeleteExists, pathDelete.Exists, "Delete tool on the design surface does not exist");
-        }
-        
-        /// <summary>
         /// Assert_Decision_Exists_OnDesignSurface - Use 'Assert_Decision_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Decision_Exists_OnDesignSurface()
@@ -380,6 +380,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'FlowDecision' custom control equals 'True'
             Assert.AreEqual(this.Assert_Decision_Exists_OnDesignSurfaceExpectedValues.DecisionExists, decision.Exists, "Decision on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Delete_Exists_OnDesignSurface - Use 'Assert_Delete_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Delete_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom pathDelete = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Delete_Exists_OnDesignSurfaceExpectedValues.PathDeleteExists, pathDelete.Exists, "Delete tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1200,6 +1213,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'DsfZip' custom control equals 'True'
             Assert.AreEqual(this.Assert_Zip_Large_View_Exists_OnDesignSurfaceExpectedValues.ZipExists, zip.Exists, "Zip large view on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Click_Close_Tab_Button
+        /// </summary>
+        public void Click_Close_Tab_Button()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton;
+            #endregion
+
+            // Click 'closeBtn' custom control
+            Mouse.Click(closeButton, new Point(5, 5));
         }
         
         /// <summary>
@@ -3838,32 +3864,6 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(uITestButton, new Point(47, 18));
         }
         
-        /// <summary>
-        /// Assert_Close_Tab_Button_Exists - Use 'Assert_Close_Tab_Button_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Close_Tab_Button_Exists()
-        {
-            #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton;
-            #endregion
-
-            // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Close_Tab_Button_ExistsExpectedValues.CloseButtonExists, closeButton.Exists, "Close tab button does not exist");
-        }
-        
-        /// <summary>
-        /// Click_Close_Tab_Button
-        /// </summary>
-        public void Click_Close_Tab_Button()
-        {
-            #region Variable Declarations
-            WpfButton closeButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton;
-            #endregion
-
-            // Click 'closeBtn' custom control
-            Mouse.Click(closeButton, new Point(5, 5));
-        }
-        
         #region Properties
         public virtual Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
@@ -3946,6 +3946,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Close_Tab_Button_ExistsExpectedValues Assert_Close_Tab_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Close_Tab_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Close_Tab_Button_ExistsExpectedValues = new Assert_Close_Tab_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Close_Tab_Button_ExistsExpectedValues;
             }
         }
         
@@ -4165,18 +4177,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Delete_Exists_OnDesignSurfaceExpectedValues Assert_Delete_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Delete_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Delete_Exists_OnDesignSurfaceExpectedValues = new Assert_Delete_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Delete_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
         public virtual Assert_Decision_Exists_OnDesignSurfaceExpectedValues Assert_Decision_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -4186,6 +4186,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Decision_Exists_OnDesignSurfaceExpectedValues = new Assert_Decision_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Decision_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Delete_Exists_OnDesignSurfaceExpectedValues Assert_Delete_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Delete_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Delete_Exists_OnDesignSurfaceExpectedValues = new Assert_Delete_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Delete_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -5101,18 +5113,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Close_Tab_Button_ExistsExpectedValues Assert_Close_Tab_Button_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Close_Tab_Button_ExistsExpectedValues == null))
-                {
-                    this.mAssert_Close_Tab_Button_ExistsExpectedValues = new Assert_Close_Tab_Button_ExistsExpectedValues();
-                }
-                return this.mAssert_Close_Tab_Button_ExistsExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -5165,6 +5165,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
+        private Assert_Close_Tab_Button_ExistsExpectedValues mAssert_Close_Tab_Button_ExistsExpectedValues;
+        
         private Assert_CMD_Line_Exists_OnDesignSurfaceExpectedValues mAssert_CMD_Line_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_CMD_Line_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_CMD_Line_Large_View_Exists_OnDesignSurfaceExpectedValues;
@@ -5201,9 +5203,9 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_DateTime_Difference_Conversion_Exists_OnDesignSurfaceExpectedValues mAssert_DateTime_Difference_Conversion_Exists_OnDesignSurfaceExpectedValues;
         
-        private Assert_Delete_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Exists_OnDesignSurfaceExpectedValues;
-        
         private Assert_Decision_Exists_OnDesignSurfaceExpectedValues mAssert_Decision_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Delete_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Delete_Record_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Record_Exists_OnDesignSurfaceExpectedValues;
         
@@ -5357,8 +5359,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
         
-        private Assert_Close_Tab_Button_ExistsExpectedValues mAssert_Close_Tab_Button_ExistsExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -5469,6 +5469,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
         /// </summary>
         public bool CaseConvertExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Close_Tab_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Close_Tab_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
+        /// </summary>
+        public bool CloseButtonExists = true;
         #endregion
     }
     
@@ -5743,21 +5758,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_Delete_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_Delete_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
-        /// </summary>
-        public bool PathDeleteExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Assert_Decision_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -5769,6 +5769,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'FlowDecision' custom control equals 'True'
         /// </summary>
         public bool DecisionExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Delete_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Delete_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfPathDelete' custom control equals 'True'
+        /// </summary>
+        public bool PathDeleteExists = true;
         #endregion
     }
     
@@ -6909,21 +6924,6 @@ namespace Warewolf.Studio.UISpecs
         /// Type 's' in 'Test data' text box
         /// </summary>
         public string TestDataTextboxText = "s";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Close_Tab_Button_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_Close_Tab_Button_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
-        /// </summary>
-        public bool CloseButtonExists = true;
         #endregion
     }
     
@@ -14316,6 +14316,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mDecision = new WpfListItem(this);
                     #region Search Criteria
                     this.mDecision.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDecision.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
                     this.mDecision.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
