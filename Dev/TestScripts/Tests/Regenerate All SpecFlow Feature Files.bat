@@ -1,4 +1,4 @@
-cd /d "%~dp0.."
+cd /d "%~dp0..\.."
 .nuget\nuget.exe restore AcceptanceTesting.sln
 if not %errorlevel%==0 pause & exit 1
 for /d %%d in (*.Specs) do (
