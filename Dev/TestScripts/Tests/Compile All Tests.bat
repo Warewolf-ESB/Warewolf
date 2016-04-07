@@ -1,6 +1,6 @@
-"%~dp0..\.nuget\nuget.exe" restore "%~dp0..\..\AcceptanceTesting.sln"
+"%~dp0..\..\.nuget\nuget.exe" restore "%~dp0..\..\AcceptanceTesting.sln"
 if not %errorlevel%==0 pause & exit 1
-"%~dp0..\.nuget\nuget.exe" restore "%~dp0..\..\UITesting.sln"
+"%~dp0..\..\.nuget\nuget.exe" restore "%~dp0..\..\UITesting.sln"
 if not %errorlevel%==0 pause & exit 1
 
 IF EXIST "%vs120comntools%..\IDE\devenv.com" ( 
