@@ -2734,6 +2734,45 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             Mouse.Click(uITestButton, new Point(47, 18));
         }
         
+        /// <summary>
+        /// Click_Yes_DeleteConfirmDialog
+        /// </summary>
+        public void Click_Yes_DeleteConfirmDialog()
+        {
+            #region Variable Declarations
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Click 'Yes' button
+            Mouse.Click(yesButton, new Point(36, 6));
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Dialog_Exists - Use 'Assert_Service_Picker_Dialog_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Dialog_Exists()
+        {
+            #region Variable Declarations
+            WpfWindow uIWpfWindow = this.MainStudioWindow.UIWpfWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Dialog_ExistsExpectedValues.UIWpfWindowExists, uIWpfWindow.Exists, "Service picker dialog does not exist");
+        }
+        
+        /// <summary>
+        /// Click_Cancel_Service_Picker_Dialog
+        /// </summary>
+        public void Click_Cancel_Service_Picker_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton uICancelButton = this.MainStudioWindow.UICancelButton;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(uICancelButton, new Point(57, 6));
+        }
+        
         #region Properties
         public virtual Assert_Close_Button_Exists_TopRibbonExpectedValues Assert_Close_Button_Exists_TopRibbonExpectedValues
         {
@@ -4463,6 +4502,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public virtual Assert_Service_Picker_Dialog_ExistsExpectedValues Assert_Service_Picker_Dialog_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Dialog_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Dialog_ExistsExpectedValues = new Assert_Service_Picker_Dialog_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Dialog_ExistsExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -4848,6 +4899,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private Plugin_Connectot_Test_Connector_Calculate_OutputsParams mPlugin_Connectot_Test_Connector_Calculate_OutputsParams;
         
         private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
+        
+        private Assert_Service_Picker_Dialog_ExistsExpectedValues mAssert_Service_Picker_Dialog_ExistsExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -7032,6 +7085,21 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
     }
     
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Dialog_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Service_Picker_Dialog_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool UIWpfWindowExists = true;
+        #endregion
+    }
+    
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MainStudioWindow : WpfWindow
     {
@@ -7150,6 +7218,39 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mDockManager;
             }
         }
+        
+        public WpfWindow UIWpfWindow
+        {
+            get
+            {
+                if ((this.mUIWpfWindow == null))
+                {
+                    this.mUIWpfWindow = new WpfWindow(this);
+                    #region Search Criteria
+                    this.mUIWpfWindow.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
+                    this.mUIWpfWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                    this.mUIWpfWindow.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIWpfWindow;
+            }
+        }
+        
+        public WpfButton UICancelButton
+        {
+            get
+            {
+                if ((this.mUICancelButton == null))
+                {
+                    this.mUICancelButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUICancelButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceCancelButton_AutoID";
+                    this.mUICancelButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUICancelButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -7166,6 +7267,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private SideMenuBar mSideMenuBar;
         
         private DockManager mDockManager;
+        
+        private WpfWindow mUIWpfWindow;
+        
+        private WpfButton mUICancelButton;
         #endregion
     }
     
