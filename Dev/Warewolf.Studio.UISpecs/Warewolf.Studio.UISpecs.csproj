@@ -69,10 +69,10 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="WorkflowDesignSurfaceTools.feature.cs">
+    <Compile Include="StudioUISpecs.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WorkflowDesignSurfaceTools.feature</DependentUpon>
+      <DependentUpon>StudioUISpecs.feature</DependentUpon>
     </Compile>
     <Compile Include="Dropdown List Item Action Steps.cs" />
     <Compile Include="Explorer Tree Item Action Steps.cs" />
@@ -82,10 +82,10 @@
     <Compile Include="OutsideWorkflowDesignSurfaceUIMap.Designer.cs">
       <DependentUpon>OutsideWorkflowDesignSurfaceUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="StudioUISpecs.feature.cs">
+    <Compile Include="OutsideWorkflowDesignSurfaceUISpecs.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StudioUISpecs.feature</DependentUpon>
+      <DependentUpon>OutsideWorkflowDesignSurfaceUISpecs.feature</DependentUpon>
     </Compile>
     <Compile Include="ActionSteps.cs" />
     <Compile Include="UIMap.cs">
@@ -98,17 +98,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="WorkflowDesignSurfaceTools.feature">
+    <None Include="StudioUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowDesignSurfaceTools.feature.cs</LastGenOutput>
+      <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="OutsideWorkflowDesignSurfaceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="StudioUISpecs.feature">
+    <None Include="OutsideWorkflowDesignSurfaceUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
+      <LastGenOutput>OutsideWorkflowDesignSurfaceUISpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
