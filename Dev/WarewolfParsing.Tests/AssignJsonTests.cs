@@ -8,8 +8,8 @@ using Warewolf.Storage;
 using WarewolfParserInterop;
 
 // ReSharper disable InconsistentNaming
-
 // ReSharper disable PossibleNullReferenceException
+
 namespace WarewolfParsingTest
 {
     [TestClass]
@@ -303,7 +303,7 @@ namespace WarewolfParsingTest
         public void AssignEvaluation_ToJObj_ErrorIfWrongType()
         {
             //------------Setup for test--------------------------
-            AssignEvaluation.toJObject(new JArray(""));
+            AssignEvaluation.toJObject(new JArray());
 
             //------------Execute Test---------------------------
 
@@ -431,6 +431,31 @@ namespace WarewolfParsingTest
             env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(*).Name]]", "x"), 0, env2);
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
             Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"x\"\r\n  },\r\n  {\r\n    \"Name\": \"x\"\r\n  }\r\n]");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_assignGivenAValue_ArrayJson_InvalidIndex()
+        {
+            var env = CreateTestEnvWithData();
+
+            AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(abc).Name]]", "a"), 0, env);
+
+            Assert.Fail("Failed");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_assignGivenAValue_ArrayJson_InvalidNamesExpresion()
+        {
+            var exp = LanguageAST.JsonIdentifierExpression.Terminal;
+            JObject res = new JObject();
+            AssignEvaluation.objectFromExpression(exp, CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing), res);
+            Assert.Fail("Failed");
         }
 
         [TestMethod]
