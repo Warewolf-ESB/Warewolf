@@ -108,5 +108,4 @@ Write-Host $Line8
 $Line8 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
 Write-Host F Sharp version file written to `"$FSharpVersionFile`".
 
-# Done. Ready to compile.
 Write-Host Version written successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/

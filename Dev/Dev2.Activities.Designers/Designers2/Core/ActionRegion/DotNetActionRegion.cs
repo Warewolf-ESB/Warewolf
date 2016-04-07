@@ -142,7 +142,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            return SelectedAction != null;
+            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            return _source.SelectedSource != null && _namespace.SelectedNamespace != null;
         }
 
         public IPluginAction SelectedAction

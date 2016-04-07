@@ -18,7 +18,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
-    [ToolDescriptorInfo("DropBoxLogo", "Dropbox Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("DropBoxLogo", "DOWNLOAD", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDownloadActivity : DsfBaseActivity
     {
         private DropboxClient _client;
@@ -29,8 +29,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         public DsfDropBoxDownloadActivity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
-            DisplayName = "Download from Dropbox";
-            OverwriteFile = false;
+            DisplayName = "DOWNLOAD from Dropbox";
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -39,8 +38,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
-
-        public bool OverwriteFile { get; set; }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Local File Path")]
@@ -105,14 +102,9 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 var bytes = Response.GetContentAsByteArrayAsync().Result;
                 if (Response.Response.IsFile)
                 {
-                    var localPathManager = new LocalPathManager(evaluatedValues["FromPath"]);
-                    var validFolder = localPathManager.GetFullFileName();
-                    var fileExist = localPathManager.FileExist();
-                    if(fileExist && !OverwriteFile)
-                        throw new Exception("Destination File already exists and overwrite is set to false");
-                    File.WriteAllBytes(validFolder, bytes);
+                    File.WriteAllBytes(FromPath, bytes);
                 }
-                return GlobalConstants.DropBoxSucces;
+                return Response.Response.Name;
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
             if (dropboxFailureResult != null)

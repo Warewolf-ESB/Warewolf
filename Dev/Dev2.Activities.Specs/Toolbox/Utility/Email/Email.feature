@@ -281,6 +281,7 @@ Scenario Outline: Sending an email using complex types
 	| [[client().set().value]]         | warewolf@dev2.co.za | [[rs(1).set().value()]] | ""              | Numeric Test | 3        | 100             | 50              | hello world |             | An    | [[result]] = To address is not in the valid format |
 	| [[client(1).set(*).value]]       | warewolf@dev2.co.za | [[rs(1).set().value]]   | info@dev2.co.za | ""           | test123  | test@dev2.co.za | user@dev2.co.za | [[b]]       | E:\test.txt | No    | [[rs(*).a]] = Success                              |
 	| [[client(1).set([[int]]).value]] | warewolf@dev2.co.za | [[rs(1).set().value]]   | info@dev2.co.za | ""           | test123  | test@dev2.co.za | user@dev2.co.za | [[b]]       | E:\test.txt | No    | [[rs(*).a]] = Success                              |
+
 Scenario: Send email with a null variable in from account
 	Given I have an email variable "[[a]]" equal to "NULL" 
 	And the from account is "[[a]]" 
@@ -297,3 +298,42 @@ Scenario: Send email with a non existent variable in from account
 	When the email tool is executed
 	Then the execution has "AN" error
 
+Scenario: Create new Email source from tool
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	And "To" input is ""
+	And "Subject" input is ""
+	And "Body" input is ""
+	When I select "New Email Source"
+	Then the new Email Source Tab is opened
+
+Scenario: Edit Email source from tool
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	And "To" input is ""
+	And "Subject" input is ""
+	And "Body" input is ""
+	When I select "Email Source"
+	Then "Edit" is Enabled
+	And I Click "Edit"
+	Then the "Email Source" Tab is opened
+
+Scenario: Change Email source
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	When I select "Email Source"
+	Then "Edit" is Enabled
+	And "To" input is "warewolfworks@gmail.com"
+	And "Subject" input is "Sample Text"
+	And "Body" input is "Text should not clear"
+	When "Mail Source" is changed from "Email Source" to "NewEmailSource"
+	Then the "Email Source" Tab is opened
+	And "To" input is "warewolfworks@gmail.com"
+	And "Subject" input is "Sample Text"
+	And "Body" input is "Text should not clear"

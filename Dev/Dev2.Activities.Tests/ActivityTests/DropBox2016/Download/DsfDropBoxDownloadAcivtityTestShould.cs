@@ -52,7 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             Assert.IsNotNull(boxUploadAcivtity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("Download from Dropbox", boxUploadAcivtity.DisplayName);
+            Assert.AreEqual("DOWNLOAD from Dropbox", boxUploadAcivtity.DisplayName);
 
         }
 

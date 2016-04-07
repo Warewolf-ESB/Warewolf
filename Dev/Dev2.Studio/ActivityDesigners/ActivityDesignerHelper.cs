@@ -48,6 +48,7 @@ using Dev2.Activities.Designers2.RecordsLength;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
+using Dev2.Activities.Designers2.SelectAndApply;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SharepointListCreate;
@@ -68,6 +69,7 @@ using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -138,6 +140,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
                 { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
+                { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 //{ typeof(DsfFlowDecisionActivity), typeof(DecisionDesigner) },
                 //{ typeof(DsfSwitch), typeof(ConfigureSwitch) }
             };

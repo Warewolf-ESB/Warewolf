@@ -189,16 +189,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.And("App is selected as the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2386 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field Name",
                         "Match Type",
                         "Value"});
-            table2386.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "Title",
                         "=",
                         string.Format("{0}", value)});
 #line 53
- testRunner.And("Sharepoint Delete Input variables are", ((string)(null)), table2386, "And ");
+ testRunner.And("Sharepoint Delete Input variables are", ((string)(null)), table1, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

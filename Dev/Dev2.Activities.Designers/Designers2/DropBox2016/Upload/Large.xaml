@@ -111,7 +111,7 @@
                                 Grid.Column="1"
                                 Grid.Row="1"
                                 FilterType="All"
-                                DefaultText="[[PathToUpload]]"
+                                DefaultText="[[PathToRead]]"
                                 WrapInBrackets="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -173,12 +173,12 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="Dropbox location"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxDownloadToolTipLocalDestination}"
+                                ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxDownloadToolTipLocalDestination}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"

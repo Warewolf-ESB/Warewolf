@@ -19,9 +19,9 @@
                                Width="340"
                                MinWidth="340"
                                MaxWidth="600"
-                               Height="260"
-                               MinHeight="260"
-                               MaxHeight="260"
+                               Height="230"
+                               MinHeight="230"
+                               MaxHeight="230"
                                mc:Ignorable="d"
                                d:DesignWidth="340"  
                                d:DataContext="{d:DesignInstance upload:DropBoxDownloadViewModel}">
@@ -115,7 +115,7 @@
                                 WrapInBrackets="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}"
+                                ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipFilename}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties1:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -126,29 +126,17 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.ReadFileHelpFilename}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="FromPath"
                                      SourcePropertyValue="{Binding  FromPath, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="If it exists" />
-        <CheckBox Grid.Column="1"
-                  Grid.Row="2"
-                  Content="Overwrite"
-                  IsChecked="{Binding Path=ModelItem.OverwriteFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.CreateToolTipForceOverWrite}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CreateHelpForceOverWrite}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.OverwriteFile"
-                                     SourcePropertyValue="{Binding  ModelItem.OverwriteFile, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </CheckBox>
+
+
         <!--DropBox File Location-->
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" Height="24" VerticalAlignment="Top" />
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Dropbox File" />
         <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
                                 Grid.Column="1"
                                 Grid.Row="4"
@@ -157,12 +145,12 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="Dropbox File"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxDownloadFileName}"
+                                ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxDownloadFileName}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"
