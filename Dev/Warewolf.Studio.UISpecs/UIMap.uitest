@@ -160,6 +160,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Close tab button does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Close_Tab_Button_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExecuteCommandLine">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -466,23 +483,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Delete tool on the design surface does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Delete_Exists_OnDesignSurface">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
     <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -492,6 +492,23 @@
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Assert_Decision_Exists_OnDesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathDelete">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Delete tool on the design surface does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Delete_Exists_OnDesignSurface">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -1570,6 +1587,24 @@
       <Disabled>false</Disabled>
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="5" Y="5" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Close_Tab_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
     <DragDropAction UIObjectName="UIMap.MainStudioWindow.Explorer.ExplorerTree.LocalhostTreeItem.DatabaseConnector">
       <ParameterName />
@@ -4924,41 +4959,6 @@
       <MouseButton>Left</MouseButton>
     </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Test_Connector_Calculate_Outputs">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Close tab button does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Close_Tab_Button_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="5" Y="5" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Click_Close_Tab_Button">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -9486,9 +9486,10 @@
                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                           </WindowTitles>
                           <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                            <PropertyCondition Name="Instance">1</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
