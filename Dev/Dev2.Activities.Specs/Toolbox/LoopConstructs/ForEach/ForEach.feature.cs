@@ -377,7 +377,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 122
  testRunner.Then("the foreach executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 123
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
@@ -1059,7 +1059,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 368
  testRunner.Then("the foreach executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 369
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
