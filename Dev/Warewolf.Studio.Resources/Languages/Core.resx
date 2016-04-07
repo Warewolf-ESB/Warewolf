@@ -3007,6 +3007,21 @@ Data
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
+  <data name="DownloadFileHelpFilename" xml:space="preserve">
+    <value>Any variable and/or data goes in here.&lt;br /&gt;
+        To download the file, put the full destination path and file name in here.&lt;br/&gt;
+        You can use File System, URI, SFTP, FTP or FTPS format.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
   <data name="ReadFileHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action.&lt;br/&gt;
         By default the account running Warewolf Server.exe service will be used.&lt;br/&gt;
@@ -3843,5 +3858,18 @@ Data
   </data>
   <data name="ChooseAttachmentsHelp" xml:space="preserve">
     <value>ChooseAttachmentsHelp</value>
+  </data>
+
+  <data name="SelectAndApplyDataSourceToolTip" xml:space="preserve">
+    <value>SelectAndApplyDataSourceToolTip</value>
+  </data>
+  <data name="SelectAndApplyDataSourceHelpText" xml:space="preserve">
+    <value>SelectAndApplyDataSourceHelpText</value>
+  </data>
+  <data name="SelectAndApplyAliasToolTip" xml:space="preserve">
+    <value>SelectAndApplyAliasToolTip</value>
+  </data>
+  <data name="SelectAndApplyAliasHelpText" xml:space="preserve">
+    <value>SelectAndApplyAliasHelpText</value>
   </data>
 </root>

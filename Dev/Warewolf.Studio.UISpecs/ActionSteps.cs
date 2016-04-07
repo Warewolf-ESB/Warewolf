@@ -6,6 +6,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses;
 
@@ -36,6 +39,32 @@ namespace Warewolf.Studio.UISpecs
                 if (workflowDesignerAction != null)
                 {
                     workflowDesignerAction.Invoke(Uimap, new object[] { });
+                }
+            }
+        }
+
+        [BeforeFeature]
+        public static void WaitForStudioStart()
+        {
+            Playback.Initialize();
+            var sleepTimer = 5;
+            while (true)
+            {
+                try
+                {
+                    WpfWindow getStudioWindow = new UIMap().MainStudioWindow;
+                    getStudioWindow.WaitForControlExist(100);
+                    if (getStudioWindow.Exists)
+                    {
+                        break;
+                    }
+                }
+                catch (UITestControlNotFoundException)
+                {
+                }
+                if (sleepTimer-- <= 0)
+                {
+                    throw new InvalidOperationException("Warewolf studio not running.");
                 }
             }
         }

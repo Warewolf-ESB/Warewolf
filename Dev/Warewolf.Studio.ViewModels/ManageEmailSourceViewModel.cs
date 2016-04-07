@@ -183,7 +183,7 @@ namespace Warewolf.Studio.ViewModels
             if (_emailServiceSource == null)
             {
                 RequestServiceNameViewModel.Wait();
-                if (RequestServiceNameViewModel.Exception != null)
+                if (RequestServiceNameViewModel.Exception == null)
                 {
                     var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
 
