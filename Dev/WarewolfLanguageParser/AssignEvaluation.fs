@@ -332,7 +332,17 @@ let toJOArray (obj:JToken) =
 let getArrayPropertyFromJson (obj:JObject) (name:string) =
       obj.Property(name) |> toJOArray
 
-
+let addValueToJArray (arr:JArray) ( ind:int)  (value:WarewolfAtom)=
+    let index = ind-1
+    if(ind>arr.Count)
+    then
+        let x = arr.Count
+        for _ in x .. ind-1 do
+            arr.Add(null)
+        arr.[index] <- new JValue( atomtoString( value))
+        arr
+    else
+        arr
 
 let addEmptyValueToJArray (arr:JArray) ( ind:int)  (value:JObject) =
     let index = ind-1
