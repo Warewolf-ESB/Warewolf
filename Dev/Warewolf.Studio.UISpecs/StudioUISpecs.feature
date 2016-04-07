@@ -461,15 +461,16 @@ Scenario: Drag toolbox Email onto a new workflow
 	When I 'Open_Email_Tool_Large_View'
 	Then I 'Assert_Email_Large_View_Exists_OnDesignSurface'
 	
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Service Picker onto a new workflow
 	When I 'Drag_Toolbox_Service_Picker_Onto_DesignSurface'
-	Then I 'Assert_Service_Picker_Exists_OnDesignSurface'
+	Then I 'Assert_Service_Picker_Cancel_Button_Exists'
 	#Ashley TODO: The test should end here.
 
 	#Ashley TODO: Use low level binding hooks for this step:
 	#Given The test is initialized using low level binding calls
+	When I 'Click_Cancel_Service_Picker_Dialog'
+	Then I 'Assert_Service_Picker_Exists_OnDesignSurface'
 	
 @ignore
 @NeedsBlankWorkflow
