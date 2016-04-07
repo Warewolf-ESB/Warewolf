@@ -2,13 +2,6 @@
 	In order to create good workflows
 	As a workflow designer
 	I want to see the layout and function of workflows
-
-@mytag
-Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
 	
 @NeedsBlankWorkflow
 Scenario: Drag toolbox multiassign onto a new workflow
@@ -30,6 +23,12 @@ Scenario: Drag toolbox multiassign onto a new workflow
 @NeedsBlankWorkflow
 Scenario: Drag toolbox decision onto a new workflow
 	When I 'Drag_Toolbox_Decision_Onto_DesignSurface'
+	Then I 'Assert_Decision_Dialog_Done_Button_Exists'
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When I 'Click_Decision_Dialog_Done_Button'
 	Then I 'Assert_Decision_Exists_OnDesignSurface'
 	
 @NeedsBlankWorkflow
@@ -40,6 +39,12 @@ Scenario: Drag toolbox sequence onto a new workflow
 @NeedsBlankWorkflow
 Scenario: Drag toolbox switch onto a new workflow
 	When I 'Drag_Toolbox_Switch_Onto_DesignSurface'
+	Then I 'Assert_Decision_Dialog_Done_Button_Exists'
+	#Ashley TODO: The test should end here.
+
+	#Ashley TODO: Use low level binding hooks for this step:
+	#Given The test is initialized using low level binding calls
+	When I 'Click_Decision_Dialog_Done_Button'
 	Then I 'Assert_Switch_Exists_OnDesignSurface'
 	
 @NeedsBlankWorkflow

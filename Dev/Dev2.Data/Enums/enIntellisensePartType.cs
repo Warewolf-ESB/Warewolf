@@ -11,7 +11,7 @@
 
 
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.DataList.Contract
 {
 
     public enum enIntellisensePartType

@@ -20,7 +20,7 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces;
+using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -59,7 +59,7 @@ namespace Dev2.Studio.Core.Interfaces
         public IIntellisenseProvider Provider { get { return _provider; } }
         public string Name { get { return _name; } }
         public string Description { get { return _description; } }
-        public string DropdownDescription { get { return String.Empty; } }
+        public string DropdownDescription { get { return _dropdownDescription; } }
         public string[] Arguments { get { return _arguments; } }
         public string[] ArgumentDescriptions { get { return _argumentDescriptions; } }
         public int StartIndex { get { return _startIndex; } }
@@ -101,7 +101,7 @@ namespace Dev2.Studio.Core.Interfaces
             _provider = provider;
             _name = name;
             _description = description;
-            _isPopup = false;
+            _isPopup = true;
         }
 
         public IntellisenseProviderResult(IIntellisenseProvider provider, string name, string dropdownDescription, string description, bool isError, int startIndex, int endIndex)
@@ -133,10 +133,6 @@ namespace Dev2.Studio.Core.Interfaces
         public bool IsInCalculateMode { get; set; }
         public object TextBox { get; set; }
     }
-    //public  static  class IntellisenseProviderContextExyensions
-    //{
-    //    public  static  
-    //}
 
     public enum IntellisenseDesiredResultSet
     {

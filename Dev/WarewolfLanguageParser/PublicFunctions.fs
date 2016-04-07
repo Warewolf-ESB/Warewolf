@@ -24,7 +24,6 @@ let CreateEnv (vals:string) =
      {
        RecordSets =Map.empty;
        Scalar =Map.empty;
-       JsonObjects = Map.empty
      }
 
 let AddRecsetToEnv (name:string) (env:WarewolfEnvironment) = 

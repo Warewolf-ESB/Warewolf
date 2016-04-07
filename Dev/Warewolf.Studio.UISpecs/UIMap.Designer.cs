@@ -123,6 +123,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_Close_Tab_Button_Exists - Use 'Assert_Close_Tab_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Close_Tab_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton closeButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Close_Tab_Button_ExistsExpectedValues.CloseButtonExists, closeButton.Exists, "Close tab button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_CMD_Line_Exists_OnDesignSurface - Use 'Assert_CMD_Line_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_CMD_Line_Exists_OnDesignSurface()
@@ -367,19 +380,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'FlowDecision' custom control equals 'True'
             Assert.AreEqual(this.Assert_Decision_Exists_OnDesignSurfaceExpectedValues.DecisionExists, decision.Exists, "Decision on the design surface does not exist");
-        }
-        
-        /// <summary>
-        /// Assert_Decision_Window_Exists_OnDesignSurface - Use 'Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Decision_Window_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfWindow uIWpfWindow = this.UIWpfWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
-            Assert.AreEqual(this.Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues.UIWpfWindowExists, uIWpfWindow.Exists, "Decision Tool window does not exist");
         }
         
         /// <summary>
@@ -1021,19 +1021,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Switch_Window_Exists_OnDesignSurface - Use 'Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_Switch_Window_Exists_OnDesignSurface()
-        {
-            #region Variable Declarations
-            WpfWindow uIWpfWindow = this.UIWpfWindow;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
-            Assert.AreEqual(this.Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues.UIWpfWindowExists, uIWpfWindow.Exists, "Switch Window does not exist");
-        }
-        
-        /// <summary>
         /// Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurface - Use 'Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurface()
@@ -1229,33 +1216,16 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Click_Yes_DeleteConfirmDialog
+        /// Click_Close_Tab_Button
         /// </summary>
-        public void Click_Yes_DeleteConfirmDialog()
+        public void Click_Close_Tab_Button()
         {
             #region Variable Declarations
-            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            WpfButton closeButton = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.CloseButton;
             #endregion
 
-            // Click 'Yes' button
-            Mouse.Click(yesButton, new Point(36, 6));
-        }
-        
-        /// <summary>
-        /// Close_New_Workflow_Tab_Without_Saving
-        /// </summary>
-        public void Close_New_Workflow_Tab_Without_Saving()
-        {
-            #region Variable Declarations
-            WpfButton yesButton = this.MessageBoxWindow.YesButton;
-            WpfButton nOButton = this.MessageBoxWindow.NOButton;
-            #endregion
-
-            // Click 'Yes' button
-            Mouse.Click(yesButton, new Point(12, 7));
-
-            // Click 'No' button
-            Mouse.Click(nOButton, new Point(32, 5));
+            // Click 'closeBtn' custom control
+            Mouse.Click(closeButton, new Point(5, 5));
         }
         
         /// <summary>
@@ -1602,16 +1572,12 @@ namespace Warewolf.Studio.UISpecs
             #region Variable Declarations
             WpfListItem decision = this.MainStudioWindow.ToolBox.ToolListBox.FlowTools.Decision;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton uIDoneButton = this.UIWpfWindow.UIDoneButton;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(309, 128));
             Mouse.StartDragging(decision, new Point(26, 21));
             Mouse.StopDragging(flowchart, new Point(309, 128));
-
-            // Click 'Done' button
-            Mouse.Click(uIDoneButton, new Point(10, 14));
         }
         
         /// <summary>
@@ -2070,16 +2036,12 @@ namespace Warewolf.Studio.UISpecs
             #region Variable Declarations
             WpfListItem switch1 = this.MainStudioWindow.ToolBox.ToolListBox.FlowTools.Switch;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfButton uIDoneButton = this.UIWpfWindow.UIDoneButton;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(303, 126));
             Mouse.StartDragging(switch1, new Point(22, 30));
             Mouse.StopDragging(flowchart, new Point(303, 126));
-
-            // Click 'Done' button
-            Mouse.Click(uIDoneButton, new Point(24, 7));
         }
         
         /// <summary>
@@ -3987,6 +3949,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Close_Tab_Button_ExistsExpectedValues Assert_Close_Tab_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Close_Tab_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Close_Tab_Button_ExistsExpectedValues = new Assert_Close_Tab_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Close_Tab_Button_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_CMD_Line_Exists_OnDesignSurfaceExpectedValues Assert_CMD_Line_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -4212,18 +4186,6 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Decision_Exists_OnDesignSurfaceExpectedValues = new Assert_Decision_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Decision_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
-        public virtual Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Decision_Window_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Decision_Window_Exists_OnDesignSurfaceExpectedValues = new Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Decision_Window_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -4815,18 +4777,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues == null))
-                {
-                    this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues = new Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues();
-                }
-                return this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues;
-            }
-        }
-        
         public virtual Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -5198,18 +5148,6 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIWarewolfDEV2LEROYWARWindow;
             }
         }
-        
-        public UIWpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new UIWpfWindow();
-                }
-                return this.mUIWpfWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -5226,6 +5164,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_Case_Conversion_Exists_OnDesignSurfaceExpectedValues mAssert_Case_Conversion_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Close_Tab_Button_ExistsExpectedValues mAssert_Close_Tab_Button_ExistsExpectedValues;
         
         private Assert_CMD_Line_Exists_OnDesignSurfaceExpectedValues mAssert_CMD_Line_Exists_OnDesignSurfaceExpectedValues;
         
@@ -5264,8 +5204,6 @@ namespace Warewolf.Studio.UISpecs
         private Assert_DateTime_Difference_Conversion_Exists_OnDesignSurfaceExpectedValues mAssert_DateTime_Difference_Conversion_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Decision_Exists_OnDesignSurfaceExpectedValues mAssert_Decision_Exists_OnDesignSurfaceExpectedValues;
-        
-        private Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues mAssert_Decision_Window_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Delete_Exists_OnDesignSurfaceExpectedValues mAssert_Delete_Exists_OnDesignSurfaceExpectedValues;
         
@@ -5365,8 +5303,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Switch_Exists_OnDesignSurfaceExpectedValues mAssert_Switch_Exists_OnDesignSurfaceExpectedValues;
         
-        private Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues;
-        
         private Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_System_Info_Qvi_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_System_information_Exists_OnDesignSurfaceExpectedValues mAssert_System_information_Exists_OnDesignSurfaceExpectedValues;
@@ -5428,8 +5364,6 @@ namespace Warewolf.Studio.UISpecs
         private MessageBoxWindow mMessageBoxWindow;
         
         private UIWarewolfDEV2LEROYWARWindow mUIWarewolfDEV2LEROYWARWindow;
-        
-        private UIWpfWindow mUIWpfWindow;
         #endregion
     }
     
@@ -5535,6 +5469,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfCaseConvertActivity' custom control equals 'True'
         /// </summary>
         public bool CaseConvertExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Close_Tab_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Close_Tab_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'closeBtn' custom control equals 'True'
+        /// </summary>
+        public bool CloseButtonExists = true;
         #endregion
     }
     
@@ -5820,21 +5769,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'FlowDecision' custom control equals 'True'
         /// </summary>
         public bool DecisionExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Decision_Window_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_Decision_Window_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
-        /// </summary>
-        public bool UIWpfWindowExists = true;
         #endregion
     }
     
@@ -6570,21 +6504,6 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'FlowSwitch`1[String]' custom control equals 'True'
         /// </summary>
         public bool SwitchExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_Switch_Window_Exists_OnDesignSurface'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
-        /// </summary>
-        public bool UIWpfWindowExists = true;
         #endregion
     }
     
@@ -8329,6 +8248,22 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public WpfButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mCloseButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
+        
         public WorkSurfaceContext3 WorkSurfaceContext
         {
             get
@@ -8343,6 +8278,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private WpfButton mCloseButton;
+        
         private WorkSurfaceContext3 mWorkSurfaceContext;
         #endregion
     }
@@ -14379,6 +14316,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mDecision = new WpfListItem(this);
                     #region Search Criteria
                     this.mDecision.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDecision.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
                     this.mDecision.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
@@ -18017,39 +17955,6 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfTree mUIExplorerTreeTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWpfWindow : WpfWindow
-    {
-        
-        public UIWpfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIDoneButton
-        {
-            get
-            {
-                if ((this.mUIDoneButton == null))
-                {
-                    this.mUIDoneButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    #endregion
-                }
-                return this.mUIDoneButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIDoneButton;
         #endregion
     }
 }

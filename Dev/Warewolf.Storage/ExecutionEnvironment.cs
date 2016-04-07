@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
 
 namespace Warewolf.Storage
@@ -71,8 +70,6 @@ namespace Warewolf.Storage
         void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList,int update);
 
         WarewolfDataEvaluationCommon.WarewolfEvalResult EvalForJson(string exp);
-
-        void AddToJsonObjects(string bob, JContainer jContainer);
     }
     public class ExecutionEnvironment : IExecutionEnvironment
     {
@@ -131,44 +128,6 @@ namespace Warewolf.Storage
                     return WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
             }
 
-        }
-
-        public void AddToJsonObjects(string bob, JContainer jContainer)
-        {
-            JObject j = JObject.FromObject(new Person()
-            {
-                Name = "n",
-                Children = new List<Person>
-                {
-                    new Person()
-                    {
-                        Name = "p", Children = new List<Person>{       new Person()
-                    {
-                        Name = "r", Children = new List<Person>()
-                    },        new Person()
-                    {
-                        Name = "s", Children = new List<Person>()
-                    } }
-
-                    }, 
-                    new Person()
-                    {
-                        Name = "q", Children = new List<Person>(){       new Person()
-                    {
-                        Name = "r", Children = new List<Person>()
-                    },        new Person()
-                    {
-                        Name = "s", Children = new List<Person>()
-                    } }
-                    }
-                },
-                Spouse = new Person()
-                {
-                    Name = "o",
-                    Children = new List<Person>()
-                }
-            });
-            _env = AssignEvaluation.AddToJsonObjects(_env, "bob", j);
         }
 
         public IEnumerable< WarewolfDataEvaluationCommon.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
