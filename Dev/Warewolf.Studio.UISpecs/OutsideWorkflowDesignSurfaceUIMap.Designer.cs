@@ -290,6 +290,32 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Assert_Decision_Dialog_Done_Button_Exists - Use 'Assert_Decision_Dialog_Done_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Decision_Dialog_Done_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Assert_Decision_Dialog_Done_Button_ExistsExpectedValues.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Decision_Dialog_Exists - Use 'Assert_Decision_Dialog_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Decision_Dialog_Exists()
+        {
+            #region Variable Declarations
+            WpfWindow decisionDialog = this.DecisionDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Decision_Dialog_ExistsExpectedValues.DecisionDialogExists, decisionDialog.Exists, "Decision dialog does not exist");
+        }
+        
+        /// <summary>
         /// Assert_DeployButton_DestinationServer_Exists - Use 'Assert_DeployButton_DestinationServer_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_DeployButton_DestinationServer_Exists()
@@ -1083,6 +1109,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Assert_Service_Picker_Cancel_Button_Exists - Use 'Assert_Service_Picker_Cancel_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Cancel_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton cancel = this.MainStudioWindow.ServicePickerDialog.Cancel;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Cancel' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Cancel_Button_ExistsExpectedValues.CancelExists, cancel.Exists, "Service picker dialog cancel button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Service_Picker_Dialog_Exists - Use 'Assert_Service_Picker_Dialog_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Service_Picker_Dialog_Exists()
@@ -1340,6 +1379,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Verify that the 'Exists' property of '1 Resource Deployed Successfully.' label equals 'True'
             Assert.AreEqual(this.Assert_SuccessMessage_Label_ExistsExpectedValues.SuccessMessageTextExists, successMessageText.Exists, "Success message label does not exist in destination server of the deploy window");
+        }
+        
+        /// <summary>
+        /// Assert_Switch_Window_Exists_OnDesignSurface - Use 'Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Switch_Window_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfWindow decisionDialog = this.DecisionDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues.DecisionDialogExists, decisionDialog.Exists, "Switch Window does not exist");
         }
         
         /// <summary>
@@ -1702,6 +1754,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Click_Decision_Dialog_Done_Button
+        /// </summary>
+        public void Click_Decision_Dialog_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(10, 14));
+        }
+        
+        /// <summary>
         /// Click_Deploy_Ribbon_Button
         /// </summary>
         public void Click_Deploy_Ribbon_Button()
@@ -1726,36 +1791,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             // Move custom control
             Mouse.StartDragging(uIItemCustom4, new Point(250, 16));
             Mouse.StopDragging(uIItemCustom4, -216, 217);
-        }
-        
-        /// <summary>
-        /// Click_Dock_ToolBox
-        /// </summary>
-        public void Click_Dock_ToolBox()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            #endregion
-
-            // Move custom control
-            Mouse.StartDragging(uIItemCustom4, new Point(234, 18));
-            Mouse.StopDragging(uIItemCustom4, -66, -27);
-        }
-        
-        /// <summary>
-        /// Click_Dock_VariableList
-        /// </summary>
-        public void Click_Dock_VariableList()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(54, 13));
-            Mouse.StartDragging(uIItemCustom4, new Point(251, 15));
-            Mouse.StopDragging(uIItemCustom, new Point(54, 13));
         }
         
         /// <summary>
@@ -1876,22 +1911,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
-        /// Click_Move_ToolboxWindow
-        /// </summary>
-        public void Click_Move_ToolboxWindow()
-        {
-            #region Variable Declarations
-            WpfCustom uITOOLBOXCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDockManagerCustom.UIZ9651af96607d48d7b87Custom.UITOOLBOXCustom;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move 'TOOL BOX' custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(57, 90));
-            Mouse.StartDragging(uITOOLBOXCustom, new Point(445, 28));
-            Mouse.StopDragging(uIItemCustom, new Point(57, 90));
-        }
-        
-        /// <summary>
         /// Click_Nested_Workflow_Name
         /// </summary>
         public void Click_Nested_Workflow_Name()
@@ -1980,6 +1999,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Click 'Create a new web source' button
             Mouse.Click(uICreateanewwebsourceButton, new Point(13, 18));
+        }
+        
+        /// <summary>
+        /// Click_No_Save_Dialog
+        /// </summary>
+        public void Click_No_Save_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton nOButton = this.MessageBoxWindow.NOButton;
+            #endregion
+
+            // Click 'No' button
+            Mouse.Click(nOButton, new Point(32, 5));
         }
         
         /// <summary>
@@ -2256,6 +2288,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Click_Switch_Dialog_Done_Button
+        /// </summary>
+        public void Click_Switch_Dialog_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(24, 7));
+        }
+        
+        /// <summary>
         /// Click_Toggle_Pin_DebugOutput
         /// </summary>
         public void Click_Toggle_Pin_DebugOutput()
@@ -2499,23 +2544,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Click 'Yes' button
             Mouse.Click(yesButton, new Point(36, 6));
-        }
-        
-        /// <summary>
-        /// Close_New_Workflow_Tab_Without_Saving
-        /// </summary>
-        public void Close_New_Workflow_Tab_Without_Saving()
-        {
-            #region Variable Declarations
-            WpfButton uIItemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.UIItemButton;
-            WpfButton nOButton = this.MessageBoxWindow.NOButton;
-            #endregion
-
-            // Click '' button
-            Mouse.Click(uIItemButton, new Point(12, 7));
-
-            // Click 'No' button
-            Mouse.Click(nOButton, new Point(32, 5));
         }
         
         /// <summary>
@@ -3011,6 +3039,30 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mAssert_DebugInput_Xml_Window_ExistsExpectedValues = new Assert_DebugInput_Xml_Window_ExistsExpectedValues();
                 }
                 return this.mAssert_DebugInput_Xml_Window_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Decision_Dialog_Done_Button_ExistsExpectedValues Assert_Decision_Dialog_Done_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues = new Assert_Decision_Dialog_Done_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Decision_Dialog_ExistsExpectedValues Assert_Decision_Dialog_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Decision_Dialog_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Decision_Dialog_ExistsExpectedValues = new Assert_Decision_Dialog_ExistsExpectedValues();
+                }
+                return this.mAssert_Decision_Dialog_ExistsExpectedValues;
             }
         }
         
@@ -3746,6 +3798,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public virtual Assert_Service_Picker_Cancel_Button_ExistsExpectedValues Assert_Service_Picker_Cancel_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues = new Assert_Service_Picker_Cancel_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_Service_Picker_Dialog_ExistsExpectedValues Assert_Service_Picker_Dialog_ExistsExpectedValues
         {
             get
@@ -3983,6 +4047,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mAssert_SuccessMessage_Label_ExistsExpectedValues = new Assert_SuccessMessage_Label_ExistsExpectedValues();
                 }
                 return this.mAssert_SuccessMessage_Label_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues = new Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -4562,18 +4638,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIWpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new UIWpfWindow();
-                }
-                return this.mUIWpfWindow;
-            }
-        }
-        
         public SaveDialogWindow SaveDialogWindow
         {
             get
@@ -4607,6 +4671,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mSplashPageWindow = new SplashPageWindow();
                 }
                 return this.mSplashPageWindow;
+            }
+        }
+        
+        public DecisionDialog DecisionDialog
+        {
+            get
+            {
+                if ((this.mDecisionDialog == null))
+                {
+                    this.mDecisionDialog = new DecisionDialog();
+                }
+                return this.mDecisionDialog;
             }
         }
         #endregion
@@ -4651,6 +4727,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private Assert_DebugInput_Xml_Tab_ExistsExpectedValues mAssert_DebugInput_Xml_Tab_ExistsExpectedValues;
         
         private Assert_DebugInput_Xml_Window_ExistsExpectedValues mAssert_DebugInput_Xml_Window_ExistsExpectedValues;
+        
+        private Assert_Decision_Dialog_Done_Button_ExistsExpectedValues mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues;
+        
+        private Assert_Decision_Dialog_ExistsExpectedValues mAssert_Decision_Dialog_ExistsExpectedValues;
         
         private Assert_DeployButton_DestinationServer_ExistsExpectedValues mAssert_DeployButton_DestinationServer_ExistsExpectedValues;
         
@@ -4774,6 +4854,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private Assert_Server_Version_ExistsExpectedValues mAssert_Server_Version_ExistsExpectedValues;
         
+        private Assert_Service_Picker_Cancel_Button_ExistsExpectedValues mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
+        
         private Assert_Service_Picker_Dialog_ExistsExpectedValues mAssert_Service_Picker_Dialog_ExistsExpectedValues;
         
         private Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues;
@@ -4813,6 +4895,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private Assert_SplitPane_Right_ExistsExpectedValues mAssert_SplitPane_Right_ExistsExpectedValues;
         
         private Assert_SuccessMessage_Label_ExistsExpectedValues mAssert_SuccessMessage_Label_ExistsExpectedValues;
+        
+        private Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_TabHeader_ExistsExpectedValues mAssert_TabHeader_ExistsExpectedValues;
         
@@ -4910,13 +4994,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private DebugInputWindow mDebugInputWindow;
         
-        private UIWpfWindow mUIWpfWindow;
-        
         private SaveDialogWindow mSaveDialogWindow;
         
         private ServicePickerWindow mServicePickerWindow;
         
         private SplashPageWindow mSplashPageWindow;
+        
+        private DecisionDialog mDecisionDialog;
         #endregion
     }
     
@@ -5217,6 +5301,36 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// Verify that the 'Exists' property of 'UI_XMLEditor_AutoID' custom control equals 'True'
         /// </summary>
         public bool XMLWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Decision_Dialog_Done_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Decision_Dialog_Done_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Decision_Dialog_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Decision_Dialog_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool DecisionDialogExists = true;
         #endregion
     }
     
@@ -6136,6 +6250,21 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Cancel_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Service_Picker_Cancel_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
+        /// </summary>
+        public bool CancelExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_Service_Picker_Dialog_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -6432,6 +6561,21 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// Verify that the 'Exists' property of '1 Resource Deployed Successfully.' label equals 'True'
         /// </summary>
         public bool SuccessMessageTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Switch_Window_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool DecisionDialogExists = true;
         #endregion
     }
     
@@ -21848,412 +21992,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWpfWindow : WpfWindow
-    {
-        
-        public UIWpfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIDoneButton
-        {
-            get
-            {
-                if ((this.mUIDoneButton == null))
-                {
-                    this.mUIDoneButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    #endregion
-                }
-                return this.mUIDoneButton;
-            }
-        }
-        
-        public UIExplorerViewCustom UIExplorerViewCustom
-        {
-            get
-            {
-                if ((this.mUIExplorerViewCustom == null))
-                {
-                    this.mUIExplorerViewCustom = new UIExplorerViewCustom(this);
-                }
-                return this.mUIExplorerViewCustom;
-            }
-        }
-        
-        public UIItemCustom3 UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom3(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIDoneButton;
-        
-        private UIExplorerViewCustom mUIExplorerViewCustom;
-        
-        private UIItemCustom3 mUIItemCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIExplorerViewCustom : WpfCustom
-    {
-        
-        public UIExplorerViewCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ExplorerView";
-            #endregion
-        }
-        
-        #region Properties
-        public UISearchTextBoxEdit UISearchTextBoxEdit
-        {
-            get
-            {
-                if ((this.mUISearchTextBoxEdit == null))
-                {
-                    this.mUISearchTextBoxEdit = new UISearchTextBoxEdit(this);
-                }
-                return this.mUISearchTextBoxEdit;
-            }
-        }
-        
-        public WpfButton UIItemButton
-        {
-            get
-            {
-                if ((this.mUIItemButton == null))
-                {
-                    this.mUIItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
-                    #endregion
-                }
-                return this.mUIItemButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISearchTextBoxEdit mUISearchTextBoxEdit;
-        
-        private WpfButton mUIItemButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UISearchTextBoxEdit : WpfEdit
-    {
-        
-        public UISearchTextBoxEdit(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIFilterText
-        {
-            get
-            {
-                if ((this.mUIFilterText == null))
-                {
-                    this.mUIFilterText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    #endregion
-                }
-                return this.mUIFilterText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIFilterText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom3 : WpfCustom
-    {
-        
-        public UIItemCustom3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolWindow";
-            #endregion
-        }
-        
-        #region Properties
-        public UIVARIABLESCustom1 UIVARIABLESCustom
-        {
-            get
-            {
-                if ((this.mUIVARIABLESCustom == null))
-                {
-                    this.mUIVARIABLESCustom = new UIVARIABLESCustom1(this);
-                }
-                return this.mUIVARIABLESCustom;
-            }
-        }
-        
-        public UIOUTPUTCustom UIOUTPUTCustom
-        {
-            get
-            {
-                if ((this.mUIOUTPUTCustom == null))
-                {
-                    this.mUIOUTPUTCustom = new UIOUTPUTCustom(this);
-                }
-                return this.mUIOUTPUTCustom;
-            }
-        }
-        
-        public UIEXPLORERCustom UIEXPLORERCustom
-        {
-            get
-            {
-                if ((this.mUIEXPLORERCustom == null))
-                {
-                    this.mUIEXPLORERCustom = new UIEXPLORERCustom(this);
-                }
-                return this.mUIEXPLORERCustom;
-            }
-        }
-        
-        public UIWHATDOESTHISDOCustom1 UIWHATDOESTHISDOCustom
-        {
-            get
-            {
-                if ((this.mUIWHATDOESTHISDOCustom == null))
-                {
-                    this.mUIWHATDOESTHISDOCustom = new UIWHATDOESTHISDOCustom1(this);
-                }
-                return this.mUIWHATDOESTHISDOCustom;
-            }
-        }
-        
-        public UITOOLBOXCustom UITOOLBOXCustom
-        {
-            get
-            {
-                if ((this.mUITOOLBOXCustom == null))
-                {
-                    this.mUITOOLBOXCustom = new UITOOLBOXCustom(this);
-                }
-                return this.mUITOOLBOXCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIVARIABLESCustom1 mUIVARIABLESCustom;
-        
-        private UIOUTPUTCustom mUIOUTPUTCustom;
-        
-        private UIEXPLORERCustom mUIEXPLORERCustom;
-        
-        private UIWHATDOESTHISDOCustom1 mUIWHATDOESTHISDOCustom;
-        
-        private UITOOLBOXCustom mUITOOLBOXCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIVARIABLESCustom1 : WpfCustom
-    {
-        
-        public UIVARIABLESCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIOUTPUTCustom : WpfCustom
-    {
-        
-        public UIOUTPUTCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIEXPLORERCustom : WpfCustom
-    {
-        
-        public UIEXPLORERCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Explorer";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWHATDOESTHISDOCustom1 : WpfCustom
-    {
-        
-        public UIWHATDOESTHISDOCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Help";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UITOOLBOXCustom : WpfCustom
-    {
-        
-        public UITOOLBOXCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Toolbox";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SaveDialogWindow : WpfWindow
     {
         
@@ -22524,5 +22262,38 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             this.WindowTitles.Add("SplashPage");
             #endregion
         }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class DecisionDialog : WpfWindow
+    {
+        
+        public DecisionDialog()
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDoneButton;
+        #endregion
     }
 }
