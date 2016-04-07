@@ -183,10 +183,6 @@
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
-      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
-      <Name>WarewolfLanguageParser</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\" />
