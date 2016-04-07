@@ -1774,7 +1774,7 @@ namespace Dev2
                         }
                         catch(Exception ex)
                         {
-                            Dev2Logger.Debug(ex.Message,ex);
+                            Dev2Logger.Debug(resource.FilePath + " is outdated or corrupted and threw exception on load: " + ex.Message, ex);
                         }
                     }
                 }
@@ -2424,7 +2424,7 @@ namespace Dev2
                         dbActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
                     }
                 }
-                if(dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
+                if (dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
                 {
                     updated = true;
                     var dbId = dbActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivityAsActivity.ResourceID.Expression.ToString());

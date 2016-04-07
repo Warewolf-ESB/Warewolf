@@ -551,7 +551,7 @@ or type_desc LIKE '%Procedure%'";
             }
 
         }
-        public static string DropboxPathNotFoundException = "The file specified does not exist in Dropbox";
+        public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
         public static string DropBoxSucces = "Success";
         public static string DropBoxFailure = "Failed";

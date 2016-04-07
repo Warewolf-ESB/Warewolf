@@ -208,7 +208,7 @@ let rec doReplace (text:string)  (caretPosition:int ) (replacement:string) =
 
                                           
         | RecordSetExpression _ ->  let b = (languageExpressionToString parsed)
-                                    let first = b.Substring(0,caretPosition)                                    
+                                    let first = b.Substring(0,caretPosition)
                                     let indexOfData = first.IndexOf("[[")
                                     let indexOfEndData = b.IndexOfAny(Tokenisers2,caretPosition)
                                     let indexOfBData = first.LastIndexOfAny(Tokenisers3)

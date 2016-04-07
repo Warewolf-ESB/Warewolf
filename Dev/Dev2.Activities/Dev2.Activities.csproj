@@ -171,17 +171,18 @@
     <Compile Include="Activities\DropBox2016\DownloadActivity\DsfDropBoxDownloadActivity.cs" />
     <Compile Include="Activities\DropBox2016\DownloadActivity\IDropboxDownload.cs" />
     <Compile Include="Activities\DropBox2016\DropboxFiles\DropboxFileList.cs" />
-    <Compile Include="Activities\DropBox2016\Result\DropboxFailureResult.cs" />
-    <Compile Include="Activities\DropBox2016\Result\DropboxUploadSuccessResult.cs" />
-    <Compile Include="Activities\DropBox2016\Result\DropboxDownloadSuccessResult.cs" />
     <Compile Include="Activities\DropBox2016\DropboxSoureFileValidator.cs" />
-    <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
-    <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxExecutor.cs" />
+    <Compile Include="Activities\DropBox2016\IDropboxResult.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxSingleExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxTeamExecutor.cs" />
-    <Compile Include="Activities\DropBox2016\IDropboxResult.cs" />
     <Compile Include="Activities\DropBox2016\IFilenameValidator.cs" />
+    <Compile Include="Activities\DropBox2016\ILocalPathManager.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxDownloadSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxFailureResult.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxUploadSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
+    <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointDeleteListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />
@@ -451,7 +453,12 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Activities\DropBox\DownloadActivity\" />
+    <Folder Include="Activities\DropBox\DropboxFiles\" />
+    <Folder Include="Activities\DropBox\Result\" />
+    <Folder Include="Activities\DropBox\UploadActivity\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--
   <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">

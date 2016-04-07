@@ -15,6 +15,7 @@ using Dev2.Services.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using Dev2.Activities.Designers2.DropBox2016.Download;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
@@ -49,6 +50,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
             ScenarioContext.Current.Add("downloadViewModel", downloadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
+            
         }
 
         private static DropBoxDownloadViewModel GetViewModel()
@@ -59,7 +62,10 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
-
+        private Mock<IEventAggregator> GetEventAggregator()
+        {
+            return ScenarioContext.Current.Get<Mock<IEventAggregator>>("eventAggrMock");
+        }
         [Given(@"Read New is Enabled")]
         public void GivenReadNewIsEnabled()
         {
@@ -131,8 +137,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the Read New Dropbox Source window is opened")]
         public void ThenTheReadNewDropboxSourceWindowIsOpened()
         {
-            var isDropboxSourceWizardSourceMessagePulished = GetViewModel().IsDropboxSourceWizardSourceMessagePulished;
-            Assert.IsTrue(isDropboxSourceWizardSourceMessagePulished);
+            Mock<IEventAggregator> eventAggregator = GetEventAggregator();
+            eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));        
         }
 
         [Then(@"Read Edit is Enabled")]

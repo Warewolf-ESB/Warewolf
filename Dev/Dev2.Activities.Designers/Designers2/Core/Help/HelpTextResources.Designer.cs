@@ -2072,6 +2072,28 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///     This is the name of the file that will be downloaded from DropBox.
+        ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        /// </summary>
+        public static string DropBoxDownloadFileName {
+            get {
+                return ResourceManager.GetString("DropBoxDownloadFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///     This is the name of the file that will be read from DropBox.
+        ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        /// </summary>
+        public static string DropBoxDownloadToolTipLocalDestination {
+            get {
+                return ResourceManager.GetString("DropBoxDownloadToolTipLocalDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the operation that you wish to perform. Read from a file on Dropbox..
         /// </summary>
         public static string DropboxOperationToolTip {
@@ -3689,7 +3711,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To read the content of a file, put the full path and file name in here.
+        ///To upload a file, put the full path and file name in here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ReadFileToolTipFilename {

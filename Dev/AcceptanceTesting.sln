@@ -290,8 +290,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.SharepointTest", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplicationToTestNetwork", "ConsoleApplicationToTestNetwork\ConsoleApplicationToTestNetwork.csproj", "{FEF0E429-201C-4530-9E14-698910D49FB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.DataStructures.StringSearch", "Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

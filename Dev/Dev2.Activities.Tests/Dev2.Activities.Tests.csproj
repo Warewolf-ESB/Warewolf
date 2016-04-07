@@ -167,6 +167,7 @@
     <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxDownloadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxUploadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\ExceptionTests\DropboxFileNotFoundExceptionShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\LocalPathManagerTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\TestConstant.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropboxDownloadSuccessResultShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\DropBoxFailureResultShould.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="ActivityTests\DropBox2016\DropboxSoureFileValidatorShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
+    <Compile Include="ActivityTests\SelectAndApply\SelectAndApplyActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />

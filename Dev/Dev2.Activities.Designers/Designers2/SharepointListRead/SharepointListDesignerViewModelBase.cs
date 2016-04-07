@@ -2,7 +2,9 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Xml;
 using Caliburn.Micro;
@@ -24,7 +26,7 @@ using Dev2.TO;
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
-    public abstract class SharepointListDesignerViewModelBase : ActivityCollectionDesignerViewModel<SharepointSearchTo>        
+    public abstract class SharepointListDesignerViewModelBase : ActivityCollectionDesignerViewModel<SharepointSearchTo>,INotifyPropertyChanged        
     {
         readonly IEventAggregator _eventPublisher;
         readonly bool _loadOnlyEditableFields;
@@ -86,6 +88,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             DependencyProperty.Register("SelectedList", typeof(SharepointListTo), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(null, OnSelectedListChanged));
         public static readonly DependencyProperty ListItemsProperty =
             DependencyProperty.Register("ListItems", typeof(List<SharepointReadListTo>), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(new List<SharepointReadListTo>()));
+        private List<SharepointReadListTo> _readListItems;
         public bool IsSelectedSharepointServerFocused { get { return (bool)GetValue(IsSelectedSharepointServerFocusedProperty); } set { SetValue(IsSelectedSharepointServerFocusedProperty, value); } }
         public bool IsSelectedListFocused { get { return (bool)GetValue(IsSelectedListFocusedProperty); } set { SetValue(IsSelectedListFocusedProperty, value); } }
         public SharepointSource SelectedSharepointServer
@@ -127,19 +130,21 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 RefreshListsCommand.RaiseCanExecuteChanged();
             }
         }
-        List<SharepointReadListTo> ReadListItems
+        public List<SharepointReadListTo> ReadListItems
         {
             get
             {
-                return GetProperty<List<SharepointReadListTo>>();
+                return _readListItems ?? GetProperty<List<SharepointReadListTo>>();
             }
             set
             {
                 if (!_isInitializing)
                 {
+                    _readListItems = value;
                     SetProperty(value);                    
                 }
                 ListItems = value;
+                OnPropertyChanged();
             }
         }
         public List<SharepointReadListTo> ListItems
@@ -150,9 +155,8 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             }
             set
             {
-
                 SetValue(ListItemsProperty, value);
-
+                OnPropertyChanged();
             }
         }
         string SharepointList
@@ -494,6 +498,17 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             if (dto == null)
             {
                 yield break;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
