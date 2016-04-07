@@ -111,10 +111,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             emailMessage.ToRecipients.Add(testMessage.To);
 
-            if (!string.IsNullOrEmpty(testMessage.Attachment))
+            foreach (var att in testMessage.Attachments)
             {
-                emailMessage.Attachments.AddFileAttachment(testMessage.Attachment);
+                if (!string.IsNullOrEmpty(att))
+                {
+                    emailMessage.Attachments.AddFileAttachment(att);
+                }
             }
+
             if (!string.IsNullOrEmpty(testMessage.CC))
             {
                 emailMessage.CcRecipients.Add(testMessage.CC);
@@ -164,10 +168,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
     public class ExchangeTestMessage
     {
+        public ExchangeTestMessage()
+        {
+            Attachments = new List<string>();
+        }
         public string To { get; set; }
         public string CC { get; set; }
         public string BCC { get; set; }
-        public string Attachment { get; set; }
+        public List<string> Attachments { get; set; }
         public string Body { get; set; }
         public string Subject { get; set; }
     }

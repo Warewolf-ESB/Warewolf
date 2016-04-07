@@ -181,6 +181,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanCreateDbSource = false;
                 child.CanCreateDropboxSource = false;
                 child.CanCreateEmailSource = false;
+                child.CanCreateExchangeSource = false;
                 child.CanCreateServerSource = false;
                 child.CanCreateSharePointSource = false;
                 child.CanCreatePluginSource = false;
@@ -200,6 +201,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanRename = true;
                 child.CanCreatePluginSource = CanCreatePluginSource;
                 child.CanCreateEmailSource = CanCreateEmailSource;
+                child.CanCreateExchangeSource = CanCreateExchangeSource;
                 child.CanCreateDropboxSource = CanCreateDropboxSource;
                 child.CanCreateSharePointSource = CanCreateSharePointSource;
                 child.CanCreateServerSource = CanCreateServerSource;
@@ -290,6 +292,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = permissions.Contribute;
             CanCreatePluginSource = permissions.Contribute;
             CanCreateEmailSource = permissions.Contribute;
+            CanCreateExchangeSource = permissions.Contribute;
             CanCreateDropboxSource = permissions.Contribute;
             CanCreateSharePointSource = permissions.Contribute;
             CanCreateServerSource = permissions.Contribute;
@@ -312,6 +315,7 @@ namespace Warewolf.Studio.ViewModels
                 CanCreateDbSource = false;
                 CanCreateDropboxSource = false;
                 CanCreateEmailSource = false;
+                CanCreateExchangeSource = false;
                 CanCreateServerSource = false;
                 CanCreateSharePointSource = false;
                 CanCreatePluginSource = false;
@@ -328,6 +332,7 @@ namespace Warewolf.Studio.ViewModels
                 CanCreateFolder = true;
                 CanCreatePluginSource = true;
                 CanCreateEmailSource = true;
+                CanCreateExchangeSource = true;
                 CanCreateDropboxSource = true;
                 CanCreateSharePointSource = true;
                 CanCreateServerSource = true;
@@ -420,6 +425,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginSource { get; set; }
         public bool CanCreateEmailSource { get; set; }
+        public bool CanCreateExchangeSource { get; set; }
         public bool CanCreateDropboxSource { get; set; }
         public bool CanCreateSharePointSource { get; set; }
         public bool CanRename { get; set; }

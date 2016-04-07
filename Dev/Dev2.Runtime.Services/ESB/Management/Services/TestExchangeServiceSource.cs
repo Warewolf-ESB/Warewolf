@@ -43,7 +43,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     BCC = string.Empty,
                     Subject = "Exchange Email Test",
                     Body = "Test Exchange email service source",
-                    Attachment = string.Empty
                 };
 
                 con.Send(con, testMessage);

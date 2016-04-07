@@ -33,7 +33,6 @@ namespace Dev2.Activities.Exchange
         public DsfExchangeEmailActivity()
             : base("Exchange Email")
         {
-            FromAccount = string.Empty;
             To = string.Empty;
             Cc = string.Empty;
             Bcc = string.Empty;
@@ -62,9 +61,6 @@ namespace Dev2.Activities.Exchange
         public IExchangeSource SavedSource { get; set; }
 
 
-        // ReSharper restore MemberCanBePrivate.Global
-        [FindMissing]
-        public string FromAccount { get; set; }
         [FindMissing]
         public string Password
         {
@@ -205,7 +201,7 @@ namespace Dev2.Activities.Exchange
                     while (colItr.HasMoreData())
                     {
                         ErrorResultTO errors;
-                        var result = SendEmail(runtimeSource, colItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
                         allErrors.MergeErrors(errors);
                         if (!allErrors.HasErrors())
                         {
@@ -224,7 +220,6 @@ namespace Dev2.Activities.Exchange
                 {
                     if (IsDebug)
                     {
-                        AddDebugInputItem(FromAccount, "From Account");
                         AddDebugInputItem(To, "To");
                         AddDebugInputItem(Subject, "Subject");
                         AddDebugInputItem(Body, "Body");
@@ -293,7 +288,7 @@ namespace Dev2.Activities.Exchange
         }
 
         // ReSharper disable TooManyArguments
-        string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
+        string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr,IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
         // ReSharper restore TooManyArguments
         {
             InitializeService();
@@ -414,11 +409,6 @@ namespace Dev2.Activities.Exchange
             {
                 foreach (Tuple<string, string> t in updates)
                 {
-
-                    if (t.Item1 == FromAccount)
-                    {
-                        FromAccount = t.Item2;
-                    }
                     if (t.Item1 == Password)
                     {
                         Password = t.Item2;
@@ -492,7 +482,7 @@ namespace Dev2.Activities.Exchange
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return GetForEachItems(FromAccount, Password, To, Cc, Bcc, Subject, Attachments, Body);
+            return GetForEachItems(Password, To, Cc, Bcc, Subject, Attachments, Body);
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()

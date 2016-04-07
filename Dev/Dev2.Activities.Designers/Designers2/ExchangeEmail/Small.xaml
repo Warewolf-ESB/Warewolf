@@ -13,6 +13,7 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                Width="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
@@ -30,9 +31,7 @@
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -41,42 +40,50 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" x:Name="SourceLabel" Text="Source" />
-        <ComboBox Grid.Column="1" Grid.Row="0" x:Name="SourcesComboBox"
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=BodyTextBox, Path=ActualWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" x:Name="SourceLabel" Text="Source" />
+            <ComboBox Grid.Column="1" x:Name="SourcesComboBox"
                         
                           DisplayMemberPath="Name" 
                           Margin="{StaticResource ControlBorderRight}"
                           ToolTip="{Binding SourceRegion.SourcesTooltip}"
                           ItemsSource="{Binding SourceRegion.Sources}"
                           SelectedItem="{Binding SourceRegion.SelectedSource , Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{Binding SourceRegion.SourcesHelpText}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </ComboBox>
-        <Button Grid.Column="2" Grid.Row="0" x:Name="SourceEditButton" 
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{Binding SourceRegion.SourcesHelpText}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button Grid.Column="2" x:Name="SourceEditButton" 
                         Margin="{StaticResource ControlBorderRight}"
                         Content="..."
                         ToolTip="{Binding SourceRegion.EditSourceTooltip}"
                         Command="{Binding Path=SourceRegion.EditSourceCommand, Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{Binding SourceRegion.EditSourceHelpText}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </Button>
-        <Button Grid.Column="3" Grid.Row="0" x:Name="SourceNewButton" 
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{Binding SourceRegion.EditSourceHelpText}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button Grid.Column="3" x:Name="SourceNewButton" 
                         Content="{x:Static languages:Core.New}" 
+                    Width="Auto"
                         Style="{StaticResource ButtonOrangeStyle}" 
                         ToolTip="{Binding SourceRegion.NewSourceTooltip}"
                         Command="{Binding Path=SourceRegion.NewSourceCommand, Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{Binding SourceRegion.NewSourceHelpText}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </Button>
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{Binding SourceRegion.NewSourceHelpText}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
         <TextBlock Grid.Column="0" Grid.Row="1" Text="To" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1"
+        <TextBox Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="{StaticResource ControlBorderTop}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                DefaultText="Account or email address"
+                                customControls:WatermarkTextBox.Watermark="Account or email address"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipTo}"
                                 Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
@@ -87,15 +94,14 @@
                                      SourcePropertyValue="{Binding ModelItem.To, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+        </TextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Subject" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1"
+        <TextBox Grid.Column="1"
                                 Grid.Row="2"
-                                DefaultText="Message Subject"
+                                customControls:WatermarkTextBox.Watermark="Message Subject"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipSubject}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_subjecttxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -105,17 +111,16 @@
                                      SourcePropertyValue="{Binding ModelItem.Subject, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+        </TextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Body" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1"
+        <TextBlock Name="BodyTextBox" Grid.Column="0" Grid.Row="3" Text="Body" Margin="{StaticResource ControlBorderTop}" />
+        <TextBox Grid.Column="1"
                                 Grid.Row="3"
+                                customControls:WatermarkTextBox.Watermark="Email Content"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipBody}"
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AllowMultilinePaste="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 AcceptsReturn="True"
-                                AllowUserInsertLine="True"
                                 MaxHeight="52"
                                 Height="25"
                                 Padding="2,5,2,2"
@@ -124,9 +129,6 @@
                                 VerticalContentAlignment="Top"
                                 MinLines="2"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_bodytxt_AutoID}">
-            <ui:IntellisenseTextBox.DefaultText>
-                <TextBlock Text="Email Content" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
-            </ui:IntellisenseTextBox.DefaultText>
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpBody}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -135,7 +137,7 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
 
-        </ui:IntellisenseTextBox>
+        </TextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="4" Text="Result" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"

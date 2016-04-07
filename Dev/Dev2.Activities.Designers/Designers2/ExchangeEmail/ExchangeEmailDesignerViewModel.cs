@@ -15,14 +15,11 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Communication;
 using Dev2.Data.Enums;
-using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -35,6 +32,7 @@ using Dev2.Validation;
 // ReSharper disable UseNullPropagation
 // ReSharper disable ConvertPropertyToExpressionBody
 // ReSharper disable ArrangeTypeMemberModifiers
+// ReSharper disable MergeSequentialChecks
 
 namespace Dev2.Activities.Designers2.ExchangeEmail
 {
@@ -54,7 +52,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         readonly IEnvironmentModel _environmentModel;
         readonly IAsyncWorker _asyncWorker;
         private ISourceToolRegion<IExchangeSource> _sourceRegion;
-        public ObservableCollection<ExchangeSource> EmailSources { get; private set; }
         public ObservableCollection<enMailPriorityEnum> Priorities { get; private set; }
 
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
@@ -79,9 +76,8 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
             AddTitleBarLargeToggle();
 
-            EmailSources = new ObservableCollection<ExchangeSource>();
             Priorities = new ObservableCollection<enMailPriorityEnum> { enMailPriorityEnum.High, enMailPriorityEnum.Normal, enMailPriorityEnum.Low };
-            TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
+            TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount());
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
@@ -93,6 +89,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         private void SetupCommonProperties()
         {
+            Testing = false;
             AddTitleBarMappingToggle();
             InitialiseViewModel();
         }
@@ -137,9 +134,32 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        public void ErrorMessage(Exception exception, bool hasError)
+        private string _statusMessage;
+        public string StatusMessage
         {
-            
+            get { return _statusMessage; }
+            set
+            {
+                _statusMessage = value;
+
+                OnPropertyChanged("ErrorMessage");
+            }
+        }
+
+        private bool _testing;
+
+        public bool Testing
+        {
+            get
+            {
+                return _testing;
+            }
+            private set
+            {
+                _testing = value;
+
+                OnPropertyChanged("Testing");
+            }
         }
 
         public void SetDisplayName(string displayName)
@@ -201,10 +221,20 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         void TestEmailAccount()
         {
+            Testing = true;
+            StatusMessage = string.Empty;
+
             var testEmailAccount = GetTestEmailAccount();
             if (string.IsNullOrEmpty(testEmailAccount))
             {
+                Testing = false;
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please supply a To address in order to Test." } };
+                return;
+            }
+            if (SourceRegion.SelectedSource == null)
+            {
+                Testing = false;
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please select a Source to Test." } };
                 return;
             }
             CanTestEmailAccount = false;
@@ -216,11 +246,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 UserName = SourceRegion.SelectedSource.UserName,
             };
 
-            if (EmailAddresssIsAVariable(testEmailAccount))
-            {
-                return;
-            }
-
             var testMessage = new ExchangeTestMessage()
             {
                 To = testEmailAccount,
@@ -228,10 +253,36 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 BCC = Bcc,
                 Body = Body,
                 Subject = Subject,
-                Attachment = Attachments
             };
 
-            testSource.Send(testSource,testMessage);
+            if (!string.IsNullOrEmpty(Attachments))
+            {
+                var attachments = Attachments.Split(';');
+                testMessage.Attachments.AddRange(attachments);
+            }
+
+            SendEmail(testSource, testMessage);
+            
+        }
+
+        private void SendEmail(ExchangeSource testSource, ExchangeTestMessage testMessage)
+        {
+            _asyncWorker.Start(() =>
+            {
+                try
+                {
+                    testSource.Send(testSource, testMessage);
+                    StatusMessage = "Send Successful";
+                }
+                catch (Exception)
+                {
+                    StatusMessage = "Email sending failed";
+                }
+                finally
+                {
+                    Testing = false;
+                }
+            });
         }
 
         string GetTestEmailAccount()
@@ -241,44 +292,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             addresses.AddRange(Cc.Split(';'));
             addresses.AddRange(Bcc.Split(';'));
             return addresses.FirstOrDefault();
-        }
-
-        bool EmailAddresssIsAVariable(string testEmailAccount)
-        {
-            var postResult = "";
-            var hasVariable = false;
-            if (DataListUtil.IsFullyEvaluated(testEmailAccount))
-            {
-                postResult += "Variable " + testEmailAccount + " cannot be used while testing.";
-                hasVariable = true;
-            }
-            
-            if (hasVariable)
-            {
-                var validationResult = new ValidationResult
-                {
-                    ErrorMessage = postResult,
-                    IsValid = false
-                };
-                OnTestCompleted(new Dev2JsonSerializer().Serialize(validationResult));
-                return true;
-            }
-            return false;
-        }
-
-        void OnTestCompleted(string postResult)
-        {
-            try
-            {
-                var result = new Dev2JsonSerializer().Deserialize<ValidationResult>(postResult);
-                Errors = result.IsValid
-                    ? null
-                    : new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsFromAccountFocused = true) { Message = result.ErrorMessage } };
-            }
-            finally
-            {
-                CanTestEmailAccount = true;
-            }
         }
 
         protected virtual IWebRequestInvoker CreateWebRequestInvoker()

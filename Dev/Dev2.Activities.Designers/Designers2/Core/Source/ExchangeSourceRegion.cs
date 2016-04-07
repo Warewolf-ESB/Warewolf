@@ -9,6 +9,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.Source
@@ -82,9 +83,9 @@ namespace Dev2.Activities.Designers2.Core.Source
             EditSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceEditSourceTooltip;
             NewSourceTooltip = Warewolf.Studio.Resources.Languages.Core.ManageExchangeServiceNewSourceTooltip;
 
-            if (SourceId != Guid.Empty)
+            if (SavedSource != null)
             {
-                SelectedSource = Sources.FirstOrDefault(source => source.ResourceID == SourceId);
+                SelectedSource = Sources.FirstOrDefault(source => source.ResourceID == SavedSource.ResourceID);
             }
         }
 
