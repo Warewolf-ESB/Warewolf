@@ -306,7 +306,7 @@ let toJObject (obj : JContainer) =
 let toJOArray (obj : JToken) = 
     match obj with
     | :? JArray as x -> x
-    | _ -> failwith "expected jObject but got something else"
+    | _ -> failwith "expected JArray but got something else"
 
 let addEmptyValueToJArray (arr : JArray) (ind : int) (value : JObject) = 
     let index = ind - 1
