@@ -3,38 +3,6 @@
 	As a Warewolf User
 	I want to be shown the database service setup
 
-
-Scenario: Creating SQL Server Connector
-	Given I open New Workflow
-	And I drag a Sql Server database connector
-	And Source is Enabled
-	And Action is Disabled
-	And Inputs is Disabled 
-	And Outputs is Disabled
-	And Validate is Disabled 
-	When I Select "GreenPoint" as Source
-	Then Action is Enabled
-	When I select "dbo.ImportOrder" as the action
-	Then Inputs is Enabled 
-	And Inputs appear as 
-	| Input     | Value | Empty is Null |
-	| ProductId |       | false         |
-	And Validate is Enabled
-	When I click Validate
-	Then the Test Connector and Calculate Outputs window is opened
-	And Test Inputs appear as
-	| ProductId |
-	| 1         |
-	When I click Test
-	Then Test Connector and Calculate Outputs outputs appear as
-	| Column1 |
-	| 1       |
-	When I click OK
-	Then Outputs appear as
-	| Mapped From | Mapped To                     | 
-	| Column1     | [[dbo_ImportOrder().Column1]] | 
-	And Recordset Name equals "dbo_ImportOrder"	
-
 Scenario: Opening Saved workflow with SQL Server tool
    Given I open workflow with database connector
 	And Source is Enabled

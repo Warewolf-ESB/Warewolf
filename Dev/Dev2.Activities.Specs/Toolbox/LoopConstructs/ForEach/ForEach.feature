@@ -120,7 +120,7 @@ Scenario: Execute a foreach over a tool with number of executions equals 0
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the foreach executes 0 times
-	And the execution has "NO" error
+	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |
 	| No. of Executes | 0      |
@@ -366,7 +366,7 @@ Scenario: Execute a foreach over an activity with number of executions equals 0
 	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
 	When the foreach tool is executed
 	Then the foreach executes 0 times
-	And the execution has "NO" error
+	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |
 	| No. of Executes | 0      |

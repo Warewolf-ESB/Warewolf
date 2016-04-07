@@ -57,10 +57,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockServiceInputViewModel.SetupAllProperties();
-            //var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem,new Mock<IContextualResourceModel>().Object,
-            //                                                                            mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object,new SynchronousAsyncWorker(), mockServiceInputViewModel.Object,mockDbServiceModel.Object);
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem,mockDbServiceModel.Object);
             
-            //ScenarioContext.Current.Add("viewModel",sqlServerDesignerViewModel);
+            ScenarioContext.Current.Add("viewModel",sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel",mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel",mockDbServiceModel);
         }
@@ -173,8 +172,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
-            //Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
-            Assert.Fail();
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
         }
 
         [Given(@"Inputs appear as")]
@@ -249,10 +247,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
-            //var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, new Mock<IContextualResourceModel>().Object,
-            //                                                                            mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker(), mockServiceInputViewModel.Object, mockDbServiceModel.Object);
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
-            //ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }

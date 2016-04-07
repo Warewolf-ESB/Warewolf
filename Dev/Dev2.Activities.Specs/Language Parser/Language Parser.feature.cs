@@ -1717,11 +1717,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "126")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "126")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "a[[rec([[[[b]]]]).a]]@")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name a[[rec([[[[b]]]]).a]]@ contains invalid character(s)")]
         public virtual void ParseTextInputNew_126()
         {
-            this.ParseTextInputNew("126", "a[[rec([[[[b]]]]).a]]@", "false", "", ((string[])(null)));
+            this.ParseTextInputNew("126", "a[[rec([[[[b]]]]).a]]@", "true", "Variable name a[[rec([[[[b]]]]).a]]@ contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]

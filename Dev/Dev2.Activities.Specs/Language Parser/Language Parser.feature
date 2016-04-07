@@ -277,7 +277,7 @@ Examples:
 	| 123  | [[rec([[a]]).a]]                          | false |                                                                                       |
 	| 124  | [[rec([[rec(*).a]]).a]]                   | false |                                                                                       |
 	| 125  | [[rec().a]]%[[a]]                         | false |                                                                                       |
-	| 126  | a[[rec([[[[b]]]]).a]]@                    | false |                                                                                       |
+	| 126  | a[[rec([[[[b]]]]).a]]@                    | true |   Variable name a[[rec([[[[b]]]]).a]]@ contains invalid character(s)                                                                                    |
 	| 127  | [[rec().a]]&[[a]]                         | false |                                                                                       |
 	| 128  | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | true  | Variable name [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] contains invalid character(s) |
 	| 129  | [[[[[[[[[[[[[[[[[[[[y]]]]]]]]]]]]]]]]]]]] | false |                                                                                       |
