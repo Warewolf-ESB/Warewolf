@@ -305,8 +305,9 @@ namespace WarewolfParsingTest
 
 
         [TestMethod]
-        [Ignore]
+
         [Owner("Leon Rajindrapersadh")]
+        [Ignore]
         [TestCategory("AssignEvaluation_assignGivenAValue")]
         public void AssignEvaluation_assignGivenAnArrayValueCreatesValidJson_addsArrayIfItDoesNotExist()
         {
@@ -376,6 +377,46 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("AssignEvaluation_assignGivenAValue")]
+        public void AssignEvaluation_assignGivenAValue_ArrayJson_Last()
+        {
+            var env = CreateTestEnvWithData();
+
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person().Name]]","a"),0,env );
+
+            Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        public void AssignEvaluation_assignGivenAValue_ArrayJson_index()
+        {
+            var env = CreateTestEnvWithData();
+
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(1).Name]]", "a"), 0, env);
+
+            Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        public void AssignEvaluation_assignGivenAValue_ArrayJson_Star()
+        {
+            var env = CreateTestEnvWithData();
+
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(1).Name]]", "a"), 0, env);
+            env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(2).Name]]", "a"), 0, env2);
+            env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person(*).Name]]", "x"), 0, env2);
+            Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+            Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"x\"\r\n  },\r\n  {\r\n    \"Name\": \"x\"\r\n  }\r\n]");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
         public void AssignEvaluation_assignGivenAnObjectValueCreatesValidJson_addsObjectIfItDoesNotExistIntLastAndAddsProperty()
         {
             var env = CreateTestEnvWithData();
@@ -383,7 +424,7 @@ namespace WarewolfParsingTest
 
             var result = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
             var parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Person.Child.Name]]");
-            var val =  ( LanguageAST.LanguageExpression.JsonIdentifierExpression) parsed;
+            var val = (LanguageAST.LanguageExpression.JsonIdentifierExpression)parsed;
             var env2 = AssignEvaluation.assignGivenAValue(env, result, val.Item);
 
             Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
@@ -407,15 +448,69 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("AssignEvaluation_MethodName")]
-        public void AssignEvaluation_MethodName_Scenerio_Result()
+        [TestCategory("AssignEvaluation_IndexToInt")]
+        public void AssignEvaluation_IndexToInt_LastReturnsCountPlusOne()
         {
             //------------Setup for test--------------------------
-            var assignEvaluation = new AssignEvaluation();
+            var arr = new JArray();
+            arr.Add(new JValue("bob"));
             
             //------------Execute Test---------------------------
-
+            var res = AssignEvaluation.indexToInt(LanguageAST.Index.Last, arr);
             //------------Assert Results-------------------------
+            Assert.AreEqual(res.Length,1);
+            Assert.AreEqual(2,res.Head);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_IndexToInt")]
+        public void AssignEvaluation_IndexToInt_IntIndexReturnsInt()
+        {
+            //------------Setup for test--------------------------
+            var arr = new JArray();
+            arr.Add(new JValue("bob"));
+
+            //------------Execute Test---------------------------
+            var res = AssignEvaluation.indexToInt(LanguageAST.Index.NewIntIndex(1), arr);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(res.Length, 1);
+            Assert.AreEqual(1, res.Head);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_IndexToInt")]
+        public void AssignEvaluation_IndexToInt_StarIndexReturnsAllIndexes()
+        {
+            //------------Setup for test--------------------------
+            var arr = new JArray();
+            arr.Add(new JValue("bob"));
+            arr.Add(new JValue("bob"));
+
+            //------------Execute Test---------------------------
+            var res = AssignEvaluation.indexToInt(LanguageAST.Index.Star, arr);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(res.Length, 2);
+            Assert.AreEqual(1, res.Head);
+            Assert.AreEqual(2, res[1]);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_IndexToInt")]
+        [ExpectedException(typeof(Exception))]
+        public void AssignEvaluation_IndexToInt_ErrorsForAnExpression()
+        {
+            //------------Setup for test--------------------------
+            var arr = new JArray();
+            //------------Execute Test---------------------------
+            // ReSharper disable once AccessToStaticMemberViaDerivedType
+            var res = AssignEvaluation.indexToInt(LanguageAST.Index.IndexExpression.NewIndexExpression(LanguageAST.LanguageExpression.NewWarewolfAtomAtomExpression(DataASTMutable.WarewolfAtom.Nothing)), arr);
+            //------------Assert Results-------------------------
+
         }
 
         [TestMethod]

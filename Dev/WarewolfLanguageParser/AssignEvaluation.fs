@@ -182,58 +182,6 @@ and evalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                                         evalMultiAssignOp env  update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
                 |   _ -> failwith "assigning an entire recordset to a variable is not defined"
 
-//and evalAssignToJson (env:WarewolfEnvironment) (update:int)  (value :IAssignValue )   =
-//    
-//    let l = WarewolfDataEvaluationCommon.evalToExpression env update value.Name |> fun a -> (WarewolfDataEvaluationCommon.parseLanguageExpression a update)
-//    let left = match l with 
-//                   |ComplexExpression a -> failwith "Complex expression in nested json not supported"
-//                   | _-> l
-//  
-//    let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
-//                     else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value  update
-//    
-//    let right = if value.Value=null then WarewolfAtomResult Nothing
-//                else WarewolfDataEvaluationCommon.eval env update value.Value 
-//    let shouldUseLast =  match rightParse with
-//                            | RecordSetExpression a ->
-//                                        match a.Index with
-//                                            | IntIndex a-> true
-//                                            | Star -> false
-//                                            | Last -> true
-//                                            | _-> true
-//                            | _->true                  
-//    match right with 
-//                | WarewolfAtomResult x -> 
-//                            match left with 
-//                            |   ScalarExpression a -> let str = JObject.Parse( x.ToString())
-//                                                      addToJsonObjects env a str
-//                            |   RecordSetExpression b -> addToRecordSetFramed env b 
-//                            |   WarewolfAtomAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
-//                            |   _ -> let expression = (evalToExpression env update value.Name)
-//                                     if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
-//                                        env
-//                                     else
-//                                        evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
-//                | WarewolfAtomListresult x -> 
-//                        match left with 
-//                        |   ScalarExpression a -> addToScalars env a (Seq.last x)
-//                        |   RecordSetExpression b ->    match b.Index with 
-//                                                        | Star -> addToRecordSetFramedWithAtomList env b  x shouldUseLast update (Some value)
-//                                                        | _ ->      try
-//                                                                        addToRecordSetFramed env b x.[0]                  
-//                                                                    with
-//                                                                        | :? Dev2.Common.Common.NullValueInVariableException as ex -> raise( new  Dev2.Common.Common.NullValueInVariableException("The expression result is  null", value.Value ) )    // added 0 here!
-// 
-//
-//                        |   WarewolfAtomAtomExpression _ ->  failwith "invalid variabe assigned to"
-//                        |    _ -> let expression = (evalToExpression env update value.Name)
-//                                  if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
-//                                        env
-//                                  else
-//                                        evalMultiAssignOp env  update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
-//                |   _ -> failwith "assigning an entire recordset to a variable is not defined"
-
-
 
 and evalMultiAssignList (env:WarewolfEnvironment)  (value :WarewolfAtom seq ) (exp :string) (update:int) (shouldUseLast: bool)=
     let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
@@ -401,17 +349,21 @@ let rec expressionToObject (obj:JToken) (exp:JsonIdentifierExpression) (res : Wa
 
 and objectFromExpression (exp:JsonIdentifierExpression)  (res : WarewolfEvalResult) (obj:JContainer) =
         match exp with                               
-        | IndexNestedNameExpression b ->  let asJObj = toJObject obj
+        | IndexNestedNameExpression b ->  let asJObj = toJOArray obj
                                            
                                           match b.Index with 
-                                                | Star -> let myValue =  evalResultToListOfString res                                                            
-                                                          addArrayPropertyToJson asJObj b.ObjectName myValue |> ignore
-                                                | IntIndex a -> let newObj = addArrayPropertyToJson asJObj b.ObjectName List.empty
-                                                                let prop = newObj.Property(b.ObjectName).Value |> toJOArray
-                                                                addValueToJArray prop a (evalResultToString res |> DataString) |> ignore
-                                                | Last ->       let newObj = addArrayPropertyToJson asJObj b.ObjectName List.empty
-                                                                let prop = newObj.Property(b.ObjectName).Value |> toJOArray
-                                                                addValueToJArray prop (prop.Count+1) (evalResultToString res |> DataString) |> ignore
+
+                                                | IntIndex a -> let objToFill = new JObject()
+                                                                let subObj = expressionToObject (objToFill) b.Next res
+                                                                addEmptyValueToJArray asJObj a objToFill |> ignore
+                                                | Last ->       let objToFill = new JObject()
+                                                                let subObj = expressionToObject (objToFill) b.Next res
+                                                                addEmptyValueToJArray asJObj (asJObj.Count+1) objToFill |> ignore                                                               
+                                                | Star ->       for i in 1..asJObj.Count do
+                                                                    let objToFill = asJObj.[i-1]
+                                                                    let subObj = expressionToObject (objToFill) b.Next res
+                                                                    addEmptyValueToJArray asJObj i (objToFill :?> JObject ) |> ignore  
+
                                                 | _ ->  failwith "the hills are alive with the sound of music"
                                           asJObj :> JToken
         | NameExpression a -> let asJObj = toJObject obj
@@ -430,9 +382,9 @@ let assignGivenAValue (env:WarewolfEnvironment) (res : WarewolfEvalResult) (exp:
                                     let obj = addedenv.JsonObjects.[a.ObjectName]
                                     expressionToObject obj a.Next res  |> ignore
                                     addedenv
-        | IndexNestedNameExpression b -> let addedenv = addOrReturnJsonObjects env b.ObjectName (new JObject())
+        | IndexNestedNameExpression b -> let addedenv = addOrReturnJsonObjects env b.ObjectName (new JArray())
                                          let obj = addedenv.JsonObjects.[b.ObjectName] 
-                                         expressionToObject obj b.Next res |> ignore
+                                         objectFromExpression exp res obj |> ignore
                                          addedenv
         | _ -> failwith "top level assign cannot be a nested expresssion"
 
