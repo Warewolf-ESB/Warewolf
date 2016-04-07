@@ -55,12 +55,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             Assert.IsNotNull(boxUploadAcivtity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("UPLOAD to Dropbox", boxUploadAcivtity.DisplayName);
+            Assert.AreEqual("Upload to Dropbox", boxUploadAcivtity.DisplayName);
 
         }
-
-
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenIsNew_ShouldSetDatagridAcitivity()

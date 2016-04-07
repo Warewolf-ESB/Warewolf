@@ -15,7 +15,6 @@ using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
@@ -207,7 +206,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
         {
             var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
-            textBox.Text = "[[var]]";
             textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBox.HasError);
         }
@@ -354,7 +352,6 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyButTextIsRecordset_ToolTipHaErrorMessage()
         {
             var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.ScalarsOnly };
-            textBox.Text = "[[var()]]";
             textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBox.HasError);
 

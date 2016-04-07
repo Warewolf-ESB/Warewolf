@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 
 namespace WarewolfParsingTest
 {
@@ -41,23 +40,5 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
         }
 
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
-        public void AddToScalarsCreatesAscalar()
-        {
-            //------------Setup for test--------------------------
-            var createDataSet = WarewolfTestData.CreateTestEnvWithData;
-            JObject j =  JObject.FromObject(new Person(){Name = "n",Children = new List<Person>()});
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
-           Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
-           Assert.AreEqual( ((JObject)added.JsonObjects["bob"]).GetValue("Name").ToString(),"n");
-        }
-
-
-    
     }
 }
