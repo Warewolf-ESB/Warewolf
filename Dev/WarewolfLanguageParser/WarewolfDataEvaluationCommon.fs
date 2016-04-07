@@ -220,7 +220,7 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
                     | RecordSetExpression a ->  evalRecordSetAsString env a
                     | ScalarExpression a ->  (evalScalar a env)
                     | WarewolfAtomAtomExpression a ->  a
-                    | _ ->failwith "you should not get here"
+                    | _ ->failwith "what we have here is a failure to communicate"
             else    
                 let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
                 let evaled = (List.map (languageExpressionToString >> (eval  env update)>>evalResultToString)  exp )|> (List.fold (+) "")
@@ -358,6 +358,9 @@ and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) 
                                                                 |_->     sprintf "[[%s(%s).%s]]" a.Name (eval  env update  (languageExpressionToString exp)|> evalResultToString) a.Column  
                                     | _->lang
         | _ -> lang
+
+and evalToExpressionAndParse (env: WarewolfEnvironment) (update:int) (langs:string)  = 
+    evalToExpression env update langs |> fun a -> parseLanguageExpression a update
 
 and  evalToExpression  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
