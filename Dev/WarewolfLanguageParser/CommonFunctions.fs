@@ -63,6 +63,14 @@ let evalResultToString (a:WarewolfEvalResult) =
     | WarewolfAtomListresult x -> Seq.map warewolfAtomRecordtoString x |> fun a->System.String.Join(",",a)
     | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join(",",a)
 
+
+let evalResultToListOfString (a:WarewolfEvalResult) = 
+    match a with
+    | WarewolfAtomResult x -> [(atomtoString >> DataString) x]
+    | WarewolfAtomListresult x -> Seq.map  (atomtoString>>DataString) x |> List.ofSeq
+    | WarewolfRecordSetResult x -> failwith "unsupported operations. cannot convert recordset to list"
+
+
 let atomToJsonCompatibleObject (a:WarewolfAtom) :System.Object= 
     match a with 
         | Int a -> a :> System.Object

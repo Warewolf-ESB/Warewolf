@@ -590,8 +590,13 @@ namespace Warewolf.Storage
         }
 
 
-        public void AssignJson(List<IAssignValue> personFirsname)
+        public void AssignJson(List<IAssignValue> values, int update)
         {
+            foreach(var assignValue in values)
+            {
+              _env =  AssignEvaluation.evalJsonAssign(assignValue, update, _env);
+            }
+            
         }
     }
 }

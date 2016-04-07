@@ -37,6 +37,11 @@ let addToJsonObjects (env:WarewolfEnvironment) (name:string) (value:JContainer) 
     {    env with   JsonObjects=rem;
     }
 
+let addOrReturnJsonObjects (env:WarewolfEnvironment) (name:string) (value:JContainer)  =
+    match env.JsonObjects.TryFind name     with  
+        | Some a -> env
+        | _   ->   addToJsonObjects env name value
+
 let rec addToRecordSet (env:WarewolfEnvironment) (name:RecordSetIdentifier) (update:int) (value:WarewolfAtom)  =
     if(env.RecordSets.ContainsKey name.Name)
     then
@@ -312,29 +317,132 @@ let addArrayPropertyToJson (obj:Newtonsoft.Json.Linq.JObject) (name:string) (val
                               obj
                     | Some a -> a.Value <-  new JArray(valuesAsStrings)     
                                 obj
+
 let toJObject (obj:JContainer) =
      match obj with
        | :? JObject as x -> x
        |_ -> failwith "expected jObject but got something else"
 
-let objectFromExpression (exp:JsonIdentifierExpression)  (res : WarewolfEvalResult) (obj:JContainer) =
+let toJOArray (obj:JToken) =
+     match obj with
+       | :? JArray as x -> x
+       |_ -> failwith "expected jObject but got something else"
+
+
+let getArrayPropertyFromJson (obj:JObject) (name:string) =
+      obj.Property(name) |> toJOArray
+
+
+
+let addEmptyValueToJArray (arr:JArray) ( ind:int)  (value:JObject) =
+    let index = ind-1
+    if(ind>arr.Count)
+    then
+        let x = arr.Count
+        for _ in x .. ind-1 do
+            arr.Add(null)
+        arr.[index] <-  value
+        (arr.[index],arr)
+    else
+        (arr.[index],arr)
+
+
+let indexToInt (a:Index) (arr:JArray) = 
+    match a with 
+        |IntIndex a -> [a]
+        | Last-> [arr.Count+1]
+        | Star -> [1..arr.Count]
+        | _ -> failwith "I'll be back"
+
+
+
+let addPropertyToJsonNoValue (obj:Newtonsoft.Json.Linq.JObject) (name:string)   =
+    let props = obj.Properties()
+    let theProp = Seq.tryFind (fun (a:JProperty)-> a.Name=name) props
+    match theProp with 
+                    | None -> let child = new JProperty(name, new JObject())
+                              obj.Add(child) |> ignore    
+                              child.Value
+                    | Some a -> a.Value
+
+let addJsonArrayPropertyToJsonNoValue (obj:Newtonsoft.Json.Linq.JObject) (name:string) (index:Index)   =
+    let props = obj.Properties()
+    let theProp = Seq.tryFind (fun (a:JProperty)-> a.Name=name) props
+    match theProp with 
+                    | None -> let arr = new JArray()
+                              let indexes = (indexToInt index arr)
+                              let arr2 = List.map (fun a-> addEmptyValueToJArray arr a (new JObject())) indexes
+                              let prop = new JProperty(name, snd arr2.Head)
+                              obj.Add(prop) |> ignore    
+                              List.map fst arr2
+                    | Some a -> let arr = a.Value :?> JArray;
+                                let indexes = (indexToInt index arr)
+                                let arr2 = List.map (fun a-> addEmptyValueToJArray arr a (new JObject())) indexes
+                                List.map fst arr2
+                                
+
+let rec expressionToObject (obj:JToken) (exp:JsonIdentifierExpression) (res : WarewolfEvalResult) =
+    match exp with  
+    | Terminal -> obj 
+    | NameExpression a -> objectFromExpression exp res (obj:?>JContainer) 
+    | NestedNameExpression a -> expressionToObject (addPropertyToJsonNoValue (obj:?>JObject) a.ObjectName) (a.Next) res
+    | IndexNestedNameExpression a -> let allProperties = addJsonArrayPropertyToJsonNoValue (obj:?>JObject) a.ObjectName a.Index
+                                     List.map (fun x -> expressionToObject (x) (a.Next) res) allProperties |> List.head
+
+and objectFromExpression (exp:JsonIdentifierExpression)  (res : WarewolfEvalResult) (obj:JContainer) =
         match exp with                               
-        | IndexNestedNameExpression b ->  failwith "top level assign cannot be a n"
+        | IndexNestedNameExpression b ->  let asJObj = toJObject obj
+                                           
+                                          match b.Index with 
+                                                | Star -> let myValue =  evalResultToListOfString res                                                            
+                                                          addArrayPropertyToJson asJObj b.ObjectName myValue |> ignore
+                                                | IntIndex a -> let newObj = addArrayPropertyToJson asJObj b.ObjectName List.empty
+                                                                let prop = newObj.Property(b.ObjectName).Value |> toJOArray
+                                                                addValueToJArray prop a (evalResultToString res |> DataString) |> ignore
+                                                | Last ->       let newObj = addArrayPropertyToJson asJObj b.ObjectName List.empty
+                                                                let prop = newObj.Property(b.ObjectName).Value |> toJOArray
+                                                                addValueToJArray prop (prop.Count+1) (evalResultToString res |> DataString) |> ignore
+                                                | _ ->  failwith "the hills are alive with the sound of music"
+                                          asJObj :> JToken
         | NameExpression a -> let asJObj = toJObject obj
                               let myValue = evalResultToString res |> DataString
                               addAtomicPropertyToJson asJObj a.Name myValue |> ignore
-                              asJObj
+                              asJObj :> JToken
 
         | _ -> failwith "top level assign cannot be a n
         ested expresssion"
 
 
+
 let assignGivenAValue (env:WarewolfEnvironment) (res : WarewolfEvalResult) (exp:JsonIdentifierExpression) : WarewolfEnvironment=
     match exp with 
-        | NestedNameExpression a -> let addedenv = addToJsonObjects env a.ObjectName (new JObject())
+        | NestedNameExpression a -> let addedenv = addOrReturnJsonObjects env a.ObjectName (new JObject())
                                     let obj = addedenv.JsonObjects.[a.ObjectName]
-                                    objectFromExpression a.Next res obj |> ignore
+                                    expressionToObject obj a.Next res  |> ignore
                                     addedenv
-        | IndexNestedNameExpression b -> let addedenv = addToJsonObjects env b.ObjectName (new JObject())
+        | IndexNestedNameExpression b -> let addedenv = addOrReturnJsonObjects env b.ObjectName (new JObject())
+                                         let obj = addedenv.JsonObjects.[b.ObjectName] 
+                                         expressionToObject obj b.Next res |> ignore
                                          addedenv
         | _ -> failwith "top level assign cannot be a nested expresssion"
+
+let languageExpressionToJsonIdentifier (a:LanguageExpression) : JsonIdentifierExpression =
+    match a with 
+    | ScalarExpression _ -> failwith "Can you smell what the rock is cooking"
+    | ComplexExpression _ -> failwith "Big fish little fish cardboard box"
+    | WarewolfAtomAtomExpression _ -> failwith  "literal value on the left hand side of an assign" 
+    | RecordSetNameExpression _ -> failwith "invalid use case please contact the product owner"
+    | RecordSetExpression x ->  let next =  ({Name=x.Column}:JsonIdentifier)  |> NameExpression
+                                {
+                                  ObjectName = x.Name;
+                                  Index = x.Index;
+                                  Next = next  
+                                } |> IndexNestedNameExpression
+    | JsonIdentifierExpression x -> x
+
+let evalJsonAssign (value :IAssignValue ) (update:int) (env:WarewolfEnvironment)  = 
+    let left = parseLanguageExpression value.Name update
+    let jsonId =  languageExpressionToJsonIdentifier left
+    let right  = eval env update value.Value
+    assignGivenAValue env right jsonId
+
