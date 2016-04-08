@@ -6,6 +6,7 @@ using Microsoft.Exchange.WebServices.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Tools.Network;
+// ReSharper disable RedundantAssignment
 
 namespace Warewolf.SharePoint
 {
