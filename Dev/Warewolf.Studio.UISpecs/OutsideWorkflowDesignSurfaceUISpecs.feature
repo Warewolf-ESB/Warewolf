@@ -359,12 +359,10 @@ Scenario: Context Menu on design surface
 	Then I 'Assert_StartNode_Exists'
 	Then I 'Open_Context_Menu_OnDesignSurface'
 	
-@ignore
-Scenario: Context Menu on Tab
-	Given I 'Assert_NewWorkFlow_RibbonButton_Exists'
-	When I 'Click_New_Workflow_Ribbon_Button'
-	Then I 'Assert_StartNode_Exists'
-	Then I 'Tab_Context_Menu'
+@NeedsBlankWorkflow
+Scenario: Context Menu on New Workflow Tab
+	When I 'RightClick_New_Workflow_Tab'
+	Then I 'Assert_New_Workflow_Context_Menu_Exists'
 	
 @ignore
 Scenario: Debug Input window

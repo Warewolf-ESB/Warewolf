@@ -93,7 +93,14 @@ namespace Warewolf.Studio.UISpecs
             var uiMap = new UIMap();
             uiMap.Assert_Close_Tab_Button_Exists();
             uiMap.Click_Close_Tab_Button();
-            new OutsideWorkflowDesignSurfaceUIMap().Click_MessageBox_No();
+            try
+            {
+                new OutsideWorkflowDesignSurfaceUIMap().Click_MessageBox_No();
+            }
+            catch (UITestControlNotFoundException e)
+            {
+                //Might not prompt for save if no changes made.
+            }
         }
 
         #region Properties and Fields

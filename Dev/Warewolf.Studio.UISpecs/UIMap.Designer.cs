@@ -1214,6 +1214,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Click_Close_Tab_Context_Menu_Button
+        /// </summary>
+        public void Click_Close_Tab_Context_Menu_Button()
+        {
+            #region Variable Declarations
+            WpfMenuItem uICloseMenuItem = this.UIWarewolfDEV2ASHLEYLEWindow.UIItemMenu.UICloseMenuItem;
+            #endregion
+
+            // Click 'Close' menu item
+            Mouse.Click(uICloseMenuItem, new Point(27, 13));
+        }
+        
+        /// <summary>
         /// Drag_Database_Connector_Onto_DesignSurface
         /// </summary>
         public void Drag_Database_Connector_Onto_DesignSurface()
@@ -3206,6 +3219,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// RightClick_New_Workflow_Tab
+        /// </summary>
+        public void RightClick_New_Workflow_Tab()
+        {
+            #region Variable Declarations
+            WpfTabPage workflowTab = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab;
+            #endregion
+
+            // Right-Click 'Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi...' tab
+            Mouse.Click(workflowTab, MouseButtons.Right, ModifierKeys.None, new Point(63, 18));
+        }
+        
+        /// <summary>
         /// RightClick_Random_OnDesignSurface
         /// </summary>
         public void RightClick_Random_OnDesignSurface()
@@ -5016,6 +5042,18 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUIWarewolfDEV2LEROYWARWindow;
             }
         }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -5226,6 +5264,8 @@ namespace Warewolf.Studio.UISpecs
         private MessageBoxWindow mMessageBoxWindow;
         
         private UIWarewolfDEV2LEROYWARWindow mUIWarewolfDEV2LEROYWARWindow;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -13973,6 +14013,74 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfTree mUIExplorerTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemMenu UIItemMenu
+        {
+            get
+            {
+                if ((this.mUIItemMenu == null))
+                {
+                    this.mUIItemMenu = new UIItemMenu(this);
+                }
+                return this.mUIItemMenu;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemMenu mUIItemMenu;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIItemMenu : WpfMenu
+    {
+        
+        public UIItemMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem UICloseMenuItem
+        {
+            get
+            {
+                if ((this.mUICloseMenuItem == null))
+                {
+                    this.mUICloseMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mUICloseMenuItem.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Close";
+                    this.mUICloseMenuItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUICloseMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mUICloseMenuItem;
         #endregion
     }
 }

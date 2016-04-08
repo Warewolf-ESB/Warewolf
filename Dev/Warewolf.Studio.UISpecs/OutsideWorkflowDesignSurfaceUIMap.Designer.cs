@@ -1441,11 +1441,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Assert_TabHeader_Exists()
         {
             #region Variable Declarations
-            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu;
+            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.HelpTab;
             #endregion
 
             // Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
-            Assert.AreEqual(this.Assert_TabHeader_ExistsExpectedValues.TabContextMenuExists, tabContextMenu.Exists, "Tab header does not exist");
+            Assert.AreEqual(this.Assert_TabHeader_ExistsExpectedValues.HelpTabExists, helpTab.Exists, "Tab header does not exist");
         }
         
         /// <summary>
@@ -2523,11 +2523,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Right_Click_Help_Tab()
         {
             #region Variable Declarations
-            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu;
+            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.HelpTab;
             #endregion
 
             // Right-Click 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab
-            Mouse.Click(tabContextMenu, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
+            Mouse.Click(helpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
         }
         
         /// <summary>
@@ -6432,7 +6432,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// <summary>
         /// Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
         /// </summary>
-        public bool TabContextMenuExists = true;
+        public bool HelpTabExists = true;
         #endregion
     }
     
@@ -9799,19 +9799,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public WpfTabPage TabContextMenu
+        public WpfTabPage HelpTab
         {
             get
             {
-                if ((this.mTabContextMenu == null))
+                if ((this.mHelpTab == null))
                 {
-                    this.mTabContextMenu = new WpfTabPage(this);
+                    this.mHelpTab = new WpfTabPage(this);
                     #region Search Criteria
-                    this.mTabContextMenu.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
-                    this.mTabContextMenu.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    this.mHelpTab.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
+                    this.mHelpTab.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
-                return this.mTabContextMenu;
+                return this.mHelpTab;
             }
         }
         
@@ -9943,7 +9943,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #region Fields
         private StartPage mStartPage;
         
-        private WpfTabPage mTabContextMenu;
+        private WpfTabPage mHelpTab;
         
         private DeployTab mDeployTab;
         
