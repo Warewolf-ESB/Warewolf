@@ -4058,6 +4058,7 @@ Scenario: backward Compatiblity2
 	When "PluginMigration" is executed
 	Then the workflow execution has "NO" error
 
+@ignore
 Scenario: workflow without StackOverflow exception check
          Given I have a workflow "Testing - LoopTest"
          And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as
@@ -4168,19 +4169,6 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
 	 Then the workflow execution has "NO" error
 	 And the delta between "first time" and "second time" is less than "1200" milliseconds
-
-
-Scenario: ForEach Acceptance Tests
-	  Given I have a workflow "ForEachMasterTest"
-	  And "ForEachMasterTest" contains "Testing/For Each/MasterTest" from server "localhost" with mapping as
-      | Input to Service | From Variable | Output from Service | To Variable    |
-      |                  |               | TestResult          | [[TestResult]] |
-      |                  |               | Result              | [[Result]]     |
-	  When "ForEachMasterTest" is executed
-	Then the workflow execution has "NO" error
-	  And the 'Testing/For Each/MasterTest' in Workflow 'ForEachMasterTest' debug outputs as
-	  |                   |
-	  | [[Result]] = Pass |
 
 #show dependacies possibly meant to be coded ui. Leave here until we figure out how to do it in Coded UI
 #Wolf-1415

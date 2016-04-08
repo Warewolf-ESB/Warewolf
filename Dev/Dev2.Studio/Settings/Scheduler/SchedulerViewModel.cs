@@ -138,7 +138,7 @@ namespace Dev2.Settings.Scheduler
             var taskServiceConvertorFactory = new TaskServiceConvertorFactory();
             SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
             IShellViewModel vm = CustomContainer.Get<IShellViewModel>();
-            CreateEnvironmentFromServer(vm.LocalhostServer, vm);
+            CreateEnvironmentFromServer(vm.ActiveServer, vm);
             Server = server;
             server.NetworkStateChanged += server_NetworkStateChanged;
             SetupServer(server);

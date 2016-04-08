@@ -122,8 +122,6 @@ this.ScenarioSetup(scenarioInfo);
                         "[[var2]] = 2"});
 #line 18
           testRunner.And("the \"TestAssign\" debug outputs as", ((string)(null)), table3, "And ");
-#line 22
-    testRunner.And("the Sequence Has a Duration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
