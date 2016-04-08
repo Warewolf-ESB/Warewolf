@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -804,6 +806,57 @@ namespace WarewolfParsingTest
             var env2 = PublicFunctions.EvalMultiAssign(assigns, 0, env);
             return env2;
         }
+
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("AssignEvaluation_assignGivenAValue")]
+        //public void AssignEvaluation_assignGivenAValue_ArrayJson_Last_Multi()
+        //{
+        //    var x = new List<long>();
+        //    for(int j = 0; j < 500; j++)
+        //    {
+                
+            
+        //        Stopwatch st = new Stopwatch();
+        //        st.Start();
+        //        var env = CreateTestEnvWithData();
+        //        for(int i = 0; i < 5000; i++)
+        //        {
+        //            env = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person().Name]]", "a"), 0, env);
+        //        }
+
+        //        x.Add(st.ElapsedTicks);
+
+        //    }
+        //    var y = x.Sum() / 500;
+        //    //Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+        //    //Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
+        //}
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("AssignEvaluation_assignGivenAValue")]
+        //public void AssignEvaluation_assignGivenAValue_ArrayJsons_Last_Multi()
+        //{
+        //    var x = new List<long>();
+        //    for (int j = 0; j < 500; j++)
+        //    {
+
+
+        //        Stopwatch st = new Stopwatch();
+        //        st.Start();
+        //        var env = CreateTestEnvWithData();
+        //        for (int i = 0; i < 5000; i++)
+        //        {
+        //             env = AssignEvaluation.evalAssign("[[Person().Name]]", "a", 0, env);
+        //        }
+
+        //        x.Add(st.ElapsedTicks);
+
+        //    }
+        //    var y = x.Sum() / 500;
+        //    //Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+        //    //Assert.AreEqual(env2.JsonObjects["Person"].ToString(), "[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]");
+        //}
 
     }
 
