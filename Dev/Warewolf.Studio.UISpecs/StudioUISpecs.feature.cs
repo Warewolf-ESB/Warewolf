@@ -18,7 +18,7 @@ namespace Warewolf.Studio.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class StudioUISpecsFeature
     {
         
@@ -242,20 +242,22 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Get Web Request Tool onto a new workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DragToolboxGetWebRequestToolOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Get Web Request Tool onto a new workflow", new string[] {
+                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 92
-this.ScenarioSetup(scenarioInfo);
 #line 93
- testRunner.When("I \'Drag_GetWeb_RequestTool_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 94
+ testRunner.When("I \'Drag_GetWeb_RequestTool_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 95
  testRunner.Then("I \'Assert_GetWeb_RequestTool_small_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 99
- testRunner.When("I \'Open_WebRequest_LargeView\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 100
+ testRunner.When("I \'Open_WebRequest_LargeView\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 101
  testRunner.Then("I \'Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -271,15 +273,15 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Post Web Request Tool onto a new workflow", new string[] {
                         "ignore",
                         "NeedsBlankWorkflow"});
-#line 104
-this.ScenarioSetup(scenarioInfo);
 #line 105
- testRunner.When("I \'Drag_PostWeb_RequestTool_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 106
+ testRunner.When("I \'Drag_PostWeb_RequestTool_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 107
  testRunner.Then("I \'Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 111
- testRunner.When("I \'Open_PostWeb_RequestTool_small_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 112
+ testRunner.When("I \'Open_PostWeb_RequestTool_small_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 113
  testRunner.Then("I \'Assert_PostWeb_RequestTool_Small_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -293,15 +295,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Case_Conversion onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 115
-this.ScenarioSetup(scenarioInfo);
 #line 116
- testRunner.When("I \'Drag_Toolbox_Case_Conversion_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 117
+ testRunner.When("I \'Drag_Toolbox_Case_Conversion_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 118
  testRunner.Then("I \'Assert_Case_Conversion_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 122
- testRunner.When("I \'Open_Case_Conversion_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 123
+ testRunner.When("I \'Open_Case_Conversion_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 124
  testRunner.Then("I \'Assert_Case_Conversion_Qvi_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -315,19 +317,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Data_Merge onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 126
-this.ScenarioSetup(scenarioInfo);
 #line 127
- testRunner.When("I \'Drag_Toolbox_Data_Merge_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 128
+ testRunner.When("I \'Drag_Toolbox_Data_Merge_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 129
  testRunner.Then("I \'Assert_Data_Merge_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 133
- testRunner.When("I \'Open_Data_Merge_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 134
+ testRunner.When("I \'Open_Data_Merge_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 135
  testRunner.Then("I \'Assert_Data_Merge_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 139
- testRunner.When("I \'Open_Data_Merge_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 140
+ testRunner.When("I \'Open_Data_Merge_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 141
  testRunner.Then("I \'Assert_Data_Merge_Qvi_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -341,19 +343,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Data_Split onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 143
-this.ScenarioSetup(scenarioInfo);
 #line 144
- testRunner.When("I \'Drag_Toolbox_Data_Split_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 145
+ testRunner.When("I \'Drag_Toolbox_Data_Split_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 146
  testRunner.Then("I \'Assert_Data_Split_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 150
- testRunner.When("I \'Open_Data_Split_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 151
+ testRunner.When("I \'Open_Data_Split_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 152
  testRunner.Then("I \'Assert_Data_Split_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 156
- testRunner.When("I \'Open_Data_Split_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 157
+ testRunner.When("I \'Open_Data_Split_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 158
  testRunner.Then("I \'Assert_Data_Split_Qvi_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -367,11 +369,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Find_Index onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 160
-this.ScenarioSetup(scenarioInfo);
 #line 161
- testRunner.When("I \'Drag_Toolbox_Find_Index_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 162
+ testRunner.When("I \'Drag_Toolbox_Find_Index_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 163
  testRunner.Then("I \'Assert_Find_Index_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -385,11 +387,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Replace onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 165
-this.ScenarioSetup(scenarioInfo);
 #line 166
- testRunner.When("I \'Drag_Toolbox_Replace_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 167
+ testRunner.When("I \'Drag_Toolbox_Replace_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 168
  testRunner.Then("I \'Assert_Replace_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -403,15 +405,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Copy_Path onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 170
-this.ScenarioSetup(scenarioInfo);
 #line 171
- testRunner.When("I \'Drag_Toolbox_Copy_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 172
+ testRunner.When("I \'Drag_Toolbox_Copy_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 173
  testRunner.Then("I \'Assert_Copy_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 177
- testRunner.When("I \'Open_Copy_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 178
+ testRunner.When("I \'Open_Copy_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 179
  testRunner.Then("I \'Assert_Copy_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -425,15 +427,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Create_Path onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 181
-this.ScenarioSetup(scenarioInfo);
 #line 182
- testRunner.When("I \'Drag_Toolbox_Create_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 183
+ testRunner.When("I \'Drag_Toolbox_Create_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 184
  testRunner.Then("I \'Assert_Create_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 188
- testRunner.When("I \'Open_Create_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 189
+ testRunner.When("I \'Open_Create_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 190
  testRunner.Then("I \'Assert_Create_Path_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -447,11 +449,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Delete_Path onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 192
-this.ScenarioSetup(scenarioInfo);
 #line 193
- testRunner.When("I \'Drag_Toolbox_Delete_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 194
+ testRunner.When("I \'Drag_Toolbox_Delete_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 195
  testRunner.Then("I \'Assert_Delete_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -465,15 +467,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Read_File onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 197
-this.ScenarioSetup(scenarioInfo);
 #line 198
- testRunner.When("I \'Drag_Toolbox_Read_File_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 199
+ testRunner.When("I \'Drag_Toolbox_Read_File_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 200
  testRunner.Then("I \'Assert_Read_File_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 204
- testRunner.When("I \'Open_Read_File_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 205
+ testRunner.When("I \'Open_Read_File_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 206
  testRunner.Then("I \'Assert_Read_File_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -487,15 +489,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Read_Folder onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 208
-this.ScenarioSetup(scenarioInfo);
 #line 209
- testRunner.When("I \'Drag_Toolbox_Read_Folder_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 210
+ testRunner.When("I \'Drag_Toolbox_Read_Folder_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 211
  testRunner.Then("I \'Assert_Read_Folder_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 215
- testRunner.When("I \'Open_Read_Folder_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 216
+ testRunner.When("I \'Open_Read_Folder_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 217
  testRunner.Then("I \'Assert_Read_Folder_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -509,15 +511,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Rename_Folder onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 219
-this.ScenarioSetup(scenarioInfo);
 #line 220
- testRunner.When("I \'Drag_Toolbox_Rename_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 221
+ testRunner.When("I \'Drag_Toolbox_Rename_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 222
  testRunner.Then("I \'Assert_Rename_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 226
- testRunner.When("I \'Open_Rename_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 227
+ testRunner.When("I \'Open_Rename_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 228
  testRunner.Then("I \'Assert_Rename_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -533,15 +535,15 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Unzip onto a new workflow", new string[] {
                         "ignore",
                         "NeedsBlankWorkflow"});
-#line 231
-this.ScenarioSetup(scenarioInfo);
 #line 232
- testRunner.When("I \'Drag_Toolbox_Unzip_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 233
+ testRunner.When("I \'Drag_Toolbox_Unzip_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 234
  testRunner.Then("I \'Assert_Unzip_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 238
- testRunner.When("I \'Open_Unzip_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 239
+ testRunner.When("I \'Open_Unzip_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 240
  testRunner.Then("I \'Assert_Unzip_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -555,15 +557,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Write_File onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 242
-this.ScenarioSetup(scenarioInfo);
 #line 243
- testRunner.When("I \'Drag_Toolbox_Write_File_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 244
+ testRunner.When("I \'Drag_Toolbox_Write_File_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 245
  testRunner.Then("I \'Assert_Write_File_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 249
- testRunner.When("I \'Open_Write_File_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 250
+ testRunner.When("I \'Open_Write_File_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 251
  testRunner.Then("I \'Assert_Write_File_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -577,15 +579,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Zip onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 253
-this.ScenarioSetup(scenarioInfo);
 #line 254
- testRunner.When("I \'Drag_Toolbox_Zip_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 255
+ testRunner.When("I \'Drag_Toolbox_Zip_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 256
  testRunner.Then("I \'Assert_Zip_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 260
- testRunner.When("I \'Open_Zip_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 261
+ testRunner.When("I \'Open_Zip_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 262
  testRunner.Then("I \'Assert_Zip_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -599,11 +601,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox For_Each onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 264
-this.ScenarioSetup(scenarioInfo);
 #line 265
- testRunner.When("I \'Drag_Toolbox_For_Each_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 266
+ testRunner.When("I \'Drag_Toolbox_For_Each_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 267
  testRunner.Then("I \'Assert_For_Each_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -617,11 +619,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Format_Number onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 269
-this.ScenarioSetup(scenarioInfo);
 #line 270
- testRunner.When("I \'Drag_Toolbox_Format_Number_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 271
+ testRunner.When("I \'Drag_Toolbox_Format_Number_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 272
  testRunner.Then("I \'Assert_Format_Number_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -635,11 +637,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Length onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 274
-this.ScenarioSetup(scenarioInfo);
 #line 275
- testRunner.When("I \'Drag_Toolbox_Length_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 276
+ testRunner.When("I \'Drag_Toolbox_Length_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 277
  testRunner.Then("I \'Assert_Length_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -653,11 +655,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Random onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 279
-this.ScenarioSetup(scenarioInfo);
 #line 280
- testRunner.When("I \'Drag_Toolbox_Random_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 281
+ testRunner.When("I \'Drag_Toolbox_Random_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 282
  testRunner.Then("I \'Assert_Random_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -671,11 +673,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Script onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 284
-this.ScenarioSetup(scenarioInfo);
 #line 285
- testRunner.When("I \'Drag_Toolbox_Script_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 286
+ testRunner.When("I \'Drag_Toolbox_Script_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 287
  testRunner.Then("I \'Assert_Script_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -689,15 +691,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Create onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 289
-this.ScenarioSetup(scenarioInfo);
 #line 290
- testRunner.When("I \'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 291
+ testRunner.When("I \'Drag_Toolbox_Sharepoint_Create_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 292
  testRunner.Then("I \'Assert_Sharepoint_Create_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 296
- testRunner.When("I \'Open_Sharepoint_Create_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 297
+ testRunner.When("I \'Open_Sharepoint_Create_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 298
  testRunner.Then("I \'Assert_Sharepoint_Create_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -711,15 +713,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Delete onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 300
-this.ScenarioSetup(scenarioInfo);
 #line 301
- testRunner.When("I \'Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 302
+ testRunner.When("I \'Drag_Toolbox_Sharepoint_Delete_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 303
  testRunner.Then("I \'Assert_Sharepoint_Delete_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 307
- testRunner.When("I \'Open_Sharepoint_Delete_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 308
+ testRunner.When("I \'Open_Sharepoint_Delete_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 309
  testRunner.Then("I \'Assert_Sharepoint_Delete_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -733,15 +735,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Read onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 311
-this.ScenarioSetup(scenarioInfo);
 #line 312
- testRunner.When("I \'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 313
+ testRunner.When("I \'Drag_Toolbox_Sharepoint_Read_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 314
  testRunner.Then("I \'Assert_Sharepoint_Read_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 318
- testRunner.When("I \'Open_Sharepoint_Read_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 319
+ testRunner.When("I \'Open_Sharepoint_Read_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 320
  testRunner.Then("I \'Assert_Sharepoint_Read_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -755,15 +757,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sharepoint_Update onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 322
-this.ScenarioSetup(scenarioInfo);
 #line 323
- testRunner.When("I \'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 324
+ testRunner.When("I \'Drag_Toolbox_Sharepoint_Update_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 325
  testRunner.Then("I \'Assert_Sharepoint_Update_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 329
- testRunner.When("I \'Open_Sharepoint_Update_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 330
+ testRunner.When("I \'Open_Sharepoint_Update_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 331
  testRunner.Then("I \'Assert_Sharepoint_Update_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -777,11 +779,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Sort_Record onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 333
-this.ScenarioSetup(scenarioInfo);
 #line 334
- testRunner.When("I \'Drag_Toolbox_Sort_Record_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 335
+ testRunner.When("I \'Drag_Toolbox_Sort_Record_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 336
  testRunner.Then("I \'Assert_Sort_Records_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -797,19 +799,19 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox SQL_Bulk_Insert onto a new workflow", new string[] {
                         "ignore",
                         "NeedsBlankWorkflow"});
-#line 339
-this.ScenarioSetup(scenarioInfo);
 #line 340
- testRunner.When("I \'Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 341
+ testRunner.When("I \'Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 342
  testRunner.Then("I \'Assert_Sql_Bulk_insert_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 346
- testRunner.When("I \'Open_SQL_Bulk_Insert_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 347
+ testRunner.When("I \'Open_SQL_Bulk_Insert_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 348
  testRunner.Then("I \'Assert_SQL_Bulk_Insert_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 352
- testRunner.When("I \'Open_SQL_Bulk_Insert_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 353
+ testRunner.When("I \'Open_SQL_Bulk_Insert_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 354
  testRunner.Then("I \'Assert_Sql_Bulk_insert_Qvi_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -823,15 +825,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox System_Information onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 356
-this.ScenarioSetup(scenarioInfo);
 #line 357
- testRunner.When("I \'Drag_Toolbox_System_Information_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 358
+ testRunner.When("I \'Drag_Toolbox_System_Information_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 359
  testRunner.Then("I \'Assert_System_information_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 363
- testRunner.When("I \'Open_System_Information_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 364
+ testRunner.When("I \'Open_System_Information_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 365
  testRunner.Then("I \'Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -847,11 +849,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Unique_Records onto a new workflow", new string[] {
                         "ignore",
                         "NeedsBlankWorkflow"});
-#line 368
-this.ScenarioSetup(scenarioInfo);
 #line 369
- testRunner.When("I \'Drag_Toolbox_Unique_Records_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 370
+ testRunner.When("I \'Drag_Toolbox_Unique_Records_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 371
  testRunner.Then("I \'Assert_Unique_Records_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -865,15 +867,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Web_Request onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 373
-this.ScenarioSetup(scenarioInfo);
 #line 374
- testRunner.When("I \'Drag_Toolbox_Web_Request_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 375
+ testRunner.When("I \'Drag_Toolbox_Web_Request_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 376
  testRunner.Then("I \'Assert_Web_Request_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 380
- testRunner.When("I \'Open_Web_Request_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 381
+ testRunner.When("I \'Open_Web_Request_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 382
  testRunner.Then("I \'Assert_Web_Request_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -887,19 +889,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox XPath onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 384
-this.ScenarioSetup(scenarioInfo);
 #line 385
- testRunner.When("I \'Drag_Toolbox_XPath_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 386
+ testRunner.When("I \'Drag_Toolbox_XPath_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 387
  testRunner.Then("I \'Assert_XPath_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 391
- testRunner.When("I \'Open_Xpath_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 392
+ testRunner.When("I \'Open_Xpath_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 393
  testRunner.Then("I \'Assert_Xpath_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 397
- testRunner.When("I \'Open_Xpath_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 398
+ testRunner.When("I \'Open_Xpath_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 399
  testRunner.Then("I \'Assert_Xpath_Qvi_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -913,11 +915,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Calculate onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 401
-this.ScenarioSetup(scenarioInfo);
 #line 402
- testRunner.When("I \'Drag_Toolbox_Calculate_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 403
+ testRunner.When("I \'Drag_Toolbox_Calculate_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 404
  testRunner.Then("I \'Assert_Calculate_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -931,15 +933,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox CMD_Line onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 406
-this.ScenarioSetup(scenarioInfo);
 #line 407
- testRunner.When("I \'Drag_Toolbox_CMD_Line_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 408
+ testRunner.When("I \'Drag_Toolbox_CMD_Line_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 409
  testRunner.Then("I \'Assert_CMD_Line_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 413
- testRunner.When("I \'Open_CMD_Line_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 414
+ testRunner.When("I \'Open_CMD_Line_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 415
  testRunner.Then("I \'Assert_CMD_Line_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -953,11 +955,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Comment onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 417
-this.ScenarioSetup(scenarioInfo);
 #line 418
- testRunner.When("I \'Drag_Toolbox_Comment_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 419
+ testRunner.When("I \'Drag_Toolbox_Comment_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 420
  testRunner.Then("I \'Assert_Comment_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -971,11 +973,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Count_Records onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 422
-this.ScenarioSetup(scenarioInfo);
 #line 423
- testRunner.When("I \'Drag_Toolbox_Count_Records_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 424
+ testRunner.When("I \'Drag_Toolbox_Count_Records_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 425
  testRunner.Then("I \'Assert_Count_Records_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -989,19 +991,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox create JSON onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 427
-this.ScenarioSetup(scenarioInfo);
 #line 428
- testRunner.When("I \'Drag_Toolbox_JSON_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 429
+ testRunner.When("I \'Drag_Toolbox_JSON_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 430
  testRunner.Then("I \'Assert_Create_JSON_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 434
- testRunner.When("I \'Open_Json_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 435
+ testRunner.When("I \'Open_Json_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 436
  testRunner.Then("I \'Assert_Json_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 440
- testRunner.When("I \'Open_Json_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 441
+ testRunner.When("I \'Open_Json_Tool_Qvi_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 442
  testRunner.Then("I \'Assert_Json_Qvi_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1015,11 +1017,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Delete_Record onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 444
-this.ScenarioSetup(scenarioInfo);
 #line 445
- testRunner.When("I \'Drag_Toolbox_Delete_Record_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 446
+ testRunner.When("I \'Drag_Toolbox_Delete_Record_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 447
  testRunner.Then("I \'Assert_Delete_Record_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1033,11 +1035,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Date_And_Time onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 449
-this.ScenarioSetup(scenarioInfo);
 #line 450
- testRunner.When("I \'Drag_Toolbox_Date_And_Time_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 451
+ testRunner.When("I \'Drag_Toolbox_Date_And_Time_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 452
  testRunner.Then("I \'Assert_Date_And_Time_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1051,11 +1053,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox DateTime_Difference onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 454
-this.ScenarioSetup(scenarioInfo);
 #line 455
- testRunner.When("I \'Drag_Toolbox_DateTime_Difference_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 456
+ testRunner.When("I \'Drag_Toolbox_DateTime_Difference_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 457
  testRunner.Then("I \'Assert_DateTime_Difference_Conversion_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1069,15 +1071,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Email onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 459
-this.ScenarioSetup(scenarioInfo);
 #line 460
- testRunner.When("I \'Drag_Toolbox_Email_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 461
+ testRunner.When("I \'Drag_Toolbox_Email_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 462
  testRunner.Then("I \'Assert_Email_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 466
- testRunner.When("I \'Open_Email_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 467
+ testRunner.When("I \'Open_Email_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 468
  testRunner.Then("I \'Assert_Email_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1086,20 +1088,22 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Service Picker onto a new workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DragToolboxServicePickerOntoANewWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Service Picker onto a new workflow", new string[] {
+                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 470
-this.ScenarioSetup(scenarioInfo);
-#line 471
- testRunner.When("I \'Drag_Toolbox_Service_Picker_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 472
+this.ScenarioSetup(scenarioInfo);
+#line 473
+ testRunner.When("I \'Drag_Toolbox_Service_Picker_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 474
  testRunner.Then("I \'Assert_Service_Picker_Cancel_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 477
+#line 479
  testRunner.When("I \'Click_Cancel_Service_Picker_Dialog\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 478
+#line 480
  testRunner.Then("I \'Assert_Service_Picker_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1115,11 +1119,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Dropbox onto a new workflow", new string[] {
                         "ignore",
                         "NeedsBlankWorkflow"});
-#line 482
-this.ScenarioSetup(scenarioInfo);
-#line 483
- testRunner.When("I \'Drag_Toolbox_Dropbox_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 484
+this.ScenarioSetup(scenarioInfo);
+#line 485
+ testRunner.When("I \'Drag_Toolbox_Dropbox_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 486
  testRunner.Then("I \'Assert_Dropbox_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1133,15 +1137,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Find_Record_Index onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 487
-this.ScenarioSetup(scenarioInfo);
-#line 488
- testRunner.When("I \'Drag_Toolbox_Find_Record_Index_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 489
+this.ScenarioSetup(scenarioInfo);
+#line 490
+ testRunner.When("I \'Drag_Toolbox_Find_Record_Index_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 491
  testRunner.Then("I \'Assert_Find_Record_Index_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 494
+#line 496
  testRunner.When("I \'Open_Find_Record_Index_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 495
+#line 497
  testRunner.Then("I \'Assert_Find_Record_index_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1155,15 +1159,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Move onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 498
-this.ScenarioSetup(scenarioInfo);
-#line 499
- testRunner.When("I \'Drag_Toolbox_Move_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 500
+this.ScenarioSetup(scenarioInfo);
+#line 501
+ testRunner.When("I \'Drag_Toolbox_Move_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 502
  testRunner.Then("I \'Assert_Move_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 505
+#line 507
  testRunner.When("I \'Open_Move_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 506
+#line 508
  testRunner.Then("I \'Assert_Move_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1172,18 +1176,20 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Get Web Request tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void GetWebRequestTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get Web Request tool", new string[] {
+                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 509
+#line 512
 this.ScenarioSetup(scenarioInfo);
-#line 510
+#line 513
  testRunner.When("I \'Drag_Web_Get_Request_Tool_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 511
+#line 514
  testRunner.Then("I \'Assert_Web_Get_Request_Tool_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 517
+#line 520
  testRunner.Then("I \'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

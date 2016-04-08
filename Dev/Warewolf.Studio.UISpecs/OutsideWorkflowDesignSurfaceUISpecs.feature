@@ -3,6 +3,7 @@
 	As a user
 	I want to have a good UX
 
+@ignore
 @NeedsBlankWorkflow
 Scenario: Variable List
 	Given I 'Assert_VariableList_Exists'
@@ -29,7 +30,8 @@ Scenario: Connect Control Exists
 	Given I 'Assert_Connect_Control_Exists_InExplorer'
 	Given I 'Assert_Connect_ConnectControl_Button_Exists_InExplorer'
 	Given I 'Assert_Explorer_Edit_Connect_Control_Button_Exists'
-	
+
+@ignore	
 Scenario: Settings Ribbon Button
 	Given I 'Assert_Settings_Button_Exists_OnDesignSurface'
 	When I 'Click_Settings_Ribbon_Button'
@@ -45,7 +47,8 @@ Scenario: Settings Ribbon Button
 	#Given The test is initialized using low level binding calls
 	When I 'Click_MessageBox_No'
 	#Then I 'Assert_Tab_Closed'
-	
+
+@ignore	
 Scenario: Scheduler Ribbon Button
 	Given I 'Assert_Scheduler_Button_Exists_OnDesignSurface'
 	When I 'Click_Scheduler_Ribbon_Button'
@@ -62,8 +65,9 @@ Scenario: Scheduler Ribbon Button
 	When I 'Click_MessageBox_No'
 	#Then I 'Assert_Tab_Closed'
 	
+@ignore
 Scenario: Deploy Ribbon Button
-	Given I 'Assert_Deploy_Button_Exists_OnDesignSurface'
+	Given I 'Assert_Deploy_Ribbon_Button_Exists'
 	When I 'Click_Deploy_Ribbon_Button'
 	#Then 'Assert_Deploy_Exists'
 	#Ashley TODO: The test should end here.
@@ -77,7 +81,8 @@ Scenario: Deploy Ribbon Button
 	#Given The test is initialized using low level binding calls
 	When I 'Click_MessageBox_No'
 	#Then I 'Assert_Tab_Closed'
-	
+
+@ignore	
 Scenario: Knowledge Base Ribbon Button
 	Given I 'Assert_Knowledge_Base_Exists_OnDesignSurface'
 	When I 'Click_Knowledge_Ribbon_Button'
@@ -99,7 +104,8 @@ Scenario: Lock Menu Ribbon Button
 	When I 'Click_Unlock_Ribbon_Button'
 	#Then 'Assert_Lock_Ribbon_Button_Exists'
 	#Ashley TODO: The test should end here.
-	
+
+@ignore	
 Scenario: New Database Connector Ribbon Button
 	Given I 'Assert_Database_Source_Exists'
 	When I 'Click_NewDatabaseSource_Ribbon_Button'
@@ -115,7 +121,8 @@ Scenario: New Database Connector Ribbon Button
 	#Given The test is initialized using low level binding calls
 	When I 'Click_MessageBox_No'
 	#Then I 'Assert_Tab_Closed'
-	
+
+@ignore	
 Scenario: New Plugin Connector Ribbon Button
 	Given I 'Assert_Plugin_Source_Exists'
 	When I 'Click_NewPluginSource_Ribbon_Button'
@@ -131,7 +138,8 @@ Scenario: New Plugin Connector Ribbon Button
 	#Given The test is initialized using low level binding calls
 	When I 'Click_MessageBox_No'
 	#Then I 'Assert_Tab_Closed'
-	
+
+@ignore	
 Scenario: New Web Connector Ribbon Button
 	Given I 'Assert_Web_Source_Exists'
 	When I 'Click_NewWebSource_Ribbon_Button'
