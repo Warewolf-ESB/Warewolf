@@ -232,9 +232,10 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
             | RecordSetExpression a when  env.RecordSets.ContainsKey a.Name -> WarewolfAtomListresult(  (evalRecordsSet a env) )
             | ScalarExpression a  when  env.Scalar.ContainsKey a  -> WarewolfAtomResult (evalScalar a env)
             | WarewolfAtomAtomExpression a  -> WarewolfAtomResult a
-            | RecordSetNameExpression a when  env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
             | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-            | _  -> evalJson env update buffer
+            | RecordSetNameExpression a when  env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
+            | JsonIdentifierExpression a -> evalJson env update buffer
+            | _ -> failwith "same same but different"
 
 and languageExpressionToJPath (lang:LanguageExpression) = 
     match lang with
