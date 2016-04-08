@@ -48,11 +48,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Assign_QVI_Large_View_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom multiAssign = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfMenu tabContextMenu = this.MainStudioWindow.TabContextMenu;
             #endregion
 
-            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues.MultiAssignExists, multiAssign.Exists, "Assign tool QVI window on the design surface does not exist");
+            // Verify that the 'Exists' property of popup menu equals 'True'
+            Assert.AreEqual(this.Assert_Assign_QVI_Large_View_Exists_OnDesignSurfaceExpectedValues.TabContextMenuExists, tabContextMenu.Exists, "New workflow tab context menu does not exist");
         }
         
         /// <summary>
@@ -654,6 +654,19 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
+        /// Assert_New_Workflow_Context_Menu_Exists - Use 'Assert_New_Workflow_Context_Menu_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_New_Workflow_Context_Menu_Exists()
+        {
+            #region Variable Declarations
+            WpfCustom multiAssign = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_New_Workflow_Context_Menu_ExistsExpectedValues.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Plugin_Connector_Exists_OnDesignSurface - Use 'Assert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Plugin_Connector_Exists_OnDesignSurface()
@@ -1219,11 +1232,24 @@ namespace Warewolf.Studio.UISpecs
         public void Click_Close_Tab_Context_Menu_Button()
         {
             #region Variable Declarations
-            WpfMenuItem uICloseMenuItem = this.UIWarewolfDEV2ASHLEYLEWindow.UIItemMenu.UICloseMenuItem;
+            WpfMenuItem close = this.MainStudioWindow.TabContextMenu.Close;
             #endregion
 
             // Click 'Close' menu item
-            Mouse.Click(uICloseMenuItem, new Point(27, 13));
+            Mouse.Click(close, new Point(27, 13));
+        }
+        
+        /// <summary>
+        /// Click_Show_Server_Version_Explorer_Context_menu
+        /// </summary>
+        public void Click_Show_Server_Version_Explorer_Context_menu()
+        {
+            #region Variable Declarations
+            WpfMenuItem showServerVersion = this.MainStudioWindow.ExplorerContextMenu.ShowServerVersion;
+            #endregion
+
+            // Click 'Server Version' menu item
+            Mouse.Click(showServerVersion, new Point(45, 13));
         }
         
         /// <summary>
@@ -2204,23 +2230,6 @@ namespace Warewolf.Studio.UISpecs
 
             // Double-Click 'DsfActivity' custom control
             Mouse.DoubleClick(uIDsfActivityCustom, new Point(262, 3));
-        }
-        
-        /// <summary>
-        /// Edit_Database_Source_From_Connector
-        /// </summary>
-        public void Edit_Database_Source_From_Connector()
-        {
-            #region Variable Declarations
-            WpfButton uIItemButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIItemButton;
-            WpfButton uIItemButton1 = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIItemButton1;
-            #endregion
-
-            // Click '' button
-            Mouse.Click(uIItemButton, new Point(12, 12));
-
-            // Click '...' button
-            Mouse.Click(uIItemButton1, new Point(9, 18));
         }
         
         /// <summary>
@@ -3777,23 +3786,6 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(showLargeView, new Point(43, 15));
         }
         
-        /// <summary>
-        /// Show_Server_Version
-        /// </summary>
-        public void Show_Server_Version()
-        {
-            #region Variable Declarations
-            WpfTreeItem uIInfragisticsControlsTreeItem = this.UIWarewolfDEV2LEROYWARWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem;
-            WpfMenuItem uIServerVersionMenuItem = this.UIWarewolfDEV2LEROYWARWindow.UIExplorerEnvironmentMMenu.UIServerVersionMenuItem;
-            #endregion
-
-            // Right-Click 'Infragistics.Controls.Menus.XamDataTreeNodeDataCon...' tree item
-            Mouse.Click(uIInfragisticsControlsTreeItem, MouseButtons.Right, ModifierKeys.None, new Point(105, 12));
-
-            // Click 'Server Version' menu item
-            Mouse.Click(uIServerVersionMenuItem, new Point(45, 13));
-        }
-        
         #region Properties
         public virtual Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
@@ -4368,6 +4360,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues = new Assert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_New_Workflow_Context_Menu_ExistsExpectedValues Assert_New_Workflow_Context_Menu_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_New_Workflow_Context_Menu_ExistsExpectedValues == null))
+                {
+                    this.mAssert_New_Workflow_Context_Menu_ExistsExpectedValues = new Assert_New_Workflow_Context_Menu_ExistsExpectedValues();
+                }
+                return this.mAssert_New_Workflow_Context_Menu_ExistsExpectedValues;
             }
         }
         
@@ -5153,6 +5157,8 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_Mysql_Database_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
+        private Assert_New_Workflow_Context_Menu_ExistsExpectedValues mAssert_New_Workflow_Context_Menu_ExistsExpectedValues;
+        
         private Assert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues mAssert_Plugin_Connector_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_PostWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues;
@@ -5293,9 +5299,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// Verify that the 'Exists' property of popup menu equals 'True'
         /// </summary>
-        public bool MultiAssignExists = true;
+        public bool TabContextMenuExists = true;
         #endregion
     }
     
@@ -5986,6 +5992,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfMySqlDatabaseActivity' custom control equals 'True'
         /// </summary>
         public bool MySqlDatabaseExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_New_Workflow_Context_Menu_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_New_Workflow_Context_Menu_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// </summary>
+        public bool MultiAssignExists = true;
         #endregion
     }
     
@@ -6798,6 +6819,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public TabContextMenu TabContextMenu
+        {
+            get
+            {
+                if ((this.mTabContextMenu == null))
+                {
+                    this.mTabContextMenu = new TabContextMenu(this);
+                }
+                return this.mTabContextMenu;
+            }
+        }
+        
         public ExplorerContextMenu ExplorerContextMenu
         {
             get
@@ -6872,6 +6905,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private TabContextMenu mTabContextMenu;
+        
         private ExplorerContextMenu mExplorerContextMenu;
         
         private GenericContextMenu mGenericContextMenu;
@@ -6883,6 +6918,42 @@ namespace Warewolf.Studio.UISpecs
         private Explorer mExplorer;
         
         private ToolBox mToolBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class TabContextMenu : WpfMenu
+    {
+        
+        public TabContextMenu(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem Close
+        {
+            get
+            {
+                if ((this.mClose == null))
+                {
+                    this.mClose = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mClose.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Close";
+                    this.mClose.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mClose;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mClose;
         #endregion
     }
     
@@ -6900,6 +6971,22 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public WpfMenuItem ShowServerVersion
+        {
+            get
+            {
+                if ((this.mShowServerVersion == null))
+                {
+                    this.mShowServerVersion = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mShowServerVersion.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersion";
+                    this.mShowServerVersion.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mShowServerVersion;
+            }
+        }
+        
         public WpfMenuItem NewWorkflow
         {
             get
@@ -7094,6 +7181,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private WpfMenuItem mShowServerVersion;
+        
         private WpfMenuItem mNewWorkflow;
         
         private WpfMenuItem mNewServerSource;
@@ -10179,6 +10268,18 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
+        public Storage Storage
+        {
+            get
+            {
+                if ((this.mStorage == null))
+                {
+                    this.mStorage = new Storage(this);
+                }
+                return this.mStorage;
+            }
+        }
+        
         public FlowTools FlowTools
         {
             get
@@ -10325,6 +10426,8 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
+        private Storage mStorage;
+        
         private FlowTools mFlowTools;
         
         private DataTools mDataTools;
@@ -10348,6 +10451,43 @@ namespace Warewolf.Studio.UISpecs
         private UtilityTools mUtilityTools;
         
         private ConnectorTools mConnectorTools;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Storage : WpfGroup
+    {
+        
+        public Storage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Storage";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem DOWNLOAD
+        {
+            get
+            {
+                if ((this.mDOWNLOAD == null))
+                {
+                    this.mDOWNLOAD = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDOWNLOAD.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDOWNLOAD.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mDOWNLOAD.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDOWNLOAD;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mDOWNLOAD;
         #endregion
     }
     
@@ -11964,13 +12104,17 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public UIExplorerEnvironmentMMenu UIExplorerEnvironmentMMenu
+        public WpfMenu UIExplorerEnvironmentMMenu
         {
             get
             {
                 if ((this.mUIExplorerEnvironmentMMenu == null))
                 {
-                    this.mUIExplorerEnvironmentMMenu = new UIExplorerEnvironmentMMenu(this);
+                    this.mUIExplorerEnvironmentMMenu = new WpfMenu(this);
+                    #region Search Criteria
+                    this.mUIExplorerEnvironmentMMenu.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerEnvironmentMenu";
+                    this.mUIExplorerEnvironmentMMenu.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
                 }
                 return this.mUIExplorerEnvironmentMMenu;
             }
@@ -12016,7 +12160,7 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfWindow mUIWpfWindow2;
         
-        private UIExplorerEnvironmentMMenu mUIExplorerEnvironmentMMenu;
+        private WpfMenu mUIExplorerEnvironmentMMenu;
         
         private UIEXPLORERCustom mUIEXPLORERCustom;
         #endregion
@@ -13911,42 +14055,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIExplorerEnvironmentMMenu : WpfMenu
-    {
-        
-        public UIExplorerEnvironmentMMenu(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.AutomationId] = "ExplorerEnvironmentMenu";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfMenuItem UIServerVersionMenuItem
-        {
-            get
-            {
-                if ((this.mUIServerVersionMenuItem == null))
-                {
-                    this.mUIServerVersionMenuItem = new WpfMenuItem(this);
-                    #region Search Criteria
-                    this.mUIServerVersionMenuItem.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "ServerVersion";
-                    this.mUIServerVersionMenuItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIServerVersionMenuItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfMenuItem mUIServerVersionMenuItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UIEXPLORERCustom : WpfCustom
     {
         
@@ -14030,57 +14138,58 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public UIItemMenu UIItemMenu
+        public UIUI_ToolboxControl_AuCustom1 UIUI_ToolboxControl_AuCustom
         {
             get
             {
-                if ((this.mUIItemMenu == null))
+                if ((this.mUIUI_ToolboxControl_AuCustom == null))
                 {
-                    this.mUIItemMenu = new UIItemMenu(this);
+                    this.mUIUI_ToolboxControl_AuCustom = new UIUI_ToolboxControl_AuCustom1(this);
                 }
-                return this.mUIItemMenu;
+                return this.mUIUI_ToolboxControl_AuCustom;
             }
         }
         #endregion
         
         #region Fields
-        private UIItemMenu mUIItemMenu;
+        private UIUI_ToolboxControl_AuCustom1 mUIUI_ToolboxControl_AuCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemMenu : WpfMenu
+    public class UIUI_ToolboxControl_AuCustom1 : WpfCustom
     {
         
-        public UIItemMenu(UITestControl searchLimitContainer) : 
+        public UIUI_ToolboxControl_AuCustom1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolboxView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ToolboxControl_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfMenuItem UICloseMenuItem
+        public WpfList UIToolListBoxList
         {
             get
             {
-                if ((this.mUICloseMenuItem == null))
+                if ((this.mUIToolListBoxList == null))
                 {
-                    this.mUICloseMenuItem = new WpfMenuItem(this);
+                    this.mUIToolListBoxList = new WpfList(this);
                     #region Search Criteria
-                    this.mUICloseMenuItem.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Close";
-                    this.mUICloseMenuItem.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mUIToolListBoxList.SearchProperties[WpfList.PropertyNames.AutomationId] = "ToolListBox";
+                    this.mUIToolListBoxList.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mUICloseMenuItem;
+                return this.mUIToolListBoxList;
             }
         }
         #endregion
         
         #region Fields
-        private WpfMenuItem mUICloseMenuItem;
+        private WpfList mUIToolListBoxList;
         #endregion
     }
 }
