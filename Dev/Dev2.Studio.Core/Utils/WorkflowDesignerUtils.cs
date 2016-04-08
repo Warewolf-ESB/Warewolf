@@ -18,6 +18,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.Services.Events;
@@ -105,7 +106,14 @@ namespace Dev2.Utils
                     }
                 }
             }
-
+            try
+            {
+                WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(activityField);
+            }
+            catch(Exception)
+            {
+                return result.Where(lang => activityField.Contains("[[" + lang + "]]")).ToList();
+            }
 
             return result;
         }

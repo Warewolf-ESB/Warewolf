@@ -41,7 +41,7 @@ namespace WpfControls.Editors
                 ToolTip = _defaultToolTip;
                 return;
             }
-          var error =   WarewolfDataEvaluationCommon.ParseLanguageExpressionAndValidate(text);
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(text);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
                 ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset";

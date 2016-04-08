@@ -56,6 +56,7 @@ namespace WarewolfParsingTest
         [TestCategory("WarewolfParse_Parse")]
         public void WarewolfParse_Parse_Nested_ExpectComplex_MultiNested()
         {
+           
 
             var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[[[[[a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
@@ -119,7 +120,7 @@ namespace WarewolfParsingTest
 
             var ast = PublicFunctions.EvalEnvExpression("[[rec(1).a]]", 0, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
-            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             // ReSharper disable PossibleNullReferenceException
             var val = x.Item.First();
 
@@ -139,7 +140,7 @@ namespace WarewolfParsingTest
 
             var ast = PublicFunctions.EvalEnvExpression("[[rec().a]]", 0, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
-            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             // ReSharper disable PossibleNullReferenceException
             var val = x.Item.First();
 
@@ -179,7 +180,7 @@ namespace WarewolfParsingTest
 
             var ast = PublicFunctions.EvalEnvExpression("[[a]]", 0, env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
-            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x.Item.IsDataString);
             var val = x.Item as DataASTMutable.WarewolfAtom.DataString;
@@ -198,7 +199,7 @@ namespace WarewolfParsingTest
 
             var ast = PublicFunctions.EvalEnvExpression("[[b]]", 0, env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
-            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             // ReSharper disable PossibleNullReferenceException
             // ReSharper disable PossibleNullReferenceException
             // ReSharper disable PossibleNullReferenceException
@@ -225,7 +226,7 @@ namespace WarewolfParsingTest
 
             var ast = PublicFunctions.EvalEnvExpression("[[[[c]]]]", 0, env);
             Assert.IsTrue(ast.IsWarewolfAtomResult);
-            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+            var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x.Item.IsDataString);
             var val = x.Item as DataASTMutable.WarewolfAtom.DataString;
@@ -245,7 +246,7 @@ namespace WarewolfParsingTest
 
             var ast = PublicFunctions.EvalEnvExpression("[[rec([[d]]).a]]", 0, env);
             Assert.IsTrue(ast.IsWarewolfAtomListresult);
-            var x = (ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.First();
+            var x = (ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item.First();
 
             // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x.IsInt);
@@ -925,7 +926,7 @@ namespace WarewolfParsingTest
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
             var res = PublicFunctions.EvalEnvExpression("[[rec()]]", 0, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
-            var x = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
+            var x = (res as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult).Item;
             Assert.AreEqual("29", x.Data[DataASTMutable.PositionColumn][0].ToString());
             Assert.AreEqual("26", x.Data["b"][0].ToString());
         }
@@ -947,7 +948,7 @@ namespace WarewolfParsingTest
             var testEnv3 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
             var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", 0, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
-            var x = (res as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult).Item;
+            var x = (res as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult).Item;
             Assert.AreEqual("27", x.Data[DataASTMutable.PositionColumn][0].ToString());
             Assert.AreEqual("33", x.Data["b"][0].ToString());
         }
@@ -1518,7 +1519,7 @@ namespace WarewolfParsingTest
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, testEnv2);
             if (items.IsWarewolfAtomListresult)
             {
-                var lst = (items as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
+                var lst = (items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item;
                 Assert.AreEqual(lst[0].ToString(), "27");
                 Assert.AreEqual(lst[1].ToString(), "25");
                 Assert.AreEqual(lst[2].ToString(), "33");
@@ -1552,7 +1553,7 @@ namespace WarewolfParsingTest
             var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, env3);
             if (items.IsWarewolfAtomListresult)
             {
-                var lst = (items as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item;
+                var lst = (items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item;
 
                 Assert.AreEqual(lst[0].ToString(), "25");
                 Assert.AreEqual(lst[1].ToString(), "33");
@@ -1657,7 +1658,7 @@ namespace WarewolfParsingTest
             var items = PublicFunctions.EvalEnvExpression("[[a]]", 0, env3);
             if (items.IsWarewolfAtomListresult)
             {
-                var lst = (items as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+                var lst = (items as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
 
                 Assert.IsTrue(lst.IsDataString);
                 Assert.AreEqual((lst as DataASTMutable.WarewolfAtom.DataString).Item, "a,b");

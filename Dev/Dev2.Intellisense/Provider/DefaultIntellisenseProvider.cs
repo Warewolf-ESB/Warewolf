@@ -15,11 +15,12 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
+using Dev2.Intellisense;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using WpfControls;
+
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors

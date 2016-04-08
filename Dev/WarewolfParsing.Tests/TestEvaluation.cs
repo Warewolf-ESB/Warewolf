@@ -23,7 +23,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>() });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -31,7 +31,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
             var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
             Assert.IsTrue(evalled.IsWarewolfAtomResult);
-            var res = (evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+            var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
             var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
             Assert.AreEqual(str,j.ToString());
         }
@@ -44,13 +44,13 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>() });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString( WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Name]]"));
+            var evalled = CommonFunctions.evalResultToString( WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Name]]"));
 
             Assert.AreEqual(evalled, "n");
         }
@@ -63,13 +63,13 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person>(), Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Spouse.Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Spouse.Name]]"));
 
             Assert.AreEqual(evalled, "o");
         }
@@ -82,13 +82,13 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(1).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(1).Name]]"));
 
             Assert.AreEqual(evalled, "p");
         }
@@ -103,13 +103,13 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*).Name]]"));
 
             Assert.AreEqual(evalled, "p,q");
         }
@@ -121,13 +121,13 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*)]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*)]]"));
 
             Assert.AreEqual(evalled, "p,q");
         }
@@ -140,13 +140,13 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             JObject j = JObject.FromObject(new Person() { Name = "n", Children = new List<Person> { new Person() { Name = "p", Children = new List<Person>() }, new Person() { Name = "q", Children = new List<Person>() } }, Spouse = new Person() { Name = "o", Children = new List<Person>() } });
-            var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+            var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = WarewolfDataEvaluationCommon.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children().Name]]"));
+            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children().Name]]"));
 
             Assert.AreEqual(evalled, "q");
         }
@@ -161,7 +161,7 @@ namespace WarewolfParsingTest
             var x = new[] { new Person() { Name = "n", Children = new List<Person>() }, new Person() { Name = "n", Children = new List<Person>() } };
             var j = JArray.FromObject( x );
             var q = j.SelectTokens("[*]");
-          //  var added = AssignEvaluation.AddToJsonObjects(createDataSet, "bob", j);
+          //  var added = AssignEvaluation.addToJsonObjects(createDataSet, "bob", j);
             ////------------Execute Test---------------------------
 
             ////------------Assert Results-------------------------
@@ -169,7 +169,7 @@ namespace WarewolfParsingTest
             //Assert.AreEqual(added.JsonObjects["bob"].GetValue("Name").ToString(), "n");
             //var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
             //Assert.IsTrue(evalled.IsWarewolfAtomResult);
-            //var res = (evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult).Item;
+            //var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
             //var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
             //Assert.AreEqual(str, j.ToString());
         }

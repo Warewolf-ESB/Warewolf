@@ -5,6 +5,7 @@ open LanguageAST
 open DataASTMutable
 open WarewolfParserInterop
 open WarewolfDataEvaluationCommon
+open CommonFunctions
 
 let rec  evalWhere  (env: WarewolfEnvironment) (lang:string) (update:int) (func: WarewolfAtom->bool) : List<int>=  
     let exp = ParseCache.TryFind lang

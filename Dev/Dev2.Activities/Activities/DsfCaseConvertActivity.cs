@@ -161,7 +161,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     
                         if(evalled.IsWarewolfAtomResult)
                         {
-                            var warewolfAtomResult = evalled as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            var warewolfAtomResult = evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                             if(warewolfAtomResult != null)
                             {
 
@@ -170,7 +170,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             return DataASTMutable.WarewolfAtom.Nothing;
                         }
 
-                        return DataASTMutable.WarewolfAtom.NewDataString(  WarewolfDataEvaluationCommon.evalResultToString(evalled));
+                        return DataASTMutable.WarewolfAtom.NewDataString( CommonFunctions.evalResultToString(evalled));
                     };
                 }
             }

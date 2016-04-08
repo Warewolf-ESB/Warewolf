@@ -1,13 +1,13 @@
 ﻿module IntellisenseStringProvider
 open LanguageAST
 //open LanguageEval
-
+open CommonFunctions
 open WarewolfDataEvaluationCommon
+open Microsoft.FSharp.Text.Lexing
 
 let Tokenisers = "!@#$%^&*()-=_+{}|:\"?><`~<>?:'{}| ".ToCharArray()
 let Tokenisers2 = "[]".ToCharArray()
 let Tokenisers3 = "()".ToCharArray()
-
 
 type FilterOption =
     | Recordsets
@@ -15,64 +15,147 @@ type FilterOption =
     | RecordSetNames
     | All
 
+let rec parseLanguageExpressionAndValidate  (lang:string) : (LanguageExpression*string)=
+    if( lang.Contains"[[")
+    then
+        try 
+            let lexbuf = LexBuffer<string>.FromString lang 
+            let buffer = Parser.start Lexer.tokenstream lexbuf
+            let res = buffer |> Clean
+            match res with 
+            | RecordSetExpression e -> (res,validateRecordsetIndex e.Index)
+            | RecordSetNameExpression e -> (res,validateRecordsetIndex e.Index)
+            | ScalarExpression _ -> (res,"")
+            | ComplexExpression x -> verifyComplexExpression(x)
+            | WarewolfAtomAtomExpression _ -> (res,"")
+            | JsonIdentifierExpression _ -> (res,"")
+        with ex when ex.Message.ToLower() = "parse error" -> 
+                                                                 if(lang.Length>2) then
+                                                                    let startswithNum,_ = System.Int32.TryParse(lang.[2].ToString())
+                                                                    match startswithNum with
+                                                                        | true -> (WarewolfAtomAtomExpression (DataASTMutable.DataString lang),"Variable name " + lang +  " begins with a number")
+                                                                        |false -> (WarewolfAtomAtomExpression (DataASTMutable.DataString lang),"Variable name " + lang + " contains invalid character(s)")
+                                                                 else
+             
+                                                                    (WarewolfAtomAtomExpression (DataASTMutable.DataString lang),"Variable name " + lang + " contains invalid character(s)")
+    else (WarewolfAtomAtomExpression (parseAtom lang),"")
+
+and checkForInvalidVariables (lang:LanguageExpression list) =
+    let updateLanguageExpression (a:LanguageExpression) =
+        match a with 
+            | RecordSetExpression _ -> WarewolfAtomAtomExpression (DataASTMutable.DataString "")
+            | RecordSetNameExpression _ -> WarewolfAtomAtomExpression (DataASTMutable.DataString"")
+            | ScalarExpression _ ->  WarewolfAtomAtomExpression (DataASTMutable.DataString"")
+            | ComplexExpression _ -> a
+            | WarewolfAtomAtomExpression _ ->a
+    let data = List.map (languageExpressionToString << updateLanguageExpression) lang |> fun a-> System.String.Join("",a)
+    if data = languageExpressionToString (ComplexExpression lang)
+    then
+        if(data.Length>2) then
+            let startswithNum,_ = System.Int32.TryParse(data.[2].ToString())
+            match startswithNum with
+                | true -> (ComplexExpression lang,"Recordset field " + data +  " begins with a number")
+                |false -> (ComplexExpression lang,"Variable name " + data + " contains invalid character(s)")
+         else
+             
+            (ComplexExpression lang,"Variable name " + data + " contains invalid character(s)")
+    else
+        
+        let parsed = parseLanguageExpressionAndValidate data
+        let res=     match parsed with 
+                        | (RecordSetExpression _,_)  -> parsed
+                        | (RecordSetNameExpression _,_)  -> parsed
+                        | (ScalarExpression _,_) ->  parsed
+                        | (ComplexExpression _,_) when  data.StartsWith"[[" && data.EndsWith("]]")  -> (ComplexExpression lang,"invalid variable name")
+                        | (ComplexExpression _,_) -> parsed
+                        | (WarewolfAtomAtomExpression _,_) ->parsed
+        res
+
+and verifyComplexExpression (lang:LanguageExpression list) =
+    if  List.exists IsAtomExpression lang
+    then
+        let balanced = LanguageExpressionToSumOfInt lang 
+        match balanced with 
+        | 99 -> (ComplexExpression lang,"The order of [[ and ]] is incorrect")
+        | a when a<0 -> (ComplexExpression lang,"Invalid region detected: A close ]] without a related open [[")
+        | 0 -> checkForInvalidVariables lang
+        |_ -> (ComplexExpression lang,"Invalid region detected: An open [[ without a related close ]]")
+
+    else 
+        (ComplexExpression lang,"")
+
+and validateRecordsetIndex (ind:Index) =
+    match ind with 
+    | IndexExpression a -> 
+        match a with 
+            | RecordSetExpression _ -> ""
+            | RecordSetNameExpression _ -> ""
+            | ScalarExpression _ ->  ""
+            | ComplexExpression _ -> parseLanguageExpressionAndValidate (languageExpressionToString a) |> snd
+            | WarewolfAtomAtomExpression _ ->"Recordset index (" + languageExpressionToString a + ") contains invalid character(s)"
+    | _ -> ""
+        
+
+
+
 let rec getOptions (variables:LanguageExpression seq) (level:int) (filter:FilterOption) =
-    Combine  (Seq.filter (fun (a:LanguageExpression) -> filterOptions filter a ) variables) level variables (level=0) |> List.sortBy (fun (a:string) -> a.ToLower())
+    combine  (Seq.filter (fun (a:LanguageExpression) -> filterOptions filter a ) variables) level variables (level=0) |> List.sortBy (fun (a:string) -> a.ToLower())
 
 and filterOptions  (filter:FilterOption) (a:LanguageExpression) =
     match (a,filter) with
-        | (LanguageExpression.RecordSetExpression a ,FilterOption.Recordsets ) -> true
-        | (LanguageExpression.ScalarExpression a ,FilterOption.Scalars ) -> true
-        | (LanguageExpression.RecordSetNameExpression a ,FilterOption.RecordSetNames ) -> true
+        | (LanguageExpression.RecordSetExpression _ ,FilterOption.Recordsets ) -> true
+        | (LanguageExpression.ScalarExpression _ ,FilterOption.Scalars ) -> true
+        | (LanguageExpression.RecordSetNameExpression _ ,FilterOption.RecordSetNames ) -> true
         | (_ ,FilterOption.All ) -> true
         | _ ->false
 // take a list of variables and cartesian product of the options. 
 // can take a bias at some point
-and  Combine (variables:LanguageExpression seq) (level:int) (unfilteredvariables:LanguageExpression seq) (startAtzero:bool) = 
-    List.collect (fun a-> CombineExpressions level (List.ofSeq unfilteredvariables) a startAtzero ) (List.ofSeq variables)  // clean up multiple enumerations
+and  combine (variables:LanguageExpression seq) (level:int) (unfilteredvariables:LanguageExpression seq) (startAtzero:bool) = 
+    List.collect (fun a-> combineExpressions level (List.ofSeq unfilteredvariables) a startAtzero ) (List.ofSeq variables)  // clean up multiple enumerations
 
-and CombineExpressions  (level:int) (variables:LanguageExpression list) (variable:LanguageExpression) (startAtzero:bool)  =
+and combineExpressions  (level:int) (variables:LanguageExpression list) (variable:LanguageExpression) (startAtzero:bool)  =
     match variable with
-    | ScalarExpression a -> CombineScalar a 
-    | RecordSetExpression b  -> CombineRecset b level  variables startAtzero
-    | RecordSetNameExpression c  -> CombineRecsetName c level  variables
+    | ScalarExpression a -> combineScalar a 
+    | RecordSetExpression b  -> combineRecset b level  variables startAtzero
+    | RecordSetNameExpression c  -> combineRecsetName c level  variables
     | WarewolfAtomAtomExpression _ -> List.empty
     | ComplexExpression _ -> List.empty // cant have complex expressions in intellisense because the variable list is made up of simple expressions
 
-and CombineScalar (a:ScalarIdentifier)  =
+and combineScalar (a:ScalarIdentifier)  =
     [ ScalarExpression a |> languageExpressionToString]
 
-and CombineRecset (a:RecordSetIdentifier) (level:int)  (variables:LanguageExpression list)  (startAtzero:bool) =
+and combineRecset (a:RecordSetIdentifier) (level:int)  (variables:LanguageExpression list)  (startAtzero:bool) =
     match level with
     | 0  when startAtzero -> 
-                               let indexes = CombineIndexAtZero level a
+                               let indexes = combineIndexAtZero level a
                                List.append  (List.map (fun x -> "[["+ a.Name + "(" + x + ")." + a.Column + "]]") indexes)  (List.map (fun x -> "[["+ a.Name + "(" + x ) indexes) 
     | 0  when not startAtzero -> [ RecordSetExpression a |> languageExpressionToString]
 
-    | _ -> let indexes = CombineIndex level variables
+    | _ -> let indexes = combineIndex level variables
            List.append  (List.map (fun x -> "[["+ a.Name + "(" + x + ")." + a.Column + "]]") indexes)  (List.map (fun x -> "[["+ a.Name + "(" + x ) indexes)
 
-and CombineRecsetName (a:RecordSetName) (level:int)  (variables:LanguageExpression list)  =
+and combineRecsetName (a:RecordSetName) (level:int)  (variables:LanguageExpression list)  =
     match level with
     | 0 -> [ RecordSetNameExpression a |> languageExpressionToString]
-    | _ -> let indexes = CombineIndex level variables
+    | _ -> let indexes = combineIndex level variables
            List.map (fun x -> "[["+ a.Name + "(" + x + ")" + "]]") indexes
 
 
 
-and CombineIndex (level:int) (variables:LanguageExpression list)   =
+and combineIndex (level:int) (variables:LanguageExpression list)   =
     let newLevel = level - 1
-    let combined = Combine variables newLevel variables false
+    let combined = combine variables newLevel variables false
     "*" :: "":: combined
 
-and CombineIndexAtZero (level:int) (variables:RecordSetIdentifier)   =
+and combineIndexAtZero (_:int) (_:RecordSetIdentifier)   =
     "*" :: [""]
 
-let rec ProcessLanguageExpressionList (lst:LanguageExpression list) (acc:string) (replacement:string ) (caretPosition:int) = 
+let rec processLanguageExpressionList (lst:LanguageExpression list) (acc:string) (replacement:string ) (caretPosition:int) = 
     match lst with
     | h::t -> match h with 
-                | WarewolfAtomAtomExpression a -> ProcessLanguageExpressionList t  (acc + replacement) "" caretPosition
+                | WarewolfAtomAtomExpression _ -> processLanguageExpressionList t  (acc + replacement) "" caretPosition
                 | _ -> let exp = WarewolfDataEvaluationCommon.languageExpressionToString h
-                       ProcessLanguageExpressionList t  (acc + exp) replacement caretPosition
+                       processLanguageExpressionList t  (acc + exp) replacement caretPosition
     |[] ->acc
 
 
@@ -81,30 +164,30 @@ let rec takeNonAlphabets (a:string) (acc:string) =
    | "" -> a
    | _ -> if a.ToCharArray().[0] > 'z' || a.ToCharArray().[0] <'A' then  takeNonAlphabets (a.Substring(1)) (acc+a.[0].ToString()) else acc
 
-let rec GetCaretPosition (lst:LanguageExpression list) (caretPosition:int) (acc:string) (i:int)=
+let rec getCaretPosition (lst:LanguageExpression list) (caretPosition:int) (acc:string) (i:int)=
     match lst with
     | h::t -> let exp = acc+ WarewolfDataEvaluationCommon.languageExpressionToString h
-              if exp.Length >= caretPosition then  i   else GetCaretPosition t caretPosition exp (i + 1)
+              if exp.Length >= caretPosition then  i   else getCaretPosition t caretPosition exp (i + 1)
 
     |[] ->i
 
-let rec GetCaretPositionInString (lst:LanguageExpression list) (caretPosition:int) (acc:string) (i:int) (currenti:int)=
+let rec getCaretPositionInString (lst:LanguageExpression list) (caretPosition:int) (acc:string) (i:int) (currenti:int)=
     match lst with
     | h::t -> let exp = acc+ WarewolfDataEvaluationCommon.languageExpressionToString h
-              if exp.Length >= caretPosition then  caretPosition-currenti   else GetCaretPositionInString t caretPosition exp (i + 1) (currenti + (WarewolfDataEvaluationCommon.languageExpressionToString h).Length)
+              if exp.Length >= caretPosition then  caretPosition-currenti   else getCaretPositionInString t caretPosition exp (i + 1) (currenti + (WarewolfDataEvaluationCommon.languageExpressionToString h).Length)
 
     |[] ->i
 
-let rec DoReplace (text:string)  (caretPosition:int ) (replacement:string) =
+let rec doReplace (text:string)  (caretPosition:int ) (replacement:string) =
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate text
     match parsed with 
-        |   ComplexExpression a ->  let caret = GetCaretPosition a caretPosition "" 0
+        |   ComplexExpression a ->  let caret = getCaretPosition a caretPosition "" 0
                                     let b =  Array.ofList a  
                                     let bcaret = languageExpressionToString b.[caret]
                                     let app = if bcaret.EndsWith(" ") then " " else "" 
                                     let str = takeNonAlphabets (bcaret) ""
                                     let rep = match b.[caret] with
-                                                    | RecordSetExpression xs -> fst (DoReplace (languageExpressionToString b.[caret])  (GetCaretPositionInString a caretPosition "" 0 0 ) replacement)
+                                                    | RecordSetExpression _ -> fst (doReplace (languageExpressionToString b.[caret])  (getCaretPositionInString a caretPosition "" 0 0 ) replacement)
                                                     |_ -> replacement                                    
                                     b.[caret] <- (LanguageAST.WarewolfAtomAtomExpression ( DataASTMutable.DataString (str+ rep+app) ))
                                     
@@ -112,7 +195,7 @@ let rec DoReplace (text:string)  (caretPosition:int ) (replacement:string) =
                                     let x = Array.map languageExpressionToString b |> fun ax -> System.String.Join("",ax) 
                                     let cx = Seq.take (caret+1) b |> Array.ofSeq |>Array.map languageExpressionToString  |> fun ax -> System.String.Join("",ax) 
                                     (x,cx.Length)
-        | WarewolfAtomAtomExpression a ->   let b = (languageExpressionToString parsed)
+        | WarewolfAtomAtomExpression _ ->   let b = (languageExpressionToString parsed)
                                             let first = b.Substring(0,caretPosition)
                                             let last = b.Substring(caretPosition)
                                             let indexOfData = first.LastIndexOfAny(Tokenisers)
@@ -124,9 +207,8 @@ let rec DoReplace (text:string)  (caretPosition:int ) (replacement:string) =
                                                 | (_,_) -> (b.Substring(0,indexOfData+1)+replacement+ b.Substring(indexOfEndData), (replacement+ b.Substring(indexOfEndData)).Length)
 
                                           
-        | RecordSetExpression a ->  let b = (languageExpressionToString parsed)
+        | RecordSetExpression _ ->  let b = (languageExpressionToString parsed)
                                     let first = b.Substring(0,caretPosition)
-                                    let last = b.Substring(caretPosition)
                                     let indexOfData = first.IndexOf("[[")
                                     let indexOfEndData = b.IndexOfAny(Tokenisers2,caretPosition)
                                     let indexOfBData = first.LastIndexOfAny(Tokenisers3)
