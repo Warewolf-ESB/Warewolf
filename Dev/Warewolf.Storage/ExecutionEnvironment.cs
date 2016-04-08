@@ -75,6 +75,162 @@ namespace Warewolf.Storage
         void AssignJson(IAssignValue value, int update);
     }
 
+    public class ScopedEnvironment : IExecutionEnvironment
+    {
+        private IExecutionEnvironment _inner;
+        private readonly string _datasource;
+        private readonly string _alias;
+
+        public ScopedEnvironment(IExecutionEnvironment inner, string datasource , string alias)
+        {
+            _inner = inner;
+            _datasource = datasource;
+            _alias = alias;
+        }
+
+        #region Implementation of IExecutionEnvironment
+
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = true)
+        {
+            return _inner.Eval( exp.Replace(_alias,_datasource),update,throwsifnotexists);
+        }
+
+        public CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update)
+        {
+            return null;
+        }
+
+        public void Assign(string exp, string value, int update)
+        {
+        }
+
+        public void AssignWithFrame(IAssignValue values, int update)
+        {
+        }
+
+        public int GetLength(string recordSetName)
+        {
+            return 0;
+        }
+
+        public int GetCount(string recordSetName)
+        {
+            return 0;
+        }
+
+        public IList<int> EvalRecordSetIndexes(string recordsetName, int update)
+        {
+            return null;
+        }
+
+        public bool HasRecordSet(string recordsetName)
+        {
+            return false;
+        }
+
+        public IList<string> EvalAsListOfStrings(string expression, int update)
+        {
+            return _inner.EvalAsListOfStrings(expression,update);
+        }
+
+        public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
+        {
+        }
+
+        public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
+        {
+        }
+
+        public void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
+        {
+        }
+
+        public void EvalDelete(string exp, int update)
+        {
+        }
+
+        public void CommitAssign()
+        {
+        }
+
+        public void SortRecordSet(string sortField, bool descOrder, int update)
+        {
+        }
+
+        public string ToStar(string expression)
+        {
+            return null;
+        }
+
+        public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false)
+        {
+            yield break;
+        }
+
+        public IEnumerable<int> EvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update)
+        {
+            yield break;
+        }
+
+        public void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause, int update)
+        {
+        }
+
+        public HashSet<string> Errors { get; private set; }
+        public HashSet<string> AllErrors { get; private set; }
+
+        public void AddError(string error)
+        {
+        }
+
+        public void AssignDataShape(string p)
+        {
+        }
+
+        public string FetchErrors()
+        {
+            return null;
+        }
+
+        public bool HasErrors()
+        {
+            return false;
+        }
+
+        public string EvalToExpression(string exp, int update)
+        {
+            return null;
+        }
+
+        public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
+        {
+            yield break;
+        }
+
+        public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)
+        {
+        }
+
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp)
+        {
+            return null;
+        }
+
+        public void AddToJsonObjects(string bob, JContainer jContainer)
+        {
+        }
+
+        public void AssignJson(IEnumerable<IAssignValue> values, int update)
+        {
+        }
+
+        public void AssignJson(IAssignValue value, int update)
+        {
+        }
+
+        #endregion
+    }
+
     public class ExecutionEnvironment : IExecutionEnvironment
     {
         private DataASTMutable.WarewolfEnvironment _env;
@@ -595,4 +751,6 @@ namespace Warewolf.Storage
             }
         }
     }
+
+
 }
