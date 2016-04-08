@@ -18,8 +18,8 @@ Scenario: Execute Sequence with Assign
           And the "TestAssign" debug outputs as
           | # |              |
           | 1 | [[var1]] = 1 |
-          | 2 | [[var2]] = 2 |           
-		  And the Sequence Has a Duration
+          | 2 | [[var2]] = 2 |           		  
+
 Scenario: Execute a Sequence with Assign and Calculate
        Given I have a Sequence "Test"
 	   And "Test" contains an Assign "SetVariables" as
