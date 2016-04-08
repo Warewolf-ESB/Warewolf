@@ -66,7 +66,8 @@ type WarewolfRecordset =
         
 
     } with
-    member this.Count = this.Data.[PositionColumn].Count
+    member this.PositionColumn = this.Data.[PositionColumn]
+    member this.Count = this.PositionColumn.Count
 
 
 type WarewolfEnvironment = 

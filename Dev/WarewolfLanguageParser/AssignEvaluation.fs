@@ -182,6 +182,91 @@ and evalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                                         evalMultiAssignOp env  update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
                 |   _ -> failwith "assigning an entire recordset to a variable is not defined"
 
+and addAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (pos:int) (isFramed:bool) =
+    let  position = pos
+    let rsAdded = if rset.Data.ContainsKey( columnName) 
+                  then  rset
+                  else 
+                       { rset with Data=  Map.add columnName (createEmpty rset.Data.[PositionColumn].Length rset.Data.[PositionColumn].Count )  rset.Data    }
+    let frame = if isFramed then position else 0;
+    if (position = rsAdded.LastIndex+1)    
+        then                  
+            let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( addToList v value) else (addNothingToList v )) rsAdded.Data
+            let len = addedAtEnd.[PositionColumn].Count 
+            
+            addedAtEnd.[PositionColumn].[len-1] <- Int position
+            { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1; Frame = frame ; Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations  }
+        else
+            if (position = rsAdded.LastIndex+1) || (position = rsAdded.Frame && isFramed)   
+            then                  
+                let len = rsAdded.Data.[PositionColumn].Count 
+                if len = 0 then
+                    rsAdded.Data.[columnName].[0] <- value
+                    rsAdded
+                else
+                    rsAdded.Data.[columnName].[len-1] <- value
+                    rsAdded
+            else
+            if position > rsAdded.LastIndex
+                then
+                let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( addToList v value) else (addNothingToList v )) rsAdded.Data
+                let len = addedAtEnd.[PositionColumn].Count 
+            
+                addedAtEnd.[PositionColumn].[len-1] <- Int position
+                { rsAdded with Data=addedAtEnd ; LastIndex = position; Frame = frame ;  Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
+
+            else
+                let lstval = rsAdded.Data.[PositionColumn]
+                if rsAdded.Optimisations = WarewolfAttribute.Ordinal then 
+                    rsAdded.Data.[columnName].[position-1] <- value
+                    rsAdded    
+                else
+                    if Seq.exists (fun vx -> vx=(Int position)) lstval then
+                        let index = Seq.findIndex (fun vx -> vx= (Int position)) lstval
+                        rsAdded.Data.[columnName].[index] <- value
+                        rsAdded
+                    else 
+                          let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( addToList v value) else (addNothingToList v )) rsAdded.Data
+                          let len = addedAtEnd.[PositionColumn].Count 
+            
+                          addedAtEnd.[PositionColumn].[len-1] <- Int position
+                          { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Frame = frame ; Optimisations = WarewolfAttribute.Fragmented }
+
+
+and addAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (position:int) =
+    let col = rset.Data.TryFind columnName
+    let rsAdded= match col with 
+                    | Some _ -> rset
+                    | None-> { rset with Data=  Map.add columnName (createEmpty rset.Data.[PositionColumn].Length rset.Data.[PositionColumn].Count)  rset.Data    }
+    if position = rsAdded.Count+1    
+        then
+                  
+            let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( addToList v value) else (addNothingToList v )) rsAdded.Data
+            let len = addedAtEnd.[PositionColumn].Count 
+            
+            addedAtEnd.[PositionColumn].[len-1] <- Int position
+            { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex+1;  Optimisations = if rsAdded.Count = rsAdded.LastIndex &&  rsAdded.Optimisations <> WarewolfAttribute.Fragmented &&  rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal else rsAdded.Optimisations }
+        else
+            if position > rsAdded.Count+1
+                then
+                let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( addToList v value) else (addNothingToList v )) rsAdded.Data
+                let len = addedAtEnd.[PositionColumn].Count 
+            
+                addedAtEnd.[PositionColumn].[len-1] <- Int position
+                { rsAdded with Data=addedAtEnd ; LastIndex = position;Optimisations = if  rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted else rsAdded.Optimisations }
+
+            else
+                let lstval = rsAdded.Data.[PositionColumn]
+                if Seq.exists (fun vx -> vx=(Int position)) lstval then
+                    let index = Seq.findIndex (fun vx -> vx= (Int position)) lstval
+                    lstval.[index] <- value
+                    rsAdded
+                else 
+                      let addedAtEnd =  Map.map (fun k v -> if k=columnName then  ( addToList v value) else (addNothingToList v )) rsAdded.Data
+                      let len = addedAtEnd.[PositionColumn].Count 
+            
+                      addedAtEnd.[PositionColumn].[len-1] <- Int position
+                      { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Optimisations = WarewolfAttribute.Fragmented }
 
 and evalMultiAssignList (env:WarewolfEnvironment)  (value :WarewolfAtom seq ) (exp :string) (update:int) (shouldUseLast: bool)=
     let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
