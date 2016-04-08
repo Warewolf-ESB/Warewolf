@@ -35,7 +35,7 @@ Scenario: Connect Control Exists
 Scenario: Settings Ribbon Button
 	Given I 'Assert_Settings_Button_Exists_OnDesignSurface'
 	When I 'Click_Settings_Ribbon_Button'
-	#Then 'Assert_Settings_Exists'
+	#Then 'Assert_Settings_Tab_Exists'
 	#Ashley TODO: The test should end here.
 	
 	Given I 'Assert_Close_Tab_Button_Exists'
