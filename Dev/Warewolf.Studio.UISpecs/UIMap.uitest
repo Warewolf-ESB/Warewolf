@@ -551,15 +551,32 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Dropbox tool on the design surface does not exist</MessageOnValidationFailure>
+      <MessageOnValidationFailure>Dropbox Download tool on the design surface does not exist</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Dropbox_Exists_OnDesignSurface">
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Dropbox_Download_Exists_OnDesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_UPLOAD">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Dropbox Upload tool on the design surface does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_Dropbox_Upload_Exists_OnDesignSurface">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -2074,7 +2091,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <DragDropAction UIObjectName="UIMap.MainStudioWindow.ToolBox.ToolListBox.ConnectorTools.DropBox">
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.ToolBox.ToolListBox.StorageTools.DOWNLOAD">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -2083,7 +2100,25 @@
       <StartLocation X="30" Y="8" />
       <StopLocation X="307" Y="131" />
     </DragDropAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Dropbox_Onto_DesignSurface">
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Dropbox_Download_Onto_DesignSurface">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <DragDropAction UIObjectName="UIMap.MainStudioWindow.ToolBox.ToolListBox.StorageTools.UPLOAD">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <TargetElementName>UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart</TargetElementName>
+      <MouseButton>Left</MouseButton>
+      <StartLocation X="30" Y="8" />
+      <StopLocation X="307" Y="131" />
+    </DragDropAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -3012,7 +3047,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -3876,7 +3911,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -6044,16 +6079,30 @@
                                                     </UIObject>
                                                   </Descendants>
                                                 </UIObject>
-                                                <UIObject ControlType="Custom" Id="DropBox" FriendlyName="DsfDropBoxFileActivity" SpecialControlType="None">
+                                                <UIObject ControlType="Custom" Id="DropBox_DOWNLOAD" FriendlyName="DsfDropBoxFileActivity" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
                                                     <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                    <PropertyCondition Name="ClassName">Uia.DropboxUploadFileDesigner</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">Dropbox File Operation(DropboxUploadFileDesigner)</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.DropBoxDownloadDesigner</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">DOWNLOAD from Dropbox(DropBoxDownloadDesigner)</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="Custom" Id="DropBox_UPLOAD" FriendlyName="DsfDropBoxFileActivity" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.DropBoxUploadDesigner</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UPLOAD from Dropbox(DropBoxUploadDesigner)</PropertyCondition>
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants />
@@ -7066,34 +7115,6 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="Group" Id="Storage" FriendlyName="Storage" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Group</PropertyCondition>
-                        <PropertyCondition Name="Name">Storage</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="ListItem" Id="DOWNLOAD" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                            <PropertyCondition Name="Instance">1</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
                     <UIObject ControlType="Group" Id="FlowTools" FriendlyName="Control Flow" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
@@ -7844,6 +7865,62 @@
                         </UIObject>
                       </Descendants>
                     </UIObject>
+                    <UIObject ControlType="Group" Id="StorageTools" FriendlyName="Connectors" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Group</PropertyCondition>
+                        <PropertyCondition Name="Name">Connectors</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="ListItem" Id="DOWNLOAD" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                        <UIObject ControlType="ListItem" Id="UPLOAD" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                        <UIObject ControlType="ListItem" Id="SelectandApply" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                            <PropertyCondition Name="Instance">3</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
                     <UIObject ControlType="Group" Id="UtilityTools" FriendlyName="Utility" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
@@ -7989,33 +8066,6 @@
                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
                             <PropertyCondition Name="Instance">10</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                    <UIObject ControlType="Group" Id="ConnectorTools" FriendlyName="Connectors" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Group</PropertyCondition>
-                        <PropertyCondition Name="Name">Connectors</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="ListItem" Id="DropBox" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants />

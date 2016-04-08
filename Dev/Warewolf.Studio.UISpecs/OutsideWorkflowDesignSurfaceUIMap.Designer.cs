@@ -18905,7 +18905,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public DebugInputWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\LEROY.WARNER)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
             #endregion
@@ -18921,7 +18921,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mDebugInputWindow1 = new WpfWindow(this);
                     #region Search Criteria
                     this.mDebugInputWindow1.SearchProperties[WpfWindow.PropertyNames.Name] = "Debug input data";
-                    this.mDebugInputWindow1.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                    this.mDebugInputWindow1.SearchProperties[WpfWindow.PropertyNames.ClassName] = "Uia.Window";
+                    this.mDebugInputWindow1.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "UI_DebugInputWindow_AutoID";
                     this.mDebugInputWindow1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
