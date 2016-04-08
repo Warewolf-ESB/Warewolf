@@ -1099,19 +1099,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_WebSource_ReqTypeComboBox_Exists - Use 'Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Assert_WebSource_ReqTypeComboBox_Exists()
-        {
-            #region Variable Declarations
-            WpfComboBox requestTypesComboBox = this.MainStudioWindow.SplitPane.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox;
-            #endregion
-
-            // Verify that the 'Exists' property of 'RequestTypes' combo box equals 'True'
-            Assert.AreEqual(this.Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues.RequestTypesComboBoxExists, requestTypesComboBox.Exists, "Request control not found");
-        }
-        
-        /// <summary>
         /// Assert_Workflow_Exists_OnDesignSurface - Use 'Assert_Workflow_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Workflow_Exists_OnDesignSurface()
@@ -3847,23 +3834,6 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(uIServerVersionMenuItem, new Point(45, 13));
         }
         
-        /// <summary>
-        /// Test_Connector_Calculate_Outputs - Use 'Test_Connector_Calculate_OutputsParams' to pass parameters into this method.
-        /// </summary>
-        public void Test_Connector_Calculate_Outputs()
-        {
-            #region Variable Declarations
-            WpfEdit testDataTextbox = this.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestDataTextbox;
-            WpfButton uITestButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UITestButton;
-            #endregion
-
-            // Type 's' in 'Test data' text box
-            testDataTextbox.Text = this.Test_Connector_Calculate_OutputsParams.TestDataTextboxText;
-
-            // Click 'Test' button
-            Mouse.Click(uITestButton, new Point(47, 18));
-        }
-        
         #region Properties
         public virtual Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
@@ -4849,18 +4819,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues
-        {
-            get
-            {
-                if ((this.mAssert_WebSource_ReqTypeComboBox_ExistsExpectedValues == null))
-                {
-                    this.mAssert_WebSource_ReqTypeComboBox_ExistsExpectedValues = new Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues();
-                }
-                return this.mAssert_WebSource_ReqTypeComboBox_ExistsExpectedValues;
-            }
-        }
-        
         public virtual Assert_Workflow_Exists_OnDesignSurfaceExpectedValues Assert_Workflow_Exists_OnDesignSurfaceExpectedValues
         {
             get
@@ -5101,18 +5059,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Test_Connector_Calculate_OutputsParams Test_Connector_Calculate_OutputsParams
-        {
-            get
-            {
-                if ((this.mTest_Connector_Calculate_OutputsParams == null))
-                {
-                    this.mTest_Connector_Calculate_OutputsParams = new Test_Connector_Calculate_OutputsParams();
-                }
-                return this.mTest_Connector_Calculate_OutputsParams;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -5315,8 +5261,6 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues mAssert_Web_Connectors_Exists_OnDesignSurfaceExpectedValues;
         
-        private Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues mAssert_WebSource_ReqTypeComboBox_ExistsExpectedValues;
-        
         private Assert_Workflow_Exists_OnDesignSurfaceExpectedValues mAssert_Workflow_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Write_File_Exists_OnDesignSurfaceExpectedValues mAssert_Write_File_Exists_OnDesignSurfaceExpectedValues;
@@ -5356,8 +5300,6 @@ namespace Warewolf.Studio.UISpecs
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
         private PressF11_EnterFullScreen_FromStartPageParams mPressF11_EnterFullScreen_FromStartPageParams;
-        
-        private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -6598,21 +6540,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_WebSource_ReqTypeComboBox_Exists'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_WebSource_ReqTypeComboBox_ExistsExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'RequestTypes' combo box equals 'True'
-        /// </summary>
-        public bool RequestTypesComboBoxExists = true;
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Assert_Workflow_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -6909,21 +6836,6 @@ namespace Warewolf.Studio.UISpecs
         /// Type '{F11}' in 'Warewolf Knowledge base function' pane
         /// </summary>
         public string KnowledgebasePaneSendKeys = "{F11}";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Test_Connector_Calculate_Outputs'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Test_Connector_Calculate_OutputsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 's' in 'Test data' text box
-        /// </summary>
-        public string TestDataTextboxText = "s";
         #endregion
     }
     
@@ -7516,18 +7428,6 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public NewServerSourceTab NewServerSourceTab
-        {
-            get
-            {
-                if ((this.mNewServerSourceTab == null))
-                {
-                    this.mNewServerSourceTab = new NewServerSourceTab(this);
-                }
-                return this.mNewServerSourceTab;
-            }
-        }
-        
         public WorkflowTab WorkflowTab
         {
             get
@@ -7601,8 +7501,6 @@ namespace Warewolf.Studio.UISpecs
         private StartPage mStartPage;
         
         private NewWebConnectorTab mNewWebConnectorTab;
-        
-        private NewServerSourceTab mNewServerSourceTab;
         
         private WorkflowTab mWorkflowTab;
         
@@ -7905,336 +7803,6 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class NewServerSourceTab : WpfTabPage
-    {
-        
-        public NewServerSourceTab(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IServerSource]";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WorkSurfaceContext2 WorkSurfaceContext
-        {
-            get
-            {
-                if ((this.mWorkSurfaceContext == null))
-                {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext2(this);
-                }
-                return this.mWorkSurfaceContext;
-            }
-        }
-        
-        public WpfButton TabCloseButton
-        {
-            get
-            {
-                if ((this.mTabCloseButton == null))
-                {
-                    this.mTabCloseButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mTabCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
-                    this.mTabCloseButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTabCloseButton;
-            }
-        }
-        
-        public WpfImage NoAuthMessageText
-        {
-            get
-            {
-                if ((this.mNoAuthMessageText == null))
-                {
-                    this.mNoAuthMessageText = new WpfImage(this);
-                    #region Search Criteria
-                    this.mNoAuthMessageText.SearchProperties[WpfImage.PropertyNames.HelpText] = "You are not authorized to edit this resource";
-                    this.mNoAuthMessageText.SearchProperties[WpfImage.PropertyNames.Instance] = "2";
-                    this.mNoAuthMessageText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNoAuthMessageText;
-            }
-        }
-        
-        public WpfText NewServerTitleText
-        {
-            get
-            {
-                if ((this.mNewServerTitleText == null))
-                {
-                    this.mNewServerTitleText = new WpfText(this);
-                    #region Search Criteria
-                    this.mNewServerTitleText.SearchProperties[WpfText.PropertyNames.Name] = "New Server Source";
-                    this.mNewServerTitleText.SearchProperties[WpfText.PropertyNames.Instance] = "2";
-                    this.mNewServerTitleText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewServerTitleText;
-            }
-        }
-        
-        public WpfImage NewServerBackground
-        {
-            get
-            {
-                if ((this.mNewServerBackground == null))
-                {
-                    this.mNewServerBackground = new WpfImage(this);
-                    #region Search Criteria
-                    this.mNewServerBackground.SearchProperties[WpfImage.PropertyNames.AutomationId] = "New Server Source";
-                    this.mNewServerBackground.SearchProperties[WpfImage.PropertyNames.Instance] = "2";
-                    this.mNewServerBackground.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewServerBackground;
-            }
-        }
-        
-        public WpfImage NoAuthImage
-        {
-            get
-            {
-                if ((this.mNoAuthImage == null))
-                {
-                    this.mNoAuthImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mNoAuthImage.SearchProperties[WpfImage.PropertyNames.HelpText] = "You are not authorized to edit this resource";
-                    this.mNoAuthImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNoAuthImage;
-            }
-        }
-        
-        public WpfText AddressText
-        {
-            get
-            {
-                if ((this.mAddressText == null))
-                {
-                    this.mAddressText = new WpfText(this);
-                    #region Search Criteria
-                    this.mAddressText.SearchProperties[WpfText.PropertyNames.Name] = "New Server Source";
-                    this.mAddressText.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mAddressText;
-            }
-        }
-        
-        public WpfImage NewServerTabIcon
-        {
-            get
-            {
-                if ((this.mNewServerTabIcon == null))
-                {
-                    this.mNewServerTabIcon = new WpfImage(this);
-                    #region Search Criteria
-                    this.mNewServerTabIcon.SearchProperties[WpfImage.PropertyNames.AutomationId] = "New Server Source";
-                    this.mNewServerTabIcon.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mNewServerTabIcon;
-            }
-        }
-        
-        public WpfImage UIItemImage
-        {
-            get
-            {
-                if ((this.mUIItemImage == null))
-                {
-                    this.mUIItemImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIItemImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WorkSurfaceContext2 mWorkSurfaceContext;
-        
-        private WpfButton mTabCloseButton;
-        
-        private WpfImage mNoAuthMessageText;
-        
-        private WpfText mNewServerTitleText;
-        
-        private WpfImage mNewServerBackground;
-        
-        private WpfImage mNoAuthImage;
-        
-        private WpfText mAddressText;
-        
-        private WpfImage mNewServerTabIcon;
-        
-        private WpfImage mUIItemImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext2 : WpfCustom
-    {
-        
-        public WorkSurfaceContext2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public NewServerSourceWizard NewServerSourceWizard
-        {
-            get
-            {
-                if ((this.mNewServerSourceWizard == null))
-                {
-                    this.mNewServerSourceWizard = new NewServerSourceWizard(this);
-                }
-                return this.mNewServerSourceWizard;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private NewServerSourceWizard mNewServerSourceWizard;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class NewServerSourceWizard : WpfCustom
-    {
-        
-        public NewServerSourceWizard(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageServerControl";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public AuthTypeOptions AuthTypeOptions
-        {
-            get
-            {
-                if ((this.mAuthTypeOptions == null))
-                {
-                    this.mAuthTypeOptions = new AuthTypeOptions(this);
-                }
-                return this.mAuthTypeOptions;
-            }
-        }
-        
-        public AddressComboBox AddressComboBox
-        {
-            get
-            {
-                if ((this.mAddressComboBox == null))
-                {
-                    this.mAddressComboBox = new AddressComboBox(this);
-                }
-                return this.mAddressComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private AuthTypeOptions mAuthTypeOptions;
-        
-        private AddressComboBox mAddressComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class AuthTypeOptions : WpfCustom
-    {
-        
-        public AuthTypeOptions(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ProtocolItems";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton WindowsAuth
-        {
-            get
-            {
-                if ((this.mWindowsAuth == null))
-                {
-                    this.mWindowsAuth = new WpfButton(this);
-                    #region Search Criteria
-                    this.mWindowsAuth.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mWindowsAuth.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mWindowsAuth;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mWindowsAuth;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class AddressComboBox : WpfComboBox
-    {
-        
-        public AddressComboBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "AddressTextBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit AddressEditBox
-        {
-            get
-            {
-                if ((this.mAddressEditBox == null))
-                {
-                    this.mAddressEditBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mAddressEditBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mAddressEditBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mAddressEditBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mAddressEditBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class WorkflowTab : WpfTabPage
     {
         
@@ -8264,13 +7832,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WorkSurfaceContext3 WorkSurfaceContext
+        public WorkSurfaceContext2 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext3(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext2(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -8280,15 +7848,15 @@ namespace Warewolf.Studio.UISpecs
         #region Fields
         private WpfButton mCloseButton;
         
-        private WorkSurfaceContext3 mWorkSurfaceContext;
+        private WorkSurfaceContext2 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext3 : WpfCustom
+    public class WorkSurfaceContext2 : WpfCustom
     {
         
-        public WorkSurfaceContext3(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -10544,13 +10112,13 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public WorkSurfaceContext4 WorkSurfaceContext
+        public WorkSurfaceContext3 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext3(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -10590,7 +10158,7 @@ namespace Warewolf.Studio.UISpecs
         #endregion
         
         #region Fields
-        private WorkSurfaceContext4 mWorkSurfaceContext;
+        private WorkSurfaceContext3 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -10599,10 +10167,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext4 : WpfCustom
+    public class WorkSurfaceContext3 : WpfCustom
     {
         
-        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -11836,13 +11404,13 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WorkSurfaceContext5 WorkSurfaceContext
+        public WorkSurfaceContext4 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext5(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -11898,7 +11466,7 @@ namespace Warewolf.Studio.UISpecs
         
         private WpfButton mNewPluginConnectorTabCloseButton;
         
-        private WorkSurfaceContext5 mWorkSurfaceContext;
+        private WorkSurfaceContext4 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -11907,10 +11475,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext5 : WpfCustom
+    public class WorkSurfaceContext4 : WpfCustom
     {
         
-        public WorkSurfaceContext5(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
