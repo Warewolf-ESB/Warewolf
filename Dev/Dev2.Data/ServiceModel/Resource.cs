@@ -619,8 +619,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                      where (
-                                      desc.Name.LocalName.Contains("DsfPublishRabbitMQActivity")) &&
+                                      where desc.Name.LocalName.Contains("DsfPublishRabbitMQActivity") &&
                                       desc.Attribute("UniqueID") != null
                                       select desc;
 
@@ -630,9 +629,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var element = xElements[0];
                 var resourceIdAsString = element.AttributeSafe("RabbitMQSourceResourceId");
+                var uniqueIdAsString = element.AttributeSafe("UniqueID");
                 Guid resId;
                 Guid.TryParse(resourceIdAsString, out resId);
-                Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, String.Empty, ResourceType.RabbitMQSource));
+                Guid uniqueId;
+                Guid.TryParse(uniqueIdAsString, out uniqueId);
+                Dependencies.Add(CreateResourceForTree(resId, uniqueId, String.Empty, ResourceType.RabbitMQSource));
             }
         }
 
