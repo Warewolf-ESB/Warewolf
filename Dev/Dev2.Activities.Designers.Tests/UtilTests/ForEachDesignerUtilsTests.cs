@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Utils;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -329,5 +330,37 @@ namespace Dev2.Core.Tests.Activities
             Assert.IsTrue(dropEnabled);
         }
 
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_ModelItemFormat_SelectAndApplyModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var activityDesignerUtils = new DropEnabledActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("SelectAndApply");
+            //------------Execute Test---------------------------
+            var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ForeachActivityDesignerUtils_LimitDragDropOptions")]
+        public void ForeachActivityDesignerUtils_LimitDragDropOptions_WorkflowItemTypeNameFormat_SelectAndApplyModelItem_DropPrevented()
+        {
+            //------------Setup for test--------------------------
+            var activityDesignerUtils = new DropEnabledActivityDesignerUtils();
+            var dataObject = new Mock<IDataObject>();
+            dataObject.Setup(o => o.GetFormats()).Returns(new[] { "WorkflowItemTypeNameFormat" });
+            dataObject.Setup(o => o.GetData(It.IsAny<string>())).Returns("SelectAndApply");
+            //------------Execute Test---------------------------
+            var dropEnabled = activityDesignerUtils.LimitDragDropOptions(dataObject.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(dropEnabled);
+        }
     }
 }
