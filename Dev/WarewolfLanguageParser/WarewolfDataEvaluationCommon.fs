@@ -26,7 +26,7 @@ let evalRecordSetStarIndexWithPositions (recset:WarewolfRecordset) (identifier:R
     Seq.zip ( Seq.map atomToInt recset.Data.[PositionColumn]) recset.Data.[identifier.Column]  |> Seq.map (fun a -> PositionedValue a)
 
 let evalRecordSetLastIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
-    if Seq.isEmpty recset.Data.[PositionColumn] then
+    if  recset.LastIndex =0 then
         Nothing
     else
         match recset.Optimisations with 
