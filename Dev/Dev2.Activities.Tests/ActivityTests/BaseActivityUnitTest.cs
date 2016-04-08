@@ -393,7 +393,7 @@ namespace ActivityUnitTests
                 {
                     return;
                 }
-                var listResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
+                var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (listResult != null)
                 {
                     foreach(var res in listResult.Item)

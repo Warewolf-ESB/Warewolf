@@ -106,7 +106,7 @@ namespace Dev2.Activities.Specs.Language_Parser
             try
             {
                 var variable = ScenarioContext.Current.Get<string>("variable");
-                var result = WarewolfDataEvaluationCommon.ParseLanguageExpressionAndValidate(variable);
+                var result = IntellisenseStringProvider.parseLanguageExpressionAndValidate(variable);
                 if (result.Item2 != String.Empty)
                 {
                     ScenarioContext.Current.Add("error", result.Item2);

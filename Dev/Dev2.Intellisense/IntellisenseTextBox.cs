@@ -1200,7 +1200,7 @@ namespace Dev2.UI
         void EnsureErrorStatus()
         {
             if(string.IsNullOrEmpty(Text)) return;
-            var error = WarewolfDataEvaluationCommon.ParseLanguageExpressionAndValidate(Text);
+            var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(Text);
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
                 ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset";

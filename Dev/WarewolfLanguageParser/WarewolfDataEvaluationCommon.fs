@@ -1,4 +1,4 @@
-﻿module WarewolfDataEvaluationCommon
+﻿module  WarewolfDataEvaluationCommon
 
 
 open LanguageAST
@@ -6,6 +6,7 @@ open LanguageAST
 open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 open WarewolfParserInterop
+open CommonFunctions
 
 // this method will given a language string return an AST based on FSLex and FSYacc
 
@@ -13,105 +14,6 @@ let mutable ParseCache = Map.empty : Map<string,LanguageExpression>
 
 let PositionColumn = "WarewolfPositionColumn"
 
-type WarewolfEvalResult = 
-    | WarewolfAtomResult of WarewolfAtom
-    | WarewolfAtomListresult of WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> 
-    | WarewolfRecordSetResult of WarewolfRecordset
-
-
-let IsAtomExpression (a:LanguageExpression ) =
-    match a with
-    |WarewolfAtomAtomExpression a -> true
-    |_-> false
-
-let atomtoString (x:WarewolfAtom )=
-    match x with 
-        | Float a -> let places = GetDecimalPlaces a
-                     a.ToString(sprintf "F%i" places)
-        | Int a -> a.ToString()
-        | DataString a -> a
-        | Nothing -> null
-        | PositionedValue (_,b) -> b.ToString()
-let warewolfAtomRecordtoString (x:WarewolfAtomRecord )=
-    match x with 
-        | Float a -> let places = GetDecimalPlaces a
-                     a.ToString(sprintf "F%i" places)
-        | Int a -> a.ToString()
-        | DataString a -> a
-        | Nothing -> ""
-        | PositionedValue (_,b) -> b.ToString()
-
-let evalResultToString (a:WarewolfEvalResult) = 
-    match a with
-    | WarewolfAtomResult x -> atomtoString x
-    | WarewolfAtomListresult x -> Seq.map warewolfAtomRecordtoString x |> fun a->System.String.Join(",",a)
-    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join(",",a)
-
-let atomToJsonCompatibleObject (a:WarewolfAtom) :System.Object= 
-    match a with 
-        | Int a -> a :> System.Object
-        | DataString a -> match a with
-                            | z when z.ToLower() = "true" ->true :> System.Object
-                            | z when z.ToLower() = "false" -> false:>System.Object
-                            | _-> a:> System.Object
-        | Float a ->a :> System.Object
-        | Nothing->null:>System.Object
-        | _ -> "" :> System.Object
-
-
-let evalResultToJsonCompatibleObject (a:WarewolfEvalResult) :System.Object= 
-    match a with
-    | WarewolfAtomResult x -> atomToJsonCompatibleObject x
-    | WarewolfAtomListresult x -> Seq.map atomToJsonCompatibleObject x:>System.Object
-
-    | _ -> failwith "json eval results can only work on atoms" 
-
-let evalResultToStringNoCommas (a:WarewolfEvalResult) = 
-    match a with
-    | WarewolfAtomResult x -> atomtoString x
-    | WarewolfAtomListresult x -> Seq.map warewolfAtomRecordtoString x |> (Seq.fold (+) "")
-    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |> List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join("",a)
-let atomToInt(a:WarewolfAtom) = 
-    match a with
-        | Int x -> if x<= 0 then failwith "invalid recordset index was less than 0" else x
-        |_ ->    let couldParse, parsed = System.Int32.TryParse(a.ToString())
-                 if couldParse then parsed else failwith "index was not an int"
-
-type PositionValue =
-    | IndexFoundPosition of int
-    | IndexDoesNotExist
-
-let getRecordSetIndex (recset:WarewolfRecordset) (position:int) =
-    match recset.Optimisations with
-    | Ordinal -> if recset.LastIndex <  position then
-                    IndexDoesNotExist
-                 else
-                    IndexFoundPosition (position-1)
-    | _->
-            let indexes = recset.Data.[PositionColumn]
-            let positionAsAtom = Int position
-            try  Seq.findIndex (fun a->  a=positionAsAtom) indexes |> IndexFoundPosition
-            with     
-            | :? System.Collections.Generic.KeyNotFoundException as a -> IndexDoesNotExist
-
-let getRecordSetIndexAsInt (recset:WarewolfRecordset) (position:int) =
-    match recset.Optimisations with
-    | Ordinal -> if recset.LastIndex <  position then
-                    failwith "row does not exist"
-                 else
-                    position - 1
-    | _->
-            let indexes = recset.Data.[PositionColumn]
-            let positionAsAtom = Int position
-            try  Seq.findIndex (fun a->  a=positionAsAtom) indexes 
-            with     
-            | :? System.Collections.Generic.KeyNotFoundException as ex ->  failwith ("row does not exist" + ex.Message)
-
-let evalRecordSetIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier) (position:int) =
-    let index = getRecordSetIndex recset position
-    match index with 
-    | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
-    | IndexDoesNotExist -> raise (new Dev2.Common.Common.NullValueInVariableException("index not found",identifier.Name))
 
 
 let evalRecordSetStarIndex (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
@@ -119,6 +21,7 @@ let evalRecordSetStarIndex (recset:WarewolfRecordset) (identifier:RecordSetIdent
     |Ordinal -> recset.Data.[identifier.Column] 
     | Sorted -> recset.Data.[identifier.Column]
     | Fragmented-> Seq.zip  recset.Data.[PositionColumn] recset.Data.[identifier.Column] |> Seq.sort |>Seq.map snd |> fun a -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing,a)
+
 let evalRecordSetStarIndexWithPositions (recset:WarewolfRecordset) (identifier:RecordSetIdentifier)  =
     Seq.zip ( Seq.map atomToInt recset.Data.[PositionColumn]) recset.Data.[identifier.Column]  |> Seq.map (fun a -> PositionedValue a)
 
@@ -179,13 +82,8 @@ and jsonExpressionToString a acc =
         | IndexNestedNameExpression x ->   let current = if acc = "" then  x.ObjectName  else sprintf "%s.%s(%s)" acc x.ObjectName (IndexToString x.Index ) 
                                            jsonExpressionToString x.Next current
         | Terminal -> acc
-and  LanguageExpressionToStringWithoutStuff  (x:LanguageExpression) =
-    match x with
-        | RecordSetExpression a -> ""
-        | ScalarExpression a -> ""
-        | WarewolfAtomAtomExpression a -> atomtoString a
-        | ComplexExpression a -> ""
-        | RecordSetNameExpression a -> ""
+
+
 
 and LanguageExpressionToSumOfInt (x: LanguageExpression list) =
     let expressionToInt (current:int) (y:LanguageExpression) =
@@ -197,9 +95,10 @@ and LanguageExpressionToSumOfInt (x: LanguageExpression list) =
                 | ScalarExpression _ -> current
                 | RecordSetNameExpression _ -> current
                 | ComplexExpression _ -> current
-                | WarewolfAtomAtomExpression a when languageExpressionToString y = "]]" -> current-1 
-                | WarewolfAtomAtomExpression a when languageExpressionToString y = "[[" -> current+1 
+                | WarewolfAtomAtomExpression _ when languageExpressionToString y = "]]" -> current-1 
+                | WarewolfAtomAtomExpression _ when languageExpressionToString y = "[[" -> current+1 
                 | WarewolfAtomAtomExpression _ -> current 
+                | JsonIdentifierExpression _ -> current
     let sum = List.fold expressionToInt 0 x
     sum
 
@@ -248,13 +147,7 @@ and  Clean (buffer :LanguageExpression) =
         | JsonIdentifierExpression a -> JsonIdentifierExpression a
         | ComplexExpression  a ->  (List.filter (fun b -> "" <> (languageExpressionToString b)) a) |> (fun a -> if (List.length a) =1 then Clean a.[0] else ComplexExpression a)
 
-and parseAtom (lang:string) =
-    let at =  tryParseAtom lang
-    match at with
-        | Int _ -> at 
-        | Float _ ->  tryFloatParseAtom lang
-        | _ -> at
-            
+                    
 and parseLanguageExpressionWithoutUpdate  (lang:string) : LanguageExpression=
     if( lang.Contains"[[")
     then 
@@ -269,108 +162,28 @@ and parseLanguageExpressionWithoutUpdate  (lang:string) : LanguageExpression=
                     res
     else WarewolfAtomAtomExpression (parseAtom lang)
 
-and ValidateRecordsetIndex (ind:Index) =
-    match ind with 
-    | IndexExpression a -> 
-        match a with 
-            | RecordSetExpression _ -> ""
-            | RecordSetNameExpression _ -> ""
-            | ScalarExpression _ ->  ""
-            | ComplexExpression x -> ParseLanguageExpressionAndValidate (languageExpressionToString a) |> snd
-            | WarewolfAtomAtomExpression _ ->"Recordset index (" + languageExpressionToString a + ") contains invalid character(s)"
-    | _ -> ""
-        
-and ParseLanguageExpressionAndValidate  (lang:string) : (LanguageExpression*string)=
-    if( lang.Contains"[[")
-    then
-        try 
-            let lexbuf = LexBuffer<string>.FromString lang 
-            let buffer = Parser.start Lexer.tokenstream lexbuf
-            let res = buffer |> Clean
-            match res with 
-            | RecordSetExpression e -> (res,ValidateRecordsetIndex e.Index)
-            | RecordSetNameExpression e -> (res,ValidateRecordsetIndex e.Index)
-            | ScalarExpression _ -> (res,"")
-            | ComplexExpression x -> VerifyComplexExpression(x)
-            | WarewolfAtomAtomExpression _ -> (res,"")
-            | JsonIdentifierExpression _ -> (res,"")
-        with ex when ex.Message.ToLower() = "parse error" -> 
-                                                                 if(lang.Length>2) then
-                                                                    let startswithNum,_ = System.Int32.TryParse(lang.[2].ToString())
-                                                                    match startswithNum with
-                                                                        | true -> (WarewolfAtomAtomExpression (DataString lang),"Variable name " + lang +  " begins with a number")
-                                                                        |false -> (WarewolfAtomAtomExpression (DataString lang),"Variable name " + lang + " contains invalid character(s)")
-                                                                 else
-             
-                                                                    (WarewolfAtomAtomExpression (DataString lang),"Variable name " + lang + " contains invalid character(s)")
-    else (WarewolfAtomAtomExpression (parseAtom lang),"")
-
-and CheckForInvalidVariables (lang:LanguageExpression list) =
-    let updateLanguageExpression (a:LanguageExpression) =
-        match a with 
-            | RecordSetExpression _ -> WarewolfAtomAtomExpression (DataString "")
-            | RecordSetNameExpression _ -> WarewolfAtomAtomExpression (DataString"")
-            | ScalarExpression _ ->  WarewolfAtomAtomExpression (DataString"")
-            | ComplexExpression x -> a
-            | WarewolfAtomAtomExpression _ ->a
-    let data = List.map (languageExpressionToString << updateLanguageExpression) lang |> fun a-> System.String.Join("",a)
-    if data = languageExpressionToString (ComplexExpression lang)
-    then
-        if(data.Length>2) then
-            let startswithNum,_ = System.Int32.TryParse(data.[2].ToString())
-            match startswithNum with
-                | true -> (ComplexExpression lang,"Recordset field " + data +  " begins with a number")
-                |false -> (ComplexExpression lang,"Variable name " + data + " contains invalid character(s)")
-         else
-             
-            (ComplexExpression lang,"Variable name " + data + " contains invalid character(s)")
-    else
-        
-        let parsed = ParseLanguageExpressionAndValidate data
-        let res=     match parsed with 
-                        | (RecordSetExpression a,_)  -> parsed
-                        | (RecordSetNameExpression f,_)  -> parsed
-                        | (ScalarExpression f,_) ->  parsed
-                        | (ComplexExpression x,_) when  data.StartsWith"[[" && data.EndsWith("]]")  -> (ComplexExpression lang,"invalid variable name")
-                        | (ComplexExpression x,_) -> parsed
-                        | (WarewolfAtomAtomExpression _,_) ->parsed
-        res
-
-and VerifyComplexExpression (lang:LanguageExpression list) =
-    if  List.exists IsAtomExpression lang
-    then
-        let balanced = LanguageExpressionToSumOfInt lang 
-        match balanced with 
-        | 99 -> (ComplexExpression lang,"The order of [[ and ]] is incorrect")
-        | a when a<0 -> (ComplexExpression lang,"Invalid region detected: A close ]] without a related open [[")
-        | 0 -> CheckForInvalidVariables lang
-        |_ -> (ComplexExpression lang,"Invalid region detected: An open [[ without a related close ]]")
-
-    else 
-        (ComplexExpression lang,"")
-
 and parseLanguageExpression  (lang:string)  (update:int): LanguageExpression=
     let data = parseLanguageExpressionWithoutUpdate lang
     match update with 
     |0 -> data
     |_->  match data with 
             | RecordSetExpression a -> match a.Index with
-                                        | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
-                                        | _-> a |> LanguageExpression.RecordSetExpression
+                                            | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
+                                            | _-> a |> LanguageExpression.RecordSetExpression
             | RecordSetNameExpression a -> match a.Index with
-                                        | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetNameExpression
-                                        | _-> a |> LanguageExpression.RecordSetNameExpression
+                                            | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetNameExpression
+                                            | _-> a |> LanguageExpression.RecordSetNameExpression
             | ComplexExpression p -> List.map (updateComplex update) p |> LanguageExpression.ComplexExpression
             | _->data
 
 and updateComplex   update data = 
     match data with 
                 | RecordSetExpression a -> match a.Index with
-                                            | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
-                                            | _-> a |> LanguageExpression.RecordSetExpression
+                                                | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetExpression
+                                                | _-> a |> LanguageExpression.RecordSetExpression
                 | RecordSetNameExpression a -> match a.Index with
-                                            | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetNameExpression
-                                            | _-> a |> LanguageExpression.RecordSetNameExpression
+                                                | Star -> {a with Index=IntIndex update } |> LanguageExpression.RecordSetNameExpression
+                                                | _-> a |> LanguageExpression.RecordSetNameExpression
                 | _->data
 
 and evalARow  ( index:int) (recset:WarewolfRecordset) =
@@ -394,7 +207,6 @@ and evalDataSetExpression (env: WarewolfEnvironment) (update:int) (name:RecordSe
                                         | _ ->   eval env update ( sprintf "[[%s(%s)]]" name.Name res)
     else
         raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found",name.Name))
-
           
 and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEvalResult=
 
@@ -408,16 +220,14 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
                     | RecordSetExpression a ->  evalRecordSetAsString env a
                     | ScalarExpression a ->  (evalScalar a env)
                     | WarewolfAtomAtomExpression a ->  a
-                    | _ ->failwith "you should not get here"
+                    | _ ->failwith "what we have here is a failure to communicate"
             else    
                 let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
                 let evaled = (List.map (languageExpressionToString >> (eval  env update)>>evalResultToString)  exp )|> (List.fold (+) "")
                 if( evaled = start || (not (evaled.Contains("[[")))) then
                     DataString evaled
-                else DataString (eval env update evaled|>  evalResultToString)
-    
-        let buffer =  parseLanguageExpression lang update
-                        
+                else DataString (eval env update evaled|>  evalResultToString)    
+        let buffer =  parseLanguageExpression lang update                        
         match buffer with
             | RecordSetExpression a when  env.RecordSets.ContainsKey a.Name -> WarewolfAtomListresult(  (evalRecordsSet a env) )
             | ScalarExpression a  when  env.Scalar.ContainsKey a  -> WarewolfAtomResult (evalScalar a env)
@@ -430,33 +240,33 @@ and languageExpressionToJPath (lang:LanguageExpression) =
     match lang with
             | RecordSetExpression a ->
                                         match a.Index with  
-                                            | IntIndex i -> "[" + (i-1).ToString() + "]."+a.Column
+                                            | IntIndex i -> sprintf "[%i].%s"  (i-1)  a.Column
                                             | Star  -> "[*]."+a.Column 
                                             | Last  -> "[(@.length-1)]."+a.Column  
                                             | _ ->failwith  "not supported for JSON types"
-            | ScalarExpression a -> "" 
-            | WarewolfAtomAtomExpression a  -> ""
+            | ScalarExpression _ -> "" 
+            | WarewolfAtomAtomExpression _  -> ""
             | RecordSetNameExpression a -> 
                                         match a.Index with  
-                                            | IntIndex i -> "[" + (i-1).ToString() + "]."
+                                            | IntIndex i ->  sprintf "[%i]." (i-1)
                                             | Star  -> "[*]." 
                                             | Last  -> "[(@.length-1)]."
                                             | _ ->failwith  "not supported for JSON types"
-            | ComplexExpression  a ->  failwith  "not supported for JSON types"
+            | ComplexExpression  _ ->  failwith  "not supported for JSON types"
             | JsonIdentifierExpression a ->  jsonIdentifierToJsonPathLevel1 a 
+
 and jsonIdentifierToJsonPath (a:JsonIdentifierExpression) (accx:string)= 
     let acc = if accx=""  then "" else accx + "."
     match a with 
     | NameExpression x -> acc  + x.Name
     | NestedNameExpression x ->   (jsonIdentifierToJsonPath x.Next (acc  + x.ObjectName) )
     | IndexNestedNameExpression x ->    let index =  match x.Index with  
-                                                        | IntIndex i -> "[" + (i-1).ToString() + "]"
+                                                        | IntIndex i -> sprintf "[%i]" (i-1)
                                                         | Star  -> "[*]" 
                                                         | Last  -> "[-1:]"
                                                         | _ ->failwith  "not supported for JSON types"
                                         (jsonIdentifierToJsonPath x.Next (acc + x.ObjectName + "." + index  ) )
     | Terminal -> accx
-
 
 and jsonIdentifierToJsonPathLevel1 (a:JsonIdentifierExpression) = 
     
@@ -498,6 +308,9 @@ and evalJson (env: WarewolfEnvironment)  (update:int) (lang:LanguageExpression) 
                                             let data = jo.SelectTokens(jPath) |> Seq.map (fun a -> WarewolfAtomRecord.DataString (a.ToString() ) )  
                                             WarewolfAtomListresult ( new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing, data))
                                         else failwith "non existent recordset"
+    | ComplexExpression _ -> failwith "no current use case please contact the warewolf product owner "
+    | WarewolfAtomAtomExpression _ ->  failwith "no current use case please contact the warewolf product owner "
+
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs
 
@@ -523,11 +336,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-
-and enQuote (atom:WarewolfAtom) = 
-    match atom with 
-        | DataString a -> DataString (sprintf "\"%s\"" a)
-        |_ -> atom
+        | JsonIdentifierExpression _ -> failwith "no current use case please contact the warewolf product owner " 
 
 and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
@@ -550,44 +359,8 @@ and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) 
                                     | _->lang
         | _ -> lang
 
-and isNotAtomAndNotcomplex  (b:LanguageExpression list) (a:LanguageExpression) =
-    let set = b|> List.map LanguageExpressionToStringWithoutStuff |> Set.ofList
-    let reserved =  ["[[";"]]"] |> Set.ofList
-    if not (Set.intersect set reserved|> Set.isEmpty)
-        then 
-            match a with
-            | WarewolfAtomAtomExpression _ -> false
-            |_ -> true
-        else
-            false
-
-and  evalForDataMerge  (env: WarewolfEnvironment) (update:int) (lang:string) : WarewolfEvalResult list=
-
-    let EvalComplex (exp:LanguageExpression list) : WarewolfEvalResult list = 
-        if((List.length exp) =1) then
-            match exp.[0] with
-                | RecordSetExpression _ ->  [eval env update (languageExpressionToString exp.[0])]
-                | ScalarExpression _ ->  [eval env update (languageExpressionToString exp.[0])]
-                | WarewolfAtomAtomExpression a ->  [WarewolfEvalResult.WarewolfAtomResult a]
-                | _ ->failwith "you should not get here"
-        else
-            List.map  (languageExpressionToString>>eval   env update)  exp 
-            
-
-    
-    let exp = ParseCache.TryFind lang
-    let buffer =  match exp with 
-                    | Some a  when update = 0 ->  a
-                    | _->    
-                        let temp = parseLanguageExpression lang update
-                        temp
-    match buffer with
-        | RecordSetExpression a -> [WarewolfAtomListresult(  (evalRecordsSet a env) )]
-        | ScalarExpression a -> [WarewolfAtomResult (evalScalar a env)]
-        | WarewolfAtomAtomExpression a -> [WarewolfAtomResult a]
-        | RecordSetNameExpression x ->[evalDataSetExpression env update x]
-        | ComplexExpression  a ->  (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-
+and evalToExpressionAndParse (env: WarewolfEnvironment) (update:int) (langs:string)  = 
+    evalToExpression env update langs |> fun a -> parseLanguageExpression a update
 
 and  evalToExpression  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
@@ -611,10 +384,7 @@ and  evalToExpression  (env: WarewolfEnvironment) (update:int) (langs:string) : 
         | _ -> lang
 
 
-and isNotAtom (a:LanguageExpression) =
-    match a with
-    | WarewolfAtomAtomExpression _ -> false
-    |_ -> true
+
 and  evalWithPositions  (env: WarewolfEnvironment)  (update:int)  (lang:string) : WarewolfEvalResult=
     let EvalComplex (exp:LanguageExpression list) = 
         if((List.length exp) =1) then
@@ -643,15 +413,6 @@ and  evalWithPositions  (env: WarewolfEnvironment)  (update:int)  (lang:string) 
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a -> WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
 
-
-and getRecordSetPositionsAsInts (recset:WarewolfRecordset) =
-    let AtomToInt (a:WarewolfAtom) =
-        match a with
-            | Int a -> a
-            | _->failwith "the position column contains non ints"
-    let positions = recset.Data.[PositionColumn];
-    Seq.map AtomToInt positions |> Seq.sort
-
 and evalRecordSetIndexes (env:WarewolfEnvironment) (recset:RecordSetName) : int seq =
     match recset.Index with
     | IntIndex _ -> {1..1}
@@ -679,18 +440,16 @@ and  evalIndexes  (env: WarewolfEnvironment) (update:int)  (lang:string) =
         | _ ->failwith "not a recordset"
 
 
-// assigns happen here all tools will use these functions to do assigns. Must be wrapped in c# class
-
-//let Eval (env:Environment) (Tools: Tool list)
 let addToScalars (env:WarewolfEnvironment) (name:string) (value:WarewolfAtom)  =
     let rem = Map.remove name env.Scalar |> Map.add name value 
-    { env with     Scalar=rem;
-
+    { 
+        env with     Scalar=rem;
     }
 
 let addToRecordSets (env:WarewolfEnvironment) (name:string) (value:WarewolfRecordset) =
     let rem = Map.remove name env.RecordSets |> Map.add name value 
-    { env with RecordSets = rem
+    { 
+        env with RecordSets = rem
     }
 
 let addColumnValueToRecordset (destination:WarewolfRecordset) (name:string) (values: WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
@@ -714,8 +473,6 @@ let addToList (lst:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) (
 let addNothingToList (lst:WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) =
     lst.AddNothing()
     lst    
-
-
 
 let addAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom) (position:int) =
     let col = rset.Data.TryFind columnName
@@ -818,13 +575,8 @@ let addAtomToRecordSetWithFraming (rset:WarewolfRecordset) (columnName:string) (
                           addedAtEnd.[PositionColumn].[len-1] <- Int position
                           { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Frame = frame ; Optimisations = WarewolfAttribute.Fragmented }
 
-
-
-
-
 let createFilled (count:int) (value: WarewolfAtom):WarewolfColumnData=
    new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing,seq {for _ in 1 .. count do yield value }) 
-
 
 let updateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom)=
     if rset.Count = 0 then
@@ -840,106 +592,6 @@ let updateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: W
         else 
         {rset with Data=  Map.add columnName ( createFilled rset.Count value)  rset.Data    }
 
-
-let deleteValues (exp:string)  (env:WarewolfEnvironment) =
-    let rset = env.RecordSets.TryFind exp
-    match rset with 
-    | Some x -> {x with Data = Map.map (fun _ _ -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)) x.Data ;LastIndex=0;  } 
-    | None->failwith "recordset does not exist"
-
-let deleteValue  (exp:string) (index:int)   (env:WarewolfEnvironment) =
-    let rset = env.RecordSets.TryFind exp
-    match rset with 
-    | Some values -> let pos = Seq.find ( fun a-> atomtoString a = index.ToString())  values.Data.[PositionColumn]
-                     let posAsInt = match pos with
-                                    | Nothing -> failwith "index does not exist"
-                                    | Int a -> a
-                                    | _  -> failwith "index does not exist"
-                     {values  with Data = Map.map (fun (_:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;  LastIndex= values.LastIndex-1 } 
-    | None->failwith "recordset does not exist"
-
-let deleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
-    let rset = env.RecordSets.TryFind exp
-    match rset with 
-    | Some values -> let pos = Seq.findIndex ( fun a-> atomtoString a = index.ToString())  values.Data.[PositionColumn]
-                     let posAsInt = pos   
-                     let newData =  Map.map (fun (_:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data                  
-                     {  values  with Optimisations = (if values.Optimisations = Ordinal then Sorted else values.Optimisations) ;
-                                              Data = newData  ;                        
-                                              LastIndex= if index = values.LastIndex && newData.[PositionColumn].Count>0 then atomToInt (Seq.max  newData.[PositionColumn]) else values.LastIndex ; 
-                     } 
-    | None->failwith "recordset does not exist"
-let getLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
-    let rset = env.RecordSets.TryFind exp
-    match rset with 
-    | Some values -> values.LastIndex                    
-    | None->failwith "recordset does not exist"
-
-let rec deleteExpressionIndex (b:RecordSetName) (ind: LanguageExpression) (update:int)  (env:WarewolfEnvironment)  =
-    let data = languageExpressionToString ind |> (eval env update) |> evalResultToString
-    match ind with 
-    | WarewolfAtomAtomExpression atom ->
-                match atom with
-                | Int a -> deleteIndex  b.Name a env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
-                | _ -> failwith "recordsets must have an integer star or empty index"
-    |_->evalDelete( (sprintf "[[%s(%s)]]" b.Name data)) update env 
-
-and evalDelete (exp:string) (update:int)   (env:WarewolfEnvironment) =
-    let left = parseLanguageExpression exp update
-    match left with 
-                |   RecordSetNameExpression b ->  match b.Index with
-                                                                 | Star -> deleteValues  b.Name env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
-                                                                 | Last ->  deleteIndex  b.Name (getLastIndexFromRecordSet  b.Name env) env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
-                                                                 | IntIndex a -> deleteIndex  b.Name a env |> (fun upd-> {env with RecordSets = Map.map (fun ax bx -> if ax=b.Name then upd else bx ) env.RecordSets} )
-                                                                 | IndexExpression exp ->  deleteExpressionIndex b exp update env
-                                                               
-
-                |_-> failwith "only recordsets can be deleted"
-
 let getIndexes (name:string) (env:WarewolfEnvironment) = evalIndexes  env 0 name
 
-let ApplyIndexes (data:WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (indexes : int[]) (name:string) =
-    let newdata = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)
-    if name = PositionColumn then
-        for x in [1..data.Count] do
-            newdata.AddSomething ( Int x)
-        newdata
-    else        
-        for x in indexes do
-            newdata.AddSomething data.[x]
-        newdata
 
-
-let compare (left:WarewolfAtom) (right:WarewolfAtom) =
-    match (left,right) with
-    | (Nothing,Nothing) -> 0
-    | ( Int a, Int b ) -> a.CompareTo(b)
-    | (Float a, Float b ) -> a.CompareTo(b)
-    | (a,b) -> (atomtoString a).CompareTo(atomtoString b)
-
-
-let rec sortRecst (recset:WarewolfRecordset) (colName:string) (desc:bool)=
-    let data = recset.Data.[colName]
-    let positions = [0..recset.Data.[PositionColumn].Count-1]
-    let interpolated = Seq.map2 (fun a b ->  a,  b) data positions
-    let sorted = if not desc then Seq.sortBy (fun x ->  (fst x)  ) interpolated else Seq.sortBy (fun x ->  (fst x)   ) interpolated |> List.ofSeq |>List.rev |> Seq.ofList
-    let indexes = Seq.map snd sorted  |> Array.ofSeq
-    let data = Map.map (fun a b -> ApplyIndexes b indexes a) recset.Data
-    {recset with Data = data; Optimisations =Ordinal ; LastIndex = positions.Length  }
-
-and sortRecset (exp:string) (desc:bool) (update:int)  (env:WarewolfEnvironment) =
-    let left = parseLanguageExpression exp update
-    match left with 
-                |   RecordSetExpression b ->  let recsetopt = env.RecordSets.TryFind b.Name
-                                              match recsetopt with
-                                              | None -> failwith "record set does not exist"  
-                                              | Some a -> let sorted =  sortRecst a b.Column desc
-                                                          let recset = Map.remove b.Name env.RecordSets  
-                                                          let recsets =   Map.add  b.Name sorted recset        
-                                                          {env with RecordSets = recsets }
-                |_-> failwith "Only recordsets that contain recordset columns can be sorted"
-
-let isNothing (a:WarewolfEvalResult) =
-   match a with
-   | WarewolfAtomResult a -> a=Nothing
-   | _-> false

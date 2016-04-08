@@ -25,7 +25,7 @@ namespace Dev2.TO
         public JsonMappingTo Simple { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
         object _evalResultAsObject;
-        WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
+        CommonFunctions.WarewolfEvalResult _evalResult;
 
         public JsonMappingEvaluated(
             IExecutionEnvironment env,
@@ -53,7 +53,7 @@ namespace Dev2.TO
             return ((LanguageAST.LanguageExpression.RecordSetNameExpression)parsed).Item.Name;
         }
 
-        public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalResult
+        public CommonFunctions.WarewolfEvalResult EvalResult
         {
             get
             {
@@ -68,15 +68,15 @@ namespace Dev2.TO
             {
                 if (_evalResultAsObject == null)
                 {
-                    WarewolfDataEvaluationCommon.WarewolfEvalResult e = EvalResult;
-                    _evalResultAsObject = WarewolfDataEvaluationCommon.evalResultToJsonCompatibleObject(e);
+                    CommonFunctions.WarewolfEvalResult e = EvalResult;
+                    _evalResultAsObject = CommonFunctions.evalResultToJsonCompatibleObject(e);
                     if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
                     {
                         _evalResultAsObject = new object[] { null };
                     }
                     if (e.IsWarewolfAtomResult)
                     {
-                        var x = e as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                        var x = e as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (x != null && x.Item.IsDataString)
                         {
                             if (((DataASTMutable.WarewolfAtom.DataString)x.Item).Item == "true")
@@ -104,7 +104,7 @@ namespace Dev2.TO
                 }
                 if (EvalResult.IsWarewolfAtomListresult)
                 {
-                    return ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)EvalResult).Item.Count;
+                    return ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)EvalResult).Item.Count;
                 }
                 return 1;
             }
@@ -152,7 +152,7 @@ namespace Dev2.TO
             }
         }
 
-        public WarewolfDataEvaluationCommon.WarewolfEvalResult EvalResult
+        public CommonFunctions.WarewolfEvalResult EvalResult
         {
             get
             {
@@ -223,7 +223,7 @@ namespace Dev2.TO
             {
                 a.Add(new JProperty(
                     jsonMappingEvaluated.Simple.DestinationName,
-                    WarewolfDataEvaluationCommon.evalResultToJsonCompatibleObject(jsonMappingEvaluated.EvalResult))
+                    CommonFunctions.evalResultToJsonCompatibleObject(jsonMappingEvaluated.EvalResult))
                     );
             }
         }
@@ -254,28 +254,28 @@ namespace Dev2.TO
             return objects.ToArray();
         }
 
-        object GetEvalResult(WarewolfDataEvaluationCommon.WarewolfEvalResult evalResult, int i)
+        object GetEvalResult(CommonFunctions.WarewolfEvalResult evalResult, int i)
         {
             if (evalResult.IsWarewolfAtomListresult)
             {
-                WarewolfAtomList<DataASTMutable.WarewolfAtom> lst = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
+                WarewolfAtomList<DataASTMutable.WarewolfAtom> lst = ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
                 if (i > lst.Count)
                 {
                     return null;
                 }
-                return WarewolfDataEvaluationCommon.atomToJsonCompatibleObject(lst[i]);
+                return CommonFunctions.atomToJsonCompatibleObject(lst[i]);
             }
             if (evalResult.IsWarewolfAtomResult)
             {
                 if (i == 0)
                 {
-                    return WarewolfDataEvaluationCommon.evalResultToJsonCompatibleObject(evalResult);
+                    return CommonFunctions.evalResultToJsonCompatibleObject(evalResult);
                 }
                 return null;
             }
             if (evalResult.IsWarewolfRecordSetResult)
             {
-                DataASTMutable.WarewolfRecordset recset = ((WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+                DataASTMutable.WarewolfRecordset recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
 
                 KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>>[] data = recset.Data.ToArray();
                 var jObjects = new List<JObject>();
@@ -288,7 +288,7 @@ namespace Dev2.TO
                         {
                             try
                             {
-                                a.Add(new JProperty(pair.Key, WarewolfDataEvaluationCommon.atomToJsonCompatibleObject(pair.Value[j])));
+                                a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
                             }
                             catch (Exception)
                             {
