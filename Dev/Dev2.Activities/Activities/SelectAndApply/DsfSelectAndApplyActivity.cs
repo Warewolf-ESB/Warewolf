@@ -92,8 +92,6 @@ namespace Dev2.Activities.SelectAndApply
                     //Create a new Execution Environment
                     var executionEnvironment = new ScopedEnvironment(dataObject.Environment,DataSource,Alias);
 
-                    //This is our current environment
-                    var currentEnvironment = dataObject.Environment;
                     //Push the new environment
                     dataObject.PushEnvironment(executionEnvironment);
 
@@ -117,13 +115,8 @@ namespace Dev2.Activities.SelectAndApply
                         var exeAct = ApplyActivity as IDev2Activity;
                         if (exeAct != null)
                         {
-                            exeAct.Execute(dataObject, update);
+                            exeAct.Execute(dataObject, upd);
                         }
-                        var evalAsListOfStrings = executionEnvironment.EvalAsListOfStrings(Alias, update);
-                        var warewolfEvalResult = evalAsListOfStrings[0];
-                        //Assign the Alias back to DataSource using the environment
-                        currentEnvironment.Assign(DataSource, warewolfEvalResult, upd);
-                      
                     }
 
                     dataObject.PopEnvironment();
