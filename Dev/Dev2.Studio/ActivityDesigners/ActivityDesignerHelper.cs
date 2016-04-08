@@ -73,6 +73,7 @@ using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Activities.Designers2.MultiAssignObject;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -84,6 +85,7 @@ namespace Dev2.Studio.ActivityDesigners
             var designerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
+                { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
