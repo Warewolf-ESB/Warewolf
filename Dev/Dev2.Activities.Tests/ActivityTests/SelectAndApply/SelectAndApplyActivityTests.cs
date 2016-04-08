@@ -14,11 +14,6 @@ using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
 {
-    public class Person
-    {
-        public string Name { get; set; }
-    }
-
     [TestClass]
     public class SelectAndApplyActivityTests : BaseActivityUnitTest
     {
@@ -44,26 +39,6 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         public void SelectAndApplyActivity_DisplayName_GivenIsCreated_ShouldBeSelectAndApply()
         {
             //------------Setup for test--------------------------
-            //var persons = new List<Person>
-            //{
-            //    new Person
-            //    {
-            //        Name = "Bob"
-            //    },
-            //    new Person
-            //    {
-            //        Name = "Dora"
-            //    },
-            //    new Person
-            //    {
-            //        Name = "Superman"
-            //    },new Person
-            //    {
-            //        Name = "Batman"
-            //    }
-            //};
-
-            //persons.Select(a=>a.Name).ToList().ForEach(a=>a = a.ToUpper());
             var selectAndApplyActivity = CreateActivity();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
