@@ -1877,7 +1877,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.HelpTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3284,7 +3284,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu">
+    <MouseAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.HelpTab">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -5240,7 +5240,7 @@
                                 </UIObject>
                               </Descendants>
                             </UIObject>
-                            <UIObject ControlType="TabPage" Id="TabContextMenu" FriendlyName="Dev2.Studio.ViewModels.Help.HelpViewModel" SpecialControlType="None">
+                            <UIObject ControlType="TabPage" Id="HelpTab" FriendlyName="Dev2.Studio.ViewModels.Help.HelpViewModel" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
