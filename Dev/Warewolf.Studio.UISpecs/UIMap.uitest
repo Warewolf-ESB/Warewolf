@@ -1435,23 +1435,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.NewWebConnectorTab.WorkSurfaceContext.RequestTypesComboBox">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Request control not found</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_WebSource_ReqTypeComboBox_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UIDsfActivityCustom">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -4944,29 +4927,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestDataTextbox">
-      <ParameterName />
-      <Value Encoded="false">s</Value>
-      <Type>String</Type>
-    </SetValueAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UITestButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="47" Y="18" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Test_Connector_Calculate_Outputs">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -5558,210 +5518,6 @@
                         </UIObject>
                       </Descendants>
                     </UIObject>
-                    <UIObject ControlType="TabPage" Id="NewServerSourceTab" FriendlyName="Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Inte..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                        <PropertyCondition Name="Name">Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IServerSource]</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                            <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
-                            <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="Custom" Id="NewServerSourceWizard" FriendlyName="" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                <PropertyCondition Name="ClassName">Uia.ManageServerControl</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants>
-                                <UIObject ControlType="Custom" Id="AuthTypeOptions" FriendlyName="ProtocolItems" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                    <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">ProtocolItems</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Button" Id="WindowsAuth" FriendlyName="ToggleButton" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                                <UIObject ControlType="ComboBox" Id="AddressComboBox" FriendlyName="AddressTextBox" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">AddressTextBox</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants>
-                                    <UIObject ControlType="Edit" Id="AddressEditBox" FriendlyName="Text" SpecialControlType="None">
-                                      <TechnologyName>UIA</TechnologyName>
-                                      <WindowTitles>
-                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                                      </WindowTitles>
-                                      <AndCondition>
-                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
-                                      </AndCondition>
-                                      <SupportLevel>0</SupportLevel>
-                                      <Descendants />
-                                    </UIObject>
-                                  </Descendants>
-                                </UIObject>
-                              </Descendants>
-                            </UIObject>
-                          </Descendants>
-                        </UIObject>
-                        <UIObject ControlType="Button" Id="TabCloseButton" FriendlyName="" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                            <PropertyCondition Name="AutomationId">closeBtn</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Image" Id="NoAuthMessageText" FriendlyName="You are not authorized to edit this resource" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                            <PropertyCondition Name="HelpText">You are not authorized to edit this resource</PropertyCondition>
-                            <PropertyCondition Name="Instance">2</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Text" Id="NewServerTitleText" FriendlyName="New Server Source" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                            <PropertyCondition Name="Name">New Server Source</PropertyCondition>
-                            <PropertyCondition Name="Instance">2</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Image" Id="NewServerBackground" FriendlyName="New Server Source" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                            <PropertyCondition Name="AutomationId">New Server Source</PropertyCondition>
-                            <PropertyCondition Name="Instance">2</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Image" Id="NoAuthImage" FriendlyName="You are not authorized to edit this resource" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                            <PropertyCondition Name="HelpText">You are not authorized to edit this resource</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Text" Id="AddressText" FriendlyName="New Server Source" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                            <PropertyCondition Name="Name">New Server Source</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Image" Id="NewServerTabIcon" FriendlyName="New Server Source" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                            <PropertyCondition Name="AutomationId">New Server Source</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                        <UIObject ControlType="Image" Id="UIItemImage" FriendlyName="" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Image</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
                     <UIObject ControlType="TabPage" Id="WorkflowTab" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
@@ -5780,7 +5536,6 @@
                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                           </WindowTitles>
                           <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                             <PropertyCondition Name="AutomationId">closeBtn</PropertyCondition>
                           </AndCondition>

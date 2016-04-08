@@ -459,6 +459,32 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Assert_MessageBox_No_Button_Exists - Use 'Assert_MessageBox_No_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_MessageBox_No_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton noButton = this.MessageBoxWindow.NoButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'No' button equals 'True'
+            Assert.AreEqual(this.Assert_MessageBox_No_Button_ExistsExpectedValues.NoButtonExists, noButton.Exists, "Message box No button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_MessageBox_Yes_Button_Exists - Use 'Assert_MessageBox_Yes_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_MessageBox_Yes_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Yes' button equals 'True'
+            Assert.AreEqual(this.Assert_MessageBox_Yes_Button_ExistsExpectedValues.YesButtonExists, yesButton.Exists, "Message box Yes button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_Minimize_Button_Exists_TopRibbon - Use 'Assert_Minimize_Button_Exists_TopRibbonExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_Minimize_Button_Exists_TopRibbon()
@@ -1898,6 +1924,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Click_MessageBox_No
+        /// </summary>
+        public void Click_MessageBox_No()
+        {
+            #region Variable Declarations
+            WpfButton noButton = this.MessageBoxWindow.NoButton;
+            #endregion
+
+            // Click 'No' button
+            Mouse.Click(noButton, new Point(32, 5));
+        }
+        
+        /// <summary>
         /// Click_Minimize_TopRibbon_Button
         /// </summary>
         public void Click_Minimize_TopRibbon_Button()
@@ -1999,19 +2038,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Click 'Create a new web source' button
             Mouse.Click(uICreateanewwebsourceButton, new Point(13, 18));
-        }
-        
-        /// <summary>
-        /// Click_No_Save_Dialog
-        /// </summary>
-        public void Click_No_Save_Dialog()
-        {
-            #region Variable Declarations
-            WpfButton nOButton = this.MessageBoxWindow.NOButton;
-            #endregion
-
-            // Click 'No' button
-            Mouse.Click(nOButton, new Point(32, 5));
         }
         
         /// <summary>
@@ -2790,15 +2816,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Test_Connector_Calculate_Outputs()
         {
             #region Variable Declarations
-            WpfEdit uITestdataEdit = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom1.UIInputsListList.UIWarewolfCoreServiceIListItem.UITestdataEdit;
-            WpfButton uITestButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UITestButton;
+            WpfEdit testData = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData;
+            WpfButton testActionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.TestActionButton;
             #endregion
 
             // Type 's' in 'Test data' text box
-            uITestdataEdit.Text = this.Test_Connector_Calculate_OutputsParams.UITestdataEditText;
+            testData.Text = this.Test_Connector_Calculate_OutputsParams.TestDataText;
 
             // Click 'Test' button
-            Mouse.Click(uITestButton, new Point(47, 18));
+            Mouse.Click(testActionButton, new Point(47, 18));
         }
         
         #region Properties
@@ -3195,6 +3221,30 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mAssert_Maximize_Button_Exists_TopRibbonExpectedValues = new Assert_Maximize_Button_Exists_TopRibbonExpectedValues();
                 }
                 return this.mAssert_Maximize_Button_Exists_TopRibbonExpectedValues;
+            }
+        }
+        
+        public virtual Assert_MessageBox_No_Button_ExistsExpectedValues Assert_MessageBox_No_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_MessageBox_No_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_MessageBox_No_Button_ExistsExpectedValues = new Assert_MessageBox_No_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_MessageBox_No_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_MessageBox_Yes_Button_ExistsExpectedValues Assert_MessageBox_Yes_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_MessageBox_Yes_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_MessageBox_Yes_Button_ExistsExpectedValues = new Assert_MessageBox_Yes_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_MessageBox_Yes_Button_ExistsExpectedValues;
             }
         }
         
@@ -4754,6 +4804,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private Assert_Maximize_Button_Exists_TopRibbonExpectedValues mAssert_Maximize_Button_Exists_TopRibbonExpectedValues;
         
+        private Assert_MessageBox_No_Button_ExistsExpectedValues mAssert_MessageBox_No_Button_ExistsExpectedValues;
+        
+        private Assert_MessageBox_Yes_Button_ExistsExpectedValues mAssert_MessageBox_Yes_Button_ExistsExpectedValues;
+        
         private Assert_Minimize_Button_Exists_TopRibbonExpectedValues mAssert_Minimize_Button_Exists_TopRibbonExpectedValues;
         
         private Assert_NewResource_Count_ExistsExpectedValues mAssert_NewResource_Count_ExistsExpectedValues;
@@ -5496,6 +5550,36 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// Verify that the 'Exists' property of '' button equals 'True'
         /// </summary>
         public bool MaximizeStudioButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_MessageBox_No_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_MessageBox_No_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'No' button equals 'True'
+        /// </summary>
+        public bool NoButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_MessageBox_Yes_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_MessageBox_Yes_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Yes' button equals 'True'
+        /// </summary>
+        public bool YesButtonExists = true;
         #endregion
     }
     
@@ -7240,7 +7324,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// <summary>
         /// Type 's' in 'Test data' text box
         /// </summary>
-        public string UITestdataEditText = "s";
+        public string TestDataText = "s";
         #endregion
     }
     
@@ -10145,12 +10229,30 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mSourceServerName;
             }
         }
+        
+        public WpfButton TabCloseButton
+        {
+            get
+            {
+                if ((this.mTabCloseButton == null))
+                {
+                    this.mTabCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTabCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mTabCloseButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTabCloseButton;
+            }
+        }
         #endregion
         
         #region Fields
         private DestinationServer mDestinationServer;
         
         private WpfTreeItem mSourceServerName;
+        
+        private WpfButton mTabCloseButton;
         #endregion
     }
     
@@ -13683,6 +13785,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public InputsList InputsList
+        {
+            get
+            {
+                if ((this.mInputsList == null))
+                {
+                    this.mInputsList = new InputsList(this);
+                }
+                return this.mInputsList;
+            }
+        }
+        
         public EditButton EditButton
         {
             get
@@ -13733,6 +13847,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
+        private InputsList mInputsList;
+        
         private EditButton mEditButton;
         
         private NewButton mNewButton;
@@ -13740,6 +13856,74 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private ActionsComboBox mActionsComboBox;
         
         private MappingsView mMappingsView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class InputsList : WpfList
+    {
+        
+        public InputsList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public ListItem ListItem
+        {
+            get
+            {
+                if ((this.mListItem == null))
+                {
+                    this.mListItem = new ListItem(this);
+                }
+                return this.mListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ListItem mListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ListItem : WpfListItem
+    {
+        
+        public ListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Core.ServiceInput";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TestData
+        {
+            get
+            {
+                if ((this.mTestData == null))
+                {
+                    this.mTestData = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTestData.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
+                    this.mTestData.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mTestData;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTestData;
         #endregion
     }
     
@@ -18572,15 +18756,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public NOButton NOButton
+        public NoButton NoButton
         {
             get
             {
-                if ((this.mNOButton == null))
+                if ((this.mNoButton == null))
                 {
-                    this.mNOButton = new NOButton(this);
+                    this.mNoButton = new NoButton(this);
                 }
-                return this.mNOButton;
+                return this.mNoButton;
             }
         }
         
@@ -18600,7 +18784,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #region Fields
         private YesButton mYesButton;
         
-        private NOButton mNOButton;
+        private NoButton mNoButton;
         
         private CancelButton mCancelButton;
         #endregion
@@ -18643,10 +18827,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class NOButton : WpfButton
+    public class NoButton : WpfButton
     {
         
-        public NOButton(UITestControl searchLimitContainer) : 
+        public NoButton(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18740,13 +18924,17 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIItemCustom1 UIItemCustom1
+        public WpfCustom UIItemCustom1
         {
             get
             {
                 if ((this.mUIItemCustom1 == null))
                 {
-                    this.mUIItemCustom1 = new UIItemCustom1(this);
+                    this.mUIItemCustom1 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIItemCustom1.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseServiceControl";
+                    this.mUIItemCustom1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
                 }
                 return this.mUIItemCustom1;
             }
@@ -19054,7 +19242,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #region Fields
         private UIItemCustom mUIItemCustom;
         
-        private UIItemCustom1 mUIItemCustom1;
+        private WpfCustom mUIItemCustom1;
         
         private WpfCustom mUIGreenPointCustom;
         
@@ -19257,106 +19445,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private WpfText mUIItemText14;
         
         private WpfText mUIItemText15;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom1 : WpfCustom
-    {
-        
-        public UIItemCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseServiceControl";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInputsListList UIInputsListList
-        {
-            get
-            {
-                if ((this.mUIInputsListList == null))
-                {
-                    this.mUIInputsListList = new UIInputsListList(this);
-                }
-                return this.mUIInputsListList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInputsListList mUIInputsListList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInputsListList : WpfList
-    {
-        
-        public UIInputsListList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWarewolfCoreServiceIListItem UIWarewolfCoreServiceIListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfCoreServiceIListItem == null))
-                {
-                    this.mUIWarewolfCoreServiceIListItem = new UIWarewolfCoreServiceIListItem(this);
-                }
-                return this.mUIWarewolfCoreServiceIListItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWarewolfCoreServiceIListItem mUIWarewolfCoreServiceIListItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfCoreServiceIListItem : WpfListItem
-    {
-        
-        public UIWarewolfCoreServiceIListItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Core.ServiceInput";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UITestdataEdit
-        {
-            get
-            {
-                if ((this.mUITestdataEdit == null))
-                {
-                    this.mUITestdataEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUITestdataEdit.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
-                    this.mUITestdataEdit.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITestdataEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUITestdataEdit;
         #endregion
     }
     
