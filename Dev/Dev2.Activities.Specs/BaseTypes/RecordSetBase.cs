@@ -20,7 +20,6 @@ using ActivityUnitTests;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
