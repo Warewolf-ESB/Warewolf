@@ -93,7 +93,7 @@ namespace Warewolf.Studio.UISpecs
             var uiMap = new UIMap();
             uiMap.Assert_Close_Tab_Button_Exists();
             uiMap.Click_Close_Tab_Button();
-            new OutsideWorkflowDesignSurfaceUIMap().Click_No_Save_Dialog();
+            new OutsideWorkflowDesignSurfaceUIMap().Click_MessageBox_No();
         }
 
         #region Properties and Fields

@@ -466,6 +466,7 @@ Scenario: Drag toolbox Email onto a new workflow
 	When I 'Open_Email_Tool_Large_View'
 	Then I 'Assert_Email_Large_View_Exists_OnDesignSurface'
 	
+@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Service Picker onto a new workflow
 	When I 'Drag_Toolbox_Service_Picker_Onto_DesignSurface'
@@ -504,14 +505,3 @@ Scenario: Drag toolbox Move onto a new workflow
 	#Given The test is initialized using low level binding calls
 	When I 'Open_Move_Tool_Large_View'
 	Then I 'Assert_Move_Large_View_Exists_OnDesignSurface'
-	
-@NeedsBlankWorkflow
-Scenario: Get Web Request tool
-	When I 'Drag_Web_Get_Request_Tool_Onto_DesignSurface'
-	Then I 'Assert_Web_Get_Request_Tool_Exists_OnDesignSurface'
-	#Ashley TODO: The test should end here.
-
-	#Ashley TODO: Use low level binding hooks for this step:
-	#Given The test is initialized using low level binding calls
-	#When I 'Open_Move_Tool_Large_View'
-	Then I 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface'
