@@ -14,6 +14,7 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
@@ -490,23 +491,23 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             }
             DebugDispatcher.Instance.Add(Guid.Empty, testDebugWriter);
             IDSFDataObject result = ExecuteProcess(isDebug: true, channel: esbChannel, throwException: false);
+            Thread.Sleep(2000);
+            var debugStates = testDebugWriter.DebugStates.Where(a=>a.StateType!=StateType.Duration).ToList();
+            var duration = testDebugWriter.DebugStates.Where(a => a.StateType == StateType.Duration).ToList();
+            ScenarioContext.Current.Add("duration", duration);
+            ScenarioContext.Current.Add("result", result);
+            CheckDebugStates(debugStates);
+            testDebugWriter.DebugStates.Clear();
             try
             {
                 DebugDispatcher.Instance.Remove(Guid.Empty);
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception)
+            catch (Exception)
             // ReSharper restore EmptyGeneralCatchClause
             {
                 //May already been removed
             }
-            var debugStates = testDebugWriter.DebugStates.Where(a=>a.StateType!=StateType.Duration).ToList();
-            var duration = testDebugWriter.DebugStates.Where(a => a.StateType == StateType.Duration).ToList();
-            ScenarioContext.Current.Add("duration", duration);
-            testDebugWriter.DebugStates.Clear();
-            ScenarioContext.Current.Add("result", result);
-            CheckDebugStates(debugStates);
-
         }
 
         void CheckDebugStates(IEnumerable<IDebugState> debugStates)
