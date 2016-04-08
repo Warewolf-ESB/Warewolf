@@ -1,5 +1,6 @@
 ﻿using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities.SelectAndApply;
@@ -15,6 +16,7 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SelectAndApplyActivityTests : BaseActivityUnitTest
     {
         private DsfSelectAndApplyActivity CreateActivity()
