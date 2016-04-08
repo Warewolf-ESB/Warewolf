@@ -131,6 +131,36 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             Assert.AreEqual("-3.46", ages[3]);
             Assert.AreEqual("0.88", ages[4]);
         }  
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        public void SelectAndApplyActivity_SetupExecute_GivenNumberFormatTool_ToDifferentResult()
+        {
+            var activity = new DsfNumberFormatActivity
+                {
+                    Expression = "[[result]]",
+                    Result = "[[b]]",
+                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
+                    RoundingDecimalPlaces = "2",
+                    DecimalPlacesToShow = "2"
+                };
+            
+            
+            //------------Setup for test--------------------------
+            SetupArgumentsForFormatNumber("", "", activity);
+            //------------Execute Test---------------------------
+            ExecuteProcess(DataObject);
+            //------------Assert Results-------------------------
+            var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
+            /*Assert.AreEqual("5.27", ages[0]);
+            Assert.AreEqual("2.30", ages[1]);
+            Assert.AreEqual("1.00", ages[2]);
+            Assert.AreEqual("-3.46", ages[3]);
+            Assert.AreEqual("0.88", ages[4]);*/
+
+            var evalAsList = DataObject.Environment.EvalAsList("[[b]]", 1);
+        }  
         
         //Ignored the test to be plumbed later
         [Ignore]

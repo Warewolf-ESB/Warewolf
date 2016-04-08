@@ -90,7 +90,7 @@ namespace Dev2.Activities.SelectAndApply
                     //Eval list using DataSource
                     var atoms = dataObject.Environment.EvalAsList(DataSource, update);
                     //Create a new Execution Environment
-                    var executionEnvironment = new ExecutionEnvironment();
+                    var executionEnvironment = new ScopedEnvironment(dataObject.Environment,DataSource,Alias);
 
                     //This is our current environment
                     var currentEnvironment = dataObject.Environment;
@@ -119,7 +119,8 @@ namespace Dev2.Activities.SelectAndApply
                         {
                             exeAct.Execute(dataObject, update);
                         }
-                        var warewolfEvalResult = executionEnvironment.EvalAsListOfStrings(Alias, update)[0];
+                        var evalAsListOfStrings = executionEnvironment.EvalAsListOfStrings(Alias, update);
+                        var warewolfEvalResult = evalAsListOfStrings[0];
                         //Assign the Alias back to DataSource using the environment
                         currentEnvironment.Assign(DataSource, warewolfEvalResult, upd);
                       
