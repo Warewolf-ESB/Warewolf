@@ -6,19 +6,22 @@ if %errorLevel% == 0 (
 	echo Success: Administrative permissions confirmed.
 ) else (
 	echo Failure: Current permissions inadequate.
-	exit 1
+	pause
+	GOTO exit
 )
 
 IF EXIST "%vs120comntools%" GOTO vs2013
 IF EXIST "%vs140comntools%" GOTO vs2015
 Echo No visual studio installation found!
 pause
-exit 1
+GOTO exit
 
 :vs2013
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%vs120comntools%..\IDE\CodedUITestBuilder.exe" /standalone) else (START "%vs120comntools%..\IDE\CodedUITestBuilder.exe" /D "%vs120comntools%..\IDE" "CodedUITestBuilder.exe" /standalone)
-exit 0
+GOTO exit
 
 :vs2013
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%vs140comntools%..\IDE\CodedUITestBuilder.exe" /standalone) else (START "%vs140comntools%..\IDE\CodedUITestBuilder.exe" /D "%vs140comntools%..\IDE" "CodedUITestBuilder.exe" /standalone)
-exit 0
+
+
+:exit
