@@ -610,9 +610,9 @@ namespace Dev2.Activities.Specs.Composition
             }
             foreach(var tableRow in mappings.Rows)
             {
-                string output = null;
+                string output;
                 tableRow.TryGetValue("Output from Service", out output);
-                string toVariable = null;
+                string toVariable;
                 tableRow.TryGetValue("To Variable", out toVariable);
                 if(!string.IsNullOrEmpty(output) && !string.IsNullOrEmpty(toVariable))
                 {
@@ -634,9 +634,9 @@ namespace Dev2.Activities.Specs.Composition
                     }
                 }
 
-                string input = null;
+                string input;
                 tableRow.TryGetValue("Input to Service", out input);
-                string fromVariable = null;
+                string fromVariable;
                 tableRow.TryGetValue("From Variable", out fromVariable);
 
                 if(!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(fromVariable))

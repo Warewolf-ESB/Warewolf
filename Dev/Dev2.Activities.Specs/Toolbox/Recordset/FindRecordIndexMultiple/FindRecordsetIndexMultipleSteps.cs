@@ -16,7 +16,6 @@ using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

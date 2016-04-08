@@ -17,7 +17,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Core.Tests;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Intellisense;
 using Dev2.Intellisense.Helper;
 using Dev2.Intellisense.Provider;
