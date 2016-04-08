@@ -90,16 +90,16 @@ namespace Warewolf.Studio.UISpecs
         [Scope(Tag = "NeedsBlankWorkflow")]
         public static void CleanupWorkflow()
         {
-            var uiMap = new UIMap();
-            uiMap.Assert_Close_Tab_Button_Exists();
-            uiMap.Click_Close_Tab_Button();
             try
             {
+                var uiMap = new UIMap();
+                uiMap.Assert_Close_Tab_Button_Exists();
+                uiMap.Click_Close_Tab_Button();
                 new OutsideWorkflowDesignSurfaceUIMap().Click_MessageBox_No();
             }
             catch (UITestControlNotFoundException e)
             {
-                //Might not prompt for save if no changes made.
+                //Test may have crashed before tab is even openned
             }
         }
 
