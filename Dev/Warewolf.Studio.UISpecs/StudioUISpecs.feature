@@ -88,7 +88,6 @@ Scenario: Drag toolbox Sql Tool onto a new workflow
 	#Given The test is initialized using low level binding calls
 	When I 'Open_Sql_Server_Tool_small_View'
 	
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Get Web Request Tool onto a new workflow
 	When I 'Drag_GetWeb_RequestTool_Onto_DesignSurface'
@@ -506,15 +505,3 @@ Scenario: Drag toolbox Move onto a new workflow
 	#Given The test is initialized using low level binding calls
 	When I 'Open_Move_Tool_Large_View'
 	Then I 'Assert_Move_Large_View_Exists_OnDesignSurface'
-	
-@ignore
-@NeedsBlankWorkflow
-Scenario: Get Web Request tool
-	When I 'Drag_Web_Get_Request_Tool_Onto_DesignSurface'
-	Then I 'Assert_Web_Get_Request_Tool_Exists_OnDesignSurface'
-	#Ashley TODO: The test should end here.
-
-	#Ashley TODO: Use low level binding hooks for this step:
-	#Given The test is initialized using low level binding calls
-	#When I 'Open_Move_Tool_Large_View'
-	Then I 'Assert_Web_Get_Request_Small_View_Exists_OnDesignSurface'
