@@ -21,7 +21,7 @@ Scenario: Schedule with history
 	  | # |                   |
 	  | 1 | [[DiceRoll]] = Int32 |
 
-
+@ignore
 Scenario: Creating task with schedule statud disabled
       Given I have a schedule "Diceroll00"
 	  And "Diceroll00" executes an Workflow "My Category\Dice Roll" 
@@ -52,7 +52,7 @@ Scenario: Setting schedule task "At log on"
 		| # |                    |
 		| 1 | [[DiceRoll]] = Int32 |
 
-
+@ignore
 Scenario: Schedule the task with Incorrect username or password
       Given I have a schedule "Diceroll1"
 	  And "Diceroll1" executes an Workflow "My Category\Dice Roll" 
