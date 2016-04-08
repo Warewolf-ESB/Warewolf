@@ -43,7 +43,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion Properties
 
         #region Private Methods
-
+         //SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
+         //                  "[[resRecordSet().number]]", "[[recordSet(*).number]]", enRoundingType.Normal, "", "");
         private void SetupArguments(string currentDl, string testData, string result, string expression,
             enRoundingType roundingType, string roundingDecimalPlaces, string decimalPlacesToShow)
         {

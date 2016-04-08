@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
@@ -21,26 +20,22 @@ namespace Dev2.Activities.SelectAndApply
             DisplayName = "Select and apply";
         }
 
-
-
         #region Overrides of DsfNativeActivity<bool>
         public string DataSource { get; set; }
         public string Alias { get; set; }
         public object ApplyActivity { get; set; }
 
-
         readonly object _selectApplyExecutionObject = new object();
         string _previousParentId;
+
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-          
+
         }
-
-
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -92,12 +87,21 @@ namespace Dev2.Activities.SelectAndApply
                 InitializeDebug(dataObject);
                 try
                 {
-                    var evalAsList = dataObject.Environment.EvalAsList("[[Datasource]]", update);
-                    var count = evalAsList.Count();
+                    //Eval list using DataSource
+                    var atoms = dataObject.Environment.EvalAsList(DataSource, update);
+                    //Create a new Execution Environment
+                    var executionEnvironment = new ScopedEnvironment(dataObject.Environment,DataSource,Alias);
 
-                    for (int i = 0; i < count; i++ )
+                    //Push the new environment
+                    dataObject.PushEnvironment(executionEnvironment);
+
+                    int upd = 0;
+                    foreach (var warewolfAtom in atoms)
                     {
-                        var exeAct = ApplyActivity as IDev2Activity;
+                        upd++;
+                        //Assign the warewolfAtom to Alias using new environment
+                        executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
+
                         if (dataObject.IsDebugMode())
                         {
                             DispatchDebugState(dataObject, StateType.Before, update);
@@ -108,19 +112,21 @@ namespace Dev2.Activities.SelectAndApply
                         {
                             DispatchDebugState(dataObject, StateType.After, update);
                         }
+                        var exeAct = ApplyActivity as IDev2Activity;
                         if (exeAct != null)
                         {
-                            exeAct.Execute(dataObject, update);
-                        }
-
-                        if (dataObject.IsDebugMode())
-                        {
-                            _debugOutputs = new List<DebugItem>();
-                            _debugOutputs = new List<DebugItem>();
-                            DispatchDebugState(dataObject, StateType.Duration, 0);
+                            exeAct.Execute(dataObject, upd);
                         }
                     }
-                   
+
+                    dataObject.PopEnvironment();
+
+                    if (dataObject.IsDebugMode())
+                    {
+                        _debugOutputs = new List<DebugItem>();
+                        _debugOutputs = new List<DebugItem>();
+                        DispatchDebugState(dataObject, StateType.Duration, 0);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -151,7 +157,6 @@ namespace Dev2.Activities.SelectAndApply
                 }
             }
         }
-
         #endregion
     }
 }
