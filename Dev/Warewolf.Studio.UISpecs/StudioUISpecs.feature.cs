@@ -1108,21 +1108,37 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Dropbox onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Dropbox Download onto a new workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
-        public virtual void DragToolboxDropboxOntoANewWorkflow()
+        public virtual void DragToolboxDropboxDownloadOntoANewWorkflow()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Dropbox onto a new workflow", new string[] {
-                        "ignore",
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Dropbox Download onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 483
+#line 482
 this.ScenarioSetup(scenarioInfo);
+#line 483
+ testRunner.When("I \'Drag_Toolbox_Dropbox_Download_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 484
- testRunner.When("I \'Drag_Toolbox_Dropbox_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 485
- testRunner.Then("I \'Assert_Dropbox_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \'Assert_Dropbox_Download_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag toolbox Dropbox Upload onto a new workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioUISpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
+        public virtual void DragToolboxDropboxUploadOntoANewWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Dropbox Upload onto a new workflow", new string[] {
+                        "NeedsBlankWorkflow"});
+#line 487
+this.ScenarioSetup(scenarioInfo);
+#line 488
+ testRunner.When("I \'Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 489
+ testRunner.Then("I \'Assert_Dropbox_Upload_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1135,15 +1151,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Find_Record_Index onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 488
+#line 492
 this.ScenarioSetup(scenarioInfo);
-#line 489
+#line 493
  testRunner.When("I \'Drag_Toolbox_Find_Record_Index_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 490
+#line 494
  testRunner.Then("I \'Assert_Find_Record_Index_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 495
+#line 499
  testRunner.When("I \'Open_Find_Record_Index_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 496
+#line 500
  testRunner.Then("I \'Assert_Find_Record_index_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1157,15 +1173,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag toolbox Move onto a new workflow", new string[] {
                         "NeedsBlankWorkflow"});
-#line 499
+#line 503
 this.ScenarioSetup(scenarioInfo);
-#line 500
+#line 504
  testRunner.When("I \'Drag_Toolbox_Move_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 501
+#line 505
  testRunner.Then("I \'Assert_Move_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 506
+#line 510
  testRunner.When("I \'Open_Move_Tool_Large_View\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 507
+#line 511
  testRunner.Then("I \'Assert_Move_Large_View_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -425,11 +425,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_Dropbox_Exists_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dropBox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox;
+            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
             #endregion
 
             // Verify that the 'Exists' property of 'DsfDropBoxFileActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues.DropBoxExists, dropBox.Exists, "Dropbox tool on the design surface does not exist");
+            Assert.AreEqual(this.Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues.DropBox_DOWNLOADExists, dropBox_DOWNLOAD.Exists, "Dropbox tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -1637,18 +1637,34 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Drag_Toolbox_Dropbox_Onto_DesignSurface
+        /// Drag_Toolbox_Dropbox_Download_Onto_DesignSurface
         /// </summary>
-        public void Drag_Toolbox_Dropbox_Onto_DesignSurface()
+        public void Drag_Toolbox_Dropbox_Download_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfListItem dropBox = this.MainStudioWindow.ToolBox.ToolListBox.ConnectorTools.DropBox;
+            WpfListItem dOWNLOAD = this.MainStudioWindow.ToolBox.ToolListBox.StorageTools.DOWNLOAD;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(307, 131));
-            Mouse.StartDragging(dropBox, new Point(30, 8));
+            Mouse.StartDragging(dOWNLOAD, new Point(30, 8));
+            Mouse.StopDragging(flowchart, new Point(307, 131));
+        }
+        
+        /// <summary>
+        /// Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface
+        /// </summary>
+        public void Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface()
+        {
+            #region Variable Declarations
+            WpfListItem uPLOAD = this.MainStudioWindow.ToolBox.ToolListBox.StorageTools.UPLOAD;
+            WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(307, 131));
+            Mouse.StartDragging(uPLOAD, new Point(30, 8));
             Mouse.StopDragging(flowchart, new Point(307, 131));
         }
         
@@ -2449,11 +2465,11 @@ namespace Warewolf.Studio.UISpecs
         public void Open_DropboxFileOperation_Large_View()
         {
             #region Variable Declarations
-            WpfCustom dropBox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox;
+            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
             #endregion
 
             // Double-Click 'DsfDropBoxFileActivity' custom control
-            Mouse.DoubleClick(dropBox, new Point(174, 14));
+            Mouse.DoubleClick(dropBox_DOWNLOAD, new Point(174, 14));
         }
         
         /// <summary>
@@ -3090,11 +3106,11 @@ namespace Warewolf.Studio.UISpecs
         public void RightClick_DropboxFileOperation_OnDesignSurface()
         {
             #region Variable Declarations
-            WpfCustom dropBox = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox;
+            WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
             #endregion
 
             // Right-Click 'DsfDropBoxFileActivity' custom control
-            Mouse.Click(dropBox, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+            Mouse.Click(dropBox_DOWNLOAD, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
         }
         
         /// <summary>
@@ -5736,7 +5752,7 @@ namespace Warewolf.Studio.UISpecs
         /// <summary>
         /// Verify that the 'Exists' property of 'DsfDropBoxFileActivity' custom control equals 'True'
         /// </summary>
-        public bool DropBoxExists = true;
+        public bool DropBox_DOWNLOADExists = true;
         #endregion
     }
     
@@ -8310,20 +8326,20 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WpfCustom DropBox
+        public WpfCustom DropBox_DOWNLOAD
         {
             get
             {
-                if ((this.mDropBox == null))
+                if ((this.mDropBox_DOWNLOAD == null))
                 {
-                    this.mDropBox = new WpfCustom(this);
+                    this.mDropBox_DOWNLOAD = new WpfCustom(this);
                     #region Search Criteria
-                    this.mDropBox.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DropboxUploadFileDesigner";
-                    this.mDropBox.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dropbox File Operation(DropboxUploadFileDesigner)";
-                    this.mDropBox.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    this.mDropBox_DOWNLOAD.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DropBoxDownloadDesigner";
+                    this.mDropBox_DOWNLOAD.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DOWNLOAD from Dropbox(DropBoxDownloadDesigner)";
+                    this.mDropBox_DOWNLOAD.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
-                return this.mDropBox;
+                return this.mDropBox_DOWNLOAD;
             }
         }
         
@@ -8699,7 +8715,7 @@ namespace Warewolf.Studio.UISpecs
         
         private XPath mXPath;
         
-        private WpfCustom mDropBox;
+        private WpfCustom mDropBox_DOWNLOAD;
         
         private WpfCustom mPathCreate;
         
@@ -10268,18 +10284,6 @@ namespace Warewolf.Studio.UISpecs
         }
         
         #region Properties
-        public Storage Storage
-        {
-            get
-            {
-                if ((this.mStorage == null))
-                {
-                    this.mStorage = new Storage(this);
-                }
-                return this.mStorage;
-            }
-        }
-        
         public FlowTools FlowTools
         {
             get
@@ -10400,6 +10404,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public StorageTools StorageTools
+        {
+            get
+            {
+                if ((this.mStorageTools == null))
+                {
+                    this.mStorageTools = new StorageTools(this);
+                }
+                return this.mStorageTools;
+            }
+        }
+        
         public UtilityTools UtilityTools
         {
             get
@@ -10411,23 +10427,9 @@ namespace Warewolf.Studio.UISpecs
                 return this.mUtilityTools;
             }
         }
-        
-        public ConnectorTools ConnectorTools
-        {
-            get
-            {
-                if ((this.mConnectorTools == null))
-                {
-                    this.mConnectorTools = new ConnectorTools(this);
-                }
-                return this.mConnectorTools;
-            }
-        }
         #endregion
         
         #region Fields
-        private Storage mStorage;
-        
         private FlowTools mFlowTools;
         
         private DataTools mDataTools;
@@ -10448,46 +10450,9 @@ namespace Warewolf.Studio.UISpecs
         
         private SharepointTools mSharepointTools;
         
+        private StorageTools mStorageTools;
+        
         private UtilityTools mUtilityTools;
-        
-        private ConnectorTools mConnectorTools;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Storage : WpfGroup
-    {
-        
-        public Storage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Storage";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem DOWNLOAD
-        {
-            get
-            {
-                if ((this.mDOWNLOAD == null))
-                {
-                    this.mDOWNLOAD = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mDOWNLOAD.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mDOWNLOAD.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
-                    this.mDOWNLOAD.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mDOWNLOAD;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mDOWNLOAD;
         #endregion
     }
     
@@ -11502,6 +11467,81 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class StorageTools : WpfGroup
+    {
+        
+        public StorageTools(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Connectors";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem DOWNLOAD
+        {
+            get
+            {
+                if ((this.mDOWNLOAD == null))
+                {
+                    this.mDOWNLOAD = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDOWNLOAD.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mDOWNLOAD.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mDOWNLOAD.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDOWNLOAD;
+            }
+        }
+        
+        public WpfListItem UPLOAD
+        {
+            get
+            {
+                if ((this.mUPLOAD == null))
+                {
+                    this.mUPLOAD = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUPLOAD.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mUPLOAD.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mUPLOAD.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUPLOAD;
+            }
+        }
+        
+        public WpfListItem SelectandApply
+        {
+            get
+            {
+                if ((this.mSelectandApply == null))
+                {
+                    this.mSelectandApply = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSelectandApply.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+                    this.mSelectandApply.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mSelectandApply.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSelectandApply;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mDOWNLOAD;
+        
+        private WpfListItem mUPLOAD;
+        
+        private WpfListItem mSelectandApply;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class UtilityTools : WpfGroup
     {
         
@@ -11704,42 +11744,6 @@ namespace Warewolf.Studio.UISpecs
         private WpfListItem mComment;
         
         private WpfListItem mXPath;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class ConnectorTools : WpfGroup
-    {
-        
-        public ConnectorTools(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Connectors";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem DropBox
-        {
-            get
-            {
-                if ((this.mDropBox == null))
-                {
-                    this.mDropBox = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mDropBox.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mDropBox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
-                    #endregion
-                }
-                return this.mDropBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mDropBox;
         #endregion
     }
     

@@ -194,7 +194,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.CancelButton">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.CancelButton">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -211,7 +211,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.DebugF6Button">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.DebugF6Button">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -228,7 +228,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell.UIRec1setText">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell.UIRec1setText">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -245,7 +245,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.InputDataTab.DataListInputsTable">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -262,7 +262,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.JSONTab">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -279,7 +279,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.JSONTab.JSONWindow">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.JSONTab.JSONWindow">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -296,7 +296,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.RememberDebugInputCheckBox">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -313,7 +313,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.ViewInBrowserF7Button">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button">
       <ParameterName />
       <PropertyName>Enabled</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -330,7 +330,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.DebugInputWindow1">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -347,7 +347,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.XMLTab">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -364,7 +364,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.XMLTab.XMLWindow">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.XMLTab.XMLWindow">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -568,7 +568,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.InputDataTab">
+    <AssertAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -3159,7 +3159,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <SetValueAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.DebugInputWindow.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell">
+    <SetValueAction UIObjectName="OutsideWorkflowDesignSurfaceUIMap.MainStudioWindow.DebugInputDialog.UITabItemsTabList.InputDataTab.DataListInputsTable.UIDescriptionCell">
       <ParameterName />
       <Value Encoded="false">s</Value>
       <Type>String</Type>
@@ -10665,6 +10665,200 @@
                 </UIObject>
               </Descendants>
             </UIObject>
+            <UIObject ControlType="Window" Id="DebugInputDialog" FriendlyName="Wpf" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Window</PropertyCondition>
+                <PropertyCondition Name="Name">Debug input data</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.Window</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_DebugInputWindow_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="TabList" Id="UITabItemsTabList" FriendlyName="TabItems" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">TabItems</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="TabPage" Id="InputDataTab" FriendlyName="Input Data" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_InputDataTab_AutoID</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Table" Id="DataListInputsTable" FriendlyName="DataListInputs" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">DataListInputs</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Cell" Id="UIDescriptionCell" FriendlyName="Description" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="ColumnHeader" />
+                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Text" Id="UIRec1setText" FriendlyName="rec(1).set" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                    <PropertyCondition Name="Name">rec(1).set</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                    <UIObject ControlType="TabPage" Id="XMLTab" FriendlyName="XML" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_XMLTab_AutoID</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="XMLWindow" FriendlyName="UI_XMLEditor_AutoID" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName" />
+                            <PropertyCondition Name="AutomationId">UI_XMLEditor_AutoID</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                    <UIObject ControlType="TabPage" Id="JSONTab" FriendlyName="JSON" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_XMLTab_AutoID</PropertyCondition>
+                        <PropertyCondition Name="Instance">2</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="JSONWindow" FriendlyName="UI_JsonEditor_AutoID" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName" />
+                            <PropertyCondition Name="AutomationId">UI_JsonEditor_AutoID</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+                <UIObject ControlType="CheckBox" Id="RememberDebugInputCheckBox" FriendlyName="Remember Debug Inputs" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_RememberInputsCb_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Button" Id="CancelButton" FriendlyName="Cancel" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_Cancelbtn_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Button" Id="DebugF6Button" FriendlyName="Debug (F6)" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_Executebtn_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+                <UIObject ControlType="Button" Id="ViewInBrowserF7Button" FriendlyName="View In Browser (F7)" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_Browserbtn_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
           </Descendants>
         </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="MessageBoxWindow" FriendlyName="WarewolfMessageBox" SpecialControlType="None" SessionId="1116676">
@@ -10763,212 +10957,19 @@
             </UIObject>
           </Descendants>
         </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="DebugInputWindow" FriendlyName="Warewolf (DEV2\LEROY.WARNER)" SpecialControlType="None" SessionId="529504">
+        <TopLevelWindow ControlType="Window" Id="DebugInputWindow" FriendlyName="Warewolf" SpecialControlType="None" SessionId="529504">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
             <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
           </WindowTitles>
           <AndCondition>
             <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\LEROY.WARNER)</PropertyCondition>
+            <PropertyCondition Name="Name" Operator="Contains">Warewolf</PropertyCondition>
             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
             <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
           </AndCondition>
           <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Window" Id="DebugInputWindow1" FriendlyName="Wpf" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="ControlType">Window</PropertyCondition>
-                <PropertyCondition Name="Name">Debug input data</PropertyCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="TabList" Id="UITabItemsTabList" FriendlyName="TabItems" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">TabList</PropertyCondition>
-                <PropertyCondition Name="AutomationId">TabItems</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="TabPage" Id="InputDataTab" FriendlyName="Input Data" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_InputDataTab_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Table" Id="DataListInputsTable" FriendlyName="DataListInputs" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">DataListInputs</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="Cell" Id="UIDescriptionCell" FriendlyName="Description" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="ColumnHeader" />
-                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="Text" Id="UIRec1setText" FriendlyName="rec(1).set" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                <PropertyCondition Name="Name">rec(1).set</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants />
-                            </UIObject>
-                          </Descendants>
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-                <UIObject ControlType="TabPage" Id="XMLTab" FriendlyName="XML" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_XMLTab_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Custom" Id="XMLWindow" FriendlyName="UI_XMLEditor_AutoID" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                        <PropertyCondition Name="ClassName" />
-                        <PropertyCondition Name="AutomationId">UI_XMLEditor_AutoID</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-                <UIObject ControlType="TabPage" Id="JSONTab" FriendlyName="JSON" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_XMLTab_AutoID</PropertyCondition>
-                    <PropertyCondition Name="Instance">2</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Custom" Id="JSONWindow" FriendlyName="UI_JsonEditor_AutoID" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                        <PropertyCondition Name="ClassName" />
-                        <PropertyCondition Name="AutomationId">UI_JsonEditor_AutoID</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="CheckBox" Id="RememberDebugInputCheckBox" FriendlyName="Remember Debug Inputs" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_RememberInputsCb_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Button" Id="CancelButton" FriendlyName="Cancel" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_Cancelbtn_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Button" Id="DebugF6Button" FriendlyName="Debug (F6)" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_Executebtn_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Button" Id="ViewInBrowserF7Button" FriendlyName="View In Browser (F7)" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                <PropertyCondition Name="AutomationId">UI_Browserbtn_AutoID</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-          </Descendants>
+          <Descendants />
         </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="SaveDialogWindow" FriendlyName="SaveDialogView" SpecialControlType="None" SessionId="395224">
           <TechnologyName>UIA</TechnologyName>
