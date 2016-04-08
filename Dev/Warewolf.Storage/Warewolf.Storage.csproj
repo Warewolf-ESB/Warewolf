@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExecutionEnvironment.cs" />
+    <Compile Include="ScopedEnvironment.cs" />
     <Compile Include="WarewolfAtomIterator.cs" />
     <Compile Include="WarewolfListIterator.cs" />
   </ItemGroup>
