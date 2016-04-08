@@ -58,24 +58,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign">
-      <ParameterName />
-      <PropertyName>Exists</PropertyName>
-      <ExpectedValue>True</ExpectedValue>
-      <MessageOnValidationFailure>Assign tool large view on the design surface does not exist</MessageOnValidationFailure>
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Assert_New_Workflow_Context_Menu_Exists">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="UIMap.MainStudioWindow.UIItemMenu">
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.TabContextMenu">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
@@ -874,6 +857,23 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
+    <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign">
+      <ParameterName />
+      <PropertyName>Exists</PropertyName>
+      <ExpectedValue>True</ExpectedValue>
+      <MessageOnValidationFailure>Assign tool large view on the design surface does not exist</MessageOnValidationFailure>
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Assert_New_Workflow_Context_Menu_Exists">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="UIMap.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.UIDsfPluginActivityCustom">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -1606,7 +1606,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.MainStudioWindow.UIItemMenu.UICloseMenuItem">
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.TabContextMenu.Close">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
@@ -1616,6 +1616,24 @@
       <MouseButton>Left</MouseButton>
     </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Click_Close_Tab_Context_Menu_Button">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.MainStudioWindow.ExplorerContextMenu.ShowServerVersion">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="45" Y="13" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="Click_Show_Server_Version_Explorer_Context_menu">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -2723,33 +2741,6 @@
       <MouseButton>Left</MouseButton>
     </MouseAction>
     <TestStepMarkerAction Comment="" MarkerInformation="Drag_Workflow_Onto_DesignSurface">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIItemButton">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="12" Y="12" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIItemButton1">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="9" Y="18" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Edit_Database_Source_From_Connector">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -4857,33 +4848,6 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIUI_ExplorerControl_ACustom.UIExplorerTreeTree.UIInfragisticsControlsTreeItem">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="105" Y="12" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Right</MouseButton>
-    </MouseAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfDEV2LEROYWARWindow.UIExplorerEnvironmentMMenu.UIServerVersionMenuItem">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="45" Y="13" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Show_Server_Version">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
   <OnErrorActions />
@@ -4903,7 +4867,7 @@
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Menu" Id="UIItemMenu" FriendlyName="" SpecialControlType="None">
+            <UIObject ControlType="Menu" Id="TabContextMenu" FriendlyName="" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -4918,7 +4882,7 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="MenuItem" Id="UICloseMenuItem" FriendlyName="Close" SpecialControlType="None">
+                <UIObject ControlType="MenuItem" Id="Close" FriendlyName="Close" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -4951,6 +4915,22 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
+                <UIObject ControlType="MenuItem" Id="ShowServerVersion" FriendlyName="Server Version" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>Expand</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ServerVersion</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
                 <UIObject ControlType="MenuItem" Id="NewWorkflow" FriendlyName="New Workflow Service" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
@@ -7086,6 +7066,34 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
+                    <UIObject ControlType="Group" Id="Storage" FriendlyName="Storage" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Group</PropertyCondition>
+                        <PropertyCondition Name="Name">Storage</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="ListItem" Id="DOWNLOAD" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
+                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants />
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
                     <UIObject ControlType="Group" Id="FlowTools" FriendlyName="Control Flow" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
@@ -9366,24 +9374,7 @@
                 <PropertyCondition Name="AutomationId">ExplorerEnvironmentMenu</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="MenuItem" Id="UIServerVersionMenuItem" FriendlyName="Server Version" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\LEROY.WARNER)</WindowTitle>
-                  </WindowTitles>
-                  <SearchConfigurations>
-                    <SearchConfiguration>Expand</SearchConfiguration>
-                  </SearchConfigurations>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">MenuItem</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">ServerVersion</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
+              <Descendants />
             </UIObject>
             <UIObject ControlType="Custom" Id="UIEXPLORERCustom" FriendlyName="EXPLORER" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
@@ -9443,6 +9434,34 @@
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
+            <UIObject ControlType="Custom" Id="UIUI_ToolboxControl_AuCustom" FriendlyName="UI_ToolboxControl_AutoID" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ToolboxView</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_ToolboxControl_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="List" Id="UIToolListBoxList" FriendlyName="ToolListBox" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">List</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">ToolListBox</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
           </Descendants>
         </TopLevelWindow>
       </TopLevelWindows>
