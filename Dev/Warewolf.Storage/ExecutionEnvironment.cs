@@ -68,7 +68,7 @@ namespace Warewolf.Storage
 
         CommonFunctions.WarewolfEvalResult EvalForJson(string exp);
 
-        void AddToJsonObjects(string bob, JContainer jContainer);
+        void AddToJsonObjects(string exp, JContainer jContainer);
 
         void AssignJson(IEnumerable<IAssignValue> values, int update);
 
