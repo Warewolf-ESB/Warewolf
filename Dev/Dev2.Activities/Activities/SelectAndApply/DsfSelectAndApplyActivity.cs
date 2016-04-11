@@ -9,6 +9,7 @@ using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.SelectAndApply
 {
@@ -35,6 +36,19 @@ namespace Dev2.Activities.SelectAndApply
         protected override void OnExecute(NativeActivityContext context)
         {
 
+        }
+
+        public override void UpdateDebugParentID(IDSFDataObject dataObject)
+        {
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);
+            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+        }
+
+
+        protected override void OnBeforeExecute(NativeActivityContext context)
+        {
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            _previousParentId = dataObject.ParentInstanceID;
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -94,7 +108,7 @@ namespace Dev2.Activities.SelectAndApply
 
                     //Push the new environment
                     dataObject.PushEnvironment(executionEnvironment);
-
+                    dataObject.ForEachNestingLevel++;
                     int upd = 0;
                     foreach (var warewolfAtom in atoms)
                     {
@@ -137,12 +151,9 @@ namespace Dev2.Activities.SelectAndApply
                 {
                     dataObject.ParentInstanceID = _previousParentId;
                     dataObject.IsDebugNested = false;
-                    // Handle Errors
+                    dataObject.ForEachNestingLevel--;
                     if (allErrors.HasErrors())
                     {
-                        dataObject.ParentInstanceID = _previousParentId;
-                        dataObject.IsDebugNested = false;
-                        // Handle Errors
                         if (allErrors.HasErrors())
                         {
                             DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
@@ -150,8 +161,6 @@ namespace Dev2.Activities.SelectAndApply
                             {
                                 dataObject.Environment.AddError(fetchError);
                             }
-
-                            dataObject.ParentInstanceID = _previousParentId;
                         }
                     }
                 }
