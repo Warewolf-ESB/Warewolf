@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
+    <Content Include="UIMapTemplate.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj">

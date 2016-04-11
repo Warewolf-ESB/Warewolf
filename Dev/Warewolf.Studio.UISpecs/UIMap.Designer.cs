@@ -420,16 +420,29 @@ namespace Warewolf.Studio.UISpecs
         }
         
         /// <summary>
-        /// Assert_Dropbox_Exists_OnDesignSurface - Use 'Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// Assert_Dropbox_Download_Exists_OnDesignSurface - Use 'Assert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void Assert_Dropbox_Exists_OnDesignSurface()
+        public void Assert_Dropbox_Download_Exists_OnDesignSurface()
         {
             #region Variable Declarations
             WpfCustom dropBox_DOWNLOAD = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_DOWNLOAD;
             #endregion
 
             // Verify that the 'Exists' property of 'DsfDropBoxFileActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues.DropBox_DOWNLOADExists, dropBox_DOWNLOAD.Exists, "Dropbox tool on the design surface does not exist");
+            Assert.AreEqual(this.Assert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues.DropBox_DOWNLOADExists, dropBox_DOWNLOAD.Exists, "Dropbox Download tool on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Dropbox_Upload_Exists_OnDesignSurface - Use 'Assert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Dropbox_Upload_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfCustom dropBox_UPLOAD = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropBox_UPLOAD;
+            #endregion
+
+            // Verify that the 'Exists' property of 'DsfDropBoxFileActivity' custom control equals 'True'
+            Assert.AreEqual(this.Assert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues.DropBox_UPLOADExists, dropBox_UPLOAD.Exists, "Dropbox Upload tool on the design surface does not exist");
         }
         
         /// <summary>
@@ -521,6 +534,19 @@ namespace Warewolf.Studio.UISpecs
 
             // Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
             Assert.AreEqual(this.Assert_Format_Number_Exists_OnDesignSurfaceExpectedValues.FormatNumberExists, formatNumber.Exists, "Format Number tool on the design surface does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Generic_Context_Menu_Exists - Use 'Assert_Generic_Context_Menu_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Generic_Context_Menu_Exists()
+        {
+            #region Variable Declarations
+            WpfMenu genericContextMenu = this.MainStudioWindow.GenericContextMenu;
+            #endregion
+
+            // Verify that the 'Exists' property of popup menu equals 'True'
+            Assert.AreEqual(this.Assert_Generic_Context_Menu_ExistsExpectedValues.GenericContextMenuExists, genericContextMenu.Exists, "Context Menu does not exist on design surface");
         }
         
         /// <summary>
@@ -4163,15 +4189,27 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public virtual Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues
+        public virtual Assert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues Assert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues
         {
             get
             {
-                if ((this.mAssert_Dropbox_Exists_OnDesignSurfaceExpectedValues == null))
+                if ((this.mAssert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues == null))
                 {
-                    this.mAssert_Dropbox_Exists_OnDesignSurfaceExpectedValues = new Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues();
+                    this.mAssert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues = new Assert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues();
                 }
-                return this.mAssert_Dropbox_Exists_OnDesignSurfaceExpectedValues;
+                return this.mAssert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues Assert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues = new Assert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues;
             }
         }
         
@@ -4256,6 +4294,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mAssert_Format_Number_Exists_OnDesignSurfaceExpectedValues = new Assert_Format_Number_Exists_OnDesignSurfaceExpectedValues();
                 }
                 return this.mAssert_Format_Number_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Generic_Context_Menu_ExistsExpectedValues Assert_Generic_Context_Menu_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Generic_Context_Menu_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Generic_Context_Menu_ExistsExpectedValues = new Assert_Generic_Context_Menu_ExistsExpectedValues();
+                }
+                return this.mAssert_Generic_Context_Menu_ExistsExpectedValues;
             }
         }
         
@@ -5137,7 +5187,9 @@ namespace Warewolf.Studio.UISpecs
         
         private Assert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues mAssert_DotNet_DLL_Connector_Exists_OnDesignSurfaceExpectedValues;
         
-        private Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues mAssert_Dropbox_Exists_OnDesignSurfaceExpectedValues;
+        private Assert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues mAssert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues mAssert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Email_Exists_OnDesignSurfaceExpectedValues mAssert_Email_Exists_OnDesignSurfaceExpectedValues;
         
@@ -5152,6 +5204,8 @@ namespace Warewolf.Studio.UISpecs
         private Assert_For_Each_Exists_OnDesignSurfaceExpectedValues mAssert_For_Each_Exists_OnDesignSurfaceExpectedValues;
         
         private Assert_Format_Number_Exists_OnDesignSurfaceExpectedValues mAssert_Format_Number_Exists_OnDesignSurfaceExpectedValues;
+        
+        private Assert_Generic_Context_Menu_ExistsExpectedValues mAssert_Generic_Context_Menu_ExistsExpectedValues;
         
         private Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues mAssert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurfaceExpectedValues;
         
@@ -5742,10 +5796,10 @@ namespace Warewolf.Studio.UISpecs
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Assert_Dropbox_Exists_OnDesignSurface'
+    /// Parameters to be passed into 'Assert_Dropbox_Download_Exists_OnDesignSurface'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_Dropbox_Exists_OnDesignSurfaceExpectedValues
+    public class Assert_Dropbox_Download_Exists_OnDesignSurfaceExpectedValues
     {
         
         #region Fields
@@ -5753,6 +5807,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfDropBoxFileActivity' custom control equals 'True'
         /// </summary>
         public bool DropBox_DOWNLOADExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Dropbox_Upload_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Dropbox_Upload_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'DsfDropBoxFileActivity' custom control equals 'True'
+        /// </summary>
+        public bool DropBox_UPLOADExists = true;
         #endregion
     }
     
@@ -5858,6 +5927,21 @@ namespace Warewolf.Studio.UISpecs
         /// Verify that the 'Exists' property of 'DsfNumberFormatActivity' custom control equals 'True'
         /// </summary>
         public bool FormatNumberExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Generic_Context_Menu_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Generic_Context_Menu_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of popup menu equals 'True'
+        /// </summary>
+        public bool GenericContextMenuExists = true;
         #endregion
     }
     
@@ -8343,6 +8427,23 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public WpfCustom DropBox_UPLOAD
+        {
+            get
+            {
+                if ((this.mDropBox_UPLOAD == null))
+                {
+                    this.mDropBox_UPLOAD = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mDropBox_UPLOAD.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DropBoxUploadDesigner";
+                    this.mDropBox_UPLOAD.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UPLOAD from Dropbox(DropBoxUploadDesigner)";
+                    this.mDropBox_UPLOAD.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mDropBox_UPLOAD;
+            }
+        }
+        
         public WpfCustom PathCreate
         {
             get
@@ -8716,6 +8817,8 @@ namespace Warewolf.Studio.UISpecs
         private XPath mXPath;
         
         private WpfCustom mDropBox_DOWNLOAD;
+        
+        private WpfCustom mDropBox_UPLOAD;
         
         private WpfCustom mPathCreate;
         
