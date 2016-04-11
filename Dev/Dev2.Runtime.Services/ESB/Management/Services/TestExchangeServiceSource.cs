@@ -38,9 +38,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var testMessage = new ExchangeTestMessage()
                 {
-                    To = src.EmailTo,
-                    CC = string.Empty,
-                    BCC = string.Empty,
+                    Tos = new List<string>{ src.EmailTo, },
+                    CCs = new List<string> { String.Empty},
+                    BcCs = new List<string> { String.Empty },
                     Subject = "Exchange Email Test",
                     Body = "Test Exchange email service source",
                 };

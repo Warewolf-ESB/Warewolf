@@ -732,6 +732,9 @@ namespace Dev2.Studio.ViewModels
                 case "EmailSource":
                     EditEmailSource(resourceModel);
                     break;
+                case "ExchangeSource":
+                    EditExchangeSource(resourceModel);
+                    break;
                 case "SharepointServerSource":
                     EditSharePointSource(resourceModel);
                     break;
@@ -859,6 +862,26 @@ namespace Dev2.Studio.ViewModels
                 EnableSsl = db.EnableSsl
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.EmailSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        void EditExchangeSource(IContextualResourceModel resourceModel)
+        {
+            var db = new ExchangeSource(resourceModel.WorkflowXaml.ToXElement());
+
+            var def = new ExchangeSourceDefinition()
+            {
+                AutoDiscoverUrl = db.AutoDiscoverUrl,
+                Id = db.ResourceID,
+                Password = db.Password,
+                UserName = db.UserName,
+                Timeout = db.Timeout,
+                ResourceName = db.ResourceName,
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
