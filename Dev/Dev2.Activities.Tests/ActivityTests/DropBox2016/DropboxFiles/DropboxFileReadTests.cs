@@ -1,47 +1,46 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.DropBox2016.DownloadActivity;
+using Dev2.Activities.DropBox2016.DropboxFiles;
 using Dev2.Activities.DropBox2016.Result;
 using Dropbox.Api;
-using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
+namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
     [TestClass]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class DropBoxDownloadTests
+    public class DropboxFileReadTests
     {
-        private Mock<IDropboxDownload> CreateDropboxDownloadMock()
+        private Mock<IDropboxFileRead> CreateDropboxReadMock()
         {
-            var mock = new Mock<IDropboxDownload>();
-            var successResult = new DropboxDownloadSuccessResult(It.IsAny<IDownloadResponse<FileMetadata>>());
+            var mock = new Mock<IDropboxFileRead>();
+            var successResult = new DropboxListFolderSuccesResult(It.IsAny<ListFolderResult>());
             mock.Setup(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()))
                  .Returns(successResult);
             return mock;
         }
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateDropBoxActivity_GivenIsNew_ShouldNotBeNull()
         {
             //---------------Set up test pack-------------------
-            var dropboxDownload = CreateDropboxDownloadMock().Object;
+            var dropboxFileRead = CreateDropboxReadMock().Object;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.IsNotNull(dropboxDownload);
+            Assert.IsNotNull(dropboxFileRead);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ExecuteTask_GivenDropBoxDownload_ShouldReturnFileMetadata()
+        public void ExecuteTask_GivendropboxFileRead_ShouldReturnFileMetadata()
         {
             //---------------Set up test pack-------------------
-            var downloadMock = CreateDropboxDownloadMock();
+            var downloadMock = CreateDropboxReadMock();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(downloadMock);
             //---------------Execute Test ----------------------
@@ -49,30 +48,30 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             downloadMock.Object.ExecuteTask(It.IsAny<DropboxClient>());
             downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
         public void CreateNewDropboxUpload_GivenMissingToPath_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
-            var dropBoxDownLoad = new DropBoxDownLoad("");
+            var dropboxFileRead = new DropboxFileRead(true, "", false, false);
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxDownLoad);
+            Assert.IsNotNull(dropboxFileRead);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateNewDropboxDownload_GivenMissingToPath_ShouldBeValid()
+        public void CreateNewdropboxFileRead_GivenMissingToPath_ShouldBeValid()
         {
             //---------------Set up test pack-------------------
-            var dropBoxDownLoad = new DropBoxDownLoad( "a.file");
+            var dropboxFileRead =  new DropboxFileRead(true, "a.file", false, false);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.IsNotNull(dropBoxDownLoad);
-        } 
+            Assert.IsNotNull(dropboxFileRead);
+        }
     }
 }
