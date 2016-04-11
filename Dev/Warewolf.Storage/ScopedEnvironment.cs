@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
+using WarewolfParserInterop;
 
 namespace Warewolf.Storage
 {
@@ -35,7 +36,12 @@ namespace Warewolf.Storage
         public void Assign(string exp, string value, int update)
         {
             update = Update(exp, update);
-            _inner.Assign(exp.Replace(_alias, _datasource), value, update);
+            _inner.Assign(ReplaceAliasWithDatasource(exp), value, update);
+        }
+
+        private string ReplaceAliasWithDatasource(string exp)
+        {
+            return exp.Replace(_alias, _datasource);
         }
 
         private int Update(string exp, int update)
@@ -47,28 +53,28 @@ namespace Warewolf.Storage
         public void AssignWithFrame(IAssignValue value, int update)
         {
             update = Update(value.Name, update);
-            _inner.AssignWithFrame(value, update);
+            _inner.AssignWithFrame(new AssignValue(value.Name.Replace(_alias, _datasource), value.Value.Replace(_alias, _datasource)), update);
         }
 
         public int GetLength(string recordSetName)
         {
-            return _inner.GetLength(recordSetName);
+            return _inner.GetLength(ReplaceAliasWithDatasource(recordSetName));
         }
 
         public int GetCount(string recordSetName)
         {
-            return _inner.GetCount(recordSetName);
+            return _inner.GetCount(ReplaceAliasWithDatasource(recordSetName));
         }
 
         public IList<int> EvalRecordSetIndexes(string recordsetName, int update)
         {
             update = Update(recordsetName, update);
-            return _inner.EvalRecordSetIndexes(recordsetName, update);
+            return _inner.EvalRecordSetIndexes(ReplaceAliasWithDatasource(recordsetName), update);
         }
 
         public bool HasRecordSet(string recordsetName)
         {
-            return _inner.HasRecordSet(recordsetName);
+            return _inner.HasRecordSet(ReplaceAliasWithDatasource(recordsetName));
         }
 
         public IList<string> EvalAsListOfStrings(string expression, int update)
@@ -86,7 +92,7 @@ namespace Warewolf.Storage
         public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
             update = Update(exp, update);
-            _inner.EvalAssignFromNestedLast(exp, recsetResult, update);
+            _inner.EvalAssignFromNestedLast(ReplaceAliasWithDatasource(exp), recsetResult, update);
         }
 
         public void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -109,7 +115,7 @@ namespace Warewolf.Storage
         public void SortRecordSet(string sortField, bool descOrder, int update)
         {
             update = Update(sortField, update);
-            _inner.SortRecordSet(sortField, descOrder, update);
+            _inner.SortRecordSet(ReplaceAliasWithDatasource(sortField), descOrder, update);
         }
 
         public string ToStar(string expression)
@@ -120,7 +126,7 @@ namespace Warewolf.Storage
         public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false)
         {
             update = Update(searchCriteria, update);
-            return _inner.EvalAsList(searchCriteria, update, throwsifnotexists);
+            return _inner.EvalAsList(ReplaceAliasWithDatasource(searchCriteria), update, throwsifnotexists);
         }
 
         public IEnumerable<int> EvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update)
@@ -157,7 +163,7 @@ namespace Warewolf.Storage
 
         public void AssignDataShape(string p)
         {
-            _inner.AssignDataShape(p);
+            _inner.AssignDataShape(ReplaceAliasWithDatasource(p));
         }
 
         public string FetchErrors()
