@@ -1714,7 +1714,7 @@ namespace Dev2
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
-            ValidatResourceFolder();
+            ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             // First call initializes instance
 #pragma warning disable 168
@@ -1767,7 +1767,7 @@ namespace Dev2
                                     }
                                     if (mustUpdate)
                                     {
-                                        UpdateXaml(chart, resource);
+                                        UpdateXaml(chart, resource);                                        
                                     }
                                 }
                             }
@@ -1777,6 +1777,14 @@ namespace Dev2
                             Dev2Logger.Debug(resource.FilePath + " is outdated or corrupted and threw exception on load: " + ex.Message, ex);
                         }
                     }
+                }
+            }
+            for (int index = resources.Count - 1; index >= 0; index--)
+            {
+                var resource = resources[index];
+                if (resource.ResourceType == ResourceType.DbService || resource.ResourceType == ResourceType.PluginService || resource.ResourceType == ResourceType.WebService)
+                {
+                    ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceType.ToString());
                 }
             }
         }
@@ -2600,14 +2608,17 @@ namespace Dev2
             if(!Directory.Exists(EnvironmentVariables.ResourcePath))
             {
                 DirectoryHelper.Copy(Path.Combine(EnvironmentVariables.ApplicationPath,"Resources"),EnvironmentVariables.ResourcePath,true);
+                DirectoryHelper.CleanUp(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources"));
             }
         }
 
-        static void ValidatResourceFolder()
+        static void ValidateResourceFolder()
         {
             var folder = EnvironmentVariables.ResourcePath;
-            if(!Directory.Exists(folder))
-            Directory.CreateDirectory(folder);
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
         }
 
         static void MigrateResources(string oldResourceFolder)
