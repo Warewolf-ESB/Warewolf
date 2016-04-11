@@ -39,7 +39,10 @@ Scenario: Connect Control Exists
 Scenario: Settings Ribbon Button
 	Given I 'Assert_Settings_Button_Exists_OnDesignSurface'
 	When I 'Click_Settings_Ribbon_Button'
-	#Then 'Assert_Settings_Tab_Exists'
+	Then I 'Assert_Settings_LoggingTab_Exists'
+	Then I 'Assert_Settings_ResourcePermissions_Exists'
+	Then I 'Assert_Settings_SecurityTab_Exists'
+	Then I 'Assert_Settings_ServerPermissions_Exists'
 	
 #@NeedsNewSettingsTab
 #Scenario: Click Close Settings Tab Button
@@ -49,23 +52,6 @@ Scenario: Settings Ribbon Button
 
 #Scenario: Click MessageBox No
 	#Given I 'Assert_Messagebox_No_Exists'
-	When I 'Click_MessageBox_No'
-	#Then I 'Assert_Tab_Closed'
-
-@ignore	
-Scenario: Scheduler Ribbon Button
-	Given I 'Assert_Scheduler_Button_Exists_OnDesignSurface'
-	When I 'Click_Scheduler_Ribbon_Button'
-	#Then 'Assert_Scheduler_Tab_Exists'
-		
-#@NeedsNewSchedulerTab
-#Scenario: Click Close Scheduler Tab Button
-	#Given I 'Assert_Close_Scheduler_Tab_Button_Exists'
-	#When I 'Click_Close_Scheduler_Tab_Button'
-	Then I 'Assert_MessageBox_No_Button_Exists'
-
-#Scenario: Click MessageBox No
-	#Given I 'Assert_Messagebox_No_Button_Exists'
 	When I 'Click_MessageBox_No'
 	#Then I 'Assert_Tab_Closed'
 	
@@ -230,15 +216,6 @@ Scenario: Scheduler Ribbon Button
 	Then I 'Assert_Scheduler_Usernamelabel_Exists'
 	Then I 'Assert_Scheduler_WorkflowInput_Exists'
 	Then I 'Assert_Scheduler_WorkflowLabel_Exists'
-	
-@ignore
-Scenario: Settings Ribbon Button
-	Given I 'Assert_Settings_Button_Exists_OnDesignSurface'
-	When I 'Click_Settings_Ribbon_Button'
-	Then I 'Assert_Settings_LoggingTab_Exists'
-	Then I 'Assert_Settings_ResourcePermissions_Exists'
-	Then I 'Assert_Settings_SecurityTab_Exists'
-	Then I 'Assert_Settings_ServerPermissions_Exists'
 	
 @ignore
 @NeedsBlankWorkflow
