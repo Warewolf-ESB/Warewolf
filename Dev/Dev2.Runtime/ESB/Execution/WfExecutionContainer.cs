@@ -28,7 +28,6 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.ESB.Execution
 {
