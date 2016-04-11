@@ -28,6 +28,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Utils;
 using Microsoft.CSharp.RuntimeBinder;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
 namespace Dev2.Activities.Designers2.SelectAndApply
 {
@@ -111,8 +112,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             {
                 return false;
             }
-            dynamic mi = ModelItem;
-            ModelItemCollection activitiesCollection = mi.Activities;
             var modelItemString = formats.FirstOrDefault(s => s.IndexOf("ModelItemsFormat", StringComparison.Ordinal) >= 0);
             if (!String.IsNullOrEmpty(modelItemString))
             {
