@@ -39,6 +39,10 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
@@ -74,6 +78,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -161,6 +166,7 @@
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
+    <Compile Include="Dropbox\IDropBoxFactory.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
@@ -389,6 +395,7 @@
     <Folder Include="Studio\Core\DataList\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
