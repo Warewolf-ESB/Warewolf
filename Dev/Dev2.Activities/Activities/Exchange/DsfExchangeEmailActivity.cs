@@ -36,8 +36,6 @@ namespace Dev2.Activities.Exchange
             To = string.Empty;
             Cc = string.Empty;
             Bcc = string.Empty;
-            Password = string.Empty;
-            Priority = enMailPriorityEnum.Normal;
             Subject = string.Empty;
             Attachments = string.Empty;
             Body = string.Empty;
@@ -47,7 +45,6 @@ namespace Dev2.Activities.Exchange
         #region Fields
 
         IDSFDataObject _dataObject;
-        string _password;
         private IExchangeServiceFactory _exchangeServiceFactory;
         private ExchangeService _exchangeService;
 
@@ -61,39 +58,10 @@ namespace Dev2.Activities.Exchange
         public IExchangeSource SavedSource { get; set; }
 
 
-        [FindMissing]
-        public string Password
-        {
-            get { return _password; }
-            set
-            {
-                if (DataListUtil.ShouldEncrypt(value))
-                {
-                    try
-                    {
-                        _password = DpapiWrapper.Encrypt(value);
-                    }
-                    catch (Exception)
-                    {
-                        _password = value;
-                    }
-                }
-                else
-                {
-                    _password = value;
-                }
-            }
-        }
+        
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         // ReSharper disable once MemberCanBePrivate.Global
-        protected string DecryptedPassword
-        {
-            get
-            {
-                return DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
-            }
-        }
 
         [FindMissing]
         public string To { get; set; }
@@ -102,8 +70,6 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public string Bcc { get; set; }
 
-        // ReSharper disable MemberCanBePrivate.Global
-        public enMailPriorityEnum Priority { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
         [FindMissing]
         public string Subject { get; set; }
@@ -112,8 +78,6 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public string Body { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        public bool IsHtml { get; set; }
 
         /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
@@ -175,9 +139,6 @@ namespace Dev2.Activities.Exchange
                 }
                 var colItr = new WarewolfListIterator();
 
-                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword, update));
-                colItr.AddVariableToIterateOn(passwordItr);
-
                 var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));
                 colItr.AddVariableToIterateOn(toItr);
 
@@ -198,7 +159,7 @@ namespace Dev2.Activities.Exchange
 
                 if (!allErrors.HasErrors())
                 {
-                    while (colItr.HasMoreData())
+                    if (colItr.HasMoreData())
                     {
                         ErrorResultTO errors;
                         var result = SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
@@ -323,7 +284,7 @@ namespace Dev2.Activities.Exchange
             {
                 EmailSender = new ExchangeEmailSender(runtimeSource);
 
-                EmailSender.Send(_exchangeService,mailMessage);
+                //EmailSender.Send(_exchangeService,mailMessage);
 
                 result = "Success";
             }
@@ -409,10 +370,6 @@ namespace Dev2.Activities.Exchange
             {
                 foreach (Tuple<string, string> t in updates)
                 {
-                    if (t.Item1 == Password)
-                    {
-                        Password = t.Item2;
-                    }
                     if (t.Item1 == To)
                     {
                         To = t.Item2;
@@ -482,7 +439,7 @@ namespace Dev2.Activities.Exchange
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return GetForEachItems(Password, To, Cc, Bcc, Subject, Attachments, Body);
+            return GetForEachItems(To, Cc, Bcc, Subject, Attachments, Body);
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()

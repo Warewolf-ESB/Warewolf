@@ -50,9 +50,8 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
-        readonly IAsyncWorker _asyncWorker;
+        public IAsyncWorker _asyncWorker;
         private ISourceToolRegion<IExchangeSource> _sourceRegion;
-        public ObservableCollection<enMailPriorityEnum> Priorities { get; private set; }
 
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public RelayCommand TestEmailAccountCommand { get; private set; }
@@ -61,6 +60,15 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public ExchangeEmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
+        }
+
+        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IExchangeServiceModel model,IEventAggregator eventPublisher) : base(modelItem)
+        {
+            TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
+            ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
+            _eventPublisher = eventPublisher;
+            Model = model;
+            SetupCommonProperties();
         }
 
         public ExchangeEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
@@ -76,8 +84,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
             AddTitleBarLargeToggle();
 
-            Priorities = new ObservableCollection<enMailPriorityEnum> { enMailPriorityEnum.High, enMailPriorityEnum.Normal, enMailPriorityEnum.Low };
-            TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount());
+            TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
@@ -142,7 +149,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             {
                 _statusMessage = value;
 
-                OnPropertyChanged("ErrorMessage");
+                OnPropertyChanged("StatusMessage");
             }
         }
 
@@ -219,13 +226,12 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        void TestEmailAccount()
+        public void TestEmailAccount()
         {
             Testing = true;
             StatusMessage = string.Empty;
 
-            var testEmailAccount = GetTestEmailAccount();
-            if (string.IsNullOrEmpty(testEmailAccount))
+            if (string.IsNullOrEmpty(To))
             {
                 Testing = false;
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please supply a To address in order to Test." } };
@@ -237,8 +243,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = "Please select a Source to Test." } };
                 return;
             }
-            CanTestEmailAccount = false;
-
+        
             var testSource = new ExchangeSource()
             {
                 AutoDiscoverUrl = SourceRegion.SelectedSource.AutoDiscoverUrl,
@@ -248,9 +253,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
             var testMessage = new ExchangeTestMessage()
             {
-                To = testEmailAccount,
-                CC = Cc,
-                BCC = Bcc,
                 Body = Body,
                 Subject = Subject,
             };
@@ -259,6 +261,24 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             {
                 var attachments = Attachments.Split(';');
                 testMessage.Attachments.AddRange(attachments);
+            }
+
+            if (!string.IsNullOrEmpty(To))
+            {
+                var tos = To.Split(';');
+                testMessage.Tos.AddRange(tos);
+            }
+
+            if (!string.IsNullOrEmpty(Cc))
+            {
+                var ccs = Cc.Split(';');
+                testMessage.CCs.AddRange(ccs);
+            }
+
+            if (!string.IsNullOrEmpty(Bcc))
+            {
+                var bccs = Bcc.Split(';');
+                testMessage.BcCs.AddRange(bccs);
             }
 
             SendEmail(testSource, testMessage);
@@ -272,26 +292,18 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 try
                 {
                     testSource.Send(testSource, testMessage);
-                    StatusMessage = "Send Successful";
+                    StatusMessage = "Passed";
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    StatusMessage = "Email sending failed";
+                    var s = ex;
+                    StatusMessage = "One or more errors occured";
                 }
                 finally
                 {
                     Testing = false;
                 }
             });
-        }
-
-        string GetTestEmailAccount()
-        {
-            var addresses = new List<string>();
-            addresses.AddRange(To.Split(';'));
-            addresses.AddRange(Cc.Split(';'));
-            addresses.AddRange(Bcc.Split(';'));
-            return addresses.FirstOrDefault();
         }
 
         protected virtual IWebRequestInvoker CreateWebRequestInvoker()

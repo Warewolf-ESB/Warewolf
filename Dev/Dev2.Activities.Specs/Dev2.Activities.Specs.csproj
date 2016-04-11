@@ -224,6 +224,12 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
+    <Compile Include="Toolbox\Exchange\Email\ExchangeEmailSteps.cs" />
+    <Compile Include="Toolbox\Exchange\Email\ExchangeEmail.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExchangeEmail.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
@@ -628,6 +634,10 @@
     <None Include="Toolbox\Data\Replace\Replace.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Exchange\Email\ExchangeEmail.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExchangeEmail.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Copy\Copy.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

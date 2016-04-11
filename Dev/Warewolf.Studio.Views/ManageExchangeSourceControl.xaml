@@ -65,7 +65,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="{Binding AutoDiscoverLabel}" Margin="{StaticResource ControlBorderTop}"/>
+                    <TextBlock x:Name="AutoDiscoverTextBox" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="{Binding AutoDiscoverLabel}" Margin="{StaticResource ControlBorderTop}"/>
                     <TextBox x:Name="AutoDiscoverUrlTxtBox" 
                              Grid.Row="0" 
                              Grid.Column="1" 
@@ -114,7 +114,7 @@
                 </Grid>
                 <Grid Grid.Row="2" Visibility="{Binding Path=ShowEmailTest,Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ElementBorderTop}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding ElementName=EnableSsl, Path=ActualWidth}" />
+                        <ColumnDefinition Width="{Binding ElementName=AutoDiscoverTextBox, Path=ActualWidth}" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>

@@ -109,8 +109,31 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Subject = testMessage.Subject
             };
 
-            emailMessage.ToRecipients.Add(testMessage.To);
 
+            foreach (var to in testMessage.Tos)
+            {
+                if (!string.IsNullOrEmpty(to))
+                {
+                    emailMessage.ToRecipients.Add(to);
+                }
+            }
+
+            foreach (var cC in testMessage.CCs)
+            {
+                if (!string.IsNullOrEmpty(cC))
+                {
+                    emailMessage.CcRecipients.Add(cC);
+                }
+            }
+
+            foreach (var bcC in testMessage.BcCs)
+            {
+                if (!string.IsNullOrEmpty(bcC))
+                {
+                    emailMessage.BccRecipients.Add(bcC);
+                }
+            }
+            
             foreach (var att in testMessage.Attachments)
             {
                 if (!string.IsNullOrEmpty(att))
@@ -119,16 +142,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 }
             }
 
-            if (!string.IsNullOrEmpty(testMessage.CC))
-            {
-                emailMessage.CcRecipients.Add(testMessage.CC);
-            }
-            if (!string.IsNullOrEmpty(testMessage.BCC))
-            {
-                emailMessage.BccRecipients.Add(testMessage.BCC);
-            }
-
-           _emailSender.Send(_exchangeService,emailMessage);
+            _emailSender.Send(_exchangeService,emailMessage);
         }
         #endregion
 
@@ -170,11 +184,14 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         public ExchangeTestMessage()
         {
+            Tos = new List<string>();
+            CCs = new List<string>();
+            BcCs = new List<string>();
             Attachments = new List<string>();
         }
-        public string To { get; set; }
-        public string CC { get; set; }
-        public string BCC { get; set; }
+        public List<string> Tos { get; set; }
+        public List<string> CCs { get; set; }
+        public List<string> BcCs { get; set; }
         public List<string> Attachments { get; set; }
         public string Body { get; set; }
         public string Subject { get; set; }

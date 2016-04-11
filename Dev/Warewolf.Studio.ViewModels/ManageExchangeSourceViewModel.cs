@@ -100,14 +100,16 @@ namespace Warewolf.Studio.ViewModels
             UserName = emailServiceSource.UserName;
             Password = emailServiceSource.Password;
             Timeout = emailServiceSource.Timeout;
+
         }
 
         void SetupHeaderTextFromExisting()
         {
             if (_emailServiceSource != null)
             {
-                HeaderText = (_emailServiceSource.Name ?? ResourceName).Trim();
-                Header = (_emailServiceSource.Name ?? ResourceName).Trim();
+                var source = (ExchangeSourceDefinition) _emailServiceSource;
+                HeaderText = !string.IsNullOrEmpty(source.ResourceName) ? source.ResourceName : source.Name;
+                Header = !string.IsNullOrEmpty(source.ResourceName) ? source.ResourceName : source.Name;
             }
         }
 
