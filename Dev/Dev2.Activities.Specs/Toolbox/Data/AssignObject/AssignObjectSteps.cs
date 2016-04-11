@@ -86,6 +86,38 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             //}
         }
 
+        [Given(@"I assign the json object ""(.*)"" to a json object ""(.*)""")]
+        public void GivenIAssignTheJsonObjectToAJsonObject(string value, string variable)
+        {
+            value = value.Replace('"', ' ').Trim();
+
+            if (value.StartsWith("="))
+            {
+                value = value.Replace("=", "");
+                value = string.Format("!~calculation~!{0}!~~calculation~!", value);
+            }
+
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            List<ActivityDTO> fieldCollection;
+            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            if (fieldCollection == null)
+            {
+                fieldCollection = new List<ActivityDTO>();
+                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+            }
+
+            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+        }
+
         protected void BuildDataList()
         {
             BuildShapeAndTestData();
