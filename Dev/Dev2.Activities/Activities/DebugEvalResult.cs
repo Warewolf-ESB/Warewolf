@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
 using Dev2.Data.Util;
