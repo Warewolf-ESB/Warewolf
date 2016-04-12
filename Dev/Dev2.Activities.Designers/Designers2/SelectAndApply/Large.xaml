@@ -88,7 +88,7 @@
                                 Grid.Row="1"
                                 FilterType="All"
                                 DefaultText="[[Alias]]"
-                                WrapInBrackets="False"
+                                WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.SelectAndApplyAliasToolTip}"
