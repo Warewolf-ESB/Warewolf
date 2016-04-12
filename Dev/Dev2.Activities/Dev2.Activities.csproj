@@ -171,10 +171,10 @@
     <Compile Include="Activities\DropBox2016\DownloadActivity\DsfDropBoxDownloadActivity.cs" />
     <Compile Include="Activities\DropBox2016\DownloadActivity\IDropboxDownload.cs" />
     <Compile Include="Activities\DropBox2016\DropboxFileNameValidator.cs" />
-    <Compile Include="Activities\DropBox2016\DropboxFiles\DsfDropboxFileListActivity.cs" />
-    <Compile Include="Activities\DropBox2016\DropboxFiles\DropboxFileRead.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxFileActivity\DsfDropboxFileListActivity.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxFileActivity\DropboxFileRead.cs" />
     <Compile Include="Activities\DropBox2016\Result\DropboxListFolderSuccesResult.cs" />
-    <Compile Include="Activities\DropBox2016\DropboxFiles\IDropboxFileRead.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxFileActivity\IDropboxFileRead.cs" />
     <Compile Include="Activities\DropBox2016\DropboxSoureFileValidator.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxResult.cs" />

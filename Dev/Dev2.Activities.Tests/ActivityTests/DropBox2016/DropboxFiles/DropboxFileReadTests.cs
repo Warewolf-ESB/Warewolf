@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.DropBox2016.DropboxFiles;
+using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dropbox.Api;
 using Dropbox.Api.Files;

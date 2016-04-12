@@ -6,7 +6,7 @@ using Dev2.Common;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 
-namespace Dev2.Activities.DropBox2016.DropboxFiles
+namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     public class DropboxFileRead : IDropboxFileRead
     {

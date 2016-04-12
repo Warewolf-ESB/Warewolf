@@ -9,11 +9,10 @@ using Dev2.Data.ServiceModel;
 using Dev2.Factories;
 using Dev2.Util;
 using Dropbox.Api;
-using Dropbox.Api.Files;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 
-namespace Dev2.Activities.DropBox2016.DropboxFiles
+namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     //To Use this class to get all dropbox files and folders
     [ToolDescriptorInfo("DropBoxLogo", "Dropbox Files", ToolType.Native, "8999E59A-38A3-43BB-A98F-5080D1C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
