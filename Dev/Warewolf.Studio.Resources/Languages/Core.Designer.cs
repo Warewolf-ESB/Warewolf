@@ -151,6 +151,34 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any json object and/or data goes in here.&lt;br /&gt;
+        ///To assign a json object to a json object, put the value in here.&lt;br /&gt;
+        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]&lt;br /&gt;
+        ///&lt;br /&gt;
+        ///Allowed:&lt;br /&gt;
+        ///Data
+        ///.
+        /// </summary>
+        public static string AssignObjectHelpNewValue {
+            get {
+                return ResourceManager.GetString("AssignObjectHelpNewValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only json objects go in here.&lt;br /&gt;
+        ///To assign a value to a json object, put the json object here.&lt;br /&gt;
+        ///&lt;br /&gt;
+        ///Allowed:
+        ///.
+        /// </summary>
+        public static string AssignObjectHelpVariable {
+            get {
+                return ResourceManager.GetString("AssignObjectHelpVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authentication Type:.
         /// </summary>
         public static string AuthenticationTypeLabel {
