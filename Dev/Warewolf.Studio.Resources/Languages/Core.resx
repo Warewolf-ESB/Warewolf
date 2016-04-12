@@ -3872,4 +3872,20 @@ Data
   <data name="SelectAndApplyAliasHelpText" xml:space="preserve">
     <value>SelectAndApplyAliasHelpText</value>
   </data>
+  <data name="AssignObjectHelpVariable" xml:space="preserve">
+    <value>Only json objects go in here.&lt;br /&gt;
+To assign a value to a json object, put the json object here.&lt;br /&gt;
+&lt;br /&gt;
+Allowed:
+</value>
+  </data>
+  <data name="AssignObjectHelpNewValue" xml:space="preserve">
+    <value>Any json object and/or data goes in here.&lt;br /&gt;
+To assign a json object to a json object, put the value in here.&lt;br /&gt;
+If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]&lt;br /&gt;
+&lt;br /&gt;
+Allowed:&lt;br /&gt;
+Data
+</value>
+  </data>
 </root>

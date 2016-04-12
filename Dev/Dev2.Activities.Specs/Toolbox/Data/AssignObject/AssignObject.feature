@@ -210,7 +210,60 @@ Scenario: Assign multiple json variables to a json object with a literal
     | 2 | [[Person.SecondPart]] = Smith		|
     | 3 | [[Person.FullName]]  = BobSmith	|
 
+Scenario: Assign values to a json object array
+	Given I assign the value "1" to a json object "[[Person.Score(1)]]"
+	And I assign the value "2" to a json object "[[Person.Score(2)]]"
+	And I assign the value "3" to a json object "[[Person.Score(3)]]"
+	When the assign tool is executed
+	Then the json object "[[Person.Score(1)]]" equals "1"
+	Then the json object "[[Person.Score(2)]]" equals "2"
+	Then the json object "[[Person.Score(3)]]" equals "3"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable						| New Value	|
+	| 1 | [[Person.Score(1)]] =			| 1			|
+	| 2 | [[Person.Score(2)]] =			| 2			|
+	| 3 | [[Person.Score(3)]] =			| 3			|
+	And the debug output as
+    | # |							|
+    | 1 | [[Person.Score(1)]] = 1	|
+    | 2 | [[Person.Score(2)]] = 2	|
+    | 3 | [[Person.Score(3)]]  = 3	|
+
+Scenario: Assign json variable with a calculate expression
+	Given I assign the value "SUM(1,2,3)+1" to a json object "[[Person.Score]]"
+	When the assign tool is executed
+	Then the json object "[[Person.Score]]" equals "7"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable				| New Value     |
+	| 1 | [[Person.Score]]  =	| SUM(1,2,3)+1  |
+	And the debug output as
+    | # |									|
+    | 1 | [[Person.Score]] = SUM(1,2,3)+1	|
+
+Scenario: Assign json variable with a calculate expression using json objects
+	Given I assign the value "1" to a json object "[[Person.Score(1)]]"
+	And I assign the value "2" to a json object "[[Person.Score(2)]]"
+	And I assign the value "3" to a json object "[[Person.Score(3)]]"
+	And I assign the value "SUM(Person.Score(*))+1" to a json object "[[Person.TotalScore]]"
+	When the assign tool is executed
+	Then the json object "[[Person.TotalScore]]" equals "7"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable						| New Value					|
+	| 1 | [[Person.Score(1)]] =			| 1							|
+	| 2 | [[Person.Score(2)]] =			| 2							|
+	| 3 | [[Person.Score(3)]] =			| 3							|
+	| 4 | [[Person.TotalScore]] =		| SUM(Person.Score(*))+1	|
+	And the debug output as
+    | # |									|
+    | 1 | [[Person.Score(1)]] = 1			|
+    | 2 | [[Person.Score(2)]] = 2			|
+    | 3 | [[Person.Score(3)]]  = 3			|
+	| 3 | [[Person.TotalScore]]  = 7		|
+
 # TODO
-# do we want calculate , v2?
+# calculate , v2?
 # add to the seq, foreach specs, adding this tool
 # debug output -> json 

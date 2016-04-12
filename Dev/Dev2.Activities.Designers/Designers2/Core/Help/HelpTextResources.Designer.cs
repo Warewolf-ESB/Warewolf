@@ -98,6 +98,33 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any json object and/or data goes in here.
+        ///To assign a value to a json object, put the value in here.
+        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]
+        ///
+        ///Allowed:
+        ///Data.
+        /// </summary>
+        public static string AssignObjectHelpNewValue {
+            get {
+                return ResourceManager.GetString("AssignObjectHelpNewValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only json objects go in here.
+        ///To assign a value to a json object, put the json object here.
+        ///
+        ///Allowed:
+        ///.
+        /// </summary>
+        public static string AssignObjectHelpVariable {
+            get {
+                return ResourceManager.GetString("AssignObjectHelpVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To assign a value to a variable, put the value in here.
         ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
