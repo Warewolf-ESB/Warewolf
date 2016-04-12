@@ -29,6 +29,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
+   
     [Binding]
     public class ForEachSteps : RecordSetBases
     {
