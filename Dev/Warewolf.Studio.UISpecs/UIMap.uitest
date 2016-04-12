@@ -7888,9 +7888,9 @@
                         <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                       </WindowTitles>
                       <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                         <PropertyCondition Name="ControlType">Group</PropertyCondition>
-                        <PropertyCondition Name="Name">Connectors</PropertyCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="Name">Storage</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
