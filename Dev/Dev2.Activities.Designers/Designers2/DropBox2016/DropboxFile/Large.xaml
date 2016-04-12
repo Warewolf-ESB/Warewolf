@@ -24,7 +24,7 @@
                                MaxHeight="260"
                                mc:Ignorable="d"
                                d:DesignWidth="340"  
-                               d:DataContext="{d:DesignInstance dropboxFile:DropBoxFileListViewModel}">
+                               d:DataContext="{d:DesignInstance dropboxFile:DropBoxFileListDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -116,6 +116,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!--DropBox File Location-->
             <TextBlock x:Name="DropboxFileTextBlock" Grid.Column="0" Grid.Row="0" Text="Dropbox File" />
@@ -159,11 +160,14 @@
 
             <TextBlock Grid.Column="0" Grid.Row="4" Text="Deleted Files" Margin="{StaticResource ActivityBorderTop}"/>
             <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeDeleted}">Include deleted files</CheckBox>
+
+            <TextBlock Grid.Column="0" Grid.Row="5" Text="Recursive" Margin="{StaticResource ActivityBorderTop}"/>
+            <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IsRecursive}">Load Sub folders</CheckBox>
             <!--Result Section-->
-            <TextBlock Grid.Column="0" Grid.Row="5" Text="Result" Margin="{StaticResource ControlBorderTop}" Height="23" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Column="0" Grid.Row="6" Text="Result" Margin="{StaticResource ControlBorderTop}" Height="23" VerticalAlignment="Bottom"/>
             <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
                                 Grid.Column="1"
-                                Grid.Row="5"
+                                Grid.Row="6"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
                                 FilterType="All"
@@ -184,7 +188,7 @@
             </ui:IntellisenseTextBox>
         </Grid>
         <errors:OnError Grid.Column="0"
-						Grid.Row="4"
+						Grid.Row="7"
                         Margin="{StaticResource ControlBorderTop}"
 						Grid.ColumnSpan="2" />
 
