@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        public IList<string> Errors { get; }
+        public IList<string> Errors { get; set; }
         private bool _isInputsEmptyRows;
         private readonly ModelItem _modelItem;
         private IList<IServiceInput> _inputs;

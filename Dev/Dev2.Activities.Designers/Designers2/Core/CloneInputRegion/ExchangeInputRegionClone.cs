@@ -13,7 +13,7 @@ namespace Dev2.Activities.Designers2.Core.CloneInputRegion
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        public IList<string> Errors { get; }
+        public IList<string> Errors { get; set; }
         public IList<IServiceInput> Inputs { get; set; }
         public IToolRegion CloneRegion()
         {
