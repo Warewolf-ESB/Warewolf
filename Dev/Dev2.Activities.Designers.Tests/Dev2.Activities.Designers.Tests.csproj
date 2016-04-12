@@ -131,6 +131,7 @@
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
     <Compile Include="DropBox2016\Download\DropBoxUploadViewModelTest.cs" />
+    <Compile Include="DropBox2016\DropboxFiles\DropBoxUploadViewModelTest.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
