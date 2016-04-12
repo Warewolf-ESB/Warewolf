@@ -283,13 +283,13 @@
     <Compile Include="Designers2\DropBox2016\Download\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml.cs">
+      <DependentUpon>DropBoxFileListDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListViewModel.cs" />
     <Compile Include="Designers2\DropBox2016\DropboxFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DropBox2016\DropboxFile\ReadFolderDesigner.xaml.cs">
-      <DependentUpon>ReadFolderDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DropBox2016\DropboxFile\DropboxListFileDesignerViewModel.cs" />
     <Compile Include="Designers2\DropBox2016\DropboxFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -1105,11 +1105,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\DropBox2016\DropboxFile\Large.xaml">
+    <Page Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\DropBox2016\DropboxFile\ReadFolderDesigner.xaml">
+    <Page Include="Designers2\DropBox2016\DropboxFile\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

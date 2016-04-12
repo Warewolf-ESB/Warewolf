@@ -35,13 +35,20 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         [Inputs("Include Deleted files")]
         [FindMissing]
         public bool IncludeDeleted { get; set; }
-        [Inputs("Include Folders")]
-        [FindMissing]
-        public virtual bool IncludeFolders { get; set; }
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
-        
+
+        [Inputs("Files Only")]
+        [FindMissing]
+        public bool IsFilesSelected { get; set; }
+        [Inputs("Folders Only")]
+        [FindMissing]
+        public bool IsFoldersSelected { get; set; }
+        [Inputs("Files Folders Only")]
+        [FindMissing]
+        public bool IsFilesAndFoldersSelected { get; set; }
+
         public List<string> DeletedFiles { get; set; }
         public List<string> FilesAndFolders { get; set; }
         public override string DisplayName { get; set; }
@@ -54,6 +61,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             Files = new List<string>();
             Folders = new List<string>();
             DeletedFiles = new List<string>();
+            IsFilesSelected = true;
         }
 
         public DsfDropboxFileListActivity()
