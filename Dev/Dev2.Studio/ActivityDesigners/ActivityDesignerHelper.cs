@@ -73,6 +73,7 @@ using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using ReadFolderDesigner = Dev2.Activities.Designers2.DropBox2016.DropboxFile.ReadFolderDesigner;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
