@@ -2716,7 +2716,7 @@ namespace Dev2
                         _owinServer = WebServerStartup.Start(_endpoints);
                         EnvironmentVariables.IsServerOnline = true; // flag server as active
                         WriteLine("\r\nWeb Server Started");
-                        foreach(var endpoint in _endpoints)
+                        foreach (var endpoint in _endpoints)
                         {
                             WriteLine(string.Format("Web server listening at {0}", endpoint.Url));
                         }
