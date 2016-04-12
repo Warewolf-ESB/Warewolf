@@ -685,11 +685,11 @@ namespace Warewolf.Studio.UISpecs
         public void Assert_New_Workflow_Context_Menu_Exists()
         {
             #region Variable Declarations
-            WpfCustom multiAssign = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+            WpfMenu genericContextMenu = this.MainStudioWindow.GenericContextMenu;
             #endregion
 
-            // Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
-            Assert.AreEqual(this.Assert_New_Workflow_Context_Menu_ExistsExpectedValues.MultiAssignExists, multiAssign.Exists, "Assign tool large view on the design surface does not exist");
+            // Verify that the 'Exists' property of popup menu equals 'True'
+            Assert.AreEqual(this.Assert_New_Workflow_Context_Menu_ExistsExpectedValues.GenericContextMenuExists, genericContextMenu.Exists, "Assign tool large view on the design surface does not exist");
         }
         
         /// <summary>
@@ -6104,9 +6104,9 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         /// <summary>
-        /// Verify that the 'Exists' property of 'DsfMultiAssignActivity' custom control equals 'True'
+        /// Verify that the 'Exists' property of popup menu equals 'True'
         /// </summary>
-        public bool MultiAssignExists = true;
+        public bool GenericContextMenuExists = true;
         #endregion
     }
     
