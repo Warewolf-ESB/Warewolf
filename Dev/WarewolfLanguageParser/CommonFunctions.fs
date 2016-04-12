@@ -28,7 +28,7 @@ let getRecordSetPositionsAsInts (recset:WarewolfRecordset) =
     let positions = recset.Data.[PositionColumn];
     Seq.map AtomToInt positions |> Seq.sort
 
-let parseAtom (lang:string) =
+let parseAtom (lang:string) =  
     let at =  tryParseAtom lang
     match at with
         | Int _ -> at 
