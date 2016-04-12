@@ -182,7 +182,7 @@ namespace Warewolf.Storage
         public string EvalToExpression(string exp, int update)
         {
   
-            return _inner.EvalToExpression(UpdateDataSourceWithIterativeValue(_datasource, update, exp), 0);
+            return _inner.EvalToExpression(exp, 0);
         }
 
         public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
