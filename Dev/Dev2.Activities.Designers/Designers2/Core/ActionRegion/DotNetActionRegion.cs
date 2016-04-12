@@ -33,6 +33,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isActionEnabled;
         private bool _isRefreshing;
         private double _labelWidth;
+        private IList<string> _errors;
 
         public DotNetActionRegion()
         {
@@ -41,36 +42,45 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
         {
-            LabelWidth = 70;
-            ToolRegionName = "DotNetActionRegion";
-            _modelItem = modelItem;
-            _model = model;
-            _source = source;
-            _namespace = namespaceItem;
-            _namespace.SomethingChanged += SourceOnSomethingChanged;
-            Dependants = new List<IToolRegion>();
-            IsRefreshing = false;
-            if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
+            try
             {
-                Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-            }
-            if (Method != null && Actions != null)
-            {
-                IsActionEnabled = true;
-                SelectedAction = Actions.FirstOrDefault(action => action.FullName == Method.FullName);
-            }
-            RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
-            {
-                IsRefreshing = true;
-                if(_source.SelectedSource != null)
+                Errors = new List<string>();
+
+                LabelWidth = 70;
+                ToolRegionName = "DotNetActionRegion";
+                _modelItem = modelItem;
+                _model = model;
+                _source = source;
+                _namespace = namespaceItem;
+                _namespace.SomethingChanged += SourceOnSomethingChanged;
+                Dependants = new List<IToolRegion>();
+                IsRefreshing = false;
+                if (_source.SelectedSource != null && _namespace.SelectedNamespace != null)
                 {
                     Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 }
-                IsRefreshing = false;
-            }, CanRefresh);
+                if (Method != null && Actions != null)
+                {
+                    IsActionEnabled = true;
+                    SelectedAction = Actions.FirstOrDefault(action => action.Method == Method.Method);
+                }
+                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
+                {
+                    IsRefreshing = true;
+                    if (_source.SelectedSource != null)
+                    {
+                        Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                    }
+                    IsRefreshing = false;
+                }, CanRefresh);
 
-            IsEnabled = true;
-            _modelItem = modelItem;
+                IsEnabled = true;
+                _modelItem = modelItem;
+            }
+            catch (Exception e)
+            {
+                Errors.Add(e.Message);
+            }
         }
 
         IPluginAction Method
@@ -100,10 +110,23 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            UpdateBasedOnNamespace();
-            // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsEnabled");
+            try
+            {
+                Errors.Clear();
+
+                // ReSharper disable once ExplicitCallerInfoArgument
+                UpdateBasedOnNamespace();
+                // ReSharper disable once ExplicitCallerInfoArgument
+                OnPropertyChanged(@"IsEnabled");
+            }
+            catch(Exception e)
+            {
+                Errors.Add(e.Message);
+            }
+            finally
+            {
+                OnSomethingChanged(this);
+            }
         }
 
         private void UpdateBasedOnNamespace()
@@ -119,7 +142,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            return SelectedAction != null;
+            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
+            return _source.SelectedSource != null && _namespace.SelectedNamespace != null;
         }
 
         public IPluginAction SelectedAction
@@ -133,7 +157,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Method))
-                        StorePreviousValues(_selectedAction.GetHashCodeBySource());
+                        StorePreviousValues(_selectedAction.GetIdentifier());
                 }
                 if(Dependants != null)
                 {
@@ -297,7 +321,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void RestorePreviousValues(IPluginAction value)
         {
-            var toRestore = _previousRegions[value.GetHashCodeBySource()];
+            var toRestore = _previousRegions[value.GetIdentifier()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
             {
                 toolRegion.Item1.RestoreRegion(toolRegion.Item2);
@@ -306,14 +330,19 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private bool IsAPreviousValue(IPluginAction value)
         {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
+            return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
         }
 
         public IList<string> Errors
         {
             get
             {
-                return SelectedAction == null ? new List<string> { "Invalid Action Selected" } : new List<string>();
+                return _errors;
+            }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged();
             }
         }
 

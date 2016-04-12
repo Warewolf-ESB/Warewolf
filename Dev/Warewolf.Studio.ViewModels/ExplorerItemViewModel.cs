@@ -165,6 +165,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return;
                 }
+                if (ResourceType == ResourceType.Folder)
+                {
+                    IsExpanded = !IsExpanded;
+                }
                 shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
                 shellViewModel.SetActiveServer(Server);
                 shellViewModel.OpenResource(ResourceId, Server);

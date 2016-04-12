@@ -183,7 +183,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             List<int> primitives = new List<int> { 1, 2, 3 };
             IEnumerable<IPath> paths = pocoMapper.Map(primitives);
 
-            Assert.IsTrue(paths.Any(p => p.ActualPath == PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
+            Assert.IsTrue(paths.Any(p => p.ActualPath == "Capacity" || p.ActualPath == "Count"));
         }
 
         [TestMethod]
@@ -260,6 +260,17 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             IEnumerable<IPath> paths = pocoMapper.Map(testData);
 
             Assert.IsTrue(paths.Any(p => p.ActualPath == "EnumerableData().NestedData.Name"));
+        }
+
+        [TestMethod]
+        public void MapEnumerable_Expected_PathToEnumerable()
+        {
+            PocoMapper pocoMapper = new PocoMapper();
+            PocoTestData testData = GivenWithParallelAndNestedEnumerables();
+
+            IEnumerable<IPath> paths = pocoMapper.Map(testData.EnumerableData);
+
+            Assert.IsTrue(paths.Any(p => p.ActualPath == "UnnamedArray().Name"));
         }
 
         [TestMethod]

@@ -85,10 +85,9 @@ namespace Dev2.Activities
             {
                 try
                 {
-                    string toLoad = DataListUtil.StripCrap(input); // clean up the rubish ;)
                     XmlDocument xDoc = new XmlDocument();
-                    toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
-                    xDoc.LoadXml(toLoad);
+                    input = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), input);
+                    xDoc.LoadXml(input);
 
                     if (xDoc.DocumentElement != null)
                     {

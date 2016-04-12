@@ -64,6 +64,14 @@ namespace Warewolf.Studio.UISpecs
             Mouse.StopDragging(getToTreeItem, new Point(140, 3));
         }
 
+        [Given("'(.*)' exists in the explorer tree")]
+        [Then("'(.*)' exists in the explorer tree")]
+        public void AssertExistsInTheDropdownList(string ListItem)
+        {
+            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
+            Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
+        }
+
         [Given(@"The View permission icon for '(.*)' exists in the explorer tree")]
         [Then(@"The View permission icon for '(.*)' exists in the explorer tree")]
         public void AssertTheViewPermissionIconForTreeItemExistsInTheExplorerTree(string path)

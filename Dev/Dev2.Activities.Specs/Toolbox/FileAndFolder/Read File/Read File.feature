@@ -121,9 +121,6 @@ Scenario Outline: Read File validation
 		| 46 | Local Files | [[var@]]                       |                   |                 |                   | [[var@]]              | ""       | [[var@]]               | ""     | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s)                                                                                             | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s)                                                                                               |
 		| 47 | Local Files | C#$%#$]]                       |                   |                 |                   | C#$%#$]]              | ""       | C#$%#$]]               | ""     | AN           | True             | File Name - Invalid expression: opening and closing brackets don't match  Username - Invalid expression: opening and closing brackets don't match   Result - Invalid expression: opening and closing brackets don't match | 1.File Name - Invalid expression: opening and closing brackets don't match 2.Username - Invalid expression: opening and closing brackets don't match   3.Result - Invalid expression: opening and closing brackets don't match |                                                      
 
-
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Read File at location using incorrect directory
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'
@@ -131,7 +128,6 @@ Scenario Outline: Read File at location using incorrect directory
 	When the read file tool is executed
 	Then the result variable '<resultVar>' will be '<result>'
 	And the execution has "<errorOccured>" error
-	And the execution has "<ErrorMessage>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password |
          | <source> = <sourceLocation> | <username> | String   |
@@ -139,10 +135,10 @@ Scenario Outline: Read File at location using incorrect directory
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| NO | Name       | source       | sourceLocation | username                     | password | resultVar  | result | errorOccured | ErrorMessage                                                                                                           |
-	| 1  | Local      | [[var]]      |                | ""                           | ""       | [[result]] | Error  | An           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 2  | UNC        | [[variable]] | ""             | ""                           | ""       | [[result]] | Error  | AN           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| 3  | UNC Secure | 45454        | 45454          | dev2.local\IntegrationTester | I73573r0 | [[result]] | Error  | AN           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
+	| NO | Name       | source       | sourceLocation | username                     | password | resultVar  | result | errorOccured |
+	| 1  | Local      | [[var]]      |                | ""                           | ""       | [[result]] |        | AN           |
+	| 2  | UNC        | [[variable]] | ""             | ""                           | ""       | [[result]] |        | AN           |
+	| 3  | UNC Secure | 45454        | 45454          | dev2.local\IntegrationTester | I73573r0 | [[result]] |        | AN           |
 
 @ignore
 #Complex Types WOLF-1042

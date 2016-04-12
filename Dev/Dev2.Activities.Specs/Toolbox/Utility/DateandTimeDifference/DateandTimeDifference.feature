@@ -469,23 +469,23 @@ Scenario: Calculate the number of Years by using default system date Input 1
 	| now() = !!DateWithMS!! | 2014/01/06 08:00:01.00 | ""           | Years     |
 
 
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Calculate the number of months between two given dates using variables and recordsets
-	Given I have a first date '<input1>' equals '<Val1>' 
-	And I have a second date '<input2>' equals '<Val2>' 
-	And the date format as '<inputformat>' equals '<Val3>'
-	And I selected output in "months" 	
+	Given I have a DateAndTimeDifference variable "<input1>" equal to <Val1>
+	Given I have a DateAndTimeDifference variable "<input2>" equal to <Val2>
+	Given I have a DateAndTimeDifference variable "<inputformat>" equal to <Val3>
+	Given I have a first date "<input1>" 
+	And I have a second date "<input2>" 
+	And the date format as "<inputformat>"
+	And I selected output in "Months" 	
+	And DateTimeDifference result variable is "<res>"
 	When the datetime difference tool is executed
 	Then the difference should be "7"
 	And the execution has "NO" error
 	And the result variable '<res>' will be '<result>'
 Examples: 
-	| input1                         | Val1       | input2                         | Val2       | inputformat                | Val3       | res                              | result            |
-	| [[rec().a]]                    | 30/07/2015 | [[rs(*).a]]                    | 01/01/2016 | [[rj(1).a]]                | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | [[rg(1).set]] = 7 |
-	| [[rec(*).a]]                   | 30/07/2015 | [[rs(1).a]]                    | 01/01/2016 | [[rj().a]]                 | dd/mm/yyyy | [[rg().set]]                     | [[rg(1).set]] = 7 |
-	| [[rec([[int]]).a]], [[int]] =1 | 30/07/2015 | [[rs().a]]                     | 01/01/2016 | [[rj(*).a]]                | dd/mm/yyyy | [[rg(1).set]]                    | [[rg(1).set]] = 7 |
-	| [[r]]                          | 30/07/2015 | [[rs([[int]]).a]], [[int]] = 1 | 01/01/2016 | [[rj([[d]]).a]], [[d]] = 1 | dd/mm/yyyy | [[rg(*).set]]                    | [[rg(1).set]] = 7 |
+	| input1       | Val1       | input2      | Val2       | inputformat | Val3       | res           | result |
+	| [[rec().a]]  | 30/07/2015 | [[rs(*).a]] | 01/01/2016 | [[rj(1).a]] | dd/mm/yyyy | [[rg(1).set]] | 7      |
+	| [[rec(*).a]] | 30/07/2015 | [[rs(1).a]] | 01/01/2016 | [[rj().a]]  | dd/mm/yyyy | [[rg().set]]  | 7      |
 	
 Scenario: Variables that do not exist
 	Given I have a first date "[[a]]" equal to ""
@@ -493,8 +493,8 @@ Scenario: Variables that do not exist
 	And the date format as "[[v]]" equals ""
 	And I selected output in "years" 	
 	When the datetime difference tool is executed
-	Then the difference should be "7"
-	And the execution has "An" error
+	Then the difference should be ""
+	And the execution has "AN" error
 	And the debug output as 
 	|            |                                            |
 	| [[result]] | The expression [[a]] has no value assigned |

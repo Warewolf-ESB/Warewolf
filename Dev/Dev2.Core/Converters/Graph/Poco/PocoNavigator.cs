@@ -334,8 +334,12 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         private IEnumerable GetEnumerableValueForPathSegment(IPathSegment pathSegment, object data)
         {
             PropertyInfo propertyInfo = data.GetType().GetProperty(pathSegment.ActualSegment);
-
             IEnumerable returnVal = null;
+
+            if (propertyInfo == null)
+            {
+                returnVal = data as IEnumerable;
+            }
             if (propertyInfo != null && propertyInfo.PropertyType.IsEnumerable())
             {
                 returnVal = propertyInfo.GetValue(data, null) as IEnumerable;

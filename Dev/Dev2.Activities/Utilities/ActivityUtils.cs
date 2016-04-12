@@ -24,34 +24,38 @@ namespace Dev2.Utilities
     {
         public static DsfSqlServerDatabaseActivity GetDsfSqlServerDatabaseActivity(DsfDatabaseActivity dbActivity, DbService service, DbSource source)
         {
-            var dsfSqlServerDatabaseActivity = new DsfSqlServerDatabaseActivity
+            DsfSqlServerDatabaseActivity dsfSqlServerDatabaseActivity = null;
+            if(dbActivity != null)
             {
-                ResourceID = dbActivity.ResourceID,
-                DisplayName = dbActivity.DisplayName,
-                ProcedureName = service.Method.ExecuteAction,
-                SourceId = source.ResourceID,
-                Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
-                Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
-                ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
-                IconPath = dbActivity.IconPath,
-                ServiceName = dbActivity.ServiceName,
-                DataTags = dbActivity.DataTags,
-                ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
-                ResultValidationExpression = dbActivity.ResultValidationExpression,
-                FriendlySourceName = dbActivity.FriendlySourceName,
-                EnvironmentID = dbActivity.EnvironmentID,
-                Type = dbActivity.Type,
-                ActionName = dbActivity.ActionName,
-                RunWorkflowAsync = dbActivity.RunWorkflowAsync,
-                Category = dbActivity.Category,
-                ServiceUri = dbActivity.ServiceUri,
-                ServiceServer = dbActivity.ServiceServer,
-                UniqueID = dbActivity.UniqueID,
-                ParentServiceName = dbActivity.ParentServiceName,
-                ParentServiceID = dbActivity.ParentServiceID,
-                ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
-                ParentInstanceID = dbActivity.ParentInstanceID,
-            };
+                dsfSqlServerDatabaseActivity = new DsfSqlServerDatabaseActivity
+                {
+                    ResourceID = dbActivity.ResourceID,
+                    DisplayName = dbActivity.DisplayName,
+                    ProcedureName = service.Method.ExecuteAction,
+                    SourceId = source.ResourceID,
+                    Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
+                    Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
+                    ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,
+                    IconPath = dbActivity.IconPath,
+                    ServiceName = dbActivity.ServiceName,
+                    DataTags = dbActivity.DataTags,
+                    ResultValidationRequiredTags = dbActivity.ResultValidationRequiredTags,
+                    ResultValidationExpression = dbActivity.ResultValidationExpression,
+                    FriendlySourceName = dbActivity.FriendlySourceName,
+                    EnvironmentID = dbActivity.EnvironmentID,
+                    Type = dbActivity.Type,
+                    ActionName = dbActivity.ActionName,
+                    RunWorkflowAsync = dbActivity.RunWorkflowAsync,
+                    Category = dbActivity.Category,
+                    ServiceUri = dbActivity.ServiceUri,
+                    ServiceServer = dbActivity.ServiceServer,
+                    UniqueID = dbActivity.UniqueID,
+                    ParentServiceName = dbActivity.ParentServiceName,
+                    ParentServiceID = dbActivity.ParentServiceID,
+                    ParentWorkflowInstanceId = dbActivity.ParentWorkflowInstanceId,
+                    ParentInstanceID = dbActivity.ParentInstanceID,
+                };
+            }
             return dsfSqlServerDatabaseActivity;
         }
 

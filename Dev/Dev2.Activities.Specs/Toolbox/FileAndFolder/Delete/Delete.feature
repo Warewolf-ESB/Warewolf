@@ -116,11 +116,6 @@ Scenario Outline: Delete file Validation
 		| 41 | [[sourcePath]]                  |                                                |                    | c:\filetodelete20.txt                                                   | ""                    | [[rec([[[[b]]]]).a]]   | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                   |
 		| 42 | [[var@]]                        |                                                |                    |                                                                         | [[var@]]              | [[var@]]               | ""      | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s) | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s) |                            
 
-
-
-
-@ignore 
-#Audit Wolf-1419
 Scenario Outline: Delete file at location with incorrect directories
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'
@@ -128,7 +123,6 @@ Scenario Outline: Delete file at location with incorrect directories
 	When the delete file tool is executed
 	Then the result variable '<resultVar>' will be '<result>'
 	And the execution has "<errorOccured>" error
-	And the execution has "<ErrorMessage>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password |
          | <source> = <sourceLocation> | <username> | String   |
@@ -136,10 +130,10 @@ Scenario Outline: Delete file at location with incorrect directories
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| Name       | source       | sourceLocation      | username                     | password | resultVar  | result  | errorOccured | ErrorMessage                                                                                                           |
-	| Local      | 1234         | c:\filetodelete.txt | ""                           | ""       | [[result]] | Success | AN           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] | Success | An           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | An           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
+	| Name       | source       | sourceLocation      | username                     | password | resultVar  | result | errorOccured | 
+	| Local      | 1234         | c:\filetodelete.txt | ""                           | ""       | [[result]] |        | AN           | 
+	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] |        | AN           | 
+	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] |        | AN           | 
 
 @ignore
 #Complex Types WOLF-1042

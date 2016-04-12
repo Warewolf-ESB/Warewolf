@@ -63,7 +63,7 @@ Scenario: Execute a foreach over a tool for range 0 to 0
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the foreach executes 0 times
-	And the execution has "NO" error
+	And the execution has "AN" error
 
 Scenario: Execute a foreach over a tool for range 1 to 5
 	And I have selected the foreach type as "InRange" from 1 to 5
@@ -120,7 +120,7 @@ Scenario: Execute a foreach over a tool with number of executions equals 0
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the foreach executes 0 times
-	And the execution has "NO" error
+	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |
 	| No. of Executes | 0      |
@@ -366,7 +366,7 @@ Scenario: Execute a foreach over an activity with number of executions equals 0
 	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
 	When the foreach tool is executed
 	Then the foreach executes 0 times
-	And the execution has "NO" error
+	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |
 	| No. of Executes | 0      |
@@ -412,53 +412,46 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	|                 | Number |
 	| No. of Executes | 8      |
 
-
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Execute a foreach over a tool 
 	Given There is a recordset in the datalist with this shape
 	| rs             | value |
 	| [[rs().field]] | 1     |
 	| [[rs().field]] | 2     |
 	| [[rs().field]] | 3     |	
-	And I have selected the foreach type as "<Type>" and used "<variable>"	
+	And I have a variable "<Variable>" with the value "<value>"
+	And I have selected the foreach type as "<Type>" and used "<Variable>"	
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed
 	Then the foreach executes <value> times
 	And the execution has "<Error>" error
-	And the debug outputs as "<Message>"
 Examples: 
-| Type           | Variable                       | value | from                               | To                                 | Error | Message                                                  |
-| NumOfExecution | " "                            |       |                                    |                                    | An    | Number of Executes must be a whole number from 1 onwards |
-| NumOfExecution | Test                           | Test  |                                    |                                    | An    | Number of Executes must be a whole number from 1 onwards |
-| NumOfExecution | [[var]]                        | 1     |                                    |                                    | No    |                                                          |
-| NumOfExecution | [[q]]                          |       |                                    |                                    | An    | Number of Executes must be a whole number from 1 onwards |
-| NumOfExecution | [[rec(1).a]]                   | 2     |                                    |                                    | No    |                                                          |
-| NumOfExecution | [[rec().a]]                    | 3     |                                    |                                    | No    |                                                          |
-| NumOfExecution | [[rec(*).a]]                   | 3     |                                    |                                    | An    | The Star notation is not accepted in the Numbers field   |
-| NumOfExecution | [[rec([[int]]).a]],[[int]] = 3 | 3     |                                    |                                    | An    | The Star notation is not accepted in the Numbers field   |
-| InCSV          | " "                            |       |                                    |                                    | An    | CSv cannot be null and must be an integer                |
-| InCSV          | Test                           | Test  |                                    |                                    | An    | Invalid characters have been entered in the CSV Numbers  |
-| InCSV          | [[var]]                        | 1     |                                    |                                    | No    |                                                          |
-| InCSV          | [[q]]                          |       |                                    |                                    | An    | CSv cannot be null and must be an integer                |
-| InCSV          | [[rec(1).a]]                   | 1     |                                    |                                    | No    |                                                          |
-| InCSV          | [[rec().a]]                    | 3     |                                    |                                    | No    |                                                          |
-| InCSV          | [[rec([[int]]).a]],[[int]] = 3 | 3     |                                    |                                    | An    |                                                          |
-| InRecordset    | " "                            |       |                                    |                                    | An    | Invalid Recordset                                        |
-| InRecordset    | 11                             | 11    |                                    |                                    | An    | Invalid Recordset                                        |
-| InRecordset    | Test                           | Test  |                                    |                                    | An    | Invalid characters have been entered as Recordset        |
-| InRecordset    | [[var]]                        | 1     |                                    |                                    | No    | Scalar not allowed                                       |
-| InRecordset    | [[q]]                          |       |                                    |                                    | An    | Scalar not allowed                                       |
-| InRecordset    | [[rec(1)]]                     | 1     |                                    |                                    | No    |                                                          |
-| InRecordset    | [[rec([[int]])]],[[int]] = 3   | 3     |                                    |                                    | An    |                                                          |
-| InRange        |                                |       | " "                                | 2                                  | An    | The from field cannot be left empty                      |
-| InRange        |                                |       | Test                               | [[var]] =1                         | An    | From range must be a whole number from 1 onwards         |
-| InRange        |                                |       | [[var]] = 1                        | [[rec(1).a]]   = 2                 | No    |                                                          |
-| InRange        |                                |       | [[q]]                              | [[rec().a]]  = 3                   | An    | From range must be a whole number from 1 onwards         |
-| InRange        |                                |       | [[rec(1).a]]   = 2                 | [[rec(*).a]]  = 3                  | An    | The Star notation is not accepted in the Numbers field   |
-| InRange        |                                |       | [[rec().a]]  = 3                   | [[q]]                              | No    | To range must be a whole number from 1 onwards           |
-| InRange        |                                |       | [[rec(*).a]]  = 3                  | [[rec([[int]]).a]] = 3,[[int]] = 3 | An    | The Star notation is not accepted in the Numbers field   |
-| InRange        |                                |       | [[rec([[int]]).a]] = 3,[[int]] = 3 | " "                                | An    | The To field cannot be left empty                        |
+| Type           | Variable     | value | Error | Message                                                  |
+| NumOfExecution | " "          | 0     | AN    | Number of Executes must be a whole number from 1 onwards |
+| NumOfExecution | Test         | 0     | AN    | Number of Executes must be a whole number from 1 onwards |
+| NumOfExecution | [[var]]      | 1     | NO    |                                                          |
+| NumOfExecution | [[q]]        | 0     | AN    | Number of Executes must be a whole number from 1 onwards |
+| NumOfExecution | [[rec(1).a]] | 2     | NO    |                                                          |
+| NumOfExecution | [[rec().a]]  | 3     | NO    |                                                          |
+| NumOfExecution | [[rec(*).a]] | 0     | AN    | The Star notation is not accepted in the Numbers field   |
+| InCSV          | " "          | 0     | AN    | CSv cannot be null and must be an integer                |
+| InCSV          | Test         | 0     | AN    | Invalid characters have been entered in the CSV Numbers  |
+| InCSV          | [[var]]      | 1     | NO    |                                                          |
+| InCSV          | [[q]]        | 1     | NO    |                                                          |
+| InCSV          | [[rec(1).a]] | 1     | NO    |                                                          |
+| InRecordset    | " "          | 0     | AN    | Invalid Recordset                                        |
+| InRecordset    | 11           | 0     | AN    | Invalid Recordset                                        |
+| InRecordset    | Test         | 0     | AN    | Invalid characters have been entered as Recordset        |
+| InRecordset    | [[var]]      | 0     | AN    | Scalar not allowed                                       |
+| InRecordset    | [[q]]        | 0     | AN    | Scalar not allowed                                       |
+| InRecordset    | [[rec(1).a]] | 0     | AN    |                                                          |
+| InRange        |              | 0     | AN    | The from field cannot be left empty                      |
+| InRange        |              | 0     | AN    | From range must be a whole number from 1 onwards         |
+| InRange        |              | 0     | AN    |                                                          |
+| InRange        |              | 0     | AN    | From range must be a whole number from 1 onwards         |
+| InRange        |              | 0     | AN    | The Star notation is not accepted in the Numbers field   |
+| InRange        |              | 0     | AN    | To range must be a whole number from 1 onwards           |
+| InRange        |              | 0     | AN    | The Star notation is not accepted in the Numbers field   |
+| InRange        |              | 0     | AN    | The To field cannot be left empty                        |
 
 	
 

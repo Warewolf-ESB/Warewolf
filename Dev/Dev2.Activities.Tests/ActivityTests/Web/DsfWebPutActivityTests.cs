@@ -52,7 +52,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //------------Execute Test---------------------------
             var DsfWebPutActivity = new DsfWebPutActivity();
             //------------Assert Results-------------------------
-            Assert.AreEqual("Web Put Request Connector", DsfWebPutActivity.DisplayName);
+            Assert.AreEqual("PUT Web Method", DsfWebPutActivity.DisplayName);
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual(1, attributes.Length);
             var toolDescriptor = attributes[0] as ToolDescriptorInfo;
             Assert.IsNotNull(toolDescriptor);
-            Assert.AreEqual("Put Web Service", toolDescriptor.Name);
+            Assert.AreEqual("PUT", toolDescriptor.Name);
         }
 
         [TestMethod]

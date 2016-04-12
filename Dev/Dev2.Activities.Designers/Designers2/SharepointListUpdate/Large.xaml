@@ -140,7 +140,7 @@
                 </Grid.ColumnDefinitions>
                 <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                        Margin="0"
-                                       ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       ItemsSource="{Binding ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Style="{StaticResource ActivityMapppingDataGridStyle}">
                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                     <DataGrid.Columns>

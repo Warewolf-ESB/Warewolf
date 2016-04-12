@@ -172,5 +172,19 @@ namespace Warewolf.Studio.Views
         public void Connect(int connectionId, object target)
         {
         }
+
+        private void ExplorerView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (ExplorerView != null)
+            {
+                if (ExplorerView.ExplorerTree != null)
+                {
+                    if (ExplorerView.ExplorerTree.EditingSettings != null)
+                    {
+                        ExplorerView.ExplorerTree.EditingSettings.IsF2EditingEnabled = false;
+                    }
+                }
+            }
+        }
     }
 }

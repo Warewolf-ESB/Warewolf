@@ -8,6 +8,6 @@ namespace Dev2.Common.Interfaces.DB
         IList<IServiceInput> Inputs { get; set; }
         string Name { get; set; }
         Guid SourceId { get; set; }
-        string GetHashCodeBySource();
+        string GetIdentifier();
     }
 }

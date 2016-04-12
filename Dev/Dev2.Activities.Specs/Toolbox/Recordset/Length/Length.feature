@@ -138,8 +138,6 @@ Scenario: Recordset length for invalid recordset
 	And the debug output as 
 	|                |
 
-@ignore
-#Audit Wolf-1419
 Scenario Outline: Ensure Recordset length inputs work as expected 
 	Given I get  the length from a recordset that looks like with this shape
 	| rs        |   |
@@ -152,20 +150,17 @@ Scenario Outline: Ensure Recordset length inputs work as expected
 	| rs().row2 | 7 |
 	And get length on record "<variable>"	
 	When the length tool is executed
-	Then the length result should be "<val>"
-	And the result variable '<result>' will be "<value>"
-	And the execution has "<Error>" error
-	And the debug inputs as "<message>"
+	Then the execution has "<Error>" error
 Examples: 
-| variable         | val  | error | message                                           | result             | value           |
-| [[a]]            | The  | An    | Scalar not allowed                                | [[b]]              | [[b]] = failure |
-| ""               | ""   | No    |                                                   | [[rec(1).a]]       | 0               |
-| dfsd             | dfsd | No    | Invalid characters have been entered as Recordset | [[rec(*).a]]       | Failure         |
-| 12               | 12   | No    | Invalid characters have been entered as Recordset | [[rec([[int]]).a]] | Failure         |
-| [[rec(1)]]       | ""   | No    |                                                   | [[rs().a]]         | [[rs(1).a]] = 3 |
-| [[rec(*)]]       | ""   | An    | Blank result variable                             | ""                 | ""              |
-| [[rec([[int]])]] | ""   | No    |                                                   | [[sdasd]]          | 3               |
-| [[c]]            | ""   | No    | Scalar not allowed                                | [[d]]              | Failure         |
+| variable         | val  | Error | message                                           | result             | value           |
+| [[a]]            | The  | AN    | Scalar not allowed                                | [[b]]              | [[b]] = failure |
+| ""               | ""   | AN    |                                                   | [[rec(1).a]]       | 0               |
+| dfsd             | dfsd | AN    | Invalid characters have been entered as Recordset | [[rec(*).a]]       | Failure         |
+| 12               | 12   | AN    | Invalid characters have been entered as Recordset | [[rec([[int]]).a]] | Failure         |
+| [[rec(1)]]       | ""   | AN    |                                                   | [[rs().a]]         | [[rs(1).a]] = 3 |
+| [[rec(*)]]       | ""   | AN    | Blank result variable                             | ""                 | ""              |
+| [[rec([[int]])]] | ""   | AN    |                                                   | [[sdasd]]          | 3               |
+| [[c]]            | ""   | AN    | Scalar not allowed                                | [[d]]              | Failure         |
 
 
 

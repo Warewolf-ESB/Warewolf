@@ -194,12 +194,44 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             }
         }
 
+        [Given(@"I have a variable ""(.*)"" with the value ""(.*)""")]
+        public void GivenIHaveAVariableWithTheValue(string variable, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            if (!string.IsNullOrEmpty(variable))
+            {
+                variableList.Add(new Tuple<string, string>(variable, value));
+            }
+        }
 
         [Given(@"I have selected the foreach type as ""(.*)"" and used ""(.*)""")]
         public void GivenIHaveSelectedTheForeachTypeAsAndUsed(string foreachType, string recordSet)
         {
-            ScenarioContext.Current.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
-            ScenarioContext.Current.Add("recordset", recordSet);
+            var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
+            ScenarioContext.Current.Add("foreachType", forEachType);
+            switch(forEachType)
+            {
+                case enForEachType.NumOfExecution:
+                    ScenarioContext.Current.Add("numberAs", recordSet);
+                    break;
+                case enForEachType.InRange:
+                    ScenarioContext.Current.Add("from", recordSet);
+                    ScenarioContext.Current.Add("to", recordSet);
+                    break;
+                case enForEachType.InCSV:
+                    ScenarioContext.Current.Add("numberAs", recordSet);
+                    break;
+                case enForEachType.InRecordset:
+                    ScenarioContext.Current.Add("recordset", recordSet);
+                    break;
+            }
         }
 
         [Given(@"I have selected the foreach type as ""(.*)"" from (.*) to (.*)")]

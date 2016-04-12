@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Text;
 using Microsoft.Exchange.WebServices.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,9 +13,6 @@ namespace Warewolf.SharePoint
     {
         public RequestResult AddListItem(string _uri, string listTitle, string json)
         {
-
-
-
             Uri webUri = new Uri(_uri);
             var result = new RequestResult { RequestSuccess = true };
             using (var client = new SharepointClient(webUri, CredentialCache.DefaultNetworkCredentials))
@@ -35,8 +31,6 @@ namespace Warewolf.SharePoint
 
             return result;
         }
-
-
 
         public RequestResult GetAllListItemsByListName(string _uri, string listTitle)
         {
@@ -66,8 +60,6 @@ namespace Warewolf.SharePoint
             return result;
         }
 
-
-
         public RequestResult GetListItemswithQuery(string _uri, string listTitle, string qry)
         {
             Uri uri = new Uri(_uri);
@@ -82,8 +74,7 @@ namespace Warewolf.SharePoint
                     Serializer serializer = new Serializer();
                     Serialized serialisedData = new Serialized();
                     serialisedData = serializer.JSONtoXML(retval);
-
-
+                    
                     result.RequestResponse = serialisedData.Data;
 
                 }
@@ -111,8 +102,6 @@ namespace Warewolf.SharePoint
                     Serialized serialisedData = new Serialized();
                     serialisedData = serializer.JSONtoXML(retval);
                     result.RequestResponse = serialisedData.Data;
-                    
-
                 }
                 catch (Exception ex)
                 {
@@ -125,7 +114,6 @@ namespace Warewolf.SharePoint
 
         public RequestResult UpdateListItemById(string _uri, int id, string listTitle, string updateJson)
         {
-
             Uri uri = new Uri(_uri);
             var result = new RequestResult { RequestSuccess = true };
             var jsonData = GetListItemById(_uri, id, listTitle).RequestResponse;
@@ -133,8 +121,7 @@ namespace Warewolf.SharePoint
             dynamic metadata = data.d.results[0].__metadata;
             string uriString = metadata.uri;
             string match = metadata.etag;
-
-
+            
             using (var client = new SharepointClient(uri, CredentialCache.DefaultNetworkCredentials))
             {
                 try
@@ -154,7 +141,6 @@ namespace Warewolf.SharePoint
 
         public RequestResult UpdateListItemByIdWithImpersonation(string userName, string domainName, string password, string _uri, int id, string listTitle, string updateJson)
         {
-
             Uri uri = new Uri(_uri);
             var result = new RequestResult { RequestSuccess = true };
             var jsonData = GetListItemById(_uri, id, listTitle).RequestResponse;
@@ -206,8 +192,7 @@ namespace Warewolf.SharePoint
                     return result;
                 }
             }
-
-
+            
             return result;
         }
 
@@ -280,8 +265,6 @@ namespace Warewolf.SharePoint
                 }
             }
             return result;
-
-
         }
     }
 
@@ -292,18 +275,14 @@ namespace Warewolf.SharePoint
 
     internal class SharepointClient : IDisposable
     {
-
-
         public SharepointClient(Uri webUri, ICredentials credentials)
         {
-
             _client = new WebClient { Credentials = credentials };
             _client.Headers.Add("X-FORMS_BASED_AUTH_ACCEPTED", "f");
             _client.Headers.Add(HttpRequestHeader.ContentType, "application/json;odata=verbose");
             _client.Headers.Add(HttpRequestHeader.Accept, "application/json;odata=verbose");
             WebUri = webUri;
         }
-
 
         /// <summary>
         /// Request Form Digest
@@ -327,7 +306,6 @@ namespace Warewolf.SharePoint
 
         private readonly WebClient _client;
 
-
         /// <summary>
         /// Returns a specific list item
         /// </summary>
@@ -342,7 +320,6 @@ namespace Warewolf.SharePoint
             var endpointUri = new Uri(WebUri, string.Format("/_api/web/lists/getbytitle('{0}')/items?$filter=Id eq {1}", listTitle, id));
             return _client.DownloadString(endpointUri);
         }
-
 
         /// <summary>
         /// Gets all of the list items. Returns XML for parsiing
@@ -415,7 +392,6 @@ namespace Warewolf.SharePoint
             var endpointUri = new Uri(uriString);
             _client.UploadString(endpointUri, RequestType, "");
         }
-
 
         public void SendEmail(string jsonEmailPayload)
         {

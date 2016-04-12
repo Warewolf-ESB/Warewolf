@@ -343,11 +343,51 @@ namespace Dev2.Activities.Designers2.Net_DLL
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if(Regions != null)
+                    {
+                        foreach(var toolRegion in Regions)
+                        {
+                            if(toolRegion.Errors != null)
+                            {
+                                toolRegion.Errors.Clear();
+                            }
+                        }
+                    }
+                }
+                };
                 regions.Add(SourceRegion);
-                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () => { OutputsRegion.IsEnabled = false; } };
+                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            if (toolRegion.Errors != null)
+                            {
+                                toolRegion.Errors.Clear();
+                            }
+                        }
+                    }
+                } };
                 regions.Add(NamespaceRegion);
-                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            if (toolRegion.Errors != null)
+                            {
+                                toolRegion.Errors.Clear();
+                            }
+                        }
+                    }
+                } };
                 regions.Add(ActionRegion);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
@@ -369,6 +409,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Regions = regions;
             return regions;
         }
+
         public ErrorRegion ErrorRegion { get; private set; }
 
         #endregion

@@ -171,7 +171,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             Assert.IsTrue(webServiceDeleteViewModel.GenerateOutputsVisible);
             Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
             Assert.IsFalse(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
-            Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.IsEnabled);
         }
 
         [Then(@"Delete Variables are Enabled")]

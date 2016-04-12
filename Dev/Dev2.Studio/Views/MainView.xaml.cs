@@ -493,6 +493,7 @@ namespace Dev2.Studio.Views
             if (e.ClickCount == 2)
             {
                 SwitchState();
+                ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
             }
             else
             {

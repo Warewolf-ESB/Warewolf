@@ -2,9 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using TechTalk.SpecFlow;
+using Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses;
 
 namespace Warewolf.Studio.UISpecs
 {
@@ -14,35 +20,121 @@ namespace Warewolf.Studio.UISpecs
         [Given(@"I '(.*)'")]
         [When(@"I '(.*)'")]
         [Then(@"I '(.*)'")]
-        public void PerformAnyRecordedAction(string p0)
+        public void TheRecordedActionIsPerformed(string p0)
         {
-            List<Type> allTypes = Assembly.GetExecutingAssembly().GetTypes().ToList();
-            List<MethodInfo> allFoundMethods = new List<MethodInfo>();
-            List<Type> allFoundUIMapTypes = new List<Type>();
-            foreach (Type type in allTypes)
+            Type workflowDesignerMapType = Uimap.GetType();
+            Type outsideWorkflowDesignerMapType = OutsideWorkflowDesignSurfaceUiMap.GetType();
+            MethodInfo workflowDesignerAction = workflowDesignerMapType.GetMethod(p0);
+            MethodInfo outsideWorkflowDesignerAction = outsideWorkflowDesignerMapType.GetMethod(p0);
+            if (workflowDesignerAction != null && outsideWorkflowDesignerAction != null)
             {
-                if (type.GetMethod(p0) != null)
+                throw new InvalidOperationException("Cannot distinguish between duplicated action recordings, both named '" + p0 + "' in different UI maps.");
+            }
+            else
+            {
+                if (outsideWorkflowDesignerAction != null)
                 {
-                    allFoundMethods.Add(type.GetMethod(p0));
-                    allFoundUIMapTypes.Add(type);
+                    outsideWorkflowDesignerAction.Invoke(OutsideWorkflowDesignSurfaceUiMap, new object[] { });
+                }
+                if (workflowDesignerAction != null)
+                {
+                    workflowDesignerAction.Invoke(Uimap, new object[] { });
                 }
             }
+        }
 
-            var countAllMethods = allFoundMethods.Count();
-            if (countAllMethods == 1)
+        [BeforeTestRun]
+        public static void WaitForStudioStart()
+        {
+            Playback.Initialize();
+            var sleepTimer = 5;
+            while (true)
             {
-                var foundActionRecording = allFoundMethods.First();
-                var foundUIMapType = allFoundUIMapTypes.First();
-                foundActionRecording.Invoke(Activator.CreateInstance(foundUIMapType), new object[] { });
-            }
-            else if (countAllMethods > 1)
-            {
-                throw new InvalidOperationException("Cannot distinguish between duplicated action recordings, named '" + p0 + "' in different UI maps.");
-            }
-            else if (countAllMethods <= 0)
-            {
-                throw new InvalidOperationException("Cannot find action recording named '" + p0 + "' in any UI map.");
+                try
+                {
+                    WpfWindow getStudioWindow = new UIMap().MainStudioWindow;
+                    getStudioWindow.WaitForControlExist(100);
+                    if (getStudioWindow.Exists)
+                    {
+                        break;
+                    }
+                }
+                catch (UITestControlNotFoundException)
+                {
+                    Thread.Sleep(100);
+                }
+                if (sleepTimer-- <= 0)
+                {
+                    throw new InvalidOperationException("Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+                }
             }
         }
+
+        [BeforeScenario]
+        public static void LogComputerName()
+        {
+            Console.WriteLine("Test \"" +ScenarioContext.Current.ScenarioInfo.Title + "\" starting on " + System.Environment.MachineName);
+        }
+
+        [BeforeScenario]
+        [Scope(Tag = "NeedsBlankWorkflow")]
+        public static void InitializeABlankWorkflow()
+        {
+            var outsideWorkflowDesignSurfaceUiMap = new OutsideWorkflowDesignSurfaceUIMap();
+            outsideWorkflowDesignSurfaceUiMap.Assert_NewWorkFlow_RibbonButton_Exists();
+            outsideWorkflowDesignSurfaceUiMap.Click_New_Workflow_Ribbon_Button();
+            new UIMap().Assert_StartNode_Exists();
+        }
+
+        [AfterScenario]
+        [Scope(Tag = "NeedsBlankWorkflow")]
+        public static void CleanupWorkflow()
+        {
+            try
+            {
+                var uiMap = new UIMap();
+                uiMap.Assert_Close_Tab_Button_Exists();
+                uiMap.Click_Close_Tab_Button();
+                new OutsideWorkflowDesignSurfaceUIMap().Click_MessageBox_No();
+            }
+            catch (UITestControlNotFoundException e)
+            {
+                //Test may have crashed before tab is even openned
+            }
+        }
+
+        #region Properties and Fields
+
+        UIMap Uimap
+        {
+            get
+            {
+                if ((_uiMap == null))
+                {
+                    _uiMap = new UIMap();
+                }
+
+                return _uiMap;
+            }
+        }
+
+        private UIMap _uiMap;
+
+        OutsideWorkflowDesignSurfaceUIMap OutsideWorkflowDesignSurfaceUiMap
+        {
+            get
+            {
+                if ((_outsideWorkflowDesignSurfaceUiMap == null))
+                {
+                    _outsideWorkflowDesignSurfaceUiMap = new OutsideWorkflowDesignSurfaceUIMap();
+                }
+
+                return _outsideWorkflowDesignSurfaceUiMap;
+            }
+        }
+
+        private OutsideWorkflowDesignSurfaceUIMap _outsideWorkflowDesignSurfaceUiMap;
+
+        #endregion
     }
 }

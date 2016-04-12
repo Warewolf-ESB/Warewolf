@@ -9,6 +9,10 @@ namespace Dev2.Common.Interfaces
     {
         ResourceType ResourceType { get; set; }
         string ResourcePath { get; set; }
+
+        bool CanDrop { get; set; }
+        bool CanDrag { get; set; }
+
         string ResourceName { get; set; }
         Guid ResourceId { get; set; }
         bool IsExpanderVisible { get; set; }

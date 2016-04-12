@@ -124,9 +124,6 @@ Scenario Outline: Check Validation Messages
 		| 47 | Local Files | C#$%#$]]                       |           |             |                     | True     | C#$%#$]]              | ""       | C#$%#$]]               | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don't match  Username - Invalid expression: opening and closing brackets don't match   Result - Invalid expression: opening and closing brackets don't match | 1.File or Folder - Invalid expression: opening and closing brackets don't match 2.Username - Invalid expression: opening and closing brackets don't match   3.Result - Invalid expression: opening and closing brackets don't match |                                                      
 
 
-
-@ignore		
-#Audit Wolf-1419
 Scenario Outline: Create file at location with invalid directories
 	Given I have a destination path '<destination>' with value '<destinationLocation>'
 	And overwrite is '<selected>'
@@ -135,7 +132,6 @@ Scenario Outline: Create file at location with invalid directories
 	When the create file tool is executed
 	Then the result variable '<resultVar>' will be '<result>'
 	And the execution has "<errorOccured>" error
-	And the execution has "<ErrorMessage>" error
 	And the debug inputs as
          | File or Folder                        | Overwrite  | Username   | Password |
          | <destination> = <destinationLocation> | <selected> | <username> | String   |
@@ -143,10 +139,10 @@ Scenario Outline: Create file at location with invalid directories
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| No | Name  | destination  | destinationLocation | selected | username | password | resultVar  | result | errorOccured | ErrorMessage                                                                                                           |  
-		| 1  | Local | [[variable]] | ""                  | False    | dev2     | Q/ulw&]  | [[result]] | Error  | AN           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |  
-		| 2  | Local | [[var]]      |                     | False    | dev2     | Q/ulw&]  | [[result]] | Error  | AN           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-		| 3  | Local | 8751         | 8751                | False    | dev2     | Q/ulw&]  | [[result]] | Error  | AN           | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
+		| No | Name  | destination  | destinationLocation | selected | username | password | resultVar  | result | errorOccured |
+		| 1  | Local | [[variable]] | ""                  | False    | dev2     | Q/ulw&]  | [[result]] |        | AN           |
+		| 2  | Local | [[var]]      |                     | False    | dev2     | Q/ulw&]  | [[result]] |        | AN           |
+		| 3  | Local | 8751         | 8751                | False    | dev2     | Q/ulw&]  | [[result]] |        | AN           |
 
 
 #Complex Type WOLF-1042

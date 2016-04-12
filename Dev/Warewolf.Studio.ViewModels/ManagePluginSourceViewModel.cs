@@ -393,7 +393,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourceName = RequestServiceNameViewModel.ResourceName.Name;
                     var src = ToModel();
-                    src.Id = Guid.NewGuid();
+                    src.Id = SelectedGuid;
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     Path = src.Path;

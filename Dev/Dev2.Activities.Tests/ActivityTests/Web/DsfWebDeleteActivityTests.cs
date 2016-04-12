@@ -82,7 +82,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(toolDescAtribute);
             //---------------Execute Test ----------------------
             Assert.IsNotNull(toolDescAtribute);
-            Assert.AreEqual("Delete Web Service", toolDescAtribute.Name);
+            Assert.AreEqual("DELETE", toolDescAtribute.Name);
             Assert.AreEqual(ToolType.Native, toolDescAtribute.ToolType);
             Assert.AreEqual(new Guid("6C5F6D7E-4B42-4874-8197-DBE68D4A9F2D"), toolDescAtribute.Id);
             //---------------Test Result -----------------------
@@ -99,7 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(dsfWebDeleteActivity.DisplayName);
             //---------------Execute Test ---------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("Web Delete Request Connector", dsfWebDeleteActivity.DisplayName);
+            Assert.AreEqual("DELETE Web Method", dsfWebDeleteActivity.DisplayName);
         }
 
         [TestMethod]

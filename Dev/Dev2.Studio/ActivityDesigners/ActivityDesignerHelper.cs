@@ -27,7 +27,8 @@ using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DateTimeDifference;
 using Dev2.Activities.Designers2.Delete;
 using Dev2.Activities.Designers2.DeleteRecords;
-using Dev2.Activities.Designers2.DropBox.Upload;
+using Dev2.Activities.Designers2.DropBox2016.Download;
+using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Activities.Designers2.ExchangeEmail;
 using Dev2.Activities.Designers2.FindIndex;
@@ -48,6 +49,7 @@ using Dev2.Activities.Designers2.RecordsLength;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
+using Dev2.Activities.Designers2.SelectAndApply;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SharepointListCreate;
@@ -66,7 +68,9 @@ using Dev2.Activities.Designers2.Web_Service_Put;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
+using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -135,16 +139,17 @@ namespace Dev2.Studio.ActivityDesigners
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
                  { typeof(DsfWebDeleteActivity), typeof(WebServiceDeleteDesigner) },
                  { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
-                 { typeof(DsfDropBoxUploadAcivtity), typeof(Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner) },
+                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
+                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
-                { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
                 { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
                 { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
+                { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 //{ typeof(DsfFlowDecisionActivity), typeof(DecisionDesigner) },
                 //{ typeof(DsfSwitch), typeof(ConfigureSwitch) }
             };

@@ -1,5 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.DropBox2016;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dropbox.Api;
 using Dropbox.Api.Files;
@@ -15,7 +16,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         private Mock<IDropBoxUpload> CreateDropboxUploadMock()
         {
             var mock = new Mock<IDropBoxUpload>();
-            var fileMetadata = new DropboxSuccessResult(new FileMetadata());
+            var fileMetadata = new DropboxUploadSuccessResult(new FileMetadata());
             mock.Setup(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()))
                  .Returns(fileMetadata);
             return mock;
@@ -76,6 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         }  
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(ArgumentException))]
         public void CreateNewDropboxUpload_GivenMissingFromPath_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
@@ -104,7 +106,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateNewDropboxUpload_GivenInvalidThenExecute_ShouldReturnNull()
+        public void CreateNewDropboxUpload_GivenInvalidThenExecute_ShouldReturnFailureResult()
         {
             //---------------Set up test pack-------------------
             var dropBoxUpload = new DropBoxUpload(null, "", "random.txt");
@@ -113,7 +115,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             //---------------Execute Test ----------------------
             var metadata = dropBoxUpload.ExecuteTask(It.IsAny<DropboxClient>());
             //---------------Test Result -----------------------
-            Assert.IsNull(metadata);
+            Assert.IsNotNull(metadata);
+            Assert.IsInstanceOfType(metadata,typeof(DropboxFailureResult));
         }
 
        

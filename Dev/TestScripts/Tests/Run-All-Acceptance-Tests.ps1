@@ -1,4 +1,5 @@
-﻿$TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
+﻿# Create test settings.
+$TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 $SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
@@ -39,14 +40,40 @@ $SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 </TestSettings>
 "@)
 
+# Read playlists.
+$TestList = ""
+Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+Foreach-Object{
+	[xml]$playlistContent = Get-Content $_.FullName
+	if ($playlistContent.Playlist.Add.count -le 0) {
+		Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+		Continue
+	}
+	foreach( $TestName in $playlistContent.Playlist.Add) {
+		$TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+	}
+}
+if ($TestList.length -gt 0) {
+	$TestList = $TestList -replace "^.", " /Tests:"
+}
+
+
+# Create assemblies list.
 $TestAssembliesList = ''
 foreach ($file in Get-ChildItem $SolutionDir | ? {$_.PSIsContainer -and ((($_.Name.StartsWith("Dev2.") -or $_.Name.StartsWith("Warewolf.")) -and $_.Name.EndsWith(".Specs")) -or $_.Name.StartsWith("Warewolf.AcceptanceTesting.")) -and $_.Name -ne "Dev2.Installer.Specs" -and $_.Name -ne "Warewolf.AcceptanceTesting.Scheduler"} ) {
     $TestAssembliesList = "`"$SolutionDir\" + $file.Name + "\bin\Debug\" + $file.Name + ".dll`" " + $TestAssembliesList 
 }
+
+# Create full VSTest argument string.
 $FullArgsList = $TestAssembliesList + "/logger:trx /Settings:`"" + $TestSettingsFile + "`""
+
+# Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+
+# Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
+# Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
 Write-Host Writing all test failures in `"$testResultsFolder`" to a playlist file
 

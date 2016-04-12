@@ -98,6 +98,19 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             variableList.Add(new Tuple<string, string>(variable, value));
         }
 
+        [Given(@"Require All decisions to be True is ""(.*)""")]
+        public void GivenRequireAllDecisionsToBeTrueIs(string p0)
+        {
+            if (p0 == "true")
+            {
+                ScenarioContext.Current.Add("mode", Dev2DecisionMode.AND);
+            }
+            else
+            {
+                ScenarioContext.Current.Add("mode", Dev2DecisionMode.OR);
+            }
+        }
+
         [Given(@"the decision mode is ""(.*)""")]
         public void GivenTheDecisionModeIs(string mode)
         {

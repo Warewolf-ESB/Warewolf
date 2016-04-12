@@ -131,45 +131,25 @@ Scenario: Replace when negative recordset index is input
 #	| [[L]]       | XXXX | Parker       | The given variable is not represent in the dictionary |
 #
 
-@ignore
-#Audit Wolf-1419
 Scenario Outline:  Ensuring recordsets work as a Result
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
 	And I have a sentence "[[sentence]]"
+	And I have a replace variable "<value>" equal to "<replace>"
+	And I have a replace variable "[[var]]" equal to "1"
 	And I want to find the characters "XXXX"
-	And I want to replace them with '<value>' equal to '<replace>'
+	And I want to replace them with "<value>"
+	And replace result is "<resultVar>"
 	When the replace tool is executed
 	Then the execution has "NO" error
 	And the result variable '<resultVar>' will be '<result>'
 Examples: 
-| value         | replace | resultVar               | result                               | output                                                    |
-| [[text]]      | West    | [[rec().string]]        | [[result]] = 1                       | [[sentence]] = Dear Mr West, We welcome you as a customer |
-| [[rs(*).val]] | Wii     | [[rec().string]]        | [[result]] = 1                       | [[sentence]] = Dear Mr Wii, We welcome you as a customer  |
-| [[text]]      | West    | [[rec(1).string]]       | [[rec(1).string]]  = 1               | [[sentence]] = Dear Mr West, We welcome you as a customer |
-| [[text]]      | West    | [[rec([[var]]).string]] | [[rec([[int]]).string]],[[int]]  = 1 | [[sentence]] = Dear Mr West, We welcome you as a customer |
-| [[text]]      | West    | [[rec(*).string]]       | [[rec(*).string]]  = 1               | [[sentence]] = Dear Mr West, We welcome you as a customer |
-| [[text]]      | 12      | [[var]]                 | [[rc().s]]  = 1                      | [[sentence]] = Dear Mr 12, We welcome you as a customer   |
-
-
-Scenario Outline: Replace when the recordset is numeric
-	Given I have a replace variable "<var>" equal to "<value>"
-	And I have a sentence "<var>"
-	And I want to find the characters "<characters>" equals '<Char>'
-	And I want to replace them with "<replacement>" equals '<val>'
-	When the replace tool is executed
-	Then the replace result should be "<count>"
-	And "<var>" should be "<result>"
-	And the execution has "NO" error
-Examples: 
-| No | var                           | value    | characters          | Char                                      | replacement                 | val                                         | count | result                 |
-| 1  | 54575                         | 54575    | 5                   |                                           | 2                           | 2                                           | 3     | 24272                  |
-| 2  | [[b]]                         |          | [[c]]               | ""                                        | [[d]]                       | ""                                          | 0     |                        |
-| 3  | [[rs().set]]                  | Warewolf | [[rs(2).set]]       | w                                         | [[rs(3).set]]               | m                                           | 2     | rs(1).set = "maremolf" |
-| 4  | [[c]]                         | jello    | [[rec().set]]       | h                                         | [[rs().set]]                | H                                           | 1     | Hello                  |
-| 5  | [[rs(1).set]]                 | Warewolf | [[rec(*).set]] ={ } | [[rec(1).set]] = "r",[[rec(2).set]] = "t" | [[rs().set]]                | 1                                           | h     | Wahewolf               |
-| 6  | [[rs([[int]]).set]],[[int]]=1 | Warewolf | [[rs(2).set]]       | w                                         | [[rs([[a]]).set]] ,[[a]]= 3 | m                                           | 2     | maremolf               |
-| 7  | [[rs(1).set]]                 | Wahewolf | [[rs().set]]        | h                                         | [[rec(*).set]]              | [[rec(1).set]] = "r",[[rec(2).set]] = "t" } | 1     | Wahewolf               |
-
+| value         | replace | resultVar               | result | output                                                    |
+| [[text]]      | West    | [[rec().string]]        | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
+| [[rs(*).val]] | Wii     | [[rec().string]]        | 1      | [[sentence]] = Dear Mr Wii, We welcome you as a customer  |
+| [[text]]      | West    | [[rec(1).string]]       | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
+| [[text]]      | West    | [[rec([[var]]).string]] | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
+| [[text]]      | West    | [[rec(*).string]]       | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
+| [[text]]      | 12      | [[var]]                 | 1      | [[sentence]] = Dear Mr 12, We welcome you as a customer   |
 
 #Complex types WOLF-1042
 @ignore

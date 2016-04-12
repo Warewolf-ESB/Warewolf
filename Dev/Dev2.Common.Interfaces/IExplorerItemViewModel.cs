@@ -26,8 +26,7 @@ namespace Dev2.Common.Interfaces
         string VersionHeader { get; set; }
         void Filter(string filter);
         Task<bool> Move(IExplorerTreeItem destination);
-        bool CanDrop { get; set; }
-        bool CanDrag { get; set; }
+        
         ICommand OpenVersionCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
         ICommand ShowDependenciesCommand { get; set; }

@@ -363,6 +363,6 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             
         }
 
-        public IStudioUpdateManager UpdateRepository { get; }
+        public IStudioUpdateManager UpdateRepository { get; set; }
     }
 }

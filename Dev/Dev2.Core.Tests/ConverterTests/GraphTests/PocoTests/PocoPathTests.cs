@@ -66,7 +66,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         {
             PropertyInfo propertyInfo = typeof(PocoTestData).GetProperty("EnumerableData");
             PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment(propertyInfo);
+            IPathSegment segment = path.CreatePathSegment(propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable());
 
             const bool expected = true;
             bool actual = segment.IsEnumarable;
@@ -82,7 +82,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         {
             PropertyInfo propertyInfo = typeof(PocoTestData).GetProperty("Name");
             PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment(propertyInfo);
+            IPathSegment segment = path.CreatePathSegment(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable());
 
             const bool expected = false;
             bool actual = segment.IsEnumarable;

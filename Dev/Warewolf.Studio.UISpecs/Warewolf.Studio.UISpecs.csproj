@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -69,6 +69,11 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="StudioUISpecs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudioUISpecs.feature</DependentUpon>
+    </Compile>
     <Compile Include="Dropdown List Item Action Steps.cs" />
     <Compile Include="Explorer Tree Item Action Steps.cs" />
     <Compile Include="OutsideWorkflowDesignSurfaceUIMap.cs">
@@ -77,10 +82,10 @@
     <Compile Include="OutsideWorkflowDesignSurfaceUIMap.Designer.cs">
       <DependentUpon>OutsideWorkflowDesignSurfaceUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="StudioUISpecs.feature.cs">
+    <Compile Include="OutsideWorkflowDesignSurfaceUISpecs.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StudioUISpecs.feature</DependentUpon>
+      <DependentUpon>OutsideWorkflowDesignSurfaceUISpecs.feature</DependentUpon>
     </Compile>
     <Compile Include="ActionSteps.cs" />
     <Compile Include="UIMap.cs">
@@ -93,13 +98,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="StudioUISpecs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
+    </None>
     <None Include="OutsideWorkflowDesignSurfaceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="StudioUISpecs.feature">
+    <None Include="OutsideWorkflowDesignSurfaceUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioUISpecs.feature.cs</LastGenOutput>
+      <LastGenOutput>OutsideWorkflowDesignSurfaceUISpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
@@ -107,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
+    <Content Include="UIMapTemplate.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj">
@@ -142,7 +152,7 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)$(ProjectName)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask "StudioUISpecs.feature.cs" --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)$(ProjectName)\fnr.exe" --cl --dir "$(SolutionDir)$(ProjectName)" --fileMask *.feature.cs --find "[Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]" --replace "[Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

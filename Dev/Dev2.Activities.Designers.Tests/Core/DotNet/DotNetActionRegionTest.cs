@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             DotNetActionRegion dotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()), sourceRegion, dotNetNamespaceRegion);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, dotNetActionRegion.Errors.Count);
+            Assert.AreEqual(0, dotNetActionRegion.Errors.Count);
             Assert.IsTrue(dotNetActionRegion.IsEnabled);
         }
 
@@ -52,11 +52,12 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var id = Guid.NewGuid();
             var act = new DsfPluginActivity { SourceId = id };
             var src = new Mock<IPluginServiceModel>();
-            var dotNetsrc = new PluginSourceDefinition { Id = id };
+            var dotNetsrc = new PluginSourceDefinition { Id = id, Name = "johnny" };
             var action = new PluginAction { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { dotNetsrc });
 
             DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()));
+            sourceRegion.SelectedSource = dotNetsrc;
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
             DotNetNamespaceRegion dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);

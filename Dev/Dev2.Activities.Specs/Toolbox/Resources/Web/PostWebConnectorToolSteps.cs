@@ -172,7 +172,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             Assert.IsTrue(webServicePostViewModel.GenerateOutputsVisible);
             Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
             Assert.IsFalse(webServicePostViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
-            Assert.IsTrue(webServicePostViewModel.ManageServiceInputViewModel.IsEnabled);
         }
 
         [Then(@"Post Variables are Enabled")]

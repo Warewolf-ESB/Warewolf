@@ -205,7 +205,6 @@ namespace Dev2.Network
             try
             {
                 _wrappedConnection.Connect(_wrappedConnection.ID);
-           
             }
            
             catch (Exception err)
@@ -220,14 +219,12 @@ namespace Dev2.Network
             try
             {
                 return await _wrappedConnection.ConnectAsync(_wrappedConnection.ID);
-           
             }
              catch( FallbackException)
             {
                 Dev2Logger.Info("Falling Back to previous signal r client");
                 var name = _wrappedConnection.DisplayName;
                 
-               
                 SetupPassthroughEvents();
                 _wrappedConnection.Connect(_wrappedConnection.ID);
                 _wrappedConnection.DisplayName = name;

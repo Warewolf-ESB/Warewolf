@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return TestPassed;
+            return TestPassed || CanTest();
         }
 
         bool CanCancelTest()
@@ -326,7 +326,7 @@ namespace Warewolf.Studio.ViewModels
                     UserName = UserName,
                     DefaultQuery = DefaultQuery,
                     Name = ResourceName,
-                    Id = _webServiceSource == null ? Guid.NewGuid() : _webServiceSource.Id
+                    Id = _webServiceSource == null ?  SelectedGuid : _webServiceSource.Id
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock
@@ -448,7 +448,6 @@ namespace Warewolf.Studio.ViewModels
 
         void ResetTestValue()
         {
-            TestPassed = false;
             TestMessage = "";
             TestFailed = false;
             Testing = false;

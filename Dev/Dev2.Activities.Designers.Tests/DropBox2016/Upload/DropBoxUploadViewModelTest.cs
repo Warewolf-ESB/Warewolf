@@ -36,10 +36,10 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
 
         private ModelItem CreateModelItem()
         {
-            var modelItem = ModelItemUtils.CreateModelItem(new DsfDropBoxUploadAcivtity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfDropBoxUploadActivity());
             return modelItem;
         }
-    
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DropBoxUploadViewModel_Construct")]
@@ -52,8 +52,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(dropBoxUploadViewModel, typeof(ActivityDesignerViewModel));
         }
-     
-        
+
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Sources_GivenANewDropBoxViewModel_ShouldHaveNotBeNull()
@@ -79,7 +79,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //---------------Test Result -----------------------
             Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.FromPath));
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ToPath_GivenActivityIsNew_ShouldBeNullOrEmpty()
@@ -92,7 +92,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //---------------Test Result -----------------------
             Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.ToPath));
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Result_GivenActivityIsNew_ShouldBeNullOrEmpty()
@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //---------------Test Result -----------------------
             Assert.IsTrue(string.IsNullOrEmpty(dropBoxUploadViewModel.Result));
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SelectedSourceName_GivenActivityIsNewAndNoSourceSelected_ShouldBeNullOrEmpty()
@@ -141,17 +141,6 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //---------------Execute Test ----------------------
             Assert.IsFalse(dropBoxUploadViewModel.AddMode);
             //---------------Test Result -----------------------
-        }[TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Update_GivenActivityIsNew_ShouldBeDefaultToFalse()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxUploadViewModel = CreateMockViewModel();
-            //---------------Assert Precondition----------------
-            Assert.IsFalse(dropBoxUploadViewModel.AddMode);
-            //---------------Execute Test ----------------------
-            Assert.IsFalse(dropBoxUploadViewModel.UpdateMode);
-            //---------------Test Result -----------------------
         }
 
         [TestMethod]
@@ -180,49 +169,218 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             CustomContainer.DeRegister<IShellViewModel>();
         }
 
-       [TestMethod]
-       [Owner("Nkosinathi Sangweni")]
-       [TestCategory("SelectedOperation_EditSource")]
-       public void DropboxUploadViewModel_EditSourceOnlyAvailableIfSourceSelected()
-       {
-           var env = new Mock<IEnvironmentModel>();
-           var res = new Mock<IResourceRepository>();
-           var agg = new Mock<IEventAggregator>();
-           env.Setup(a => a.ResourceRepository).Returns(res.Object);
-           var sources = GetSources();
-           res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource))
-               .Returns(sources);
-           res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
-               .Returns(new Mock<IResourceModel>().Object);
-           var model = CreateModelItem();
-           //------------Setup for test--------------------------
-           var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
-           Assert.IsFalse(dropBoxUploadViewModel.IsDropboxSourceSelected);
-           dropBoxUploadViewModel.SelectedSource = sources[1];
-           Assert.IsTrue(dropBoxUploadViewModel.IsDropboxSourceSelected);
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SelectedOperation_EditSource")]
+        public void DropboxUploadViewModel_EditSourceOnlyAvailableIfSourceSelected()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource))
+                .Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
+                .Returns(new Mock<IResourceModel>().Object);
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            var dropBoxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+            Assert.IsFalse(dropBoxUploadViewModel.IsDropboxSourceSelected);
+            dropBoxUploadViewModel.SelectedSource = sources[1];
+            Assert.IsTrue(dropBoxUploadViewModel.IsDropboxSourceSelected);
 
-       }
-    
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SelectedOperation_EditSource")]
+        public void DropboxUploadViewModel_EditSourceAvailableIfSourceSelected()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            var boxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+            Assert.IsFalse(boxUploadViewModel.IsDropboxSourceSelected);
+            boxUploadViewModel.SelectedSource = boxUploadViewModel.Sources[0];
+            Assert.IsTrue(boxUploadViewModel.IsDropboxSourceSelected);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AddMode_GivenIsSet_ShouldSetModelItemProperty()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var boxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+
+            //------------Execute Test---------------------------
+            boxUploadViewModel.AddMode = true;
+            //------------Assert Results-------------------------
+            ModelProperty property = model.Properties["AddMode"];
+            if (property == null)
+            {
+                Assert.Fail("Property Does not exist");
+            }
+            var modelPropertyValue = Convert.ToBoolean(property.ComputedValue);
+            Assert.IsTrue(modelPropertyValue);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OverwriteModel_GivenIsSet_ShouldSetModelItemProperty()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var boxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+
+            //------------Execute Test---------------------------
+            boxUploadViewModel.OverWriteMode = true;
+            //------------Assert Results-------------------------
+            ModelProperty property = model.Properties["OverWriteMode"];
+            if (property == null)
+            {
+                Assert.Fail("Property Does not exist");
+            }
+            var modelPropertyValue = Convert.ToBoolean(property.ComputedValue);
+            Assert.IsTrue(modelPropertyValue);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void FromPath_GivenIsSet_ShouldSetModelItemProperty()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var boxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+
+            //------------Execute Test---------------------------
+            boxUploadViewModel.FromPath = "A";
+            //------------Assert Results-------------------------
+            ModelProperty property = model.Properties["FromPath"];
+            if (property == null)
+            {
+                Assert.Fail("Property Does not exist");
+            }
+            var modelPropertyValue = property.ComputedValue;
+            Assert.AreEqual("A", modelPropertyValue);
+        } 
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ToPath_GivenIsSet_ShouldSetModelItemProperty()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var boxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+
+            //------------Execute Test---------------------------
+            boxUploadViewModel.ToPath = "A";
+            //------------Assert Results-------------------------
+            ModelProperty property = model.Properties["ToPath"];
+            if (property == null)
+            {
+                Assert.Fail("Property Does not exist");
+            }
+            var modelPropertyValue = property.ComputedValue;
+            Assert.AreEqual("A", modelPropertyValue);
+        } 
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Result_GivenIsSet_ShouldSetModelItemProperty()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var boxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+
+            //------------Execute Test---------------------------
+            boxUploadViewModel.Result = "A";
+            //------------Assert Results-------------------------
+            ModelProperty property = model.Properties["Result"];
+            if (property == null)
+            {
+                Assert.Fail("Property Does not exist");
+            }
+            var modelPropertyValue = property.ComputedValue;
+            Assert.AreEqual("A", modelPropertyValue);
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateOAuthSource_GivenCanPublish_ShouldResfreshSources()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var res = new Mock<IResourceRepository>();
+            var agg = new Mock<IEventAggregator>();
+            env.Setup(a => a.ResourceRepository).Returns(res.Object);
+            var sources = GetSources();
+            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
+            
+            var model = CreateModelItem();
+            //------------Setup for test--------------------------
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var mockVM = new DropBoxUploadViewModel(model, env.Object, agg.Object);
+            //---------------Assert Precondition----------------
+            mockVM.Sources.Clear();
+            var count = mockVM.Sources.Count();
+            Assert.AreEqual(0,count);
+            //---------------Execute Test ----------------------
+            mockVM.Sources = mockVM.LoadOAuthSources();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2, mockVM.Sources.Count);
+        }
+        
       
-    [TestMethod]
-    [Owner("Nkosinathi Sangweni")]
-    [TestCategory("SelectedOperation_EditSource")]
-    public void DropboxUploadViewModel_EditSourceAvailableIfSourceSelected()
-    {
-        var env = new Mock<IEnvironmentModel>();
-        var res = new Mock<IResourceRepository>();
-        var agg = new Mock<IEventAggregator>();
-        env.Setup(a => a.ResourceRepository).Returns(res.Object);
-        var sources = GetSources();
-        res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
-        res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
-        var model = CreateModelItem();
-        //------------Setup for test--------------------------
-        var boxUploadViewModel = new DropBoxUploadViewModel(model, env.Object, agg.Object) ;
-        Assert.IsFalse(boxUploadViewModel.IsDropboxSourceSelected);
-        boxUploadViewModel.SelectedSource = boxUploadViewModel.Sources[0];
-        Assert.IsTrue(boxUploadViewModel.IsDropboxSourceSelected);
-    }
 
         List<OauthSource> GetSources()
         {

@@ -25,7 +25,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "Post Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebPostActivity:DsfActivity
     {
         public IList<INameValue> Headers { get; set; }
@@ -35,8 +35,8 @@ namespace Dev2.Activities
 
         public DsfWebPostActivity()
         {
-            Type = "Web Post Request Connector";
-            DisplayName = "Web Post Request Connector";
+            Type = "POST Web Method";
+            DisplayName = "POST Web Method";
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -248,6 +248,7 @@ namespace Dev2.Activities
 
         public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
+            ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => true;
             var webclient = new WebClient();
             if (head != null)
             {
@@ -263,12 +264,6 @@ namespace Dev2.Activities
                 webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
 
-            var contentType = webclient.Headers["Content-Type"];
-            if (string.IsNullOrEmpty(contentType))
-            {
-                contentType = "application/x-www-form-urlencoded";
-            }
-            webclient.Headers["Content-Type"] = contentType;
             webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
             var address = source.Address;
             if (query != null)
