@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dropbox.Api;
@@ -47,7 +48,15 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             {
                 Dev2Logger.Error(exception.Message);
                 var hasInnerExc = exception.InnerException != null;
-                return hasInnerExc ? new DropboxFailureResult(exception.InnerException) : new DropboxFailureResult(exception);
+                if (hasInnerExc)
+                {
+                    if (exception.InnerException.Message.Contains("not_found"))
+                    {
+                        return new DropboxFailureResult(new DropboxFileNotFoundException());
+                    }
+                    return exception.InnerException.Message.Contains("not_file") ? new DropboxFailureResult(new DropboxPathNotFileFoundException()) : new DropboxFailureResult(exception.InnerException);
+                }
+                return new DropboxFailureResult(exception);
             }
         }
         [ExcludeFromCodeCoverage]

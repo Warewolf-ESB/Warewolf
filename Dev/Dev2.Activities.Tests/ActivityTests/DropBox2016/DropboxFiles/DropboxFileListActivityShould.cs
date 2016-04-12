@@ -227,9 +227,10 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource()
                 {
-                    Secret = "Test"
+                    Secret = "Test",
+                   
                 },
-                IncludeFolders = true
+                IsFoldersSelected = true
             };
 
             ;
@@ -250,6 +251,82 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Test Result -----------------------
             Assert.AreEqual(3, dropboxFileListActivityMock.Folders.Count());
         }
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PerformExecution_GivenPathAndIsFilesAndFoldersSelected_ShouldLoadFoldersAndFiles()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+                .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
+            var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
+            {
+                SelectedSource = new OauthSource()
+                {
+                    Secret = "Test",
+                   
+                },
+                IsFilesAndFoldersSelected = true
+            };
+
+            ;
+
+
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dropboxFileListActivityMock);
+            //---------------Execute Test ----------------------
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            {
+                {"ToPath","a.txt"},
+                {"IsRecursive","false"},
+                {"IncludeMediaInfo","false"},
+                {"IncludeDeleted","false"},
+                {"IncludeFolders","true"},
+              
+            });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(3, dropboxFileListActivityMock.FilesAndFolders.Count());
+        } 
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PerformExecution_GivenPathAndIsFilesAndFoldersSelectedAndIncludeDeleted_ShouldLoadFoldersAndFilesAndDeleted()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+                .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
+            var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
+            {
+                SelectedSource = new OauthSource()
+                {
+                    Secret = "Test",
+                   
+                },
+                IsFilesAndFoldersSelected = true,
+                IncludeDeleted = true
+               
+            };
+
+            ;
+
+
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dropboxFileListActivityMock);
+            //---------------Execute Test ----------------------
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            {
+                {"ToPath","a.txt"},
+                {"IsRecursive","false"},
+                {"IncludeMediaInfo","false"},
+                {"IncludeDeleted","false"},
+                {"IncludeFolders","true"},
+              
+            });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(4, dropboxFileListActivityMock.FilesAndFolders.Count());
+        }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPathAndIncludeDeleted_ShouldLoadDeletedFiles()
@@ -264,6 +341,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 {
                     Secret = "Test"
                 },
+                IncludeDeleted = true
             };
 
             //---------------Assert Precondition----------------
@@ -296,7 +374,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 {
                     Secret = "Test"
                 },
-                IncludeFolders = false
             };
 
             ;

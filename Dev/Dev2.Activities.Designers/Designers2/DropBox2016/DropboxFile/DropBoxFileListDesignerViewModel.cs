@@ -24,7 +24,7 @@ using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
 {
-    public class DropBoxFileListViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
+    public class DropBoxFileListDesignerViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
         private ObservableCollection<OauthSource> _sources;
         private readonly IEnvironmentModel _environmentModel;
@@ -42,12 +42,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         private bool _isFoldersSelected;
         private bool _isFilesAndFoldersSelected;
 
-        public DropBoxFileListViewModel(ModelItem modelItem)
+        public DropBoxFileListDesignerViewModel(ModelItem modelItem)
             : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
         }
 
-        public DropBoxFileListViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public DropBoxFileListDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem, "File Or Folder", String.Empty)
         {
             _environmentModel = environmentModel;
@@ -60,6 +60,10 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
             _sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
+            IsFilesSelected = true;
+            IncludeDeleted = false;
+            IsRecursive = false;
+            IncludeMediaInfo = false;
 
         }
         public ICommand NewSourceCommand { get; set; }
@@ -80,7 +84,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
                 OnPropertyChanged("SelectedSource");
             }
         }
-
 
 
         private void SetModelItemProperty(object value, [CallerMemberName]string propName = null)

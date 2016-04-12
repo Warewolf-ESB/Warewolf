@@ -286,7 +286,7 @@
     <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml.cs">
       <DependentUpon>DropBoxFileListDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesignerViewModel.cs" />
     <Compile Include="Designers2\DropBox2016\DropboxFile\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>

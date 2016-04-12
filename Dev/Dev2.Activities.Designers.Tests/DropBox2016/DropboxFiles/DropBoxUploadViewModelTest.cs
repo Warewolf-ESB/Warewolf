@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             AppSettings.LocalHost = AppLocalhost;
         }
 
-        private DropBoxFileListViewModel CreateMockViewModel()
+        private DropBoxFileListDesignerViewModel CreateMockViewModel()
         {
             var env = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             mockResourceRepo.Setup(repository => repository.FindSourcesByType<OauthSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
             env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var agg = new Mock<IEventAggregator>();
-            var dropBoxDownloadViewModel = new DropBoxFileListViewModel(CreateModelItem(), env.Object, agg.Object);
+            var dropBoxDownloadViewModel = new DropBoxFileListDesignerViewModel(CreateModelItem(), env.Object, agg.Object);
             return dropBoxDownloadViewModel;
         }
 
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             mockResourceRepo.Setup(repository => repository.FindSourcesByType<OauthSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
             mock.SetupGet(a => a.ResourceRepository).Returns(mockResourceRepo.Object);
             EnvironmentRepository.Instance.ActiveEnvironment = mock.Object;
-            var viewModel = new DropBoxFileListViewModel(CreateModelItem());
+            var viewModel = new DropBoxFileListDesignerViewModel(CreateModelItem());
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -290,7 +290,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.Register(mockShellViewModel.Object);
             //------------Setup for test--------------------------
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
             dropBoxFileListViewModel.SelectedSource = dropBoxFileListViewModel.Sources.First();
             dropBoxFileListViewModel.EditDropboxSourceCommand.Execute(null);
             //------------Execute Test---------------------------
@@ -315,7 +315,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
                 .Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
             Assert.IsFalse(dropBoxFileListViewModel.IsDropboxSourceSelected);
             dropBoxFileListViewModel.SelectedSource = sources[1];
             Assert.IsTrue(dropBoxFileListViewModel.IsDropboxSourceSelected);
@@ -337,7 +337,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var boxUploadViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
             Assert.IsFalse(boxUploadViewModel.IsDropboxSourceSelected);
             boxUploadViewModel.SelectedSource = boxUploadViewModel.Sources[0];
             Assert.IsTrue(boxUploadViewModel.IsDropboxSourceSelected);
@@ -358,7 +358,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.ToPath = "A";
@@ -386,7 +386,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IncludeMediaInfo = true;
@@ -414,7 +414,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsRecursive = true;
@@ -442,7 +442,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IncludeDeleted = true;
@@ -470,7 +470,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFilesSelected = true;
@@ -497,7 +497,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFoldersSelected = true;
@@ -524,7 +524,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFilesAndFoldersSelected = true;
@@ -552,7 +552,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.Result = "A";
@@ -582,7 +582,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var mockVM = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var mockVM = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
             //---------------Assert Precondition----------------
             mockVM.Sources.Clear();
             var count = mockVM.Sources.Count();
@@ -608,7 +608,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var mockVM = new DropBoxFileListViewModel(model, env.Object, agg.Object);
+            var mockVM = new DropBoxFileListDesignerViewModel(model, env.Object, agg.Object);
             //---------------Assert Precondition----------------
             mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------

@@ -7,9 +7,6 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
-                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
@@ -19,7 +16,7 @@
                                MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
-                               d:DataContext="{d:DesignInstance dropboxFile:DropBoxFileListViewModel}"                            
+                               d:DataContext="{d:DesignInstance dropboxFile:DropBoxFileListDesignerViewModel}"                            
                                
                                >
     <core:ActivityDesignerTemplate.Resources>
@@ -36,6 +33,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -64,7 +62,7 @@
                 <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxDownloadFileName}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
-                                     SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
@@ -80,14 +78,17 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <RadioButton Grid.Column="0" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesSelected}">Files</RadioButton>
-            <RadioButton Grid.Column="1" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFoldersSelected}">Folders</RadioButton>
-            <RadioButton Grid.Column="2" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesAndFoldersSelected}">Files &amp; Folders</RadioButton>
+            <RadioButton Grid.Column="0" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files</RadioButton>
+            <RadioButton Grid.Column="1" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Folders</RadioButton>
+            <RadioButton Grid.Column="2" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesAndFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files &amp; Folders</RadioButton>
         </Grid>
         <TextBlock Grid.Column="0" Grid.Row="4" Text="Media information" Margin="{StaticResource ActivityBorderTop}"/>
-        <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeMediaInfo}">Include media information</CheckBox>
+        <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeMediaInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Include media information</CheckBox>
 
         <TextBlock Grid.Column="0" Grid.Row="5" Text="Deleted Files" Margin="{StaticResource ActivityBorderTop}"/>
-        <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeDeleted}">Include deleted files</CheckBox>
+        <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Include deleted files</CheckBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="Recursive" Margin="{StaticResource ActivityBorderTop}"/>
+        <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IsRecursive}">Load Sub folders</CheckBox>
     </Grid>
 </core:ActivityDesignerTemplate>

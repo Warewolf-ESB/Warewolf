@@ -26,30 +26,26 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         public virtual List<string> Folders { get; set; }
         private DropboxClient _dropboxClient;
         public Exception Exception { get; set; }
-        [Inputs("Include Media info")]
         [FindMissing]
         public bool IncludeMediaInfo { get; set; }
-        [Inputs("Load recursively")]
         [FindMissing]
         public bool IsRecursive { get; set; }
-        [Inputs("Include Deleted files")]
         [FindMissing]
         public bool IncludeDeleted { get; set; }
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
-
-        [Inputs("Files Only")]
         [FindMissing]
         public bool IsFilesSelected { get; set; }
-        [Inputs("Folders Only")]
         [FindMissing]
         public bool IsFoldersSelected { get; set; }
-        [Inputs("Files Folders Only")]
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
 
+
+
         public List<string> DeletedFiles { get; set; }
+        [Outputs("Files and folders")]
         public List<string> FilesAndFolders { get; set; }
         public override string DisplayName { get; set; }
         private DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
@@ -62,14 +58,15 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             Folders = new List<string>();
             DeletedFiles = new List<string>();
             IsFilesSelected = true;
+            IncludeDeleted = false;
+            IsRecursive = false;
+            IncludeMediaInfo = false;
         }
 
         public DsfDropboxFileListActivity()
             : this(new DropboxFactory())
         {
-            IncludeDeleted = false;
-            IsRecursive = false;
-            IncludeMediaInfo = false;
+
         }
 
         public virtual DropboxClient GetDropboxClient()
@@ -98,12 +95,9 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         }
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            var isRecursive = Convert.ToBoolean(evaluatedValues["IsRecursive"]);
             var toPath = evaluatedValues["ToPath"];
-            var includeMediaInfo = Convert.ToBoolean(evaluatedValues["IncludeMediaInfo"]);
-            var includeDeleted = Convert.ToBoolean(evaluatedValues["IncludeDeleted"]);
-            var includeFolders = Convert.ToBoolean(evaluatedValues["IncludeFolders"]);
-            IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(isRecursive, toPath, includeMediaInfo, includeDeleted);
+
+            IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(GetDropboxClient());
             var dropboxSuccessResult = dropboxExecutionResult as DropboxListFolderSuccesResult;
@@ -111,17 +105,23 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             {
                 var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
                 var metadatas = listFolderResult.Entries;
-                if (includeDeleted)
+                if (IncludeDeleted)
                 {
                     DeletedFiles = listFolderResult.Entries.Where(metadata => metadata.IsDeleted).Select(metadata => metadata.Name).ToList();
                 }
                 Files = metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList();
-                if (includeFolders)
+                if (IsFoldersSelected)
                     Folders = metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList();
-                if (Files != null)
-                    FilesAndFolders.AddRange(Files);
-                if (Folders != null)
-                    FilesAndFolders.AddRange(Folders);
+                if (IsFilesSelected)
+                    Files = metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList();
+                if (IsFilesAndFoldersSelected)
+                {
+                    FilesAndFolders.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList());
+                    FilesAndFolders.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList());
+                    if (IncludeDeleted)
+                        FilesAndFolders.AddRange(DeletedFiles);
+
+                }
                 return GlobalConstants.DropBoxSucces;
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
