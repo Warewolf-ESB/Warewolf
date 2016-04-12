@@ -11,48 +11,53 @@ namespace Warewolf.Storage
         private readonly IExecutionEnvironment _inner;
         private readonly string _datasource;
         private readonly string _alias;
-
+        private readonly Func<string, int,string,string> _doReplace;
         public ScopedEnvironment(IExecutionEnvironment inner, string datasource, string alias)
         {
             _inner = inner;
             _datasource = datasource;
             _alias = alias;
+            _doReplace = UpdateDataSourceWithIterativeValueBob;
         }
 
         #region Implementation of IExecutionEnvironment
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = true)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.Eval(ReplaceUpdate(exp, updateDatasource), update, throwsifnotexists);
+  
+            return _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists);
         }
 
         public CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.EvalStrict(ReplaceUpdate(exp, updateDatasource), update);
+          
+            return _inner.EvalStrict(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update);
         }
 
         public void Assign(string exp, string value, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.Assign(ReplaceUpdate(exp, updateDatasource), ReplaceUpdate(value, updateDatasource), 0);
+          
+            _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
         }
 
-        private string ReplaceUpdate(string value, string magic)
-        {
-            return value.Replace(_alias, magic);
-        }
+ 
 
-        private string UpdateDataSourceWithIterativeValue(string datasource, int update)
+        private string UpdateDataSourceWithIterativeValueBob(string datasource, int update, string exp)
         {
-            return WarewolfDataEvaluationCommon.languageExpressionToString( WarewolfDataEvaluationCommon.parseLanguageExpression(datasource,update));
+            return exp.Replace(_alias,WarewolfDataEvaluationCommon.languageExpressionToString( WarewolfDataEvaluationCommon.parseLanguageExpression(datasource,update)));
+        }
+        private string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
+        {
+            var magic = _doReplace(datasource, update,exp);
+            return magic;
+           
         }
 
         public void AssignWithFrame(IAssignValue value, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.AssignWithFrame(new AssignValue(ReplaceUpdate(value.Name, _datasource), ReplaceUpdate(value.Value, _datasource)), update);
+            var name = UpdateDataSourceWithIterativeValue(_datasource, update,value.Name);
+            var valuerep = UpdateDataSourceWithIterativeValue(_datasource, update, value.Value);
+            _inner.AssignWithFrame(new AssignValue(name, valuerep), update);
         }
 
         public int GetLength(string recordSetName)
@@ -67,8 +72,8 @@ namespace Warewolf.Storage
 
         public IList<int> EvalRecordSetIndexes(string recordsetName, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.EvalRecordSetIndexes(ReplaceUpdate(recordsetName, updateDatasource), 0);
+
+            return _inner.EvalRecordSetIndexes(UpdateDataSourceWithIterativeValue(_datasource, update,recordsetName), 0);
         }
 
         public bool HasRecordSet(string recordsetName)
@@ -78,32 +83,31 @@ namespace Warewolf.Storage
 
         public IList<string> EvalAsListOfStrings(string expression, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.EvalAsListOfStrings(ReplaceUpdate(expression, updateDatasource), 0);
+            return _inner.EvalAsListOfStrings(UpdateDataSourceWithIterativeValue(_datasource, update, expression), 0);
         }
 
         public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.EvalAssignFromNestedStar(ReplaceUpdate(exp, updateDatasource), recsetResult, 0);
+
+            _inner.EvalAssignFromNestedStar(UpdateDataSourceWithIterativeValue(_datasource, update,exp), recsetResult, 0);
         }
 
         public void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.EvalAssignFromNestedLast(ReplaceUpdate(exp, updateDatasource), recsetResult, 0);
+
+            _inner.EvalAssignFromNestedLast(UpdateDataSourceWithIterativeValue(_datasource, update, exp), recsetResult, 0);
         }
 
         public void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.EvalAssignFromNestedNumeric(ReplaceUpdate(rawValue, updateDatasource), recsetResult, 0);
+
+            _inner.EvalAssignFromNestedNumeric(UpdateDataSourceWithIterativeValue(_datasource, update, rawValue), recsetResult, 0);
         }
 
         public void EvalDelete(string exp, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.EvalDelete(ReplaceUpdate(exp, updateDatasource), 0);
+            
+            _inner.EvalDelete(UpdateDataSourceWithIterativeValue(_datasource, update, exp), 0);
         }
 
         public void CommitAssign()
@@ -113,8 +117,8 @@ namespace Warewolf.Storage
 
         public void SortRecordSet(string sortField, bool descOrder, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.SortRecordSet(ReplaceUpdate(sortField, updateDatasource), descOrder, 0);
+
+            _inner.SortRecordSet(UpdateDataSourceWithIterativeValue(_datasource, update, sortField), descOrder, 0);
         }
 
         public string ToStar(string expression)
@@ -124,20 +128,20 @@ namespace Warewolf.Storage
 
         public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.EvalAsList(ReplaceUpdate(searchCriteria, updateDatasource), 0, throwsifnotexists);
+           
+            return _inner.EvalAsList(UpdateDataSourceWithIterativeValue(_datasource, update, searchCriteria), 0, throwsifnotexists);
         }
 
         public IEnumerable<int> EvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.EvalWhere(ReplaceUpdate(expression, updateDatasource), clause, 0);
+
+            return _inner.EvalWhere(UpdateDataSourceWithIterativeValue(_datasource, update, expression), clause, 0);
         }
 
         public void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            _inner.ApplyUpdate(ReplaceUpdate(expression, updateDatasource), clause, 0);
+
+            _inner.ApplyUpdate(UpdateDataSourceWithIterativeValue(_datasource, update, expression), clause, 0);
         }
 
         public HashSet<string> Errors
@@ -162,7 +166,7 @@ namespace Warewolf.Storage
 
         public void AssignDataShape(string p)
         {
-            _inner.AssignDataShape(p);
+            _inner.AssignDataShape(p.Replace(_alias,_datasource));
         }
 
         public string FetchErrors()
@@ -177,14 +181,14 @@ namespace Warewolf.Storage
 
         public string EvalToExpression(string exp, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.EvalToExpression(ReplaceUpdate(exp, updateDatasource), 0);
+  
+            return _inner.EvalToExpression(UpdateDataSourceWithIterativeValue(_datasource, update, exp), 0);
         }
 
         public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
         {
-            var updateDatasource = UpdateDataSourceWithIterativeValue(_datasource, update);
-            return _inner.EvalForDataMerge(ReplaceUpdate(exp, updateDatasource), 0);
+            
+            return _inner.EvalForDataMerge(UpdateDataSourceWithIterativeValue(_datasource, update, exp), 0);
         }
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -254,6 +256,391 @@ namespace Warewolf.Storage.Tests
             Assert.IsTrue(replaced);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalRecordSetIndexes")]
+        public void ScopedEnvironment_EvalRecordSetIndexesTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalRecordSetIndexes("[[a]]", 1));
+   
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalRecordSetIndexes")]
+        public void ScopedEnvironment_EvalRecordSetIndexesTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalRecordSetIndexes("[[b]]", 1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAsListOfStrings")]
+        public void ScopedEnvironment_EvalAsListOfStringsTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAsListOfStrings("[[a]]", 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAsListOfStrings")]
+        public void ScopedEnvironment_EvalAsListOfStringsTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAsListOfStrings("[[b]]", 1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAssignFromNestedStar")]
+        public void ScopedEnvironment_EvalAssignFromNestedStarTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAssignFromNestedStar("[[a]]",It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAssignFromNestedStar")]
+        public void ScopedEnvironment_EvalAssignFromNestedStarTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAssignFromNestedStar("[[b]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(),1));
+
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAssignFromNestedLast")]
+        public void ScopedEnvironment_EvalAssignFromNestedLastTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAssignFromNestedLast("[[a]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAssignFromNestedLast")]
+        public void ScopedEnvironment_EvalAssignFromNestedLastTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAssignFromNestedLast("[[b]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAssignFromNestedNumeric")]
+        public void ScopedEnvironment_EvalAssignFromNestedNumericTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAssignFromNestedNumeric("[[a]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAssignFromNestedNumeric")]
+        public void ScopedEnvironment_EvalAssignFromNestedNumericTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAssignFromNestedNumeric("[[b]]", It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), 1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalDelete")]
+        public void ScopedEnvironment_EvalDeleteTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalDelete("[[a]]", 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalDelete")]
+        public void ScopedEnvironment_EvalDeleteTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalDelete("[[b]]", 1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_SortRecordSet")]
+        public void ScopedEnvironment_SortRecordSetTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.SortRecordSet("[[a]]",It.IsAny<bool>(), 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_SortRecordSet")]
+        public void ScopedEnvironment_SortRecordSetTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.SortRecordSet("[[b]]",It.IsAny<bool>(), 1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAsList")]
+        public void ScopedEnvironment_EvalAsListTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalAsList("[[a]]",  1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalAsList")]
+        public void ScopedEnvironment_EvalAsListTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalAsList("[[b]]",  1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalWhere")]
+        public void ScopedEnvironment_EvalWhereTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalWhere("[[a]]", ax => true, 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalWhere")]
+        public void ScopedEnvironment_EvalWhereTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalWhere("[[b]]",ax=>true, 1));
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_ApplyUpdate")]
+        public void ScopedEnvironment_ApplyUpdateTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.ApplyUpdate("[[a]]", ax => ax, 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_ApplyUpdate")]
+        public void ScopedEnvironment_ApplyUpdateTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.ApplyUpdate("[[b]]", ax => ax, 1));
+
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalToExpression")]
+        public void ScopedEnvironment_EvalToExpressionTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalToExpression("[[a]]",  1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalToExpression")]
+        public void ScopedEnvironment_EvalToExpressionTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalToExpression("[[b]]", 1));
+
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalForDataMerge")]
+        public void ScopedEnvironment_EvalForDataMergeTest()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunction(scopedEnvironment, new List<string>() { "[[a]]" }, new List<string> { "[[Person(1)]]" }, a => a.EvalForDataMerge("[[a]]", 1));
+
+
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_EvalForDataMerge")]
+        public void ScopedEnvironment_EvalForDataMergeTestNegative()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            SetupReplacementFunctionDoesNotOccur(scopedEnvironment, a => a.EvalForDataMerge("[[b]]", 1));
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_HasRecordSet")]
+        public void ScopedEnvironment_HasRecordSet_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.HasRecordSet("a");
+            _mockEnv.Verify(a => a.HasRecordSet("a"));
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_CommitAssign")]
+        public void ScopedEnvironment_CommitAssign_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.CommitAssign();
+            _mockEnv.Verify(a => a.CommitAssign());
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_ToStar")]
+        public void ScopedEnvironment_ToStar_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.ToStar("[[a]]");
+            _mockEnv.Verify(a => a.ToStar("[[Person(*)]]"));
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_Errors")]
+        public void ScopedEnvironment_Errors_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var x = scopedEnvironment.Errors;
+            _mockEnv.Verify(a => a.Errors);
+        
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AllErrors")]
+        public void ScopedEnvironment_AllErrors_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            var x = scopedEnvironment.AllErrors;
+            _mockEnv.Verify(a => a.AllErrors);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AddError")]
+        public void ScopedEnvironment_AddError_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.AddError("bob");
+            _mockEnv.Verify(a => a.AddError("bob"));
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void ScopedEnvironment_AssignDataShape_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.AssignDataShape("[[a]]");
+            _mockEnv.Verify(a => a.AssignDataShape("[[Person(*)]]"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_AssignDataShape")]
+        public void ScopedEnvironment_AssignDataShape_expectPassThrough_NoReplace()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.AssignDataShape("a");
+            _mockEnv.Verify(a => a.AssignDataShape("a"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_FetchErrors")]
+        public void ScopedEnvironment_FetchErrors_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.FetchErrors();
+            _mockEnv.Verify(a => a.FetchErrors());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ScopedEnvironment_HasErrors")]
+        public void ScopedEnvironment_HasErrors_expectPassThrough()
+        {
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
+            scopedEnvironment.HasErrors();
+            _mockEnv.Verify(a => a.HasErrors());
+        }
+
+
+         void SetupReplacementFunction(ScopedEnvironment env, IEnumerable<string> originals, IEnumerable<string> replacements, Action<ScopedEnvironment> envAction)
+        {
+
+            var orzipped = originals.Zip(replacements, (a, b) => new Tuple<string, string>(a, b));
+           PrivateObject p = new PrivateObject(env);
+           var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int,string,string>;
+           p.SetFieldOrProperty("_doReplace",new Func<string, int,string,string>(
+               (s, i,val) =>
+               {
+
+                   // ReSharper disable once PossibleNullReferenceException
+                   var replaced =  fun(s,i,val);
+                   Assert.IsTrue(orzipped.Any(a=>a.Item1==val&&a.Item2==replaced));
+                  
+                   return replaced;
+               } 
+               )
+               );
+           envAction(env);
+        }
+         void SetupReplacementFunctionDoesNotOccur(ScopedEnvironment env,  Action<ScopedEnvironment> envAction)
+         {
+
+
+             PrivateObject p = new PrivateObject(env);
+             var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int, string, string>;
+             p.SetFieldOrProperty("_doReplace", new Func<string, int, string, string>(
+                 (s, i, val) =>
+                 {
+
+                     // ReSharper disable once PossibleNullReferenceException
+                     var replaced = fun(s, i, val);
+    
+                     Assert.AreEqual(replaced,val);
+                     return replaced;
+                 }
+                 )
+                 );
+             envAction(env);
+          
+         }
       
     }
 }
