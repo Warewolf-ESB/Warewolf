@@ -18,7 +18,6 @@
                                MinHeight="500"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"                               
-                               Padding="10,7,10,10"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:EmailDesignerViewModel}">
@@ -40,7 +39,7 @@
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
-    <Grid>
+    <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -283,8 +282,7 @@
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
                                 TextWrapping="Wrap"
-                                MinHeight="100"
-                                MaxHeight="100"
+                                Height="Auto"
                                 AcceptsTab="True"
                                 Padding="2,5,2,2"
                                 VerticalContentAlignment="Top"

@@ -7,7 +7,6 @@ using Dev2.Activities.Annotations;
 using Dev2.Activities.Designers2.Core.CloneInputRegion;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
 // ReSharper disable UnassignedGetOnlyAutoProperty
@@ -20,7 +19,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        public IList<string> Errors { get; }
+        public IList<string> Errors { get; set; }
         private bool _isInputsEmptyRows;
         private readonly ModelItem _modelItem;
         private IList<IServiceInput> _inputs;

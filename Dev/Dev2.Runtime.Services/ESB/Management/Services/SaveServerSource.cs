@@ -59,6 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 con.Password = src.Password;
                 con.ResourceName = src.Name;
                 con.ResourcePath = src.ResourcePath;
+                con.ResourceID = src.ID;
                 con.WebServerPort = int.Parse(port);
                 Connections tester = new Connections();
                 var res = tester.CanConnectToServer(con);

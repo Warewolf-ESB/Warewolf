@@ -115,7 +115,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
         // ReSharper disable once UnassignedGetOnlyAutoProperty
-        public IList<string> Errors { get; }
+        public IList<string> Errors { get; set; }
         public IToolRegion CloneRegion()
         {
             return new ExchangeSourceRegion

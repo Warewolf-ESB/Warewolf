@@ -2019,6 +2019,27 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.&lt;br /&gt;
+        ///        To download the file, put the full destination path and file name in here.&lt;br/&gt;
+        ///        You can use File System, URI, SFTP, FTP or FTPS format.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string DownloadFileHelpFilename {
+            get {
+                return ResourceManager.GetString("DownloadFileHelpFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are not allowed to drag remote workflows onto a remote service designer..
         /// </summary>
         public static string DragRemoteNotSupported {

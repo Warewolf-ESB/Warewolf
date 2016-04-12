@@ -55,10 +55,6 @@
       <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\DropNet.dll</HintPath>
-    </Reference>
     <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
@@ -182,18 +178,26 @@
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
-    <Compile Include="Activities\DropBox2016\DropboxFailureResult.cs" />
-    <Compile Include="Activities\DropBox2016\DropboxSuccessResult.cs" />
-    <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
-    <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadAcivtity.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\DropboxApiExceptions.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\DropBoxDownLoad.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\DsfDropBoxDownloadActivity.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\IDropboxDownload.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxFiles\DropboxFileList.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxSoureFileValidator.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxExecutor.cs" />
+    <Compile Include="Activities\DropBox2016\IDropboxResult.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxSingleExecutor.cs" />
     <Compile Include="Activities\DropBox2016\IDropboxTeamExecutor.cs" />
-    <Compile Include="Activities\DropBox2016\IDropboxResult.cs" />
+    <Compile Include="Activities\DropBox2016\IFilenameValidator.cs" />
+    <Compile Include="Activities\DropBox2016\ILocalPathManager.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxDownloadSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxFailureResult.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxUploadSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
-    <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
     <Compile Include="Activities\DsfODBCDatabaseActivity.cs" />
@@ -252,6 +256,7 @@
     <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
+    <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointDeleteListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />
@@ -464,7 +469,12 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Activities\DropBox\DownloadActivity\" />
+    <Folder Include="Activities\DropBox\DropboxFiles\" />
+    <Folder Include="Activities\DropBox\Result\" />
+    <Folder Include="Activities\DropBox\UploadActivity\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--
   <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">

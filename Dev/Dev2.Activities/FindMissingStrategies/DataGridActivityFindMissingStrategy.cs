@@ -284,19 +284,19 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             } 
-            else if (activityType == typeof(DsfDropBoxUploadAcivtity))
+            else if (activityType == typeof(DsfDropBoxUploadActivity))
             {
-                var maAct = activity as DsfDropBoxUploadAcivtity;
+                var maAct = activity as DsfDropBoxUploadActivity;
                 if (maAct != null)
                 {
-                    if (maAct.Inputs != null)
+                  /*  if (maAct.Inputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
+                    }**/
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {
                         results.Add(maAct.OnErrorVariable);

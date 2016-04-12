@@ -240,9 +240,6 @@ Scenario: Send Email with an attachment
 	And I click "Attachments"
 	Then the webs file chooser dialog opens 
 
-
-@ignore
-	#Audit Wolf-1419
 Scenario Outline: Sending an email 
 	Given the from account is '<from>'
 	And to address is '<To>'
@@ -255,16 +252,17 @@ Scenario Outline: Sending an email
 	And the execution has '<error>' error
 	And Result is '<result>'
 	Examples: 
-	| from                                        | To                                          | subject                           | password                 | Bcc                                       | Cc                                    | body                         | attachments                                | error | result                                                  |
-	| 22                                          | [[va]] =""                                  | [[rec([[int]]).a]] = Numeric Test | 3                        | 100                                       | 50                                    | [[rs().a]] = hello           | [[a]] = ""                                 | An    | [[result]] = From address is not in the valid format:22 |
-	| [[va]]      =""                             | 11                                          | [[rs().set]] = T                  | [[var]] = test123        | [[a]] = warewolf@dev2.co.za               | info@dev2.co.za                       | 45                           | [[at().set]] = E:\test.txt                 | An    | [[result]] = To address is not in the valid format:11   |
-	| [[rec(1).set]] = warewolf@dev2.co.za        | [[rs(1).a]] =  info@dev2.co.za              | [[va]]     =""                    | [[q]]  = test123         | test@dev2.co.za                           | [[var]] = user@dev2.co.za             | [[b]]                        | [[at(1).set]] = E:\test.txt                | No    | [[rs(*).a]] = Success                                   |
-	| [[email().rs]] = warewolf@dev2.co.za        | [[email([[int]]).rs]] = warewolf@dev2.co.za | [[rs(*).a]] = Test                | [[rs(1).a]] = test123    | [[e]]                                     | [[rec(1).set]] = info@dev2.co.za      | [[email([[int]]).rs]] = Test | [[at(*).set]] = E:\test.txt;E:\tr.txt;     | No    | [[rs([[int]]).a]] = Success, [[int]] = 1                |
-	| [[email(*).rs]] =                           | [[email().rs]] = warewolf@dev2.co.za        | New Email Test                    | [[rs().b]] = test123     | [[rec(1).set]] = warewolf@dev2.co.za      | [[e]]                                 | [[rs(*).a]] =                | [[at([[int]]).set]] = E:\tr.txt, [[int]]=2 | An    | [[result]] = Invalid Email Source                       |
-	| [[email([[int]]).rs]] = warewolf@dev2.co.za | [[email(*).rs]] =                           | New Email Test                    | [[rs(*).a]] = Test       | [[rec().set]] = warewolf@dev2.co.za       | [[rs(*).a]] =                         | This is a test               |                                            | An    | [[result]] = The recipient must be specified            |
-	| warewolf@dev2.co.za                         | info@dev2.co.za                             | New Email Test                    | [[rs([[int]]).a]] = Test | [[rs(*).a]] =                             | [[rec().set]] = warewolf@dev2.co.za   | This is a test               | E:\test.txt                                | No    | [[rs().a]] = Success                                    |
-	| warewolf@dev2.co.za                         | info@dev2.co.za                             | New Email Test                    | Test123                  | [[rs([[int]]).a]] =   warewolf@dev2.co.za | [[rs([[int]]).a]] =   info@dev2.co.za | This is a test               |                                            | No    | [[rs(1).a]] = Success                                   |
-	| warewolf@dev2.co.za                         | info@dev2.co.za                             | New Email Test                    | Test123                  | [[rs([[int]]).a]] =   warewolf@dev2.co.za | [[rs([[int]]).a]] =   info@dev2.co.za | This is a test               | 121                                        | AN    | [[result]] = Attachment is not the valid format :121    |
+	| from                                                  | To                                          | subject                           | password                 | Bcc                                       | Cc                                    | body                         | attachments                                | error | result                                                                                  |
+	| 22                                                    | [[va]] =""                                  | [[rec([[int]]).a]] = Numeric Test | 3                        | 100                                       | 50                                    | [[rs().a]] = hello           | [[a]] = ""                                 | An    | [[result]] = From address is not in the valid format:22                                 |
+	| [[va]]      =""                                       | 11                                          | [[rs().set]] = T                  | [[var]] = test123        | [[a]] = warewolf@dev2.co.za               | info@dev2.co.za                       | 45                           | [[at().set]] = E:\test.txt                 | An    | [[result]] = To address is not in the valid format:11                                   |
+	| [[rec(1).set]] = warewolf@dev2.co.za                  | [[rs(1).a]] =  info@dev2.co.za              | [[va]]     =""                    | [[q]]  = test123         | test@dev2.co.za                           | [[var]] = user@dev2.co.za             | [[b]]                        | [[at(1).set]] = E:\test.txt                | No    | [[rs(*).a]] = Success                                                                   |
+	| [[email().rs]] = warewolf@dev2.co.za                  | [[email([[int]]).rs]] = warewolf@dev2.co.za | [[rs(*).a]] = Test                | [[rs(1).a]] = test123    | [[e]]                                     | [[rec(1).set]] = info@dev2.co.za      | [[email([[int]]).rs]] = Test | [[at(*).set]] = E:\test.txt;E:\tr.txt;     | No    | [[rs([[int]]).a]] = Success, [[int]] = 1                                                |
+	| [[email(*).rs]] =                                     | [[email().rs]] = warewolf@dev2.co.za        | New Email Test                    | [[rs().b]] = test123     | [[rec(1).set]] = warewolf@dev2.co.za      | [[e]]                                 | [[rs(*).a]] =                | [[at([[int]]).set]] = E:\tr.txt, [[int]]=2 | An    | [[result]] = Invalid Email Source                                                       |
+	| [[email([[int]]).rs]] = warewolf@dev2.co.za           | [[email(*).rs]] =                           | New Email Test                    | [[rs(*).a]] = Test       | [[rec().set]] = warewolf@dev2.co.za       | [[rs(*).a]] =                         | This is a test               |                                            | An    | [[result]] = The recipient must be specified                                            |
+	| warewolf@dev2.co.za                                   | info@dev2.co.za                             | New Email Test                    | [[rs([[int]]).a]] = Test | [[rs(*).a]] =                             | [[rec().set]] = warewolf@dev2.co.za   | This is a test               | E:\test.txt                                | No    | [[rs().a]] = Success                                                                    |
+	| warewolf@dev2.co.za                                   | info@dev2.co.za                             | New Email Test                    | Test123                  | [[rs([[int]]).a]] =   warewolf@dev2.co.za | [[rs([[int]]).a]] =   info@dev2.co.za | This is a test               |                                            | No    | [[rs(1).a]] = Success                                                                   |
+	| warewolf@dev2.co.za                                   | info@dev2.co.za                             | New Email Test                    | Test123                  | [[rs([[int]]).a]] =   warewolf@dev2.co.za | [[rs([[int]]).a]] =   info@dev2.co.za | This is a test               | 121                                        | AN    | [[result]] = Attachment is not the valid format :121                                    |
+	| [[email(*).res]] = warewolf@dev2.co.za;new@dev2.co.za | [[email().rs]] = warewolf@dev2.c o.za        | New Email Test                    | [[rs().b]] = test123     | [[rec(1).set]] = warewolf@dev2.co.za      | [[e]]                                 | [[rs(*).a]] =                | [[at([[int]]).set]] = E:\tr.txt, [[int]]=2 | An    | [[result]] = From address is not in the valid format:warewolf@dev2.co.za;new@dev2.co.za |
 
 @ignore
 #Complex Types WOLF-1042
@@ -284,6 +282,7 @@ Scenario Outline: Sending an email using complex types
 	| [[client().set().value]]         | warewolf@dev2.co.za | [[rs(1).set().value()]] | ""              | Numeric Test | 3        | 100             | 50              | hello world |             | An    | [[result]] = To address is not in the valid format |
 	| [[client(1).set(*).value]]       | warewolf@dev2.co.za | [[rs(1).set().value]]   | info@dev2.co.za | ""           | test123  | test@dev2.co.za | user@dev2.co.za | [[b]]       | E:\test.txt | No    | [[rs(*).a]] = Success                              |
 	| [[client(1).set([[int]]).value]] | warewolf@dev2.co.za | [[rs(1).set().value]]   | info@dev2.co.za | ""           | test123  | test@dev2.co.za | user@dev2.co.za | [[b]]       | E:\test.txt | No    | [[rs(*).a]] = Success                              |
+
 Scenario: Send email with a null variable in from account
 	Given I have an email variable "[[a]]" equal to "NULL" 
 	And the from account is "[[a]]" 
@@ -300,3 +299,42 @@ Scenario: Send email with a non existent variable in from account
 	When the email tool is executed
 	Then the execution has "AN" error
 
+Scenario: Create new Email source from tool
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	And "To" input is ""
+	And "Subject" input is ""
+	And "Body" input is ""
+	When I select "New Email Source"
+	Then the new Email Source Tab is opened
+
+Scenario: Edit Email source from tool
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	And "To" input is ""
+	And "Subject" input is ""
+	And "Body" input is ""
+	When I select "Email Source"
+	Then "Edit" is Enabled
+	And I Click "Edit"
+	Then the "Email Source" Tab is opened
+
+Scenario: Change Email source
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	When I select "Email Source"
+	Then "Edit" is Enabled
+	And "To" input is "warewolfworks@gmail.com"
+	And "Subject" input is "Sample Text"
+	And "Body" input is "Text should not clear"
+	When "Mail Source" is changed from "Email Source" to "NewEmailSource"
+	Then the "Email Source" Tab is opened
+	And "To" input is "warewolfworks@gmail.com"
+	And "Subject" input is "Sample Text"
+	And "Body" input is "Text should not clear"

@@ -96,11 +96,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.And("Generate Outputs is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2300 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 17
- testRunner.And("Outputs are", ((string)(null)), table1, "And ");
+ testRunner.And("Outputs are", ((string)(null)), table2300, "And ");
 #line 19
  testRunner.And("Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
@@ -132,14 +132,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
  testRunner.Then("Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2301 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
-            table2.AddRow(new string[] {
+            table2301.AddRow(new string[] {
                         "[[a]]",
                         "test"});
 #line 33
- testRunner.And("Header is added as", ((string)(null)), table2, "And ");
+ testRunner.And("Header is added as", ((string)(null)), table2301, "And ");
 #line 36
  testRunner.And("Url is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
@@ -151,14 +151,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 40
  testRunner.Then("the Generate Outputs window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2302 = new TechTalk.SpecFlow.Table(new string[] {
                         "Inputs",
                         ""});
-            table3.AddRow(new string[] {
+            table2302.AddRow(new string[] {
                         "[[a]]",
                         "1"});
 #line 41
- testRunner.And("Variables to test appear as", ((string)(null)), table3, "And ");
+ testRunner.And("Variables to test appear as", ((string)(null)), table2302, "And ");
 #line 44
  testRunner.When("Test Request Variables is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 45
@@ -168,17 +168,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
  testRunner.Then("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2303 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table4.AddRow(new string[] {
+            table2303.AddRow(new string[] {
                         "CountryID",
                         "CountryID"});
-            table4.AddRow(new string[] {
+            table2303.AddRow(new string[] {
                         "Description",
                         "Description"});
 #line 48
- testRunner.And("output mappings are", ((string)(null)), table4, "And ");
+ testRunner.And("output mappings are", ((string)(null)), table2303, "And ");
 #line 52
  testRunner.And("\"Done\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -250,14 +250,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
  testRunner.And("Url as \"http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2304 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
-            table5.AddRow(new string[] {
+            table2304.AddRow(new string[] {
                         "[[a]]",
                         "test"});
 #line 82
- testRunner.And("Header is added as", ((string)(null)), table5, "And ");
+ testRunner.And("Header is added as", ((string)(null)), table2304, "And ");
 #line 85
  testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 86
@@ -275,17 +275,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 92
  testRunner.Then("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2305 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table6.AddRow(new string[] {
+            table2305.AddRow(new string[] {
                         "CountryID",
                         "CountryID"});
-            table6.AddRow(new string[] {
+            table2305.AddRow(new string[] {
                         "Description",
                         "Description"});
 #line 93
-  testRunner.And("output mappings are", ((string)(null)), table6, "And ");
+  testRunner.And("output mappings are", ((string)(null)), table2305, "And ");
 #line 97
  testRunner.And("\"Done\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -325,12 +325,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 116
  testRunner.When("Test Request Variables is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2306 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table7.AddRow(new string[] {
+            table2306.AddRow(new string[] {
                         "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
 #line 117
- testRunner.Then("Web Outputs appear as", ((string)(null)), table7, "Then ");
+ testRunner.Then("Web Outputs appear as", ((string)(null)), table2306, "Then ");
 #line 120
  testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 121
@@ -338,17 +338,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 122
  testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2307 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table8.AddRow(new string[] {
+            table2307.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table8.AddRow(new string[] {
+            table2307.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 123
- testRunner.And("output mappings are", ((string)(null)), table8, "And ");
+ testRunner.And("output mappings are", ((string)(null)), table2307, "And ");
 #line 127
  testRunner.When("I change Source from \"WebHeloo\"  to \"Dev2CountriesWebService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 128
@@ -410,14 +410,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 155
  testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2308 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table9.AddRow(new string[] {
+            table2308.AddRow(new string[] {
                         "Response",
                         "Response"});
 #line 156
- testRunner.And("output mappings are", ((string)(null)), table9, "And ");
+ testRunner.And("output mappings are", ((string)(null)), table2308, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -457,12 +457,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 175
  testRunner.And("I click Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2309 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table10.AddRow(new string[] {
+            table2309.AddRow(new string[] {
                         "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
 #line 176
- testRunner.Then("Web Outputs appear as", ((string)(null)), table10, "Then ");
+ testRunner.Then("Web Outputs appear as", ((string)(null)), table2309, "Then ");
 #line 179
  testRunner.When("I click Cancel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 180
@@ -506,12 +506,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 197
  testRunner.When("Test Request Variables is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2310 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table11.AddRow(new string[] {
+            table2310.AddRow(new string[] {
                         "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
 #line 198
- testRunner.Then("Web Outputs appear as", ((string)(null)), table11, "Then ");
+ testRunner.Then("Web Outputs appear as", ((string)(null)), table2310, "Then ");
 #line 201
  testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 202
@@ -519,17 +519,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 203
  testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2311 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table12.AddRow(new string[] {
+            table2311.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table12.AddRow(new string[] {
+            table2311.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 204
- testRunner.And("output mappings are", ((string)(null)), table12, "And ");
+ testRunner.And("output mappings are", ((string)(null)), table2311, "And ");
 #line 208
  testRunner.And("Recordset Name equals rec", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 209
@@ -541,17 +541,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 212
  testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2312 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table13.AddRow(new string[] {
+            table2312.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table13.AddRow(new string[] {
+            table2312.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 213
- testRunner.And("output mappings are", ((string)(null)), table13, "And ");
+ testRunner.And("output mappings are", ((string)(null)), table2312, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -589,12 +589,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 232
  testRunner.When("Test Request Variables is Successful", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2313 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table14.AddRow(new string[] {
+            table2313.AddRow(new string[] {
                         "{\"rec\" : [{\"a\":\"1\",\"b\":\"a\"}]}"});
 #line 233
- testRunner.Then("Web Outputs appear as", ((string)(null)), table14, "Then ");
+ testRunner.Then("Web Outputs appear as", ((string)(null)), table2313, "Then ");
 #line 236
  testRunner.When("I click Done", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 237
@@ -602,17 +602,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 238
  testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2314 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table15.AddRow(new string[] {
+            table2314.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table15.AddRow(new string[] {
+            table2314.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 239
- testRunner.And("output mappings are", ((string)(null)), table15, "And ");
+ testRunner.And("output mappings are", ((string)(null)), table2314, "And ");
 #line 243
  testRunner.And("Recordset Name equals rec", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 244
@@ -634,17 +634,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 252
  testRunner.And("Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2315 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table16.AddRow(new string[] {
+            table2315.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table16.AddRow(new string[] {
+            table2315.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 253
- testRunner.And("output mappings are", ((string)(null)), table16, "And ");
+ testRunner.And("output mappings are", ((string)(null)), table2315, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

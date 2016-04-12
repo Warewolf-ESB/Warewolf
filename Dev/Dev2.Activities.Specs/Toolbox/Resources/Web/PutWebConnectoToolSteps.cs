@@ -170,7 +170,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             Assert.IsTrue(webServicePutViewModel.GenerateOutputsVisible);
             Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.InputArea.IsEnabled);
             Assert.IsFalse(webServicePutViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
-            Assert.IsTrue(webServicePutViewModel.ManageServiceInputViewModel.IsEnabled);
         }
 
         [Then(@"Put Variables are Enabled")]

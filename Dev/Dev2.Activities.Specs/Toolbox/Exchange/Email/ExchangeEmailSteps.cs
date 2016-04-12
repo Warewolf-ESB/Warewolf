@@ -63,7 +63,6 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
                 Subject = string.IsNullOrEmpty(subject) ? "" : subject,
                 To = string.IsNullOrEmpty(to) ? "" : to,
                 SavedSource = selectedEmailSource,
-                IsHtml = isHtml
             };
 
             TestStartNode = new FlowStep

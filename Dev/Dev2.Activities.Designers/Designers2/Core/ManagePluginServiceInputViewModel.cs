@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -125,10 +126,7 @@ namespace Dev2.Activities.Designers2.Core
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (OutputArea != null)
                 {
-                    foreach (var serviceOutputMapping in OutputArea.Outputs)
-                    {
-                        _viewmodel.OutputsRegion.Outputs.Add(serviceOutputMapping);
-                    }
+                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(OutputArea.Outputs);
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
                     if (recSet != null)
                     {
@@ -158,6 +156,7 @@ namespace Dev2.Activities.Designers2.Core
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
+            Errors = new List<string>();
             OutputArea.IsEnabled = true;
             TestResults = null;
             IsTesting = true;

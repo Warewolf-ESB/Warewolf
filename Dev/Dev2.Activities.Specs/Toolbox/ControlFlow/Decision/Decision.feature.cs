@@ -3318,21 +3318,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 1193
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1194
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table151 = new TechTalk.SpecFlow.Table(new string[] {
-                        "",
-                        "Statement",
-                        "Require All decisions to be True"});
-#line 1195
- testRunner.Then("the debug inputs as", ((string)(null)), table151, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table152.AddRow(new string[] {
+            table151.AddRow(new string[] {
                         "NO"});
-#line 1197
- testRunner.And("the debug output as", ((string)(null)), table152, "And ");
+#line 1195
+ testRunner.And("the debug output as", ((string)(null)), table151, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3343,32 +3336,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingDecisionWithMalformedRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Decision with malformed recordset", ((string[])(null)));
-#line 1201
+#line 1199
 this.ScenarioSetup(scenarioInfo);
-#line 1202
+#line 1200
  testRunner.Given("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1203
+#line 1201
  testRunner.And("is \"[[[[rec().a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1204
+#line 1202
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1205
+#line 1203
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1206
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1204
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
-                        "",
-                        "Statement",
-                        "Require All decisions to be True"});
-#line 1207
- testRunner.Then("the debug inputs as", ((string)(null)), table153, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table154.AddRow(new string[] {
+            table152.AddRow(new string[] {
                         "NO"});
-#line 1209
- testRunner.And("the debug output as", ((string)(null)), table154, "And ");
+#line 1205
+ testRunner.And("the debug output as", ((string)(null)), table152, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3379,32 +3365,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingDecisionWithRecordsetContainsSpclCharacterAsIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Decision with recordset contains spcl character as index", ((string[])(null)));
-#line 1213
+#line 1209
 this.ScenarioSetup(scenarioInfo);
-#line 1214
+#line 1210
  testRunner.Given("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1215
+#line 1211
  testRunner.And("is \"[[rec(&).a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1216
+#line 1212
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1217
+#line 1213
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1218
+#line 1214
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-#line 1219
- testRunner.Then("the debug inputs as", ((string)(null)), table155, "Then ");
+#line 1215
+ testRunner.Then("the debug inputs as", ((string)(null)), table153, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table156.AddRow(new string[] {
+            table154.AddRow(new string[] {
                         "NO"});
-#line 1221
- testRunner.And("the debug output as", ((string)(null)), table156, "And ");
+#line 1217
+ testRunner.And("the debug output as", ((string)(null)), table154, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3415,38 +3401,38 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RuntimeInvalidRecordsetVariableNegativeTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Runtime invalid recordset variable negative test", ((string[])(null)));
-#line 1226
+#line 1222
 this.ScenarioSetup(scenarioInfo);
-#line 1227
+#line 1223
        testRunner.Given("a decision variable \"[[A]]\" value \"rec(1).%\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1228
+#line 1224
        testRunner.And("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1229
+#line 1225
        testRunner.And("is \"[[[[A]]]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1230
+#line 1226
        testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1231
+#line 1227
        testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1232
+#line 1228
        testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table157.AddRow(new string[] {
+            table155.AddRow(new string[] {
                         "[[[[A]]]] =",
                         "String",
                         "YES"});
-#line 1233
-       testRunner.Then("the debug inputs as", ((string)(null)), table157, "Then ");
+#line 1229
+       testRunner.Then("the debug inputs as", ((string)(null)), table155, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table158.AddRow(new string[] {
+            table156.AddRow(new string[] {
                         "NO"});
-#line 1236
-       testRunner.And("the debug output as", ((string)(null)), table158, "And ");
+#line 1232
+       testRunner.And("the debug output as", ((string)(null)), table156, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3457,66 +3443,60 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RuntimeInvalidRecordsetVariablePositveTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Runtime invalid recordset variable positve test", ((string[])(null)));
-#line 1240
+#line 1236
 this.ScenarioSetup(scenarioInfo);
-#line 1241
+#line 1237
        testRunner.Given("a decision variable \"[[A]]\" value \"rec(1).a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1242
+#line 1238
        testRunner.And("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1243
+#line 1239
        testRunner.And("is \"[[[[A]]]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1244
+#line 1240
        testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1245
+#line 1241
        testRunner.Then("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1246
+#line 1242
        testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table159.AddRow(new string[] {
+            table157.AddRow(new string[] {
                         "[[[[A]]]] = 1",
                         "String",
                         "YES"});
-#line 1247
-       testRunner.Then("the debug inputs as", ((string)(null)), table159, "Then ");
+#line 1243
+       testRunner.Then("the debug inputs as", ((string)(null)), table157, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table160.AddRow(new string[] {
+            table158.AddRow(new string[] {
                         "YES"});
-#line 1250
-       testRunner.And("the debug output as", ((string)(null)), table160, "And ");
+#line 1246
+       testRunner.And("the debug output as", ((string)(null)), table158, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         public virtual void EnsuringAllInputsWorkAsExpected(string variable1, string var1, string variable2, string var2, string variable3, string var3, string requirement, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensuring all inputs work as expected", @__tags);
-#line 1257
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensuring all inputs work as expected", exampleTags);
+#line 1251
 this.ScenarioSetup(scenarioInfo);
-#line 1258
- testRunner.Given(string.Format("a decision variable \'{0}\' value \'{1}\'", variable1, var1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1259
- testRunner.And(string.Format("a decision variable \'{0}\' value \'{1}\'", variable2, var2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1260
- testRunner.And(string.Format("a decision variable \'{0}\' value \'{1}\'", variable3, var3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1261
- testRunner.And(string.Format("check if \'{0}\' \"IsBetween\" \'{1}\' and \'{2}\'", variable1, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1262
- testRunner.And(string.Format("\"Require All decisions to be True\" is \'{0}\'", requirement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1263
+#line 1252
+ testRunner.Given(string.Format("a decision variable \"{0}\" value \"{1}\"", variable1, var1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1253
+ testRunner.And(string.Format("a decision variable \"{0}\" value \"{1}\"", variable2, var2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1254
+ testRunner.And(string.Format("a decision variable \"{0}\" value \"{1}\"", variable3, var3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1255
+ testRunner.And(string.Format("check if \"{0}\" \"IsBetween\" \"{1}\" and \"{2}\"", variable1, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1256
+ testRunner.And(string.Format("Require All decisions to be True is \"{0}\"", requirement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1257
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1264
+#line 1258
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -3525,8 +3505,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "")]
@@ -3534,7 +3512,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant0()
+        public virtual void EnsuringAllInputsWorkAsExpected_()
         {
             this.EnsuringAllInputsWorkAsExpected("", "", "", "", "", "", "true", ((string[])(null)));
         }
@@ -3542,8 +3520,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[q]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[q]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "[[rec(1).a]]")]
@@ -3551,7 +3528,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "[[rs(1).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant1()
+        public virtual void EnsuringAllInputsWorkAsExpected_Q()
         {
             this.EnsuringAllInputsWorkAsExpected("[[q]]", "", "[[rec(1).a]]", "\" \"", "[[rs(1).set]]", "5", "true", ((string[])(null)));
         }
@@ -3559,76 +3536,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[rec().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "27")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "22")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var2", "22")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "33")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "33")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant2()
-        {
-            this.EnsuringAllInputsWorkAsExpected("[[rec().a]]", "27", "22", "22", "33", "33", "true", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[rec(*).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "T")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "\"South Africa\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var2", "\"South Africa\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "H")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "H")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant3()
-        {
-            this.EnsuringAllInputsWorkAsExpected("[[rec(*).a]]", "T", "\"South Africa\"", "\"South Africa\"", "H", "H", "true", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[rec([[int]]).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "[[p]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "[[q]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant4()
-        {
-            this.EnsuringAllInputsWorkAsExpected("[[rec([[int]]).a]]", "2", "[[p]]", "", "[[q]]", "", "true", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "10")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "\" \"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var2", "\" \"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "\" \"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "\" \"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "false")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant5()
-        {
-            this.EnsuringAllInputsWorkAsExpected("[[a]]", "10", "\" \"", "\" \"", "\" \"", "\" \"", "false", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "[[rec().a]]")]
@@ -3636,43 +3544,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "[[rs(*).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant6()
+        public virtual void EnsuringAllInputsWorkAsExpected_A()
         {
             this.EnsuringAllInputsWorkAsExpected("[[a]]", "27", "[[rec().a]]", "22", "[[rs(*).set]]", "33", "true", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "T")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "[[rec([[int]].a)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var2", "\"South Africa\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "[[rs().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "H")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant7()
-        {
-            this.EnsuringAllInputsWorkAsExpected("[[a]]", "T", "[[rec([[int]].a)", "\"South Africa\"", "[[rs().set]]", "H", "true", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all inputs work as expected")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable2", "[[rec(*).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var2", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable3", "[[rs([[int]]).set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var3", "7")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Requirement", "true")]
-        public virtual void EnsuringAllInputsWorkAsExpected_Variant8()
-        {
-            this.EnsuringAllInputsWorkAsExpected("[[a]]", "2", "[[rec(*).a]]", "5", "[[rs([[int]]).set]]", "7", "true", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -3681,40 +3555,40 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DecideIfVariableAGreaterThanAVariableBFalse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] greater than a variable [[B]] (False)", ((string[])(null)));
-#line 1280
+#line 1266
 this.ScenarioSetup(scenarioInfo);
-#line 1281
+#line 1267
  testRunner.Given("a decision variable \"[[A]]\" value \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1282
+#line 1268
  testRunner.And("a decision variable \"[[B]]\" value \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1283
- testRunner.And("is \"[[A]]\" \"Equals\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1284
+#line 1269
+ testRunner.And("is \"[[A]]\" \"IsEqual\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1270
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1286
+#line 1272
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table161 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table161.AddRow(new string[] {
+            table159.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table161.AddRow(new string[] {
+            table159.AddRow(new string[] {
                         "[[B]] = \\",
                         "String",
                         "YES"});
-#line 1287
- testRunner.Then("the debug inputs as", ((string)(null)), table161, "Then ");
+#line 1273
+ testRunner.Then("the debug inputs as", ((string)(null)), table159, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table162 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table162.AddRow(new string[] {
-                        "False"});
-#line 1291
- testRunner.And("the debug output as", ((string)(null)), table162, "And ");
+            table160.AddRow(new string[] {
+                        "NO"});
+#line 1277
+ testRunner.And("the debug output as", ((string)(null)), table160, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3728,19 +3602,19 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensuring all complex type inputs work as expected", @__tags);
-#line 1297
+#line 1283
 this.ScenarioSetup(scenarioInfo);
-#line 1298
+#line 1284
  testRunner.Given(string.Format("a decision variable \'{0}\' value \'{1}\'", variable1, var1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1299
+#line 1285
  testRunner.And(string.Format("a decision variable \'{0}\' value \'{1}\'", variable2, var2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1300
+#line 1286
  testRunner.And(string.Format("check if \'{0}\' \'<matchtype>\' \'{1}\'", variable1, variable2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1301
- testRunner.And("\"Require All decisions to be True\" is \'<Requirement>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1302
+#line 1287
+ testRunner.And("Require All decisions to be True is \'<Requirement>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1288
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1303
+#line 1289
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -3812,34 +3686,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidateThatAVariableIsNullNegative()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Null negative", ((string[])(null)));
-#line 1312
+#line 1298
 this.ScenarioSetup(scenarioInfo);
-#line 1313
+#line 1299
  testRunner.Given("a decision variable \"[[A]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1314
+#line 1300
  testRunner.And("decide if \"[[A]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1315
+#line 1301
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1316
+#line 1302
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table161 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table163.AddRow(new string[] {
+            table161.AddRow(new string[] {
                         "[[A]] = 1",
                         "String",
                         "YES"});
-#line 1317
- testRunner.Then("the debug inputs as", ((string)(null)), table163, "Then ");
+#line 1303
+ testRunner.Then("the debug inputs as", ((string)(null)), table161, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table164 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table162 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table164.AddRow(new string[] {
+            table162.AddRow(new string[] {
                         "NO"});
-#line 1320
-    testRunner.And("the debug output as", ((string)(null)), table164, "And ");
+#line 1306
+    testRunner.And("the debug output as", ((string)(null)), table162, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3850,32 +3724,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidateThatAVariableIsNullPositive()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Null Positive", ((string[])(null)));
-#line 1324
+#line 1310
 this.ScenarioSetup(scenarioInfo);
-#line 1325
+#line 1311
  testRunner.Given("decide if \"[[A]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1326
+#line 1312
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1327
+#line 1313
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table165.AddRow(new string[] {
+            table163.AddRow(new string[] {
                         "[[A]] = [[A]]",
                         "String",
                         "YES"});
-#line 1328
- testRunner.Then("the debug inputs as", ((string)(null)), table165, "Then ");
+#line 1314
+ testRunner.Then("the debug inputs as", ((string)(null)), table163, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table166 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table164 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table166.AddRow(new string[] {
+            table164.AddRow(new string[] {
                         "YES"});
-#line 1331
-    testRunner.And("the debug output as", ((string)(null)), table166, "And ");
+#line 1317
+    testRunner.And("the debug output as", ((string)(null)), table164, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3886,34 +3760,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidateThatAVariableIsNotNullPositive()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is not Null positive", ((string[])(null)));
-#line 1335
+#line 1321
 this.ScenarioSetup(scenarioInfo);
-#line 1336
+#line 1322
  testRunner.Given("a decision variable \"[[B]]\" value \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1337
+#line 1323
  testRunner.And("decide if \"[[B]]\" \"IsNotNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1338
+#line 1324
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1339
+#line 1325
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table167 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table167.AddRow(new string[] {
+            table165.AddRow(new string[] {
                         "[[B]] = 10",
                         "String",
                         "YES"});
-#line 1340
-  testRunner.Then("the debug inputs as", ((string)(null)), table167, "Then ");
+#line 1326
+  testRunner.Then("the debug inputs as", ((string)(null)), table165, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table168 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table166 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table168.AddRow(new string[] {
+            table166.AddRow(new string[] {
                         "YES"});
-#line 1343
-    testRunner.And("the debug output as", ((string)(null)), table168, "And ");
+#line 1329
+    testRunner.And("the debug output as", ((string)(null)), table166, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3924,13 +3798,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void NullThrowsAnError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Null throws an error", ((string[])(null)));
-#line 1347
+#line 1333
 this.ScenarioSetup(scenarioInfo);
-#line 1348
+#line 1334
  testRunner.Given("is \"[[A]]\" \"IsEqual\" \"123   234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1349
+#line 1335
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1351
+#line 1337
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

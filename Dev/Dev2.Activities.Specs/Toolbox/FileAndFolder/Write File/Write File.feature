@@ -54,19 +54,6 @@ Scenario Outline: Write file at location Null
 		| Name                 | source   | sourceLocation | method    | content        | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 		| Local with Overwrite | [[path]] | NULL           | Overwrite | warewolf rules | ""       | ""       | [[result]] |        | AN           |                      |
 
-
-
-Scenario: Write file with carriage returns
-	Given I have a source path '[[path]]' with value 'c:\Temp\filetowrite1.txt' 	
-	And source credentials as '' and ''	
-	And Method is 'Overwrite'
-	And the input contents from a file 'infile1WithCarriageReturn.txt'     
-	And use private public key for source is '' 
-	And result as 'Success'
-    When the write file tool is executed	
-	Then the output contents from a file 'outfile1WithCarriageReturn.txt'
-	And the execution has "NO" error
-
 Scenario: Write file when contents has variables that cannot be evealuated
 	Given I have a source path '[[path]]' with value 'c:\Temp\filetowrite1.txt' 	
 	And source credentials as '' and ''	
@@ -162,35 +149,6 @@ Scenario Outline: Write file validation
 		| 49 | Local with Overwrite | [[sourcePath]]                 | ""                | ""              | c:\filetoread.txt | Append Bottom | [[rec([[a]]).a]] rules   | ""                    | ""       | [[result]]             | ""               | AN           | False            |                                                                                                                                                                                                                           | 1.Contents - No Value assigned for : [[a]]                                                                                                                                                                                     |
 		| 50 | Local with Overwrite | [[variable]]                   | c:\Tempfile.txt   | ""              | c:\filetoread.txt | Overwrite     | [[var]] variable is null | ""                    | ""       | [[result]]             | variable is null | NO           | False            |                                                                                                                                                                                                                           | ""                                                                                                                                                                                                                             |
       
-
-
-
-@ignore
-#Audit Wolf-1419
-
-Scenario Outline: Write file at location with invalid directories
-	Given I have a source path '<source>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'	
-	And Method is '<method>'
-	And input contents as "<content>" with value "<values>"    
-	And result as '<resultVar>'
-    When the write file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
-	And the execution has "An" error
-	And the execution has "<ErrorMessage>" error
-	And the debug inputs as
-         | Output Path                 | Method   | Username   | Password | File Contents |
-         | <source> = <sourceLocation> | <method> | <username> | String   | <content>     |
-	And the debug output as
-		|                        |
-		| <resultVar> = <result> |
-		Examples: 
-		| Name                  | source       | sourceLocation                                         | method     | content       | values         | username          | password | resultVar  | result  | ErrorMessage |
-		| Local with Overwrite  | [[var]]      | ""                                                     | Overwrite  | [[var]]       | warewolf rules | ""                | ""       | [[result]] | Error | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-		| UNC with Overwrite    | [[variable]] |                                                        | Overwrite  | [[var]]       | warewolf rules | ""                | ""       | [[result]] | Error | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-		| FTP with Overwrite    | 878787       | 878787                                                 | Overwrite  | [[var]]       | warewolf rules | ""                | ""       | [[result]] | Error | Invalid Path. Please ensure that the path provided is an absolute path, if you intend to access the local file system. |
-
-	
 @Ignore
 #Complex Types WOLF-1042
 Scenario Outline: Write file at location using complex types

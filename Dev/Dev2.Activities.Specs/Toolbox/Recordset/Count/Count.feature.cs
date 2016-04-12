@@ -559,14 +559,8 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults(string count, string val, string error, string message, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure variables of different types produce desired results", @__tags);
-#line 185
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure variables of different types produce desired results", exampleTags);
+#line 181
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -581,18 +575,16 @@ this.ScenarioSetup(scenarioInfo);
             table23.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 186
+#line 182
  testRunner.Given("I have a recordset with this shape", ((string)(null)), table23, "Given ");
-#line 191
+#line 187
  testRunner.And("count on record \"<count>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 188
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 193
+#line 189
  testRunner.Then(string.Format("the result count should be \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 194
+#line 190
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 195
- testRunner.And(string.Format("the debug outputs as \"{0}\"", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -600,187 +592,78 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure variables of different types produce desired results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Count", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "An")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Recordset not given")]
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults_()
         {
-            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("", "", "An", "Recordset not given", ((string[])(null)));
+            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("", "0", "AN", "Recordset not given", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure variables of different types produce desired results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Count", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "An")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Scalar not allowed")]
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults_Var()
         {
-            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[var]]", "1", "An", "Scalar not allowed", ((string[])(null)));
+            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[var]]", "0", "AN", "Scalar not allowed", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure variables of different types produce desired results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[q]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Count", "[[q]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "An")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Value must be a recordset")]
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults_Q()
         {
-            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[q]]", "", "An", "Value must be a recordset", ((string[])(null)));
+            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[q]]", "0", "AN", "Value must be a recordset", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure variables of different types produce desired results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Test")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Count", "Test")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "Test")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "An")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Value must be a recordset")]
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults_Test()
         {
-            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("Test", "Test", "An", "Value must be a recordset", ((string[])(null)));
+            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("Test", "0", "AN", "Value must be a recordset", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure variables of different types produce desired results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Count", "99")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "99")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "An")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "Value must be a recordset")]
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults_99()
         {
-            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("99", "99", "An", "Value must be a recordset", ((string[])(null)));
+            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("99", "0", "AN", "Value must be a recordset", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure variables of different types produce desired results")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rs([[int]])]], [[int]] = 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Count", "[[rs([[int]])]], [[int]] = 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "No")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "[[result]] = 3")]
-        public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults_RsIntInt1()
-        {
-            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[rs([[int]])]], [[int]] = 1", "1", "No", "[[result]] = 3", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure variables of different types produce desired results")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rs([[var]])]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Count", "[[rs([[var]])]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "An")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Message", "[[result]] = Error")]
         public virtual void EnsureVariablesOfDifferentTypesProduceDesiredResults_RsVar()
         {
-            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[rs([[var]])]]", "", "An", "[[result]] = Error", ((string[])(null)));
-        }
-        
-        public virtual void EnsureRecordsetResultAreCorrect(string debug, string output, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure recordset result are correct", exampleTags);
-#line 207
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[rs]]",
-                        ""});
-            table24.AddRow(new string[] {
-                        "rs().row",
-                        "1"});
-            table24.AddRow(new string[] {
-                        "rs().row",
-                        "2"});
-            table24.AddRow(new string[] {
-                        "rs().row",
-                        "3"});
-#line 208
- testRunner.Given("I have a recordset with this shape", ((string)(null)), table24, "Given ");
-#line 213
- testRunner.And("count on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 214
- testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 215
- testRunner.Then("the result count should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 216
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Recordset"});
-            table25.AddRow(new string[] {
-                        "[[rs(1).row]] = 1"});
-            table25.AddRow(new string[] {
-                        "[[rs(2).row]] = 2"});
-            table25.AddRow(new string[] {
-                        "[[rs(3).row]] = 3"});
-#line 217
- testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
-#line 222
- testRunner.And(string.Format("the debug output as \"{0}\" with \"{1}\"", debug, output), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure recordset result are correct")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Debug", "[[rec().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "[[rec(1).a]] = 3")]
-        public virtual void EnsureRecordsetResultAreCorrect_Variant0()
-        {
-            this.EnsureRecordsetResultAreCorrect("[[rec().a]]", "[[rec(1).a]] = 3", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure recordset result are correct")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Debug", "[[rec(*).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "[[rec(1).a]] = 3 ,[[rec(2).a]] = 3")]
-        public virtual void EnsureRecordsetResultAreCorrect_Variant1()
-        {
-            this.EnsureRecordsetResultAreCorrect("[[rec(*).a]]", "[[rec(1).a]] = 3 ,[[rec(2).a]] = 3", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure recordset result are correct")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Debug", "[[rec([[int]]).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "[[rec(1).a]] = 3")]
-        public virtual void EnsureRecordsetResultAreCorrect_Variant2()
-        {
-            this.EnsureRecordsetResultAreCorrect("[[rec([[int]]).a]]", "[[rec(1).a]] = 3", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure recordset result are correct")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Debug", "[[rec(1).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "[[rec(1).a]] = 3")]
-        public virtual void EnsureRecordsetResultAreCorrect_Variant3()
-        {
-            this.EnsureRecordsetResultAreCorrect("[[rec(1).a]]", "[[rec(1).a]] = 3", ((string[])(null)));
+            this.EnsureVariablesOfDifferentTypesProduceDesiredResults("[[rs([[var]])]]", "0", "AN", "[[result]] = Error", ((string[])(null)));
         }
         
         public virtual void EnsureTheCorrectValuesAreReturnedUsingComplexTypes(string debug, string output, string[] exampleTags)
@@ -792,43 +675,43 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the correct values are returned using complex types", @__tags);
-#line 233
+#line 203
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "complex types",
                         ""});
-            table26.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "rs().row().set",
                         "1"});
-            table26.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "rs().row().set",
                         "2"});
-            table26.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "rs().row().set",
                         "3"});
-#line 234
- testRunner.Given("I have a complex type with this shape", ((string)(null)), table26, "Given ");
-#line 239
+#line 204
+ testRunner.Given("I have a complex type with this shape", ((string)(null)), table24, "Given ");
+#line 209
  testRunner.And("count on record \"[[rs().row()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
+#line 210
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 241
+#line 211
  testRunner.Then("the result count should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 242
+#line 212
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table27.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "[[rs().row(1).set]] = 1"});
-            table27.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "[[rs().row(2).set]] = 2"});
-            table27.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "[[rs().row(3).set]] = 3"});
-#line 243
- testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
-#line 248
+#line 213
+ testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
+#line 218
  testRunner.And(string.Format("the debug output as \"{0}\" with \"{1}\"", debug, output), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

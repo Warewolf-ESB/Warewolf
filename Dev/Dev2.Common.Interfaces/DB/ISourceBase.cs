@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace Dev2.Common.Interfaces.DB
 {
     public interface ISourceBase<T>
@@ -9,5 +11,6 @@ namespace Dev2.Common.Interfaces.DB
         T ToModel();
         string Name { get; set; }
         void Save();
+        Guid SelectedGuid { get; set; }
     }
 }

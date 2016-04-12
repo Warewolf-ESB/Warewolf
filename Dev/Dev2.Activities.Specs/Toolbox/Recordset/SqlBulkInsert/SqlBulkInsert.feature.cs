@@ -2641,7 +2641,7 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void SavingResultsInRecordsets(string result, string value, string[] exampleTags)
+        public virtual void SavingResultsInComplexTypes(string result, string value, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "ignore"};
@@ -2649,7 +2649,7 @@ this.ScenarioSetup(scenarioInfo);
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in recordsets", @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in complex types", @__tags);
 #line 381
 this.ScenarioSetup(scenarioInfo);
 #line 382
@@ -2662,11 +2662,11 @@ this.ScenarioSetup(scenarioInfo);
                         "ToField",
                         "Type"});
             table46.AddRow(new string[] {
-                        "[[Country(*).CountryID]]",
+                        "[[Country(*).CountryID().value]]",
                         "CountryID",
                         "int"});
             table46.AddRow(new string[] {
-                        "[[Country(*).Description]]",
+                        "[[Country(*).Description().value]]",
                         "Description",
                         "varchar(50)"});
 #line 384
@@ -2678,96 +2678,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 390
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 391
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Saving results in recordsets")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Success")]
-        public virtual void SavingResultsInRecordsets_Variant0()
-        {
-            this.SavingResultsInRecordsets("[[rec().a]]", "Success", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Saving results in recordsets")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec(1).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Success")]
-        public virtual void SavingResultsInRecordsets_Variant1()
-        {
-            this.SavingResultsInRecordsets("[[rec(1).a]]", "Success", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Saving results in recordsets")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec(*).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Success")]
-        public virtual void SavingResultsInRecordsets_Variant2()
-        {
-            this.SavingResultsInRecordsets("[[rec(*).a]]", "Success", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Saving results in recordsets")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec([[int]]).a]],[[int]] =3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Success")]
-        public virtual void SavingResultsInRecordsets_Variant3()
-        {
-            this.SavingResultsInRecordsets("[[rec([[int]]).a]],[[int]] =3", "Success", ((string[])(null)));
-        }
-        
-        public virtual void SavingResultsInComplexTypes(string result, string value, string[] exampleTags)
-        {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving results in complex types", @__tags);
-#line 402
-this.ScenarioSetup(scenarioInfo);
-#line 403
- testRunner.Given("I have \"DB Source\" as \"DemoDB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 404
- testRunner.And("table as \"dbo.[Country]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
-                        "InputData",
-                        "ToField",
-                        "Type"});
-            table47.AddRow(new string[] {
-                        "[[Country(*).CountryID().value]]",
-                        "CountryID",
-                        "int"});
-            table47.AddRow(new string[] {
-                        "[[Country(*).Description().value]]",
-                        "Description",
-                        "varchar(50)"});
-#line 405
- testRunner.And("I have this data", ((string)(null)), table47, "And ");
-#line 409
- testRunner.And("\"skip blank rows\" is checked by default", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 410
- testRunner.And(string.Format("The result variable \'{0}\' equals \'{1}\'", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 411
- testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 412
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

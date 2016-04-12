@@ -325,7 +325,7 @@ namespace Warewolf.Studio.ViewModels
                     AuthenticationType = AuthenticationType,
                     Name = ResourceName,
                     Password = Password,
-                    ID = _serverSource == null ? Guid.NewGuid() : _serverSource.ID
+                    ID = _serverSource == null ? SelectedGuid : _serverSource.ID
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock

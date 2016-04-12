@@ -3328,171 +3328,6 @@ this.ScenarioSetup(scenarioInfo);
             this.UnzipFileValidation("81", "[[sourcePath]]", "\"\"", "\"\"", "c:\\copyfile82.txt", "\"\"", "\"\"", "[[destPath]]", "c:\\ZIP90", "integrationtester", "I73573r0", "True", "[[rec([[[[b]]]]).a]]", "\"\"", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", ((string[])(null)));
         }
         
-        public virtual void UnzipFileAtLocationWithInvalidDirectories(
-                    string no, 
-                    string name, 
-                    string source, 
-                    string sourceLocation, 
-                    string username, 
-                    string password, 
-                    string destination, 
-                    string destinationLocation, 
-                    string destUsername, 
-                    string destPassword, 
-                    string selected, 
-                    string archivepassword, 
-                    string resultVar, 
-                    string result, 
-                    string errorMessage, 
-                    string[] exampleTags)
-        {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at location with invalid directories", @__tags);
-#line 170
-this.ScenarioSetup(scenarioInfo);
-#line 171
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 172
- testRunner.And(string.Format("zip credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
- testRunner.And(string.Format("I have a destination path \'{0}\' with value \'{1}\'", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 174
- testRunner.And(string.Format("destination credentials as \'{0}\' and \'{1}\'", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
- testRunner.And(string.Format("overwrite is \'{0}\'", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
- testRunner.And(string.Format("Archive Password as \'{0}\'", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
-    testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 179
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 180
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
- testRunner.And(string.Format("the execution has \"{0}\" error", errorMessage), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Source Path",
-                        "Username",
-                        "Password",
-                        "Destination Path",
-                        "Destination Username",
-                        "Destination Password",
-                        "Overwrite",
-                        "Archive Password"});
-            table5.AddRow(new string[] {
-                        string.Format("{0} = {1}", source, sourceLocation),
-                        string.Format("{0}", username),
-                        "String",
-                        string.Format("{0} = {1}", destination, destinationLocation),
-                        string.Format("{0}", destUsername),
-                        "String",
-                        string.Format("{0}", selected),
-                        "String"});
-#line 182
- testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table6.AddRow(new string[] {
-                        string.Format("{0} = {1}", resultVar, result)});
-#line 185
- testRunner.And("the debug output as", ((string)(null)), table6, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location with invalid directories")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to Local")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "c:\\ZIP0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorMessage", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-            "tend to access the local file system.")]
-        public virtual void UnzipFileAtLocationWithInvalidDirectories_1()
-        {
-            this.UnzipFileAtLocationWithInvalidDirectories("1", "Local to Local", "[[a]]", "\"\"", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Error", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-                    "tend to access the local file system.", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location with invalid directories")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to Local")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[b]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "c:\\ZIP1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorMessage", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-            "tend to access the local file system.")]
-        public virtual void UnzipFileAtLocationWithInvalidDirectories_2()
-        {
-            this.UnzipFileAtLocationWithInvalidDirectories("2", "UNC to Local", "[[b]]", "", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Error", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-                    "tend to access the local file system.", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location with invalid directories")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to Local")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "121")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "121")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "c:\\ZIP2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Error")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorMessage", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-            "tend to access the local file system.")]
-        public virtual void UnzipFileAtLocationWithInvalidDirectories_3()
-        {
-            this.UnzipFileAtLocationWithInvalidDirectories("3", "FTP to Local", "121", "121", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Error", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-                    "tend to access the local file system.", ((string[])(null)));
-        }
-        
         public virtual void UnzipFileAtLocationUsingComplexTypes(
                     string no, 
                     string name, 
@@ -3518,30 +3353,30 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at location using complex types", @__tags);
-#line 196
+#line 170
 this.ScenarioSetup(scenarioInfo);
-#line 197
+#line 171
  testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 198
+#line 172
  testRunner.And(string.Format("zip credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 173
  testRunner.And(string.Format("I have a destination path \'{0}\' with value \'{1}\'", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 200
+#line 174
  testRunner.And(string.Format("destination credentials as \'{0}\' and \'{1}\'", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 201
+#line 175
  testRunner.And(string.Format("overwrite is \'{0}\'", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 176
  testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
+#line 177
  testRunner.And(string.Format("Archive Password as \'{0}\'", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 178
     testRunner.When("the Unzip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 205
+#line 179
  testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 206
+#line 180
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source Path",
                         "Username",
                         "Password",
@@ -3550,7 +3385,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Destination Password",
                         "Overwrite",
                         "Archive Password"});
-            table7.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
@@ -3559,15 +3394,15 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", selected),
                         "String"});
-#line 207
- testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
+#line 181
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table8.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 210
- testRunner.And("the debug output as", ((string)(null)), table8, "And ");
+#line 184
+ testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

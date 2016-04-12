@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, dbActionRegion.Errors.Count);
+            Assert.AreEqual(0, dbActionRegion.Errors.Count);
             Assert.IsTrue(dbActionRegion.IsEnabled);
         }
 
@@ -47,11 +47,12 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var id = Guid.NewGuid();
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
-            var dbsrc = new DbSourceDefinition() { Id = id };
+            var dbsrc = new DbSourceDefinition() { Id = id, Name = "johnny"};
             var action = new DbAction() { Name = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc });
 
             DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
+            sourceRegion.SelectedSource = dbsrc;
 
             //------------Execute Test---------------------------
             DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);

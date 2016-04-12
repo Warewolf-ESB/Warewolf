@@ -1273,31 +1273,23 @@ this.ScenarioSetup(scenarioInfo);
                     "ble name [[var@]] contains invalid character(s)", ((string[])(null)));
         }
         
-        public virtual void DeleteFileAtLocationWithIncorrectDirectories(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string errorMessage, string[] exampleTags)
+        public virtual void DeleteFileAtLocationWithIncorrectDirectories(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location with incorrect directories", @__tags);
-#line 124
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location with incorrect directories", exampleTags);
+#line 119
 this.ScenarioSetup(scenarioInfo);
-#line 125
+#line 120
  testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 126
+#line 121
  testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 122
  testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 123
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 129
+#line 124
  testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 130
+#line 125
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
- testRunner.And(string.Format("the execution has \"{0}\" error", errorMessage), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
@@ -1307,14 +1299,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
-#line 132
+#line 126
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table6.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 135
+#line 129
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1324,7 +1316,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location with incorrect directories")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "1234")]
@@ -1332,21 +1323,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorMessage", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-            "tend to access the local file system.")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_Local()
         {
-            this.DeleteFileAtLocationWithIncorrectDirectories("Local", "1234", "c:\\filetodelete.txt", "\"\"", "\"\"", "[[result]]", "Success", "AN", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-                    "tend to access the local file system.", ((string[])(null)));
+            this.DeleteFileAtLocationWithIncorrectDirectories("Local", "1234", "c:\\filetodelete.txt", "\"\"", "\"\"", "[[result]]", "", "AN", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location with incorrect directories")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[var]]")]
@@ -1354,21 +1341,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "An")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorMessage", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-            "tend to access the local file system.")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_UNC()
         {
-            this.DeleteFileAtLocationWithIncorrectDirectories("UNC", "[[var]]", "", "\"\"", "\"\"", "[[result]]", "Success", "An", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-                    "tend to access the local file system.", ((string[])(null)));
+            this.DeleteFileAtLocationWithIncorrectDirectories("UNC", "[[var]]", "", "\"\"", "\"\"", "[[result]]", "", "AN", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location with incorrect directories")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[variable]]")]
@@ -1376,14 +1359,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "An")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorMessage", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-            "tend to access the local file system.")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_UNCSecure()
         {
-            this.DeleteFileAtLocationWithIncorrectDirectories("UNC Secure", "[[variable]]", "\"\"", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "Success", "An", "Invalid Path. Please ensure that the path provided is an absolute path, if you in" +
-                    "tend to access the local file system.", ((string[])(null)));
+            this.DeleteFileAtLocationWithIncorrectDirectories("UNC Secure", "[[variable]]", "\"\"", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "", "AN", ((string[])(null)));
         }
         
         public virtual void DeleteFileAtLocationUsingComplexTypes(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string[] exampleTags)
@@ -1395,19 +1375,19 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location using complex types", @__tags);
-#line 146
+#line 140
 this.ScenarioSetup(scenarioInfo);
-#line 147
+#line 141
  testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 148
+#line 142
  testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 143
  testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 144
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
+#line 145
  testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
+#line 146
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1418,14 +1398,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
-#line 153
+#line 147
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 156
+#line 150
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();

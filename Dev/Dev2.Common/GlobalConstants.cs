@@ -27,28 +27,28 @@ namespace Dev2.Common
     public static class GlobalConstants
     {
 
-         static GlobalConstants()
-         {
-             SystemEvents.TimeChanged += (sender, args) =>
-             {
-                 // ReSharper disable once ConvertToLambdaExpression
-                 CultureInfo.CurrentCulture.ClearCachedData();
-             };
+        static GlobalConstants()
+        {
+            SystemEvents.TimeChanged += (sender, args) =>
+            {
+                // ReSharper disable once ConvertToLambdaExpression
+                CultureInfo.CurrentCulture.ClearCachedData();
+            };
 
-             /**********************************************************
-              * Hear ye Hear ye
-              * The event below allows warewolf to react to changes in regional settings by clearing the Culture cache.
-              * The method below is not tested using integration tests because it is difficult to change regional settings without restarting explorer.exe
-              * If a good way is found to do this, then please add integration tests. 
-              * Dont delete this method
-              */
-             SystemEvents.UserPreferenceChanged += (sender, args) =>
-             {
-                 // ReSharper disable once ConvertToLambdaExpression
-                 CultureInfo.CurrentCulture.ClearCachedData();
-             };
-            
-         }
+            /**********************************************************
+             * Hear ye Hear ye
+             * The event below allows warewolf to react to changes in regional settings by clearing the Culture cache.
+             * The method below is not tested using integration tests because it is difficult to change regional settings without restarting explorer.exe
+             * If a good way is found to do this, then please add integration tests. 
+             * Dont delete this method
+             */
+            SystemEvents.UserPreferenceChanged += (sender, args) =>
+            {
+                // ReSharper disable once ConvertToLambdaExpression
+                CultureInfo.CurrentCulture.ClearCachedData();
+            };
+
+        }
         // ReSharper disable InconsistentNaming
         //Default TimeoutValue
         // ReSharper disable UnusedMember.Global
@@ -76,14 +76,14 @@ namespace Dev2.Common
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
                                              "<threshold value=\"ERROR\" />" +
-                                              "<mapping>"+
-                                                "<level value=\"ERROR\" />"+
-                                                "<eventLogEntryType value=\"Error\" />"+
-                                              "</mapping>"+
-                                              "<mapping>"+
-                                                 "<level value=\"DEBUG\" />"+
-                                                 "<eventLogEntryType value=\"Information\" />"+
-                                               "</mapping>"+
+                                              "<mapping>" +
+                                                "<level value=\"ERROR\" />" +
+                                                "<eventLogEntryType value=\"Error\" />" +
+                                              "</mapping>" +
+                                              "<mapping>" +
+                                                 "<level value=\"DEBUG\" />" +
+                                                 "<eventLogEntryType value=\"Information\" />" +
+                                               "</mapping>" +
                                                 "<mapping>" +
                                                 "<level value=\"INFO\" />" +
                                                 "<eventLogEntryType value=\"Information\" />" +
@@ -94,10 +94,10 @@ namespace Dev2.Common
                                                "</mapping>" +
                                              "<logName value=\"Warewolf\"/>" +
                                              "<applicationName value=\"Warewolf Server\"/>" +
-                                             "<layout type=\"log4net.Layout.PatternLayout\">"+
+                                             "<layout type=\"log4net.Layout.PatternLayout\">" +
                                                 "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
-                                              "</layout>"+
-                                             "</appender>"+
+                                              "</layout>" +
+                                             "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
@@ -108,16 +108,16 @@ namespace Dev2.Common
 
         public static string DefaultStudioLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
-                                            "<file type=\"log4net.Util.PatternString\" value=\"${LOCALAPPDATA}\\Warewolf\\Studio Logs\\Warewolf Studio.log\" />"+
-    "<!-- Example using environment variables in params -->"+
-    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
-    "<appendToFile value=\"true\" />"+
-    "<rollingStyle value=\"Size\" />"+
-    "<maxSizeRollBackups value=\"1\" />"+
-    "<maximumFileSize value=\"200MB\" />"+
-    "<!-- An alternate output encoding can be specified -->"+
-    "<!-- <encoding value=\"unicodeFFFE\" /> -->"+
-    "<layout type=\"log4net.Layout.PatternLayout\">"+
+                                            "<file type=\"log4net.Util.PatternString\" value=\"${LOCALAPPDATA}\\Warewolf\\Studio Logs\\Warewolf Studio.log\" />" +
+    "<!-- Example using environment variables in params -->" +
+    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->" +
+    "<appendToFile value=\"true\" />" +
+    "<rollingStyle value=\"Size\" />" +
+    "<maxSizeRollBackups value=\"1\" />" +
+    "<maximumFileSize value=\"200MB\" />" +
+    "<!-- An alternate output encoding can be specified -->" +
+    "<!-- <encoding value=\"unicodeFFFE\" /> -->" +
+    "<layout type=\"log4net.Layout.PatternLayout\">" +
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
                                              "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
@@ -126,7 +126,7 @@ namespace Dev2.Common
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
                                              "</appender>" +
                                              "<appender name=\"EventLogLogger\" type=\"log4net.Appender.EventLogAppender\">" +
-                                             "<threshold value=\"ERROR\" />"+
+                                             "<threshold value=\"ERROR\" />" +
                                              "<mapping>" +
                                                 "<level value=\"ERROR\" />" +
                                                 "<eventLogEntryType value=\"Error\" />" +
@@ -143,8 +143,8 @@ namespace Dev2.Common
                                                  "<level value=\"WARN\" />" +
                                                  "<eventLogEntryType value=\"Warning\" />" +
                                                "</mapping>" +
-                                             "<logName value=\"Warewolf\"/>"+
-                                             "<applicationName value=\"Warewolf Studio\"/>"+
+                                             "<logName value=\"Warewolf\"/>" +
+                                             "<applicationName value=\"Warewolf Studio\"/>" +
                                              "<layout type=\"log4net.Layout.PatternLayout\">" +
                                                 "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
                                               "</layout>" +
@@ -152,8 +152,8 @@ namespace Dev2.Common
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
                                              "<root>" +
                                              "<level value=\"DEBUG\" />" +
-                                             "<appender-ref ref=\"LogFileAppender\" />" +                                           
-                                             "<appender-ref ref=\"EventLogLogger\"/>"+
+                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "<appender-ref ref=\"EventLogLogger\"/>" +
                                              "</root>" +
                                              "</log4net>";
 
@@ -172,7 +172,7 @@ namespace Dev2.Common
         // Force Webserver Constants
         // ReSharper disable UnusedMember.Global
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
-     
+
 
         //Runtime Configuration
         public const string Dev2RuntimeConfigurationAssemblyName = "Dev2.Runtime.Configuration.dll";
@@ -259,8 +259,8 @@ namespace Dev2.Common
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultStorageSegments = 1;
-        public const int DefaultStorageSegmentSize = 8*1024*1024; // 8 MB default buffer size ;)
-        public const int DefaultAliasCacheSize = 32*1024; // 32KB of alias cache ;)
+        public const int DefaultStorageSegmentSize = 8 * 1024 * 1024; // 8 MB default buffer size ;)
+        public const int DefaultAliasCacheSize = 32 * 1024; // 32KB of alias cache ;)
         public const string DefaultStorageZipEntry = "Dev2Storage";
 
         public const string DataListIoColDirection = "ColumnIODirection";
@@ -379,8 +379,8 @@ WHERE   n.nspname = 'public'
         // ReSharper disable ConvertToConstant.Global
         // ReSharper disable FieldCanBeMadeReadOnly.Global
         public static String PublicUsername = @"\";
-      
- 
+
+
 
         // GAC
         public static readonly string GACPrefix = "GAC:";
@@ -499,13 +499,13 @@ WHERE   n.nspname = 'public'
         public static int AddPopupTimeDelay = 2000;
         static GenericPrincipal _user;
         public static double RowHeight = 30;
-        public static double RowHeaderHeight=30;
+        public static double RowHeaderHeight = 30;
 
         public static IPrincipal GenericPrincipal
         {
             get
             {
-                if(_user == null)
+                if (_user == null)
                 {
                     var genericIdentity = new GenericIdentity("GenericPublicUser");
                     var user = new GenericPrincipal(genericIdentity, new string[0]);
@@ -520,7 +520,7 @@ WHERE   n.nspname = 'public'
             {
                 return "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
             }
-     
+
         }
 
         public static string TempLocation
@@ -532,34 +532,36 @@ WHERE   n.nspname = 'public'
                 return tempPath;
             }
         }
-public static int MinCompressVersionMinor
+        public static int MinCompressVersionMinor
         {
             get
             {
-//#if DEBUG
-//                return Assembly.GetExecutingAssembly().GetName().Version.Minor-1;
-//#endif
+                //#if DEBUG
+                //                return Assembly.GetExecutingAssembly().GetName().Version.Minor-1;
+                //#endif
                 // ReSharper disable once HeuristicUnreachableCode
 #pragma warning disable 162
                 return 7;
 #pragma warning restore 162
             }
-    
+
         }
         public static int MinCompressVersionMajor
         {
             get
             {
-//#if DEBUG
-//                return Assembly.GetExecutingAssembly().GetName().Version.Major-1;
-//#endif
+                //#if DEBUG
+                //                return Assembly.GetExecutingAssembly().GetName().Version.Major-1;
+                //#endif
                 // ReSharper disable once HeuristicUnreachableCode
 #pragma warning disable 162
                 return 0;
 #pragma warning restore 162
             }
-   
+
         }
+        public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
+        public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
         public static string DropBoxSucces = "Success";
         public static string DropBoxFailure = "Failed";
         public static string GlobalCounterName = "All";

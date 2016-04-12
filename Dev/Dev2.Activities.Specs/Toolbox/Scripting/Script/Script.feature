@@ -331,9 +331,6 @@ Scenario: Execute Python with a negative recordset index
 	|               |
 	| [[result]] = |
 
-
-@ignore
-#Audit Wolf-1419
 Scenario Outline:Excute Javascript with incorrect values
 	Given I have the script to execute '<script>'
 	And I have selected the language as "JavaScript"

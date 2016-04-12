@@ -241,7 +241,7 @@ namespace Dev2.Runtime.Hosting
                     Dev2Logger.Debug(
                         string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.",
-                            res.ResourceName, filePath, dupRes.ResourceName));
+                            res.ResourceName, filePath, dupRes.FilePath));
                 }
                 else
                 {

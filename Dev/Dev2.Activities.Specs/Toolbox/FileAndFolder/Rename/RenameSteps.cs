@@ -31,7 +31,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
-
+            
+            string privateKeyFile;
+            string destPrivateKeyFile;
+            ScenarioContext.Current.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile,out privateKeyFile);
+            ScenarioContext.Current.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out destPrivateKeyFile);
             var rename = new DsfPathRename
                 {
                     InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
@@ -42,8 +46,8 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                     DestinationPassword = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
                     Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
                     Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder),
-                    PrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.SourcePrivatePublicKeyFile),
-                    DestinationPrivateKeyFile = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPrivateKeyFile)
+                    PrivateKeyFile = privateKeyFile,
+                    DestinationPrivateKeyFile = destPrivateKeyFile
                 };
 
             TestStartNode = new FlowStep

@@ -2389,9 +2389,6 @@ Scenario: Search using a negative index recordset criteria
 	| In Field(s) | [[rs(1).row]] = Warewolf |   |         |                  |  |     |                             |                                |
 	|             | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
 
-#--
-@ignore
-#Audit Wolf-1419
 Scenario: Find an index
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value |

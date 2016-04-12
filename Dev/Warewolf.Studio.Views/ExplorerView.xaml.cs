@@ -569,23 +569,19 @@ namespace Warewolf.Studio.Views
                         selectedItem = dataContext.SelectedDataItems[0] as IExplorerTreeItem;
                         dataContext.SelectedItem = selectedItem;
                     }
-
-                    if (selectedItem != null && (selectedItem.ResourceType == ResourceType.Server || selectedItem.ResourceType == ResourceType.ServerSource) && string.IsNullOrWhiteSpace(selectedItem.ResourcePath))
+                    if (selectedItem != null)
                     {
-                        StopDragging();
-                        ExplorerTree.QueryContinueDrag += ExplorerTreeOnQueryContinueDrag;
-                        e.Handled = true;
-                    }
-                    else if (selectedItem != null && (selectedItem.ResourceType == ResourceType.DbService || selectedItem.ResourceType == ResourceType.PluginService || selectedItem.ResourceType == ResourceType.WebService))
-                    {
-                        StopDragging();
-                        ExplorerTree.QueryContinueDrag += ExplorerTreeOnQueryContinueDrag;
-                        e.Handled = true;
-                    }
-                    else
-                    {
-                        CancelDrag = false;
-                        ExplorerTree.QueryContinueDrag += ExplorerTreeOnQueryContinueDrag;
+                        if (!selectedItem.CanDrag)
+                        {
+                            StopDragging();
+                            ExplorerTree.QueryContinueDrag += ExplorerTreeOnQueryContinueDrag;
+                            e.Handled = true;
+                        }
+                        else
+                        {
+                            CancelDrag = false;
+                            ExplorerTree.QueryContinueDrag += ExplorerTreeOnQueryContinueDrag;
+                        }
                     }
                 }
             }

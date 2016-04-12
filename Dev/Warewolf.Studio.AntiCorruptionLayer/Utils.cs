@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using Vestris.ResourceLib;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {

@@ -160,7 +160,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         {
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataMerge.{0}",
                                                 fileName);
-            string value = ReadFile(resourceName);
+            var readFile = ReadFile(resourceName);
+            string value = readFile;
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");

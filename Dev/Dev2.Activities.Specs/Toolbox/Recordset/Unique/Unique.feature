@@ -242,9 +242,6 @@ Scenario: Find unique records and assigning result in two variables
 	| 1 | [[a]] = 10,20,30 |
 	| 2 | [[b]] = 10,20,30 |
 
-
-#Audit Wolf-1419
-@ignore
 Scenario Outline: Invalid expressions
 Given I have the following duplicated recordset
 	| rs       | val |

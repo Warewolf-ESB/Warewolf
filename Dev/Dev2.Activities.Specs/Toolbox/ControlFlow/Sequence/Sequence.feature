@@ -18,8 +18,8 @@ Scenario: Execute Sequence with Assign
           And the "TestAssign" debug outputs as
           | # |              |
           | 1 | [[var1]] = 1 |
-          | 2 | [[var2]] = 2 |           
-		  And the Sequence Has a Duration
+          | 2 | [[var2]] = 2 |           		  
+
 Scenario: Execute a Sequence with Assign and Calculate
        Given I have a Sequence "Test"
 	   And "Test" contains an Assign "SetVariables" as
@@ -525,19 +525,3 @@ Scenario: Execute a Sequence with For each with 3 executions
 	  |                                |
 	  | [[test().result4]] = 788.895 |
 
-Scenario: Sending Error in error variable and calling webservice when inner activity errors
-    Given I have a Sequence "Test"
-	And "Test" contains Date and Time Difference "Date&Time" as	
-	  | Input1     | Input2     | Input Format | Output In | Result      |
-	  | 2013-11-29 | 2050-11-29 | yyyytt-mm-dd | Years     | [[result1]] |  
-    And assign error to variable "[[error]]"
-    And call the web service "http://tst-ci-remote:3142/services/Test/OnError_WriteErrorSeq.xml?errorLog=[[error]]"
-    When the Sequence tool is executed
-    Then the execution has "AN" error
-    And the result from the web service "http://tst-ci-remote:3142/services/Test/OnError_ReadErrorSeq.xml" will have the same data as variable "[[error]]"
-   And the "Date&Time" debug inputs as  
-	  | Input 1    | Input 2    | Input Format | Output In |
-	  | 2013-11-29 | 2050-11-29 | yyyytt-mm-dd   | Years     |
-	  And the "Date&Time" debug outputs as 
-	  |                 |
-	  | [[result1]] =  |

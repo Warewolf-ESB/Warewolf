@@ -27,7 +27,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "GET Web Service", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Resources-Service", "GET", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebGetActivity : DsfActivity
     {
 
@@ -223,13 +223,7 @@ namespace Dev2.Activities
             {
                 webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
-
-            var contentType = webclient.Headers["Content-Type"];
-            if (string.IsNullOrEmpty(contentType))
-            {
-                contentType = "application/x-www-form-urlencoded";
-            }
-            webclient.Headers["Content-Type"] = contentType;
+          
             webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
             webclient.BaseAddress = source.Address + query;
             return webclient;
@@ -240,8 +234,8 @@ namespace Dev2.Activities
         // ReSharper disable once MemberCanBeProtected.Global
         public DsfWebGetActivity()
         {
-            Type = "Web Get Request Connector";
-            DisplayName = "Web Get Request Connector";
+            Type = "GET Web Method";
+            DisplayName = "GET Web Method";
         }
 
         public override enFindMissingType GetFindMissingType()
