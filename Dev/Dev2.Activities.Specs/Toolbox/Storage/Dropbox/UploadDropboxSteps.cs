@@ -13,6 +13,7 @@ using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using Dev2.Activities.Designers2.DropBox2016.Upload;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {

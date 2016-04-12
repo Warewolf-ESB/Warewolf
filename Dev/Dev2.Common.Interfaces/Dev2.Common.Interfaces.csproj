@@ -185,6 +185,7 @@
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
+    <Compile Include="IExecutionEnvironment.cs" />
     <Compile Include="IExecutionToken.cs" />
     <Compile Include="IExplorerHelpDescriptorBuilder.cs" />
     <Compile Include="IExplorerItemNodeViewModel.cs" />

@@ -6,6 +6,7 @@ using Dev2.Activities.DropBox2016;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dropbox.Api;
