@@ -238,7 +238,7 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
             | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
             | RecordSetNameExpression a when  env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
             | JsonIdentifierExpression a -> evalJson env update buffer
-            | _ -> failwith "same same but different"
+            | _ -> failwith "Invalid language expression"
 
 and languageExpressionToJPath (lang:LanguageExpression) = 
     match lang with
