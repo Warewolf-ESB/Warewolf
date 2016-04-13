@@ -49,9 +49,8 @@ Scenario: Assign values with different types to json objects
 	| # |								|
 	| 1 | [[Person.FirstName]] = Bob	|
 	| 2 | [[Person.Surname]] = Smith	|
-	| 3 | [[Person.Age]] = 21		|
+	| 3 | [[Person.Age]] = 21			|
 
-#failing - debug output
 Scenario: Assign a json object value to a json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "[[Person.FirstName]]" to a json object "[[Person.Surname]]"
@@ -60,15 +59,14 @@ Scenario: Assign a json object value to a json object
 	And the json object "[[Person.Surname]]" equals "Bob"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable					| New Value	|
-	| 1 | [[Person.FirstName]] =	| Bob		|
-	| 2 | [[Person.Surname]] =		| Bob		|
+	| # | Variable					| New Value						|
+	| 1 | [[Person.FirstName]] =	| Bob							|
+	| 2 | [[Person.Surname]] =		| [[Person.FirstName]] = Bob	|
 	And the debug output as
 	| # |								|
 	| 1 | [[Person.FirstName]] = Bob	|
 	| 2 | [[Person.Surname]] = Bob		|
 
-#failing - debug output
 Scenario: Assign a json object value to a json object overwriting the existing value
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "Smith" to a json object "[[Person.Surname]]"
@@ -107,7 +105,7 @@ Scenario: Assign a value with plus in it to a json object
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Variable  | New Value	|
-	| 1 | [[Person.Score]] =	| +10       |
+	| 1 | [[Person.Score]] =	| +10   |
 	And the debug output as 
 	| # |							|
 	| 1 | [[Person.Score]] = +10	|
@@ -119,26 +117,25 @@ Scenario: Assign a value with minus in it to a json object
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Variable  | New Value	|
-	| 1 | [[Person.Score]] =	| -10       |
+	| 1 | [[Person.Score]] =	| -10   |
 	And the debug output as 
 	| # |							|
 	| 1 | [[Person.Score]] = -10	|
 
-#failing
-# person.name = bob, person.age = 25, staff = person -> is this valid?
+#failing - person.name = bob, person.age = 25, staff = person -> is this valid?
 Scenario: Assign a populated json object to a new json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "Smith" to a json object "[[Person.Surname]]"
 	And I assign the json object "[[Person]]" to a json object "[[Staff]]"
 	When the assign object tool is executed
-	Then the json object "[[Staff.FirstName]]" equals "Bob"
-	Then the json object "[[Staff.Surname]]" equals "Smith"
+	Then the json object "[[Staff.Person.FirstName]]" equals "Bob"
+	Then the json object "[[Staff.Person.Surname]]" equals "Smith"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable						| New Value						|
-	| 1 | [[Person.FirstName]] =		| Bob							|
-	| 2 | [[Person.Surname]] =			| Smith							|
-	| 3 | [[Person]] = 					| [[Staff]]						|
+	| # | Variable					| New Value	|
+	| 1 | [[Person.FirstName]] =	| Bob		|
+	| 2 | [[Person.Surname]] =		| Smith		|
+	| 3 | [[Person]] = 				| [[Staff]]	|
 	And the debug output as
 	| # |								|
 	| 1 | [[Person.FirstName]] = Bob	|
@@ -146,21 +143,20 @@ Scenario: Assign a populated json object to a new json object
 	| 3 | [[Staff.FirstName]] = Bob		|
 	| 4 | [[Staff.Surname]] = Smith		|
 
-#failing
-# person.name = bob, person.age = 25, staff.subordinate = person -> is this valid?
+#failing - person.name = bob, person.age = 25, staff.subordinate = person -> is this valid?
 Scenario: Assign a populated json object to a child of a new json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "Smith" to a json object "[[Person.Surname]]"
 	And I assign the json object "[[Person]]" to a json object "[[Staff.Subordinate]]"
 	When the assign object tool is executed
-	Then the json object "[[Staff.Subordinate.FirstName]]" equals "Bob"
-	Then the json object "[[Staff.Subordinate.Surname]]" equals "Smith"
+	Then the json object "[[Staff.Subordinate.Person.FirstName]]" equals "Bob"
+	Then the json object "[[Staff.Subordinate.Person.Surname]]" equals "Smith"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable						| New Value						|
-	| 1 | [[Person.FirstName]] =		| Bob							|
-	| 2 | [[Person.Surname]] =			| Smith							|
-	| 3 | [[Person]] = 					| [[Staff.Subordinate]]			|
+	| # | Variable					| New Value				|
+	| 1 | [[Person.FirstName]] =	| Bob					|
+	| 2 | [[Person.Surname]] =		| Smith					|
+	| 3 | [[Person]] = 				| [[Staff.Subordinate]]	|
 	And the debug output as
 	| # |											|
 	| 1 | [[Person.FirstName]] = Bob				|
@@ -168,7 +164,27 @@ Scenario: Assign a populated json object to a child of a new json object
 	| 3 | [[Staff.Subordinate.FirstName]] = Bob		|
 	| 4 | [[StaffSubordinate..Surname]] = Smith		|
 
-#failing
+#failing - person.name = bob, person.age = 25, staff(1) = person -> is this valid?
+Scenario: Assign a populated json object to a new json object array
+	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
+	And I assign the value "Smith" to a json object "[[Person.Surname]]"
+	And I assign the json object "[[Person]]" to a json object "[[Staff(1)]]"
+	When the assign object tool is executed
+	Then the json object "[[Staff(1).Person.FirstName]]" equals "Bob"
+	Then the json object "[[Staff(1).Person.Surname]]" equals "Smith"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable					| New Value				|
+	| 1 | [[Person.FirstName]] =	| Bob					|
+	| 2 | [[Person.Surname]] =		| Smith					|
+	| 3 | [[Person]] = 				| [[Staff.Subordinate]]	|
+	And the debug output as
+	| # |											|
+	| 1 | [[Person.FirstName]] = Bob				|
+	| 2 | [[Person.Surname]] = Smith				|
+	| 3 | [[Staff.Subordinate.FirstName]] = Bob		|
+	| 4 | [[StaffSubordinate..Surname]] = Smith		|
+
 Scenario: Assign multiple json variables to a json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "Smith" to a json object "[[Person.Surname]]"
@@ -179,10 +195,10 @@ Scenario: Assign multiple json variables to a json object
 	And the value of "[[Person.FullName]]" equals BobSmith
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable						| New Value									|
-	| 1 | [[Person.FirstName]] =		| Bob										|
-	| 2 | [[Person.Surname]] =			| Smith										|
-	| 3 | [[Person.FullName]] =			| [[Person.FirstName]][[Person.Surname]]	|
+	| # | Variable					| New Value											|
+	| 1 | [[Person.FirstName]] =	| Bob												|
+	| 2 | [[Person.Surname]] =		| Smith												|
+	| 3 | [[Person.FullName]] =		| [[Person.FirstName]][[Person.Surname]] = BobSmith	|
 	And the debug output as
     | # |									|
     | 1 | [[Person.FirstPart]] = Bob		|
@@ -200,10 +216,10 @@ Scenario: Assign multiple json variables to a json object with a literal
 	And the value of "[[Person.FullName]]" equals BobSmith
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable						| New Value									|
-	| 1 | [[Person.FirstName]] =		| Bob										|
-	| 2 | [[Person.Surname]] =			| Smith										|
-	| 3 | [[Person.FullName]] =			| [[Person.FirstName]][[Person.Surname]]	|
+	| # | Variable					| New Value									|
+	| 1 | [[Person.FirstName]] =	| Bob										|
+	| 2 | [[Person.Surname]] =		| Smith										|
+	| 3 | [[Person.FullName]] =		| [[Person.FirstName]][[Person.Surname]]	|
 	And the debug output as
     | # |									|
     | 1 | [[Person.FirstPart]] = Bob		|
@@ -211,24 +227,24 @@ Scenario: Assign multiple json variables to a json object with a literal
     | 3 | [[Person.FullName]]  = BobSmith	|
 
 Scenario: Assign values to a json object array
-	Given I assign the value "1" to a json object "[[Person.Score(1)]]"
-	And I assign the value "2" to a json object "[[Person.Score(2)]]"
-	And I assign the value "3" to a json object "[[Person.Score(3)]]"
+	Given I assign the value "11" to a json object "[[Person.Score(1)]]"
+	And I assign the value "22" to a json object "[[Person.Score(2)]]"
+	And I assign the value "33" to a json object "[[Person.Score(3)]]"
 	When the assign tool is executed
 	Then the json object "[[Person.Score(1)]]" equals "1"
 	Then the json object "[[Person.Score(2)]]" equals "2"
 	Then the json object "[[Person.Score(3)]]" equals "3"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable						| New Value	|
-	| 1 | [[Person.Score(1)]] =			| 1			|
-	| 2 | [[Person.Score(2)]] =			| 2			|
-	| 3 | [[Person.Score(3)]] =			| 3			|
+	| # | Variable				| New Value	|
+	| 1 | [[Person.Score(1)]] =	| 11		|
+	| 2 | [[Person.Score(2)]] =	| 22		|
+	| 3 | [[Person.Score(3)]] =	| 33		|
 	And the debug output as
     | # |							|
-    | 1 | [[Person.Score(1)]] = 1	|
-    | 2 | [[Person.Score(2)]] = 2	|
-    | 3 | [[Person.Score(3)]]  = 3	|
+    | 1 | [[Person.Score(1)]] = 11	|
+    | 2 | [[Person.Score(2)]] = 22	|
+    | 3 | [[Person.Score(3)]] = 33	|
 
 Scenario: Assign json variable with a calculate expression
 	Given I assign the value "SUM(1,2,3)+1" to a json object "[[Person.Score]]"
@@ -251,17 +267,38 @@ Scenario: Assign json variable with a calculate expression using json objects
 	Then the json object "[[Person.TotalScore]]" equals "7"
 	And the execution has "NO" error
 	And the debug inputs as
+	| # | Variable					| New Value															|
+	| 1 | [[Person.Score1]] =		| 1																	|
+	| 2 | [[Person.Score2]] =		| 2																	|
+	| 3 | [[Person.Score3]] =		| 3																	|
+	| 4 | [[Person.TotalScore]] =	| SUM(Person.Score(Person.Score1,Person.Score2,Person.Score3))+1	|
+	And the debug output as
+    | # |							|
+    | 1 | [[Person.Score1]] = 1		|
+    | 2 | [[Person.Score2]] = 2		|
+    | 3 | [[Person.Score3]]  = 3	|
+	| 3 | [[Person.TotalScore]] = 7	|
+
+Scenario: Assign json variable with a calculate expression using json array
+	Given I assign the value "1" to a json object "[[Person.Score(1)]]"
+	And I assign the value "2" to a json object "[[Person.Score(2)]]"
+	And I assign the value "3" to a json object "[[Person.Score(3)]]"
+	And I assign the value "SUM(Person.Score(*))+1" to a json object "[[Person.TotalScore]]"
+	When the assign tool is executed
+	Then the json object "[[Person.TotalScore]]" equals "7"
+	And the execution has "NO" error
+	And the debug inputs as
 	| # | Variable						| New Value					|
 	| 1 | [[Person.Score(1)]] =			| 1							|
 	| 2 | [[Person.Score(2)]] =			| 2							|
 	| 3 | [[Person.Score(3)]] =			| 3							|
 	| 4 | [[Person.TotalScore]] =		| SUM(Person.Score(*))+1	|
 	And the debug output as
-    | # |									|
-    | 1 | [[Person.Score(1)]] = 1			|
-    | 2 | [[Person.Score(2)]] = 2			|
-    | 3 | [[Person.Score(3)]]  = 3			|
-	| 3 | [[Person.TotalScore]]  = 7		|
+    | # |							|
+    | 1 | [[Person.Score(1)]] = 1	|
+    | 2 | [[Person.Score(2)]] = 2	|
+    | 3 | [[Person.Score(3)]]  = 3	|
+	| 3 | [[Person.TotalScore]] = 7	|
 
 # TODO
 # calculate , v2?
