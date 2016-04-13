@@ -781,6 +781,15 @@ The file must be available on the local file system.</value>
      This is the name of the file that will be downloaded from DropBox.
      NOTE: The file path must use "/" to identify folders and not "\".</value>
   </data>
+  <data name="DropBoxFileListFileNameToolTip" xml:space="preserve">
+    <value>DropBoxFileListFileNameToolTip</value>
+  </data>
+  <data name="DropBoxFileListFileName" xml:space="preserve">
+    <value>DropBoxFileListFileName</value>
+  </data>
+  <data name="DropboxReadFolderToolTip" xml:space="preserve">
+    <value>DropboxReadFolderToolTip</value>
+  </data>
   <data name="DropboxSourceToolTip" xml:space="preserve">
     <value>Select the Dropbox source that the file operation will be performed on.</value>
   </data>

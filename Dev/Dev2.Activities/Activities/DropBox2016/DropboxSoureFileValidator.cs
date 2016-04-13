@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Security;
-using Dropbox.Api.Sharing;
 
 namespace Dev2.Activities.DropBox2016
 {

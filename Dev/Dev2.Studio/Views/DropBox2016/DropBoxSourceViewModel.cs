@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Webs.Callbacks;
