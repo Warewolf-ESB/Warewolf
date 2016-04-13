@@ -53,6 +53,11 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                     if (exception.InnerException.Message.Contains("not_found"))
                     {
                         return new DropboxFailureResult(new DropboxFileNotFoundException());
+                    } 
+                    
+                    if (exception.InnerException.Message.Contains("malformed"))
+                    {
+                        return new DropboxFailureResult(new DropboxFileMalformdedException());
                     }
                     return exception.InnerException.Message.Contains("not_file") ? new DropboxFailureResult(new DropboxPathNotFileFoundException()) : new DropboxFailureResult(exception.InnerException);
                 }

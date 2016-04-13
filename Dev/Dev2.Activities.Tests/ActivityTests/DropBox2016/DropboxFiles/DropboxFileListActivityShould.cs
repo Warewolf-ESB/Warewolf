@@ -21,10 +21,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             return new DsfDropboxFileListActivity();
         }
+
         private static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DsfDropboxFileList_GivenNewInstance_ShouldNotBeNull()
@@ -36,6 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Test Result -----------------------
             Assert.IsNotNull(dropboxFileListActivity);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewActivity_GivenIsNew_ShouldHaveDisplayName()
@@ -47,8 +50,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.AreEqual("List Dropbox files", dropboxFileListActivity.DisplayName);
-
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetFindMissingType_GivenIsNew_ShouldSetStaticActivity()
@@ -60,7 +63,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var enFindMissingType = dropboxFileListActivity.GetFindMissingType();
             //---------------Test Result -----------------------
             Assert.AreEqual(enFindMissingType.StaticActivity, enFindMissingType);
-
         }
 
         [TestMethod]
@@ -75,6 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugInputs.Count());
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenEnvironmentMockEnvironmentAndFromPath_ShouldHaveOneDebugOutputs()
@@ -98,7 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
-            var dropBoxDownloadActivityMock = new DsfDropboxFileListActivity() { };
+            var dropBoxDownloadActivityMock = new DsfDropboxFileListActivity();
             dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropBoxDownloadActivityMock);
@@ -117,8 +120,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Set up test pack-------------------
             var dropBoxDownloadActivity = new Mock<DsfDropboxFileListActivity>();
             dropBoxDownloadActivity.SetupAllProperties();
-            dropBoxDownloadActivity.Setup(acivtity => acivtity.GetDebugOutputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>()))
-                .Returns(new List<DebugItem>()
+            dropBoxDownloadActivity.Setup(
+                acivtity => acivtity.GetDebugOutputs(It.IsAny<IExecutionEnvironment>(), It.IsAny<int>()))
+                .Returns(new List<DebugItem>
                 {
                     new DebugItem()
                 });
@@ -137,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
-            var dropboxFileListActivity = new DsfDropboxFileListActivity() { ToPath = "Test.a" };
+            var dropboxFileListActivity = new DsfDropboxFileListActivity {ToPath = "Test.a"};
             dropboxFileListActivity.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivity);
@@ -146,14 +150,14 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             // ReSharper disable once RedundantAssignment
-            IDSFDataObject dataObject = datObj.Object;
+            var dataObject = datObj.Object;
             var dev2Activity = dropboxFileListActivity.Execute(dataObject, 0);
             //---------------Test Result -----------------------
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof (ArgumentException))]
         public void PerformExecution_GivenNoPaths_ShouldThrowException()
         {
             //---------------Set up test pack-------------------
@@ -164,19 +168,18 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
-            dropboxFileListActivityMock.SelectedSource= new OauthSource()
+            dropboxFileListActivityMock.SelectedSource = new OauthSource
             {
                 Secret = "Test"
             };
             //---------------Execute Test ----------------------
-            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
             {
-                 {"ToPath",""},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","false"},
-                {"IncludeFolders","false"},
-              
+                {"ToPath", ""},
+                {"IsRecursive", "false"},
+                {"IncludeMediaInfo", "false"},
+                {"IncludeDeleted", "false"},
+                {"IncludeFolders", "false"}
             });
             //---------------Test Result -----------------------
             Assert.Fail("Exception Not Thrown");
@@ -190,26 +193,26 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
-            var dropboxFileListActivityMock = new Mock<DsfDropboxFileListActivityMock>();
-            dropboxFileListActivityMock.Setup(
-                mock => mock.GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()))
-                .Returns(mockExecutor.Object);
-            dropboxFileListActivityMock.SetupGet(mock => mock.SelectedSource).Returns(new OauthSource()
+            var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                Secret = "Test"
-            });
+                SelectedSource = new OauthSource
+                {
+                    Secret = "Test"
+                },
+                IsFoldersSelected = true,
+            };
 
+            ;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
             //---------------Execute Test ----------------------
-            var execution = dropboxFileListActivityMock.Object.PerformBaseExecution(new Dictionary<string, string>()
+            var execution = dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
             {
-                {"ToPath","a.txt"},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","false"},
-                {"IncludeFolders","false"},
-              
+                {"ToPath", "a.txt"},
+                {"IsRecursive", "false"},
+                {"IncludeMediaInfo", "false"},
+                {"IncludeDeleted", "false"},
+                {"IncludeFolders", "false"}
             });
             //---------------Test Result -----------------------
             Assert.AreEqual(execution, GlobalConstants.DropBoxSucces);
@@ -225,12 +228,11 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource()
+                SelectedSource = new OauthSource
                 {
-                    Secret = "Test",
-                   
+                    Secret = "Test"
                 },
-                IsFoldersSelected = true
+                IsFoldersSelected = true,
             };
 
             ;
@@ -239,19 +241,18 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
             //---------------Execute Test ----------------------
-            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
             {
-                {"ToPath","a.txt"},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","false"},
-                {"IncludeFolders","true"},
-              
+                {"ToPath", "a.txt"},
+                {"IsRecursive", "false"},
+                {"IncludeMediaInfo", "false"},
+                {"IncludeDeleted", "false"},
+                {"IncludeFolders", "true"}
             });
             //---------------Test Result -----------------------
-            Assert.AreEqual(3, dropboxFileListActivityMock.Folders.Count());
+            Assert.AreEqual(3, dropboxFileListActivityMock.Files.Count());
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPathAndIsFilesAndFoldersSelected_ShouldLoadFoldersAndFiles()
@@ -262,10 +263,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource()
+                SelectedSource = new OauthSource
                 {
-                    Secret = "Test",
-                   
+                    Secret = "Test"
                 },
                 IsFilesAndFoldersSelected = true
             };
@@ -276,22 +276,22 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
             //---------------Execute Test ----------------------
-            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
             {
-                {"ToPath","a.txt"},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","false"},
-                {"IncludeFolders","true"},
-              
+                {"ToPath", "a.txt"},
+                {"IsRecursive", "false"},
+                {"IncludeMediaInfo", "false"},
+                {"IncludeDeleted", "false"},
+                {"IncludeFolders", "true"}
             });
             //---------------Test Result -----------------------
-            Assert.AreEqual(3, dropboxFileListActivityMock.FilesAndFolders.Count());
-        } 
-        
+            Assert.AreEqual(3, dropboxFileListActivityMock.Files.Count());
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void PerformExecution_GivenPathAndIsFilesAndFoldersSelectedAndIncludeDeleted_ShouldLoadFoldersAndFilesAndDeleted()
+        public void
+            PerformExecution_GivenPathAndIsFilesAndFoldersSelectedAndIncludeDeleted_ShouldLoadFoldersAndFilesAndDeleted()
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
@@ -299,14 +299,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource()
+                SelectedSource = new OauthSource
                 {
-                    Secret = "Test",
-                   
+                    Secret = "Test"
                 },
                 IsFilesAndFoldersSelected = true,
                 IncludeDeleted = true
-               
             };
 
             ;
@@ -315,18 +313,18 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
             //---------------Execute Test ----------------------
-            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
             {
-                {"ToPath","a.txt"},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","false"},
-                {"IncludeFolders","true"},
-              
+                {"ToPath", "a.txt"},
+                {"IsRecursive", "false"},
+                {"IncludeMediaInfo", "false"},
+                {"IncludeDeleted", "false"},
+                {"IncludeFolders", "true"}
             });
             //---------------Test Result -----------------------
-            Assert.AreEqual(4, dropboxFileListActivityMock.FilesAndFolders.Count());
+            Assert.AreEqual(4, dropboxFileListActivityMock.Files.Count());
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PerformExecution_GivenPathAndIncludeDeleted_ShouldLoadDeletedFiles()
@@ -337,7 +335,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource()
+                SelectedSource = new OauthSource
                 {
                     Secret = "Test"
                 },
@@ -347,17 +345,16 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
             //---------------Execute Test ----------------------
-            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
             {
-                {"ToPath","a.txt"},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","true"},
-                {"IncludeFolders","true"},
-              
+                {"ToPath", "a.txt"},
+                {"IsRecursive", "false"},
+                {"IncludeMediaInfo", "false"},
+                {"IncludeDeleted", "true"},
+                {"IncludeFolders", "false"}
             });
             //---------------Test Result -----------------------
-            Assert.AreEqual(1, dropboxFileListActivityMock.DeletedFiles.Count());
+            Assert.AreEqual(1, dropboxFileListActivityMock.Files.Count());
         }
 
         [TestMethod]
@@ -370,10 +367,10 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource()
+                SelectedSource = new OauthSource
                 {
                     Secret = "Test"
-                },
+                }
             };
 
             ;
@@ -382,17 +379,16 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
             //---------------Execute Test ----------------------
-            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>()
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
             {
-                {"ToPath","a.txt"},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","false"},
-                {"IncludeFolders","false"},
-              
+                {"ToPath", "a.txt"},
+                {"IsRecursive", "false"},
+                {"IncludeMediaInfo", "false"},
+                {"IncludeDeleted", "false"},
+                {"IncludeFolders", "false"}
             });
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, dropboxFileListActivityMock.Folders.Count());
+            Assert.AreEqual(0, dropboxFileListActivityMock.Files.Count());
         }
 
         [TestMethod]
@@ -409,7 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 dropboxFileListActivityMock.Setup(
                     mock => mock.GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()))
                     .Returns(mockExecutor.Object);
-                dropboxFileListActivityMock.SetupGet(mock => mock.SelectedSource).Returns(new OauthSource()
+                dropboxFileListActivityMock.SetupGet(mock => mock.SelectedSource).Returns(new OauthSource
                 {
                     Secret = "Test"
                 });
@@ -417,14 +413,13 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(dropboxFileListActivityMock);
                 //---------------Execute Test ----------------------
-                var execution = dropboxFileListActivityMock.Object.PerformBaseExecution(new Dictionary<string, string>()
+                var execution = dropboxFileListActivityMock.Object.PerformBaseExecution(new Dictionary<string, string>
                 {
-                  {"ToPath","a.txt"},
-                {"IsRecursive","false"},
-                {"IncludeMediaInfo","false"},
-                {"IncludeDeleted","false"},
-                {"IncludeFolders","false"},
-              
+                    {"ToPath", "a.txt"},
+                    {"IsRecursive", "false"},
+                    {"IncludeMediaInfo", "false"},
+                    {"IncludeDeleted", "false"},
+                    {"IncludeFolders", "false"}
                 });
             }
             catch (Exception e)
@@ -432,7 +427,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 Assert.AreEqual(TestConstant.ExceptionInstance.Value.Message, e.Message);
             }
             //---------------Test Result -----------------------
-
         }
 
         [TestMethod]
@@ -451,10 +445,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             // ReSharper disable once RedundantAssignment
-            IDSFDataObject dataObject = datObj.Object;
+            var dataObject = datObj.Object;
             dropboxFileListActivityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
-            executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct Dropbox file location has been entered"));
+            executionEnvironment.Verify(
+                environment =>
+                    environment.AddError("Please confirm that the correct Dropbox file location has been entered"));
         }
 
         [TestMethod]
@@ -466,7 +462,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivity();
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropboxFileListActivityMock.SelectedSource = new OauthSource()
+            dropboxFileListActivityMock.SelectedSource = new OauthSource
             {
                 Secret = "Test"
             };
@@ -488,7 +484,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivity();
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropboxFileListActivityMock.SelectedSource = new OauthSource()
+            dropboxFileListActivityMock.SelectedSource = new OauthSource
             {
                 Secret = "Test"
             };
@@ -503,10 +499,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             Assert.IsNotNull(dropboxClient1);
             Assert.AreEqual(dropboxClient, dropboxClient1);
         }
-
-
-
-
     }
 
     public class DsfDropboxFileListActivityMock : DsfDropboxFileListActivity
@@ -515,7 +507,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             return base.PerformExecution(evaluatedValues);
         }
-        public override IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
+
+        public override IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(
+            IDropboxSingleExecutor<IDropboxResult> singleExecutor)
         {
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
             mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))

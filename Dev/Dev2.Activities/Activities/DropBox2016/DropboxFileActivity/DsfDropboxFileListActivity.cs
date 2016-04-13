@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
+using Dev2.DataList.Contract;
+using Dev2.Diagnostics;
 using Dev2.Factories;
 using Dev2.Util;
 using Dropbox.Api;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
@@ -23,7 +27,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         public virtual OauthSource SelectedSource { get; set; }
 
         public virtual List<string> Files { get; set; }
-        public virtual List<string> Folders { get; set; }
         private DropboxClient _dropboxClient;
         public Exception Exception { get; set; }
         [FindMissing]
@@ -44,19 +47,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
 
 
-        public List<string> DeletedFiles { get; set; }
-        [Outputs("Files and folders")]
-        public List<string> FilesAndFolders { get; set; }
         public override string DisplayName { get; set; }
         private DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
         {
             DropboxFactory = dropboxFactory;
             // ReSharper disable VirtualMemberCallInContructor
             DisplayName = "List Dropbox files";
-            FilesAndFolders = new List<string>();
             Files = new List<string>();
-            Folders = new List<string>();
-            DeletedFiles = new List<string>();
             IsFilesSelected = true;
             IncludeDeleted = false;
             IsRecursive = false;
@@ -87,6 +84,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                 return;
             }
             base.ExecuteTool(dataObject, update);
+            
         }
 
         public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
@@ -107,21 +105,18 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                 var metadatas = listFolderResult.Entries;
                 if (IncludeDeleted)
                 {
-                    DeletedFiles = listFolderResult.Entries.Where(metadata => metadata.IsDeleted).Select(metadata => metadata.Name).ToList();
+                    Files.AddRange(listFolderResult.Entries.Where(metadata => metadata.IsDeleted).Select(metadata => metadata.Name).ToList());
                 }
-                Files = metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList();
                 if (IsFoldersSelected)
-                    Folders = metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList();
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList());
                 if (IsFilesSelected)
-                    Files = metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList();
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList());
                 if (IsFilesAndFoldersSelected)
                 {
-                    FilesAndFolders.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList());
-                    FilesAndFolders.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList());
-                    if (IncludeDeleted)
-                        FilesAndFolders.AddRange(DeletedFiles);
-
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList());
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList());
                 }
+                
                 return GlobalConstants.DropBoxSucces;
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
@@ -134,9 +129,20 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             throw new Exception(executionError);
         }
 
+
+        protected override void AssignResult(IDSFDataObject dataObject, int update)
+        {
+            foreach (var file in Files)
+            {
+                dataObject.Environment.Assign(Result,file,update);
+            }
+        }
+
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.StaticActivity;
         }
+
+       
     }
 }

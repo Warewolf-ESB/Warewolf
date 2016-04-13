@@ -26,7 +26,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
-    
+
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -82,11 +82,6 @@
             <RadioButton Grid.Column="1" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Folders</RadioButton>
             <RadioButton Grid.Column="2" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesAndFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files &amp; Folders</RadioButton>
         </Grid>
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="Media information" Margin="{StaticResource ActivityBorderTop}"/>
-        <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeMediaInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Include media information</CheckBox>
-
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="Deleted Files" Margin="{StaticResource ActivityBorderTop}"/>
-        <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IncludeDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Include deleted files</CheckBox>
 
         <TextBlock Grid.Column="0" Grid.Row="6" Text="Recursive" Margin="{StaticResource ActivityBorderTop}"/>
         <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IsRecursive}">Load Sub folders</CheckBox>

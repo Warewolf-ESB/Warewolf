@@ -155,12 +155,7 @@
                 <RadioButton Grid.Column="1" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFoldersSelected}">Folders</RadioButton>
                 <RadioButton Grid.Column="2" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesAndFoldersSelected}">Files &amp; Folders</RadioButton>
             </Grid>
-            <TextBlock Grid.Column="0" Grid.Row="3" Text="Media information" Margin="{StaticResource ActivityBorderTop}"/>
-            <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding IncludeMediaInfo}">Include media information</CheckBox>
-
-            <TextBlock Grid.Column="0" Grid.Row="4" Text="Deleted Files" Margin="{StaticResource ActivityBorderTop}"/>
-            <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding IncludeDeleted}">Include deleted files</CheckBox>
-
+           
             <TextBlock Grid.Column="0" Grid.Row="5" Text="Recursive" Margin="{StaticResource ActivityBorderTop}"/>
             <CheckBox Grid.Column="1" Grid.Row="5" IsChecked="{Binding IsRecursive}">Load Sub folders</CheckBox>
             <!--Result Section-->
