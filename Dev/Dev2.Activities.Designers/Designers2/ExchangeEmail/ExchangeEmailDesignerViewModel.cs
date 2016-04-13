@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -15,7 +13,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Data.Enums;
 using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
