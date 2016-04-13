@@ -148,18 +148,6 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //---------------Test Result -----------------------
             Assert.IsFalse(dropBoxFileListViewModel.IsRecursive);
         }
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Folders_GivenActivityIsNew_ShouldBeEmpty()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxFileListViewModel = CreateMockViewModel();
-            //---------------Assert Precondition----------------
-            Assert.IsTrue(string.IsNullOrEmpty(dropBoxFileListViewModel.Result));
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.AreEqual(0, dropBoxFileListViewModel.Folders.Count);
-        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -225,37 +213,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //---------------Test Result -----------------------
             Assert.IsFalse(dropBoxFileListViewModel.IsFilesAndFoldersSelected);
         }
-
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void DeletedFiles_GivenActivityIsNew_ShouldBeFalse()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxFileListViewModel = CreateMockViewModel();
-            //---------------Assert Precondition----------------
-            Assert.IsFalse(dropBoxFileListViewModel.IncludeDeleted);
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(dropBoxFileListViewModel.DeletedFiles);
-            Assert.AreEqual(0, dropBoxFileListViewModel.DeletedFiles.Count);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void FilesAndFolders_GivenActivityIsNew_ShouldBeFalse()
-        {
-            //---------------Set up test pack-------------------
-            var dropBoxFileListViewModel = CreateMockViewModel();
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxFileListViewModel.DeletedFiles);
-            Assert.AreEqual(0, dropBoxFileListViewModel.DeletedFiles.Count);
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(dropBoxFileListViewModel.FilesAndFolders);
-            Assert.AreEqual(0, dropBoxFileListViewModel.FilesAndFolders.Count);
-        }
+       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

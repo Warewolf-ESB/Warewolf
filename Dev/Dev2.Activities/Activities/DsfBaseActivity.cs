@@ -18,6 +18,7 @@ namespace Dev2.Activities
 {
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
+        private string _result;
         public new abstract string DisplayName { get; set; }
 
 
@@ -88,11 +89,8 @@ namespace Dev2.Activities
                         var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
                         evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
                     }
-                    var result = PerformExecution(evaluatedValues);
-                    if (!string.IsNullOrEmpty(Result))
-                    {
-                        dataObject.Environment.Assign(Result, result, update);
-                    }
+                    _result = PerformExecution(evaluatedValues);
+                    AssignResult(dataObject, update);
                 }
 
                 allErrors.MergeErrors(errors);
@@ -131,6 +129,14 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+            }
+        }
+
+        protected virtual void AssignResult(IDSFDataObject dataObject, int update)
+        {
+            if (!string.IsNullOrEmpty(Result))
+            {
+                dataObject.Environment.Assign(Result, _result, update);
             }
         }
 

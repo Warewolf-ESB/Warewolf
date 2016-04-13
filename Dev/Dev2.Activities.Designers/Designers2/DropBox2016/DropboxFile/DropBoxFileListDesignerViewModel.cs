@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -32,12 +31,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         private string _toPath;
         private string _result;
         private List<string> _files;
-        private List<string> _folders;
         private bool _includeMediaInfo;
         private bool _isRecursive;
         private bool _includeDeleted;
-        private List<string> _deletedFiles;
-        private List<string> _filesAndFolders;
         private bool _isFilesSelected;
         private bool _isFoldersSelected;
         private bool _isFilesAndFoldersSelected;
@@ -143,15 +139,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
             }
         }
 
-        public virtual List<string> Folders
-        {
-            get
-            {
-                _folders = GetModelPropertyName() as List<string>;
-                return _folders;
-            }
-        }
-
         public bool IncludeMediaInfo
         {
             get
@@ -194,24 +181,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
                 _includeDeleted = value;
                 SetModelItemProperty(_includeDeleted);
                 OnPropertyChanged();
-            }
-        }
-
-        public List<string> DeletedFiles
-        {
-            get
-            {
-                _deletedFiles = GetModelPropertyName() as List<string>;
-                return _deletedFiles;
-            }
-        }
-
-        public List<string> FilesAndFolders
-        {
-            get
-            {
-                _filesAndFolders = GetModelPropertyName() as List<string>;
-                return _filesAndFolders;
             }
         }
 
