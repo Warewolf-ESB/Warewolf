@@ -2094,11 +2094,38 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DropBoxFileListFileName.
+        /// </summary>
+        public static string DropBoxFileListFileName {
+            get {
+                return ResourceManager.GetString("DropBoxFileListFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropBoxFileListFileNameToolTip.
+        /// </summary>
+        public static string DropBoxFileListFileNameToolTip {
+            get {
+                return ResourceManager.GetString("DropBoxFileListFileNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the operation that you wish to perform. Read from a file on Dropbox..
         /// </summary>
         public static string DropboxOperationToolTip {
             get {
                 return ResourceManager.GetString("DropboxOperationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropboxReadFolderToolTip.
+        /// </summary>
+        public static string DropboxReadFolderToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFolderToolTip", resourceCulture);
             }
         }
         

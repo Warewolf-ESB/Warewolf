@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Dropbox.Api.Files;
+﻿using Dropbox.Api.Files;
 
 namespace Dev2.Activities.DropBox2016.Result
 {

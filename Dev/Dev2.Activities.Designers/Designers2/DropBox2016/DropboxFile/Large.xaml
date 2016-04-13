@@ -11,9 +11,6 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
-                               xmlns:attachedProperties1="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:dropboxFile="clr-namespace:Dev2.Activities.Designers2.DropBox2016.DropboxFile"
                                Width="340"
@@ -127,12 +124,12 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="Dropbox File"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxDownloadFileName}"
+                                ToolTip="{x:Static help:HelpTextResources.DropBoxFileListFileNameToolTip}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxDownloadFileName}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxFileListFileName}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"
@@ -142,7 +139,7 @@
             <TextBlock Grid.Column="0" Grid.Row="2" Text="Read" Margin="{StaticResource ActivityBorderTop}"/>
             <Grid Grid.Column="1"                    
                     Grid.Row="2"
-                    ToolTip="{x:Static help:HelpTextResources.ReadFolderToolTipRead}">
+                    ToolTip="{x:Static help:HelpTextResources.DropboxReadFolderToolTip}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />

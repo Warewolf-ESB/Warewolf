@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
-using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using Dev2.Factories;
 using Dev2.Util;
 using Dropbox.Api;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
-using Warewolf.Storage;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
