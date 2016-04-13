@@ -51,6 +51,30 @@ Scenario: Assign values with different types to json objects
 	| 2 | [[Person.Surname]] = Smith	|
 	| 3 | [[Person.Age]] = 21			|
 
+Scenario: Assign a value with plus in it to a json object
+	Given I assign the value "+10" to a json object "[[Person.Score]]"
+	When the assign object tool is executed
+	Then the value of "[[Person.Score]]" equals +10
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable  | New Value	|
+	| 1 | [[Person.Score]] =	| +10   |
+	And the debug output as 
+	| # |							|
+	| 1 | [[Person.Score]] = +10	|
+
+Scenario: Assign a value with minus in it to a json object
+	Given I assign the value "-10" to a json object "[[Person.Score]]"
+	When the assign object tool is executed
+	Then the value of "[[Person.Score]]" equals -10
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable  | New Value	|
+	| 1 | [[Person.Score]] =	| -10   |
+	And the debug output as 
+	| # |							|
+	| 1 | [[Person.Score]] = -10	|
+
 Scenario: Assign a json object value to a json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "[[Person.FirstName]]" to a json object "[[Person.Surname]]"
@@ -97,30 +121,6 @@ Scenario: Assign an invalid value to a json object
 	When the assign object tool is executed
 	Then the execution has "AN" error
 	And the execution has "parse error" error
-
-Scenario: Assign a value with plus in it to a json object
-	Given I assign the value "+10" to a json object "[[Person.Score]]"
-	When the assign object tool is executed
-	Then the value of "[[Person.Score]]" equals +10
-	And the execution has "NO" error
-	And the debug inputs as
-	| # | Variable  | New Value	|
-	| 1 | [[Person.Score]] =	| +10   |
-	And the debug output as 
-	| # |							|
-	| 1 | [[Person.Score]] = +10	|
-
-Scenario: Assign a value with minus in it to a json object
-	Given I assign the value "-10" to a json object "[[Person.Score]]"
-	When the assign object tool is executed
-	Then the value of "[[Person.Score]]" equals -10
-	And the execution has "NO" error
-	And the debug inputs as
-	| # | Variable  | New Value	|
-	| 1 | [[Person.Score]] =	| -10   |
-	And the debug output as 
-	| # |							|
-	| 1 | [[Person.Score]] = -10	|
 
 #failing - person.name = bob, person.age = 25, staff = person -> is this valid?
 Scenario: Assign a populated json object to a new json object
@@ -189,7 +189,7 @@ Scenario: Assign multiple json variables to a json object
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "Smith" to a json object "[[Person.Surname]]"
 	And I assign the value "[[Person.FirstName]][[Person.Surname]]" to a json object "[[Person.FullName]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the json object "[[Person.FirstName]]" equals "Bob"
 	And the json object "[[Person.Surname]]" equals "Smith"
 	And the value of "[[Person.FullName]]" equals BobSmith
@@ -210,7 +210,7 @@ Scenario: Assign multiple json variables to a json object with a literal
 	Given I assign the value "Bob" to a json object "[[Person.FirstName]]"
 	And I assign the value "Smith" to a json object "[[Person.Surname]]"
 	And I assign the value "[[Person.FirstName]] the killa [[Person.Surname]]" to a json object "[[Person.FullName]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the json object "[[Person.FirstName]]" equals "Bob"
 	And the json object "[[Person.Surname]]" equals "Smith"
 	And the value of "[[Person.FullName]]" equals BobSmith
@@ -230,10 +230,31 @@ Scenario: Assign values to a json object array
 	Given I assign the value "11" to a json object "[[Person.Score(1)]]"
 	And I assign the value "22" to a json object "[[Person.Score(2)]]"
 	And I assign the value "33" to a json object "[[Person.Score(3)]]"
-	When the assign tool is executed
-	Then the json object "[[Person.Score(1)]]" equals "1"
-	Then the json object "[[Person.Score(2)]]" equals "2"
-	Then the json object "[[Person.Score(3)]]" equals "3"
+	When the assign object tool is executed
+	Then the json object "[[Person.Score(1)]]" equals "11"
+	Then the json object "[[Person.Score(2)]]" equals "22"
+	Then the json object "[[Person.Score(3)]]" equals "33"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable				| New Value	|
+	| 1 | [[Person.Score(1)]] =	| 11		|
+	| 2 | [[Person.Score(2)]] =	| 22		|
+	| 3 | [[Person.Score(3)]] =	| 33		|
+	And the debug output as
+    | # |							|
+    | 1 | [[Person.Score(1)]] = 11	|
+    | 2 | [[Person.Score(2)]] = 22	|
+    | 3 | [[Person.Score(3)]] = 33	|
+
+Scenario: Assign a json object array to a new json object
+	Given I assign the value "11" to a json object "[[Person.Score(1)]]"
+	And I assign the value "22" to a json object "[[Person.Score(2)]]"
+	And I assign the value "33" to a json object "[[Person.Score(3)]]"
+	And I assign the value "[[Person.Score(*)]]" to a json object ""[[Person.CurrentScore]]""
+	When the assign object tool is executed
+	Then the json object "[[Person.CurrentScore(1)]]" equals "11"
+	Then the json object "[[Person.CurrentScore(2)]]" equals "22"
+	Then the json object "[[Person.CurrentScore(3)]]" equals "33"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # | Variable				| New Value	|
@@ -248,7 +269,7 @@ Scenario: Assign values to a json object array
 
 Scenario: Assign json variable with a calculate expression
 	Given I assign the value "SUM(1,2,3)+1" to a json object "[[Person.Score]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the json object "[[Person.Score]]" equals "7"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -263,7 +284,7 @@ Scenario: Assign json variable with a calculate expression using json objects
 	And I assign the value "2" to a json object "[[Person.Score(2)]]"
 	And I assign the value "3" to a json object "[[Person.Score(3)]]"
 	And I assign the value "SUM(Person.Score(*))+1" to a json object "[[Person.TotalScore]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the json object "[[Person.TotalScore]]" equals "7"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -284,7 +305,7 @@ Scenario: Assign json variable with a calculate expression using json array
 	And I assign the value "2" to a json object "[[Person.Score(2)]]"
 	And I assign the value "3" to a json object "[[Person.Score(3)]]"
 	And I assign the value "SUM(Person.Score(*))+1" to a json object "[[Person.TotalScore]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the json object "[[Person.TotalScore]]" equals "7"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -301,6 +322,5 @@ Scenario: Assign json variable with a calculate expression using json array
 	| 3 | [[Person.TotalScore]] = 7	|
 
 # TODO
-# calculate , v2?
 # add to the seq, foreach specs, adding this tool
 # debug output -> json 
