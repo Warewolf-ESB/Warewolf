@@ -32,12 +32,12 @@ if (-not [string]::IsNullOrEmpty($FullVersionString))  {
     Write-Host This version is not tagged, generating new tag...
 	# Get last known version
     $FullVersionString = git -C "$WarewolfGitRepoDirectory" describe --abbrev=0 --tags
-    $FullVersionString = $FullVersionString.Trim()
     if ([string]::IsNullOrEmpty($FullVersionString)) {
         Write-Host No local tags found in git history. Setting version to `"0.0.0.0`".
 		# No known versions found. Use generic version.
         $FullVersionString = "0.0.*"
     } else {
+		$FullVersionString = $FullVersionString.Trim()
 		# Make new version from last known version.
 		Write-Host Last version was `"$FullVersionString`". Generating next version...
 		do {
