@@ -111,7 +111,7 @@ namespace Dev2.Activities.SelectAndApply
                         AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
                     }
                     //Eval list using DataSource
-                    var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update);
+                    var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true);
                     //Create a new Execution Environment
                     var executionEnvironment = new ScopedEnvironment(dataObject.Environment,DataSource,Alias);
 
