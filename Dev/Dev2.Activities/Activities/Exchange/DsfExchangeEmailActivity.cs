@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data;
-using Dev2.Data.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -21,7 +20,6 @@ using Dev2.Util;
 using Microsoft.Exchange.WebServices.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
-using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 

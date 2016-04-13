@@ -43,7 +43,6 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
-using Warewolf.Core;
 using Warewolf.ResourceManagement;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
