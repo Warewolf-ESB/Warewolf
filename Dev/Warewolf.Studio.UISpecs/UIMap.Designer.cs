@@ -11577,7 +11577,7 @@ namespace Warewolf.Studio.UISpecs
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Connectors";
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Storage";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
