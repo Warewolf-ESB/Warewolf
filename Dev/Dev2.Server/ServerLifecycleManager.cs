@@ -1784,7 +1784,9 @@ namespace Dev2
                 var resource = resources[index];
                 if (resource.ResourceType == ResourceType.DbService || resource.ResourceType == ResourceType.PluginService || resource.ResourceType == ResourceType.WebService)
                 {
+#if !DEBUG
                     ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceType.ToString());
+#endif
                 }
             }
         }
