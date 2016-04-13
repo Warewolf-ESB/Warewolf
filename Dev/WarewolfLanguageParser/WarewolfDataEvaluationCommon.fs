@@ -73,7 +73,13 @@ and  languageExpressionToString  (x:LanguageExpression) =
         | RecordSetExpression a -> sprintf "[[%s(%s).%s]]" a.Name (IndexToString a.Index ) a.Column  
         | ScalarExpression a -> sprintf "[[%s]]" a
         | WarewolfAtomAtomExpression a -> atomtoString a
-        | JsonIdentifierExpression a -> jsonExpressionToString  a ""
+        | JsonIdentifierExpression a ->      match a with 
+                                                | NameExpression x -> sprintf "[[%s]]" x.Name
+                                                | NestedNameExpression x -> sprintf "[[%s.%s]]" x.ObjectName  (jsonExpressionToString x.Next "")
+                                                | Terminal -> ""
+                                                | IndexNestedNameExpression x ->   sprintf "[[%s(%s).%s]]" x.ObjectName (IndexToString x.Index)  (jsonExpressionToString x.Next "")
+        
+          
         | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d ) "" a
         | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index ) 
 and jsonExpressionToString a acc =
