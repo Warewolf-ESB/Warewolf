@@ -120,6 +120,7 @@ and combineExpressions  (level:int) (variables:LanguageExpression list) (variabl
     | RecordSetNameExpression c  -> combineRecsetName c level  variables
     | WarewolfAtomAtomExpression _ -> List.empty
     | ComplexExpression _ -> List.empty // cant have complex expressions in intellisense because the variable list is made up of simple expressions
+    | JsonIdentifierExpression _ -> List.empty
 
 and combineScalar (a:ScalarIdentifier)  =
     [ ScalarExpression a |> languageExpressionToString]
