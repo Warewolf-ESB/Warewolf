@@ -113,14 +113,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Inputs is Enabled")]
-        public void ThenInputsIsEnabled()
-        {
-            var viewModel = GetViewModel();
-            var hasInputs = viewModel.InputArea.Inputs != null;
-            Assert.IsTrue(hasInputs);
-        }
-
         [Given(@"I Enter a value as the input")]
         public void GivenIEnterAsTheInput(Table table)
         {
