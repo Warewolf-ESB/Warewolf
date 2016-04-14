@@ -176,6 +176,7 @@
     <Compile Include="Activities\DropBox2016\DropboxFileNameValidator.cs" />
     <Compile Include="Activities\DropBox2016\DropboxFileActivity\DsfDropboxFileListActivity.cs" />
     <Compile Include="Activities\DropBox2016\DropboxFileActivity\DropboxFileRead.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxDeleteSuccessResult.cs" />
     <Compile Include="Activities\DropBox2016\Result\DropboxListFolderSuccesResult.cs" />
     <Compile Include="Activities\DropBox2016\DropboxFileActivity\IDropboxFileRead.cs" />
     <Compile Include="Activities\DropBox2016\DropboxSoureFileValidator.cs" />
