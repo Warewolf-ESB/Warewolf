@@ -184,6 +184,8 @@
     <Compile Include="IComputerNameProvider.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IDllListing.cs" />
+    <Compile Include="IDropboxExecutor.cs" />
+    <Compile Include="IDropboxResult.cs" />
     <Compile Include="IEmailAttachmentModel.cs" />
     <Compile Include="IEmailAttachmentView.cs" />
     <Compile Include="IEmailAttachmentVm.cs" />
@@ -200,8 +202,10 @@
     <Compile Include="IExplorerView.cs" />
     <Compile Include="IExplorerViewModel.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
+    <Compile Include="IFilenameValidator.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IHelpView.cs" />
+    <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageEmailSourceViewModel.cs" />
