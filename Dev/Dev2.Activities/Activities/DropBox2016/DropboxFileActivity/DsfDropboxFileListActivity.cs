@@ -102,16 +102,16 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                 var metadatas = listFolderResult.Entries;
                 if (IncludeDeleted)
                 {
-                    Files.AddRange(listFolderResult.Entries.Where(metadata => metadata.IsDeleted).Select(metadata => metadata.Name).ToList());
+                    Files.AddRange(listFolderResult.Entries.Where(metadata => metadata.IsDeleted).Select(metadata => metadata.PathLower).ToList());
                 }
                 if (IsFoldersSelected)
-                    Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList());
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.PathLower).ToList());
                 if (IsFilesSelected)
-                    Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList());
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.PathLower).ToList());
                 if (IsFilesAndFoldersSelected)
                 {
-                    Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.Name).ToList());
-                    Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.Name).ToList());
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.PathLower).ToList());
+                    Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.PathLower).ToList());
                 }
                 
                 return GlobalConstants.DropBoxSucces;

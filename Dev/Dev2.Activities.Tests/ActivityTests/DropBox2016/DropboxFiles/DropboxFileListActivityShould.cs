@@ -402,19 +402,17 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
                 mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
                     .Returns(new DropboxFailureResult(TestConstant.ExceptionInstance.Value));
-                var dropboxFileListActivityMock = new Mock<DsfDropboxFileListActivityMock>();
-                dropboxFileListActivityMock.Setup(
-                    mock => mock.GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()))
-                    .Returns(mockExecutor.Object);
-                dropboxFileListActivityMock.SetupGet(mock => mock.SelectedSource).Returns(new OauthSource
+                var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock();
+                dropboxFileListActivityMock.SelectedSource = 
+                    new OauthSource
                 {
                     Secret = "Test"
-                });
-
-                //---------------Assert Precondition----------------
+                };
+                dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+               //---------------Assert Precondition----------------
                 Assert.IsNotNull(dropboxFileListActivityMock);
                 //---------------Execute Test ----------------------
-                var execution = dropboxFileListActivityMock.Object.PerformBaseExecution(new Dictionary<string, string>
+                var execution = dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
                 {
                     {"ToPath", "a.txt"},
                     {"IsRecursive", "false"},
