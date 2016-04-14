@@ -321,6 +321,329 @@ Scenario: Assign json variable with a calculate expression using json array
     | 3 | [[Person.Score(3)]]  = 3	|
 	| 3 | [[Person.TotalScore]] = 7	|
 
+
+	Scenario: Assign two json values to scalar
+	Given I assign the value A to a variable "[[rec.a(1)]]"	
+	And I assign the value B to a variable "[[rec.a(2)]]"
+	And I assign the value [[rec.a(1)]][[rec.a(2)]] to a variable "[[Scalar]]"
+	When the assign tool is executed
+	Then the value of "[[Scalar]]" equals "AB"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable       | New Value                     |
+	| 1 | [[rec.a(1)]] = | A                             |
+	| 2 | [[rec.a(2)]] = | B                             |
+	| 3 | [[Scalar]] =   | [[rec.a(1)]][[rec.a(2)]] = AB |
+	And the debug output as
+	| # |                  |
+	| 1 | [[rec.a(1)]] = A |
+	| 2 | [[rec.a(2)]] = B |
+	| 3 | [[Scalar]] = AB  |
+
+
+	Scenario: Assign two json and data 
+	Given I assign the value 1 to a variable "[[rec.a(1)]]"	
+	And I assign the value 2 to a variable "[[rec.a(2)]]"
+	And I assign the value Test[[rec.a(1)]].Warewolf[[rec.a(2)]] to a variable "[[Lr.a(1)]]"
+	When the assign tool is executed
+	Then the value of "[[Lr.a(1)]]" equals "Test1.Warewolf2"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable       | New Value       |
+	| 1 | [[rec.a(1)]] = | 1               |
+	| 2 | [[rec.a(2)]] = | 2               |
+	| 3 | [[Lr.a(1)]] =  | Test[[rec.a(1)]].Warewolf[[rec.a(2)]] = Test1.Warewolf2 |
+	And the debug output as
+	| # |                                |
+	| 1 | [[rec.a(1)]] = 1               |
+	| 2 | [[rec.a(2)]] = 2               |
+	| 3 | [[Lr.a(1)]]  = Test1.Warewolf2 |
+
+
+	Scenario: Assign two json with index as variable to scalr
+	Given I assign the value Test to a variable "[[rec.test(1)]]"	
+	And I assign the value Warewolf to a variable "[[rec.test(2)]]"
+	And I assign the value 1 to a variable "[[a]]"
+	And I assign the value 2 to a variable "[[b]]"
+	And I assign the value [[rec.test([[a]])]][[rec.test([[b]])]] to a variable "[[c]]"
+	When the assign tool is executed
+	Then the value of "[[c]]" equals "TestWarewolf"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable          | New Value                                             |
+	| 1 | [[rec.test(1)]] = | Test                                                  |
+	| 2 | [[rec.test(2)]] = | Warewolf                                              |
+	| 3 | [[a]]           = | 1                                                     |
+	| 4 | [[b]]           = | 2                                                     |
+	| 5 | [[c]]           = | [[rec.test([[a]])]][[rec.test([[b]])]] = TestWarewolf |
+	And the debug output as
+	| # |                            |
+	| 1 | [[rec.test(1)]] = Test     |
+	| 2 | [[rec.test(2)]] = Warewolf |
+	| 3 | [[a]]  = 1                 |
+	| 4 | [[b]]  = 2                 |
+	| 5 | [[c]]  = TestWarewolf      |
+
+
+	Scenario: Assign two json with index as json variable to scalr
+	Given I assign the value Test to a variable "[[rec.test(1)]]"	
+	And I assign the value Warewolf to a variable "[[rec.test(2)]]"
+	And I assign the value 1 to a variable "[[Index.a(1)]]"
+	And I assign the value 2 to a variable "[[Index.a(2)]]"
+	And I assign the value [[rec.test([[Index.a(1)]])]][[rec.test([[Index.a(2)]])]] to a variable "[[Result]]"
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "TestWarewolf"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable          | New Value                                                               |
+	| 1 | [[rec.test(1)]] = | Test                                                                    |
+	| 2 | [[rec.test(2)]] = | Warewolf                                                                |
+	| 3 | [[Index.a(1)]]  = | 1                                                                       |
+	| 4 | [[Index.a(2)]]  = | 2                                                                       |
+	| 5 | [[Result]]      = | [[rec.test([[Index.a(1)]])]][[rec.test([[Index.a(2)]])]] = TestWarewolf |
+	And the debug output as
+	| # |                            |
+	| 1 | [[rec.test(1)]] = Test     |
+	| 2 | [[rec.test(2)]] = Warewolf |
+	| 3 | [[Index.a(1)]]  = 1        |
+	| 4 | [[Index.a(2)]]  = 2        |
+	| 5 | [[Result]]  = TestWarewolf |
+
+
+	Scenario: Assign a json to a scalar
+	Given I assign the value 10 to a variable "[[rec.set(1)]]"	
+	And I assign the value 20 to a variable "[[rec.set(2)]]"
+	And I assign the value 30 to a variable "[[rec.set(3)]]"
+	And I assign the value "[[rec.set(*)]]" to a variable "[[var]]"
+	When the assign tool is executed
+	Then the value of "[[var]]" equals "30"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value           |
+	| 1 | [[rec.set(1)]] = | 10                  |
+	| 2 | [[rec.set(2)]] = | 20                  |
+	| 3 | [[rec.set(3)]] = | 30                  |
+	| 4 | [[var]]        = | [[rec.set(1)]] = 10 |
+	|   |                  | [[rec.set(2)]] = 20 |
+	|   |                  | [[rec.set(3)]] = 30 |
+	And the debug output as
+	| # |                     |
+	| 1 | [[rec.set(1)]] = 10 |
+	| 2 | [[rec.set(2)]] = 20 |
+	| 3 | [[rec.set(3)]] = 30 |
+	| 4 | [[var]] = 30        |
+
+
+	Scenario: Assign a scalar equal to a json
+	Given I assign the value 30 to a variable "[[var]]"
+	And I assign the value "[[var]]" to a variable "[[rec.set()]]"
+	When the assign tool is executed
+	Then the value of "[[rec.set(1)]]" equals "30"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable        | New Value     |
+	| 1 | [[var]]       = | 30            |
+	| 2 | [[rec.set()]] = | [[var]]  = 30 |
+	And the debug output as
+	| # |                     |
+	| 1 | [[var]] = 30        |
+	| 2 | [[rec.set(1)]] = 30 |	 
+
+
+	Scenario: Assign the value of a negative json index
+	Given I assign the value 10 to a variable "[[rec.set()]]"	
+	And I assign the value [[rec.set(-1)]] to a variable "[[var]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	| # | Variable        | New Value         |
+	| 1 | [[rec.set()]] = | 10                |
+	And the debug output as
+	| # |                     |
+	| 1 | [[rec.set(1)]] = 10 |
+
+	Scenario: Assign a variable to mixed scalar, char and json values
+	Given I assign the value Hello to a variable "[[var]]"	
+	And I assign the value World to a variable "[[rec.set(1)]]"
+	And I assign the value [[var]] [[rec.set(1)]] ! to a variable "[[value]]"
+	When the assign tool is executed
+	Then the value of "[[value]]" equals "Hello World !"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value     |
+	| 1 | [[var]]        = | Hello         |
+	| 2 | [[rec.set(1)]] = | World         |
+	| 3 | [[value]]      = | [[var]] [[rec.set(1)]] ! = Hello World ! |
+	And the debug output as
+    | # |                           |
+    | 1 | [[var]] = Hello           |
+    | 2 | [[rec.set(1)]] = World    |
+    | 3 | [[value]] = Hello World ! |
+
+
+	Scenario: Assign multiple variables to the end of a json
+	Given I assign the value 10 to a variable "[[rec.set()]]"	
+	And I assign the value 20 to a variable "[[rec.set()]]"
+	And I assign the value 30 to a variable "[[rec.set()]]"
+	And I assign the value [[rec.set(3)]] to a variable "[[value]]"
+	When the assign tool is executed
+	Then the value of "[[value]]" equals 30
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable        | New Value           |
+	| 1 | [[rec.set()]] = | 10                  |
+	| 2 | [[rec.set()]] = | 20                  |
+	| 3 | [[rec.set()]] = | 30                  |
+	| 4 | [[value]]     = | [[rec.set(3)]] = 30 |
+	And the debug output as
+    | # |                     |
+    | 1 | [[rec.set(1)]] = 10 |
+    | 2 | [[rec.set(2)]] = 20 |
+    | 3 | [[rec.set(3)]] = 30 |
+    | 4 | [[value]] = 30      |
+
+
+
+	Scenario: Assign all json values to a single variable
+	Given I assign the value 10 to a variable "[[rec.set(1)]]"	
+	And I assign the value 20 to a variable "[[rec.set(2)]]"
+	And I assign the value 30 to a variable "[[rec.set(3)]]"
+	And I assign the value "" to a variable "[[rec.set(*)]]"
+	When the assign tool is executed
+	Then the value of "[[rec.set(3)]]" equals ""
+	And the value of "[[rec.set(2)]]" equals ""
+	And the value of "[[rec.set(1)]]" equals ""
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable            | New Value |
+	| 1 | [[rec.set(1)]] =    | 10        |
+	| 2 | [[rec.set(2)]] =    | 20        |
+	| 3 | [[rec.set(3)]] =    | 30        |
+	| 4 | [[rec.set(1)]] = 10 |           |
+	|   | [[rec.set(2)]] = 20 |           |
+	|   | [[rec.set(3)]] = 30 | " "       |
+	And the debug output as
+    | # |                     |
+    | 1 | [[rec.set(1)]] = 10 |
+    | 2 | [[rec.set(2)]] = 20 |
+    | 3 | [[rec.set(3)]] = 30 |
+    | 4 | [[rec.set(1)]] = "" |
+    |   | [[rec.set(2)]] = "" |
+    |   | [[rec.set(3)]] = "" |
+
+	Scenario: Assign all json values to all json
+	Given I assign the value 10 to a variable "[[rec.set(1)]]"	
+	And I assign the value 20 to a variable "[[rec.set(2)]]"
+	And I assign the value 30 to a variable "[[rec.set(3)]]"
+	And I assign the value Hello to a variable "[[rs.val()]]"
+	And I assign the value "[[rec.set(*)]]" to a variable "[[rs.val(*)]]"
+	When the assign tool is executed
+	Then the value of "[[rs.val(1)]]" equals 10
+	And the value of "[[rs.val(2)]]" equals 20
+	And the value of "[[rs.val(3)]]" equals 30
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable              | New Value           |
+	| 1 | [[rec.set(1)]] =      | 10                  |
+	| 2 | [[rec.set(2)]] =      | 20                  |
+	| 3 | [[rec.set(3)]] =      | 30                  |
+	| 4 | [[rs.val()]] =        | Hello               |
+	| 5 | [[rs.val(1)]] = Hello | [[rec.set(1)]] = 10 |
+	|   |                       | [[rec.set(2)]] = 20 |
+	|   |                       | [[rec.set(3)]] = 30 |
+	And the debug output as
+    | # |                       |
+    | 1 | [[rec.set(1)]] = 10   |
+    | 2 | [[rec.set(2)]] = 20   |
+    | 3 | [[rec.set(3)]] = 30   |
+    | 4 | [[rs.val(1)]] = Hello |
+    | 5 | [[rs.val(1)]] = 10    |
+    |   | [[rs.val(2)]] = 20    |
+    |   | [[rs.val(3)]] = 30    |
+
+
+	Scenario: Assign values to different columns in a reccord set
+       Given I assign the value 10 to a variable "[[rec.a()]]"       
+       And I assign the value 20 to a variable "[[rec.b()]]"
+       And I assign the value 30 to a variable "[[rec.c()]]"
+       And I assign the value [[rec.a()]] to a variable "[[d]]"
+       And I assign the value [[rec.b()]] to a variable "[[e]]"
+       And I assign the value [[rec.c()]] to a variable "[[f]]"
+       When the assign tool is executed
+       Then the value of "[[d]]" equals 10
+       And the value of "[[e]]" equals 20
+       And the value of "[[f]]" equals 30
+       And the execution has "NO" error
+       And the debug inputs as
+       | # | Variable      | New Value        |
+       | 1 | [[rec.a()]] = | 10               |
+       | 2 | [[rec.b()]] = | 20               |
+       | 3 | [[rec.c()]] = | 30               |
+       | 4 | [[d]]     =   | [[rec.a(1)]] = 10 |
+       | 5 | [[e]]     =   | [[rec.b(1)]] = 20 |
+       | 6 | [[f]]     =   | [[rec.c(1)]] = 30 |
+       And the debug output as
+    | # |                   |
+    | 1 | [[rec.a(1)]] = 10 |
+    | 2 | [[rec.b(1)]] = 20 |
+    | 3 | [[rec.c(1)]] = 30 |
+    | 4 | [[d]] = 10        |
+    | 5 | [[e]] = 20        |
+    | 6 | [[f]] = 30        |
+
+
+	#Scenario: Assign values to recordsets
+#	Given I assign the value 1 to a variable "[[AB.a()]]"	
+#	And I assign the value a to a variable "[[CD.a()]]"
+#	And I assign the value b to a variable "[[CD.a()]]"
+#	And I assign the value 2 to a variable "[[AB.a()]]"	
+#	When the assign tool is executed
+#	Then the value of "[[AB.a(2)]]" equals 2
+#	And the execution has "NO" error
+#	And the debug inputs as
+#	| # | Variable      | New Value |
+#	| 1 | [[AB.a()]]  = | 1         |
+#	| 2 | [[CD.a()]]  = | a         |
+#	| 3 | [[CD.a()]]  = | b         |
+#	| 4 | [[AB.a()]]  = | 2         |
+#	And the debug output as
+#    | # |                 |
+#    | 1 | [[AB.a(1)]] = 1 |
+#    | 2 | [[CD.a(1)]] = a |
+#    | 3 | [[CD.a(2)]] = b |
+#    | 4 | [[AB.a(2)]] = 2 |
+
+
+Scenario: Assign a scalar equal to a calculation
+	Given I assign the value 30 to a variable "[[var]]"
+	And I assign the value "=30-[[var]]" to a variable "[[Result]]"	
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "0"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable     | New Value          |
+	| 1 | [[var]]    = | 30                 |
+	| 2 | [[Result]] = | 30-[[var]] = 30-30 |
+	And the debug output as
+	| # |                |
+	| 1 | [[var]] = 30   |
+	| 2 | [[Result]] = 0 |
+
+
+	Scenario: Assign the value of a negative json index
+	Given I assign the value 10 to a variable "[[rec.set()]]"	
+	And I assign the value [[rec.set(-1)]] to a variable "[[var]]"
+	When the assign tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	| # | Variable        | New Value         |
+	| 1 | [[rec.set()]] = | 10                |
+	And the debug output as
+	| # |                     |
+	| 1 | [[rec.set(1)]] = 10 |
+
+
+
 # TODO
 # add to the seq, foreach specs, adding this tool
 # debug output -> json 
