@@ -703,11 +703,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign values to a json object array")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign values to a json object array within a json object")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
-        public virtual void AssignValuesToAJsonObjectArray()
+        public virtual void AssignValuesToAJsonObjectArrayWithinAJsonObject()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign values to a json object array", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign values to a json object array within a json object", ((string[])(null)));
 #line 210
 this.ScenarioSetup(scenarioInfo);
 #line 211
@@ -765,31 +765,28 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a json object array to a new json object")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign values to a json object array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
-        public virtual void AssignAJsonObjectArrayToANewJsonObject()
+        public virtual void AssignValuesToAJsonObjectArray()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json object array to a new json object", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign values to a json object array", ((string[])(null)));
 #line 230
 this.ScenarioSetup(scenarioInfo);
 #line 231
- testRunner.Given("I assign the value \"11\" to a json object \"[[Person.Score(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I assign the value \"11\" to a json object \"[[Score(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 232
- testRunner.And("I assign the value \"22\" to a json object \"[[Person.Score(2)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value \"22\" to a json object \"[[Score(2)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 233
- testRunner.And("I assign the value \"33\" to a json object \"[[Person.Score(3)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value \"33\" to a json object \"[[Score(3)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 234
- testRunner.And("I assign the value \"[[Person.Score(*)]]\" to a json object \"\"[[Person.CurrentScore" +
-                    "]]\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 235
+ testRunner.Then("the json object \"[[Score(1)]]\" equals \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 236
- testRunner.Then("the json object \"[[Person.CurrentScore(1)]]\" equals \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the json object \"[[Score(2)]]\" equals \"22\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 237
- testRunner.Then("the json object \"[[Person.CurrentScore(2)]]\" equals \"22\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the json object \"[[Score(3)]]\" equals \"33\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 238
- testRunner.Then("the json object \"[[Person.CurrentScore(3)]]\" equals \"33\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 239
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -798,17 +795,17 @@ this.ScenarioSetup(scenarioInfo);
                         "New Value"});
             table27.AddRow(new string[] {
                         "1",
-                        "[[Person.Score(1)]] =",
+                        "[[Score(1)]] =",
                         "11"});
             table27.AddRow(new string[] {
                         "2",
-                        "[[Person.Score(2)]] =",
+                        "[[Score(2)]] =",
                         "22"});
             table27.AddRow(new string[] {
                         "3",
-                        "[[Person.Score(3)]] =",
+                        "[[Score(3)]] =",
                         "33"});
-#line 240
+#line 239
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -816,15 +813,82 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table28.AddRow(new string[] {
                         "1",
-                        "[[Person.Score(1)]] = 11"});
+                        "[[Score(1)]] = 11"});
             table28.AddRow(new string[] {
                         "2",
-                        "[[Person.Score(2)]] = 22"});
+                        "[[Score(2)]] = 22"});
             table28.AddRow(new string[] {
                         "3",
-                        "[[Person.Score(3)]] = 33"});
-#line 245
+                        "[[Score(3)]] = 33"});
+#line 244
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a json object array to a new json object")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void AssignAJsonObjectArrayToANewJsonObject()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json object array to a new json object", new string[] {
+                        "ignore"});
+#line 252
+this.ScenarioSetup(scenarioInfo);
+#line 253
+ testRunner.Given("I assign the value \"11\" to a json object \"[[Person.Score(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 254
+ testRunner.And("I assign the value \"22\" to a json object \"[[Person.Score(2)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 255
+ testRunner.And("I assign the value \"33\" to a json object \"[[Person.Score(3)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 256
+ testRunner.And("I assign the value \"[[Person.Score(*)]]\" to a json object \"\"[[Person.CurrentScore" +
+                    "]]\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 257
+ testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 258
+ testRunner.Then("the json object \"[[Person.CurrentScore(1)]]\" equals \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 259
+ testRunner.Then("the json object \"[[Person.CurrentScore(2)]]\" equals \"22\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 260
+ testRunner.Then("the json object \"[[Person.CurrentScore(3)]]\" equals \"33\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 261
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table29.AddRow(new string[] {
+                        "1",
+                        "[[Person.Score(1)]] =",
+                        "11"});
+            table29.AddRow(new string[] {
+                        "2",
+                        "[[Person.Score(2)]] =",
+                        "22"});
+            table29.AddRow(new string[] {
+                        "3",
+                        "[[Person.Score(3)]] =",
+                        "33"});
+#line 262
+ testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table30.AddRow(new string[] {
+                        "1",
+                        "[[Person.Score(1)]] = 11"});
+            table30.AddRow(new string[] {
+                        "2",
+                        "[[Person.Score(2)]] = 22"});
+            table30.AddRow(new string[] {
+                        "3",
+                        "[[Person.Score(3)]] = 33"});
+#line 267
+ testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -835,36 +899,36 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAJsonVariableWithACalculateExpression()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json variable with a calculate expression", ((string[])(null)));
-#line 251
+#line 273
 this.ScenarioSetup(scenarioInfo);
-#line 252
+#line 274
  testRunner.Given("I assign the value \"=SUM(1,2,3)+1\" to a json object \"[[Person.Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 253
+#line 275
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 254
+#line 276
  testRunner.Then("the json object \"[[Person.Score]]\" equals \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 255
+#line 277
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table29.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "1",
                         "[[Person.Score]] =",
                         "SUM(1,2,3)+1"});
-#line 256
- testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
+#line 278
+ testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table30.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "1",
                         "[[Person.Score]] = 7"});
-#line 259
- testRunner.And("the debug output as", ((string)(null)), table30, "And ");
+#line 281
+ testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -875,74 +939,6 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAJsonVariableWithACalculateExpressionUsingJsonObjects()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json variable with a calculate expression using json objects", ((string[])(null)));
-#line 264
-this.ScenarioSetup(scenarioInfo);
-#line 265
- testRunner.Given("I assign the value \"1\" to a json object \"[[Person.Score(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 266
- testRunner.And("I assign the value \"2\" to a json object \"[[Person.Score(2)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 267
- testRunner.And("I assign the value \"3\" to a json object \"[[Person.Score(3)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
- testRunner.And("I assign the value \"=SUM(Person.Score(*))+1\" to a json object \"[[Person.TotalScor" +
-                    "e]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 269
- testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 270
- testRunner.Then("the json object \"[[Person.TotalScore]]\" equals \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 271
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table31.AddRow(new string[] {
-                        "1",
-                        "[[Person.Score1]] =",
-                        "1"});
-            table31.AddRow(new string[] {
-                        "2",
-                        "[[Person.Score2]] =",
-                        "2"});
-            table31.AddRow(new string[] {
-                        "3",
-                        "[[Person.Score3]] =",
-                        "3"});
-            table31.AddRow(new string[] {
-                        "4",
-                        "[[Person.TotalScore]] =",
-                        "SUM(Person.Score(Person.Score1,Person.Score2,Person.Score3))+1"});
-#line 272
- testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table32.AddRow(new string[] {
-                        "1",
-                        "[[Person.Score1]] = 1"});
-            table32.AddRow(new string[] {
-                        "2",
-                        "[[Person.Score2]] = 2"});
-            table32.AddRow(new string[] {
-                        "3",
-                        "[[Person.Score3]]  = 3"});
-            table32.AddRow(new string[] {
-                        "3",
-                        "[[Person.TotalScore]] = 7"});
-#line 278
- testRunner.And("the debug output as", ((string)(null)), table32, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a json variable with a calculate expression using json array")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
-        public virtual void AssignAJsonVariableWithACalculateExpressionUsingJsonArray()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json variable with a calculate expression using json array", ((string[])(null)));
 #line 286
 this.ScenarioSetup(scenarioInfo);
 #line 287
@@ -967,20 +963,20 @@ this.ScenarioSetup(scenarioInfo);
                         "New Value"});
             table33.AddRow(new string[] {
                         "1",
-                        "[[Person.Score(1)]] =",
+                        "[[Person.Score1]] =",
                         "1"});
             table33.AddRow(new string[] {
                         "2",
-                        "[[Person.Score(2)]] =",
+                        "[[Person.Score2]] =",
                         "2"});
             table33.AddRow(new string[] {
                         "3",
-                        "[[Person.Score(3)]] =",
+                        "[[Person.Score3]] =",
                         "3"});
             table33.AddRow(new string[] {
                         "4",
                         "[[Person.TotalScore]] =",
-                        "SUM(Person.Score(*))+1"});
+                        "SUM(Person.Score(Person.Score1,Person.Score2,Person.Score3))+1"});
 #line 294
  testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
 #line hidden
@@ -989,18 +985,86 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table34.AddRow(new string[] {
                         "1",
-                        "[[Person.Score(1)]] = 1"});
+                        "[[Person.Score1]] = 1"});
             table34.AddRow(new string[] {
                         "2",
-                        "[[Person.Score(2)]] = 2"});
+                        "[[Person.Score2]] = 2"});
             table34.AddRow(new string[] {
                         "3",
-                        "[[Person.Score(3)]]  = 3"});
+                        "[[Person.Score3]]  = 3"});
             table34.AddRow(new string[] {
                         "3",
                         "[[Person.TotalScore]] = 7"});
 #line 300
  testRunner.And("the debug output as", ((string)(null)), table34, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a json variable with a calculate expression using json array")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AssignObject")]
+        public virtual void AssignAJsonVariableWithACalculateExpressionUsingJsonArray()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a json variable with a calculate expression using json array", ((string[])(null)));
+#line 308
+this.ScenarioSetup(scenarioInfo);
+#line 309
+ testRunner.Given("I assign the value \"1\" to a json object \"[[Person.Score(1)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 310
+ testRunner.And("I assign the value \"2\" to a json object \"[[Person.Score(2)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 311
+ testRunner.And("I assign the value \"3\" to a json object \"[[Person.Score(3)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 312
+ testRunner.And("I assign the value \"=SUM(Person.Score(*))+1\" to a json object \"[[Person.TotalScor" +
+                    "e]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 313
+ testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 314
+ testRunner.Then("the json object \"[[Person.TotalScore]]\" equals \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 315
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table35.AddRow(new string[] {
+                        "1",
+                        "[[Person.Score(1)]] =",
+                        "1"});
+            table35.AddRow(new string[] {
+                        "2",
+                        "[[Person.Score(2)]] =",
+                        "2"});
+            table35.AddRow(new string[] {
+                        "3",
+                        "[[Person.Score(3)]] =",
+                        "3"});
+            table35.AddRow(new string[] {
+                        "4",
+                        "[[Person.TotalScore]] =",
+                        "SUM(Person.Score(*))+1"});
+#line 316
+ testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table36.AddRow(new string[] {
+                        "1",
+                        "[[Person.Score(1)]] = 1"});
+            table36.AddRow(new string[] {
+                        "2",
+                        "[[Person.Score(2)]] = 2"});
+            table36.AddRow(new string[] {
+                        "3",
+                        "[[Person.Score(3)]]  = 3"});
+            table36.AddRow(new string[] {
+                        "3",
+                        "[[Person.TotalScore]] = 7"});
+#line 322
+ testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
