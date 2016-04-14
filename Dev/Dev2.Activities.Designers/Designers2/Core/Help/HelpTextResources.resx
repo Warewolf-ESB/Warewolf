@@ -781,6 +781,12 @@ The file must be available on the local file system.</value>
      This is the name of the file that will be downloaded from DropBox.
      NOTE: The file path must use "/" to identify folders and not "\".</value>
   </data>
+  <data name="DropBoxDeleteFileNameTooltip" xml:space="preserve">
+    <value>DropBoxDeleteFileNameTooltip</value>
+  </data>
+  <data name="DropBoxDeleteFileNameHelpText" xml:space="preserve">
+    <value>DropBoxDeleteFileNameHelpText</value>
+  </data>
   <data name="DropBoxFileListFileNameToolTip" xml:space="preserve">
     <value>DropBoxFileListFileNameToolTip</value>
   </data>
