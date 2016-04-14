@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dropbox.Api;
 using Dropbox.Api.Babel;
 using Dropbox.Api.Files;

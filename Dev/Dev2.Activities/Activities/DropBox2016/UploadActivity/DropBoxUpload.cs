@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 
