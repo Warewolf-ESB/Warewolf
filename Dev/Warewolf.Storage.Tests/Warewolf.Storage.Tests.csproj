@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2E0959BE-A401-4AB7-A666-2FC0DCD807A6}</ProjectGuid>
+    <ProjectGuid>{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Storage.Tests</RootNamespace>
