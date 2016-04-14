@@ -482,6 +482,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SharepointUpdate.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature.cs" />
+    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeleteDropbox.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature.cs" />
+    <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DownloadDropbox.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
       <DependentUpon>ReadDropbox.feature</DependentUpon>
       <SubType>Code</SubType>
@@ -732,6 +744,14 @@
     <None Include="Toolbox\Sharepoint\SharepointUpdate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SharepointUpdate.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DeleteDropbox1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DownloadDropbox1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Storage\Dropbox\ReadDropbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
