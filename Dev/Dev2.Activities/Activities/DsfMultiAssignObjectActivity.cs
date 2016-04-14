@@ -269,18 +269,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else if (evalResult.IsWarewolfAtomListresult)
                     {
-                        if (DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
-                        {
-                            AddDebugItem(new DebugItemWarewolfAtomListResult(null, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
-                        }
-                        else
-                        {
-                            var recSetResult = evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            if (recSetResult != null)
-                            {
-                                AddDebugItem(new DebugItemWarewolfAtomListResult(recSetResult, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
-                            }
-                        }
+                        AddDebugItem(new DebugItemWarewolfAtomListResult(null, assignValue.Value, "", environment.EvalToExpression(assignValue.Name, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
                     }
                 }
                 else if (DataListUtil.IsEvaluated(assignValue.Value))
