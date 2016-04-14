@@ -1,24 +1,24 @@
-﻿<core:ActivityDesigner x:TypeArguments="dropBoxUploadService:DropBoxUploadViewModel"
-                       x:Class="Dev2.Activities.Designers2.DropBox2016.Upload.DropBoxUploadDesigner"
+﻿<core:ActivityDesigner x:TypeArguments="dropBoxDeleteService:DropBoxDeleteViewModel"
+                       x:Class="Dev2.Activities.Designers2.DropBox2016.Delete.DropBoxDeleteDesigner"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                       xmlns:dropBoxUploadService ="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Upload"
+                       xmlns:dropBoxDeleteService ="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Delete"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                        mc:Ignorable="d"
-                       d:DataContext="{d:DesignInstance dropBoxUploadService:DropBoxUploadViewModel}"
+                       d:DataContext="{d:DesignInstance dropBoxDeleteService:DropBoxDeleteViewModel}"
                        Style="{DynamicResource ContentViewStyle}">
-    
+
     <sap:ActivityDesigner.Icon>
         <Binding Source="{StaticResource DropBoxLogoIcon}"/>
     </sap:ActivityDesigner.Icon>
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>
-            <dropBoxUploadService:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
-            <dropBoxUploadService:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
+            <dropBoxDeleteService:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
+            <dropBoxDeleteService:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
             <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
                 <Setter Property="Content" Value="{DynamicResource Small}" />
                 <Style.Triggers>
