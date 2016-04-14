@@ -148,10 +148,28 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
-        public void MutiAssignObjectInvalidJsonObject()
+        public void MutiAssignObjectInvalidJsonObjectLeft()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[//test.value]]", "testData", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[test..value]]", "testData", fieldCollection.Count));
+
+            SetupArguments(
+                           ActivityStrings.scalarShape
+                         , ActivityStrings.scalarShape
+                         , fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            Assert.IsTrue(result.Environment.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Clint Stedman")]
+        [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
+        public void MutiAssignObjectInvalidJsonObjectRight()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "[[test..value2]]", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -207,7 +225,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Ignore] // TODO: not currently supported but needs to get done
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
@@ -218,7 +235,65 @@ namespace Dev2.Tests.Activities.ActivityTests
             fieldCollection.Add(new ActivityDTO("[[test.value2]]", "2", fieldCollection.Count));
             fieldCollection.Add(new ActivityDTO("[[test.value3]]", "3", fieldCollection.Count));
             fieldCollection.Add(new ActivityDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
-                "SUM([[test.value1]], [[test.value2]], [[test.value3]]) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+                "SUM([[test.value1]], [[test.value2]], [[test.value3]]) + 1" + 
+                GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+
+            SetupArguments(
+                           ActivityStrings.scalarShape
+                         , ActivityStrings.scalarShape
+                         , fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            const string expected = "7";
+            string actual;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "test.total1", out actual, out error);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Clint Stedman")]
+        [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
+        public void MultiAssignObjectArrayWithMultipleValues()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[test.value(1)]]", "somevalue1", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[test.value(2)]]", "somevalue2", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[test.value(3)]]", "somevalue3", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[test.value(4)]]", "somevalue4", fieldCollection.Count));
+
+            SetupArguments(
+                           ActivityStrings.scalarShape
+                         , ActivityStrings.scalarShape
+                         , fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            const string expected1 = "somevalue1", expected2 = "somevalue2", expected3 = "somevalue3", expected4 = "somevalue4";
+            string actual1, actual2, actual3, actual4;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "test.value(1)", out actual1, out error);
+            GetScalarValueFromEnvironment(result.Environment, "test.value(2)", out actual2, out error);
+            GetScalarValueFromEnvironment(result.Environment, "test.value(3)", out actual3, out error);
+            GetScalarValueFromEnvironment(result.Environment, "test.value(4)", out actual4, out error);
+
+            Assert.AreEqual(expected1, actual1);
+            Assert.AreEqual(expected2, actual2);
+            Assert.AreEqual(expected3, actual3);
+            Assert.AreEqual(expected4, actual4);
+        }
+
+        [TestMethod]
+        [Owner("Clint Stedman")]
+        [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
+        public void MultiAssignObjectWithCalculatedValueFromJsonArray()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[test.value(1)]]", "1", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[test.value(2)]]", "2", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[test.value(3)]]", "3", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
+                "SUM([[test.value(*)]]) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
