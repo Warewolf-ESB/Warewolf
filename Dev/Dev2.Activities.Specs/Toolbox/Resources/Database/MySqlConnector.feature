@@ -19,7 +19,7 @@ Scenario: Creating MySQL Connector
 	And "Mapping" is "Disabled" 
 	When I Select "mysqlSource" as Source
 	Then "Action" is "Enabled"
-	When I select "new_procedure" as the action
+	When I select new_procedure as the action
 	Then "Inputs/Outputs" is "Enabled" 
 	And "Validate" is "Enabled"
 	When I click "Validate"
@@ -208,7 +208,7 @@ Scenario: Invalid Recordset name
 	And "Mapping" is "Disabled" 
 	When I Select "mysqlSource" as Source
 	Then "Action" is "Enabled"
-	When I select "new_procedure" as the action
+	When I select new_procedure as the action
 	Then "Inputs/Outputs" is "Enabled" 
 	And "Validate" is "Enabled"
 	And "Inputs/Outputs" appear as

@@ -81,19 +81,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [When(@"I select ""(.*)"" as the action")]
-        public void WhenISelectedAsTheAction(string actionName)
+        [When(@"I select getemployees as the action")]
+        public void WhenISelectedAsTheAction()
         {
-            if (actionName == "getemployees")
-            {
-                var dataTable = new DataTable();
-                dataTable.Columns.Add(new DataColumn("name"));
-                dataTable.Columns.Add(new DataColumn("salary"));
-                dataTable.Columns.Add(new DataColumn("age"));
-                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill",4200,45 }, true));
-                GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().ActionRegion.SelectedAction = _selectedAction;
-            }
+            var dataTable = new DataTable();
+            dataTable.Columns.Add(new DataColumn("name"));
+            dataTable.Columns.Add(new DataColumn("salary"));
+            dataTable.Columns.Add(new DataColumn("age"));
+            dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill",4200,45 }, true));
+            GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
+            GetViewModel().ActionRegion.SelectedAction = _selectedAction;
         }
 
         [Given(@"I click on Generate Output")]

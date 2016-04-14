@@ -197,12 +197,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
             }
         }
-
-        [When(@"I click ""(.*)""")]
-        public void WhenIClick(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
         
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string p0, string p1)

@@ -283,18 +283,21 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
         }
-        
-        [When(@"I select ""(.*)"" as the action")]
-        public void WhenISelectAsTheAction(string actionName)
+
+        [When(@"I select dbo.ImportOrder as the action")]
+        public void WhenISelectImportOrderAsTheAction()
         {
-            if (actionName == "dbo.ImportOrder")
-            {
-                var dataTable = new DataTable();
-                dataTable.Columns.Add(new DataColumn("Column1"));
-                dataTable.ImportRow(dataTable.LoadDataRow(new object[]{1},true));
-                GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
-            }
+            var dataTable = new DataTable();
+            dataTable.Columns.Add(new DataColumn("Column1"));
+            dataTable.ImportRow(dataTable.LoadDataRow(new object[]{1},true));
+            GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
+            GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+        }
+
+        [When(@"I select new_procedure as the action")]
+        public void WhenISelectnew_procedureAsTheAction()
+        {
+            ScenarioContext.Current.Pending();
         }
         
         [When(@"I click Test")]
