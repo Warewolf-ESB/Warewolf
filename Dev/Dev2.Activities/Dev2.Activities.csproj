@@ -166,6 +166,9 @@
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
     <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
+    <Compile Include="Activities\DropBox2016\DeleteActivity\DropboxDelete.cs" />
+    <Compile Include="Activities\DropBox2016\DeleteActivity\DsfDropBoxDeleteActivity.cs" />
+    <Compile Include="Activities\DropBox2016\DeleteActivity\IDropBoxDelete.cs" />
     <Compile Include="Activities\DropBox2016\DownloadActivity\DropboxApiExceptions.cs" />
     <Compile Include="Activities\DropBox2016\DownloadActivity\DropBoxDownLoad.cs" />
     <Compile Include="Activities\DropBox2016\DownloadActivity\DsfDropBoxDownloadActivity.cs" />
