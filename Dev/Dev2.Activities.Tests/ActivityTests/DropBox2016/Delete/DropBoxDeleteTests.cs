@@ -29,7 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
         {
             //------------Setup for test--------------------------
             var dropBoxDelete = CreateDropboxDeleteMock().Object;
-            
+
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -70,43 +70,21 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("DropboxDelete_CreateDropboxActivity")]
+        [ExpectedException(typeof(ArgumentException))]
         public void DropboxDelete_CreateDropboxActivity_GivenMissingDeletePath_ShouldBeInValid()
         {
-            bool valid = true;
-            try
-            {
-                //---------------Set up test pack-------------------
-                var dropBoxDelete = new DropboxDelete("");
-            }
-            catch(Exception)
-            {
-                valid = false;
-            }
-            //---------------Execute Test ----------------------
-            
-            //---------------Test Result -----------------------
-            Assert.IsFalse(valid);
+            //---------------Set up test pack-------------------
+            var dropBoxDelete = new DropboxDelete("");
         }
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("DropboxDelete_CreateDropboxActivity")]
+        [ExpectedException(typeof(ArgumentException))]
         public void DropboxDelete_CreateDropboxActivity_GivenInvalidThenExecute_ShouldReturnFailureResult()
         {
-            bool valid = true;
-            try
-            {
-                //---------------Set up test pack-------------------
-                var dropBoxDelete = new DropboxDelete("");
-            }
-            catch (Exception)
-            {
-                valid = false;
-            }
-            //---------------Execute Test ----------------------
-
-            //---------------Test Result -----------------------
-            Assert.IsFalse(valid);
+            //---------------Set up test pack-------------------
+            var dropBoxDelete = new DropboxDelete("");
         }
     }
 }
