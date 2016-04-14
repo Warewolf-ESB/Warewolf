@@ -2,16 +2,10 @@
 //https://msdn.microsoft.com/en-us/library/system.io.path.getdirectoryname(v=vs.110).aspx
 
 using System.IO;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities.DropBox2016
 {
-    public interface ILocalPathManager
-    {
-        string GetDirectoryName();
-        string GetFullFileName();
-        bool FileExist();
-    }
-
     public class LocalPathManager : ILocalPathManager
     {
         private readonly string _fileName;

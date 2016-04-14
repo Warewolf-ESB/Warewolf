@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
@@ -20,9 +21,9 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
     {
         public IDropboxFactory DropboxFactory { get; private set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public virtual OauthSource SelectedSource { get; set; }
+        public OauthSource SelectedSource { get; set; }
 
-        public virtual List<string> Files { get; set; }
+        public List<string> Files { get; set; }
         private DropboxClient _dropboxClient;
         public Exception Exception { get; set; }
         [FindMissing]
@@ -62,7 +63,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         }
 
-        public virtual DropboxClient GetDropboxClient()
+        public DropboxClient GetDropboxClient()
         {
             if (_dropboxClient != null)
             {
