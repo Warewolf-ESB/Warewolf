@@ -361,6 +361,7 @@ and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) 
                                                                 | WarewolfAtomAtomExpression _ -> lang
                                                                 |_->     sprintf "[[%s(%s).%s]]" a.Name (eval  env update  (languageExpressionToString exp)|> evalResultToString) a.Column  
                                     | _->lang
+        |JsonIdentifierExpression a -> lang
         | _ -> lang
 
 and evalToExpressionAndParse (env: WarewolfEnvironment) (update:int) (langs:string)  = 
