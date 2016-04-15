@@ -360,9 +360,9 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Tools.Specs\Warewolf.Tools.Specs.csproj">
+    <ProjectReference Include="..\Warewolf.Tools.Specs\Warewolf.Tools.SpecTests.csproj">
       <Project>{CAD4D820-C619-4099-AA9C-DCACD23ADB89}</Project>
-      <Name>Warewolf.Tools.Specs</Name>
+      <Name>Warewolf.Tools.SpecTests</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>

@@ -201,7 +201,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ServerSettings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services.Sql\SqlServerTests.cs" />
     <Compile Include="Services.Sql\SqlServerTestUtils.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
@@ -353,10 +352,6 @@
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Tools.Specs\Warewolf.Tools.Specs.csproj">
-      <Project>{CAD4D820-C619-4099-AA9C-DCACD23ADB89}</Project>
-      <Name>Warewolf.Tools.Specs</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
