@@ -237,7 +237,7 @@ Scenario: Assign values to a json object array
 	Then the json object "[[Score(3)]]" equals "33"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable				| New Value	|
+	| # | Variable			| New Value	|
 	| 1 | [[Score(1)]] =	| 11		|
 	| 2 | [[Score(2)]] =	| 22		|
 	| 3 | [[Score(3)]] =	| 33		|
