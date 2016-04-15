@@ -48,6 +48,7 @@ and checkForInvalidVariables (lang:LanguageExpression list) =
             | ScalarExpression _ ->  WarewolfAtomAtomExpression (DataASTMutable.DataString"")
             | ComplexExpression _ -> a
             | WarewolfAtomAtomExpression _ ->a
+            | JsonIdentifierExpression _-> WarewolfAtomAtomExpression (DataASTMutable.DataString"")
     let data = List.map (languageExpressionToString << updateLanguageExpression) lang |> fun a-> System.String.Join("",a)
     if data = languageExpressionToString (ComplexExpression lang)
     then
