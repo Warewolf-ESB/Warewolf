@@ -333,44 +333,44 @@ Scenario: Assign a json variable with a calculate expression using json objects
 	Given I assign the value "1" to a json object "[[Person.Score(1)]]"
 	And I assign the value "2" to a json object "[[Person.Score(2)]]"
 	And I assign the value "3" to a json object "[[Person.Score(3)]]"
-	And I assign the value "=SUM(Person.Score(*))+1" to a json object "[[Person.TotalScore]]"
+	And I assign the value "=SUM([[Person.Score(*)]])+1" to a json object "[[Person.TotalScore]]"
 	When the assign object tool is executed
 	Then the json object "[[Person.TotalScore]]" equals "7"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable					| New Value															|
-	| 1 | [[Person.Score1]] =		| 1																	|
-	| 2 | [[Person.Score2]] =		| 2																	|
-	| 3 | [[Person.Score3]] =		| 3																	|
-	| 4 | [[Person.TotalScore]] =	| SUM(Person.Score(Person.Score1,Person.Score2,Person.Score3))+1	|
+	| # | Variable                | New Value    |
+	| 1 | [[Person.Score(1)]] =   | 1            |
+	| 2 | [[Person.Score(2)]] =   | 2            |
+	| 3 | [[Person.Score(3)]] =   | 3            |
+	| 4 | [[Person.TotalScore]] =  | SUM([[Person.Score(*)]])+1 =SUM(1,2,3)+1 |
 	And the debug output as
     | # |							|
-    | 1 | [[Person.Score1]] = 1		|
-    | 2 | [[Person.Score2]] = 2		|
-    | 3 | [[Person.Score3]]  = 3	|
-	| 3 | [[Person.TotalScore]] = 7	|
+    | 1 | [[Person.Score(1)]] = 1		|
+    | 2 | [[Person.Score(2)]] = 2		|
+    | 3 | [[Person.Score(3)]]  = 3	|
+	| 4 | [[Person.TotalScore]] = 7	|
 
 # failing - TODO: calculate wolf-1600
 Scenario: Assign a json variable with a calculate expression using json array
-	Given I assign the value "1" to a json object "[[Person.Score(1)]]"
-	And I assign the value "2" to a json object "[[Person.Score(2)]]"
-	And I assign the value "3" to a json object "[[Person.Score(3)]]"
-	And I assign the value "=SUM(Person.Score(*))+1" to a json object "[[Person.TotalScore]]"
+	Given I assign the value "1" to a json object "[[Person.Score(1).val]]"
+	And I assign the value "2" to a json object "[[Person.Score(2).val]]"
+	And I assign the value "3" to a json object "[[Person.Score(3).val]]"
+	And I assign the value "=SUM([[Person.Score(*).val]])+1" to a json object "[[Person.TotalScore]]"
 	When the assign object tool is executed
 	Then the json object "[[Person.TotalScore]]" equals "7"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable						| New Value					|
-	| 1 | [[Person.Score(1)]] =			| 1							|
-	| 2 | [[Person.Score(2)]] =			| 2							|
-	| 3 | [[Person.Score(3)]] =			| 3							|
-	| 4 | [[Person.TotalScore]] =		| SUM(Person.Score(*))+1	|
+	| # | Variable                | New Value    |
+	| 1 | [[Person.Score(1).val]] =   | 1            |
+	| 2 | [[Person.Score(2).val]] =   | 2            |
+	| 3 | [[Person.Score(3).val]] =   | 3            |
+	| 4 | [[Person.TotalScore]] =  | SUM([[Person.Score(*).val]])+1 =SUM(1,2,3)+1 |
 	And the debug output as
     | # |							|
-    | 1 | [[Person.Score(1)]] = 1	|
-    | 2 | [[Person.Score(2)]] = 2	|
-    | 3 | [[Person.Score(3)]]  = 3	|
-	| 3 | [[Person.TotalScore]] = 7	|
+    | 1 | [[Person.Score(1).val]] = 1		|
+    | 2 | [[Person.Score(2).val]] = 2		|
+    | 3 | [[Person.Score(3).val]]  = 3	|
+	| 4 | [[Person.TotalScore]] = 7	|
 
 
 	Scenario: Assign two json values to scalar
