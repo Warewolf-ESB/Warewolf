@@ -44,7 +44,7 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             var viewModel = DataContext as SelectAndApplyDesignerViewModel;
             if (viewModel != null)
             {
-                viewModel.DoDrop(e.Data);
+               // viewModel.DoDrop(e.Data);
             }
         }
 
