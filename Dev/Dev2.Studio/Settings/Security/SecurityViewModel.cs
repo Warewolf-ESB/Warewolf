@@ -34,7 +34,7 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Security
 {
-    public class SecurityViewModel : SettingsItemViewModel, IHelpSource
+    public class SecurityViewModel : SettingsItemViewModel, IHelpSource, IUpdatesHelp
     {
          IResourcePickerDialog _resourcePicker;
         readonly DirectoryObjectPickerDialog _directoryObjectPicker;
@@ -451,6 +451,15 @@ namespace Dev2.Settings.Security
                                 .Select(g => g.Key);
             return duplicates.Any();
         }
+
+        #region Implementation of IUpdatesHelp
+
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            HelpText = helpText;
+        }
+
+        #endregion
     }
 
 }
