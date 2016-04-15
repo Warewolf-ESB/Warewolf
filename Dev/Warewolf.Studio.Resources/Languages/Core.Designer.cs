@@ -2134,6 +2134,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The body of the email message. This is the content of the email..
+        /// </summary>
+        public static string EmailHelpBodyCheckbox {
+            get {
+                return ResourceManager.GetString("EmailHelpBodyCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;&lt;br /&gt;
         ///        If you are on a domain, you still need to provide the email address of the account you are sending to.&lt;br /&gt;
         ///        &lt;br /&gt;
@@ -3183,6 +3192,298 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string LocalhostLabel {
             get {
                 return ResourceManager.GetString("LocalhostLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity.
+        /// </summary>
+        public static string LoggingViewServerEventLogDebugHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogDebugHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerEventLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to error details:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events.
+        /// </summary>
+        public static string LoggingViewServerEventLogErrorHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogErrorHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerEventLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Only fatal events are logged..
+        /// </summary>
+        public static string LoggingViewServerEventLogFatalHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogFatalHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Fatal events.
+        /// </summary>
+        public static string LoggingViewServerEventLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to infromation detail:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data.
+        /// </summary>
+        public static string LoggingViewServerEventLogInfoHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogInfoHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerEventLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No system logging is done. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging..
+        /// </summary>
+        public static string LoggingViewServerEventLogOffHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogOffHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No logging.
+        /// </summary>
+        public static string LoggingViewServerEventLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs everything to the Windows Event Log:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity&lt;br /&gt;
+        ///Detailed System information.
+        /// </summary>
+        public static string LoggingViewServerEventLogTraceHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogTraceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerEventLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events.
+        /// </summary>
+        public static string LoggingViewServerEventLogWarnHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogWarnHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerEventLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogWarnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to file: Details up to System Activity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity.
+        /// </summary>
+        public static string LoggingViewServerFileLogDebugHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogDebugHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerFileLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to file: Events up to error details:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events.
+        /// </summary>
+        public static string LoggingViewServerFileLogErrorHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogErrorHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerFileLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to file: Only fatal events are logged..
+        /// </summary>
+        public static string LoggingViewServerFileLogFatalHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogFatalHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Fatal events..
+        /// </summary>
+        public static string LoggingViewServerFileLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to file: Up to infromation detail:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data.
+        /// </summary>
+        public static string LoggingViewServerFileLogInfoHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogInfoHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerFileLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No system logging is done. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging..
+        /// </summary>
+        public static string LoggingViewServerFileLogOffHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogOffHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No logging..
+        /// </summary>
+        public static string LoggingViewServerFileLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs everything to file:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity&lt;br /&gt;
+        ///Detailed System information.
+        /// </summary>
+        public static string LoggingViewServerFileLogTraceHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogTraceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerFileLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs to file: Events up to warning severity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events.
+        /// </summary>
+        public static string LoggingViewServerFileLogWarnHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogWarnHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
+        /// </summary>
+        public static string LoggingViewServerFileLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogWarnTooltip", resourceCulture);
             }
         }
         

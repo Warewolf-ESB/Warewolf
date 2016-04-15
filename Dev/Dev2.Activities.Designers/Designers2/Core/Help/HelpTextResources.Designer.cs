@@ -2778,7 +2778,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -2809,7 +2809,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
@@ -4215,6 +4215,42 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SchedulerDeleteHelpTextTrigger.
+        /// </summary>
+        public static string SchedulerDeleteHelpTextTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerDeleteHelpTextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SchedulerDeleteTooltipTrigger.
+        /// </summary>
+        public static string SchedulerDeleteTooltipTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerDeleteTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SchedulerSettingsDisabledHelpTextStatus.
+        /// </summary>
+        public static string SchedulerSettingsDisabledHelpTextStatus {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsDisabledHelpTextStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SchedulerSettingsEnabledHelpTextStatus.
+        /// </summary>
+        public static string SchedulerSettingsEnabledHelpTextStatus {
+            get {
+                return ResourceManager.GetString("SchedulerSettingsEnabledHelpTextStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To prevent redundant data being kept the system will clean up old schedule results. To specify how many results to keep, put a whole number in here..
         /// </summary>
         public static string SchedulerSettingsHelpTextHistoryRecords {
@@ -4371,6 +4407,24 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SchedulerStatusAltHelpTextTrigger.
+        /// </summary>
+        public static string SchedulerStatusAltHelpTextTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerStatusAltHelpTextTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SchedulerStatusAltTooltipTrigger.
+        /// </summary>
+        public static string SchedulerStatusAltTooltipTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerStatusAltTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to What type of scripting language do you want to use?
         ///
         ///Allowed:
@@ -4475,7 +4529,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {
             get {
@@ -4791,7 +4845,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Fiel [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Field]]   
+        ///[[ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SQLBulkInsertHelpInputData {
             get {
@@ -5117,7 +5172,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snap [rest of string was truncated]&quot;;.
+        ///Snapshot: [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionHelpIsolationLevel {
             get {
@@ -5184,7 +5239,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snap [rest of string was truncated]&quot;;.
+        ///Snapshot: [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionToolTipIsolationLevel {
             get {
@@ -5645,7 +5700,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WorkflowServiceHelpInput {
             get {
