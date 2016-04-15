@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DeleteDropbox", "In order to delete from an dropbox Server\nAs a Warewolf User\nI want to be to dele" +
-                    "te files on a dropbox account", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DeleteDropbox", "In order to delete from an dropbox Server\r\nAs a Warewolf User\r\nI want to be to de" +
+                    "lete files on a dropbox account", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
