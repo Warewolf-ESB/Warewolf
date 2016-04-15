@@ -680,21 +680,16 @@ Scenario: Assign a scalar equal to a calculation
 	| 1 | [[var]] = 30   |
 	| 2 | [[Result]] = 0 |
 
+	# a test already exists with this name, causing build breaks
+	#Scenario: Assign the value of a negative json index
+	#Given I assign the value 10 to a variable "[[rec.set()]]"	
+	#And I assign the value [[rec.set(-1)]] to a variable "[[var]]"
+	#When the assign tool is executed
+	#Then the execution has "AN" error
+	#And the debug inputs as
+	#| # | Variable        | New Value         |
+	#| 1 | [[rec.set()]] = | 10                |
+	#And the debug output as
+	#| # |                     |
+	#| 1 | [[rec.set(1)]] = 10 |
 
-	Scenario: Assign the value of a negative json index
-	Given I assign the value 10 to a variable "[[rec.set()]]"	
-	And I assign the value [[rec.set(-1)]] to a variable "[[var]]"
-	When the assign tool is executed
-	Then the execution has "AN" error
-	And the debug inputs as
-	| # | Variable        | New Value         |
-	| 1 | [[rec.set()]] = | 10                |
-	And the debug output as
-	| # |                     |
-	| 1 | [[rec.set(1)]] = 10 |
-
-
-
-# TODO
-# add to the seq, foreach specs, adding this tool
-# debug output -> json 
