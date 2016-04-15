@@ -314,7 +314,7 @@ namespace Warewolf.Storage
             try
             {
                 var x = WarewolfDataEvaluationCommon.parseLanguageExpression(expression, update);
-                if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression)
+                if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression || x.IsRecordSetNameExpression)
                 {
                     return true;
                 }
