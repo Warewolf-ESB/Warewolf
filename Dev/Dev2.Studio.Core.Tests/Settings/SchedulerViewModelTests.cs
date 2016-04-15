@@ -139,10 +139,10 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            string expectedHelpText = Dev2.Activities.Designers2.Core.Help.HelpTextResources.SchedulerSettingsHelpTextSettingsView;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
-Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well.", schedulerViewModel.HelpText);
+            Assert.AreEqual(expectedHelpText, schedulerViewModel.HelpText); 
         }
 
         [TestMethod]

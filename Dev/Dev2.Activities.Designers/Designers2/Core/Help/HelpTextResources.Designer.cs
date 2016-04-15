@@ -2479,7 +2479,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See in tool
+        ///   Looks up a localized string similar to The criteria to match on
         ///
         ///Allowed:
         ///Data   
@@ -2723,7 +2723,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to See in tool.
+        ///   Looks up a localized string similar to Match data.
         /// </summary>
         public static string FindToolTipMatch {
             get {
@@ -3445,7 +3445,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QuickVariableAppendToolTip.
+        ///   Looks up a localized string similar to Append to existing variables.
         /// </summary>
         public static string QuickVariableAppendToolTip {
             get {
@@ -3465,7 +3465,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QuickVariablePrefixWithToolTip.
+        ///   Looks up a localized string similar to Adds this to the front of the variables.
         /// </summary>
         public static string QuickVariablePrefixWithToolTip {
             get {
@@ -3483,7 +3483,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QuickVariableReplaceToolTip.
+        ///   Looks up a localized string similar to Replaces existing variables in the tool.
         /// </summary>
         public static string QuickVariableReplaceToolTip {
             get {
@@ -3506,7 +3506,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QuickVariableSplitAndAtToolTip.
+        ///   Looks up a localized string similar to Criteria for splitting the above data.
         /// </summary>
         public static string QuickVariableSplitAndAtToolTip {
             get {
@@ -3535,7 +3535,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QuickVariableSuffixWithToolTip.
+        ///   Looks up a localized string similar to Adds this to end of the variables.
         /// </summary>
         public static string QuickVariableSuffixWithToolTip {
             get {
@@ -3553,7 +3553,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QuickVariableVariableListToolTip.
+        ///   Looks up a localized string similar to The rough data with the variables in it.
         /// </summary>
         public static string QuickVariableVariableListToolTip {
             get {
@@ -4269,7 +4269,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SchedulerDeleteHelpTextTrigger.
+        ///   Looks up a localized string similar to Delete this scheduled task.
         /// </summary>
         public static string SchedulerDeleteHelpTextTrigger {
             get {
@@ -4278,7 +4278,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SchedulerDeleteTooltipTrigger.
+        ///   Looks up a localized string similar to Delete this scheduled task.
         /// </summary>
         public static string SchedulerDeleteTooltipTrigger {
             get {
@@ -4287,7 +4287,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SchedulerNewScheduleTooltipTrigger.
+        ///   Looks up a localized string similar to Create a new scheduled task.
         /// </summary>
         public static string SchedulerNewScheduleTooltipTrigger {
             get {
@@ -4296,7 +4296,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SchedulerSettingsDisabledHelpTextStatus.
+        ///   Looks up a localized string similar to Disable this scheduled task.
         /// </summary>
         public static string SchedulerSettingsDisabledHelpTextStatus {
             get {
@@ -4305,7 +4305,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SchedulerSettingsEnabledHelpTextStatus.
+        ///   Looks up a localized string similar to Enable this scheduled task.
         /// </summary>
         public static string SchedulerSettingsEnabledHelpTextStatus {
             get {
@@ -4470,7 +4470,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SchedulerStatusAltHelpTextTrigger.
+        ///   Looks up a localized string similar to Enables or Disables the scheduled task. Disabled schedules will not execute when their trigger is valid..
         /// </summary>
         public static string SchedulerStatusAltHelpTextTrigger {
             get {
@@ -4479,7 +4479,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SchedulerStatusAltTooltipTrigger.
+        ///   Looks up a localized string similar to Enable or Disable the schedule.
         /// </summary>
         public static string SchedulerStatusAltTooltipTrigger {
             get {

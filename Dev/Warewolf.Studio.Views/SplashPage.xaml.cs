@@ -126,5 +126,10 @@ namespace Warewolf.Studio.Views
         }
 
         #endregion
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            CloseSplash();
+        }
     }
 }
