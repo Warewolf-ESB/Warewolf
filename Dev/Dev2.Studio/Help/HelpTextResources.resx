@@ -238,12 +238,12 @@ Public is an internal Warewolf group that applies to everyone.</value>
     <value>Select Windows Group</value>
   </data>
   <data name="SettingsSecurityServerHelpAdministrator" xml:space="preserve">
-    <value>Administrators can amend security permissions and change server settings.
+    <value>Administrators can amend security permissions and change server settings. 
 The local machine Administrators are automatically given this permission.
-Giving Public access to this permission is akin to turning security off and is not recommended.</value>
+ Giving Public access to this permission is akin to turning security off and is not recommended.</value>
   </data>
   <data name="SettingsSecurityServerHelpContribute" xml:space="preserve">
-    <value>By Default this group will be able to AddMode New resources, Edit resources and Delete existing resources on this server. 
+    <value>By Default this group will be able to add new resources, edit resources and delete existing resources on this server. 
 To do this they can also View and Execute.</value>
   </data>
   <data name="SettingsSecurityServerHelpDeployFrom" xml:space="preserve">
@@ -288,7 +288,9 @@ The Public group grants any and every user those permissions.</value>
     <value>Select Windows Group</value>
   </data>
   <data name="SettingsSecurityServerBrowseHelpWindowsGroup" xml:space="preserve">
-    <value>SettingsSecurityServerBrowseHelpWindowsGroup</value>
+    <value>Opens the windows group picker for this computer. If this server is on another domain, you will need to either manually type the Group name in, or launch a studio from a PC that is on that domain to get access to the group picker.
+
+Warewolf has a built in group for and called Public.</value>
   </data>
   <data name="WorkflowDesignerSecurityToolTipNone" xml:space="preserve">
     <value>You are not authorized to edit this resource</value>

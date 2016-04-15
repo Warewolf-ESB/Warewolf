@@ -331,24 +331,6 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
-        /// </summary>
-        public static string SettingsSecurityResourceBrowseHelpResources {
-            get {
-                return ResourceManager.GetString("SettingsSecurityResourceBrowseHelpResources", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
-        /// </summary>
-        public static string SettingsSecurityResourceBrowseHelpWindowsGroup {
-            get {
-                return ResourceManager.GetString("SettingsSecurityResourceBrowseHelpWindowsGroup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 
         ///To do this they can also View and Execute..
         /// </summary>
@@ -445,7 +427,9 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsSecurityServerBrowseHelpWindowsGroup.
+        ///   Looks up a localized string similar to Opens the windows group picker for this computer. If this server is on another domain, you will need to either manually type the Group name in, or launch a studio from a PC that is on that domain to get access to the group picker.
+        ///
+        ///Warewolf has a built in group for and called Public..
         /// </summary>
         public static string SettingsSecurityServerBrowseHelpWindowsGroup {
             get {
@@ -454,9 +438,9 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrators can amend security permissions and change server settings.
+        ///   Looks up a localized string similar to Administrators can amend security permissions and change server settings. 
         ///The local machine Administrators are automatically given this permission.
-        ///Giving Public access to this permission is akin to turning security off and is not recommended..
+        /// Giving Public access to this permission is akin to turning security off and is not recommended..
         /// </summary>
         public static string SettingsSecurityServerHelpAdministrator {
             get {
@@ -465,7 +449,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By Default this group will be able to AddMode New resources, Edit resources and Delete existing resources on this server. 
+        ///   Looks up a localized string similar to By Default this group will be able to add new resources, edit resources and delete existing resources on this server. 
         ///To do this they can also View and Execute..
         /// </summary>
         public static string SettingsSecurityServerHelpContribute {
