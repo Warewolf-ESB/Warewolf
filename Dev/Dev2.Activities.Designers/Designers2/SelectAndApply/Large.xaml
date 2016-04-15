@@ -65,7 +65,7 @@
                                 FilterType="All"
                                 DefaultText="[[Datasource]]"
                                 WrapInBrackets="False"
-                                Text="{Binding Path=DataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=ModelItem.DataSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.SelectAndApplyDataSourceToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="False"
@@ -78,8 +78,8 @@
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SelectAndApplyDataSourceHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="DataSource"
-                                     SourcePropertyValue="{Binding  DataSource, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.DataSource"
+                                     SourcePropertyValue="{Binding  ModelItem.DataSource, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
@@ -90,7 +90,7 @@
                                 DefaultText="[[Alias]]"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
-                                Text="{Binding Path=Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=ModelItem.Alias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Core.SelectAndApplyAliasToolTip}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="False"
@@ -103,8 +103,8 @@
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SelectAndApplyAliasHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Alias"
-                                     SourcePropertyValue="{Binding  Alias, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ModelItem.Alias"
+                                     SourcePropertyValue="{Binding  ModelItem.Alias, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
@@ -118,7 +118,7 @@
                                        HintText="Drop Activity Here"
                                        BorderBrush="Black"
                                        BorderThickness="2"
-                                       Item="{Binding ModelItem.ApplyActivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource ModelItemToActivityConverter}}"
+                                       Item="{Binding Path=ModelItem.ApplyActivityFunc.Handler, Mode=TwoWay,Converter={StaticResource ModelItemToActivityConverter}}"
                                        MinHeight="50"
                                        attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
                 <AutomationProperties.AutomationId>

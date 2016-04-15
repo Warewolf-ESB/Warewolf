@@ -5,7 +5,6 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -21,12 +20,24 @@ namespace Dev2.Activities.SelectAndApply
         public DsfSelectAndApplyActivity()
         {
             DisplayName = "Select and apply";
+            ApplyActivityFunc = new ActivityFunc<string, bool>
+            {
+                DisplayName = "Data Action",
+                Argument = new DelegateInArgument<string>(string.Format("explicitData_{0}", DateTime.Now.ToString("yyyyMMddhhmmss")))
+
+            };
         }
 
+        protected override void CacheMetadata(NativeActivityMetadata metadata)
+        {
+            metadata.AddDelegate(ApplyActivityFunc);
+
+            base.CacheMetadata(metadata);
+        }
         #region Overrides of DsfNativeActivity<bool>
         public string DataSource { get; set; }
         public string Alias { get; set; }
-        public object ApplyActivity { get; set; }
+        public ActivityFunc<string, bool> ApplyActivityFunc { get; set; }
 
         readonly object _selectApplyExecutionObject = new object();
         string _previousParentId;
@@ -137,7 +148,7 @@ namespace Dev2.Activities.SelectAndApply
                         //Assign the warewolfAtom to Alias using new environment
                         executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
 
-                        var exeAct = ApplyActivity as IDev2Activity;
+                        var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
                         if (exeAct != null)
                         {
                             exeAct.Execute(dataObject, upd);
