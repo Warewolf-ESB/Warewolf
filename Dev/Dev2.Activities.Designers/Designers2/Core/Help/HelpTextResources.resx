@@ -142,7 +142,7 @@ Which direction would you like to process in?</value>
     <value>Append will add the variables onto the list of variables already in the input grid. The values of the last row will be repeated for all of these additional values.</value>
   </data>
   <data name="QuickVariableAppendToolTip" xml:space="preserve">
-    <value>QuickVariableAppendToolTip</value>
+    <value>Append to existing variables</value>
   </data>
   <data name="QuickVariablePrefixWithHelpText" xml:space="preserve">
     <value>To append something onto the front of the variables in your list, type it in here.
@@ -150,7 +150,7 @@ For recordsets, type  recordsetname(). Dont forget the "." after the "()"
 You do not need to put the "[[" in.</value>
   </data>
   <data name="QuickVariablePrefixWithToolTip" xml:space="preserve">
-    <value>QuickVariablePrefixWithToolTip</value>
+    <value>Adds this to the front of the variables</value>
   </data>
   <data name="QuickVariableSplitAndAtHelpText" xml:space="preserve">
     <value>Select the criteria to split the variables in the list. This will be the pattern used to repeat against the Variable List box.
@@ -161,7 +161,7 @@ Space will split on blank space.
 Tab splits on a tab character.</value>
   </data>
   <data name="QuickVariableSplitAndAtToolTip" xml:space="preserve">
-    <value>QuickVariableSplitAndAtToolTip</value>
+    <value>Criteria for splitting the above data</value>
   </data>
   <data name="QuickVariableSplitListOnHelpText" xml:space="preserve">
     <value>Simply enter the name of the recordset that you want to count in. eg
@@ -172,19 +172,19 @@ Tab splits on a tab character.</value>
 You do not need to put the "]]" in.</value>
   </data>
   <data name="QuickVariableSuffixWithToolTip" xml:space="preserve">
-    <value>QuickVariableSuffixWithToolTip</value>
+    <value>Adds this to end of the variables</value>
   </data>
   <data name="QuickVariableVariableListHelpText" xml:space="preserve">
     <value>Type or paste all the variables you want to use in here. You can paste in any format. If you are adding variables into a grid with a drop down or other input, the values from the last row will be repeated, so set them before adding these variables.</value>
   </data>
   <data name="QuickVariableVariableListToolTip" xml:space="preserve">
-    <value>QuickVariableVariableListToolTip</value>
+    <value>The rough data with the variables in it</value>
   </data>
   <data name="QuickVariableReplaceHelpText" xml:space="preserve">
     <value>Replace will replace the current list of variables with this list. The values of the first row will be repeated for all of these new values.</value>
   </data>
   <data name="QuickVariableReplaceToolTip" xml:space="preserve">
-    <value>QuickVariableReplaceToolTip</value>
+    <value>Replaces existing variables in the tool</value>
   </data>
   <data name="PreviewInputHelpText" xml:space="preserve">
     <value>Preview (recordset field)
@@ -193,18 +193,18 @@ This is a variable from an input field. Use comma-separated values for each inde
 Preview (scalar field - including indexed recordsets and ())
 This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
   </data>
-    <data name="SharepointToolTipServer" xml:space="preserve">
+  <data name="SharepointToolTipServer" xml:space="preserve">
     <value>Select a preconfigured Sharepoint server source or "New Sharepoint Server Source..." to add a new one.</value>
   </data>
-    <data name="SharepointToolTipList" xml:space="preserve">
+  <data name="SharepointToolTipList" xml:space="preserve">
     <value>Select a list to read from.
 If the list has changed or recently added to the source, click the refresh button.</value>
   </data>
-      <data name="SharepointToolTipToVariable" xml:space="preserve">
+  <data name="SharepointToolTipToVariable" xml:space="preserve">
     <value>To read list item data into a variable, put the variable here.
     </value>
   </data>
-    <data name="SharepointToolTipFieldToFilterOn" xml:space="preserve">
+  <data name="SharepointToolTipFieldToFilterOn" xml:space="preserve">
     <value>Select the field you want to match on.</value>
   </data>
   <data name="SqlBulkInsertHelpTimeout" xml:space="preserve">
@@ -258,13 +258,13 @@ Returns Success or the record numbers with errors.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-    <data name="SharepointDelteToolTipResult" xml:space="preserve">
+  <data name="SharepointDelteToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the number of items deleted.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-     <data name="SharepointInsertToolTipResult" xml:space="preserve">
+  <data name="SharepointInsertToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or Failure.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
@@ -789,7 +789,7 @@ The file must be available on the local file system.</value>
      Write: This is the name of the file that will be written to DropBox.
      NOTE: The file path must use "/" to identify folders and not "\".</value>
   </data>
-    <data name="DropBoxDownloadToolTipLocalDestination" xml:space="preserve">
+  <data name="DropBoxDownloadToolTipLocalDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
      This is the name of the file that will be read from DropBox.
      NOTE: The file path must use "/" to identify folders and not "\".</value>
@@ -1820,28 +1820,28 @@ Renaming a Schedule will loose its History.</value>
     <value>To change if the trigger is active or not, select Enabled or Dissabled.</value>
   </data>
   <data name="SchedulerSettingsEnabledHelpTextStatus" xml:space="preserve">
-    <value>SchedulerSettingsEnabledHelpTextStatus</value>
+    <value>Enable this scheduled task</value>
   </data>
   <data name="SchedulerSettingsDisabledHelpTextStatus" xml:space="preserve">
-    <value>SchedulerSettingsDisabledHelpTextStatus</value>
+    <value>Disable this scheduled task</value>
   </data>
   <data name="SchedulerSettingsHelpTextTrigger" xml:space="preserve">
     <value>To run a workflow on a schedule select the Edit Trigger button.</value>
   </data>
   <data name="SchedulerStatusAltTooltipTrigger" xml:space="preserve">
-    <value>SchedulerStatusAltTooltipTrigger</value>
+    <value>Enable or Disable the schedule</value>
   </data>
   <data name="SchedulerStatusAltHelpTextTrigger" xml:space="preserve">
-    <value>SchedulerStatusAltHelpTextTrigger</value>
+    <value>Enables or Disables the scheduled task. Disabled schedules will not execute when their trigger is valid.</value>
   </data>
   <data name="SchedulerDeleteTooltipTrigger" xml:space="preserve">
-    <value>SchedulerDeleteTooltipTrigger</value>
+    <value>Delete this scheduled task</value>
   </data>
   <data name="SchedulerDeleteHelpTextTrigger" xml:space="preserve">
-    <value>SchedulerDeleteHelpTextTrigger</value>
+    <value>Delete this scheduled task</value>
   </data>
   <data name="SchedulerNewScheduleTooltipTrigger" xml:space="preserve">
-    <value>SchedulerNewScheduleTooltipTrigger</value>
+    <value>Create a new scheduled task</value>
   </data>
   <data name="SchedulerSettingsHelpTextUsername" xml:space="preserve">
     <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
@@ -2379,7 +2379,7 @@ Allowed:
 na</value>
   </data>
   <data name="FindHelpMatch" xml:space="preserve">
-    <value>See in tool
+    <value>The criteria to match on
 
 Allowed:
 Data   
@@ -2426,7 +2426,7 @@ Allowed:
     <value>Select the type of information you want to match on.</value>
   </data>
   <data name="FindToolTipMatch" xml:space="preserve">
-    <value>See in tool</value>
+    <value>Match data</value>
   </data>
   <data name="FindToolTipRequireAllFieldsToMatch" xml:space="preserve">
     <value>Will only return rows where each field specified meets the match criteria if selected.</value>
@@ -3208,18 +3208,18 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-    <data name="SharepointHelpServer" xml:space="preserve">
+  <data name="SharepointHelpServer" xml:space="preserve">
     <value>Select a preconfigured Sharepoint server source or "New Sharepoint Server Source..." to add a new one.
 </value>
   </data>
-      <data name="SharepointHelpList" xml:space="preserve">
+  <data name="SharepointHelpList" xml:space="preserve">
     <value>Select a list to read data from.
 If the list changed, click the refresh button.
 
 Allowed:
 Select a list to read data from.</value>
   </data>
-      <data name="SharepointHelpFieldToMatchOn" xml:space="preserve">
+  <data name="SharepointHelpFieldToMatchOn" xml:space="preserve">
     <value>Select the field you want to match on.
 
 Allowed:
@@ -3241,7 +3241,7 @@ Number
 
 Allowed:
 Check constraints while data is being inserted.</value>
-  </data>    
+  </data>
   <data name="SQLBulkInsertHelpDatabase" xml:space="preserve">
     <value>Select a preconfigured database source or "New Database Source..." to add a new one.
 
@@ -3272,7 +3272,7 @@ Allowed:
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-    <data name="SharepointDeleteHelpResult" xml:space="preserve">
+  <data name="SharepointDeleteHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the number of records deleted.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
@@ -3284,7 +3284,7 @@ Allowed:
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-     <data name="SharepointInsertHelpResult" xml:space="preserve">
+  <data name="SharepointInsertHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or Failure.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
