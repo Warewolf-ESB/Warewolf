@@ -78,16 +78,16 @@ and  languageExpressionToString  (x:LanguageExpression) =
                                                 | NestedNameExpression x -> sprintf "[[%s.%s]]" x.ObjectName  (jsonExpressionToString x.Next "")
                                                 | Terminal -> ""
                                                 | IndexNestedNameExpression x ->   sprintf "[[%s(%s).%s]]" x.ObjectName (IndexToString x.Index)  (jsonExpressionToString x.Next "")
-        
-          
         | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d ) "" a
         | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index ) 
+
 and jsonExpressionToString a acc =
     match a with 
-        | NameExpression x -> if acc = "" then  x.Name else sprintf ".%s" x.Name
+        | NameExpression x -> if acc = "" then  x.Name else sprintf "%s.%s" acc x.Name
         | NestedNameExpression x -> let current = if acc = "" then  x.ObjectName  else sprintf "%s.%s" acc x.ObjectName
                                     jsonExpressionToString x.Next current
-        | IndexNestedNameExpression x ->   let current = if acc = "" then  x.ObjectName  else sprintf "%s.%s(%s)" acc x.ObjectName (IndexToString x.Index ) 
+        | IndexNestedNameExpression x ->   let accdot = if acc= "" then "" else acc+"."
+                                           let current = sprintf "%s%s(%s)" accdot x.ObjectName (IndexToString x.Index ) 
                                            jsonExpressionToString x.Next current
         | Terminal -> acc
 
