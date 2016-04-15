@@ -272,7 +272,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ChooseAttachmentsHelp.
+        ///   Looks up a localized string similar to File picker to help you locate the location of the items you want to attach.
         /// </summary>
         public static string ChooseAttachmentsHelp {
             get {
@@ -1576,7 +1576,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DbInputDefaultValueHelp.
+        ///   Looks up a localized string similar to Put your test data in here then click Test. If possible this execution will automatically roll back..
         /// </summary>
         public static string DbInputDefaultValueHelp {
             get {
@@ -1585,7 +1585,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DbInsertToolTipColumn.
+        ///   Looks up a localized string similar to This data is used for testing and not at run time..
         /// </summary>
         public static string DbInsertToolTipColumn {
             get {
@@ -2001,7 +2001,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DotNetInputDefaultValueHelp.
+        ///   Looks up a localized string similar to The data or variable that will be passed into the action at run time..
         /// </summary>
         public static string DotNetInputDefaultValueHelp {
             get {
@@ -2010,7 +2010,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DotNetInsertToolTipColumn.
+        ///   Looks up a localized string similar to Hard coded values or variables..
         /// </summary>
         public static string DotNetInsertToolTipColumn {
             get {
@@ -2067,7 +2067,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EditEmailSourceHelp.
+        ///   Looks up a localized string similar to Edit the email source that is selected..
         /// </summary>
         public static string EditEmailSourceHelp {
             get {
@@ -2426,15 +2426,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EnvironmentExplorerRefreshToolTip.
-        /// </summary>
-        public static string EnvironmentExplorerRefreshToolTip {
-            get {
-                return ResourceManager.GetString("EnvironmentExplorerRefreshToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Environments.
         /// </summary>
         public static string Environments_Directory {
@@ -2593,7 +2584,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExpandCollapseAllToolTip.
+        ///   Looks up a localized string similar to Expand or collapse all execution nodes..
         /// </summary>
         public static string ExpandCollapseAllToolTip {
             get {
@@ -3056,7 +3047,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InputDefaultValueHelp.
+        ///   Looks up a localized string similar to The variable or the value that you want passed into this action..
         /// </summary>
         public static string InputDefaultValueHelp {
             get {
@@ -3065,7 +3056,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InputEmptyIsNullDefaultValueHelp.
+        ///   Looks up a localized string similar to If the variable coming in has not value assigned to it, this will allow you to pass it in as NULL..
         /// </summary>
         public static string InputEmptyIsNullDefaultValueHelp {
             get {
@@ -3074,7 +3065,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InputGenerateOutputsDefaultHelp.
+        ///   Looks up a localized string similar to To get the response data of this action, put some test data in. The transaction will be rolled back if possible..
         /// </summary>
         public static string InputGenerateOutputsDefaultHelp {
             get {
@@ -5461,7 +5452,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerSourceDialogsCancelTestToolTip.
+        ///   Looks up a localized string similar to Cancel the connection attempt.
         /// </summary>
         public static string ServerSourceDialogsCancelTestToolTip {
             get {
@@ -5524,7 +5515,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerTestConnectionHelp.
+        ///   Looks up a localized string similar to Test the connection to the remote Warewolf Server.
+        ///Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server..
         /// </summary>
         public static string ServerTestConnectionHelp {
             get {
@@ -5602,7 +5594,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestCancelButtonHelp.
+        ///   Looks up a localized string similar to Cancel the test response results. Cancelling will not use the results from the test execution to determine the actions outputs..
         /// </summary>
         public static string ServiceTestCancelButtonHelp {
             get {
@@ -5611,7 +5603,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestDoneButtonHelp.
+        ///   Looks up a localized string similar to Accept the test response results. This will use the results from the test execution to determine the actions outputs..
         /// </summary>
         public static string ServiceTestDoneButtonHelp {
             get {
@@ -5668,7 +5660,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointEditServerHelp.
+        ///   Looks up a localized string similar to Edit the connection properties of the selected Sharepoint Server..
         /// </summary>
         public static string SharepointEditServerHelp {
             get {
@@ -5734,7 +5726,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointRefreshListHelp.
+        ///   Looks up a localized string similar to Refreshes the information from the server..
         /// </summary>
         public static string SharepointRefreshListHelp {
             get {
@@ -5761,7 +5753,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointServiceSourceServerHelp.
+        ///   Looks up a localized string similar to The full URL of the Sharepoint server.
         /// </summary>
         public static string SharepointServiceSourceServerHelp {
             get {
@@ -5770,7 +5762,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointServiceSourceTestHelp.
+        ///   Looks up a localized string similar to Test the connection to the Sharepoint server.
         /// </summary>
         public static string SharepointServiceSourceTestHelp {
             get {
@@ -5779,7 +5771,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceCancelTestTooltip.
+        ///   Looks up a localized string similar to Cancel the test connection to the Sharepoint server.
         /// </summary>
         public static string SharepointSourceCancelTestTooltip {
             get {
@@ -5788,7 +5780,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourcePasswordTooltip.
+        ///   Looks up a localized string similar to Password for the username used to connect to Sharepoint.
         /// </summary>
         public static string SharepointSourcePasswordTooltip {
             get {
@@ -5797,7 +5789,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceServerNameTooltip.
+        ///   Looks up a localized string similar to Sharepoint URL.
         /// </summary>
         public static string SharepointSourceServerNameTooltip {
             get {
@@ -5806,7 +5798,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceTestTooltip.
+        ///   Looks up a localized string similar to Test the connection to the Sharepoint server.
         /// </summary>
         public static string SharepointSourceTestTooltip {
             get {
@@ -5815,7 +5807,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceUserNameTooltip.
+        ///   Looks up a localized string similar to The usename used to connect to Sharepoint.
         /// </summary>
         public static string SharepointSourceUserNameTooltip {
             get {
@@ -5871,7 +5863,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQLBulkInsertEditDatabaseHelp.
+        ///   Looks up a localized string similar to Edit the selected database connection properties.
         /// </summary>
         public static string SQLBulkInsertEditDatabaseHelp {
             get {
@@ -6060,7 +6052,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQLBulkInsertRefreshListHelp.
+        ///   Looks up a localized string similar to Refresh the information from the server.
         /// </summary>
         public static string SQLBulkInsertRefreshListHelp {
             get {
@@ -6182,7 +6174,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TestEmailAccountHelp.
+        ///   Looks up a localized string similar to Test the email account is working.
         /// </summary>
         public static string TestEmailAccountHelp {
             get {
@@ -6472,7 +6464,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UserAuthenticationHelp.
+        ///   Looks up a localized string similar to Connect with a specific user account..
         /// </summary>
         public static string UserAuthenticationHelp {
             get {
@@ -6490,7 +6482,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;UserNameAuthenticationHelp&lt;/p&gt;&lt;/body&gt;.
+        ///   Looks up a localized string similar to The full username of the account you want to use to connect to this resource..
         /// </summary>
         public static string UserNameAuthenticationHelp {
             get {
@@ -6592,7 +6584,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebInputDefaultValueHelp.
+        ///   Looks up a localized string similar to The test data you want to use to execute this action with..
         /// </summary>
         public static string WebInputDefaultValueHelp {
             get {
@@ -6601,7 +6593,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebInsertToolTipColumn.
+        ///   Looks up a localized string similar to Test data for the execution.
         /// </summary>
         public static string WebInsertToolTipColumn {
             get {

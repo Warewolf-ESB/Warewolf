@@ -604,9 +604,6 @@ You need Administrator permission.</value>
   <data name="DebugToolTip" xml:space="preserve">
     <value>Run and debug your workflow service</value>
   </data>
-  <data name="EnvironmentExplorerRefreshToolTip" xml:space="preserve">
-    <value>EnvironmentExplorerRefreshToolTip</value>
-  </data>
   <data name="ExplorerItemEditToolTip" xml:space="preserve">
     <value>You have view permission on this item. Click to open</value>
   </data>
@@ -635,7 +632,7 @@ You need Administrator permission.</value>
     <value>Adjust the debug output</value>
   </data>
   <data name="ExpandCollapseAllToolTip" xml:space="preserve">
-    <value>ExpandCollapseAllToolTip</value>
+    <value>Expand or collapse all execution nodes.</value>
   </data>
   <data name="DebugOutputSearchToolTip" xml:space="preserve">
     <value>Filter the debug output information</value>
@@ -827,19 +824,19 @@ You need Administrator permission.</value>
     <value>Cancel this action</value>
   </data>
   <data name="SharepointSourceServerNameTooltip" xml:space="preserve">
-    <value>SharepointSourceServerNameTooltip</value>
+    <value>Sharepoint URL</value>
   </data>
   <data name="SharepointSourceUserNameTooltip" xml:space="preserve">
-    <value>SharepointSourceUserNameTooltip</value>
+    <value>The usename used to connect to Sharepoint</value>
   </data>
   <data name="SharepointSourcePasswordTooltip" xml:space="preserve">
-    <value>SharepointSourcePasswordTooltip</value>
+    <value>Password for the username used to connect to Sharepoint</value>
   </data>
   <data name="SharepointSourceTestTooltip" xml:space="preserve">
-    <value>SharepointSourceTestTooltip</value>
+    <value>Test the connection to the Sharepoint server</value>
   </data>
   <data name="SharepointSourceCancelTestTooltip" xml:space="preserve">
-    <value>SharepointSourceCancelTestTooltip</value>
+    <value>Cancel the test connection to the Sharepoint server</value>
   </data>
   <data name="DeploySelectDependenciesTooltip" xml:space="preserve">
     <value>Automatically select dependent resources. WARNING: Overwriting Sources on the destination is not recommended.</value>
@@ -905,7 +902,7 @@ You need Administrator permission.</value>
     <value>Test the connection to the server using these credentials</value>
   </data>
   <data name="ServerSourceDialogsCancelTestToolTip" xml:space="preserve">
-    <value>ServerSourceDialogsCancelTestToolTip</value>
+    <value>Cancel the connection attempt</value>
   </data>
   <data name="UserNameToolTip" xml:space="preserve">
     <value>Enter the user name you want to connect with</value>
@@ -1067,8 +1064,6 @@ This data will not be stored and the execution will be rolled back if supported 
   <data name="DatabaseServiceTestHelp" xml:space="preserve">
     <value>Test the execution of this resource.</value>
   </data>
-    
-  
   <data name="ServiceTestActionTooltip" xml:space="preserve">
     <value>Test the procedure or function</value>
   </data>
@@ -1081,17 +1076,16 @@ This data will not be stored and the execution will be rolled back if supported 
     <value>Test the execution of this resource.</value>
   </data>
   <data name="ServiceTestDoneButtonHelp" xml:space="preserve">
-    <value>ServiceTestDoneButtonHelp</value>
+    <value>Accept the test response results. This will use the results from the test execution to determine the actions outputs.</value>
   </data>
   <data name="ServiceTestCancelButtonHelp" xml:space="preserve">
-    <value>ServiceTestCancelButtonHelp</value>
+    <value>Cancel the test response results. Cancelling will not use the results from the test execution to determine the actions outputs.</value>
   </data>
-
   <data name="SharepointServiceSourceServerHelp" xml:space="preserve">
-    <value>SharepointServiceSourceServerHelp</value>
+    <value>The full URL of the Sharepoint server</value>
   </data>
   <data name="SharepointServiceSourceTestHelp" xml:space="preserve">
-    <value>SharepointServiceSourceTestHelp</value>
+    <value>Test the connection to the Sharepoint server</value>
   </data>
   <data name="MenuNewServiceHelp" xml:space="preserve">
     <value>Create a new Warewolf Hosted Service. This flow based service is that start of all orchestration in Warewolf.&lt;br/&gt;
@@ -1337,31 +1331,31 @@ This account needs to be a valid email address/account for the Host server.</val
     <value>Test the settings you have entered by sending a test email.</value>
   </data>
   <data name="DbInputDefaultValueHelp" xml:space="preserve">
-    <value>DbInputDefaultValueHelp</value>
+    <value>Put your test data in here then click Test. If possible this execution will automatically roll back.</value>
   </data>
   <data name="DbInsertToolTipColumn" xml:space="preserve">
-    <value>DbInsertToolTipColumn</value>
+    <value>This data is used for testing and not at run time.</value>
   </data>
   <data name="WebInputDefaultValueHelp" xml:space="preserve">
-    <value>WebInputDefaultValueHelp</value>
+    <value>The test data you want to use to execute this action with.</value>
   </data>
   <data name="WebInsertToolTipColumn" xml:space="preserve">
-    <value>WebInsertToolTipColumn</value>
+    <value>Test data for the execution</value>
   </data>
   <data name="DotNetInputDefaultValueHelp" xml:space="preserve">
-    <value>DotNetInputDefaultValueHelp</value>
+    <value>The data or variable that will be passed into the action at run time.</value>
   </data>
   <data name="DotNetInsertToolTipColumn" xml:space="preserve">
-    <value>DotNetInsertToolTipColumn</value>
+    <value>Hard coded values or variables.</value>
   </data>
   <data name="InputDefaultValueHelp" xml:space="preserve">
-    <value>InputDefaultValueHelp</value>
+    <value>The variable or the value that you want passed into this action.</value>
   </data>
   <data name="InputEmptyIsNullDefaultValueHelp" xml:space="preserve">
-    <value>InputEmptyIsNullDefaultValueHelp</value>
+    <value>If the variable coming in has not value assigned to it, this will allow you to pass it in as NULL.</value>
   </data>
   <data name="InputGenerateOutputsDefaultHelp" xml:space="preserve">
-    <value>InputGenerateOutputsDefaultHelp</value>
+    <value>To get the response data of this action, put some test data in. The transaction will be rolled back if possible.</value>
   </data>
   <data name="MappingsRecordsetNameHelp" xml:space="preserve">
     <value>If you would like the default variables in a recordset, put the recordset name in here.</value>
@@ -1427,16 +1421,17 @@ If there are no resources on the remote server, there will be no Public authenti
 Do not change this unless you know the ports on the remote machine have been altered.</value>
   </data>
   <data name="ServerTestConnectionHelp" xml:space="preserve">
-    <value>ServerTestConnectionHelp</value>
+    <value>Test the connection to the remote Warewolf Server.
+Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server.</value>
   </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
   </data>
   <data name="UserAuthenticationHelp" xml:space="preserve">
-    <value>UserAuthenticationHelp</value>
+    <value>Connect with a specific user account.</value>
   </data>
   <data name="UserNameAuthenticationHelp" xml:space="preserve">
-    <value>&lt;body&gt;&lt;p&gt;UserNameAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
+    <value>The full username of the account you want to use to connect to this resource.</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
@@ -3422,14 +3417,11 @@ Data
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
-  <data name="SharepointHelpServer" xml:space="preserve">
-    <value>Select a preconfigured SharePoint server source or "New SharePoint Server Source..." to add a new one.</value>
-  </data>
   <data name="SharepointEditServerHelp" xml:space="preserve">
-    <value>SharepointEditServerHelp</value>
+    <value>Edit the connection properties of the selected Sharepoint Server.</value>
   </data>
   <data name="SharepointRefreshListHelp" xml:space="preserve">
-    <value>SharepointRefreshListHelp</value>
+    <value>Refreshes the information from the server.</value>
   </data>
   <data name="SharepointToolTipToVariable" xml:space="preserve">
     <value>To read list item data into a variable, put the variable here.</value>
@@ -3480,10 +3472,10 @@ Data
         Select a preconfigured database source or "New Database Source..." to add a new one.</value>
   </data>
   <data name="SQLBulkInsertEditDatabaseHelp" xml:space="preserve">
-    <value>SQLBulkInsertEditDatabaseHelp</value>
+    <value>Edit the selected database connection properties</value>
   </data>
   <data name="SQLBulkInsertRefreshListHelp" xml:space="preserve">
-    <value>SQLBulkInsertRefreshListHelp</value>
+    <value>Refresh the information from the server</value>
   </data>
   <data name="SQLBulkInsertHelpFiretriggers" xml:space="preserve">
     <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.&lt;br/&gt;
@@ -3877,14 +3869,13 @@ Data
   <data name="NewServerLabel" xml:space="preserve">
     <value>New Remote Server...</value>
   </data>
-
   <data name="EditEmailSourceHelp" xml:space="preserve">
-    <value>EditEmailSourceHelp</value>
+    <value>Edit the email source that is selected.</value>
   </data>
   <data name="TestEmailAccountHelp" xml:space="preserve">
-    <value>TestEmailAccountHelp</value>
+    <value>Test the email account is working</value>
   </data>
   <data name="ChooseAttachmentsHelp" xml:space="preserve">
-    <value>ChooseAttachmentsHelp</value>
+    <value>File picker to help you locate the location of the items you want to attach</value>
   </data>
 </root>
