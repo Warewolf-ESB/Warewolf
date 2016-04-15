@@ -162,6 +162,9 @@
   <data name="SettingsPerfCounterResourceToolTipResource" xml:space="preserve">
     <value>SettingsPerfCounterResourceToolTipResource</value>
   </data>
+  <data name="SettingsPerfCounterResourceBrowseHelpResource" xml:space="preserve">
+    <value>SettingsPerfCounterResourceBrowseHelpResource</value>
+  </data>
   <data name="SettingsPerfCounterResourceToolTipTotErrors" xml:space="preserve">
     <value>SettingsPerfCounterResourceToolTipTotErrors</value>
   </data>
@@ -287,7 +290,16 @@ The Public group grants any and every user those permissions.</value>
   <data name="SettingsSecurityServerToolTipWindowsGroup" xml:space="preserve">
     <value>Select Windows Group</value>
   </data>
+  <data name="SettingsSecurityServerBrowseHelpWindowsGroup" xml:space="preserve">
+    <value>SettingsSecurityServerBrowseHelpWindowsGroup</value>
+  </data>
   <data name="WorkflowDesignerSecurityToolTipNone" xml:space="preserve">
     <value>You are not authorized to edit this resource</value>
+  </data>
+  <data name="SettingsPerfCounterRemoveResourceTooltip" xml:space="preserve">
+    <value>Removes Performance Counter</value>
+  </data>
+  <data name="SettingsPerfCounterRemoveResourceHelpText" xml:space="preserve">
+    <value>SettingsPerfCounterRemoveResourceHelpText</value>
   </data>
 </root>
