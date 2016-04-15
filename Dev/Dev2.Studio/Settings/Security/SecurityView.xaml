@@ -381,6 +381,10 @@
                                                 <Binding Path="ResourceName" FallbackValue="New" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceBrowseHelpResources}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
                                     </Button>
                                     <Path Grid.ColumnSpan="2"
                                           Grid.Column="0"
@@ -424,6 +428,10 @@
                                                 <Binding Path="WindowsGroup" FallbackValue="New" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceBrowseHelpWindowsGroup}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
                                     </Button>
                                     <Path Grid.ColumnSpan="2"
                                           Grid.Column="0"
