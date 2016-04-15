@@ -112,7 +112,7 @@
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                 aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                ToolTip="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.ErrorMessage, UpdateSourceTrigger=PropertyChanged}"
+                                                                ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsUsed="{Binding IsUsed}"
@@ -148,6 +148,7 @@
                                       IsChecked="{Binding Input}"
                                       VerticalAlignment="Center"
                                       Focusable="True"
+                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
                                       Checked="Inputcbx_OnChecked"
                                       Unchecked="Inputcbx_OnChecked"
                                       AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
@@ -164,6 +165,7 @@
                                       VerticalAlignment="Center"
                                       Margin="0,-1,0,-1"
                                       Focusable="True"
+                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
                                       Checked="Outputcbx_OnChecked"
                                       Unchecked="Outputcbx_OnChecked"
                                       AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >

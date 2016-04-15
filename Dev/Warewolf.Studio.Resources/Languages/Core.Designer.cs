@@ -1089,6 +1089,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DataListInputCheckBoxTooltip.
+        /// </summary>
+        public static string DataListInputCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DataListInputCheckBoxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Marks the variable as an output of the service. To return this variable from the workflow service, make this checkbox selected.&lt;br/&gt;
         ///&lt;br/&gt;
         ///&lt;a href=&quot;http://warewolf.io/knowledge-base/warewolf-language/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
@@ -1096,6 +1105,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DataListOutputCheckBoxHelp {
             get {
                 return ResourceManager.GetString("DataListOutputCheckBoxHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataListOutputCheckBoxTooltip.
+        /// </summary>
+        public static string DataListOutputCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DataListOutputCheckBoxTooltip", resourceCulture);
             }
         }
         
@@ -1118,6 +1136,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DataListVariableInputHelp {
             get {
                 return ResourceManager.GetString("DataListVariableInputHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataListVariableInputTooltip.
+        /// </summary>
+        public static string DataListVariableInputTooltip {
+            get {
+                return ResourceManager.GetString("DataListVariableInputTooltip", resourceCulture);
             }
         }
         
@@ -2431,6 +2458,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string EmailSourceTimeoutLabel {
             get {
                 return ResourceManager.GetString("EmailSourceTimeoutLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EmailTooltipBodyCheckbox.
+        /// </summary>
+        public static string EmailTooltipBodyCheckbox {
+            get {
+                return ResourceManager.GetString("EmailTooltipBodyCheckbox", resourceCulture);
             }
         }
         
@@ -5872,11 +5908,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServiceTestCancelButtonTooltip.
+        /// </summary>
+        public static string ServiceTestCancelButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestCancelButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ServiceTestDoneButtonHelp.
         /// </summary>
         public static string ServiceTestDoneButtonHelp {
             get {
                 return ResourceManager.GetString("ServiceTestDoneButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestDoneButtonTooltip.
+        /// </summary>
+        public static string ServiceTestDoneButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestDoneButtonTooltip", resourceCulture);
             }
         }
         
