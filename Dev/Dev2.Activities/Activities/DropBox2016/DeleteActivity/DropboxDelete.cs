@@ -38,7 +38,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             try
             {
                 FileMetadata deleteAsync = client.Files.DeleteAsync(_dropboxPath).Result as FileMetadata;
-                return new DropboxUploadSuccessResult(deleteAsync);
+                return new DropboxDeleteSuccessResult(deleteAsync);
             }
             catch (Exception exception)
             {
