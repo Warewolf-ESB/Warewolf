@@ -243,8 +243,7 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
             | WarewolfAtomAtomExpression a  -> WarewolfAtomResult a
             | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
             | RecordSetNameExpression a when  env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
-            | JsonIdentifierExpression a -> evalJson env update buffer
-            | _ -> failwith "Invalid language expression"
+            | _-> evalJson env update buffer
 
 and languageExpressionToJPath (lang:LanguageExpression) = 
     match lang with
@@ -258,9 +257,9 @@ and languageExpressionToJPath (lang:LanguageExpression) =
             | WarewolfAtomAtomExpression _  -> ""
             | RecordSetNameExpression a -> 
                                         match a.Index with  
-                                            | IntIndex i ->  sprintf "[%i]." (i-1)
-                                            | Star  -> "[*]." 
-                                            | Last  -> "[-1:]."
+                                            | IntIndex i ->  sprintf "[%i]" (i-1)
+                                            | Star  -> "[*]" 
+                                            | Last  -> "[-1:]"
                                             | _ ->failwith  "not supported for JSON types"
             | ComplexExpression  _ ->  failwith  "not supported for JSON types"
             | JsonIdentifierExpression a ->  jsonIdentifierToJsonPathLevel1 a 
