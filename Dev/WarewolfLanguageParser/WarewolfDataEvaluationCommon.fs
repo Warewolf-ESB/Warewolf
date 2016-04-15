@@ -78,16 +78,16 @@ and  languageExpressionToString  (x:LanguageExpression) =
                                                 | NestedNameExpression x -> sprintf "[[%s.%s]]" x.ObjectName  (jsonExpressionToString x.Next "")
                                                 | Terminal -> ""
                                                 | IndexNestedNameExpression x ->   sprintf "[[%s(%s).%s]]" x.ObjectName (IndexToString x.Index)  (jsonExpressionToString x.Next "")
-        
-          
         | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d ) "" a
         | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index ) 
+
 and jsonExpressionToString a acc =
     match a with 
-        | NameExpression x -> if acc = "" then  x.Name else sprintf ".%s" x.Name
+        | NameExpression x -> if acc = "" then  x.Name else sprintf "%s.%s" acc x.Name
         | NestedNameExpression x -> let current = if acc = "" then  x.ObjectName  else sprintf "%s.%s" acc x.ObjectName
                                     jsonExpressionToString x.Next current
-        | IndexNestedNameExpression x ->   let current = if acc = "" then  x.ObjectName  else sprintf "%s.%s(%s)" acc x.ObjectName (IndexToString x.Index ) 
+        | IndexNestedNameExpression x ->   let accdot = if acc= "" then "" else acc+"."
+                                           let current = sprintf "%s%s(%s)" accdot x.ObjectName (IndexToString x.Index ) 
                                            jsonExpressionToString x.Next current
         | Terminal -> acc
 
@@ -345,8 +345,11 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-        | JsonIdentifierExpression _ -> failwith "no current use case please contact the warewolf product owner " 
-
+        | JsonIdentifierExpression _ -> let res =  evalJson env update buffer
+                                        match res with 
+                                         |  WarewolfAtomListresult a -> a |>  Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) )|> WarewolfAtomListresult 
+                                         |  WarewolfAtomResult a->   a|> enQuote |> WarewolfAtomResult
+                                         |  _ -> failwith "recordest results callot be supported by calculate"
 and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
     let exp = ParseCache.TryFind lang
@@ -366,6 +369,7 @@ and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) 
                                                                 | WarewolfAtomAtomExpression _ -> lang
                                                                 |_->     sprintf "[[%s(%s).%s]]" a.Name (eval  env update  (languageExpressionToString exp)|> evalResultToString) a.Column  
                                     | _->lang
+        |JsonIdentifierExpression a -> lang
         | _ -> lang
 
 and evalToExpressionAndParse (env: WarewolfEnvironment) (update:int) (langs:string)  = 
