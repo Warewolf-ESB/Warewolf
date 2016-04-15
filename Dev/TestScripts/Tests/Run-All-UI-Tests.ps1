@@ -55,7 +55,7 @@ Foreach-Object{
         }
     }
 }
-if ($TestList.length -gt 1) {
+if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
