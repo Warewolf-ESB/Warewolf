@@ -900,6 +900,7 @@
                             VerticalAlignment="Bottom"
                             Margin="{StaticResource ControlBorderRight}"
                             Command="{Binding OkCommand}"
+                            ToolTip="{x:Static languages:Core.ServiceTestDoneButtonTooltip}"
                             Width="46"
                             Content="Done">
                         <i:Interaction.Behaviors>
@@ -909,6 +910,7 @@
                     <Button HorizontalAlignment="Right" 
                             VerticalAlignment="Bottom"
                             Command="{Binding CloseCommand}"
+                            ToolTip="{x:Static languages:Core.ServiceTestCancelButtonTooltip}"
                             Width="46"
                             Content="Cancel">
                         <i:Interaction.Behaviors>

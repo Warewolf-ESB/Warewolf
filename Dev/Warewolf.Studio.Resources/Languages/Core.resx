@@ -1083,6 +1083,12 @@ This data will not be stored and the execution will be rolled back if supported 
   <data name="ServiceTestDoneButtonHelp" xml:space="preserve">
     <value>ServiceTestDoneButtonHelp</value>
   </data>
+  <data name="ServiceTestDoneButtonTooltip" xml:space="preserve">
+    <value>ServiceTestDoneButtonTooltip</value>
+  </data>
+  <data name="ServiceTestCancelButtonTooltip" xml:space="preserve">
+    <value>ServiceTestCancelButtonTooltip</value>
+  </data>
   <data name="ServiceTestCancelButtonHelp" xml:space="preserve">
     <value>ServiceTestCancelButtonHelp</value>
   </data>
@@ -1383,6 +1389,9 @@ This variable is not being used in the service and can safely be deleted.</value
   <data name="DataListSortButtonHelp" xml:space="preserve">
     <value>Sort the variable list alphabetically.</value>
   </data>
+  <data name="DataListVariableInputTooltip" xml:space="preserve">
+    <value>DataListVariableInputTooltip</value>
+  </data>
   <data name="DataListVariableInputHelp" xml:space="preserve">
     <value>Input the variable you want to use in your service.&lt;br/&gt;
 &lt;br/&gt;
@@ -1390,10 +1399,16 @@ If you use a variable on the design surface it will automatically appear here.&l
 &lt;br/&gt;
 &lt;a href="http://warewolf.io/knowledge-base/the-variable-list/"  target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
+  <data name="DataListInputCheckBoxTooltip" xml:space="preserve">
+    <value>DataListInputCheckBoxTooltip</value>
+  </data>
   <data name="DataListInputCheckBoxHelp" xml:space="preserve">
     <value>Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;
 &lt;br/&gt;
 &lt;a href="http://warewolf.io/knowledge-base/the-variable-list/"  target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
+  </data>
+  <data name="DataListOutputCheckBoxTooltip" xml:space="preserve">
+    <value>DataListOutputCheckBoxTooltip</value>
   </data>
   <data name="DataListOutputCheckBoxHelp" xml:space="preserve">
     <value>Marks the variable as an output of the service. To return this variable from the workflow service, make this checkbox selected.&lt;br/&gt;
@@ -3888,6 +3903,9 @@ Data
   </data>
   <data name="EmailHelpBodyCheckbox" xml:space="preserve">
     <value>EmailHelpBodyCheckbox</value>
+  </data>
+  <data name="EmailTooltipBodyCheckbox" xml:space="preserve">
+    <value>EmailTooltipBodyCheckbox</value>
   </data>
 
   <data name="LoggingViewServerEventLogOffTooltip" xml:space="preserve">
