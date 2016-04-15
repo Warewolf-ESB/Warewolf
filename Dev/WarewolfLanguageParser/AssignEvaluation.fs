@@ -536,10 +536,15 @@ let assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (ex
         let obj = addedenv.JsonObjects.[a.ObjectName]
         expressionToObject obj a.Next res |> ignore
         addedenv
-    | IndexNestedNameExpression b -> 
+    | IndexNestedNameExpression b ->
         let addedenv = addOrReturnJsonObjects env b.ObjectName (new JArray())
         let obj = addedenv.JsonObjects.[b.ObjectName]
-        objectFromExpression exp res obj |> ignore
+        if b.Next = Terminal then
+            let arr = obj:?> JArray
+            let indexes = indexToInt b.Index arr
+            List.map (fun a -> addValueToJArray arr a  (new JValue(evalResultToString res))) indexes  |> ignore
+        else
+            objectFromExpression exp res obj |> ignore
         addedenv
     | _ -> failwith "top level assign cannot be a nested expresssion"
 
