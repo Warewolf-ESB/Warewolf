@@ -97,6 +97,7 @@
                                 DefaultText="[[Success]]"
                                 FilterType="All" 
                                 WrapInBrackets="True" 
+                                ToolTip="{x:Static help:HelpTextResources.CopyToolTipResult}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

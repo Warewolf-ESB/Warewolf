@@ -101,7 +101,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}" DataContext="{Binding}" />
+                                    <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="SearchType"
                                                          SourcePropertyValue="{Binding SearchType, UpdateSourceTrigger=PropertyChanged}"
@@ -147,7 +147,7 @@
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                         ToolTip="{x:Static help:HelpTextResources.FindToolTipMatch}">
                                     <i:Interaction.Behaviors>
-                                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding}" />
+                                        <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="SearchCriteria"
                                                              SourcePropertyValue="{Binding SearchCriteria, UpdateSourceTrigger=PropertyChanged}"
