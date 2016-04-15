@@ -272,7 +272,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ChooseAttachmentsHelp.
+        ///   Looks up a localized string similar to File picker to help you locate the location of the items you want to attach.
         /// </summary>
         public static string ChooseAttachmentsHelp {
             get {
@@ -1089,6 +1089,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DataListInputCheckBoxTooltip.
+        /// </summary>
+        public static string DataListInputCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DataListInputCheckBoxTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Marks the variable as an output of the service. To return this variable from the workflow service, make this checkbox selected.&lt;br/&gt;
         ///&lt;br/&gt;
         ///&lt;a href=&quot;http://warewolf.io/knowledge-base/warewolf-language/&quot;  target=&quot;_blank&quot;&gt;Read more in the Knowledge Base.&lt;/a&gt;.
@@ -1096,6 +1105,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DataListOutputCheckBoxHelp {
             get {
                 return ResourceManager.GetString("DataListOutputCheckBoxHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataListOutputCheckBoxTooltip.
+        /// </summary>
+        public static string DataListOutputCheckBoxTooltip {
+            get {
+                return ResourceManager.GetString("DataListOutputCheckBoxTooltip", resourceCulture);
             }
         }
         
@@ -1118,6 +1136,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DataListVariableInputHelp {
             get {
                 return ResourceManager.GetString("DataListVariableInputHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataListVariableInputTooltip.
+        /// </summary>
+        public static string DataListVariableInputTooltip {
+            get {
+                return ResourceManager.GetString("DataListVariableInputTooltip", resourceCulture);
             }
         }
         
@@ -1576,7 +1603,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DbInputDefaultValueHelp.
+        ///   Looks up a localized string similar to Put your test data in here then click Test. If possible this execution will automatically roll back..
         /// </summary>
         public static string DbInputDefaultValueHelp {
             get {
@@ -1585,7 +1612,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DbInsertToolTipColumn.
+        ///   Looks up a localized string similar to This data is used for testing and not at run time..
         /// </summary>
         public static string DbInsertToolTipColumn {
             get {
@@ -2001,7 +2028,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DotNetInputDefaultValueHelp.
+        ///   Looks up a localized string similar to The data or variable that will be passed into the action at run time..
         /// </summary>
         public static string DotNetInputDefaultValueHelp {
             get {
@@ -2010,7 +2037,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DotNetInsertToolTipColumn.
+        ///   Looks up a localized string similar to Hard coded values or variables..
         /// </summary>
         public static string DotNetInsertToolTipColumn {
             get {
@@ -2067,7 +2094,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EditEmailSourceHelp.
+        ///   Looks up a localized string similar to Edit the email source that is selected..
         /// </summary>
         public static string EditEmailSourceHelp {
             get {
@@ -2134,7 +2161,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EmailHelpBodyCheckbox.
+        ///   Looks up a localized string similar to The body of the email message. This is the content of the email..
         /// </summary>
         public static string EmailHelpBodyCheckbox {
             get {
@@ -2435,6 +2462,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EmailTooltipBodyCheckbox.
+        /// </summary>
+        public static string EmailTooltipBodyCheckbox {
+            get {
+                return ResourceManager.GetString("EmailTooltipBodyCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EnvironmentExplorerRefreshToolTip.
         /// </summary>
         public static string EnvironmentExplorerRefreshToolTip {
@@ -2602,7 +2638,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExpandCollapseAllToolTip.
+        ///   Looks up a localized string similar to Expand or collapse all execution nodes..
         /// </summary>
         public static string ExpandCollapseAllToolTip {
             get {
@@ -3065,7 +3101,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InputDefaultValueHelp.
+        ///   Looks up a localized string similar to The variable or the value that you want passed into this action..
         /// </summary>
         public static string InputDefaultValueHelp {
             get {
@@ -3074,7 +3110,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InputEmptyIsNullDefaultValueHelp.
+        ///   Looks up a localized string similar to If the variable coming in has not value assigned to it, this will allow you to pass it in as NULL..
         /// </summary>
         public static string InputEmptyIsNullDefaultValueHelp {
             get {
@@ -3083,7 +3119,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InputGenerateOutputsDefaultHelp.
+        ///   Looks up a localized string similar to To get the response data of this action, put some test data in. The transaction will be rolled back if possible..
         /// </summary>
         public static string InputGenerateOutputsDefaultHelp {
             get {
@@ -3205,7 +3241,12 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogDebugHelpText.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity.
         /// </summary>
         public static string LoggingViewServerEventLogDebugHelpText {
             get {
@@ -3214,7 +3255,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogDebugTooltip.
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerEventLogDebugTooltip {
             get {
@@ -3223,7 +3264,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogErrorHelpText.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to error details:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events.
         /// </summary>
         public static string LoggingViewServerEventLogErrorHelpText {
             get {
@@ -3232,7 +3275,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogErrorTooltip.
+        ///   Looks up a localized string similar to Log Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerEventLogErrorTooltip {
             get {
@@ -3241,7 +3284,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogFatalHelpText.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Only fatal events are logged..
         /// </summary>
         public static string LoggingViewServerEventLogFatalHelpText {
             get {
@@ -3250,7 +3293,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogFatalTooltip.
+        ///   Looks up a localized string similar to Log Fatal events.
         /// </summary>
         public static string LoggingViewServerEventLogFatalTooltip {
             get {
@@ -3259,7 +3302,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogInfoHelpText.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to infromation detail:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data.
         /// </summary>
         public static string LoggingViewServerEventLogInfoHelpText {
             get {
@@ -3268,7 +3315,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogInfoTooltip.
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerEventLogInfoTooltip {
             get {
@@ -3277,7 +3324,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogOffHelpText.
+        ///   Looks up a localized string similar to No system logging is done. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging..
         /// </summary>
         public static string LoggingViewServerEventLogOffHelpText {
             get {
@@ -3286,7 +3333,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogOffTooltip.
+        ///   Looks up a localized string similar to No logging.
         /// </summary>
         public static string LoggingViewServerEventLogOffTooltip {
             get {
@@ -3295,7 +3342,13 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogTraceHelpText.
+        ///   Looks up a localized string similar to Logs everything to the Windows Event Log:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity&lt;br /&gt;
+        ///Detailed System information.
         /// </summary>
         public static string LoggingViewServerEventLogTraceHelpText {
             get {
@@ -3304,7 +3357,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogTraceTooltip.
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerEventLogTraceTooltip {
             get {
@@ -3313,7 +3366,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogWarnHelpText.
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events.
         /// </summary>
         public static string LoggingViewServerEventLogWarnHelpText {
             get {
@@ -3322,7 +3378,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerEventLogWarnTooltip.
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerEventLogWarnTooltip {
             get {
@@ -3331,7 +3387,12 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogDebugHelpText.
+        ///   Looks up a localized string similar to Logs to file: Details up to System Activity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity.
         /// </summary>
         public static string LoggingViewServerFileLogDebugHelpText {
             get {
@@ -3340,7 +3401,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogDebugTooltip.
+        ///   Looks up a localized string similar to Log Debug, Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerFileLogDebugTooltip {
             get {
@@ -3349,7 +3410,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogErrorHelpText.
+        ///   Looks up a localized string similar to Logs to file: Events up to error details:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events.
         /// </summary>
         public static string LoggingViewServerFileLogErrorHelpText {
             get {
@@ -3358,7 +3421,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogErrorTooltip.
+        ///   Looks up a localized string similar to Log Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerFileLogErrorTooltip {
             get {
@@ -3367,7 +3430,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogFatalHelpText.
+        ///   Looks up a localized string similar to Logs to file: Only fatal events are logged..
         /// </summary>
         public static string LoggingViewServerFileLogFatalHelpText {
             get {
@@ -3376,7 +3439,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogFatalTooltip.
+        ///   Looks up a localized string similar to Log Fatal events..
         /// </summary>
         public static string LoggingViewServerFileLogFatalTooltip {
             get {
@@ -3385,7 +3448,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogInfoHelpText.
+        ///   Looks up a localized string similar to Logs to file: Up to infromation detail:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data.
         /// </summary>
         public static string LoggingViewServerFileLogInfoHelpText {
             get {
@@ -3394,7 +3461,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogInfoTooltip.
+        ///   Looks up a localized string similar to Log Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerFileLogInfoTooltip {
             get {
@@ -3403,7 +3470,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogOffHelpText.
+        ///   Looks up a localized string similar to No system logging is done. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging..
         /// </summary>
         public static string LoggingViewServerFileLogOffHelpText {
             get {
@@ -3412,7 +3479,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogOffTooltip.
+        ///   Looks up a localized string similar to No logging..
         /// </summary>
         public static string LoggingViewServerFileLogOffTooltip {
             get {
@@ -3421,7 +3488,13 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogTraceHelpText.
+        ///   Looks up a localized string similar to Logs everything to file:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events&lt;br /&gt;
+        ///Pulse Data&lt;br /&gt;
+        ///System Activity&lt;br /&gt;
+        ///Detailed System information.
         /// </summary>
         public static string LoggingViewServerFileLogTraceHelpText {
             get {
@@ -3430,7 +3503,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogTraceTooltip.
+        ///   Looks up a localized string similar to Log Trace, Debug, Info, Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerFileLogTraceTooltip {
             get {
@@ -3439,7 +3512,10 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogWarnHelpText.
+        ///   Looks up a localized string similar to Logs to file: Events up to warning severity:&lt;br /&gt;
+        ///    Fatal Events&lt;br /&gt;
+        ///  Error Events&lt;br /&gt;
+        ///Warning Events.
         /// </summary>
         public static string LoggingViewServerFileLogWarnHelpText {
             get {
@@ -3448,7 +3524,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoggingViewServerFileLogWarnTooltip.
+        ///   Looks up a localized string similar to Log Warning, Error and Fatal events..
         /// </summary>
         public static string LoggingViewServerFileLogWarnTooltip {
             get {
@@ -5722,7 +5798,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerSourceDialogsCancelTestToolTip.
+        ///   Looks up a localized string similar to Cancel the connection attempt.
         /// </summary>
         public static string ServerSourceDialogsCancelTestToolTip {
             get {
@@ -5785,7 +5861,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerTestConnectionHelp.
+        ///   Looks up a localized string similar to Test the connection to the remote Warewolf Server.
+        ///Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server..
         /// </summary>
         public static string ServerTestConnectionHelp {
             get {
@@ -5863,11 +5940,20 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestCancelButtonHelp.
+        ///   Looks up a localized string similar to Cancel the test response results. Cancelling will not use the results from the test execution to determine the actions outputs..
         /// </summary>
         public static string ServiceTestCancelButtonHelp {
             get {
                 return ResourceManager.GetString("ServiceTestCancelButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestCancelButtonTooltip.
+        /// </summary>
+        public static string ServiceTestCancelButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestCancelButtonTooltip", resourceCulture);
             }
         }
         
@@ -5877,6 +5963,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestDoneButtonHelp {
             get {
                 return ResourceManager.GetString("ServiceTestDoneButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceTestDoneButtonTooltip.
+        /// </summary>
+        public static string ServiceTestDoneButtonTooltip {
+            get {
+                return ResourceManager.GetString("ServiceTestDoneButtonTooltip", resourceCulture);
             }
         }
         
@@ -5929,7 +6024,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointEditServerHelp.
+        ///   Looks up a localized string similar to Edit the connection properties of the selected Sharepoint Server..
         /// </summary>
         public static string SharepointEditServerHelp {
             get {
@@ -5995,7 +6090,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointRefreshListHelp.
+        ///   Looks up a localized string similar to Refreshes the information from the server..
         /// </summary>
         public static string SharepointRefreshListHelp {
             get {
@@ -6022,7 +6117,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointServiceSourceServerHelp.
+        ///   Looks up a localized string similar to The full URL of the Sharepoint server.
         /// </summary>
         public static string SharepointServiceSourceServerHelp {
             get {
@@ -6031,7 +6126,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointServiceSourceTestHelp.
+        ///   Looks up a localized string similar to Test the connection to the Sharepoint server.
         /// </summary>
         public static string SharepointServiceSourceTestHelp {
             get {
@@ -6040,7 +6135,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceCancelTestTooltip.
+        ///   Looks up a localized string similar to Cancel the test connection to the Sharepoint server.
         /// </summary>
         public static string SharepointSourceCancelTestTooltip {
             get {
@@ -6049,7 +6144,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourcePasswordTooltip.
+        ///   Looks up a localized string similar to Password for the username used to connect to Sharepoint.
         /// </summary>
         public static string SharepointSourcePasswordTooltip {
             get {
@@ -6058,7 +6153,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceServerNameTooltip.
+        ///   Looks up a localized string similar to Sharepoint URL.
         /// </summary>
         public static string SharepointSourceServerNameTooltip {
             get {
@@ -6067,7 +6162,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceTestTooltip.
+        ///   Looks up a localized string similar to Test the connection to the Sharepoint server.
         /// </summary>
         public static string SharepointSourceTestTooltip {
             get {
@@ -6076,7 +6171,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharepointSourceUserNameTooltip.
+        ///   Looks up a localized string similar to The usename used to connect to Sharepoint.
         /// </summary>
         public static string SharepointSourceUserNameTooltip {
             get {
@@ -6132,7 +6227,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQLBulkInsertEditDatabaseHelp.
+        ///   Looks up a localized string similar to Edit the selected database connection properties.
         /// </summary>
         public static string SQLBulkInsertEditDatabaseHelp {
             get {
@@ -6321,7 +6416,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SQLBulkInsertRefreshListHelp.
+        ///   Looks up a localized string similar to Refresh the information from the server.
         /// </summary>
         public static string SQLBulkInsertRefreshListHelp {
             get {
@@ -6443,7 +6538,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TestEmailAccountHelp.
+        ///   Looks up a localized string similar to Test the email account is working.
         /// </summary>
         public static string TestEmailAccountHelp {
             get {
@@ -6733,7 +6828,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UserAuthenticationHelp.
+        ///   Looks up a localized string similar to Connect with a specific user account..
         /// </summary>
         public static string UserAuthenticationHelp {
             get {
@@ -6751,7 +6846,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;body&gt;&lt;p&gt;UserNameAuthenticationHelp&lt;/p&gt;&lt;/body&gt;.
+        ///   Looks up a localized string similar to The full username of the account you want to use to connect to this resource..
         /// </summary>
         public static string UserNameAuthenticationHelp {
             get {
@@ -6853,7 +6948,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebInputDefaultValueHelp.
+        ///   Looks up a localized string similar to The test data you want to use to execute this action with..
         /// </summary>
         public static string WebInputDefaultValueHelp {
             get {
@@ -6862,7 +6957,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebInsertToolTipColumn.
+        ///   Looks up a localized string similar to Test data for the execution.
         /// </summary>
         public static string WebInsertToolTipColumn {
             get {

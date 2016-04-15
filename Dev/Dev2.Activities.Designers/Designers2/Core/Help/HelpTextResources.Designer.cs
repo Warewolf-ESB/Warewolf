@@ -3445,6 +3445,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QuickVariableAppendToolTip.
+        /// </summary>
+        public static string QuickVariableAppendToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableAppendToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To append something onto the front of the variables in your list, type it in here.
         ///For recordsets, type  recordsetname(). Dont forget the &quot;.&quot; after the &quot;()&quot;
         ///You do not need to put the &quot;[[&quot; in..
@@ -3456,11 +3465,29 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QuickVariablePrefixWithToolTip.
+        /// </summary>
+        public static string QuickVariablePrefixWithToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariablePrefixWithToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace will replace the current list of variables with this list. The values of the first row will be repeated for all of these new values..
         /// </summary>
         public static string QuickVariableReplaceHelpText {
             get {
                 return ResourceManager.GetString("QuickVariableReplaceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QuickVariableReplaceToolTip.
+        /// </summary>
+        public static string QuickVariableReplaceToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableReplaceToolTip", resourceCulture);
             }
         }
         
@@ -3475,6 +3502,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string QuickVariableSplitAndAtHelpText {
             get {
                 return ResourceManager.GetString("QuickVariableSplitAndAtHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QuickVariableSplitAndAtToolTip.
+        /// </summary>
+        public static string QuickVariableSplitAndAtToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableSplitAndAtToolTip", resourceCulture);
             }
         }
         
@@ -3499,11 +3535,29 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QuickVariableSuffixWithToolTip.
+        /// </summary>
+        public static string QuickVariableSuffixWithToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableSuffixWithToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type or paste all the variables you want to use in here. You can paste in any format. If you are adding variables into a grid with a drop down or other input, the values from the last row will be repeated, so set them before adding these variables..
         /// </summary>
         public static string QuickVariableVariableListHelpText {
             get {
                 return ResourceManager.GetString("QuickVariableVariableListHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to QuickVariableVariableListToolTip.
+        /// </summary>
+        public static string QuickVariableVariableListToolTip {
+            get {
+                return ResourceManager.GetString("QuickVariableVariableListToolTip", resourceCulture);
             }
         }
         
@@ -4229,6 +4283,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string SchedulerDeleteTooltipTrigger {
             get {
                 return ResourceManager.GetString("SchedulerDeleteTooltipTrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SchedulerNewScheduleTooltipTrigger.
+        /// </summary>
+        public static string SchedulerNewScheduleTooltipTrigger {
+            get {
+                return ResourceManager.GetString("SchedulerNewScheduleTooltipTrigger", resourceCulture);
             }
         }
         
