@@ -247,6 +247,52 @@ Scenario: Assign values to a json object array
     | 2 | [[Score(2)]] = 22	|
     | 3 | [[Score(3)]] = 33	|
 
+Scenario: Assign a value to all elements of a json object array within a json object
+	Given I assign the value "11" to a json object "[[Person.Score(1)]]"
+	And I assign the value "22" to a json object "[[Person.Score(2)]]"
+	And I assign the value "33" to a json object "[[Person.Score(3)]]"
+	And I assign the value "44" to a json object "[[Person.Score(*)]]"
+	When the assign object tool is executed
+	Then the json object "[[Person.Score(1)]]" equals "44"
+	Then the json object "[[Person.Score(2)]]" equals "44"
+	Then the json object "[[Person.Score(3)]]" equals "44"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable				| New Value	|
+	| 1 | [[Person.Score(1)]] =	| 11		|
+	| 2 | [[Person.Score(2)]] =	| 22		|
+	| 3 | [[Person.Score(3)]] =	| 33		|
+	| 4 | [[Person.Score(*)]] =	| 44		|
+	And the debug output as
+    | # |							|
+    | 1 | [[Person.Score(1)]] = 11	|
+    | 2 | [[Person.Score(2)]] = 22	|
+    | 3 | [[Person.Score(3)]] = 33	|
+	| 4 | [[Person.Score(*)]] = 44	|
+
+Scenario: Assign a value to all elements of a json object array
+	Given I assign the value "11" to a json object "[[Score(1)]]"
+	And I assign the value "22" to a json object "[[Score(2)]]"
+	And I assign the value "33" to a json object "[[Score(3)]]"
+	And I assign the value "44" to a json object "[[Score(*)]]"
+	When the assign object tool is executed
+	Then the json object "[[Score(1)]]" equals "44"
+	Then the json object "[[Score(2)]]" equals "44"
+	Then the json object "[[Score(3)]]" equals "44"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable			| New Value	|
+	| 1 | [[Score(1)]] =	| 11		|
+	| 2 | [[Score(2)]] =	| 22		|
+	| 3 | [[Score(3)]] =	| 33		|
+	| 3 | [[Score(*)]] =	| 44		|
+	And the debug output as
+    | # |					|
+    | 1 | [[Score(1)]] = 11	|
+    | 2 | [[Score(2)]] = 22	|
+    | 3 | [[Score(3)]] = 33	|
+	| 3 | [[Score(4)]] = 44	|
+
 @ignore
 #failing - staff(1) = Bob, staff(2) = OtherBob, staff(3) = OtherOtherBob, hitList = staff -> is this valid?
 Scenario: Assign a json object array to a new json object
