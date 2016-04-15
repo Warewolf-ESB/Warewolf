@@ -7,11 +7,8 @@ using Dev2.Studio.Core.Interfaces;
 using Moq;
 using TechTalk.SpecFlow;
 using System.Linq.Expressions;
-using System.Windows;
-using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
-using Dev2.Services.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using Dev2.Activities.Designers2.DropBox2016.Download;
@@ -22,7 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class DownloadDropboxSteps
     {
-        [Given(@"I drag Download Dropbox Tool onto the design surface")]
+        [Given(@"I drag DropboxDownload Tool onto the design surface")]
         public void GivenIDragReadDropboxToolOntoTheDesignSurface()
         {
             var dropBoxUploadTool = new DsfDropBoxDownloadActivity();
@@ -66,41 +63,41 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             return ScenarioContext.Current.Get<Mock<IEventAggregator>>("eventAggrMock");
         }
-        [Given(@"Download New is Enabled")]
+        [Given(@"DropboxDownload New is Enabled")]
         public void GivenReadNewIsEnabled()
         {
             var canExecute = GetViewModel().NewSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
 
-        [Given(@"Download Edit is Disabled")]
+        [Given(@"DropboxDownload Edit is Disabled")]
         public void GivenReadEditIsDisabled()
         {
             var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
             Assert.IsFalse(canExecute);
         }
 
-        [Given(@"Download Local File is Enabled")]
+        [Given(@"DropboxDownload Local File is Enabled")]
         public void GivenReadLocalFileIsEnabled()
         {
             var fromPath = GetViewModel().FromPath;
             Assert.IsNotNull(fromPath);
         }
 
-        [Given(@"Download Dropbox File is Enabled")]
+        [Given(@"DropboxDownload File is Enabled")]
         public void GivenReadDropboxFileIsEnabled()
         {
             var dropBoxPath = GetViewModel().ToPath;
             Assert.IsNotNull(dropBoxPath);
         }
 
-        [When(@"Download I Click Read New")]
+        [When(@"DropboxDownload I Click New")]
         public void WhenIClickReadNew()
         {
             GetViewModel().NewSourceCommand.Execute(null);
         }
 
-        [When(@"Download I Select ""(.*)"" as the Read source")]
+        [When(@"DropboxDownload I Select ""(.*)"" as the source")]
         public void WhenISelectAsTheReadSource(string sourceName)
         {
             if (sourceName == "Drop")
@@ -134,31 +131,37 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             };
         }
 
-        [Then(@"Download the New Dropbox Source window is opened")]
+        [Then(@"the New DropboxDownload Source window is opened")]
         public void ThenTheReadNewDropboxSourceWindowIsOpened()
         {
             Mock<IEventAggregator> eventAggregator = GetEventAggregator();
             eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));        
         }
 
-        [Then(@"Download Edit is Enabled")]
+        [Then(@"DropboxDownload Edit is Enabled")]
         public void ThenReadEditIsEnabled()
         {
             var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
-
-        [Then(@"Download the ""(.*)"" Dropbox Source window is opened")]
-        public void ThenTheReadDropboxSourceWindowIsOpened(string sourceName)
+      
+        [Then(@"DropboxDownload the ""(.*)"" Dropbox Source window is opened")]
+        public void ThenDropboxDownloadTheDropboxSourceWindowIsOpened(string sourceName)
         {
             if (sourceName == "Drop")
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
         }
 
+
         [Then(@"Download Local File equals ""(.*)""")]
         public void ThenReadLocalFileEquals(string emptyString)
         {
             Assert.IsTrue(string.IsNullOrEmpty(emptyString));
+        }
+        [Then(@"DropboxDownload I Click Edit")]
+        public void ThenDropboxDownloadIClickEdit()
+        {
+            GetViewModel().EditDropboxSourceCommand.CanExecute(null);
         }
 
         [Then(@"Download Dropbox File equals ""(.*)""")]
