@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using Caliburn.Micro;
-using Dev2.Activities.DropBox2016.DownloadActivity;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
-using Moq;
-using TechTalk.SpecFlow;
 using System.Linq.Expressions;
-using System.Windows;
-using Dev2.Activities.Specs.BaseTypes;
+using Caliburn.Micro;
+using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
+using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
-using Dev2.Services.Events;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Storage;
-using Dev2.Activities.Designers2.DropBox2016.Download;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using TechTalk.SpecFlow;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
     [Binding]
-    public class ReadDropboxSteps
+    public class ReadListDropboxSteps
     {
-        [Given(@"I drag Read Dropbox Tool onto the design surface")]
-        public void GivenIDragReadDropboxToolOntoTheDesignSurface()
+        [Given(@"I drag Readlist Dropbox Tool onto the design surface")]
+        public void GivenIDragReadlistDropboxToolOntoTheDesignSurface()
         {
-            var dropBoxUploadTool = new DsfDropBoxDownloadActivity();
+            var dropBoxUploadTool = new DsfDropboxFileListActivity();
             var modelItem = ModelItemUtils.CreateModelItem(dropBoxUploadTool);
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -47,16 +44,14 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
 
-            var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
-            ScenarioContext.Current.Add("downloadViewModel", downloadViewModel);
+            var dropBoxFileListDesignerViewModel = new DropBoxFileListDesignerViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            ScenarioContext.Current.Add("dropBoxFileListDesignerViewModel", dropBoxFileListDesignerViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
             ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
-            
         }
-
-        private static DropBoxDownloadViewModel GetViewModel()
+        private static DropBoxFileListDesignerViewModel GetViewModel()
         {
-            return ScenarioContext.Current.Get<DropBoxDownloadViewModel>("downloadViewModel");
+            return ScenarioContext.Current.Get<DropBoxFileListDesignerViewModel>("dropBoxFileListDesignerViewModel");
         }
         private static Mock<IEnvironmentModel> GeEnvrionmentModel()
         {
@@ -66,42 +61,41 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             return ScenarioContext.Current.Get<Mock<IEventAggregator>>("eventAggrMock");
         }
-        [Given(@"Read New is Enabled")]
-        public void GivenReadNewIsEnabled()
+        [Given(@"Readlist New is Enabled")]
+        public void GivenReadlistNewIsEnabled()
         {
             var canExecute = GetViewModel().NewSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
-
-        [Given(@"Read Edit is Disabled")]
-        public void GivenReadEditIsDisabled()
+        
+        [Given(@"Readlist Edit is Disabled")]
+        public void GivenReadlistEditIsDisabled()
         {
             var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
             Assert.IsFalse(canExecute);
         }
-
-        [Given(@"Read Local File is Enabled")]
-        public void GivenReadLocalFileIsEnabled()
+        
+        [Given(@"Readlist Dropbox File is Enabled")]
+        public void GivenReadlistDropboxFileIsEnabled()
         {
-            var fromPath = GetViewModel().FromPath;
-            Assert.IsNotNull(fromPath);
+            
+        }
+        [Then(@"the ""(.*)"" Readlist Dropbox Source window is opened")]
+        public void ThenTheReadlistDropboxSourceWindowIsOpened(string sourceName)
+        {
+            if (sourceName == "Drop")
+                Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
         }
 
-        [Given(@"Read Dropbox File is Enabled")]
-        public void GivenReadDropboxFileIsEnabled()
-        {
-            var dropBoxPath = GetViewModel().ToPath;
-            Assert.IsNotNull(dropBoxPath);
-        }
-
-        [When(@"I Click Read New")]
-        public void WhenIClickReadNew()
+        
+        [When(@"I Click Readlist New")]
+        public void WhenIClickReadlistNew()
         {
             GetViewModel().NewSourceCommand.Execute(null);
         }
-
-        [When(@"I Select ""(.*)"" as the Read source")]
-        public void WhenISelectAsTheReadSource(string sourceName)
+        
+        [When(@"I Select ""(.*)"" as the Readlist source")]
+        public void WhenISelectAsTheReadlistSource(string sourceName)
         {
             if (sourceName == "Drop")
             {
@@ -114,65 +108,48 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
                 GetViewModel().SelectedSource = oauthSource;
             }
         }
-
-        [When(@"I click ""(.*)""")]
-        public void WhenIClick(string p0)
+        
+        [When(@"I Readlist click ""(.*)""")]
+        public void WhenIReadlistClick(string p0)
         {
             GetViewModel().NewSourceCommand.Execute(null);
         }
-
-        [When(@"I change Read source from ""(.*)"" to ""(.*)""")]
-        public void WhenIChangeReadSourceFromTo(string oldSourceName, string newSourceName)
+        
+        [When(@"I change Readlist source from ""(.*)"" to ""(.*)""")]
+        public void WhenIChangeReadlistSourceFromTo(string oldSourceName, string newSourceName)
         {
             var selectedSource = GetViewModel().SelectedSource;
             Assert.AreEqual(oldSourceName, selectedSource.ResourceName);
-            Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().FromPath));
             Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().ToPath));
             GetViewModel().SelectedSource = new OauthSource()
             {
                 ResourceName = newSourceName
             };
         }
-
-        [Then(@"the Read New Dropbox Source window is opened")]
-        public void ThenTheReadNewDropboxSourceWindowIsOpened()
+        
+        [When(@"Readlist Dropbox File equals ""(.*)""")]
+        public void WhenReadlistDropboxFileEquals(string emptyString)
+        {
+            Assert.IsTrue(string.IsNullOrEmpty(emptyString));
+        }
+        
+        [Then(@"the New Readlist Dropbox Source window is opened")]
+        public void ThenTheNewReadlistDropboxSourceWindowIsOpened()
         {
             Mock<IEventAggregator> eventAggregator = GetEventAggregator();
-            eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));        
+            eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));     
         }
-
-        [Then(@"Read Edit is Enabled")]
-        public void ThenReadEditIsEnabled()
+        
+        [Then(@"Readlist Edit is Enabled")]
+        public void ThenReadlistEditIsEnabled()
         {
             var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
-
-        [Then(@"the ""(.*)"" Read Dropbox Source window is opened")]
-        public void ThenTheReadDropboxSourceWindowIsOpened(string sourceName)
-        {
-            if (sourceName == "Drop")
-                Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
-        }
-
-        [Then(@"Read Local File equals ""(.*)""")]
-        public void ThenReadLocalFileEquals(string emptyString)
-        {
-            Assert.IsTrue(string.IsNullOrEmpty(emptyString));
-        }
-
-        [Then(@"Read Dropbox File equals ""(.*)""")]
-        public void ThenReadDropboxFileEquals(string emptyString)
-        {
-            Assert.IsTrue(string.IsNullOrEmpty(emptyString));
-        }
-        [Then(@"I set Read Dropbox Local File equals ""(.*)""")]
-        public void ThenISetLocalFileEquals(string localPath)
-        {
-            GetViewModel().FromPath = localPath;
-        }
-        [Then(@"I set Read Dropbox File equals ""(.*)""")]
-        public void ThenISetDropboxFileEquals(string dropboxPath)
+       
+        
+        [Then(@"I set Readlist Dropbox File equals ""(.*)""")]
+        public void ThenISetReadlistDropboxFileEquals(string dropboxPath)
         {
             GetViewModel().ToPath = dropboxPath;
         }
