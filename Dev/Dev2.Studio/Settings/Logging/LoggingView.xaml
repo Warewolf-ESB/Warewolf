@@ -77,7 +77,8 @@
                                      ToolTip="{x:Static languages:Core.LoggingViewServerEventLogOffTooltip}"
                                      IsChecked="{Binding ServerEventLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">
                             <i:Interaction.Behaviors>
-                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogOffHelpText}" DataContext="{Binding}" />
+                                <core:HelpSetter Text="{x:Static languages:Core.LoggingViewServerEventLogOffHelpText}" 
+                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </i:Interaction.Behaviors>
                         </RadioButton>
                         <RadioButton Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" GroupName="Server_EventLog_Settings" 

@@ -891,14 +891,6 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanRename = false;
         }
 
-        public string RefreshToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.EnvironmentExplorerRefreshToolTip;
-            }
-        }
-
         public void Dispose()
         {
             if (Children != null)
