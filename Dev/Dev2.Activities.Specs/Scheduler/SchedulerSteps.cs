@@ -17,7 +17,6 @@ using System.Security.Principal;
 using System.Threading;
 using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Core.Tests.Utils;
@@ -33,6 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Scheduler
 {

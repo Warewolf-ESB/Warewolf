@@ -21,7 +21,6 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -61,6 +60,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Warewolf.Tools.Specs.BaseTypes;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedParameter.Global
 
