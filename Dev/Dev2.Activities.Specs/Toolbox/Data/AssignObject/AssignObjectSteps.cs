@@ -58,9 +58,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
         public void ThenTheJsonObjectEquals(string variable, string value)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-
-            //if (DataListUtil.IsValueRecordset(variable))
-            //{
             var recordSetValues = result.Environment.EvalAsListOfStrings(variable, 0);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
             value = value.Replace('"', ' ').Trim();
@@ -73,17 +70,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             {
                 Assert.AreEqual(recordSetValues[0], value);
             }
-            //}
-            //else
-            //{
-            //    string actualValue;
-            //    value = value.Replace('"', ' ').Trim();
-            //    string error;
-            //    GetScalarValueFromEnvironment(result.Environment, variable,
-            //                               out actualValue, out error);
-            //    actualValue = actualValue.Replace('"', ' ').Trim();
-            //    Assert.AreEqual(value, actualValue);
-            //}
         }
 
         [Given(@"I assign the json object ""(.*)"" to a json object ""(.*)""")]
