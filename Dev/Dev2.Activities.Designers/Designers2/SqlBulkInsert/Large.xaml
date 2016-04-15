@@ -152,7 +152,8 @@
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpInputData}" DataContext="{Binding}" />
+                                    <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpInputData}" 
+                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="InputColumn"
                                                          SourcePropertyValue="{Binding InputColumn, UpdateSourceTrigger=PropertyChanged}"

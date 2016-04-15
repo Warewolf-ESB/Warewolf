@@ -6,11 +6,7 @@ $SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 <TestSettings name=`"Local Acceptance Run`" id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>These are default test settings for a local acceptance test run.</Description>
     <Deployment>
-      <!--Server and Studio under test-->
 		  <DeploymentItem filename=`"Dev2.Server\bin\Debug\`" outputDirectory=`"Server`" />
-      <!--Missing test assembly dependencies-->
-      <DeploymentItem filename=`"packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll`" />
-      <DeploymentItem filename=`"packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll`" />
     </Deployment>
   <NamingScheme baseName=`"AcceptanceTesting`" appendTimeStamp=`"false`" useDefault=`"false`" />
     <Scripts setupScript=`"TestScripts\Server\Startup.bat`" cleanupScript=`"TestScripts\Server\Cleanup.bat`" />
@@ -45,15 +41,20 @@ $TestList = ""
 Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
 Foreach-Object{
 	[xml]$playlistContent = Get-Content $_.FullName
-	if ($playlistContent.Playlist.Add.count -le 0) {
-		Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-		Continue
-	}
-	foreach( $TestName in $playlistContent.Playlist.Add) {
-		$TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
-	}
+	if ($playlistContent.Playlist.Add.count -gt 0) {
+	    foreach( $TestName in $playlistContent.Playlist.Add) {
+		    $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+	    }
+	} else {        
+        if ($playlistContent.Playlist.Add.Test -ne $null) {
+            $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+        } else {
+	        Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+	        Continue
+        }
+    }
 }
-if ($TestList.length -gt 0) {
+if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
@@ -65,7 +66,7 @@ foreach ($file in Get-ChildItem $SolutionDir | ? {$_.PSIsContainer -and ((($_.Na
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + "/logger:trx /Settings:`"" + $TestSettingsFile + "`""
+$FullArgsList = $TestAssembliesList + "/logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 
 # Display full command including full argument string.
 Write-Host $SolutionDir> `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList

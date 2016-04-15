@@ -1801,8 +1801,26 @@ Renaming a Schedule will loose its History.</value>
   <data name="SchedulerSettingsHelpTextStatus" xml:space="preserve">
     <value>To change if the trigger is active or not, select Enabled or Dissabled.</value>
   </data>
+  <data name="SchedulerSettingsEnabledHelpTextStatus" xml:space="preserve">
+    <value>SchedulerSettingsEnabledHelpTextStatus</value>
+  </data>
+  <data name="SchedulerSettingsDisabledHelpTextStatus" xml:space="preserve">
+    <value>SchedulerSettingsDisabledHelpTextStatus</value>
+  </data>
   <data name="SchedulerSettingsHelpTextTrigger" xml:space="preserve">
     <value>To run a workflow on a schedule select the Edit Trigger button.</value>
+  </data>
+  <data name="SchedulerStatusAltTooltipTrigger" xml:space="preserve">
+    <value>SchedulerStatusAltTooltipTrigger</value>
+  </data>
+  <data name="SchedulerStatusAltHelpTextTrigger" xml:space="preserve">
+    <value>SchedulerStatusAltHelpTextTrigger</value>
+  </data>
+  <data name="SchedulerDeleteTooltipTrigger" xml:space="preserve">
+    <value>SchedulerDeleteTooltipTrigger</value>
+  </data>
+  <data name="SchedulerDeleteHelpTextTrigger" xml:space="preserve">
+    <value>SchedulerDeleteHelpTextTrigger</value>
   </data>
   <data name="SchedulerSettingsHelpTextUsername" xml:space="preserve">
     <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
