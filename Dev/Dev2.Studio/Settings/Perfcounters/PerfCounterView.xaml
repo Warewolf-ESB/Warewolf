@@ -11,235 +11,231 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance perfcounters:PerfcounterViewModel}"
-             >
-           
-        <UserControl.Resources>
+             d:DataContext="{d:DesignInstance perfcounters:PerfcounterViewModel}">
 
-            <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
-                <Setter Property="Content" Value="..." />
-                <Setter Property="Margin" Value="1" />
-                <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                <Setter Property="CommandParameter" Value="{Binding}" />
-                <Setter Property="AutomationProperties.AutomationId">
-                    <Setter.Value>
-                        <MultiBinding StringFormat="UI_Security_Row{1}_PickResourceButton" Converter="{StaticResource DataGridRowNumberConverter}">
-                            <Binding />
-                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
-                        </MultiBinding>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+    <UserControl.Resources>
+        <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Content" Value="..." />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
+            <Setter Property="AutomationProperties.AutomationId">
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_Security_Row{1}_PickResourceButton" Converter="{StaticResource DataGridRowNumberConverter}">
+                        <Binding />
+                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
 
-        </UserControl.Resources>
-    
-        <Grid Margin="{StaticResource ElementBorderTop}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <Grid Margin="{StaticResource ElementBorderTop}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="8" />
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50*"/>
-                <RowDefinition Height="8" />
-                <RowDefinition Height="50*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0" 
+            <StackPanel Grid.Row="0" 
                             Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Server Counters</TextBlock>
-                </StackPanel>
+                <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Server Counters</TextBlock>
+            </StackPanel>
 
-                <ig:XamGrid Grid.Row="1"
+            <ig:XamGrid Grid.Row="1"
                         x:Name="ServerPermissionsDataGrid"
                         AutoGenerateColumns="False"
                         ItemsSource="{Binding ServerCounters}">
-                    <ig:XamGrid.ColumnResizingSettings>
-                        <ig:ColumnResizingSettings AllowColumnResizing="Disabled"></ig:ColumnResizingSettings>
-                    </ig:XamGrid.ColumnResizingSettings>
+                <ig:XamGrid.ColumnResizingSettings>
+                    <ig:ColumnResizingSettings AllowColumnResizing="Disabled"></ig:ColumnResizingSettings>
+                </ig:XamGrid.ColumnResizingSettings>
 
                 <ig:XamGrid.Columns>
                     <ig:TemplateColumn x:Name="AverageExecutionTimeColumn" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="*" HorizontalContentAlignment="Stretch"
                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="{Binding ElementName=DeployToColumn, Path=ActualWidth}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=DeployToColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipAvgExecTime}">
-                                                <i:Interaction.Behaviors>
+                                            <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpAvgExecTime}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                </i:Interaction.Behaviors>
-                                                <AutomationProperties.AutomationId>
-                                                    <MultiBinding StringFormat="UI_{0}_DeployToPermissionCheckBox_AutoID">
-                                                        <Binding Path="WindowsGroup" FallbackValue="New" />
-                                                    </MultiBinding>
-                                                </AutomationProperties.AutomationId>
-                                            </CheckBox>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_DeployToPermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
                     <ig:TemplateColumn x:Name="ConcurrentRequestsColumn" Key="ConcurrentRequests" HeaderText="Concurrent Requests" Width="*" HorizontalContentAlignment="Stretch"  d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="{Binding ElementName=DeployFromColumn, Path=ActualWidth}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=DeployFromColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=ConcurrentRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipConcurrentReq}">
-                                                <i:Interaction.Behaviors>
+                                            <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpConcurrentReq}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                </i:Interaction.Behaviors>
-                                                <AutomationProperties.AutomationId>
-                                                    <MultiBinding StringFormat="UI_{0}_DeployFromPermissionCheckBox_AutoID">
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_DeployFromPermissionCheckBox_AutoID">
                                                     <Binding Path="ConcurrentRequests" FallbackValue="New" />
-                                                    </MultiBinding>
-                                                </AutomationProperties.AutomationId>
-                                            </CheckBox>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
                     <ig:TemplateColumn x:Name="RequestPerSecondColumn" Key="RequestPerSecond" HeaderText="Request Per Second"  Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="{Binding ElementName=AdministratorColumn, Path=ActualWidth}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=AdministratorColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=RequestPerSecond, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipReqPerSec}">
-                                                <i:Interaction.Behaviors>
+                                            <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpReqPerSec}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                </i:Interaction.Behaviors>
-                                                <AutomationProperties.AutomationId>
-                                                    <MultiBinding StringFormat="UI_{0}_AdministratorPermissionCheckBox_AutoID">
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_AdministratorPermissionCheckBox_AutoID">
                                                     <Binding Path="RequestPerSecond" FallbackValue="New" />
-                                                    </MultiBinding>
-                                                </AutomationProperties.AutomationId>
-                                            </CheckBox>
-                                        </StackPanel>
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
 
-                                    </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
                     <ig:TemplateColumn x:Name="TotalErrorsColumn" Key="TotalErrors" HeaderText="Total Errors"  Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
                                 <Grid Width="{Binding ElementName=TotalErrors, Path=ActualWidth}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=TotalErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerTooltipTotalErrors}">
-                                                <i:Interaction.Behaviors>
+                                            <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpTotalErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                </i:Interaction.Behaviors>
-                                                <AutomationProperties.AutomationId>
-                                                    <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
                                                     <Binding Path="TotalErrors" FallbackValue="New" />
-                                                    </MultiBinding>
-                                                </AutomationProperties.AutomationId>
-                                            </CheckBox>
-                                        </StackPanel>
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
 
-                                    </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
                     <ig:TemplateColumn x:Name="WorkflowsNotColumn" Key="WorkFlowsNotFound" HeaderText="WorkFlows Not Found" Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="{Binding ElementName=ExecuteColumn, Path=ActualWidth}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ExecuteColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=WorkFlowsNotFound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipWfNotFound}">
-                                                <i:Interaction.Behaviors>
+                                            <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpWfNotFound}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                </i:Interaction.Behaviors>
-                                                <AutomationProperties.AutomationId>
-                                                    <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
                                                     <Binding Path="WorkFlowsNotFoundGroup" FallbackValue="New" />
-                                                    </MultiBinding>
-                                                </AutomationProperties.AutomationId>
-                                            </CheckBox>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
                     <ig:TemplateColumn x:Name="NotAuthorisedErrorsColumn" Key="NotAuthorisedErrors" HeaderText="Not Authorised Errors" Width="*" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByMachine}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
                                 <Grid Width="{Binding ElementName=NotAuthorisedErrors, Path=ActualWidth}">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <CheckBox IsChecked="{Binding Path=NotAuthorisedErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=NotAuthorisedErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="true"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipNotAuthErrors}">
-                                                <i:Interaction.Behaviors>
+                                            <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpNotAuthErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                                </i:Interaction.Behaviors>
-                                                <AutomationProperties.AutomationId>
-                                                    <MultiBinding StringFormat="UI_{0}_ContributePermissionCheckBox_AutoID">
-                                                        <Binding Path="WindowsGroup" FallbackValue="New" />
-                                                    </MultiBinding>
-                                                </AutomationProperties.AutomationId>
-                                            </CheckBox>
-                                        </StackPanel>
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ContributePermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
 
-                                    </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
 
-                    </ig:XamGrid.Columns>
-                    <ig:XamGrid.SortingSettings>
-                        <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-                    </ig:XamGrid.SortingSettings>
-                </ig:XamGrid>
-            </Grid>
+                </ig:XamGrid.Columns>
+                <ig:XamGrid.SortingSettings>
+                    <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
+                </ig:XamGrid.SortingSettings>
+            </ig:XamGrid>
+        </Grid>
 
-            <GridSplitter Grid.Row="1"
+        <GridSplitter Grid.Row="1"
                       Background="#C1C3C5"
                       HorizontalAlignment=" Stretch"
                       VerticalAlignment="Center"
                       Height="8" />
 
-            <Grid Grid.Row="2"
-              Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" 
+            <StackPanel Grid.Row="0" 
                             Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
                             Background="{StaticResource WareWolfMenuBrush}" 
                             HorizontalAlignment="Stretch" 
                             Orientation="Horizontal">
-                    <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Resource Counters</TextBlock>
-                </StackPanel>
+                <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Resource Counters</TextBlock>
+            </StackPanel>
 
-                <ig:XamGrid Grid.Row="1"
+            <ig:XamGrid Grid.Row="1"
                         x:Name="ResourcePermissionsDataGrid"
                         AutoGenerateColumns="False"
                         ColumnSorting="ResourceColumnSorting"
@@ -249,14 +245,14 @@
                 </ig:XamGrid.ColumnResizingSettings>
                 <ig:XamGrid.Columns>
                     <ig:TemplateColumn x:Name="ResourceNameColumn" Key="CounterName" HeaderText="Resources" Width="*" MaximumWidth="250" HorizontalContentAlignment="Stretch" d:DataContext="{d:DesignInstance perfcounters:PerformanceCountersByResource}">
-                            <ig:TemplateColumn.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="{Binding ElementName=ResourceNameColumn, Path=ActualWidth}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0"
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ResourceNameColumn, Path=ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
                                                Text="{Binding Path=CounterName, Mode=TwoWay}"
                                                ToolTip="{Binding Path=CounterName, Mode=TwoWay}">
                                       <i:Interaction.Behaviors>
@@ -268,27 +264,31 @@
                                             <Binding Path="CounterName" FallbackValue="New" />
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
-                                        </TextBlock>
-                                        <Button Grid.Column="1"
+                                    </TextBlock>
+                                    <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
                                             ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipResource}">
-                                            <AutomationProperties.AutomationId>
-                                                <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
                                                 <Binding Path="CounterName" FallbackValue="New" />
-                                                </MultiBinding>
-                                            </AutomationProperties.AutomationId>
-                                        </Button>
-                                        <Path Grid.ColumnSpan="2"
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceBrowseHelpResource}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                    <Path Grid.ColumnSpan="2"
                                           Grid.Column="0"
                                           Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                           Data="M0,0.5 L1,0.5"
                                           Stretch="Fill"
                                           Stroke="Red"
                                           StrokeThickness="1" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ig:TemplateColumn.ItemTemplate>
-                        </ig:TemplateColumn>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
                     <ig:TemplateColumn x:Name="AverageExecutionTimeColumnResource" Key="AverageExecutionTime" HeaderText="Average Execution Time" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
                                        d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
                         <ig:TemplateColumn.ItemTemplate>
@@ -400,27 +400,29 @@
                                           StrokeThickness="1"/>
                                 </Grid>
                             </DataTemplate>
-                        </ig:TemplateColumn.ItemTemplate>                        
+                        </ig:TemplateColumn.ItemTemplate>
                     </ig:TemplateColumn>
                     <ig:TemplateColumn Key="RemoveRow" HeaderStyle="{StaticResource EmptyHeaderCellControlStyle}" Width="Auto" MinimumWidth="20" HorizontalContentAlignment="Center" IsResizable="False" d:DataContext="{d:DesignInstance Type=perfcounters:PerformanceCountersByResource}">
                         <ig:TemplateColumn.ItemTemplate>
                             <DataTemplate>
                                 <Button AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
                                         Command="{Binding Path=RemoveRow}"
-                                        ToolTip="Removes Performance Counter">
-                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
-                                           Height="15"
-                                           Width="15" />
+                                        ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterRemoveResourceTooltip}">
+                                    <Image Source="{StaticResource RemoveUnusedVariable-32}" Height="15" Width="15" />
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterRemoveResourceHelpText}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
                                 </Button>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
                     </ig:TemplateColumn>
                 </ig:XamGrid.Columns>
-                    <ig:XamGrid.SortingSettings>
-                        <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>
-                    </ig:XamGrid.SortingSettings>
-                </ig:XamGrid>
-            </Grid>
+                <ig:XamGrid.SortingSettings>
+                    <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>
+                </ig:XamGrid.SortingSettings>
+            </ig:XamGrid>
+        </Grid>
 
         <TextBlock Grid.Row="3" >
                         <Hyperlink Command="{Binding Path=ResetCountersCommand}" Style="{StaticResource HyperLinkStyle}">

@@ -2134,6 +2134,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EmailHelpBodyCheckbox.
+        /// </summary>
+        public static string EmailHelpBodyCheckbox {
+            get {
+                return ResourceManager.GetString("EmailHelpBodyCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;&lt;br /&gt;
         ///        If you are on a domain, you still need to provide the email address of the account you are sending to.&lt;br /&gt;
         ///        &lt;br /&gt;
@@ -3192,6 +3201,258 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string LocalhostLabel {
             get {
                 return ResourceManager.GetString("LocalhostLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogDebugHelpText.
+        /// </summary>
+        public static string LoggingViewServerEventLogDebugHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogDebugHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogDebugTooltip.
+        /// </summary>
+        public static string LoggingViewServerEventLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogErrorHelpText.
+        /// </summary>
+        public static string LoggingViewServerEventLogErrorHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogErrorHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogErrorTooltip.
+        /// </summary>
+        public static string LoggingViewServerEventLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogFatalHelpText.
+        /// </summary>
+        public static string LoggingViewServerEventLogFatalHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogFatalHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogFatalTooltip.
+        /// </summary>
+        public static string LoggingViewServerEventLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogInfoHelpText.
+        /// </summary>
+        public static string LoggingViewServerEventLogInfoHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogInfoHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogInfoTooltip.
+        /// </summary>
+        public static string LoggingViewServerEventLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogOffHelpText.
+        /// </summary>
+        public static string LoggingViewServerEventLogOffHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogOffHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogOffTooltip.
+        /// </summary>
+        public static string LoggingViewServerEventLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogTraceHelpText.
+        /// </summary>
+        public static string LoggingViewServerEventLogTraceHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogTraceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogTraceTooltip.
+        /// </summary>
+        public static string LoggingViewServerEventLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogWarnHelpText.
+        /// </summary>
+        public static string LoggingViewServerEventLogWarnHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogWarnHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerEventLogWarnTooltip.
+        /// </summary>
+        public static string LoggingViewServerEventLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerEventLogWarnTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogDebugHelpText.
+        /// </summary>
+        public static string LoggingViewServerFileLogDebugHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogDebugHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogDebugTooltip.
+        /// </summary>
+        public static string LoggingViewServerFileLogDebugTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogDebugTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogErrorHelpText.
+        /// </summary>
+        public static string LoggingViewServerFileLogErrorHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogErrorHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogErrorTooltip.
+        /// </summary>
+        public static string LoggingViewServerFileLogErrorTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogFatalHelpText.
+        /// </summary>
+        public static string LoggingViewServerFileLogFatalHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogFatalHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogFatalTooltip.
+        /// </summary>
+        public static string LoggingViewServerFileLogFatalTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogFatalTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogInfoHelpText.
+        /// </summary>
+        public static string LoggingViewServerFileLogInfoHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogInfoHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogInfoTooltip.
+        /// </summary>
+        public static string LoggingViewServerFileLogInfoTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogInfoTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogOffHelpText.
+        /// </summary>
+        public static string LoggingViewServerFileLogOffHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogOffHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogOffTooltip.
+        /// </summary>
+        public static string LoggingViewServerFileLogOffTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogOffTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogTraceHelpText.
+        /// </summary>
+        public static string LoggingViewServerFileLogTraceHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogTraceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogTraceTooltip.
+        /// </summary>
+        public static string LoggingViewServerFileLogTraceTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogTraceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogWarnHelpText.
+        /// </summary>
+        public static string LoggingViewServerFileLogWarnHelpText {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogWarnHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoggingViewServerFileLogWarnTooltip.
+        /// </summary>
+        public static string LoggingViewServerFileLogWarnTooltip {
+            get {
+                return ResourceManager.GetString("LoggingViewServerFileLogWarnTooltip", resourceCulture);
             }
         }
         

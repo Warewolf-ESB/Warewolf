@@ -115,6 +115,33 @@ namespace Dev2.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SettingsPerfCounterRemoveResourceHelpText.
+        /// </summary>
+        public static string SettingsPerfCounterRemoveResourceHelpText {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterRemoveResourceHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes Performance Counter.
+        /// </summary>
+        public static string SettingsPerfCounterRemoveResourceTooltip {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterRemoveResourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SettingsPerfCounterResourceBrowseHelpResource.
+        /// </summary>
+        public static string SettingsPerfCounterResourceBrowseHelpResource {
+            get {
+                return ResourceManager.GetString("SettingsPerfCounterResourceBrowseHelpResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SettingsPerfCounterResourceHelpAvgExecTime.
         /// </summary>
         public static string SettingsPerfCounterResourceHelpAvgExecTime {
@@ -405,6 +432,15 @@ namespace Dev2.Help {
         public static string SettingsSecurityResourceToolTipWindowsGroup {
             get {
                 return ResourceManager.GetString("SettingsSecurityResourceToolTipWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SettingsSecurityServerBrowseHelpWindowsGroup.
+        /// </summary>
+        public static string SettingsSecurityServerBrowseHelpWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityServerBrowseHelpWindowsGroup", resourceCulture);
             }
         }
         
