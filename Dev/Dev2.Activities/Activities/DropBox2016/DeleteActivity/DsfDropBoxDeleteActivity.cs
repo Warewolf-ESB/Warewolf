@@ -15,7 +15,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
-    [ToolDescriptorInfo("DropBoxLogo", "Dropbox Delete", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("DropBoxLogo", "Dropbox Delete", ToolType.Native, "8AC94835-0A28-4166-A53A-D7B07730C135", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDeleteActivity : DsfBaseActivity
     {
         private DropboxClient _client;
@@ -59,7 +59,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
+            var dropboxSuccessResult = dropboxExecutionResult as DropboxDeleteSuccessResult;
             if (dropboxSuccessResult != null)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
