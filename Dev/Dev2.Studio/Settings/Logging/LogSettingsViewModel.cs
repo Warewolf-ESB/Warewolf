@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -29,7 +30,7 @@ namespace Dev2.Settings.Logging
         DEBUG,
         TRACE
     }
-    public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings
+    public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings,IUpdatesHelp
     {
         public IEnvironmentModel CurrentEnvironment
         {
@@ -260,6 +261,15 @@ namespace Dev2.Settings.Logging
                 }
             }
         }
+
+        #region Implementation of IUpdatesHelp
+
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            HelpText = helpText;
+        }
+
+        #endregion
     }
 
     public interface ILogSettings
