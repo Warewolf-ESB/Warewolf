@@ -9,14 +9,14 @@ Foreach-Object{
 	    }
 	} else {        
         if ($playlistContent.Playlist.Add.Test -ne $null) {
-            $TestList = $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+            $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
         } else {
 	        Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
 	        Continue
         }
     }
 }
-if ($TestList.length -gt 0) {
+if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
