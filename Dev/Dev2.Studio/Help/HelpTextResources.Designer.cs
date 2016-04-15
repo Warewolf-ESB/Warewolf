@@ -340,6 +340,15 @@ namespace Dev2.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SettingsSecurityResourceBrowseHelpWindowsGroup.
+        /// </summary>
+        public static string SettingsSecurityResourceBrowseHelpWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceBrowseHelpWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 
         ///To do this they can also View and Execute..
         /// </summary>

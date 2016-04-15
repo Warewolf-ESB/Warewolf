@@ -304,4 +304,7 @@ Warewolf has a built in group for and called Public.</value>
   <data name="SettingsSecurityResourceBrowseHelpResources" xml:space="preserve">
     <value>SettingsSecurityResourceBrowseHelpResources</value>
   </data>
+  <data name="SettingsSecurityResourceBrowseHelpWindowsGroup" xml:space="preserve">
+    <value>SettingsSecurityResourceBrowseHelpWindowsGroup</value>
+  </data>
 </root>
