@@ -821,7 +821,7 @@
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.WebInputDefaultValueHelp}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.WebInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
