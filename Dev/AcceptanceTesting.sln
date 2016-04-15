@@ -296,7 +296,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{378E17
 		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Tools.Specs", "Warewolf.Tools.Specs\Warewolf.Tools.Specs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Tools.SpecTests", "Warewolf.Tools.Specs\Warewolf.Tools.SpecTests.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
