@@ -4025,5 +4025,129 @@ System Activity&lt;br /&gt;
 Detailed System information</value>
   </data>
 
-  
+
+  <data name="LoggingViewStudioEventLogOffTooltip" xml:space="preserve">
+    <value>No logging</value>
+  </data>
+  <data name="LoggingViewStudioEventLogOffHelpText" xml:space="preserve">
+    <value>No system logging is done. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events</value>
+  </data>
+  <data name="LoggingViewStudioEventLogFatalHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Only fatal events are logged.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogErrorTooltip" xml:space="preserve">
+    <value>Log Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogErrorHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Events up to error details:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events</value>
+  </data>
+  <data name="LoggingViewStudioEventLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogWarnHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events</value>
+  </data>
+  <data name="LoggingViewStudioEventLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogInfoHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Up to infromation detail:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events&lt;br /&gt;
+Pulse Data</value>
+  </data>
+  <data name="LoggingViewStudioEventLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogDebugHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events&lt;br /&gt;
+Pulse Data&lt;br /&gt;
+System Activity</value>
+  </data>
+  <data name="LoggingViewStudioEventLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogTraceHelpText" xml:space="preserve">
+    <value>Logs everything to the Windows Event Log:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events&lt;br /&gt;
+Pulse Data&lt;br /&gt;
+System Activity&lt;br /&gt;
+Detailed System information</value>
+  </data>
+  <data name="LoggingViewStudioFileLogOffTooltip" xml:space="preserve">
+    <value>No logging.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogOffHelpText" xml:space="preserve">
+    <value>No system logging is done. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogFatalHelpText" xml:space="preserve">
+    <value>Logs to file: Only fatal events are logged.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogErrorTooltip" xml:space="preserve">
+    <value>Log Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogErrorHelpText" xml:space="preserve">
+    <value>Logs to file: Events up to error details:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events</value>
+  </data>
+  <data name="LoggingViewStudioFileLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogWarnHelpText" xml:space="preserve">
+    <value>Logs to file: Events up to warning severity:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events</value>
+  </data>
+  <data name="LoggingViewStudioFileLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogInfoHelpText" xml:space="preserve">
+    <value>Logs to file: Up to infromation detail:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events&lt;br /&gt;
+Pulse Data</value>
+  </data>
+  <data name="LoggingViewStudioFileLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogDebugHelpText" xml:space="preserve">
+    <value>Logs to file: Details up to System Activity:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events&lt;br /&gt;
+Pulse Data&lt;br /&gt;
+System Activity</value>
+  </data>
+  <data name="LoggingViewStudioFileLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogTraceHelpText" xml:space="preserve">
+    <value>Logs everything to file:&lt;br /&gt;
+    Fatal Events&lt;br /&gt;
+  Error Events&lt;br /&gt;
+Warning Events&lt;br /&gt;
+Pulse Data&lt;br /&gt;
+System Activity&lt;br /&gt;
+Detailed System information</value>
+  </data>
 </root>

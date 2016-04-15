@@ -340,6 +340,24 @@ namespace Dev2.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
+        /// </summary>
+        public static string SettingsSecurityResourceBrowseHelpResources {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceBrowseHelpResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
+        /// </summary>
+        public static string SettingsSecurityResourceBrowseHelpWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceBrowseHelpWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 
         ///To do this they can also View and Execute..
         /// </summary>
@@ -506,7 +524,7 @@ namespace Dev2.Help {
         /// <summary>
         ///   Looks up a localized string similar to To set server wide permissions for security, enter the Windows Group name or &quot;Public&quot; here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.
         ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribu [rest of string was truncated]&quot;;.
+        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SettingsSecurityServerHelpWindowsGroup {
             get {
