@@ -331,6 +331,24 @@ namespace Dev2.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
+        /// </summary>
+        public static string SettingsSecurityResourceBrowseHelpResources {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceBrowseHelpResources", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click the Ellipsis to add a resource.
+        /// </summary>
+        public static string SettingsSecurityResourceBrowseHelpWindowsGroup {
+            get {
+                return ResourceManager.GetString("SettingsSecurityResourceBrowseHelpWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 
         ///To do this they can also View and Execute..
         /// </summary>
