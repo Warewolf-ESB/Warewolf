@@ -117,7 +117,7 @@ namespace Dev2.Activities.Specs
             {
                 DataSource = recordSet,
                 Alias = alias,
-                ApplyActivity = dsfNumberFormatActivity
+               // ApplyActivity = dsfNumberFormatActivity
             };
 
             TestStartNode = new FlowStep
