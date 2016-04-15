@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Resources.PostgresSql
+namespace Warewolf.Tools.Specs.Toolbox.Resources.PostgresSql
 {
     using TechTalk.SpecFlow;
     
@@ -19,6 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.PostgresSql
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class PostgresSqlConnectorFeature
     {
         
@@ -32,7 +33,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.PostgresSql
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PostgresSqlConnector", "In order to manage my database services\r\nAs a Warewolf User\r\nI want to be shown t" +
-                    "he database service setup", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "he database service setup", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -49,7 +51,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.PostgresSql
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "PostgresSqlConnector")))
             {
-                Dev2.Activities.Specs.Toolbox.Resources.PostgresSql.PostgresSqlConnectorFeature.FeatureSetup(null);
+                Warewolf.Tools.Specs.Toolbox.Resources.PostgresSql.PostgresSqlConnectorFeature.FeatureSetup(null);
             }
         }
         
@@ -75,13 +77,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.PostgresSql
         public virtual void CreatingPostgresSqlServerConnector()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating PostgresSql Server Connector", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("I drag a PostgresSql Server database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.When("I select \"DemoPostgres\" as the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I drag a PostgresSql Server database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
+ testRunner.When("I select \"DemoPostgres\" as the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
  testRunner.When("I select \"getemployees\" as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -92,20 +94,20 @@ this.ScenarioSetup(scenarioInfo);
                         "fname",
                         "",
                         "false"});
-#line 10
+#line 11
  testRunner.Then("Test Inputs appear", ((string)(null)), table1, "Then ");
-#line 13
+#line 14
  testRunner.Then("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "fname"});
             table2.AddRow(new string[] {
                         "Bill"});
-#line 14
+#line 15
  testRunner.Given("I Enter a value as the input", ((string)(null)), table2, "Given ");
-#line 17
- testRunner.Then("Test button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 18
+ testRunner.Then("Test button is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 19
  testRunner.Then("Test button is Clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -116,7 +118,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Bill",
                         "4200",
                         "45"});
-#line 19
+#line 20
  testRunner.Then("Test Connector and Calculate Outputs outputs appear as", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -128,19 +130,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OpeningSavedWorkflowWithPostgresServerTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with Postgres Server tool", ((string[])(null)));
-#line 23
- this.ScenarioSetup(scenarioInfo);
 #line 24
- testRunner.Given("I Open workflow with PostgreSql connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ this.ScenarioSetup(scenarioInfo);
 #line 25
- testRunner.And("Source Is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I Open workflow with PostgreSql connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
- testRunner.And("Source Is \"postgressql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Source Is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
- testRunner.And("Action Is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Source Is \"postgressql\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
- testRunner.And("Action Is \"getemployees\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Action Is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
+ testRunner.And("Action Is \"getemployees\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
  testRunner.And("Inputs Is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -151,9 +153,9 @@ this.ScenarioSetup(scenarioInfo);
                         "fname",
                         "",
                         "false"});
-#line 30
+#line 31
  testRunner.Then("Inputs appear As", ((string)(null)), table4, "Then ");
-#line 33
+#line 34
  testRunner.And("Validate Is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
