@@ -346,8 +346,11 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-        | JsonIdentifierExpression _ -> failwith "no current use case please contact the warewolf product owner " 
-
+        | JsonIdentifierExpression _ -> let res =  evalJson env update buffer
+                                        match res with 
+                                         |  WarewolfAtomListresult a -> a |>  Seq.map enQuote |> (fun x-> new WarewolfAtomList<WarewolfAtom>(Nothing,x) )|> WarewolfAtomListresult 
+                                         |  WarewolfAtomResult a->   a|> enQuote |> WarewolfAtomResult
+                                         |  _ -> failwith "recordest results callot be supported by calculate"
 and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 
     let exp = ParseCache.TryFind lang
