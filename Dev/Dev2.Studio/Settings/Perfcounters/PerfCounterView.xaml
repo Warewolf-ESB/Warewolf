@@ -255,10 +255,7 @@
                                     <TextBlock Grid.Column="0"
                                                Text="{Binding Path=CounterName, Mode=TwoWay}"
                                                ToolTip="{Binding Path=CounterName, Mode=TwoWay}">
-                                      <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpResource}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
+                                     
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_AddResourceTextBox_AutoID">
                                             <Binding Path="CounterName" FallbackValue="New" />

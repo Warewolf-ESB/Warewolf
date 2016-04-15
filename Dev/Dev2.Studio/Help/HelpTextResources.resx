@@ -136,73 +136,70 @@
     <value>You are authorized to open and inspect this resource</value>
   </data>
   <data name="SettingsPerfCounterResourceHelpAvgExecTime" xml:space="preserve">
-    <value>SettingsPerfCounterResourceHelpAvgExecTime</value>
+    <value>A counter for the average execution time of this specific resource.</value>
   </data>
   <data name="SettingsPerfCounterResourceHelpConReq" xml:space="preserve">
-    <value>SettingsPerfCounterResourceHelpConReq</value>
+    <value>A counter for the number of concurrent requests of this specific resource.</value>
   </data>
   <data name="SettingsPerfCounterResourceHelpReqPerSec" xml:space="preserve">
-    <value>SettingsPerfCounterResourceHelpReqPerSec</value>
-  </data>
-  <data name="SettingsPerfCounterResourceHelpResource" xml:space="preserve">
-    <value>SettingsPerfCounterResourceHelpResource</value>
+    <value>A counter for the number of requests per second of this resource.</value>
   </data>
   <data name="SettingsPerfCounterResourceHelpTotErrors" xml:space="preserve">
-    <value>SettingsPerfCounterResourceHelpTotErrors</value>
+    <value>A counter for the total number of errors of this resource.</value>
   </data>
   <data name="SettingsPerfCounterResourceToolTipAvgExecTime" xml:space="preserve">
-    <value>SettingsPerfCounterResourceToolTipAvgExecTime</value>
+    <value>Average execution time of this resource.</value>
   </data>
   <data name="SettingsPerfCounterResourceToolTipConReq" xml:space="preserve">
-    <value>SettingsPerfCounterResourceToolTipConReq</value>
+    <value>Number of concurrent requests of this resource.</value>
   </data>
   <data name="SettingsPerfCounterResourceToolTipReqPerSec" xml:space="preserve">
-    <value>SettingsPerfCounterResourceToolTipReqPerSec</value>
+    <value>Number of requests per second of this resource.</value>
   </data>
   <data name="SettingsPerfCounterResourceToolTipResource" xml:space="preserve">
-    <value>SettingsPerfCounterResourceToolTipResource</value>
+    <value>Resource picker</value>
   </data>
   <data name="SettingsPerfCounterResourceBrowseHelpResource" xml:space="preserve">
-    <value>SettingsPerfCounterResourceBrowseHelpResource</value>
+    <value>Select a resource from the active server to set specific counters for.</value>
   </data>
   <data name="SettingsPerfCounterResourceToolTipTotErrors" xml:space="preserve">
-    <value>SettingsPerfCounterResourceToolTipTotErrors</value>
+    <value>Total number of errors of this resource.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpAvgExecTime" xml:space="preserve">
-    <value>SettingsPerfCounterServerAvgExecTime</value>
+    <value>A counter for the average execution time of all the resources on the server.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpConcurrentReq" xml:space="preserve">
-    <value>SettingsPerfCounterServerHelpConcurrentReq</value>
+    <value>A counter for the number of concurrent requests on the server.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpNotAuthErrors" xml:space="preserve">
-    <value>SettingsPerfCounterServerHelpNotAuthErrors</value>
+    <value>A counter for the authorisation failers on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpReqPerSec" xml:space="preserve">
-    <value>SettingsPerfCounterServerHelpReqPerSec</value>
+    <value>A counter for the number of requests per second on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpTotalErrors" xml:space="preserve">
-    <value>SettingsPerfCounterServerHelpTotalErrors</value>
+    <value>A counter for the total number of errors on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpWfNotFound" xml:space="preserve">
-    <value>SettingsPerfCounterServerHelpWfNotFound</value>
+    <value>A counter for the number of times a workflow was requested but did not exist on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerToolTipAvgExecTime" xml:space="preserve">
-    <value>SettingsPerfCounterServerToolTipAvgExecTime</value>
+    <value>Average execution time of all resources.</value>
   </data>
   <data name="SettingsPerfCounterServerToolTipConcurrentReq" xml:space="preserve">
-    <value>SettingsPerfCounterServerToolTipConcurrentReq</value>
+    <value>Number of concurrent requests on the server.</value>
   </data>
   <data name="SettingsPerfCounterServerToolTipNotAuthErrors" xml:space="preserve">
-    <value>SettingsPerfCounterServerToolTipNotAuthErrors</value>
+    <value>Authorisation failers on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerToolTipReqPerSec" xml:space="preserve">
-    <value>SettingsPerCounterServerToolTipReqPerSec</value>
+    <value>Number of requests per second on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerTooltipTotalErrors" xml:space="preserve">
-    <value>SettingsPerfCounterServerTooltipTotalErrors</value>
+    <value>Total number of errors on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerToolTipWfNotFound" xml:space="preserve">
-    <value>SettingsPerfCounterServerToolTipWfNotFound</value>
+    <value>Number of times a workflow was requested and it didn't exist.</value>
   </data>
   <data name="SettingsSecurityResourceHelpContribute" xml:space="preserve">
     <value>By Default this group will be able to Edit or Delete this resource. 
@@ -297,9 +294,9 @@ The Public group grants any and every user those permissions.</value>
     <value>You are not authorized to edit this resource</value>
   </data>
   <data name="SettingsPerfCounterRemoveResourceTooltip" xml:space="preserve">
-    <value>Removes Performance Counter</value>
+    <value>Removes performance counters</value>
   </data>
   <data name="SettingsPerfCounterRemoveResourceHelpText" xml:space="preserve">
-    <value>SettingsPerfCounterRemoveResourceHelpText</value>
+    <value>Removes the performance counters for this specific resource</value>
   </data>
 </root>
