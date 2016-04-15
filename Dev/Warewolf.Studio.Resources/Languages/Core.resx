@@ -3877,7 +3877,6 @@ Data
   <data name="NewServerLabel" xml:space="preserve">
     <value>New Remote Server...</value>
   </data>
-
   <data name="EditEmailSourceHelp" xml:space="preserve">
     <value>EditEmailSourceHelp</value>
   </data>
@@ -3887,4 +3886,94 @@ Data
   <data name="ChooseAttachmentsHelp" xml:space="preserve">
     <value>ChooseAttachmentsHelp</value>
   </data>
+  <data name="EmailHelpBodyCheckbox" xml:space="preserve">
+    <value>EmailHelpBodyCheckbox</value>
+  </data>
+
+  <data name="LoggingViewServerEventLogOffTooltip" xml:space="preserve">
+    <value>LoggingViewServerEventLogOffTooltip</value>
+  </data>
+  <data name="LoggingViewServerEventLogOffHelpText" xml:space="preserve">
+    <value>LoggingViewServerEventLogOffHelpText</value>
+  </data>
+  <data name="LoggingViewServerEventLogFatalTooltip" xml:space="preserve">
+    <value>LoggingViewServerEventLogFatalTooltip</value>
+  </data>
+  <data name="LoggingViewServerEventLogFatalHelpText" xml:space="preserve">
+    <value>LoggingViewServerEventLogFatalHelpText</value>
+  </data>
+  <data name="LoggingViewServerEventLogErrorTooltip" xml:space="preserve">
+    <value>LoggingViewServerEventLogErrorTooltip</value>
+  </data>
+  <data name="LoggingViewServerEventLogErrorHelpText" xml:space="preserve">
+    <value>LoggingViewServerEventLogErrorHelpText</value>
+  </data>
+  <data name="LoggingViewServerEventLogWarnTooltip" xml:space="preserve">
+    <value>LoggingViewServerEventLogWarnTooltip</value>
+  </data>
+  <data name="LoggingViewServerEventLogWarnHelpText" xml:space="preserve">
+    <value>LoggingViewServerEventLogWarnHelpText</value>
+  </data>
+  <data name="LoggingViewServerEventLogInfoTooltip" xml:space="preserve">
+    <value>LoggingViewServerEventLogInfoTooltip</value>
+  </data>
+  <data name="LoggingViewServerEventLogInfoHelpText" xml:space="preserve">
+    <value>LoggingViewServerEventLogInfoHelpText</value>
+  </data>
+  <data name="LoggingViewServerEventLogDebugTooltip" xml:space="preserve">
+    <value>LoggingViewServerEventLogDebugTooltip</value>
+  </data>
+  <data name="LoggingViewServerEventLogDebugHelpText" xml:space="preserve">
+    <value>LoggingViewServerEventLogDebugHelpText</value>
+  </data>
+  <data name="LoggingViewServerEventLogTraceTooltip" xml:space="preserve">
+    <value>LoggingViewServerEventLogTraceTooltip</value>
+  </data>
+  <data name="LoggingViewServerEventLogTraceHelpText" xml:space="preserve">
+    <value>LoggingViewServerEventLogTraceHelpText</value>
+  </data>
+  <data name="LoggingViewServerFileLogOffTooltip" xml:space="preserve">
+    <value>LoggingViewServerFileLogOffTooltip</value>
+  </data>
+  <data name="LoggingViewServerFileLogOffHelpText" xml:space="preserve">
+    <value>LoggingViewServerFileLogOffHelpText</value>
+  </data>
+  <data name="LoggingViewServerFileLogFatalTooltip" xml:space="preserve">
+    <value>LoggingViewServerFileLogFatalTooltip</value>
+  </data>
+  <data name="LoggingViewServerFileLogFatalHelpText" xml:space="preserve">
+    <value>LoggingViewServerFileLogFatalHelpText</value>
+  </data>
+  <data name="LoggingViewServerFileLogErrorTooltip" xml:space="preserve">
+    <value>LoggingViewServerFileLogErrorTooltip</value>
+  </data>
+  <data name="LoggingViewServerFileLogErrorHelpText" xml:space="preserve">
+    <value>LoggingViewServerFileLogErrorHelpText</value>
+  </data>
+  <data name="LoggingViewServerFileLogWarnTooltip" xml:space="preserve">
+    <value>LoggingViewServerFileLogWarnTooltip</value>
+  </data>
+  <data name="LoggingViewServerFileLogWarnHelpText" xml:space="preserve">
+    <value>LoggingViewServerFileLogWarnHelpText</value>
+  </data>
+  <data name="LoggingViewServerFileLogInfoTooltip" xml:space="preserve">
+    <value>LoggingViewServerFileLogInfoTooltip</value>
+  </data>
+  <data name="LoggingViewServerFileLogInfoHelpText" xml:space="preserve">
+    <value>LoggingViewServerFileLogInfoHelpText</value>
+  </data>
+  <data name="LoggingViewServerFileLogDebugTooltip" xml:space="preserve">
+    <value>LoggingViewServerFileLogDebugTooltip</value>
+  </data>
+  <data name="LoggingViewServerFileLogDebugHelpText" xml:space="preserve">
+    <value>LoggingViewServerFileLogDebugHelpText</value>
+  </data>
+  <data name="LoggingViewServerFileLogTraceTooltip" xml:space="preserve">
+    <value>LoggingViewServerFileLogTraceTooltip</value>
+  </data>
+  <data name="LoggingViewServerFileLogTraceHelpText" xml:space="preserve">
+    <value>LoggingViewServerFileLogTraceHelpText</value>
+  </data>
+
+  
 </root>
