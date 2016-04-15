@@ -96,7 +96,7 @@
     <Compile Include="..\Dev2.IntegrationTests\Services.Sql\SqlServerTestUtils.cs">
       <Link>Toolbox\Recordset\SqlBulkInsert\SqlServerTestUtils.cs</Link>
     </Compile>
-     <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="BaseTypes\CommonSteps.cs" />
@@ -470,21 +470,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OracleServerConnector.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature.cs">
       <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs" />
