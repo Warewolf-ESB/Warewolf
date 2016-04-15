@@ -234,6 +234,12 @@ Public is an internal Warewolf group that applies to everyone.</value>
   <data name="SettingsSecurityResourceToolTipResource" xml:space="preserve">
     <value>Click the Ellipsis to add a resource</value>
   </data>
+  <data name="SettingsSecurityResourceBrowseHelpResources" xml:space="preserve">
+    <value>Click the Ellipsis to add a resource</value>
+  </data>
+  <data name="SettingsSecurityResourceBrowseHelpWindowsGroup" xml:space="preserve">
+    <value>Click the Ellipsis to add a resource</value>
+  </data>
   <data name="SettingsSecurityResourceToolTipView" xml:space="preserve">
     <value>Open and inspect this resource</value>
   </data>
