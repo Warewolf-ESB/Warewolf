@@ -482,13 +482,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SharepointUpdate.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteDropbox.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature.cs" />
+    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
