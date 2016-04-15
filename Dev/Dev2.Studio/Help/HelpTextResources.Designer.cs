@@ -115,7 +115,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterRemoveResourceHelpText.
+        ///   Looks up a localized string similar to Removes the performance counters for this specific resource.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceHelpText {
             get {
@@ -124,7 +124,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removes Performance Counter.
+        ///   Looks up a localized string similar to Removes performance counters.
         /// </summary>
         public static string SettingsPerfCounterRemoveResourceTooltip {
             get {
@@ -133,7 +133,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceBrowseHelpResource.
+        ///   Looks up a localized string similar to Select a resource from the active server to set specific counters for..
         /// </summary>
         public static string SettingsPerfCounterResourceBrowseHelpResource {
             get {
@@ -142,7 +142,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceHelpAvgExecTime.
+        ///   Looks up a localized string similar to A counter for the average execution time of this specific resource..
         /// </summary>
         public static string SettingsPerfCounterResourceHelpAvgExecTime {
             get {
@@ -151,7 +151,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceHelpConReq.
+        ///   Looks up a localized string similar to A counter for the number of concurrent requests of this specific resource..
         /// </summary>
         public static string SettingsPerfCounterResourceHelpConReq {
             get {
@@ -160,7 +160,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceHelpReqPerSec.
+        ///   Looks up a localized string similar to A counter for the number of requests per second of this resource..
         /// </summary>
         public static string SettingsPerfCounterResourceHelpReqPerSec {
             get {
@@ -169,16 +169,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceHelpResource.
-        /// </summary>
-        public static string SettingsPerfCounterResourceHelpResource {
-            get {
-                return ResourceManager.GetString("SettingsPerfCounterResourceHelpResource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceHelpTotErrors.
+        ///   Looks up a localized string similar to A counter for the total number of errors of this resource..
         /// </summary>
         public static string SettingsPerfCounterResourceHelpTotErrors {
             get {
@@ -187,7 +178,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceToolTipAvgExecTime.
+        ///   Looks up a localized string similar to Average execution time of this resource..
         /// </summary>
         public static string SettingsPerfCounterResourceToolTipAvgExecTime {
             get {
@@ -196,7 +187,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceToolTipConReq.
+        ///   Looks up a localized string similar to Number of concurrent requests of this resource..
         /// </summary>
         public static string SettingsPerfCounterResourceToolTipConReq {
             get {
@@ -205,7 +196,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceToolTipReqPerSec.
+        ///   Looks up a localized string similar to Number of requests per second of this resource..
         /// </summary>
         public static string SettingsPerfCounterResourceToolTipReqPerSec {
             get {
@@ -214,7 +205,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceToolTipResource.
+        ///   Looks up a localized string similar to Resource picker.
         /// </summary>
         public static string SettingsPerfCounterResourceToolTipResource {
             get {
@@ -223,7 +214,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterResourceToolTipTotErrors.
+        ///   Looks up a localized string similar to Total number of errors of this resource..
         /// </summary>
         public static string SettingsPerfCounterResourceToolTipTotErrors {
             get {
@@ -232,7 +223,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerAvgExecTime.
+        ///   Looks up a localized string similar to A counter for the average execution time of all the resources on the server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpAvgExecTime {
             get {
@@ -241,7 +232,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerHelpConcurrentReq.
+        ///   Looks up a localized string similar to A counter for the number of concurrent requests on the server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpConcurrentReq {
             get {
@@ -250,7 +241,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerHelpNotAuthErrors.
+        ///   Looks up a localized string similar to A counter for the authorisation failers on this server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpNotAuthErrors {
             get {
@@ -259,7 +250,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerHelpReqPerSec.
+        ///   Looks up a localized string similar to A counter for the number of requests per second on this server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpReqPerSec {
             get {
@@ -268,7 +259,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerHelpTotalErrors.
+        ///   Looks up a localized string similar to A counter for the total number of errors on this server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpTotalErrors {
             get {
@@ -277,7 +268,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerHelpWfNotFound.
+        ///   Looks up a localized string similar to A counter for the number of times a workflow was requested but did not exist on this server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpWfNotFound {
             get {
@@ -286,7 +277,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerToolTipAvgExecTime.
+        ///   Looks up a localized string similar to Average execution time of all resources..
         /// </summary>
         public static string SettingsPerfCounterServerToolTipAvgExecTime {
             get {
@@ -295,7 +286,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerToolTipConcurrentReq.
+        ///   Looks up a localized string similar to Number of concurrent requests on the server..
         /// </summary>
         public static string SettingsPerfCounterServerToolTipConcurrentReq {
             get {
@@ -304,7 +295,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerToolTipNotAuthErrors.
+        ///   Looks up a localized string similar to Authorisation failers on this server..
         /// </summary>
         public static string SettingsPerfCounterServerToolTipNotAuthErrors {
             get {
@@ -313,7 +304,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerCounterServerToolTipReqPerSec.
+        ///   Looks up a localized string similar to Number of requests per second on this server..
         /// </summary>
         public static string SettingsPerfCounterServerToolTipReqPerSec {
             get {
@@ -322,7 +313,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerTooltipTotalErrors.
+        ///   Looks up a localized string similar to Total number of errors on this server..
         /// </summary>
         public static string SettingsPerfCounterServerTooltipTotalErrors {
             get {
@@ -331,7 +322,7 @@ namespace Dev2.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsPerfCounterServerToolTipWfNotFound.
+        ///   Looks up a localized string similar to Number of times a workflow was requested and it didn&apos;t exist..
         /// </summary>
         public static string SettingsPerfCounterServerToolTipWfNotFound {
             get {
@@ -506,7 +497,7 @@ namespace Dev2.Help {
         /// <summary>
         ///   Looks up a localized string similar to To set server wide permissions for security, enter the Windows Group name or &quot;Public&quot; here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.
         ///By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribu [rest of string was truncated]&quot;;.
+        ///Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SettingsSecurityServerHelpWindowsGroup {
             get {
