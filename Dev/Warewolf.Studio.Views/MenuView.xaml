@@ -20,29 +20,7 @@
               <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        <!--<Storyboard x:Key="BlinkLabel" Duration="0:0:1" RepeatBehavior="Forever">
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="VersionButton"
-                                          Storyboard.TargetProperty="BorderBrush.(SolidColorBrush.Color)">
-                <DiscreteColorKeyFrame KeyTime="0:0:0" Value="White" />
-                <DiscreteColorKeyFrame KeyTime="0:0:0.5" Value="{StaticResource WarewolfOrange}" />
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="VersionImage"
-                                          Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)">
-                <DiscreteColorKeyFrame KeyTime="0:0:0" Value="White" />
-                <DiscreteColorKeyFrame KeyTime="0:0:0.5" Value="{StaticResource WarewolfOrange}" />
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetName="VersionText"
-                                          Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)">
-                <DiscreteColorKeyFrame KeyTime="0:0:0" Value="White" />
-                <DiscreteColorKeyFrame KeyTime="0:0:0.5" Value="{StaticResource WarewolfOrange}" />
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>-->
     </UserControl.Resources>
-    <UserControl.Triggers>
-        <!--<EventTrigger RoutedEvent="UserControl.Loaded">
-            <BeginStoryboard Storyboard="{StaticResource BlinkLabel}"/>
-        </EventTrigger>-->
-    </UserControl.Triggers>
 
     <DockPanel x:Name="MenuPanel" Background="{StaticResource MenuPanelGradient}">
 
