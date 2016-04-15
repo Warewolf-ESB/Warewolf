@@ -1645,6 +1645,27 @@ namespace WarewolfParsingTest
         }
 
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_LanguageExpressionToString_NestedJsonArrayOfObjects()
+        {
+            var str = WarewolfDataEvaluationCommon.languageExpressionToString(WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Person.Child(*).Age]]"));
+            Assert.AreEqual(str, "[[Person.Child(*).Age]]");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_LanguageExpressionToString_NestedProperty()
+        {
+            var str = WarewolfDataEvaluationCommon.languageExpressionToString(WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Person.Child]]"));
+            Assert.AreEqual(str, "[[Person.Child]]");
+        }
+
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]

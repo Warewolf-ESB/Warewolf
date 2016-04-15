@@ -48,6 +48,7 @@ and checkForInvalidVariables (lang:LanguageExpression list) =
             | ScalarExpression _ ->  WarewolfAtomAtomExpression (DataASTMutable.DataString"")
             | ComplexExpression _ -> a
             | WarewolfAtomAtomExpression _ ->a
+            | JsonIdentifierExpression _-> WarewolfAtomAtomExpression (DataASTMutable.DataString"")
     let data = List.map (languageExpressionToString << updateLanguageExpression) lang |> fun a-> System.String.Join("",a)
     if data = languageExpressionToString (ComplexExpression lang)
     then
@@ -120,6 +121,7 @@ and combineExpressions  (level:int) (variables:LanguageExpression list) (variabl
     | RecordSetNameExpression c  -> combineRecsetName c level  variables
     | WarewolfAtomAtomExpression _ -> List.empty
     | ComplexExpression _ -> List.empty // cant have complex expressions in intellisense because the variable list is made up of simple expressions
+    | JsonIdentifierExpression _ -> List.empty
 
 and combineScalar (a:ScalarIdentifier)  =
     [ ScalarExpression a |> languageExpressionToString]
