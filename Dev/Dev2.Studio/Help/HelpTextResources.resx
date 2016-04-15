@@ -301,4 +301,7 @@ Warewolf has a built in group for and called Public.</value>
   <data name="SettingsPerfCounterRemoveResourceHelpText" xml:space="preserve">
     <value>Removes the performance counters for this specific resource</value>
   </data>
+  <data name="SettingsSecurityResourceBrowseHelpResources" xml:space="preserve">
+    <value>SettingsSecurityResourceBrowseHelpResources</value>
+  </data>
 </root>
