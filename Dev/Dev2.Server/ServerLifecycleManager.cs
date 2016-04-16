@@ -2607,10 +2607,11 @@ namespace Dev2
                 MigrateResources(oldSourcesFolder);
                 WriteLine("done.");
             }
-            if(!Directory.Exists(EnvironmentVariables.ResourcePath))
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath,"Resources");
+            if(!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
             {
-                DirectoryHelper.Copy(Path.Combine(EnvironmentVariables.ApplicationPath,"Resources"),EnvironmentVariables.ResourcePath,true);
-                DirectoryHelper.CleanUp(Path.Combine(EnvironmentVariables.ApplicationPath, "Resources"));
+                DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+                DirectoryHelper.CleanUp(serverBinResources);
             }
         }
 
