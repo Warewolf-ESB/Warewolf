@@ -111,8 +111,34 @@ namespace Warewolf.Studio.ViewModels
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
-                ServerVersion = "Version " + Server.GetServerVersion();
-                StudioVersion = "Version " + Utils.FetchVersionInfo();
+                var serverVersion = Server.GetServerVersion();
+                if (serverVersion.StartsWith("0.0."))
+                {
+                    var splitServerVersion = serverVersion.Split('.');
+                    var totalDays = Convert.ToDouble(splitServerVersion[2]);
+                    var totalSeconds = Convert.ToDouble(splitServerVersion[3])*2;
+                    var CSharpEpoc = new DateTime(2000, 1, 1);
+                    var compileTIme = CSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
+                    ServerVersion = "Compiled " + GetInformalDate(compileTIme);
+                }
+                else
+                {
+                    ServerVersion = "Version " + serverVersion;
+                }
+                var studioVersion = Utils.FetchVersionInfo();
+                if (studioVersion.StartsWith("0.0."))
+                {
+                    var splitStudioVersion = studioVersion.Split('.');
+                    var totalDays = Convert.ToDouble(splitStudioVersion[2]);
+                    var totalSeconds = Convert.ToDouble(splitStudioVersion[3])*2;
+                    var cSharpEpoc = new DateTime(2000, 1, 1);
+                    var compileTIme = cSharpEpoc.AddDays(totalDays).AddSeconds(totalSeconds);
+                    StudioVersion = "Compiled " + GetInformalDate(compileTIme);
+                }
+                else
+                {
+                    StudioVersion = "Version " + studioVersion;
+                }
             });
         }
 
@@ -120,33 +146,31 @@ namespace Warewolf.Studio.ViewModels
         {
             var sinceThen = DateTime.Now.Subtract(d);
             var totalDays = (int)sinceThen.TotalDays;
-            var totalSeconds = (int)sinceThen.TotalSeconds;
-            if (totalDays < 0)
+            var totalHours = (int)sinceThen.TotalHours;
+            var totalMinutes = (int)sinceThen.TotalMinutes;
+            if (totalDays < 0 || totalHours < 0 || totalMinutes < 0)
             {
                 return null;
             }
+            if (totalMinutes == 0)
+            {
+                return "just Now";
+            }
+            if (totalMinutes == 1)
+            {
+                return "a minute ago";
+            }
+            if (totalHours == 0)
+            {
+                return string.Format("{0} minutes ago", totalMinutes);
+            }
+            if (totalHours == 1)
+            {
+                return "an hour ago";
+            }
             if (totalDays == 0)
             {
-                if (totalSeconds < 60)
-                {
-                    return "just Now";
-                }
-                if (totalSeconds < 120)
-                {
-                    return "a minute ago";
-                }
-                if (totalSeconds < 3600)
-                {
-                    return string.Format("{0} minutes ago", Math.Floor((double)totalSeconds / 60));
-                }
-                if (totalSeconds < 7200)
-                {
-                    return "an hour ago";
-                }
-                if (totalSeconds < 86400)
-                {
-                    return string.Format("{0} hours ago", Math.Floor((double)totalSeconds / 3600));
-                }
+                return string.Format("{0} hours ago", totalHours);
             }
             if (totalDays == 1)
             {
@@ -158,17 +182,25 @@ namespace Warewolf.Studio.ViewModels
             }
             if (totalDays < 14)
             {
-                return string.Format("a week ago");
+                return "a week ago";
             }
             if (totalDays < 31)
             {
-                return string.Format("{0} week(s) ago", Math.Ceiling((double)totalDays / 7));
+                return string.Format("{0} weeks ago", Math.Ceiling((double)totalDays / 7));
+            }
+            if (totalDays < 62)
+            {
+                return "a month ago";
             }
             if (totalDays < 365)
             {
-                return string.Format("{0} month(s) ago", Math.Ceiling((double)totalDays / 31));
+                return string.Format("{0} months ago", Math.Ceiling((double)totalDays / 31));
             }
-            return string.Format("{0} year(s) ago", Math.Ceiling((double)totalDays / 365));
+            if (totalDays < 730)
+            {
+                return "a year ago";
+            }
+            return string.Format("{0} years ago", Math.Ceiling((double)totalDays / 365));
         }
     }
 }
