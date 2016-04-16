@@ -113,12 +113,62 @@ namespace Warewolf.Studio.ViewModels
             {
                 ServerVersion = "Version " + Server.GetServerVersion();
                 StudioVersion = "Version " + Utils.FetchVersionInfo();
-                //var serverVersionInformation = Server.GetServerInformationalVersion().Split(' ');
-                //ServerInformationalVersion = "Committed on " + serverVersionInformation[0] + " at " + serverVersionInformation[1] + " as " + serverVersionInformation[2];
-                //var studioVersionInformation = Utils.FetchInformationalVersionInfo().Split(' ');
-                //StudioInformationalVersion = "Committed on " + studioVersionInformation[0] + " at " + studioVersionInformation[1] + " as " + studioVersionInformation[2];
             });
-            
+        }
+
+        static string GetInformalDate(DateTime d)
+        {
+            var sinceThen = DateTime.Now.Subtract(d);
+            var totalDays = (int)sinceThen.TotalDays;
+            var totalSeconds = (int)sinceThen.TotalSeconds;
+            if (totalDays < 0)
+            {
+                return null;
+            }
+            if (totalDays == 0)
+            {
+                if (totalSeconds < 60)
+                {
+                    return "just Now";
+                }
+                if (totalSeconds < 120)
+                {
+                    return "a minute ago";
+                }
+                if (totalSeconds < 3600)
+                {
+                    return string.Format("{0} minutes ago", Math.Floor((double)totalSeconds / 60));
+                }
+                if (totalSeconds < 7200)
+                {
+                    return "an hour ago";
+                }
+                if (totalSeconds < 86400)
+                {
+                    return string.Format("{0} hours ago", Math.Floor((double)totalSeconds / 3600));
+                }
+            }
+            if (totalDays == 1)
+            {
+                return "yesterday";
+            }
+            if (totalDays < 7)
+            {
+                return string.Format("{0} days ago", totalDays);
+            }
+            if (totalDays < 14)
+            {
+                return string.Format("a week ago");
+            }
+            if (totalDays < 31)
+            {
+                return string.Format("{0} week(s) ago", Math.Ceiling((double)totalDays / 7));
+            }
+            if (totalDays < 365)
+            {
+                return string.Format("{0} month(s) ago", Math.Ceiling((double)totalDays / 31));
+            }
+            return string.Format("{0} year(s) ago", Math.Ceiling((double)totalDays / 365));
         }
     }
 }
