@@ -1,20 +1,34 @@
-﻿module IntellisenseStringProvider
+﻿// !!!!!!! Not Covering this because it is being replaced by 1601
+// !!!!!!! Not Covering this because it is being replaced by 1601
+// !!!!!!! Not Covering this because it is being replaced by 1601
+// !!!!!!! Not Covering this because it is being replaced by 1601
+
+
+
+
+
+module IntellisenseStringProvider
 open LanguageAST
 //open LanguageEval
 open CommonFunctions
 open WarewolfDataEvaluationCommon
 open Microsoft.FSharp.Text.Lexing
+open System
+open System.Diagnostics.CodeAnalysis
 
 let Tokenisers = "!@#$%^&*()-=_+{}|:\"?><`~<>?:'{}| ".ToCharArray()
 let Tokenisers2 = "[]".ToCharArray()
 let Tokenisers3 = "()".ToCharArray()
 
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 type FilterOption =
     | Recordsets
     | Scalars 
     | RecordSetNames
     | All
-
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let rec parseLanguageExpressionAndValidate  (lang:string) : (LanguageExpression*string)=
     if( lang.Contains"[[")
     then
@@ -40,7 +54,7 @@ let rec parseLanguageExpressionAndValidate  (lang:string) : (LanguageExpression*
                                                                     (WarewolfAtomAtomExpression (DataASTMutable.DataString lang),"Variable name " + lang + " contains invalid character(s)")
     else (WarewolfAtomAtomExpression (parseAtom lang),"")
 
-and checkForInvalidVariables (lang:LanguageExpression list) =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>] checkForInvalidVariables (lang:LanguageExpression list) =
     let updateLanguageExpression (a:LanguageExpression) =
         match a with 
             | RecordSetExpression _ -> WarewolfAtomAtomExpression (DataASTMutable.DataString "")
@@ -72,7 +86,7 @@ and checkForInvalidVariables (lang:LanguageExpression list) =
                         | (WarewolfAtomAtomExpression _,_) ->parsed
         res
 
-and verifyComplexExpression (lang:LanguageExpression list) =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  verifyComplexExpression (lang:LanguageExpression list) =
     if  List.exists IsAtomExpression lang
     then
         let balanced = LanguageExpressionToSumOfInt lang 
@@ -85,7 +99,7 @@ and verifyComplexExpression (lang:LanguageExpression list) =
     else 
         (ComplexExpression lang,"")
 
-and validateRecordsetIndex (ind:Index) =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  validateRecordsetIndex (ind:Index) =
     match ind with 
     | IndexExpression a -> 
         match a with 
@@ -98,11 +112,12 @@ and validateRecordsetIndex (ind:Index) =
         
 
 
-
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let rec getOptions (variables:LanguageExpression seq) (level:int) (filter:FilterOption) =
     combine  (Seq.filter (fun (a:LanguageExpression) -> filterOptions filter a ) variables) level variables (level=0) |> List.sortBy (fun (a:string) -> a.ToLower())
 
-and filterOptions  (filter:FilterOption) (a:LanguageExpression) =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  filterOptions  (filter:FilterOption) (a:LanguageExpression) =
     match (a,filter) with
         | (LanguageExpression.RecordSetExpression _ ,FilterOption.Recordsets ) -> true
         | (LanguageExpression.ScalarExpression _ ,FilterOption.Scalars ) -> true
@@ -111,10 +126,10 @@ and filterOptions  (filter:FilterOption) (a:LanguageExpression) =
         | _ ->false
 // take a list of variables and cartesian product of the options. 
 // can take a bias at some point
-and  combine (variables:LanguageExpression seq) (level:int) (unfilteredvariables:LanguageExpression seq) (startAtzero:bool) = 
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]   combine (variables:LanguageExpression seq) (level:int) (unfilteredvariables:LanguageExpression seq) (startAtzero:bool) = 
     List.collect (fun a-> combineExpressions level (List.ofSeq unfilteredvariables) a startAtzero ) (List.ofSeq variables)  // clean up multiple enumerations
 
-and combineExpressions  (level:int) (variables:LanguageExpression list) (variable:LanguageExpression) (startAtzero:bool)  =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  combineExpressions  (level:int) (variables:LanguageExpression list) (variable:LanguageExpression) (startAtzero:bool)  =
     match variable with
     | ScalarExpression a -> combineScalar a 
     | RecordSetExpression b  -> combineRecset b level  variables startAtzero
@@ -123,10 +138,10 @@ and combineExpressions  (level:int) (variables:LanguageExpression list) (variabl
     | ComplexExpression _ -> List.empty // cant have complex expressions in intellisense because the variable list is made up of simple expressions
     | JsonIdentifierExpression _ -> List.empty
 
-and combineScalar (a:ScalarIdentifier)  =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  combineScalar (a:ScalarIdentifier)  =
     [ ScalarExpression a |> languageExpressionToString]
 
-and combineRecset (a:RecordSetIdentifier) (level:int)  (variables:LanguageExpression list)  (startAtzero:bool) =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  combineRecset (a:RecordSetIdentifier) (level:int)  (variables:LanguageExpression list)  (startAtzero:bool) =
     match level with
     | 0  when startAtzero -> 
                                let indexes = combineIndexAtZero level a
@@ -136,7 +151,7 @@ and combineRecset (a:RecordSetIdentifier) (level:int)  (variables:LanguageExpres
     | _ -> let indexes = combineIndex level variables
            List.append  (List.map (fun x -> "[["+ a.Name + "(" + x + ")." + a.Column + "]]") indexes)  (List.map (fun x -> "[["+ a.Name + "(" + x ) indexes)
 
-and combineRecsetName (a:RecordSetName) (level:int)  (variables:LanguageExpression list)  =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  combineRecsetName (a:RecordSetName) (level:int)  (variables:LanguageExpression list)  =
     match level with
     | 0 -> [ RecordSetNameExpression a |> languageExpressionToString]
     | _ -> let indexes = combineIndex level variables
@@ -144,14 +159,15 @@ and combineRecsetName (a:RecordSetName) (level:int)  (variables:LanguageExpressi
 
 
 
-and combineIndex (level:int) (variables:LanguageExpression list)   =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  combineIndex (level:int) (variables:LanguageExpression list)   =
     let newLevel = level - 1
     let combined = combine variables newLevel variables false
     "*" :: "":: combined
 
-and combineIndexAtZero (_:int) (_:RecordSetIdentifier)   =
+and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  combineIndexAtZero (_:int) (_:RecordSetIdentifier)   =
     "*" :: [""]
-
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let rec processLanguageExpressionList (lst:LanguageExpression list) (acc:string) (replacement:string ) (caretPosition:int) = 
     match lst with
     | h::t -> match h with 
@@ -160,26 +176,29 @@ let rec processLanguageExpressionList (lst:LanguageExpression list) (acc:string)
                        processLanguageExpressionList t  (acc + exp) replacement caretPosition
     |[] ->acc
 
-
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let rec takeNonAlphabets (a:string) (acc:string) = 
    match a with
    | "" -> a
    | _ -> if a.ToCharArray().[0] > 'z' || a.ToCharArray().[0] <'A' then  takeNonAlphabets (a.Substring(1)) (acc+a.[0].ToString()) else acc
-
+[<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>] 
 let rec getCaretPosition (lst:LanguageExpression list) (caretPosition:int) (acc:string) (i:int)=
     match lst with
     | h::t -> let exp = acc+ WarewolfDataEvaluationCommon.languageExpressionToString h
               if exp.Length >= caretPosition then  i   else getCaretPosition t caretPosition exp (i + 1)
 
     |[] ->i
-
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let rec getCaretPositionInString (lst:LanguageExpression list) (caretPosition:int) (acc:string) (i:int) (currenti:int)=
     match lst with
     | h::t -> let exp = acc+ WarewolfDataEvaluationCommon.languageExpressionToString h
               if exp.Length >= caretPosition then  caretPosition-currenti   else getCaretPositionInString t caretPosition exp (i + 1) (currenti + (WarewolfDataEvaluationCommon.languageExpressionToString h).Length)
 
     |[] ->i
-
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let rec doReplace (text:string)  (caretPosition:int ) (replacement:string) =
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate text
     match parsed with 

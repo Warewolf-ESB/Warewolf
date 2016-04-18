@@ -29,28 +29,12 @@ let addToJsonObjects (env : WarewolfEnvironment) (name : string) (value : JConta
     let rem = Map.remove name env.JsonObjects |> Map.add name value
     { env with JsonObjects = rem }
 
-let addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
+let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
     match env.JsonObjects.TryFind name with
     | Some a -> env
     | _ -> addToJsonObjects env name value
 
-let rec addToRecordSet (env : WarewolfEnvironment) (name : RecordSetIdentifier) (update : int) (value : WarewolfAtom) = 
-    if (env.RecordSets.ContainsKey name.Name) then 
-        let recordset = env.RecordSets.[name.Name]
-        
-        let recsetAdded = 
-            match name.Index with
-            | IntIndex a -> addAtomToRecordSet recordset name.Column value a
-            | Star -> updateColumnWithValue recordset name.Column value
-            | Last -> addAtomToRecordSet recordset name.Column value (recordset.LastIndex + 1)
-            | IndexExpression a -> 
-                addAtomToRecordSet recordset name.Column value (evalIndex env update (languageExpressionToString a))
-        
-        let recsets = Map.remove name.Name env.RecordSets |> fun a -> Map.add name.Name recsetAdded a
-        { env with RecordSets = recsets }
-    else 
-        let envwithRecset = addRecsetToEnv name.Name env
-        addToRecordSet envwithRecset name update value
+
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     evalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp, value)) update env
@@ -278,61 +262,6 @@ and addAtomToRecordSetWithFraming (rset : WarewolfRecordset) (columnName : strin
                            Frame = frame
                            Optimisations = WarewolfAttribute.Fragmented }
 
-and addAtomToRecordSet (rset : WarewolfRecordset) (columnName : string) (value : WarewolfAtom) (position : int) = 
-    let col = rset.Data.TryFind columnName
-    
-    let rsAdded = 
-        match col with
-        | Some _ -> rset
-        | None -> 
-            { rset with Data = 
-                            Map.add columnName 
-                                (createEmpty rset.Data.[PositionColumn].Length rset.Data.[PositionColumn].Count) 
-                                rset.Data }
-    if position = rsAdded.Count + 1 then 
-        let addedAtEnd = 
-            Map.map (fun k v -> 
-                if k = columnName then (addToList v value)
-                else (addNothingToList v)) rsAdded.Data
-        
-        let len = addedAtEnd.[PositionColumn].Count
-        addedAtEnd.[PositionColumn].[len - 1] <- Int position
-        { rsAdded with Data = addedAtEnd
-                       LastIndex = rsAdded.LastIndex + 1
-                       Optimisations = 
-                           if rsAdded.Count = rsAdded.LastIndex && rsAdded.Optimisations <> WarewolfAttribute.Fragmented 
-                              && rsAdded.Optimisations <> WarewolfAttribute.Sorted then WarewolfAttribute.Ordinal
-                           else rsAdded.Optimisations }
-    else if position > rsAdded.Count + 1 then 
-        let addedAtEnd = 
-            Map.map (fun k v -> 
-                if k = columnName then (addToList v value)
-                else (addNothingToList v)) rsAdded.Data
-        
-        let len = addedAtEnd.[PositionColumn].Count
-        addedAtEnd.[PositionColumn].[len - 1] <- Int position
-        { rsAdded with Data = addedAtEnd
-                       LastIndex = position
-                       Optimisations = 
-                           if rsAdded.Optimisations = WarewolfAttribute.Ordinal then WarewolfAttribute.Sorted
-                           else rsAdded.Optimisations }
-    else 
-        let lstval = rsAdded.Data.[PositionColumn]
-        if Seq.exists (fun vx -> vx = (Int position)) lstval then 
-            let index = Seq.findIndex (fun vx -> vx = (Int position)) lstval
-            lstval.[index] <- value
-            rsAdded
-        else 
-            let addedAtEnd = 
-                Map.map (fun k v -> 
-                    if k = columnName then (addToList v value)
-                    else (addNothingToList v)) rsAdded.Data
-            
-            let len = addedAtEnd.[PositionColumn].Count
-            addedAtEnd.[PositionColumn].[len - 1] <- Int position
-            { rsAdded with Data = addedAtEnd
-                           LastIndex = rsAdded.LastIndex
-                           Optimisations = WarewolfAttribute.Fragmented }
 
 and evalMultiAssignList (env : WarewolfEnvironment) (value : WarewolfAtom seq) (exp : string) (update : int) 
     (shouldUseLast : bool) = 

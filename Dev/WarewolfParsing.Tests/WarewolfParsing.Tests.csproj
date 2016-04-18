@@ -67,6 +67,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EvalFunctionTests.cs" />
     <Compile Include="TestDataStructure.cs" />
     <Compile Include="TestEvaluation.cs" />
     <Compile Include="TestParser.cs" />

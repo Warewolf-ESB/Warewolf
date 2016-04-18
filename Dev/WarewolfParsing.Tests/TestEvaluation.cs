@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 // ReSharper disable PossibleNullReferenceException
+// ReSharper disable InconsistentNaming
 
 namespace WarewolfParsingTest
 {
@@ -390,6 +392,345 @@ namespace WarewolfParsingTest
 
         }
 
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_Scalar()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+            
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[x]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res),GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix );
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec().a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(3)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_Index()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(1).a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_Star()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1,2,3)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_Complex()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]][[x]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1,2,31)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_Json()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Age]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"22\")" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_Json_Array()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(1)]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\")" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_Json_Array_star()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(*)]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\",\"3\")" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_Atom()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( 1 2 3)" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum( 1 2 3)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecSet_RecsetResult()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( [[Rec()]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(3,c)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeScalar()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[x]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "1");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeRecSet()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Rec().a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "3");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeRecSet_Index()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Rec(1).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "1");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeRecSet_Star()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Rec(*).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "1,2,3");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeRecSet_Complex()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Rec(*).a]][[x]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "1,2,3");
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.Last()), "1");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void Eval_DataMergeRecSet_Json()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Person.Age]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "22");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void Eval_DataMergeRecSet_Json_Array()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Person.Score(1)]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "2");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void Eval_DataMergeRecSet_Json_Array_star()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Person.Score(*)]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "2,3");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeRecSet_Atom()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, " 1 2 3");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), " 1 2 3");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeRecSet_RecsetResult()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, " [[Rec()]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.Last()), "3,c");
+        }
+
+
+        public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
+        {
+            
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.Assign("[[Rec(1).a]]","1",0);
+            env.Assign("[[Rec(2).a]]", "2", 0);
+            env.Assign("[[Rec(3).a]]", "3", 0);
+            env.Assign("[[Rec(1).b]]", "a", 0);
+            env.Assign("[[Rec(2).b]]", "b", 0);
+            env.Assign("[[Rec(3).b]]", "c", 0);
+            env.Assign("[[x]]","1",0);
+            env.Assign("[[y]]", "y", 0);
+            env.AssignJson(new AssignValue("[[Person.Name]]","bob"),0 );
+            env.AssignJson(new AssignValue("[[Person.Age]]", "22"), 0);
+            env.AssignJson(new AssignValue("[[Person.Spouse.Name]]", "dora"), 0);
+            env.AssignJson(new AssignValue("[[Person.Children(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[Person.Children(2).Name]]", "Jane"), 0);
+            env.AssignJson(new AssignValue("[[Person.Score(1)]]", "2"), 0);
+            env.AssignJson(new AssignValue("[[Person.Score(2)]]", "3"), 0);
+            env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
+            PrivateObject p = new PrivateObject(env);
+            return (DataASTMutable.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
