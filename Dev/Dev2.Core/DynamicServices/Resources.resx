@@ -204,9 +204,6 @@
   <data name="CompilerError_MissingValue" xml:space="preserve">
     <value>Error: Missing value on object '{0}.{1}'</value>
   </data>
-  <data name="ContainerError_UnexpectedDynamicServiceObjectType" xml:space="preserve">
-    <value>Unexpected Object Type Expected only BizRule, Source and DynamicService</value>
-  </data>
   <data name="CompilerError_MissingRegularExpression" xml:space="preserve">
     <value>Error:  Regular Expression not found on object '{0}.{1}'</value>
   </data>

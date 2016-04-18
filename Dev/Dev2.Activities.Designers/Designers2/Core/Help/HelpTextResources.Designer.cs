@@ -98,17 +98,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To assign a value to a variable, put the value in here.
-        ///If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]].
-        /// </summary>
-        public static string AssignToolTipNewValue {
-            get {
-                return ResourceManager.GetString("AssignToolTipNewValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///To assign a value to a variable, put the variable here.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].

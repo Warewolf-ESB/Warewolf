@@ -359,11 +359,6 @@
     <Compile Include="Help\HelpControl.xaml.cs">
       <DependentUpon>HelpControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Help\HelpTextResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HelpTextResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="IApp.cs" />
     <Compile Include="CustomControls\Progress\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
@@ -810,11 +805,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="Help\HelpTextResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -340,15 +340,6 @@ namespace Dev2.DynamicServices {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected Object Type Expected only BizRule, Source and DynamicService.
-        /// </summary>
-        public static string ContainerError_UnexpectedDynamicServiceObjectType {
-            get {
-                return ResourceManager.GetString("ContainerError_UnexpectedDynamicServiceObjectType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Binary value must be greater than 8 characters.
         /// </summary>
         public static string Dev2BinaryConverterPayloadToSmallException {

@@ -119,7 +119,7 @@
                                                     Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    ToolTip="{x:Static help:HelpTextResources.AssignToolTipNewValue}">
+                                                    ToolTip="{x:Static languages:Core.AssignToolTipNewValue}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.AssignHelpNewValue}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"

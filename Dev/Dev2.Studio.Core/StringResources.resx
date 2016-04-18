@@ -698,9 +698,6 @@ Version History will also be deleted.</value>
   <data name="Uri_Studio_PageRestrictedAccess" xml:space="preserve">
     <value>Help\PageRestrictedAccess.htm</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="Uri_Studio_PageNotAvailable" xml:space="preserve">
     <value>Help\PageNotAvailable.htm</value>
   </data>

@@ -1925,11 +1925,7 @@ Allowed:
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="AssignToolTipNewValue" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To assign a value to a variable, put the value in here.
-If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]</value>
-  </data>
+
   <data name="AssignToolTipVariable" xml:space="preserve">
     <value>Only variables go in here.
 To assign a value to a variable, put the variable here.

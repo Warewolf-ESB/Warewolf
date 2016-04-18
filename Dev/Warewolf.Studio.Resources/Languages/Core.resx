@@ -4147,4 +4147,181 @@ Studio Pulse Data&lt;br /&gt;
 Studio System Activity&lt;br /&gt;
 Studio Detailed System information</value>
   </data>
+  <data name="SettingsPerfCounterResourceHelpAvgExecTime" xml:space="preserve">
+    <value>A counter for the average execution time of this specific resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceHelpConReq" xml:space="preserve">
+    <value>A counter for the number of concurrent requests of this specific resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceHelpReqPerSec" xml:space="preserve">
+    <value>A counter for the number of requests per second of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceHelpTotErrors" xml:space="preserve">
+    <value>A counter for the total number of errors of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipAvgExecTime" xml:space="preserve">
+    <value>Average execution time of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipConReq" xml:space="preserve">
+    <value>Number of concurrent requests of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipReqPerSec" xml:space="preserve">
+    <value>Number of requests per second of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipResource" xml:space="preserve">
+    <value>Resource picker</value>
+  </data>
+  <data name="SettingsPerfCounterResourceBrowseHelpResource" xml:space="preserve">
+    <value>Select a resource from the active server to set specific counters for.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipTotErrors" xml:space="preserve">
+    <value>Total number of errors of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpAvgExecTime" xml:space="preserve">
+    <value>A counter for the average execution time of all the resources on the server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpConcurrentReq" xml:space="preserve">
+    <value>A counter for the number of concurrent requests on the server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpNotAuthErrors" xml:space="preserve">
+    <value>A counter for the authorisation failers on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpReqPerSec" xml:space="preserve">
+    <value>A counter for the number of requests per second on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpTotalErrors" xml:space="preserve">
+    <value>A counter for the total number of errors on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerHelpWfNotFound" xml:space="preserve">
+    <value>A counter for the number of times a workflow was requested but did not exist on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipAvgExecTime" xml:space="preserve">
+    <value>Average execution time of all resources.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipConcurrentReq" xml:space="preserve">
+    <value>Number of concurrent requests on the server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipNotAuthErrors" xml:space="preserve">
+    <value>Authorisation failers on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipReqPerSec" xml:space="preserve">
+    <value>Number of requests per second on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerTooltipTotalErrors" xml:space="preserve">
+    <value>Total number of errors on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipWfNotFound" xml:space="preserve">
+    <value>Number of times a workflow was requested and it didn't exist.</value>
+  </data>
+  <data name="SettingsSecurityResourceHelpContribute" xml:space="preserve">
+    <value>By Default this group will be able to Edit or Delete this resource. 
+To do this they can also View and Execute.</value>
+  </data>
+  <data name="SettingsSecurityResourceHelpExecute" xml:space="preserve">
+    <value>By Default this group will be able to call or execute this workflow.</value>
+  </data>
+  <data name="SettingsSecurityResourceHelpResource" xml:space="preserve">
+    <value>To set specific permissions for a resource on this server, select the resource here.
+Any permissions applied to this resource will OVERWRITE the server settings above.
+By specifying a resource here, it will not inherit permissions from the server (above).</value>
+  </data>
+  <data name="SettingsSecurityResourceHelpView" xml:space="preserve">
+    <value>By Default this group will be able to open and view this resource.
+Typically this is used by Business Analysts to sign off work and participate in the development process.</value>
+  </data>
+  <data name="SettingsSecurityResourceHelpWindowsGroup" xml:space="preserve">
+    <value>To set resource specific permissions, enter the Windows Group name or "Public" here followed by the system access for that group. 
+Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.
+Public is an internal Warewolf group that applies to everyone.</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipContribute" xml:space="preserve">
+    <value>Edit and Delete this workflow</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipExecute" xml:space="preserve">
+    <value>Run and Debug this workflow</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipResource" xml:space="preserve">
+    <value>Click the Ellipsis to add a resource</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipView" xml:space="preserve">
+    <value>Open and inspect this resource</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipWindowsGroup" xml:space="preserve">
+    <value>Select Windows Group</value>
+  </data>
+  <data name="SettingsSecurityServerHelpAdministrator" xml:space="preserve">
+    <value>Administrators can amend security permissions and change server settings. 
+The local machine Administrators are automatically given this permission.
+ Giving Public access to this permission is akin to turning security off and is not recommended.</value>
+  </data>
+  <data name="SettingsSecurityServerHelpContribute" xml:space="preserve">
+    <value>By Default this group will be able to add new resources, edit resources and delete existing resources on this server. 
+To do this they can also View and Execute.</value>
+  </data>
+  <data name="SettingsSecurityServerHelpDeployFrom" xml:space="preserve">
+    <value>By Default this group will be able to deploy resources off this server.</value>
+  </data>
+  <data name="SettingsSecurityServerHelpDeployTo" xml:space="preserve">
+    <value>By Default this group will be able to deploy resources onto this server.
+Deploy may mean overwriting existing work and can be done without Contribute privileges.</value>
+  </data>
+  <data name="SettingsSecurityServerHelpExecute" xml:space="preserve">
+    <value>By Default this group will be able to call or execute resources on this server.</value>
+  </data>
+  <data name="SettingsSecurityServerHelpView" xml:space="preserve">
+    <value>By Default this group will be able to open and view resources on the server. 
+Typically this is used by Business Analysts to sign off work and participate in the development process.</value>
+  </data>
+  <data name="SettingsSecurityServerHelpWindowsGroup" xml:space="preserve">
+    <value>To set server wide permissions for security, enter the Windows Group name or "Public" here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.
+By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
+Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission. 
+The Public group grants any and every user those permissions.</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipAdministrator" xml:space="preserve">
+    <value>Amend security and admin tasks</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipContribute" xml:space="preserve">
+    <value>Edit, Create and Delete workflows and services</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipDeployFrom" xml:space="preserve">
+    <value>Deploy resources off this server</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipDeployTo" xml:space="preserve">
+    <value>Deploy resources to this server</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipExecute" xml:space="preserve">
+    <value>Run and Debug workflows</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipView" xml:space="preserve">
+    <value>Open and inspect resources</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipWindowsGroup" xml:space="preserve">
+    <value>Select Windows Group</value>
+  </data>
+  <data name="SettingsSecurityServerBrowseHelpWindowsGroup" xml:space="preserve">
+    <value>Opens the windows group picker for this computer. If this server is on another domain, you will need to either manually type the Group name in, or launch a studio from a PC that is on that domain to get access to the group picker.
+
+Warewolf has a built in group for and called Public.</value>
+  </data>
+  <data name="WorkflowDesignerSecurityToolTipNone" xml:space="preserve">
+    <value>You are not authorized to edit this resource</value>
+  </data>
+  <data name="SettingsPerfCounterRemoveResourceTooltip" xml:space="preserve">
+    <value>Removes performance counters</value>
+  </data>
+  <data name="SettingsPerfCounterRemoveResourceHelpText" xml:space="preserve">
+    <value>Removes the performance counters for this specific resource</value>
+  </data>
+  <data name="SettingsSecurityResourceBrowseHelpResources" xml:space="preserve">
+    <value>SettingsSecurityResourceBrowseHelpResources</value>
+  </data>
+  <data name="SettingsSecurityResourceBrowseHelpWindowsGroup" xml:space="preserve">
+    <value>SettingsSecurityResourceBrowseHelpWindowsGroup</value>
+  </data>
+  <data name="AssignToolTipNewValue" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To assign a value to a variable, put the value in here.
+If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]</value>
+  </data>
 </root>
