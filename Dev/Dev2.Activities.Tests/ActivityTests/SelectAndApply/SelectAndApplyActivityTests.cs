@@ -163,7 +163,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         }  
         
         //Ignored the test to be plumbed later
-        [Ignore]
+       /* [Ignore]
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_SetupExecute")]
@@ -219,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             Assert.AreEqual("-3.46", ages[3]);
             Assert.AreEqual("0.88", ages[4]);
         }
-
+        */
 
 
         #region Private Test Methods
@@ -273,7 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             {
                 DataSource = dataSource,
                 Alias = alias,
-                ApplyActivity = activity
+               // ApplyActivity = activity
             };
             TestStartNode = new FlowStep
             {
@@ -299,7 +299,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             {
                 DataSource = dataSource,
                 Alias = alias,
-                ApplyActivity = activity
+                //ApplyActivity = activity
             };
             TestStartNode = new FlowStep
             {
