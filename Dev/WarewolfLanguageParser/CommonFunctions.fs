@@ -12,6 +12,11 @@ type WarewolfEvalResult =
     | WarewolfAtomListresult of WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> 
     | WarewolfRecordSetResult of WarewolfRecordset
 
+[<ExcludeFromCodeCoverage()>] 
+type PositionValue =
+    | IndexFoundPosition of int
+    | IndexDoesNotExist
+
 let enQuote (atom:WarewolfAtom) = 
     match atom with 
         | DataString a -> DataString (sprintf "\"%s\"" a)
@@ -94,9 +99,6 @@ let atomToInt(a:WarewolfAtom) =
         |_ ->    let couldParse, parsed = System.Int32.TryParse(a.ToString())
                  if couldParse then parsed else failwith "index was not an int"
 
-type PositionValue =
-    | IndexFoundPosition of int
-    | IndexDoesNotExist
 
 let getRecordSetIndex (recset:WarewolfRecordset) (position:int) =
     match recset.Optimisations with
