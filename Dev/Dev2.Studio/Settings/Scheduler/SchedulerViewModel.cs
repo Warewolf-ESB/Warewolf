@@ -52,6 +52,7 @@ using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
 using Microsoft.Win32.TaskScheduler;
 using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Scheduler
@@ -186,6 +187,7 @@ namespace Dev2.Settings.Scheduler
             {
                 server.UpdateRepository.ItemSaved += Refresh;
             }
+            // ReSharper disable once ObjectCreationAsStatement
             new EnvironmentViewModel(server, shellViewModel);
         }
 
@@ -816,7 +818,7 @@ namespace Dev2.Settings.Scheduler
         void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
-            HelpText = HelpTextResources.SchedulerSettingsHelpTextSettingsView;
+            HelpText = Core.SchedulerSettingsHelpTextSettingsView;
         }
 
         ActivityDesignerToggle CreateHelpToggle()
