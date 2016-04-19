@@ -10933,7 +10933,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mFormatNumber = new WpfListItem(this);
                     #region Search Criteria
                     this.mFormatNumber.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mFormatNumber.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
+                    this.mFormatNumber.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
                     this.mFormatNumber.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
@@ -10950,7 +10950,7 @@ namespace Warewolf.Studio.UISpecs
                     this.mRandom = new WpfListItem(this);
                     #region Search Criteria
                     this.mRandom.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mRandom.SearchProperties[WpfListItem.PropertyNames.Instance] = "7";
+                    this.mRandom.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
                     this.mRandom.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }

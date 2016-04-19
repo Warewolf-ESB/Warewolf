@@ -7594,7 +7594,7 @@
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
                         </UIObject>
-                        <UIObject ControlType="ListItem" Id="SysInfo" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                        <UIObject ControlType="ListItem" Id="FormatNumber" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -7608,7 +7608,7 @@
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
                         </UIObject>
-                        <UIObject ControlType="ListItem" Id="FormatNumber" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                        <UIObject ControlType="ListItem" Id="Random" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -7622,7 +7622,7 @@
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
                         </UIObject>
-                        <UIObject ControlType="ListItem" Id="Random" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
+                        <UIObject ControlType="ListItem" Id="Email" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
                             <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
@@ -7636,20 +7636,6 @@
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
                         </UIObject>
-                        <UIObject ControlType="ListItem" Id="Email" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                            <PropertyCondition Name="Instance">8</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants />
-                        </UIObject>
                         <UIObject ControlType="ListItem" Id="WebRequest" FriendlyName="Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV..." SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles />
@@ -7657,7 +7643,7 @@
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                            <PropertyCondition Name="Instance">9</PropertyCondition>
+                            <PropertyCondition Name="Instance">8</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
@@ -7671,7 +7657,7 @@
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                            <PropertyCondition Name="Instance">10</PropertyCondition>
+                            <PropertyCondition Name="Instance">9</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
@@ -7685,7 +7671,7 @@
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel</PropertyCondition>
-                            <PropertyCondition Name="Instance">11</PropertyCondition>
+                            <PropertyCondition Name="Instance">10</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants />
