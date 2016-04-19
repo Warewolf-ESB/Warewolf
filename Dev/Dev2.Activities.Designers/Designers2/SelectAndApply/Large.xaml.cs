@@ -38,10 +38,10 @@ namespace Dev2.Activities.Designers2.SelectAndApply
         {
             DropPointOnDragEnter(sender, e);
             var modelItem = this.DropPoint.Item;
-            if (ViewModel.SetModelItemForServiceTypes(e.Data))
+           /* if (/*ViewModel.SetModelItemForServiceTypes(e.Data)false)
             {
                 e.Handled = true;
-            }
+            }*/
         }
 
         void DropPointOnDragEnter(object sender, DragEventArgs e)
