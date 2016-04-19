@@ -45,6 +45,21 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
+        public void Eval_RecSetIndexExpression()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 0, "[[Rec([[x]])]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,a");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
         public void Eval_RecSetWithIndexExpression()
         {
             //------------Setup for test--------------------------
@@ -61,6 +76,24 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void Eval_RecSetWithIndexExpression_EvaluatesToExp()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 0, "[[Rec([[y]]).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+     
         public void Eval_RecSet_Index()
         {
             //------------Setup for test--------------------------
@@ -87,6 +120,22 @@ namespace WarewolfParsingTest
             var res = WarewolfDataEvaluationCommon.eval(env, 0,  "[[Rec(*).a]]" );
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),  "1,2,3" );
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_RecSet_Complete()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 0, "[[Rec(*)]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,2,3,a,b,c");
         }
 
         [TestMethod]

@@ -449,7 +449,7 @@ and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalRes
                 let objToFill = asJObj.[i - 1]
                 let subObj = expressionToObject (objToFill) b.Next res
                 addValueToJArray asJObj i (objToFill :?> JObject) |> ignore
-        | _ -> failwith "the hills are alive with the sound of music"
+        | _ -> failwith "unspecified error"
         asJObj :> JToken
     | NameExpression a -> 
         let asJObj = toJObject obj
@@ -479,8 +479,8 @@ let assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (ex
 
 let languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifierExpression = 
     match a with
-    | ScalarExpression _ -> failwith "Can you smell what the rock is cooking"
-    | ComplexExpression _ -> failwith "Big fish little fish cardboard box"
+    | ScalarExpression _ -> failwith "unspecified error"
+    | ComplexExpression _ -> failwith "unspecified error"
     | WarewolfAtomAtomExpression _ -> failwith "literal value on the left hand side of an assign"
     | RecordSetNameExpression x ->
         let next = Terminal

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -259,7 +260,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-        [ExpectedException(typeof(NullValueInVariableException))]
+        [ExpectedException(typeof(Exception))]
         public void WarewolfParse_Eval_Scalar_NonExistent_ExpectException()
         {
 
@@ -1055,6 +1056,31 @@ namespace WarewolfParsingTest
 
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_WithIndexExpAndMultipleColumns_Multipleresults()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "1"), 0);
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+
+            Assert.AreEqual(items[0], "26");
+            Assert.AreEqual(items[1], "25");
+            Assert.AreEqual(items[2], "28");
+
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

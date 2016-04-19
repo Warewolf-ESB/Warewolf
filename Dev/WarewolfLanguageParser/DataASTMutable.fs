@@ -1,5 +1,7 @@
 ﻿module DataASTMutable
 
+open System.Diagnostics.CodeAnalysis
+[<ExcludeFromCodeCoverage()>]
 let PositionColumn = "WarewolfPositionColumn"
 
 
@@ -11,7 +13,7 @@ let GetDecimalPlaces (decimalNumber:float) =
             powers <- powers*10.0
             decimalPlaces <-decimalPlaces+1
     decimalPlaces;
-
+[<ExcludeFromCodeCoverage()>]
 type WarewolfAttribute =
     | Ordinal
     | Sorted
@@ -57,6 +59,7 @@ type WarewolfColumnData = WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRec
 
 type WarewolfColumnHeader = string
 
+[<ExcludeFromCodeCoverage()>]
 type WarewolfRecordset = 
     {
         Data : Map<WarewolfColumnHeader,WarewolfColumnData> ;
@@ -69,7 +72,7 @@ type WarewolfRecordset =
     member this.PositionColumn = this.Data.[PositionColumn]
     member this.Count = this.PositionColumn.Count
 
-
+[<ExcludeFromCodeCoverage()>]
 type WarewolfEnvironment = 
     {
        RecordSets : Map<string,WarewolfRecordset>;

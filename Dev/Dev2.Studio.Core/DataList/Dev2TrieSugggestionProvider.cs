@@ -27,25 +27,33 @@ namespace Dev2
 
                 PatriciaTrie = new SuffixTrie<string>(1);
 
+#pragma warning disable 618
                 var vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a), Level, IntellisenseStringProvider.FilterOption.All);
+#pragma warning restore 618
                 foreach (var @var in vars)
                 {
                     PatriciaTrie.Add(@var, @var);
                 }
                 PatriciaTrieScalars = new SuffixTrie<string>(1);
+#pragma warning disable 618
                 vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsScalarExpression), Level, IntellisenseStringProvider.FilterOption.Scalars);
+#pragma warning restore 618
                 foreach (var @var in vars)
                 {
                     PatriciaTrieScalars.Add(@var, @var);
                 }
                 PatriciaTrieRecsets = new SuffixTrie<string>(1);
+#pragma warning disable 618
                 vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression), Level, IntellisenseStringProvider.FilterOption.RecordSetNames);
+#pragma warning restore 618
                 foreach (var @var in vars)
                 {
                     PatriciaTrieRecsets.Add(@var, @var);
                 }
                 PatriciaTrieRecsetsFields = new SuffixTrie<string>(1);
+#pragma warning disable 618
                 vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression), Level, IntellisenseStringProvider.FilterOption.Recordsets);
+#pragma warning restore 618
                 foreach (var @var in vars)
                 {
                     PatriciaTrieRecsetsFields.Add(@var, @var);

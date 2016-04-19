@@ -17,7 +17,9 @@ namespace Dev2.Intellisense
             }
             try
             {
+#pragma warning disable 618
                 var rep = IntellisenseStringProvider.doReplace(originalText, originalCaret, selectedOption);
+#pragma warning restore 618
                 return new IntellisenseStringResult(rep.Item1, rep.Item2);
             }
             catch (Exception)
