@@ -93,6 +93,8 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
                                              false
                         index <- index + 1
                     recsetmutated
+            //!!!!!!!!!!!!!!!!!Note the calling method handles Star and everything els uses the first index. 
+            // If this is incorrect then uncomment the lines below.
             | Last -> 
                 let mutable recsetmutated = recordset
                 let mutable index = recordset.LastIndex + 1
@@ -100,21 +102,21 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
                     recsetmutated <- addAtomToRecordSetWithFraming recordset name.Column a index false
                     index <- index + 1
                 recsetmutated
-            | IndexExpression b -> 
-                let res = eval env update (languageExpressionToString b) |> evalResultToString
-                match b, assignValue with
-                | WarewolfAtomAtomExpression atom, _ -> 
-                    match atom with
-                    | Int a -> addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
-                    | _ -> failwith "Invalid index"
-                | _, Some av -> 
-                    let data : WarewolfEnvironment = 
-                        (evalAssignWithFrame 
-                             (new WarewolfParserInterop.AssignValue((sprintf " // added 0 here!
-                                                                               [[%s(%s).%s]]" name.Name res name.Column), 
-                                                                    av.Value)) update env)
-                    data.RecordSets.[name.Name]
-                | _, _ -> failwith "Invalid assign from list"
+            | IndexExpression _ -> failwith "Invalid assign from list" // logic below does not make sense. removed it. If there is a use case then add it back it. 
+//                let res = eval env update (languageExpressionToString b) |> evalResultToString
+//                match b, assignValue with
+//                | WarewolfAtomAtomExpression atom, _ -> 
+//                    match atom with
+//                    | Int a -> addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
+//                    | _ -> failwith "Invalid index"
+//                | _, Some av -> 
+//                    let data : WarewolfEnvironment = 
+//                        (evalAssignWithFrame 
+//                             (new WarewolfParserInterop.AssignValue((sprintf " // added 0 here!
+//                                                                               [[%s(%s).%s]]" name.Name res name.Column), 
+//                                                                    av.Value)) update env)
+//                    data.RecordSets.[name.Name]
+//                | _, _ -> failwith "Invalid assign from list"
         
         let recsets = Map.remove name.Name env.RecordSets |> fun a -> Map.add name.Name recsetAdded a
         { env with RecordSets = recsets }
@@ -123,8 +125,7 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
         addToRecordSetFramedWithAtomList envwithRecset name value shouldUseLast update assignValue
 
 and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
-    let l = WarewolfDataEvaluationCommon.parseLanguageExpression value.Name update
-    
+    let l = WarewolfDataEvaluationCommon.parseLanguageExpression value.Name update    
     let left = 
         match l with
         | ComplexExpression a -> 
@@ -135,16 +136,13 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                    | _ -> false) a
             then l
             else LanguageExpression.WarewolfAtomAtomExpression(languageExpressionToString l |> DataString)
-        | _ -> l
-    
+        | _ -> l    
     let rightParse = 
         if value.Value = null then LanguageExpression.WarewolfAtomAtomExpression Nothing
-        else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value update
-    
+        else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value update    
     let right = 
         if value.Value = null then WarewolfAtomResult Nothing
-        else WarewolfDataEvaluationCommon.eval env update value.Value
-    
+        else WarewolfDataEvaluationCommon.eval env update value.Value    
     let shouldUseLast = 
         match rightParse with
         | RecordSetExpression a -> 
@@ -178,7 +176,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                     raise 
                         (new Dev2.Common.Common.NullValueInVariableException("The expression result is  null", 
                                                                              value.Value))
-        | WarewolfAtomAtomExpression _ -> failwith "invalid variabe assigned to"
+        | WarewolfAtomAtomExpression _ -> failwith "invalid variable assigned to"
         | _ -> 
             let expression = (evalToExpression env update value.Name)
             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env

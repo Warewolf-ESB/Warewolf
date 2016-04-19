@@ -595,6 +595,54 @@ namespace WarewolfParsingTest
 
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_FramedAssign_List_IndexExpression()
+        {
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[a]]", "1"),
+
+             };
+            var env = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var envx = PublicFunctions.EvalMultiAssign(assigns, 0, env);
+             envx = AssignEvaluation.evalMultiAssignList(envx, new List<DataASTMutable.WarewolfAtom> { DataASTMutable.WarewolfAtom.NewInt(1), DataASTMutable.WarewolfAtom.NewInt(2) }, "[[bec([[a]]).a]]", 0, true);
+
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_With_LastOnOneSideList()
+        {
+
+
+
+            var env = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var envx = AssignEvaluation.evalMultiAssignList(env, new List<DataASTMutable.WarewolfAtom> { DataASTMutable.WarewolfAtom.NewInt(1), DataASTMutable.WarewolfAtom.NewInt(2) }, "[[bec().a]]", 0, true);
+
+
+            var recordSet = envx.RecordSets["bec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 2);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+        }
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
