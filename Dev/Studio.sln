@@ -31,11 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core", "Dev2.Core\Dev2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core.Tests", "Dev2.Core.Tests\Dev2.Core.Tests.csproj", "{6A65D99B-61C5-4376-B4F7-71A503F9351F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BD7DD42-D245-449E-84F9-DBD97A5A7002}"
-	ProjectSection(SolutionItems) = preProject
-		AssemblyCommonInfo.cs = AssemblyCommonInfo.cs
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.OutputLibraries", "Dev2.OutputLibraries\Dev2.OutputLibraries.csproj", "{38650E4E-90E2-44DE-A32F-30F3C4D1438B}"
@@ -437,7 +432,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7F0E96E6-0D23-4305-8F2C-31CB2CD1D92F} = {9BD7DD42-D245-449E-84F9-DBD97A5A7002}
 		{F6E87B6B-42FB-4101-9375-59D56A234F20} = {7F0E96E6-0D23-4305-8F2C-31CB2CD1D92F}
 		{F03F2AA2-AFE4-4710-9277-AF246CD8F5DF} = {7F0E96E6-0D23-4305-8F2C-31CB2CD1D92F}
 		{21A7E1BF-EABD-4D92-B886-EF5790BE6428} = {7F0E96E6-0D23-4305-8F2C-31CB2CD1D92F}
