@@ -145,7 +145,7 @@
     <value>Studio: Version {0}
 Server: Version {1}
 
-Sofware development by: www.dev2.co.za
+Software development by: www.dev2.co.za
 </value>
   </data>
   <data name="About_Header_Text" xml:space="preserve">
@@ -247,7 +247,7 @@ Version History will also be deleted.</value>
     <value>Confirm delete.</value>
   </data>
   <data name="DialogTitle_HasDependencies" xml:space="preserve">
-    <value>{0} has dependants</value>
+    <value>{0} has dependents</value>
   </data>
   <data name="DialogTitle_HasDuplicateName" xml:space="preserve">
     <value>{0} exists</value>
@@ -322,7 +322,7 @@ Version History will also be deleted.</value>
     <value>Warewolf EULA</value>
   </data>
   <data name="IntellisenseErrorMisMacthingBrackets" xml:space="preserve">
-    <value>Invalid expression: Opening and closing brackets dont match.</value>
+    <value>Invalid expression: Opening and closing brackets don't match.</value>
   </data>
   <data name="CriticalExceptionMessage" xml:space="preserve">
     <value>Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community.</value>
@@ -379,13 +379,13 @@ Version History will also be deleted.</value>
  Please re-install or upgrade to the latest version to resolve this issue</value>
   </data>
   <data name="DialogBody_FolderContentsHaveDependencies" xml:space="preserve">
-    <value>This folder cannot be deleted because it contains resources with dependants.</value>
+    <value>This folder cannot be deleted because it contains resources with dependents.</value>
   </data>
   <data name="DialogTitle_FolderHasDependencies" xml:space="preserve">
-    <value>Folder has dependants</value>
+    <value>Folder has dependents</value>
   </data>
   <data name="Resource_ID_must_be_a_Guid" xml:space="preserve">
-    <value>Resource ID must be a Guid</value>
+    <value>Resource ID must be a GUID</value>
   </data>
   <data name="Pack_Uri_DatabaseService_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png</value>
@@ -425,7 +425,7 @@ You need Administrator permission.</value>
   </data>
   <data name="SaveSettingsDuplicateServerPermissions" xml:space="preserve">
     <value>There are duplicate server permissions, 
-    i.e Server permissions have been setup up with the same group twice. 
+    i.e. Server permissions have been setup up with the same group twice. 
     Please clear the duplicates before saving.</value>
   </data>
 </root>

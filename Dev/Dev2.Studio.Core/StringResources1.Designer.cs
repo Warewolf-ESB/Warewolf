@@ -64,7 +64,7 @@ namespace Dev2 {
         ///   Looks up a localized string similar to Studio: Version {0}
         ///Server: Version {1}
         ///
-        ///Sofware development by: www.dev2.co.za
+        ///Software development by: www.dev2.co.za
         ///.
         /// </summary>
         public static string About_Content {
@@ -225,7 +225,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This folder cannot be deleted because it contains resources with dependants..
+        ///   Looks up a localized string similar to This folder cannot be deleted because it contains resources with dependents..
         /// </summary>
         public static string DialogBody_FolderContentsHaveDependencies {
             get {
@@ -275,7 +275,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Folder has dependants.
+        ///   Looks up a localized string similar to Folder has dependents.
         /// </summary>
         public static string DialogTitle_FolderHasDependencies {
             get {
@@ -284,7 +284,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} has dependants.
+        ///   Looks up a localized string similar to {0} has dependents.
         /// </summary>
         public static string DialogTitle_HasDependencies {
             get {
@@ -420,7 +420,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets dont match..
+        ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets don&apos;t match..
         /// </summary>
         public static string IntellisenseErrorMisMacthingBrackets {
             get {
@@ -524,7 +524,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resource ID must be a Guid.
+        ///   Looks up a localized string similar to Resource ID must be a GUID.
         /// </summary>
         public static string Resource_ID_must_be_a_Guid {
             get {
@@ -572,7 +572,7 @@ namespace Dev2 {
         
         /// <summary>
         ///   Looks up a localized string similar to There are duplicate server permissions, 
-        ///    i.e Server permissions have been setup up with the same group twice. 
+        ///    i.e. Server permissions have been setup up with the same group twice. 
         ///    Please clear the duplicates before saving..
         /// </summary>
         public static string SaveSettingsDuplicateServerPermissions {

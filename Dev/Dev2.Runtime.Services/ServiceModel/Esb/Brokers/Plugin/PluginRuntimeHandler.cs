@@ -207,7 +207,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             else
             {
                 //does not start with gac prefix or end with .dll
-                result = "Not a Dll file";
+                result = "Not a DLL file";
             }
 
             return result;
