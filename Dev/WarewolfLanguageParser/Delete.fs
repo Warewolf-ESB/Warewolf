@@ -1,13 +1,9 @@
 ﻿module Delete
-
-
 open LanguageAST
 open DataASTMutable
 open WarewolfParserInterop
 open CommonFunctions
 open WarewolfDataEvaluationCommon
-
-
 
 let deleteValues (exp:string)  (env:WarewolfEnvironment) =
     let rset = env.RecordSets.TryFind exp

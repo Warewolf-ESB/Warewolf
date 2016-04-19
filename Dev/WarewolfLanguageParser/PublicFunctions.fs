@@ -30,6 +30,7 @@ let AddRecsetToEnv (name : string) (env : WarewolfEnvironment) =
 
 let EvalEnvExpression (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.eval env update exp
+
 let EvalWithPositions (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.evalWithPositions env update exp
 
@@ -51,14 +52,19 @@ let RecordsetToSearchTo(recordset : WarewolfRecordset) =
 
 let EvalRecordSetIndexes (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.eval env update exp
+
 let EvalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssign exp value update env
+
 let EvalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
     AssignEvaluation.evalMultiAssignOp env update value
+
 let EvalMultiAssign (values : IAssignValue seq) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalMultiAssign values update env
+
 let EvalAssignWithFrame (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssignWithFrame value update env
+
 let EvalAssignFromList (value : string) (data : WarewolfAtom seq) (env : WarewolfEnvironment) (update : int) 
     (shouldUseLast : bool) = AssignEvaluation.evalMultiAssignList env data value update shouldUseLast
 
@@ -67,16 +73,22 @@ let RemoveFraming(env : WarewolfEnvironment) =
     { env with RecordSets = recsets }
 
 let AtomtoString a = atomtoString a
+
 let GetIndexes (name : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.evalIndexes env update name
+
 let EvalDelete (exp : string) (update : int) (env : WarewolfEnvironment) = Delete.evalDelete exp update env
+
 let SortRecset (exp : string) (desc : bool) (update : int) (env : WarewolfEnvironment) = 
     Sort.sortRecset exp desc update env
+
 let EvalWhere (exp : string) (env : WarewolfEnvironment) (update : int) (func : System.Func<WarewolfAtom, bool>) = 
     Where.evalWhere env exp update (fun a -> func.Invoke(a))
+
 let EvalUpdate (exp : string) (env : WarewolfEnvironment) (update : int) 
     (func : System.Func<WarewolfAtom, WarewolfAtom>) = UpdateInPlace.evalUpdate env exp update (fun a -> func.Invoke(a))
 //let EvalDistinct (exp:string list)  (env:WarewolfEnvironment)  = Where.EvalDistinct env exp
+
 let EvalDataShape (exp : string) (env : WarewolfEnvironment) = AssignEvaluation.evalDataShape exp 0 env
 
 let IsValidRecsetExpression(exp : string) = 
