@@ -59,10 +59,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the execution has '(.*)' error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expectedError = anError.Equals("AN",StringComparison.OrdinalIgnoreCase);
+            bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            string fetchErrors =  result.Environment.FetchErrors();
+            string fetchErrors = result.Environment.FetchErrors();
             bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheDebugInputsAs(Table table)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            if(!result.Environment.HasErrors())
+            if (!result.Environment.HasErrors())
             {
                 var inputDebugItems = GetInputDebugItems(null, result.Environment);
                 ThenTheDebugInputsAs(table, inputDebugItems);
@@ -93,7 +93,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheDebugOutputAs(Table table)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            if(!result.Environment.HasErrors())
+            if (!result.Environment.HasErrors())
             {
                 var outputDebugItems = GetOutputDebugItems(null, result.Environment);
                 ThenTheDebugOutputAs(table, outputDebugItems);
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
                     ScenarioContext.Current.Get<string>(SourceUsernameHolder),
                     ScenarioContext.Current.Get<string>(SourcePasswordHolder),
-                    true,"");
+                    true, "");
                 StringBuilder sb = new StringBuilder();
                 Enumerable.Range(1, numberOfGuids).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
                 var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, sb.ToString());

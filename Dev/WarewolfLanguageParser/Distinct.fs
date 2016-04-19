@@ -10,7 +10,7 @@ let distinctIndexes (recset:WarewolfRecordset) (columnName:string) =
     Seq.distinctBy (fun (_,b) -> b.GetHashCode()) positions |> Seq.map fst
  
 let distinctValues (recset:WarewolfRecordset) (columnName:string) (positions:int seq)= 
-    Seq.map (fun a -> recset.Data.[columnName].[a].ToString()) positions
+    Seq.map (fun a -> recset.Data.[columnName].[a].ToString()) positions 
 
 
 let assignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) (update:int) (startPositions:Map<string,int>) =

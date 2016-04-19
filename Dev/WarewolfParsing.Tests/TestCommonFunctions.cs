@@ -56,6 +56,38 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_AtomToInt")]
+        [ExpectedException(typeof(Exception))]
+        public void CommonFunctions_AtomToInt()
+        {
+            CommonFunctions.atomToInt(DataASTMutable.WarewolfAtom.Nothing);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_AtomToInt")]
+        [ExpectedException(typeof(Exception))]
+        public void CommonFunctions_AtomToInt_neg()
+        {
+            CommonFunctions.atomToInt(DataASTMutable.WarewolfAtom.NewInt(-1));
+        }
+        
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_AtomToInt")]
+        public void CommonFunctions_AtomToInt_Parsed()
+        {
+          Assert.AreEqual(1,  CommonFunctions.atomToInt(DataASTMutable.WarewolfAtom.NewDataString("1")));
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_AtomToInt")]
+        public void CommonFunctions_AtomToInt_ParsedInt()
+        {
+            Assert.AreEqual(1, CommonFunctions.atomToInt(DataASTMutable.WarewolfAtom.NewInt(1)));
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("CommonFunctions_AtomToJsonCompatable")]
         public void CommonFunctions_EvalResultToJsonCompatable()
         {
@@ -76,6 +108,58 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_GetRecsetPosition")]
+        public void CommonFunctions_GetRecsetPosition()
+        {
+            var env = CreateEnvironmentWithData();
+            var rec = env.RecordSets["bec"];
+            var a = CommonFunctions.getRecordSetIndex(rec,3);
+            Assert.AreEqual(((CommonFunctions.PositionValue.IndexFoundPosition)a).Item,0);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_GetRecsetPosition")]
+        public void CommonFunctions_GetRecsetPositionNonExistent()
+        {
+            var env = CreateEnvironmentWithData();
+            var rec = env.RecordSets["bec"];
+            var a = CommonFunctions.getRecordSetIndex(rec, 5);
+            Assert.IsTrue(a.IsIndexDoesNotExist);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_GetRecsetPosition")]
+        public void CommonFunctions_IsNothing()
+        {
+            var env = CreateEnvironmentWithData();
+
+            Assert.IsTrue(CommonFunctions.isNothing(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing)));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_GetRecsetPosition")]
+        public void CommonFunctions_IsNothingNot()
+        {
+            var env = CreateEnvironmentWithData();
+
+            Assert.IsFalse(CommonFunctions.isNothing(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString("A"))));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_GetRecsetPosition")]
+        public void CommonFunctions_IsNothingLsit()
+        {
+            var env = CreateEnvironmentWithData();
+
+            Assert.IsFalse(CommonFunctions.isNothing(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing))));
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("CommonFunctions_AtomToJsonCompatable")]
         [ExpectedException(typeof(Exception))]
         public void CommonFunctions_EvalResultToJsonCompatableJson()
@@ -84,6 +168,7 @@ namespace WarewolfParsingTest
             var a = CommonFunctions.evalResultToJsonCompatibleObject(WarewolfDataEvaluationCommon.eval(env, 0, "[[Rec(*)]]"));
 
         }
+
         public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
@@ -96,6 +181,8 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(2).b]]", "b", 0);
             env.Assign("[[Rec(3).b]]", "c", 0);
             env.Assign("[[Rec(4).b]]", "c", 0);
+            env.Assign("[[bec(3).b]]", "c", 0);
+            env.Assign("[[bec(2).b]]", "c", 0);
             env.Assign("[[x]]", "1", 0);
             env.Assign("[[y]]", "y", 0);
             env.AssignJson(new AssignValue("[[Person.Name]]", "bob"), 0);
