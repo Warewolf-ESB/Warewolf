@@ -57,10 +57,3 @@ and evalRecordsSetExpressionUpdate (recset:RecordSetIdentifier) (env: WarewolfEn
                                                                 AssignEvaluation.evalAssign (languageExpressionToString (RecordSetExpression recset))  (data.ToString()) update env 
                                                     |  _ -> failwith "Invalid index"
                                         | _ ->   evalUpdate env  ( sprintf "[[%s(%s).%s]]" recset.Name res recset.Column) update func
-
-
-and evalRecordsetUpdate (recset:RecordSetIdentifier) (env: WarewolfEnvironment) (update:int) (func: WarewolfAtom->WarewolfAtom)  =
-    if  not (env.RecordSets.ContainsKey recset.Name)       then 
-        failwith "Unknown recordset type"    
-    else
-        evalRecordsSetExpressionUpdate  recset env update func

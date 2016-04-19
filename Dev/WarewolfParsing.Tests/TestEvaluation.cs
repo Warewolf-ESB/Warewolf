@@ -130,8 +130,9 @@ namespace WarewolfParsingTest
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
             var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*)]]"));
+            Assert.IsTrue(evalled.Contains(@"""Name"": ""p"""));
+            Assert.IsTrue(evalled.Contains(@"""Name"": ""q"""));
 
-            Assert.AreEqual(evalled, "p,q");
         }
 
         [TestMethod]
@@ -305,6 +306,8 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items.ToArray()[0], 1);
 
         }
+
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -765,7 +768,66 @@ namespace WarewolfParsingTest
             Assert.AreEqual(enumerable.ToArray()[1], 3);
 
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Assign_MultipleEvals_Star()
+        {
 
 
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().b]]", "26"),
+                 new AssignValue("[[rec(*).a]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            // ReSharper disable UnusedVariable
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+            // ReSharper restore UnusedVariable
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec(*).a]]", "28"), 0);
+
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]",0);
+            Assert.AreEqual(items.ToArray()[0], "28");
+            Assert.AreEqual(items.ToArray()[1], "28");
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Assign_MultipleEvals_Star_NonExistent()
+        {
+
+
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().b]]", "26"),
+                 new AssignValue("[[rec(*).a]]", "27"),
+
+             };
+            var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
+
+            // ReSharper disable UnusedVariable
+            var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
+            // ReSharper restore UnusedVariable
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "27"), 0);
+            env.AssignWithFrame(new AssignValue("[[rsec(*).a]]", "28"), 0);
+
+            var items = env.EvalAsListOfStrings("[[rsec(*).a]]", 0);
+            Assert.AreEqual(items.Count, 1);
+            Assert.AreEqual(items[0], "28");
+        }
     }
 }

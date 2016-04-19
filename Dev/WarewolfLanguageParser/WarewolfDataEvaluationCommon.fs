@@ -7,6 +7,7 @@ open Microsoft.FSharp.Text.Lexing
 open DataASTMutable
 open WarewolfParserInterop
 open CommonFunctions
+open System.Diagnostics.CodeAnalysis
 
 // this method will given a language string return an AST based on FSLex and FSYacc
 
@@ -93,7 +94,7 @@ and jsonExpressionToString a acc =
 
 
 
-and LanguageExpressionToSumOfInt (x: LanguageExpression list) =
+and [<System.Obsolete("Deprecated Usewolf 1601 ")>] [<ExcludeFromCodeCoverage()>] LanguageExpressionToSumOfInt (x: LanguageExpression list) =
     let expressionToInt (current:int) (y:LanguageExpression) =
         match current with 
         | -1 -> -99
@@ -229,7 +230,7 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
                     | RecordSetExpression a ->  evalRecordSetAsString env a
                     | ScalarExpression a ->  (evalScalar a env)
                     | WarewolfAtomAtomExpression a ->  a
-                    | _ ->failwith "what we have here is a failure to communicate"
+                    | _ ->failwith "unspecified error"
             else    
                 let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
                 let evaled = (List.map (languageExpressionToString >> (eval  env update)>>evalResultToString)  exp )|> (List.fold (+) "")
@@ -484,19 +485,7 @@ let getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
 let createFilled (count:int) (value: WarewolfAtom):WarewolfColumnData=
    new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> (WarewolfAtomRecord.Nothing,seq {for _ in 1 .. count do yield value }) 
 
-let updateColumnWithValue (rset:WarewolfRecordset) (columnName:string) (value: WarewolfAtom)=
-    if rset.Count = 0 then
-   
-        rset
-    else 
-        if rset.Data.ContainsKey( columnName) 
-        then
-            let x = rset.Data.[columnName];
-            for i in [0..x.Count-1] do                         
-                x.[i]<-value;    
-            rset 
-        else 
-        {rset with Data=  Map.add columnName ( createFilled rset.Count value)  rset.Data    }
+
 
 let getIndexes (name:string) (env:WarewolfEnvironment) = evalIndexes  env 0 name
 

@@ -757,7 +757,6 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("AssignEvaluation_assignGivenAValue")]
-        [ExpectedException(typeof(Exception))]
         public void AssignEvaluation_LanguageExpressionToJsonExpression_CompleteRecset()
         {
             var parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Child()]]");

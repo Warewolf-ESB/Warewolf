@@ -15,16 +15,6 @@ let deleteValues (exp:string)  (env:WarewolfEnvironment) =
     | Some x -> {x with Data = Map.map (fun _ _ -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)) x.Data ;LastIndex=0;  } 
     | None->failwith "recordset does not exist"
 
-let deleteValue  (exp:string) (index:int)   (env:WarewolfEnvironment) =
-    let rset = env.RecordSets.TryFind exp
-    match rset with 
-    | Some values -> let pos = Seq.find ( fun a-> atomtoString a = index.ToString())  values.Data.[PositionColumn]
-                     let posAsInt = match pos with
-                                    | Nothing -> failwith "index does not exist"
-                                    | Int a -> a
-                                    | _  -> failwith "index does not exist"
-                     {values  with Data = Map.map (fun (_:string) (b:WarewolfAtomList<WarewolfAtom>) -> b.DeletePosition( posAsInt ) ) values.Data ;  LastIndex= values.LastIndex-1 } 
-    | None->failwith "recordset does not exist"
 
 let deleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
     let rset = env.RecordSets.TryFind exp

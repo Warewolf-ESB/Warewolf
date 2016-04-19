@@ -1,46 +1,49 @@
 ﻿module LanguageAST
 open DataASTMutable
+open System.Diagnostics.CodeAnalysis
 
+[<ExcludeFromCodeCoverage()>]
 type ScalarId = string
+[<ExcludeFromCodeCoverage()>]
 type Index = 
     | IntIndex of int
     | Star
     | Last
     | IndexExpression of LanguageExpression
-and RecordSetIdentifier = 
+and [<ExcludeFromCodeCoverage()>] RecordSetIdentifier = 
     {
         Name : string;
         Column :string;
         Index: Index;
     }
-and JsonIdentifier = 
+and [<ExcludeFromCodeCoverage()>] JsonIdentifier = 
     {   
         Name:string
     }
-and JsonPropertyIdentifier = 
+and [<ExcludeFromCodeCoverage()>] JsonPropertyIdentifier = 
     {
         ObjectName :string;
         Next: JsonIdentifierExpression;
     }
-and BasicJsonIndexedPropertyIdentifier = 
+and [<ExcludeFromCodeCoverage()>] BasicJsonIndexedPropertyIdentifier = 
     {
         ObjectName :string;
         Next: JsonIdentifierExpression;
         Index:Index;
     }
-and JsonIdentifierExpression = 
+and [<ExcludeFromCodeCoverage()>] JsonIdentifierExpression = 
     | NameExpression of JsonIdentifier
     | NestedNameExpression of JsonPropertyIdentifier
     | IndexNestedNameExpression of BasicJsonIndexedPropertyIdentifier
     | Terminal
 
-and RecordSetName = 
+and [<ExcludeFromCodeCoverage()>] RecordSetName = 
     {
         Name : string;
         Index : Index;
     }
-and ScalarIdentifier = string
-and LanguageExpression = 
+and [<ExcludeFromCodeCoverage()>] ScalarIdentifier = string
+and [<ExcludeFromCodeCoverage()>] LanguageExpression = 
     | RecordSetExpression of RecordSetIdentifier
     | ScalarExpression of ScalarIdentifier
     | WarewolfAtomAtomExpression of WarewolfAtom
