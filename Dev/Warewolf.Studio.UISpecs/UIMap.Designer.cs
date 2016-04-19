@@ -3795,6 +3795,19 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(showLargeView, new Point(43, 15));
         }
         
+        /// <summary>
+        /// Assert_Decision_Exists_In_The_Toolbox - Use 'Assert_Decision_Exists_In_The_ToolboxExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Decision_Exists_In_The_Toolbox()
+        {
+            #region Variable Declarations
+            WpfImage uIDecisionImage = this.UIWarewolfDEV2ASHLEYLEWindow.UIUI_ToolboxControl_AuCustom.UIToolButtonImageText.UIDecisionImage;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Decision' image equals 'True'
+            Assert.AreEqual(this.Assert_Decision_Exists_In_The_ToolboxExpectedValues.UIDecisionImageExists, uIDecisionImage.Exists, "Decision does not exist in the Toolbox");
+        }
+        
         #region Properties
         public virtual Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues Assert_Assign_Large_View_Exists_OnDesignSurfaceExpectedValues
         {
@@ -5032,6 +5045,18 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
+        public virtual Assert_Decision_Exists_In_The_ToolboxExpectedValues Assert_Decision_Exists_In_The_ToolboxExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Decision_Exists_In_The_ToolboxExpectedValues == null))
+                {
+                    this.mAssert_Decision_Exists_In_The_ToolboxExpectedValues = new Assert_Decision_Exists_In_The_ToolboxExpectedValues();
+                }
+                return this.mAssert_Decision_Exists_In_The_ToolboxExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -5053,6 +5078,18 @@ namespace Warewolf.Studio.UISpecs
                     this.mMessageBoxWindow = new MessageBoxWindow();
                 }
                 return this.mMessageBoxWindow;
+            }
+        }
+        
+        public UIWarewolfDEV2ASHLEYLEWindow UIWarewolfDEV2ASHLEYLEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2ASHLEYLEWindow == null))
+                {
+                    this.mUIWarewolfDEV2ASHLEYLEWindow = new UIWarewolfDEV2ASHLEYLEWindow();
+                }
+                return this.mUIWarewolfDEV2ASHLEYLEWindow;
             }
         }
         #endregion
@@ -5264,9 +5301,13 @@ namespace Warewolf.Studio.UISpecs
         
         private PressF11_EnterFullScreenParams mPressF11_EnterFullScreenParams;
         
+        private Assert_Decision_Exists_In_The_ToolboxExpectedValues mAssert_Decision_Exists_In_The_ToolboxExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
+        
+        private UIWarewolfDEV2ASHLEYLEWindow mUIWarewolfDEV2ASHLEYLEWindow;
         #endregion
     }
     
@@ -6812,6 +6853,21 @@ namespace Warewolf.Studio.UISpecs
         /// Type '{F11}' in 'Warewolf' window
         /// </summary>
         public string MainStudioWindowSendKeys = "{F11}";
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Decision_Exists_In_The_Toolbox'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Decision_Exists_In_The_ToolboxExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Decision' image equals 'True'
+        /// </summary>
+        public bool UIDecisionImageExists = true;
         #endregion
     }
     
@@ -11214,6 +11270,221 @@ namespace Warewolf.Studio.UISpecs
         
         #region Fields
         private WpfText mCancelButtonText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfDEV2ASHLEYLEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2ASHLEYLEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\ASHLEY.LEWIS)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ToolboxControl_AuCustom UIUI_ToolboxControl_AuCustom
+        {
+            get
+            {
+                if ((this.mUIUI_ToolboxControl_AuCustom == null))
+                {
+                    this.mUIUI_ToolboxControl_AuCustom = new UIUI_ToolboxControl_AuCustom(this);
+                }
+                return this.mUIUI_ToolboxControl_AuCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ToolboxControl_AuCustom mUIUI_ToolboxControl_AuCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIUI_ToolboxControl_AuCustom : WpfCustom
+    {
+        
+        public UIUI_ToolboxControl_AuCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolboxView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ToolboxControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIToolListBoxList UIToolListBoxList
+        {
+            get
+            {
+                if ((this.mUIToolListBoxList == null))
+                {
+                    this.mUIToolListBoxList = new UIToolListBoxList(this);
+                }
+                return this.mUIToolListBoxList;
+            }
+        }
+        
+        public UIToolButtonImageText UIToolButtonImageText
+        {
+            get
+            {
+                if ((this.mUIToolButtonImageText == null))
+                {
+                    this.mUIToolButtonImageText = new UIToolButtonImageText(this);
+                }
+                return this.mUIToolButtonImageText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIToolListBoxList mUIToolListBoxList;
+        
+        private UIToolButtonImageText mUIToolButtonImageText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIToolListBoxList : WpfList
+    {
+        
+        public UIToolListBoxList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "ToolListBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIControlFlowGroup UIControlFlowGroup
+        {
+            get
+            {
+                if ((this.mUIControlFlowGroup == null))
+                {
+                    this.mUIControlFlowGroup = new UIControlFlowGroup(this);
+                }
+                return this.mUIControlFlowGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIControlFlowGroup mUIControlFlowGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIControlFlowGroup : WpfGroup
+    {
+        
+        public UIControlFlowGroup(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Control Flow";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWarewolfStudioViewMoListItem UIWarewolfStudioViewMoListItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoListItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoListItem = new UIWarewolfStudioViewMoListItem(this);
+                }
+                return this.mUIWarewolfStudioViewMoListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWarewolfStudioViewMoListItem mUIWarewolfStudioViewMoListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIWarewolfStudioViewMoListItem : WpfListItem
+    {
+        
+        public UIWarewolfStudioViewMoListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIDecisionText
+        {
+            get
+            {
+                if ((this.mUIDecisionText == null))
+                {
+                    this.mUIDecisionText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIDecisionText.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolName";
+                    this.mUIDecisionText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDecisionText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIDecisionText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class UIToolButtonImageText : WpfText
+    {
+        
+        public UIToolButtonImageText(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage UIDecisionImage
+        {
+            get
+            {
+                if ((this.mUIDecisionImage == null))
+                {
+                    this.mUIDecisionImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mUIDecisionImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Decision";
+                    this.mUIDecisionImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mUIDecisionImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mUIDecisionImage;
         #endregion
     }
 }
