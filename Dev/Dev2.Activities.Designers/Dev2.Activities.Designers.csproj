@@ -407,11 +407,6 @@
     <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
     <Compile Include="Designers2\Core\Help\HelpSetter.cs" />
-    <Compile Include="Designers2\Core\Help\HelpTextResources.Designer.cs">
-      <DependentUpon>HelpTextResources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
@@ -914,11 +909,6 @@
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
-    <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ActivityResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
