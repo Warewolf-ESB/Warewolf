@@ -33,6 +33,7 @@ let getLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
     | Some values -> values.LastIndex                    
     | None->failwith "recordset does not exist"
 
+
 let rec deleteExpressionIndex (b:RecordSetName) (ind: LanguageExpression) (update:int)  (env:WarewolfEnvironment)  =
     let data = languageExpressionToString ind |> (eval env update) |> evalResultToString
     match ind with 

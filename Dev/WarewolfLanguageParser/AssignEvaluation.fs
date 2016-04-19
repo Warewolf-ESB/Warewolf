@@ -34,8 +34,6 @@ let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (valu
     | Some a -> env
     | _ -> addToJsonObjects env name value
 
-
-
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     evalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp, value)) update env
 
@@ -262,7 +260,6 @@ and addAtomToRecordSetWithFraming (rset : WarewolfRecordset) (columnName : strin
                            Frame = frame
                            Optimisations = WarewolfAttribute.Fragmented }
 
-
 and evalMultiAssignList (env : WarewolfEnvironment) (value : WarewolfAtom seq) (exp : string) (update : int) 
     (shouldUseLast : bool) = 
     let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
@@ -465,15 +462,14 @@ let assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (ex
         let obj = addedenv.JsonObjects.[a.ObjectName]
         expressionToObject obj a.Next res |> ignore
         addedenv
-    | IndexNestedNameExpression b ->
+    | IndexNestedNameExpression b -> 
         let addedenv = addOrReturnJsonObjects env b.ObjectName (new JArray())
         let obj = addedenv.JsonObjects.[b.ObjectName]
-        if b.Next = Terminal then
-            let arr = obj:?> JArray
+        if b.Next = Terminal then 
+            let arr = obj :?> JArray
             let indexes = indexToInt b.Index arr
-            List.map (fun a -> addValueToJArray arr a  (new JValue(evalResultToString res))) indexes  |> ignore
-        else
-            objectFromExpression exp res obj |> ignore
+            List.map (fun a -> addValueToJArray arr a (new JValue(evalResultToString res))) indexes |> ignore
+        else objectFromExpression exp res obj |> ignore
         addedenv
     | _ -> failwith "top level assign cannot be a nested expresssion"
 
@@ -482,10 +478,10 @@ let languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
     | ScalarExpression _ -> failwith "unspecified error"
     | ComplexExpression _ -> failwith "unspecified error"
     | WarewolfAtomAtomExpression _ -> failwith "literal value on the left hand side of an assign"
-    | RecordSetNameExpression x ->
+    | RecordSetNameExpression x -> 
         let next = Terminal
         { ObjectName = x.Name
-          Index = x.Index 
+          Index = x.Index
           Next = next }
         |> IndexNestedNameExpression
     | RecordSetExpression x -> 

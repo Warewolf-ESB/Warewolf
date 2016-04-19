@@ -148,6 +148,82 @@ namespace WarewolfParsingTest
         }
 
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluationRecsets_AssignAShape")]
+        public void Assign_Shape()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = AssignEvaluation.evalDataShape( "[[b]]", 1,data);
+
+            //------------Assert Results-------------------------
+
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(x.Scalar.ContainsKey("b"));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluationRecsets_AssignAShape")]
+        public void Assign_Shape_Recset()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = AssignEvaluation.evalDataShape("[[bx().d]]", 1, data);
+
+            //------------Assert Results-------------------------
+
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(x.RecordSets.ContainsKey("bx"));
+            Assert.IsTrue(x.RecordSets["bx"].Data.ContainsKey("d"));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluationRecsets_AssignAShape")]
+        public void Assign_Shape_Recset_ExistsGetsReplaced()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = AssignEvaluation.evalDataShape("[[Rec().d]]", 1, data);
+
+            //------------Assert Results-------------------------
+
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(x.RecordSets.ContainsKey("Rec"));
+            Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("d"));
+            Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("a"));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluationRecsets_AssignAShape")]
+        [ExpectedException(typeof(Exception))]
+        public void Assign_Shape_Recset_JsonThrows()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = AssignEvaluation.evalDataShape("1", 1, data);
+             x = AssignEvaluation.evalDataShape("[[Rec().d.x]]", 1, x);
+
+            //------------Assert Results-------------------------
+
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(x.RecordSets.ContainsKey("Rec"));
+            Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("d"));
+            Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("a"));
+        }
+
+
         public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
