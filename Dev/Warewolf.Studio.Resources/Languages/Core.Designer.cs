@@ -3092,7 +3092,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the character index(es) of a string inside another string, put the string to be searched here.
+        ///To find the character index(s) of a string inside another string, put the string to be searched here.
         ///
         ///Allowed:
         ///[[Scalar]]   
@@ -3107,7 +3107,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the index(es) of the found string.
+        ///Returns the index(s) of the found string.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
         ///Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.
         ///
@@ -3143,7 +3143,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select which index(es) you would like found..
+        ///   Looks up a localized string similar to Select which index(s) you would like found..
         /// </summary>
         public static string FindIndexToolTipIndexType {
             get {
@@ -3153,7 +3153,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To find the character index(es) of a string inside another string, put the string to be searched here..
+        ///To find the character index(s) of a string inside another string, put the string to be searched here..
         /// </summary>
         public static string FindIndexToolTipInField {
             get {
@@ -3163,7 +3163,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the index(es) of the found string.
+        ///Returns the index(s) of the found string.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
         ///Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated..
         /// </summary>
@@ -4468,7 +4468,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full path or GAC name of the dll you want to use.
+        ///   Looks up a localized string similar to The full path or GAC name of the DLL you want to use.
         /// </summary>
         public static string ManagePluginSourceAssemblyNameTooltip {
             get {
@@ -4549,7 +4549,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Paste a customised response instead.
+        ///   Looks up a localized string similar to Paste a customized response instead.
         /// </summary>
         public static string ManageWebServicePasteTooltip {
             get {
@@ -5305,9 +5305,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change the connection string properties of the selected dll.&lt;br&gt;
+        ///   Looks up a localized string similar to Change the connection string properties of the selected DLL.&lt;br&gt;
         ///&lt;br/&gt;
-        ///Change the connection string from, say, a development dll to a live dll.&lt;br/&gt;
+        ///Change the connection string from, say, a development DLL to a live DLL.&lt;br/&gt;
         ///&lt;br/&gt;
         ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
         /// </summary>
@@ -5345,7 +5345,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the method in the dll you want to execute..
+        ///   Looks up a localized string similar to Select the method in the DLL you want to execute..
         /// </summary>
         public static string PluginServiceSelectActionHelp {
             get {
@@ -5354,7 +5354,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the dll you want to use from previously setup sources..
+        ///   Looks up a localized string similar to Select the DLL you want to use from previously setup sources..
         /// </summary>
         public static string PluginServiceSourcesHelp {
             get {
@@ -5372,7 +5372,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full path to the dll. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;
+        ///   Looks up a localized string similar to The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;
         ///or
         ///The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;
         ///.
@@ -5414,7 +5414,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Preview (recordset field)
-        ///This is a variable from an input field. Use comma-separated values for each index eg [[Trip(*).Distance]] = 45, 32, 12, 5
+        ///This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5
         /// 
         ///Preview (scalar field - including indexed recordsets and ())
         ///This is a variable from an input field. Put some test info in and click the Preview button to test your result..
@@ -6961,7 +6961,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A counter for the authorisation failures on this server..
+        ///   Looks up a localized string similar to A counter for the authorization failures on this server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpNotAuthErrors {
             get {
@@ -7015,7 +7015,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authorisation failures on this server..
+        ///   Looks up a localized string similar to Authorization failures on this server..
         /// </summary>
         public static string SettingsPerfCounterServerToolTipNotAuthErrors {
             get {

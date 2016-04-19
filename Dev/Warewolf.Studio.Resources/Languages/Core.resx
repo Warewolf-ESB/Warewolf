@@ -380,7 +380,7 @@ Software development by: www.dev2.co.za
     <value>Refresh the available files and GAC entries</value>
   </data>
   <data name="ManagePluginSourceAssemblyNameTooltip" xml:space="preserve">
-    <value>The full path or GAC name of the dll you want to use</value>
+    <value>The full path or GAC name of the DLL you want to use</value>
   </data>
   <data name="ManageWebServiceSourcesTooltip" xml:space="preserve">
     <value>Select the webservice host you want to use</value>
@@ -395,7 +395,7 @@ Software development by: www.dev2.co.za
     <value>The body of the request</value>
   </data>
   <data name="ManageWebServicePasteTooltip" xml:space="preserve">
-    <value>Paste a customised response instead</value>
+    <value>Paste a customized response instead</value>
   </data>
   <data name="ManageWebSourceHostNameTooltip" xml:space="preserve">
     <value>The base URL of the webservice</value>
@@ -773,18 +773,18 @@ If you do not know the response body exactly, rather execute the Test execution.
 Newly added resources should show after a refresh.</value>
   </data>
   <data name="PluginSourceDllFullNameHelp" xml:space="preserve">
-    <value>The full path to the dll. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;
+    <value>The full path to the DLL. e.g. &lt;b&gt;D:\My Project\Core.dll&lt;/b&gt;&lt;br/&gt;
 or
 The full GAC address e.g. &lt;b&gt;GAC:TaskScheduler, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35&lt;/b&gt;
 </value>
   </data>
   <data name="PluginServiceSourcesHelp" xml:space="preserve">
-    <value>Select the dll you want to use from previously setup sources.</value>
+    <value>Select the DLL you want to use from previously setup sources.</value>
   </data>
   <data name="PluginServiceEditSourceHelp" xml:space="preserve">
-    <value>Change the connection string properties of the selected dll.&lt;br&gt;
+    <value>Change the connection string properties of the selected DLL.&lt;br&gt;
 &lt;br/&gt;
-Change the connection string from, say, a development dll to a live dll.&lt;br/&gt;
+Change the connection string from, say, a development DLL to a live DLL.&lt;br/&gt;
 &lt;br/&gt;
 &lt;a href="http://warewolf.io/knowledge-base/data-connectors" target="_blank"&gt;Read more in the Knowledgebase.&lt;/a&gt;</value>
   </data>
@@ -792,7 +792,7 @@ Change the connection string from, say, a development dll to a live dll.&lt;br/&
     <value>To create a reference to a new dll, click New.</value>
   </data>
   <data name="PluginServiceSelectActionHelp" xml:space="preserve">
-    <value>Select the method in the dll you want to execute.</value>
+    <value>Select the method in the DLL you want to execute.</value>
   </data>
   <data name="PluginServiceRefreshHelp" xml:space="preserve">
     <value>Refresh the available actions.</value>
@@ -2019,7 +2019,7 @@ na</value>
   </data>
   <data name="FindIndexHelpInField" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-To find the character index(es) of a string inside another string, put the string to be searched here.
+To find the character index(s) of a string inside another string, put the string to be searched here.
 
 Allowed:
 [[Scalar]]   
@@ -2028,7 +2028,7 @@ Allowed:
   </data>
   <data name="FindIndexHelpResult" xml:space="preserve">
     <value>Only variables go in here.
-Returns the index(es) of the found string.
+Returns the index(s) of the found string.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.
 
@@ -3246,7 +3246,7 @@ Studio Detailed System information</value>
     <value>A counter for the number of concurrent requests on the server.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpNotAuthErrors" xml:space="preserve">
-    <value>A counter for the authorisation failures on this server.</value>
+    <value>A counter for the authorization failures on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerHelpReqPerSec" xml:space="preserve">
     <value>A counter for the number of requests per second on this server.</value>
@@ -3264,7 +3264,7 @@ Studio Detailed System information</value>
     <value>Number of concurrent requests on the server.</value>
   </data>
   <data name="SettingsPerfCounterServerToolTipNotAuthErrors" xml:space="preserve">
-    <value>Authorisation failures on this server.</value>
+    <value>Authorization failures on this server.</value>
   </data>
   <data name="SettingsPerfCounterServerToolTipReqPerSec" xml:space="preserve">
     <value>Number of requests per second on this server.</value>
@@ -3432,7 +3432,7 @@ You do not need to put the "]]" in.</value>
   </data>
   <data name="PreviewInputHelpText" xml:space="preserve">
     <value>Preview (recordset field)
-This is a variable from an input field. Use comma-separated values for each index eg [[Trip(*).Distance]] = 45, 32, 12, 5
+This is a variable from an input field. Use comma-separated values for each index e.g. [[Trip(*).Distance]] = 45, 32, 12, 5
  
 Preview (scalar field - including indexed recordsets and ())
 This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
@@ -3617,11 +3617,11 @@ Put  the index of the string you are looking for in here.</value>
   </data>
   <data name="FindIndexToolTipInField" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-To find the character index(es) of a string inside another string, put the string to be searched here.</value>
+To find the character index(s) of a string inside another string, put the string to be searched here.</value>
   </data>
   <data name="FindIndexToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
-Returns the index(es) of the found string.
+Returns the index(s) of the found string.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.</value>
   </data>
@@ -4208,7 +4208,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Select the direction to search in.</value>
   </data>
   <data name="FindIndexToolTipIndexType" xml:space="preserve">
-    <value>Select which index(es) you would like found.</value>
+    <value>Select which index(s) you would like found.</value>
   </data>
   <data name="FindToolTipInFields" xml:space="preserve">
     <value>To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here.</value>

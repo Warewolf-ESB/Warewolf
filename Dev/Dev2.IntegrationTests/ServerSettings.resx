@@ -122,6 +122,6 @@
   </data>
   <data name="WebserverURI" xml:space="preserve">
     <value>http://localhost:3142/services/</value>
-    <comment>Keep local, dont update ;)</comment>
+    <comment>Keep local, don't update ;)</comment>
   </data>
 </root>

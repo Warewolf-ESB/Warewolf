@@ -326,7 +326,7 @@ namespace Dev2.Studio.Core.Models
                 return false;
             }
 
-            //Dont ever EVER check any other property here or the connect control will die and you will be beaten;)
+            //don't ever EVER check any other property here or the connect control will die and you will be beaten;)
             return ID == other.ID;
         }
 
