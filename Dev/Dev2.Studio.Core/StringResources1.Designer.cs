@@ -92,83 +92,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Business Design Studio Administrators,Business Design Studio Developers,Business Design Studio Users.
-        /// </summary>
-        public static string AllowedRoles_DevelopmentEnvironment {
-            get {
-                return ResourceManager.GetString("AllowedRoles_DevelopmentEnvironment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Business Design Studio Administrators,Business Design Studio Testers.
-        /// </summary>
-        public static string AllowedRoles_LiveEnvironment {
-            get {
-                return ResourceManager.GetString("AllowedRoles_LiveEnvironment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Business Design Studio Administrators,Business Design Studio Testers,Business Design Studio Developers.
-        /// </summary>
-        public static string AllowedRoles_TestingEnvironment {
-            get {
-                return ResourceManager.GetString("AllowedRoles_TestingEnvironment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Warewolf.
         /// </summary>
         public static string App_Data_Directory {
             get {
                 return ResourceManager.GetString("App_Data_Directory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Business Design Studio Administrators.
-        /// </summary>
-        public static string BDSAdminRole {
-            get {
-                return ResourceManager.GetString("BDSAdminRole", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Business Design Studio Developers.
-        /// </summary>
-        public static string BDSDeveloperRole {
-            get {
-                return ResourceManager.GetString("BDSDeveloperRole", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Business Design Studio Testers.
-        /// </summary>
-        public static string BDSTestingRole {
-            get {
-                return ResourceManager.GetString("BDSTestingRole", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Business Design Studio Users.
-        /// </summary>
-        public static string BDSUserRole {
-            get {
-                return ResourceManager.GetString("BDSUserRole", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BrowserCache.
-        /// </summary>
-        public static string BrowserCacheFolder {
-            get {
-                return ResourceManager.GetString("BrowserCacheFolder", resourceCulture);
             }
         }
         
@@ -209,33 +137,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //Inputs.
-        /// </summary>
-        public static string DataMapping_InputXpathExpression {
-            get {
-                return ResourceManager.GetString("DataMapping_InputXpathExpression", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to //Outputs.
-        /// </summary>
-        public static string DataMapping_OutputXpathExpression {
-            get {
-                return ResourceManager.GetString("DataMapping_OutputXpathExpression", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DebugData.
-        /// </summary>
-        public static string DebugData_FilePath {
-            get {
-                return ResourceManager.GetString("DebugData_FilePath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please resolve all variable errors, before debugging..
         /// </summary>
         public static string Debugging_Error {
@@ -250,15 +151,6 @@ namespace Dev2 {
         public static string Debugging_Error_Title {
             get {
                 return ResourceManager.GetString("Debugging_Error_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 3142.
-        /// </summary>
-        public static string Default_WebServer_Port {
-            get {
-                return ResourceManager.GetString("Default_WebServer_Port", resourceCulture);
             }
         }
         
@@ -295,33 +187,6 @@ namespace Dev2 {
         public static string DestinationPermission_Error {
             get {
                 return ResourceManager.GetString("DestinationPermission_Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TUW-DEVFS/dsfDev.
-        /// </summary>
-        public static string Dev_SPN_Endpoint_Identity {
-            get {
-                return ResourceManager.GetString("Dev_SPN_Endpoint_Identity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to LDAP://premier.local.
-        /// </summary>
-        public static string Dev2StudioLDAPEndpoint {
-            get {
-                return ResourceManager.GetString("Dev2StudioLDAPEndpoint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Offline.
-        /// </summary>
-        public static string Dev2StudioSecurityMode {
-            get {
-                return ResourceManager.GetString("Dev2StudioSecurityMode", resourceCulture);
             }
         }
         
@@ -387,15 +252,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Couldn&apos;t find the resource needed to display the wizard. Please ensure that a resource with the name &apos;Dev2ServiceDetails&apos; exists..
-        /// </summary>
-        public static string DialogBody_MissingWizard {
-            get {
-                return ResourceManager.GetString("DialogBody_MissingWizard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The workflow &apos;{0}&apos; that you are closing is not saved.
         ///Would you like to save the workflow?
         ///-----------------------------------------------------------------
@@ -406,32 +262,6 @@ namespace Dev2 {
         public static string DialogBody_NotSaved {
             get {
                 return ResourceManager.GetString("DialogBody_NotSaved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A new version of Warewolf is available:
-        ///    
-        ///Warewolf-{0}.exe
-        ///    
-        ///Would you like to download now?.
-        /// </summary>
-        public static string DialogBody_UpdateAvailable {
-            get {
-                return ResourceManager.GetString("DialogBody_UpdateAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A new version of Warewolf has already been downloaded:
-        ///
-        ///Warewolf-{0}.exe
-        ///
-        ///Would you like to start the setup now?.
-        /// </summary>
-        public static string DialogBody_UpdateReady {
-            get {
-                return ResourceManager.GetString("DialogBody_UpdateReady", resourceCulture);
             }
         }
         
@@ -472,69 +302,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing Wizard.
-        /// </summary>
-        public static string DialogTitle_MissingWizard {
-            get {
-                return ResourceManager.GetString("DialogTitle_MissingWizard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Workflow not saved....
-        /// </summary>
-        public static string DialogTitle_NotSaved {
-            get {
-                return ResourceManager.GetString("DialogTitle_NotSaved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You are not allowed to drag remote workflows onto a remote service designer..
-        /// </summary>
-        public static string DragRemoteNotSupported {
-            get {
-                return ResourceManager.GetString("DragRemoteNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid Designer Operation.
-        /// </summary>
-        public static string DragRemoteNotSupportedHeader {
-            get {
-                return ResourceManager.GetString("DragRemoteNotSupportedHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Development Environment.
-        /// </summary>
-        public static string DsfChannelName_Development_Environment {
-            get {
-                return ResourceManager.GetString("DsfChannelName_Development_Environment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Live Environment.
-        /// </summary>
-        public static string DsfChannelName_Live_Environment {
-            get {
-                return ResourceManager.GetString("DsfChannelName_Live_Environment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Testing Environment.
-        /// </summary>
-        public static string DsfChannelName_Testing_Environment {
-            get {
-                return ResourceManager.GetString("DsfChannelName_Testing_Environment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Environments.
         /// </summary>
         public static string Environments_Directory {
@@ -553,29 +320,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Address not valid.
-        /// </summary>
-        public static string Error_DSF_Address_Not_Valid {
-            get {
-                return ResourceManager.GetString("Error_DSF_Address_Not_Valid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name not provided.
         /// </summary>
         public static string Error_DSF_Name_Not_Provided {
             get {
                 return ResourceManager.GetString("Error_DSF_Name_Not_Provided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Directory Not found.
-        /// </summary>
-        public static string Error_Environments_Directory_Not_Found {
-            get {
-                return ResourceManager.GetString("Error_Environments_Directory_Not_Found", resourceCulture);
             }
         }
         
@@ -671,92 +420,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feedback.
-        /// </summary>
-        public static string Feedback_Recordings_Directory {
-            get {
-                return ResourceManager.GetString("Feedback_Recordings_Directory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to feedback@warewolf.io.
-        /// </summary>
-        public static string FeedbackEmail {
-            get {
-                return ResourceManager.GetString("FeedbackEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AttachmentPath must contain exactly one semicolon seperator, between recording log file and server log file..
-        /// </summary>
-        public static string FeedbackViewModel_Init_ArgException {
-            get {
-                return ResourceManager.GetString("FeedbackViewModel_Init_ArgException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Provide a value for the case that you are creating. E.g If you want to do specific visual logic for Durban then you will provide Durban as a case value.
-        /// </summary>
-        public static string HelpContent_CaseValue {
-            get {
-                return ResourceManager.GetString("HelpContent_CaseValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Provides the name of the type of data that will be used to switch logic. E.g If you want visual logic to be defined for different cities you would use a Switch value of City. If you are unsure of what the actual switch values are then contact your administrator .
-        /// </summary>
-        public static string HelpContent_SwitchValue {
-            get {
-                return ResourceManager.GetString("HelpContent_SwitchValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to \\tuw-devfs\bdsimages\activity.png.
-        /// </summary>
-        public static string Icon_Default_Path {
-            get {
-                return ResourceManager.GetString("Icon_Default_Path", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid Expression: Cant start a variable name with a number..
-        /// </summary>
-        public static string IntellisenseErrorExpressionStartingWithANumber {
-            get {
-                return ResourceManager.GetString("IntellisenseErrorExpressionStartingWithANumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets dont match..
         /// </summary>
         public static string IntellisenseErrorMisMacthingBrackets {
             get {
                 return ResourceManager.GetString("IntellisenseErrorMisMacthingBrackets", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid category name.
-        /// </summary>
-        public static string InvalidCategoryNameExceptionMessage {
-            get {
-                return ResourceManager.GetString("InvalidCategoryNameExceptionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid resource name.
-        /// </summary>
-        public static string InvalidResourceNameExceptionMessage {
-            get {
-                return ResourceManager.GetString("InvalidResourceNameExceptionMessage", resourceCulture);
             }
         }
         
@@ -775,137 +443,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TUW-DEVFS/dsfLive.
-        /// </summary>
-        public static string Live_SPN_Endpoint_Identity {
-            get {
-                return ResourceManager.GetString("Live_SPN_Endpoint_Identity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inputs / Outputs Changed.
-        /// </summary>
-        public static string MappingChangedWarningDialogTitle {
-            get {
-                return ResourceManager.GetString("MappingChangedWarningDialogTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unassigned.
-        /// </summary>
-        public static string Navigation_Category_Unassigned {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Unassigned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Warewolf.ico.
-        /// </summary>
-        public static string Navigation_Environment_Icon_Pack_Uri {
-            get {
-                return ResourceManager.GetString("Navigation_Environment_Icon_Pack_Uri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png.
-        /// </summary>
-        public static string Navigation_Folder_Icon_Pack_Uri {
-            get {
-                return ResourceManager.GetString("Navigation_Folder_Icon_Pack_Uri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerFolderOpen-32.png.
-        /// </summary>
-        public static string Navigation_OpenFolder_Icon_Pack_Uri {
-            get {
-                return ResourceManager.GetString("Navigation_OpenFolder_Icon_Pack_Uri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Explorer.
-        /// </summary>
-        public static string Navigation_RootNode_Name {
-            get {
-                return ResourceManager.GetString("Navigation_RootNode_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unexpected resource type from delete relay command..
-        /// </summary>
-        public static string NavigationItemViewModel_Unexpected_Resource {
-            get {
-                return ResourceManager.GetString("NavigationItemViewModel_Unexpected_Resource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unsaved.
         /// </summary>
         public static string NewWorkflowBaseName {
             get {
                 return ResourceManager.GetString("NewWorkflowBaseName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/.
-        /// </summary>
-        public static string Pack_Uri_Application_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/HelpCommunity-32.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Community {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Community", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/GenericHelp-16.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Help {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Help", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/StartPage-16.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Home {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/User.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Webpage {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Webpage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/webpagebuilder.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Website {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Website", resourceCulture);
             }
         }
         
@@ -982,24 +524,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png.
-        /// </summary>
-        public static string RemoteWarewolfIconPath {
-            get {
-                return ResourceManager.GetString("RemoteWarewolfIconPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is used by {1} workflow{2}. Please update their mappings..
-        /// </summary>
-        public static string Resource_Changed_MessageBody {
-            get {
-                return ResourceManager.GetString("Resource_Changed_MessageBody", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Resource ID must be a Guid.
         /// </summary>
         public static string Resource_ID_must_be_a_Guid {
@@ -1023,15 +547,6 @@ namespace Dev2 {
         public static string Ribbon_StopExecution {
             get {
                 return ResourceManager.GetString("Ribbon_StopExecution", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to RuntimeConfigurationAssemblies.
-        /// </summary>
-        public static string RuntimeConfigurationAssemblyDirectory {
-            get {
-                return ResourceManager.GetString("RuntimeConfigurationAssemblyDirectory", resourceCulture);
             }
         }
         
@@ -1104,131 +619,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server: Version {1}
-        ///
-        ///Sofware development by: www.dev2.co.za
-        ///.
-        /// </summary>
-        public static string Server_About_Content {
-            get {
-                return ResourceManager.GetString("Server_About_Content", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ResourceUpload.
-        /// </summary>
-        public static string Services_Add_Resource {
-            get {
-                return ResourceManager.GetString("Services_Add_Resource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ThemeResourceDelete.
-        /// </summary>
-        public static string Services_Delete_Resource {
-            get {
-                return ResourceManager.GetString("Services_Delete_Resource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Source server permission Deploy From not allowed..
         /// </summary>
         public static string SourcePermission_Error {
             get {
                 return ResourceManager.GetString("SourcePermission_Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Images\SplashImage_New_2015.jpg.
-        /// </summary>
-        public static string SplashImage {
-            get {
-                return ResourceManager.GetString("SplashImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TUW-DEVFS/dsfDev.
-        /// </summary>
-        public static string SPN_Endpoint_Identity {
-            get {
-                return ResourceManager.GetString("SPN_Endpoint_Identity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to For the case of:.
-        /// </summary>
-        public static string StringWindow_CaseLabelValue {
-            get {
-                return ResourceManager.GetString("StringWindow_CaseLabelValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Provide the case value.
-        /// </summary>
-        public static string StringWindow_CaseWindowTitle {
-            get {
-                return ResourceManager.GetString("StringWindow_CaseWindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Switch On:.
-        /// </summary>
-        public static string StringWindow_SwitchLabelValue {
-            get {
-                return ResourceManager.GetString("StringWindow_SwitchLabelValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Provide the identifier to switch on.
-        /// </summary>
-        public static string StringWindow_SwitchWindowTitle {
-            get {
-                return ResourceManager.GetString("StringWindow_SwitchWindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to css,images,js.
-        /// </summary>
-        public static string Supported_WebResource_Folders {
-            get {
-                return ResourceManager.GetString("Supported_WebResource_Folders", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TUW-DEVFS/dsfTest.
-        /// </summary>
-        public static string Test_SPN_Endpoint_Identity {
-            get {
-                return ResourceManager.GetString("Test_SPN_Endpoint_Identity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 80.
-        /// </summary>
-        public static string UI_Layout_Grid_Default_Height {
-            get {
-                return ResourceManager.GetString("UI_Layout_Grid_Default_Height", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 150.
-        /// </summary>
-        public static string UI_Layout_Grid_Default_Width {
-            get {
-                return ResourceManager.GetString("UI_Layout_Grid_Default_Width", resourceCulture);
             }
         }
         
@@ -1242,33 +637,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://warewolf.s3.amazonaws.com/Latest/.
-        /// </summary>
-        public static string Uri_DownloadPage {
-            get {
-                return ResourceManager.GetString("Uri_DownloadPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://www.google.co.za/.
-        /// </summary>
-        public static string Uri_Start_Page {
-            get {
-                return ResourceManager.GetString("Uri_Start_Page", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Studio\Help\StudioHomepage.htm.
-        /// </summary>
-        public static string Uri_Studio_Homepage {
-            get {
-                return ResourceManager.GetString("Uri_Studio_Homepage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Help\Warewolf Language.htm.
         /// </summary>
         public static string Uri_Studio_Language_Reference_Document {
@@ -1278,38 +646,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help\PageMissing.htm.
-        /// </summary>
-        public static string Uri_Studio_PageMissing {
-            get {
-                return ResourceManager.GetString("Uri_Studio_PageMissing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Help\PageNotAvailable.htm.
         /// </summary>
         public static string Uri_Studio_PageNotAvailable {
             get {
                 return ResourceManager.GetString("Uri_Studio_PageNotAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help\PageRestrictedAccess.htm.
-        /// </summary>
-        public static string Uri_Studio_PageRestrictedAccess {
-            get {
-                return ResourceManager.GetString("Uri_Studio_PageRestrictedAccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help\StudioShortCutKeys.htm.
-        /// </summary>
-        public static string Uri_Studio_Shortcut_Keys_Document {
-            get {
-                return ResourceManager.GetString("Uri_Studio_Shortcut_Keys_Document", resourceCulture);
             }
         }
         
@@ -1341,15 +682,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/checksum.txt.
-        /// </summary>
-        public static string Warewolf_Checksum {
-            get {
-                return ResourceManager.GetString("Warewolf_Checksum", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/start.html.
         /// </summary>
         public static string Warewolf_Homepage_Start {
@@ -1368,84 +700,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/version.txt.
-        /// </summary>
-        public static string Warewolf_Version {
-            get {
-                return ResourceManager.GetString("Warewolf_Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to System.
-        /// </summary>
-        public static string Webpage_Default_Website {
-            get {
-                return ResourceManager.GetString("Webpage_Default_Website", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} Editor.
-        /// </summary>
-        public static string Window_Title_Property_Editor {
-            get {
-                return ResourceManager.GetString("Window_Title_Property_Editor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;DataList&gt;
-        ///	&lt;NUD2347 Description=&quot;&quot;/&gt;
-        ///	&lt;number Description=&quot;&quot;/&gt;
-        ///	&lt;vehicleColor Description=&quot;&quot;/&gt;
-        ///	&lt;Fines Description=&quot;&quot;&gt;
-        ///		&lt;Speed Description=&quot;&quot;/&gt;
-        ///		&lt;Date Description=&quot;&quot;/&gt;
-        ///		&lt;Location Description=&quot;&quot;/&gt;
-        ///	&lt;/Fines&gt;
-        ///	&lt;Registrations Description=&quot;&quot;&gt;
-        ///		&lt;Speed Description=&quot;&quot;/&gt;
-        ///		&lt;Date Description=&quot;&quot;/&gt;
-        ///		&lt;Location Description=&quot;&quot;/&gt;
-        ///	&lt;/Registrations&gt;
-        ///&lt;/DataList&gt;.
-        /// </summary>
-        public static string xmlDataList {
-            get {
-                return ResourceManager.GetString("xmlDataList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;
-        ///  &lt;Actions&gt;
-        ///	&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot;&gt;
-        ///		&lt;Inputs&gt;
-        ///			&lt;Input Name=&quot;reg&quot; Source=&quot;&quot; DefaultValue=&quot;NUD2347&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;
-        ///			&lt;Input Name=&quot;asdfsad&quot; Source=&quot;registration223&quot; DefaultValue=&quot;w3rt24324&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;			
-        ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
-        ///		&lt;/Inputs&gt;
-        ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; Value=&quot;&quot;/&gt;
-        ///			&lt;Output Name=&quot;vehi [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string xmlNullSourceMethodServiceDef {
-            get {
-                return ResourceManager.GetString("xmlNullSourceMethodServiceDef", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
         ///  &lt;contentPanes&gt;
         ///    &lt;contentPane name=&quot;OutputPane&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;1000,200&quot; lastFloatingWindowRect=&quot;625,541,1016,234&quot; lastFloatingLocation=&quot;625,541&quot; lastActivatedTime=&quot;2013-06-10T07:30:08.998685Z&quot; /&gt;
-        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.882685 [rest of string was truncated]&quot;;.
+        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.88 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string XmlOriginalLayout {
             get {
@@ -1467,7 +726,7 @@ namespace Dev2 {
         ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
         ///		&lt;/Inputs&gt;
         ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; [rest of string was truncated]&quot;;.
+        ///			&lt;Output Name=&quot;vehicleVin&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string xmlServiceDefinition {
             get {

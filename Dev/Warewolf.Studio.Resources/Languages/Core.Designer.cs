@@ -83,29 +83,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About .
-        /// </summary>
-        public static string About_Header_Text {
-            get {
-                return ResourceManager.GetString("About_Header_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationToolTip {
             get {
                 return ResourceManager.GetString("AnonymousAuthenticationToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warewolf.
-        /// </summary>
-        public static string App_Data_Directory {
-            get {
-                return ResourceManager.GetString("App_Data_Directory", resourceCulture);
             }
         }
         
@@ -179,7 +161,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AutoDiscover Url.
+        ///   Looks up a localized string similar to AutoDiscover URL.
         /// </summary>
         public static string AutoDiscoverLabel {
             get {
@@ -218,24 +200,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the converted data into a separate variable.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string BaseConversionHelpResult {
-            get {
-                return ResourceManager.GetString("BaseConversionHelpResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select the type of data you are converting to.
         ///e.g. If the data is Binary and you would like Text, then select Text here.
         ///
@@ -269,60 +233,12 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the converted data into a separate variable.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
-        /// </summary>
-        public static string BaseConversionToolTipResult {
-            get {
-                return ResourceManager.GetString("BaseConversionToolTipResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select the type of data you are converting to.
         ///e.g. If the data is Binary and you would like Text, then select Text here..
         /// </summary>
         public static string BaseConversionToolTipTotype {
             get {
                 return ResourceManager.GetString("BaseConversionToolTipTotype", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This data must be in the format specified in the &apos;Convert From&apos; category. This data will be converted to the format specified in the &apos;Convert To&apos; column..
-        /// </summary>
-        public static string BaseConvertInputHelpText {
-            get {
-                return ResourceManager.GetString("BaseConvertInputHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The variable where the result will be output to..
-        /// </summary>
-        public static string BaseConvertResultHelpText {
-            get {
-                return ResourceManager.GetString("BaseConvertResultHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Calculate Service works like the function box in Microsoft Excel (fn). Type the equation using good maths practices and put a variable from the Data List into the Result field. You can use the full Excel library of functions eg. AVG([[Employee().Age]]).
-        /// </summary>
-        public static string CalculateFunctionInputText {
-            get {
-                return ResourceManager.GetString("CalculateFunctionInputText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The variable you would like to contain the result once the calculation has completed..
-        /// </summary>
-        public static string CalculateFunctionResultText {
-            get {
-                return ResourceManager.GetString("CalculateFunctionResultText", resourceCulture);
             }
         }
         
@@ -408,24 +324,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the converted data.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string CaseConversionHelpResult {
-            get {
-                return ResourceManager.GetString("CaseConversionHelpResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To convert the case of some text, put the variable containing the text here.
         ///
@@ -449,18 +347,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CaseConversionToolTipConvertToCasetype {
             get {
                 return ResourceManager.GetString("CaseConversionToolTipConvertToCasetype", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the converted data.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
-        /// </summary>
-        public static string CaseConversionToolTipResult {
-            get {
-                return ResourceManager.GetString("CaseConversionToolTipResult", resourceCulture);
             }
         }
         
@@ -565,15 +451,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CommentHelpComment {
             get {
                 return ResourceManager.GetString("CommentHelpComment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The comment entered here will not effect the workflow. This text will be visible in the debug output if this comment is included as a step in the workflow..
-        /// </summary>
-        public static string CommentInputText {
-            get {
-                return ResourceManager.GetString("CommentInputText", resourceCulture);
             }
         }
         
@@ -788,153 +665,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the way in which indexes will be specified to copy.
-        ///Every Index will copy every row to the specified To recordset.
-        ///Indexes in Range lets you copy a batch of indexes to another recordset.
-        ///Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used.
-        ///
-        ///Allowed:
-        ///na.
-        /// </summary>
-        public static string CopyRecordsHelpCopyRecordsType {
-            get {
-                return ResourceManager.GetString("CopyRecordsHelpCopyRecordsType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sets the way in which indexes will be specified to copy.
-        ///Every Index will copy every row to the specified To recordset.
-        ///Indexes in Range lets you copy a batch of indexes to another recordset.
-        ///Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string CopyRecordsHelpCopyRecordsTypeInput {
-            get {
-                return ResourceManager.GetString("CopyRecordsHelpCopyRecordsTypeInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specify the Recordset you would like to copy the information from.
-        ///
-        ///Allowed:
-        ///[[Recordset()]].
-        /// </summary>
-        public static string CopyRecordsHelpFrom {
-            get {
-                return ResourceManager.GetString("CopyRecordsHelpFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To copy or move a record field value from one recordset to another, put the destination recordset field in here. To the left is the field you are copying from.
-        ///The recordset names must all match the one specified in the To box.
-        ///If you do not want a field mapped, blank out this field.
-        ///
-        ///Allowed:
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string CopyRecordsHelpRecordsetFieldMapping {
-            get {
-                return ResourceManager.GetString("CopyRecordsHelpRecordsetFieldMapping", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Selecting this checkbox will split the recordset into two recordsets.
-        ///
-        ///Allowed:
-        ///To move the rows rather than copy, select this check box..
-        /// </summary>
-        public static string CopyRecordsHelpRemoveoriginalrowaftercopy {
-            get {
-                return ResourceManager.GetString("CopyRecordsHelpRemoveoriginalrowaftercopy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specify the Recordset you would like to copy the information to. This is the destination recordset.
-        ///
-        ///Allowed:
-        ///[[Recordset()]].
-        /// </summary>
-        public static string CopyRecordsHelpTo {
-            get {
-                return ResourceManager.GetString("CopyRecordsHelpTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sets the way in which indexes will be specified to copy.
-        ///Every Index will copy every row to the specified To recordset.
-        ///Indexes in Range lets you copy a batch of indexes to another recordset.
-        ///Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used..
-        /// </summary>
-        public static string CopyRecordsToolTipCopyRecordsType {
-            get {
-                return ResourceManager.GetString("CopyRecordsToolTipCopyRecordsType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sets the way in which indexes will be specified to copy.
-        ///Every Index will copy every row to the specified To recordset.
-        ///Indexes in Range lets you copy a batch of indexes to another recordset.
-        ///Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used..
-        /// </summary>
-        public static string CopyRecordsToolTipCopyRecordsTypeInput {
-            get {
-                return ResourceManager.GetString("CopyRecordsToolTipCopyRecordsTypeInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specify the Recordset you would like to copy the information from..
-        /// </summary>
-        public static string CopyRecordsToolTipFrom {
-            get {
-                return ResourceManager.GetString("CopyRecordsToolTipFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To copy or move a record field value from one recordset to another, put the destination recordset field in here. To the left is the field you are copying from.
-        ///The recordset names must all match the one specified in the To box.
-        ///If you do not want a field mapped, blank out this field..
-        /// </summary>
-        public static string CopyRecordsToolTipRecordsetFieldMapping {
-            get {
-                return ResourceManager.GetString("CopyRecordsToolTipRecordsetFieldMapping", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Selecting this checkbox will split the recordset into two recordsets..
-        /// </summary>
-        public static string CopyRecordsToolTipRemoveoriginalrowaftercopy {
-            get {
-                return ResourceManager.GetString("CopyRecordsToolTipRemoveoriginalrowaftercopy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specify the Recordset you would like to copy the information to. This is the destination recordset..
-        /// </summary>
-        public static string CopyRecordsToolTipTo {
-            get {
-                return ResourceManager.GetString("CopyRecordsToolTipTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are copying to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -1130,7 +860,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
         ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
         ///[[rec(*).name]] 
-        ///To create JSON Objects, use a comma seperated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
+        ///To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
         ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
         ///or simply 
         ///[[rec(*)]]
@@ -1183,7 +913,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Looks up a localized string similar to To create JSON data, enter the Name and Data of the JSON variables. 
         ///To create JSON Arrays use a single recordset field with a star for every record e.g. 
         ///[[rec(*).name]] 
-        ///To create JSON Objects, use a comma seperated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
+        ///To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. e.g. 
         ///[[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] 
         ///or simply 
         ///[[rec(*)]].
@@ -1278,60 +1008,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Critical Error.
-        /// </summary>
-        public static string CritErrorTitle {
-            get {
-                return ResourceManager.GetString("CritErrorTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community..
-        /// </summary>
-        public static string CriticalExceptionMessage {
-            get {
-                return ResourceManager.GetString("CriticalExceptionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select an Action.
-        /// </summary>
-        public static string DatabaseServiceActionHeader {
-            get {
-                return ResourceManager.GetString("DatabaseServiceActionHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit .
-        /// </summary>
-        public static string DatabaseServiceDBSourceEditTabHeader {
-            get {
-                return ResourceManager.GetString("DatabaseServiceDBSourceEditTabHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Data Source.
-        /// </summary>
-        public static string DatabaseServiceDBSourceHeader {
-            get {
-                return ResourceManager.GetString("DatabaseServiceDBSourceHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New DB Connector.
-        /// </summary>
-        public static string DatabaseServiceDBSourceTabHeader {
-            get {
-                return ResourceManager.GetString("DatabaseServiceDBSourceTabHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Change the connection string properties of the selected Database.&lt;br&gt;
         ///&lt;br/&gt;
         ///Change the connection string from, say, a development database to a live database.&lt;br/&gt;
@@ -1368,44 +1044,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DatabaseServiceExecuteViewPermission {
             get {
                 return ResourceManager.GetString("DatabaseServiceExecuteViewPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Incorrect Version. The remote workflow has changed.Please refresh.
-        /// </summary>
-        public static string DatabaseServiceIncorrectVersion {
-            get {
-                return ResourceManager.GetString("DatabaseServiceIncorrectVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Input some test data to execute the procedure.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This data will not be stored and the execution will be rolled back if supported by the database..
-        /// </summary>
-        public static string DatabaseServiceInputsHelp {
-            get {
-                return ResourceManager.GetString("DatabaseServiceInputsHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inspect Data Connector.
-        /// </summary>
-        public static string DatabaseServiceInspectHeader {
-            get {
-                return ResourceManager.GetString("DatabaseServiceInspectHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Defaults and Mapping.
-        /// </summary>
-        public static string DatabaseServiceMappingsHeader {
-            get {
-                return ResourceManager.GetString("DatabaseServiceMappingsHeader", resourceCulture);
             }
         }
         
@@ -1473,15 +1111,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test the execution of this resource..
-        /// </summary>
-        public static string DatabaseServiceTestHelp {
-            get {
-                return ResourceManager.GetString("DatabaseServiceTestHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cancels the setup of this database source..
         /// </summary>
         public static string DatabaseSourceCancelHelp {
@@ -1505,24 +1134,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DatabaseSourceDatabasesHelp {
             get {
                 return ResourceManager.GetString("DatabaseSourceDatabasesHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the database this source will use.
-        /// </summary>
-        public static string DatabaseSourceDatabaseToolTip {
-            get {
-                return ResourceManager.GetString("DatabaseSourceDatabaseToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit .
-        /// </summary>
-        public static string DatabaseSourceServerEditHeaderLabel {
-            get {
-                return ResourceManager.GetString("DatabaseSourceServerEditHeaderLabel", resourceCulture);
             }
         }
         
@@ -1583,15 +1194,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of database you want to connect to.
-        /// </summary>
-        public static string DatabaseSourceTypeToolTip {
-            get {
-                return ResourceManager.GetString("DatabaseSourceTypeToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Address:.
         /// </summary>
         public static string DatabaseWebserviceLabel {
@@ -1623,7 +1225,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DataListInputCheckBoxTooltip.
+        ///   Looks up a localized string similar to Allows this variable to be passed into the service.
         /// </summary>
         public static string DataListInputCheckBoxTooltip {
             get {
@@ -1643,7 +1245,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DataListOutputCheckBoxTooltip.
+        ///   Looks up a localized string similar to Will return this variable as a response.
         /// </summary>
         public static string DataListOutputCheckBoxTooltip {
             get {
@@ -1674,7 +1276,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DataListVariableInputTooltip.
+        ///   Looks up a localized string similar to The variable name you want to declare, without the [[ ]] braces.
         /// </summary>
         public static string DataListVariableInputTooltip {
             get {
@@ -2425,83 +2027,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to localhost.
-        /// </summary>
-        public static string DefaultEnvironmentName {
-            get {
-                return ResourceManager.GetString("DefaultEnvironmentName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Defaults and Mapping.
-        /// </summary>
-        public static string DefaultMappings {
-            get {
-                return ResourceManager.GetString("DefaultMappings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Default Query:.
         /// </summary>
         public static string DefaultQueryLabel {
             get {
                 return ResourceManager.GetString("DefaultQueryLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
-        ///E.g. 6 minutes. 
-        ///A blank Time field will default to 0 and not cause any delay.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string DelayHelpTime {
-            get {
-                return ResourceManager.GetString("DelayHelpTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
-        ///E.g. 6 minutes. 
-        ///A blank Time field will default to 0 and not cause any delay.
-        ///
-        ///Allowed:
-        ///na.
-        /// </summary>
-        public static string DelayHelpType {
-            get {
-                return ResourceManager.GetString("DelayHelpType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
-        ///E.g. 6 minutes. 
-        ///A blank Time field will default to 0 and not cause any delay..
-        /// </summary>
-        public static string DelayToolTipTime {
-            get {
-                return ResourceManager.GetString("DelayToolTipTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
-        ///E.g. 6 minutes. 
-        ///A blank Time field will default to 0 and not cause any delay..
-        /// </summary>
-        public static string DelayToolTipType {
-            get {
-                return ResourceManager.GetString("DelayToolTipType", resourceCulture);
             }
         }
         
@@ -2732,126 +2262,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you wish to delete the {0} {1}?
-        ///
-        ///Version History will also be deleted..
-        /// </summary>
-        public static string DialogBody_ConfirmDelete {
-            get {
-                return ResourceManager.GetString("DialogBody_ConfirmDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you wish to delete {0} folder and all its contents?.
-        /// </summary>
-        public static string DialogBody_ConfirmFolderDelete {
-            get {
-                return ResourceManager.GetString("DialogBody_ConfirmFolderDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This folder cannot be deleted because it contains resources with dependants..
-        /// </summary>
-        public static string DialogBody_FolderContentsHaveDependencies {
-            get {
-                return ResourceManager.GetString("DialogBody_FolderContentsHaveDependencies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The {0} {1} cannot be deleted because something depends on it..
-        /// </summary>
-        public static string DialogBody_HasDependencies {
-            get {
-                return ResourceManager.GetString("DialogBody_HasDependencies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The {0} {1} cannot be renamed because a resource with that name already exists on the same server..
-        /// </summary>
-        public static string DialogBody_HasDuplicateName {
-            get {
-                return ResourceManager.GetString("DialogBody_HasDuplicateName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The workflow &apos;{0}&apos; that you are closing is not saved.
-        ///Would you like to save the workflow?
-        ///-------------------------------------------------------------------
-        ///Yes - Save the workflow.
-        ///No - Discard your changes.
-        ///Cancel - Returns you to the workflow..
-        /// </summary>
-        public static string DialogBody_NotSaved {
-            get {
-                return ResourceManager.GetString("DialogBody_NotSaved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirm delete..
-        /// </summary>
-        public static string DialogTitle_ConfirmDelete {
-            get {
-                return ResourceManager.GetString("DialogTitle_ConfirmDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Folder has dependants.
-        /// </summary>
-        public static string DialogTitle_FolderHasDependencies {
-            get {
-                return ResourceManager.GetString("DialogTitle_FolderHasDependencies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} has dependants.
-        /// </summary>
-        public static string DialogTitle_HasDependencies {
-            get {
-                return ResourceManager.GetString("DialogTitle_HasDependencies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} exists.
-        /// </summary>
-        public static string DialogTitle_HasDuplicateName {
-            get {
-                return ResourceManager.GetString("DialogTitle_HasDuplicateName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Workflow not saved....
-        /// </summary>
-        public static string DialogTitle_NotSaved {
-            get {
-                return ResourceManager.GetString("DialogTitle_NotSaved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Did you know?.
         /// </summary>
         public static string DidYouKnow {
             get {
                 return ResourceManager.GetString("DidYouKnow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DotNet DLL Test Connector and Calculate Outputs.
-        /// </summary>
-        public static string DotNetDllTestHeader {
-            get {
-                return ResourceManager.GetString("DotNetDllTestHeader", resourceCulture);
             }
         }
         
@@ -2874,162 +2289,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To execute an activity until certain conditions are met, enter the conditions to check for. You can add multiple conditions and require them all to be true or  just one to be true before stopping execution.
-        ///You can use a sequence tool with other activities inside it to execute a number of activities every time.
-        ///
-        ///Allowed:
-        ///.
-        /// </summary>
-        public static string DoWhileHelp {
-            get {
-                return ResourceManager.GetString("DoWhileHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute an activity until certain conditions are met, enter the conditions to check for.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string DoWhileHelpInputfield {
-            get {
-                return ResourceManager.GetString("DoWhileHelpInputfield", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See Find (Recordset) tool in the application
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string DoWhileHelpMatch {
-            get {
-                return ResourceManager.GetString("DoWhileHelpMatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the type of information you want to match on.
-        ///
-        ///Allowed:
-        ///na.
-        /// </summary>
-        public static string DoWhileHelpMatchType {
-            get {
-                return ResourceManager.GetString("DoWhileHelpMatchType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To continue execution until all conditions are met, select this check box.
-        ///
-        ///Allowed:
-        ///.
-        /// </summary>
-        public static string DoWhileHelpRequirealltobetrue {
-            get {
-                return ResourceManager.GetString("DoWhileHelpRequirealltobetrue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute an activity until certain conditions are met, enter the conditions to check for. You can add multiple conditions and require them all to be true or  just one to be true before stopping execution.
-        ///You can use a sequence tool with other activities inside it to execute a number of activities every time..
-        /// </summary>
-        public static string DoWhileToolTip {
-            get {
-                return ResourceManager.GetString("DoWhileToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute an activity until certain conditions are met, enter the conditions to check for..
-        /// </summary>
-        public static string DoWhileToolTipInputfield {
-            get {
-                return ResourceManager.GetString("DoWhileToolTipInputfield", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See Find (Recordset) tool in the application.
-        /// </summary>
-        public static string DoWhileToolTipMatch {
-            get {
-                return ResourceManager.GetString("DoWhileToolTipMatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the type of information you want to match on..
-        /// </summary>
-        public static string DoWhileToolTipMatchType {
-            get {
-                return ResourceManager.GetString("DoWhileToolTipMatchType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To continue execution until all conditions are met, select this check box..
-        /// </summary>
-        public static string DoWhileToolTipRequirealltobetrue {
-            get {
-                return ResourceManager.GetString("DoWhileToolTipRequirealltobetrue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.&lt;br /&gt;
-        ///        To download the file, put the full destination path and file name in here.&lt;br/&gt;
-        ///        You can use File System, URI, SFTP, FTP or FTPS format.&lt;br/&gt;
-        ///        &lt;br /&gt;
-        ///
-        ///        Allowed:&lt;br /&gt;
-        ///        Data   
-        ///        &lt;ol&gt;
-        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
-        /// </summary>
-        public static string DownloadFileHelpFilename {
-            get {
-                return ResourceManager.GetString("DownloadFileHelpFilename", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You are not allowed to drag remote workflows onto a remote service designer..
-        /// </summary>
-        public static string DragRemoteNotSupported {
-            get {
-                return ResourceManager.GetString("DragRemoteNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid Designer Operation.
-        /// </summary>
-        public static string DragRemoteNotSupportedHeader {
-            get {
-                return ResourceManager.GetString("DragRemoteNotSupportedHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///     This is the name of the file that will be downloaded from DropBox.
+        ///     This is the name of the file that will be downloaded from Dropbox.
         ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
         /// </summary>
         public static string DropBoxDownloadFileName {
@@ -3040,7 +2301,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///     This is the name of the file that will be read from DropBox.
+        ///     This is the name of the file that will be read from Dropbox.
         ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
         /// </summary>
         public static string DropBoxDownloadToolTipLocalDestination {
@@ -3086,23 +2347,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit the DropBox connection properties..
+        ///   Looks up a localized string similar to Edit the Dropbox connection properties..
         /// </summary>
         public static string DropBoxToolTipEditSource {
             get {
                 return ResourceManager.GetString("DropBoxToolTipEditSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///     Read: This is the name of the file that will be read from DropBox.
-        ///     Write: This is the name of the file that will be written to DropBox.
-        ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
-        /// </summary>
-        public static string DropBoxToolTipLocalDestination {
-            get {
-                return ResourceManager.GetString("DropBoxToolTipLocalDestination", resourceCulture);
             }
         }
         
@@ -3117,7 +2366,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a New DropBox connection..
+        ///   Looks up a localized string similar to Create a New Dropbox connection..
         /// </summary>
         public static string DropBoxToolTipNewSource {
             get {
@@ -3314,15 +2563,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit .
-        /// </summary>
-        public static string EmailSourceEditHeaderLabel {
-            get {
-                return ResourceManager.GetString("EmailSourceEditHeaderLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The email address that will be used to send the email from.&lt;br/&gt;
         ///&lt;br/&gt;
         ///This account needs to be a valid email address/account for the Host server..
@@ -3435,15 +2675,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string EmailSourcePortHelp {
             get {
                 return ResourceManager.GetString("EmailSourcePortHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test the settings you have entered by sending a test email..
-        /// </summary>
-        public static string EmailSourceTestHelp {
-            get {
-                return ResourceManager.GetString("EmailSourceTestHelp", resourceCulture);
             }
         }
         
@@ -3581,124 +2812,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Environments.
-        /// </summary>
-        public static string Environments_Directory {
-            get {
-                return ResourceManager.GetString("Environments_Directory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Connection Failed.
-        /// </summary>
-        public static string Error_Connect_Failed {
-            get {
-                return ResourceManager.GetString("Error_Connect_Failed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name not provided.
-        /// </summary>
-        public static string Error_DSF_Name_Not_Provided {
-            get {
-                return ResourceManager.GetString("Error_DSF_Name_Not_Provided", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The recordset name is a duplicate of an existing recordset. Recordset names must be unique..
-        /// </summary>
-        public static string ErrorMessageDuplicateRecordset {
-            get {
-                return ResourceManager.GetString("ErrorMessageDuplicateRecordset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variable names must be unique..
-        /// </summary>
-        public static string ErrorMessageDuplicateValue {
-            get {
-                return ResourceManager.GetString("ErrorMessageDuplicateValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This variable name is a duplicate of an existing variable. Variable names must be unique..
-        /// </summary>
-        public static string ErrorMessageDuplicateVariable {
-            get {
-                return ResourceManager.GetString("ErrorMessageDuplicateVariable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recordset must contain one or more field(s)..
-        /// </summary>
-        public static string ErrorMessageEmptyRecordSet {
-            get {
-                return ResourceManager.GetString("ErrorMessageEmptyRecordSet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variable name contains invalid character(s)..
-        /// </summary>
-        public static string ErrorMessageInvalidChar {
-            get {
-                return ResourceManager.GetString("ErrorMessageInvalidChar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error : .
-        /// </summary>
-        public static string ErrorPrefix {
-            get {
-                return ResourceManager.GetString("ErrorPrefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        public static string ErrorTitle {
-            get {
-                return ResourceManager.GetString("ErrorTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/eula/.
-        /// </summary>
-        public static string EULA_Link {
-            get {
-                return ResourceManager.GetString("EULA_Link", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warewolf EULA.
-        /// </summary>
-        public static string EULA_Text {
-            get {
-                return ResourceManager.GetString("EULA_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The {0} example cannot be found. 
-        /// Please re-install or upgrade to the latest version to resolve this issue.
-        /// </summary>
-        public static string ExampleWorkflowNotFound {
-            get {
-                return ResourceManager.GetString("ExampleWorkflowNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Change the connection string properties of the selected connection.&lt;br&gt;
         ///&lt;br/&gt;
         ///Change the connection string from, say, a development database to a live database.&lt;br/&gt;
@@ -3816,24 +2929,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ExplorerViewRefreshHelp {
             get {
                 return ResourceManager.GetString("ExplorerViewRefreshHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Feedback.
-        /// </summary>
-        public static string Feedback_Recordings_Directory {
-            get {
-                return ResourceManager.GetString("Feedback_Recordings_Directory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to feedback@warewolf.io.
-        /// </summary>
-        public static string FeedbackEmail {
-            get {
-                return ResourceManager.GetString("FeedbackEmail", resourceCulture);
             }
         }
         
@@ -3984,7 +3079,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select which index(es) you would like found.
+        ///   Looks up a localized string similar to Select which index(s) you would like found.
         ///
         ///Allowed:
         ///na.
@@ -4173,13 +3268,13 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
         ///[[Customer(2).ID]],
         ///[[Customer(3).ID]].
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -4188,42 +3283,17 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string ForEachHelpValue {
-            get {
-                return ResourceManager.GetString("ForEachHelpValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+        ///   Looks up a localized string similar to Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
         ///[[Customer(2).ID]],
         ///[[Customer(3).ID]].
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
                 return ResourceManager.GetString("ForEachToolTipForEachType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],.
-        /// </summary>
-        public static string ForEachToolTipValue {
-            get {
-                return ResourceManager.GetString("ForEachToolTipValue", resourceCulture);
             }
         }
         
@@ -4382,123 +3452,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To execute a particular activity rather than another if a statement is true, then set the conditions and place the relevant activity in the relevant box. 
-        ///You can add multiple conditions and require them all to be true or just one to be true.
-        ///You can use a sequence tool with other activities inside it to execute a number of activities.
-        ///
-        ///Allowed:
-        ///.
-        /// </summary>
-        public static string IfThenHelp {
-            get {
-                return ResourceManager.GetString("IfThenHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute a particular activity rather than another if a statement is true, then set the input for the statement here.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string IfThenHelpInputfield {
-            get {
-                return ResourceManager.GetString("IfThenHelpInputfield", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See Find (Recordset) tool in the application
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string IfThenHelpMatch {
-            get {
-                return ResourceManager.GetString("IfThenHelpMatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the type of information you want to match on.
-        ///
-        ///Allowed:
-        ///na.
-        /// </summary>
-        public static string IfThenHelpMatchType {
-            get {
-                return ResourceManager.GetString("IfThenHelpMatchType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To have all conditions met then select this check box.
-        ///
-        ///Allowed:
-        ///.
-        /// </summary>
-        public static string IfThenHelpRequirealltobetrue {
-            get {
-                return ResourceManager.GetString("IfThenHelpRequirealltobetrue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute a particular activity rather than another if a statement is true, then set the conditions and place the relevant activity in the relevant box. 
-        ///You can add multiple conditions and require them all to be true or just one to be true.
-        ///You can use a sequence tool with other activities inside it to execute a number of activities..
-        /// </summary>
-        public static string IfThenToolTip {
-            get {
-                return ResourceManager.GetString("IfThenToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute a particular activity rather than another if a statement is true, then set the input for the statement here..
-        /// </summary>
-        public static string IfThenToolTipInputfield {
-            get {
-                return ResourceManager.GetString("IfThenToolTipInputfield", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to See Find (Recordset) tool in the application.
-        /// </summary>
-        public static string IfThenToolTipMatch {
-            get {
-                return ResourceManager.GetString("IfThenToolTipMatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the type of information you want to match on..
-        /// </summary>
-        public static string IfThenToolTipMatchType {
-            get {
-                return ResourceManager.GetString("IfThenToolTipMatchType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To have all conditions met then select this check box..
-        /// </summary>
-        public static string IfThenToolTipRequirealltobetrue {
-            get {
-                return ResourceManager.GetString("IfThenToolTipRequirealltobetrue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The variable or the value that you want passed into this action..
         /// </summary>
         public static string InputDefaultValueHelp {
@@ -4540,15 +3493,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string InputVariablesTip {
             get {
                 return ResourceManager.GetString("InputVariablesTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid expression: Opening and closing brackets don&apos;t match..
-        /// </summary>
-        public static string IntellisenseErrorMisMacthingBrackets {
-            get {
-                return ResourceManager.GetString("IntellisenseErrorMisMacthingBrackets", resourceCulture);
             }
         }
         
@@ -4713,7 +3657,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to infromation detail:&lt;br /&gt;
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to information detail:&lt;br /&gt;
         ///    Server Fatal Events&lt;br /&gt;
         ///  Server Error Events&lt;br /&gt;
         ///Server Warning Events&lt;br /&gt;
@@ -4859,7 +3803,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Up to infromation detail:&lt;br /&gt;
+        ///   Looks up a localized string similar to Logs to file: Up to information detail:&lt;br /&gt;
         ///    Server Fatal Events&lt;br /&gt;
         ///  Server Error Events&lt;br /&gt;
         ///Server Warning Events&lt;br /&gt;
@@ -5005,7 +3949,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to infromation detail:&lt;br /&gt;
+        ///   Looks up a localized string similar to Logs to Windows Event Log: Up to information detail:&lt;br /&gt;
         ///    Studio Fatal Events&lt;br /&gt;
         ///  Studio Error Events&lt;br /&gt;
         ///Studio Warning Events&lt;br /&gt;
@@ -5151,7 +4095,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs to file: Up to infromation detail:&lt;br /&gt;
+        ///   Looks up a localized string similar to Logs to file: Up to information detail:&lt;br /&gt;
         ///    Studio Fatal Events&lt;br /&gt;
         ///  Studio Error Events&lt;br /&gt;
         ///Studio Warning Events&lt;br /&gt;
@@ -5254,29 +4198,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test data.
-        /// </summary>
-        public static string ManageDbServiceInputValueTooltip {
-            get {
-                return ResourceManager.GetString("ManageDbServiceInputValueTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create a new connection to a database.
         /// </summary>
         public static string ManageDbServiceNewSourceTooltip {
             get {
                 return ResourceManager.GetString("ManageDbServiceNewSourceTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refresh the available actions on the selected server.
-        /// </summary>
-        public static string ManageDbServiceRefreshTooltip {
-            get {
-                return ResourceManager.GetString("ManageDbServiceRefreshTooltip", resourceCulture);
             }
         }
         
@@ -5515,29 +4441,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the action you want this service to represent.
-        /// </summary>
-        public static string ManagePluginServiceActionsTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginServiceActionsTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edits the selected plugin source connection.
         /// </summary>
         public static string ManagePluginServiceEditSourceTooltip {
             get {
                 return ResourceManager.GetString("ManagePluginServiceEditSourceTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the namespace in the dll.
-        /// </summary>
-        public static string ManagePluginServiceNamespaceTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginServiceNamespaceTooltip", resourceCulture);
             }
         }
         
@@ -5551,38 +4459,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh the available actions on the selected dll.
-        /// </summary>
-        public static string ManagePluginServiceRefreshTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginServiceRefreshTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reload the plugin source list.
-        /// </summary>
-        public static string ManagePluginServiceReloadSourcesTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginServiceReloadSourcesTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select the plugin you want to use.
         /// </summary>
         public static string ManagePluginServiceSourcesTooltip {
             get {
                 return ResourceManager.GetString("ManagePluginServiceSourcesTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test the execution of this action.
-        /// </summary>
-        public static string ManagePluginServiceTestTooltip {
-            get {
-                return ResourceManager.GetString("ManagePluginServiceTestTooltip", resourceCulture);
             }
         }
         
@@ -5686,38 +4567,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The request type of the webservice.
-        /// </summary>
-        public static string ManageWebServiceRequestTypesTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebServiceRequestTypesTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The remainder of the webservice URL.
-        /// </summary>
-        public static string ManageWebServiceRequestUrlTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebServiceRequestUrlTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select the webservice host you want to use.
         /// </summary>
         public static string ManageWebServiceSourcesTooltip {
             get {
                 return ResourceManager.GetString("ManageWebServiceSourcesTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test the execution of this webservice.
-        /// </summary>
-        public static string ManageWebServiceTestTooltip {
-            get {
-                return ResourceManager.GetString("ManageWebServiceTestTooltip", resourceCulture);
             }
         }
         
@@ -5794,29 +4648,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the input variable is blank, or there is no data passed in, then use &lt;i&gt;NULL&lt;/i&gt;..
-        /// </summary>
-        public static string MappingsEmptyIsNullHelp {
-            get {
-                return ResourceManager.GetString("MappingsEmptyIsNullHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to If you would like the default variables in a recordset, put the recordset name in here..
         /// </summary>
         public static string MappingsRecordsetNameHelp {
             get {
                 return ResourceManager.GetString("MappingsRecordsetNameHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mark this field as required for Input..
-        /// </summary>
-        public static string MappingsRequiredFieldHelp {
-            get {
-                return ResourceManager.GetString("MappingsRequiredFieldHelp", resourceCulture);
             }
         }
         
@@ -6337,15 +5173,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MySQL Database Test Connector and Calculate Outputs.
-        /// </summary>
-        public static string MySqlTestHeader {
-            get {
-                return ResourceManager.GetString("MySqlTestHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
         ///E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]
         ///
@@ -6424,15 +5251,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unassigned.
-        /// </summary>
-        public static string Navigation_Category_Unassigned {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Unassigned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string New {
@@ -6451,153 +5269,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unsaved.
-        /// </summary>
-        public static string NewWorkflowBaseName {
-            get {
-                return ResourceManager.GetString("NewWorkflowBaseName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Outputs.
         /// </summary>
         public static string OutputsLabel {
             get {
                 return ResourceManager.GetString("OutputsLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/HelpCommunity-32.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Community {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Community", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/StartPage-16.png.
-        /// </summary>
-        public static string Pack_Uri_Application_Image_Home {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Application_Image_Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png.
-        /// </summary>
-        public static string Pack_Uri_DatabaseService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_DatabaseService_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png.
-        /// </summary>
-        public static string Pack_Uri_EmailSource_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_EmailSource_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png.
-        /// </summary>
-        public static string Pack_Uri_PluginService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_PluginService_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png.
-        /// </summary>
-        public static string Pack_Uri_Server_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_Server_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/WebService-32.png.
-        /// </summary>
-        public static string Pack_Uri_WebService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_WebService_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png.
-        /// </summary>
-        public static string Pack_Uri_WorkflowService_Image {
-            get {
-                return ResourceManager.GetString("Pack_Uri_WorkflowService_Image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ParallelForEachHelp {
-            get {
-                return ResourceManager.GetString("ParallelForEachHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ParallelForEachHelpForEachType {
-            get {
-                return ResourceManager.GetString("ParallelForEachHelpForEachType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ParallelForEachToolTip {
-            get {
-                return ResourceManager.GetString("ParallelForEachToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ParallelForEachToolTipForEachType {
-            get {
-                return ResourceManager.GetString("ParallelForEachToolTipForEachType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute a number of Activities at the same time, drop them into the Parallel tool.
-        ///Execution of the workflow will continue when all the channels have completed.
-        ///The error handling is a catch all for any process inside the parallel execution.
-        ///
-        ///Allowed:
-        ///.
-        /// </summary>
-        public static string ParallelHelp {
-            get {
-                return ResourceManager.GetString("ParallelHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To execute a number of Activities at the same time, drop them into the Parallel tool.
-        ///Execution of the workflow will continue when all the channels have completed.
-        ///The error handling is a catch all for any process inside the parallel execution..
-        /// </summary>
-        public static string ParallelToolTip {
-            get {
-                return ResourceManager.GetString("ParallelToolTip", resourceCulture);
             }
         }
         
@@ -6629,15 +5305,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit .
-        /// </summary>
-        public static string PluginServiceEditHeaderLabel {
-            get {
-                return ResourceManager.GetString("PluginServiceEditHeaderLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Change the connection string properties of the selected dll.&lt;br&gt;
         ///&lt;br/&gt;
         ///Change the connection string from, say, a development dll to a live dll.&lt;br/&gt;
@@ -6660,33 +5327,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the Namespace from the DLL that has the method you want to execute..
-        /// </summary>
-        public static string PluginServiceNamespaceHelp {
-            get {
-                return ResourceManager.GetString("PluginServiceNamespaceHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Procedure not selected. This service will not execute..
-        /// </summary>
-        public static string PluginServiceNamespaceNotSelected {
-            get {
-                return ResourceManager.GetString("PluginServiceNamespaceNotSelected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New Plugin Connector.
-        /// </summary>
-        public static string PluginServiceNewHeaderLabel {
-            get {
-                return ResourceManager.GetString("PluginServiceNewHeaderLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to To create a reference to a new dll, click New..
         /// </summary>
         public static string PluginServiceNewSourceHelp {
@@ -6701,15 +5341,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginServiceRefreshHelp {
             get {
                 return ResourceManager.GetString("PluginServiceRefreshHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reload the list of dll&apos;s you want to use from previously setup sources..
-        /// </summary>
-        public static string PluginServiceReloadSourcesHelp {
-            get {
-                return ResourceManager.GetString("PluginServiceReloadSourcesHelp", resourceCulture);
             }
         }
         
@@ -6732,33 +5363,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test the dll so that we have a response object that can be used to map data back into the system..
-        /// </summary>
-        public static string PluginServiceTestHelp {
-            get {
-                return ResourceManager.GetString("PluginServiceTestHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Put the information you want to test with into the variables and execute the Test..
-        /// </summary>
-        public static string PluginServiceTestInputHelp {
-            get {
-                return ResourceManager.GetString("PluginServiceTestInputHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The results from the dll execution test based on your inputs..
-        /// </summary>
-        public static string PluginServiceTestResultsHelp {
-            get {
-                return ResourceManager.GetString("PluginServiceTestResultsHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Clears the Search Filter.
         /// </summary>
         public static string PluginSourceClearSearchHelp {
@@ -6776,15 +5380,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginSourceDllFullNameHelp {
             get {
                 return ResourceManager.GetString("PluginSourceDllFullNameHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit.
-        /// </summary>
-        public static string PluginSourceEditHeaderLabel {
-            get {
-                return ResourceManager.GetString("PluginSourceEditHeaderLabel", resourceCulture);
             }
         }
         
@@ -6850,7 +5445,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to To append something onto the front of the variables in your list, type it in here.
-        ///For recordsets, type  recordsetname(). Dont forget the &quot;.&quot; after the &quot;()&quot;
+        ///For recordsets, type  recordsetname(). Don&apos;t forget the &quot;.&quot; after the &quot;()&quot;
         ///You do not need to put the &quot;[[&quot; in..
         /// </summary>
         public static string QuickVariablePrefixWithHelpText {
@@ -6889,7 +5484,7 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Select the criteria to split the variables in the list. This will be the pattern used to repeat against the Variable List box.
         ///Char will split on the characters you specify, like comma or | &lt;/.
-        ///Index will split on the numeric index from the previouse split.
+        ///Index will split on the numeric index from the previous split.
         ///New Line will split on carriage return.
         ///Space will split on blank space.
         ///Tab splits on a tab character..
@@ -6906,16 +5501,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string QuickVariableSplitAndAtToolTip {
             get {
                 return ResourceManager.GetString("QuickVariableSplitAndAtToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Simply enter the name of the recordset that you want to count in. eg
-        ///[[MyRecordset()]].
-        /// </summary>
-        public static string QuickVariableSplitListOnHelpText {
-            get {
-                return ResourceManager.GetString("QuickVariableSplitListOnHelpText", resourceCulture);
             }
         }
         
@@ -7334,45 +5919,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]].
-        /// </summary>
-        public static string RecordsLengthHelpRecordset {
-            get {
-                return ResourceManager.GetString("RecordsLengthHelpRecordset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the highest index / max index in the recordset..
-        /// </summary>
-        public static string RecordsLengthHelpResult {
-            get {
-                return ResourceManager.GetString("RecordsLengthHelpResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [[Recordset()]].
-        /// </summary>
-        public static string RecordsLengthToolTipRecordset {
-            get {
-                return ResourceManager.GetString("RecordsLengthToolTipRecordset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string RecordsLengthToolTipResult {
-            get {
-                return ResourceManager.GetString("RecordsLengthToolTipResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------&quot; + &quot;Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler..
         /// </summary>
         public static string RenameConflictDescription {
@@ -7657,33 +6203,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resource ID must be a Guid.
-        /// </summary>
-        public static string Resource_ID_must_be_a_Guid {
-            get {
-                return ResourceManager.GetString("Resource_ID_must_be_a_Guid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Debug.
-        /// </summary>
-        public static string Ribbon_Debug {
-            get {
-                return ResourceManager.GetString("Ribbon_Debug", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stop.
-        /// </summary>
-        public static string Ribbon_StopExecution {
-            get {
-                return ResourceManager.GetString("Ribbon_StopExecution", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Make current version.
         /// </summary>
         public static string RollbackHeader {
@@ -7702,104 +6221,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To add a rule, enter the rule name in the Default input and hit enter or double click a rule to edit.
-        ///You can drag and drop the rules to change their execution order.
-        ///Rules will be processed in the order listed. If a Rule is found to be True, that flow arm will be executed.
-        ///
-        ///Allowed:
-        ///AddMode to or edit the rules list..
-        /// </summary>
-        public static string RulesHelp {
-            get {
-                return ResourceManager.GetString("RulesHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To add a rule, enter the rule name in the Default input and hit enter or double click a rule to edit.
-        ///You can drag and drop the rules to change their execution order.
-        ///Rules will be processed in the order listed. If a Rule is found to be True, that flow arm will be executed..
-        /// </summary>
-        public static string RulesToolTip {
-            get {
-                return ResourceManager.GetString("RulesToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Saving Error.
         /// </summary>
         public static string SaveErrorHeader {
             get {
                 return ResourceManager.GetString("SaveErrorHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The following error occurred on save:.
-        /// </summary>
-        public static string SaveErrorMessage {
-            get {
-                return ResourceManager.GetString("SaveErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error while saving.
-        /// </summary>
-        public static string SaveSettingErrorPrefix {
-            get {
-                return ResourceManager.GetString("SaveSettingErrorPrefix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are duplicate permissions for a resource, 
-        ///    i.e. one resource has permissions set twice with the same group. 
-        ///    Please clear the duplicates before saving..
-        /// </summary>
-        public static string SaveSettingsDuplicateResourcePermissions {
-            get {
-                return ResourceManager.GetString("SaveSettingsDuplicateResourcePermissions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There are duplicate server permissions, 
-        ///    i.e. Server permissions have been setup up with the same group twice. 
-        ///    Please clear the duplicates before saving..
-        /// </summary>
-        public static string SaveSettingsDuplicateServerPermissions {
-            get {
-                return ResourceManager.GetString("SaveSettingsDuplicateServerPermissions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error while saving: Server unreachable..
-        /// </summary>
-        public static string SaveSettingsNotReachableErrorMsg {
-            get {
-                return ResourceManager.GetString("SaveSettingsNotReachableErrorMsg", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error while saving: You don&apos;t have permission to change settings on this server.
-        ///You need Administrator permission..
-        /// </summary>
-        public static string SaveSettingsPermissionsErrorMsg {
-            get {
-                return ResourceManager.GetString("SaveSettingsPermissionsErrorMsg", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scheduler Task has not been saved.{0}Would you like to save the Task? {0}-------------------------------------------------------------------Yes - Save the Task.{0}No - Discard your changes.{0}Cancel - Returns you to Scheduler..
-        /// </summary>
-        public static string SchedulerChangesDescription {
-            get {
-                return ResourceManager.GetString("SchedulerChangesDescription", resourceCulture);
             }
         }
         
@@ -7867,16 +6293,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Each trigger that is executed will be stored in the system.
-        ///To see the result of the workflow execution, select the history record and then look at the Output pane..
-        /// </summary>
-        public static string SchedulerSettingsHelpTextHistoryView {
-            get {
-                return ResourceManager.GetString("SchedulerSettingsHelpTextHistoryView", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The name of the schedule that will appear in the list of Schedules in the left hand column.
         ///Renaming a Schedule will loose its History..
         /// </summary>
@@ -7915,7 +6331,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To change if the trigger is active or not, select Enabled or Dissabled..
+        ///   Looks up a localized string similar to To change if the trigger is active or not, select Enabled or Disabled..
         /// </summary>
         public static string SchedulerSettingsHelpTextStatus {
             get {
@@ -7983,15 +6399,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SchedulerSettingsToolTipRun {
             get {
                 return ResourceManager.GetString("SchedulerSettingsToolTipRun", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to When should the workflow run?.
-        /// </summary>
-        public static string SchedulerSettingsToolTipTrigger {
-            get {
-                return ResourceManager.GetString("SchedulerSettingsToolTipTrigger", resourceCulture);
             }
         }
         
@@ -8226,24 +6633,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server address cannot be empty.
-        /// </summary>
-        public static string ServerSourceDialogNoAddressErrorMessage {
-            get {
-                return ResourceManager.GetString("ServerSourceDialogNoAddressErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The server connection must be tested with a valid address before you can save.
-        /// </summary>
-        public static string ServerSourceDialogNoTestMessage {
-            get {
-                return ResourceManager.GetString("ServerSourceDialogNoTestMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Select the protocol you want to connect on.
         /// </summary>
         public static string ServerSourceDialogProtocolToolTip {
@@ -8258,15 +6647,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerSourceDialogPublicToolTip {
             get {
                 return ResourceManager.GetString("ServerSourceDialogPublicToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cancel the connection attempt.
-        /// </summary>
-        public static string ServerSourceDialogsCancelTestToolTip {
-            get {
-                return ResourceManager.GetString("ServerSourceDialogsCancelTestToolTip", resourceCulture);
             }
         }
         
@@ -8383,17 +6763,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input some test data to execute the procedure.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///This data will not be stored and the execution will be rolled back if supported by the database..
-        /// </summary>
-        public static string ServiceInputsHelp {
-            get {
-                return ResourceManager.GetString("ServiceInputsHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Test the procedure or function.
         /// </summary>
         public static string ServiceTestActionTooltip {
@@ -8412,7 +6781,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestCancelButtonTooltip.
+        ///   Looks up a localized string similar to Cancel the test execution and return to mappings.
         /// </summary>
         public static string ServiceTestCancelButtonTooltip {
             get {
@@ -8430,7 +6799,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServiceTestDoneButtonTooltip.
+        ///   Looks up a localized string similar to Accept these results and continue.
         /// </summary>
         public static string ServiceTestDoneButtonTooltip {
             get {
@@ -8444,29 +6813,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestHelp {
             get {
                 return ResourceManager.GetString("ServiceTestHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. 
-        ///You can also put multiple fields into one field with other text much like the assign tool.
-        ///By default similar matches from the variable list are used where possible..
-        /// </summary>
-        public static string ServiceToolTipInput {
-            get {
-                return ResourceManager.GetString("ServiceToolTipInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Insert the variable that you want the output from the service to be mapped into. By default similar matches from the variable list are used where possible.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
-        /// </summary>
-        public static string ServiceToolTipOutput {
-            get {
-                return ResourceManager.GetString("ServiceToolTipOutput", resourceCulture);
             }
         }
         
@@ -8615,7 +6961,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A counter for the authorisation failers on this server..
+        ///   Looks up a localized string similar to A counter for the authorisation failures on this server..
         /// </summary>
         public static string SettingsPerfCounterServerHelpNotAuthErrors {
             get {
@@ -8669,7 +7015,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authorisation failers on this server..
+        ///   Looks up a localized string similar to Authorisation failures on this server..
         /// </summary>
         public static string SettingsPerfCounterServerToolTipNotAuthErrors {
             get {
@@ -8705,7 +7051,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsSecurityResourceBrowseHelpResources.
+        ///   Looks up a localized string similar to Resource picker.
         /// </summary>
         public static string SettingsSecurityResourceBrowseHelpResources {
             get {
@@ -8714,7 +7060,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SettingsSecurityResourceBrowseHelpWindowsGroup.
+        ///   Looks up a localized string similar to Resource picker.
         /// </summary>
         public static string SettingsSecurityResourceBrowseHelpWindowsGroup {
             get {
@@ -9003,7 +7349,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit the connection properties of the selected Sharepoint Server..
+        ///   Looks up a localized string similar to Edit the connection properties of the selected SharePoint Server..
         /// </summary>
         public static string SharepointEditServerHelp {
             get {
@@ -9037,7 +7383,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured Sharepoint server source or &quot;New Sharepoint Server Source...&quot; to add a new one.
+        ///   Looks up a localized string similar to Select a preconfigured SharePoint server source or &quot;New SharePoint Server Source...&quot; to add a new one.
         ///.
         /// </summary>
         public static string SharepointHelpServer {
@@ -9086,15 +7432,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
-        /// </summary>
-        public static string SharePointServiceEditHeaderLabel {
-            get {
-                return ResourceManager.GetString("SharePointServiceEditHeaderLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to New SharePoint Service Source.
         /// </summary>
         public static string SharePointServiceNewHeaderLabel {
@@ -9104,7 +7441,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The full URL of the Sharepoint server.
+        ///   Looks up a localized string similar to The full URL of the SharePoint server.
         /// </summary>
         public static string SharepointServiceSourceServerHelp {
             get {
@@ -9113,7 +7450,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test the connection to the Sharepoint server.
+        ///   Looks up a localized string similar to Test the connection to the SharePoint server.
         /// </summary>
         public static string SharepointServiceSourceTestHelp {
             get {
@@ -9122,7 +7459,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel the test connection to the Sharepoint server.
+        ///   Looks up a localized string similar to Cancel the test connection to the SharePoint server.
         /// </summary>
         public static string SharepointSourceCancelTestTooltip {
             get {
@@ -9131,7 +7468,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password for the username used to connect to Sharepoint.
+        ///   Looks up a localized string similar to Password for the username used to connect to SharePoint.
         /// </summary>
         public static string SharepointSourcePasswordTooltip {
             get {
@@ -9140,7 +7477,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sharepoint URL.
+        ///   Looks up a localized string similar to SharePoint URL.
         /// </summary>
         public static string SharepointSourceServerNameTooltip {
             get {
@@ -9149,7 +7486,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test the connection to the Sharepoint server.
+        ///   Looks up a localized string similar to Test the connection to the SharePoint server.
         /// </summary>
         public static string SharepointSourceTestTooltip {
             get {
@@ -9158,7 +7495,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The usename used to connect to Sharepoint.
+        ///   Looks up a localized string similar to The username used to connect to SharePoint.
         /// </summary>
         public static string SharepointSourceUserNameTooltip {
             get {
@@ -9186,7 +7523,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured Sharepoint server source or &quot;New Sharepoint Server Source...&quot; to add a new one..
+        ///   Looks up a localized string similar to Select a preconfigured SharePoint server source or &quot;New SharePoint Server Source...&quot; to add a new one..
         /// </summary>
         public static string SharepointToolTipServer {
             get {
@@ -9249,15 +7586,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SortToolTipSortOrderType {
             get {
                 return ResourceManager.GetString("SortToolTipSortOrderType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Images\SplashImage_New_2014.jpg.
-        /// </summary>
-        public static string SplashImage {
-            get {
-                return ResourceManager.GetString("SplashImage", resourceCulture);
             }
         }
         
@@ -9560,15 +7888,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used..
-        /// </summary>
-        public static string SQLBulkInsertToolTipTablelock {
-            get {
-                return ResourceManager.GetString("SQLBulkInsertToolTipTablelock", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The number of seconds you would like the operation to complete in.
         ///All batches in total must complete within this time period.
         ///The default is 0 which will be no time constraint.
@@ -9587,15 +7906,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SqlBulkInsertToolTipUseInternalTransaction {
             get {
                 return ResourceManager.GetString("SqlBulkInsertToolTipUseInternalTransaction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SQL Server Database Test Connector and Calculate Outputs.
-        /// </summary>
-        public static string SqlServerDbTestHeader {
-            get {
-                return ResourceManager.GetString("SqlServerDbTestHeader", resourceCulture);
             }
         }
         
@@ -9637,18 +7947,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string StandardStyling {
             get {
                 return ResourceManager.GetString("StandardStyling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to When specified, cause the server to fire the insert triggers for the rows being inserted into the database.
-        ///
-        ///Allowed:
-        ///When specified, cause the server to fire the insert triggers for the rows being inserted into the database..
-        /// </summary>
-        public static string String1SQLBulkInsertHelpFiretriggers {
-            get {
-                return ResourceManager.GetString("String1SQLBulkInsertHelpFiretriggers", resourceCulture);
             }
         }
         
@@ -9709,29 +8007,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test/Default:.
-        /// </summary>
-        public static string TestDefaultLabel {
-            get {
-                return ResourceManager.GetString("TestDefaultLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Test the email account is working.
         /// </summary>
         public static string TestEmailAccountHelp {
             get {
                 return ResourceManager.GetString("TestEmailAccountHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test Connector and Calculate Outputs.
-        /// </summary>
-        public static string TestHeader {
-            get {
-                return ResourceManager.GetString("TestHeader", resourceCulture);
             }
         }
         
@@ -9777,140 +8057,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ToolboxViewRefreshHelp {
             get {
                 return ResourceManager.GetString("ToolboxViewRefreshHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tool guids are not allowed to be the empty guid.
-        /// </summary>
-        public static string ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid {
-            get {
-                return ResourceManager.GetString("ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To run an activity or sequence of activities in a transaction, drop it on here.
-        ///Transactions WILL NOT be honored across servers and must be part of the Windows transaction scope.
-        ///
-        ///Allowed:
-        ///Drop a sequence or activity here to have it execute in a transaction..
-        /// </summary>
-        public static string TransactionHelp {
-            get {
-                return ResourceManager.GetString("TransactionHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chaos:- The pending changes from more highly isolated transactions cannot be overwritten.
-        ///ReadCommitted:- Volatile data cannot be read during the transaction, but can be modified.
-        ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
-        ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
-        ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snap [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string TransactionHelpIsolationLevel {
-            get {
-                return ResourceManager.GetString("TransactionHelpIsolationLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns &quot;Success&quot; if the transaction completed without error.
-        ///Returns &quot;Fail&quot; if transaction completed with an error.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string TransactionHelpResult {
-            get {
-                return ResourceManager.GetString("TransactionHelpResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To create a timeout on the transaction, enter the time part and amount in here. 
-        ///0 or blank will not timeout.
-        ///
-        ///Allowed:
-        ///How long before timing out?.
-        /// </summary>
-        public static string TransactionHelpTimeoutTime {
-            get {
-                return ResourceManager.GetString("TransactionHelpTimeoutTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To create a timeout on the transaction, enter the time part and amount in here. 
-        ///0 or blank will not timeout.
-        ///
-        ///Allowed:
-        ///Timepart for the timeout.
-        /// </summary>
-        public static string TransactionHelpTimeoutType {
-            get {
-                return ResourceManager.GetString("TransactionHelpTimeoutType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To run an activity or sequence of activities in a transaction, drop it on here.
-        ///Transactions WILL NOT be honored across servers and must be part of the Windows transaction scope..
-        /// </summary>
-        public static string TransactionToolTip {
-            get {
-                return ResourceManager.GetString("TransactionToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chaos:- The pending changes from more highly isolated transactions cannot be overwritten.
-        ///ReadCommitted:- Volatile data cannot be read during the transaction, but can be modified.
-        ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
-        ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
-        ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snap [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string TransactionToolTipIsolationLevel {
-            get {
-                return ResourceManager.GetString("TransactionToolTipIsolationLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns &quot;Success&quot; if the transaction completed without error.
-        ///Returns &quot;Fail&quot; if transaction completed with an error..
-        /// </summary>
-        public static string TransactionToolTipResult {
-            get {
-                return ResourceManager.GetString("TransactionToolTipResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To create a timeout on the transaction, enter the time part and amount in here. 
-        ///0 or blank will not timeout..
-        /// </summary>
-        public static string TransactionToolTipTimeoutTime {
-            get {
-                return ResourceManager.GetString("TransactionToolTipTimeoutTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To create a timeout on the transaction, enter the time part and amount in here. 
-        ///0 or blank will not timeout..
-        /// </summary>
-        public static string TransactionToolTipTimeoutType {
-            get {
-                return ResourceManager.GetString("TransactionToolTipTimeoutType", resourceCulture);
             }
         }
         
@@ -10080,24 +8226,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To unzip a file, put the full path and zip file name in here.
-        ///You can use File System, URI, SFTP, FTP or FTPS format.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string UnzipHelpZipname {
-            get {
-                return ResourceManager.GetString("UnzipHelpZipname", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Specify the password needed to open the zip file here.
         ///Leaving the Archive Password blank will result in no archive password being used to open the file..
         /// </summary>
@@ -10169,51 +8297,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://community.warewolf.io/.
-        /// </summary>
-        public static string Uri_Community_HomePage {
-            get {
-                return ResourceManager.GetString("Uri_Community_HomePage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help\Warewolf Language.htm.
-        /// </summary>
-        public static string Uri_Studio_Language_Reference_Document {
-            get {
-                return ResourceManager.GetString("Uri_Studio_Language_Reference_Document", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help\PageMissing.htm.
-        /// </summary>
-        public static string Uri_Studio_PageMissing {
-            get {
-                return ResourceManager.GetString("Uri_Studio_PageMissing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help\PageNotAvailable.htm.
-        /// </summary>
-        public static string Uri_Studio_PageNotAvailable {
-            get {
-                return ResourceManager.GetString("Uri_Studio_PageNotAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Help\PageRestrictedAccess.htm.
-        /// </summary>
-        public static string Uri_Studio_PageRestrictedAccess {
-            get {
-                return ResourceManager.GetString("Uri_Studio_PageRestrictedAccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connect with a specific user account..
         /// </summary>
         public static string UserAuthenticationHelp {
@@ -10268,24 +8351,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/start.html.
-        /// </summary>
-        public static string Warewolf_Homepage_Start {
-            get {
-                return ResourceManager.GetString("Warewolf_Homepage_Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png.
-        /// </summary>
-        public static string Warewolf_Logo {
-            get {
-                return ResourceManager.GetString("Warewolf_Logo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Copyright © 2015 Warewolf, All rights reserved..
         /// </summary>
         public static string WarewolfCopyright {
@@ -10321,15 +8386,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WarewolfUrl {
             get {
                 return ResourceManager.GetString("WarewolfUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web Get Request Test Connector and Calculate Outputs.
-        /// </summary>
-        public static string WebGetTestHeader {
-            get {
-                return ResourceManager.GetString("WebGetTestHeader", resourceCulture);
             }
         }
         
@@ -10439,33 +8495,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit .
-        /// </summary>
-        public static string WebserviceEditHeaderLabel {
-            get {
-                return ResourceManager.GetString("WebserviceEditHeaderLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select Request Method and Source.
-        /// </summary>
-        public static string WebserviceHeader {
-            get {
-                return ResourceManager.GetString("WebserviceHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Header.
-        /// </summary>
-        public static string WebserviceHeadersHeader {
-            get {
-                return ResourceManager.GetString("WebserviceHeadersHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to New Web Service Source.
         /// </summary>
         public static string WebserviceNewHeaderLabel {
@@ -10524,15 +8553,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Body.
-        /// </summary>
-        public static string WebserviceRequestBodyHeader {
-            get {
-                return ResourceManager.GetString("WebserviceRequestBodyHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The request body.&lt;br/&gt;
         ///&lt;br/&gt;
         ///This is typically directly after the header text in the Request..
@@ -10540,15 +8560,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebServiceRequestBodyHelp {
             get {
                 return ResourceManager.GetString("WebServiceRequestBodyHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Request.
-        /// </summary>
-        public static string WebserviceRequestHeader {
-            get {
-                return ResourceManager.GetString("WebserviceRequestHeader", resourceCulture);
             }
         }
         
@@ -10564,15 +8575,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to URL.
-        /// </summary>
-        public static string WebserviceRequestURLHeader {
-            get {
-                return ResourceManager.GetString("WebserviceRequestURLHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Web Service Request URL to execute.&lt;br/&gt;
         ///&lt;br/&gt;
         ///The un-editable part is determined by the Source you are using, so it&apos;s easy to change when moving environments, for example, going from development to testing, or live..
@@ -10580,15 +8582,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebServiceRequestUrlHelp {
             get {
                 return ResourceManager.GetString("WebServiceRequestUrlHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Response.
-        /// </summary>
-        public static string WebserviceResponseHeader {
-            get {
-                return ResourceManager.GetString("WebserviceResponseHeader", resourceCulture);
             }
         }
         
@@ -10630,15 +8623,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Web Service Connector.
-        /// </summary>
-        public static string WebserviceTabHeader {
-            get {
-                return ResourceManager.GetString("WebserviceTabHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Test the Webservice to get response payload. &lt;br/&gt;
         ///&lt;br/&gt;
         ///This allows us to map response data back into the system for you..
@@ -10646,28 +8630,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WebServiceTestCommandHelp {
             get {
                 return ResourceManager.GetString("WebServiceTestCommandHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Variables.
-        /// </summary>
-        public static string WebserviceVariablesHeader {
-            get {
-                return ResourceManager.GetString("WebserviceVariablesHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Indicates the method to be performed on the object identified by the URL&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///These should be set by the webservice creator and found in the webservice documentation.&lt;br/&gt;
-        ///&lt;br/&gt;
-        ///Note that the GET method, does not have a request Body..
-        /// </summary>
-        public static string WebServiceWebRequestHelp {
-            get {
-                return ResourceManager.GetString("WebServiceWebRequestHelp", resourceCulture);
             }
         }
         
@@ -10690,151 +8652,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. 
-        ///You can also put multiple fields into one field with other text much like the assign tool.
-        ///By default similar matches from the variable list are used where possible.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string WorkerServiceHelpInput {
-            get {
-                return ResourceManager.GetString("WorkerServiceHelpInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Insert the variable that you want the output from the service to be mapped into. By default similar matches from the variable list are used where possible.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string WorkerServiceHelpOutput {
-            get {
-                return ResourceManager.GetString("WorkerServiceHelpOutput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. 
-        ///You can also put multiple fields into one field with other text much like the assign tool.
-        ///By default similar matches from the variable list are used where possible..
-        /// </summary>
-        public static string WorkerServiceToolTipInput {
-            get {
-                return ResourceManager.GetString("WorkerServiceToolTipInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Insert the variable that you want the output from the service to be mapped into. By default similar matches from the variable list are used where possible.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
-        /// </summary>
-        public static string WorkerServiceToolTipOutput {
-            get {
-                return ResourceManager.GetString("WorkerServiceToolTipOutput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You are not authorized to edit this resource.
         /// </summary>
         public static string WorkflowDesignerSecurityToolTipNone {
             get {
                 return ResourceManager.GetString("WorkflowDesignerSecurityToolTipNone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Selecting this checkbox will cause the workflow to execute as &quot;&quot;Fire and Forget&quot;&quot;. This will free up the parent workflow to continue without waiting for a response from the nested workflow.
-        ///Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.
-        ///
-        ///Allowed:
-        ///.
-        /// </summary>
-        public static string WorkflowServiceHelpExecuteworkflowasynchronously {
-            get {
-                return ResourceManager.GetString("WorkflowServiceHelpExecuteworkflowasynchronously", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
-        ///You can also put multiple fields into one field with other text much like the assign tool.
-        ///By default similar matches from the variable list are used where possible.
-        ///
-        ///Allowed:
-        ///Data   
-        ///[[Scalar]]   
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string WorkflowServiceHelpInput {
-            get {
-                return ResourceManager.GetString("WorkflowServiceHelpInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
-        /// </summary>
-        public static string WorkflowServiceHelpOutput {
-            get {
-                return ResourceManager.GetString("WorkflowServiceHelpOutput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Selecting this checkbox will cause the workflow to execute as &quot;&quot;Fire and Forget&quot;&quot;. This will free up the parent workflow to continue without waiting for a response from the nested workflow.
-        ///Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use..
-        /// </summary>
-        public static string WorkflowServiceToolTipExecuteworkflowasynchronously {
-            get {
-                return ResourceManager.GetString("WorkflowServiceToolTipExecuteworkflowasynchronously", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
-        ///You can also put multiple fields into one field with other text much like the assign tool.
-        ///By default similar matches from the variable list are used where possible..
-        /// </summary>
-        public static string WorkflowServiceToolTipInput {
-            get {
-                return ResourceManager.GetString("WorkflowServiceToolTipInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
-        /// </summary>
-        public static string WorkflowServiceToolTipOutput {
-            get {
-                return ResourceManager.GetString("WorkflowServiceToolTipOutput", resourceCulture);
             }
         }
         
@@ -10956,17 +8778,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overwrite will replace the file contents with the new content.
-        ///Append Top puts the new content at the beginning of the file.
-        ///Append Bottom will add the new content to the end of the file..
-        /// </summary>
-        public static string WriteFileToolTipMethod {
-            get {
-                return ResourceManager.GetString("WriteFileToolTipMethod", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used..
         /// </summary>
         public static string WriteFileToolTipPassword {
@@ -10993,64 +8804,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WriteFileToolTipUsername {
             get {
                 return ResourceManager.GetString("WriteFileToolTipUsername", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;
-        ///  &lt;Actions&gt;
-        ///	&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot;&gt;
-        ///		&lt;Inputs&gt;
-        ///			&lt;Input Name=&quot;reg&quot; Source=&quot;&quot; DefaultValue=&quot;NUD2347&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;
-        ///			&lt;Input Name=&quot;asdfsad&quot; Source=&quot;registration223&quot; DefaultValue=&quot;w3rt24324&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;			
-        ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
-        ///		&lt;/Inputs&gt;
-        ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; Value=&quot;&quot;/&gt;
-        ///			&lt;Out [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string xmlNullSourceMethodServiceDef {
-            get {
-                return ResourceManager.GetString("xmlNullSourceMethodServiceDef", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
-        ///  &lt;contentPanes&gt;
-        ///    &lt;contentPane name=&quot;OutputPane&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;1000,200&quot; lastFloatingWindowRect=&quot;625,541,1016,234&quot; lastFloatingLocation=&quot;625,541&quot; lastActivatedTime=&quot;2013-06-10T07:30:08.998685Z&quot; /&gt;
-        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.88 [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string XmlOriginalLayout {
-            get {
-                return ResourceManager.GetString("XmlOriginalLayout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;
-        ///  &lt;Actions&gt;
-        ///	&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot; SourceMethod=&quot;proc_GetCarsByReg&quot;&gt;
-        ///		&lt;Inputs&gt;
-        ///			&lt;Input Name=&quot;reg&quot; Source=&quot;&quot; DefaultValue=&quot;NUD2347&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;
-        ///			&lt;Input Name=&quot;asdfsad&quot; Source=&quot;registration223&quot; DefaultValue=&quot;w3rt24324&quot;&gt;
-        ///				&lt;Validator Type=&quot;Required&quot; /&gt;				
-        ///			&lt;/Input&gt;			
-        ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
-        ///		&lt;/Inputs&gt;
-        ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string xmlServiceDefinition {
-            get {
-                return ResourceManager.GetString("xmlServiceDefinition", resourceCulture);
             }
         }
         
