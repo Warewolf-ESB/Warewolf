@@ -71,6 +71,7 @@
     <Compile Include="EvalFunctionTests.cs" />
     <Compile Include="SortTest.cs" />
     <Compile Include="TestAst.cs" />
+    <Compile Include="TestCommonFunctions.cs" />
     <Compile Include="TestDataStructure.cs" />
     <Compile Include="TestDistinct.cs" />
     <Compile Include="TestEvaluation.cs" />
