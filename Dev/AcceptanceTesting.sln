@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -82,13 +82,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{C6750CCC-03BB-42BF-8EB7-0D9ACB927923}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Hard Reset and Clean This Repo.bat = TestScripts\Hard Reset and Clean This Repo.bat
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Explorer.Specs", "Dev2.Explorer.Specs\Dev2.Explorer.Specs.csproj", "{3C6D24ED-71A4-4A97-A941-15C02754A0DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20848FEE-00A7-4B96-9FA1-80F2890E37AB}"
-	ProjectSection(SolutionItems) = preProject
-		Dev2.Server\Decrypt Server Resources.ps1 = Dev2.Server\Decrypt Server Resources.ps1
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Integration.Tests", "Dev2.IntegrationTests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"
 EndProject
@@ -270,12 +270,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.AcceptanceTesting.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS", "AutoComplete\WpfControls.CS\WpfControls.CS.csproj", "{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{BD257381-0CA0-49B8-9FC6-BCEAD24022CA}"
-	ProjectSection(SolutionItems) = preProject
-		BakeInVersion.ps1 = BakeInVersion.ps1
-		ReadOutVersion.ps1 = ReadOutVersion.ps1
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{97031FE6-CCA7-4372-9370-01432C4D6439}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Server\Cleanup.bat = TestScripts\Server\Cleanup.bat
@@ -297,6 +291,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{378E17
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Tools.SpecTests", "Warewolf.Tools.Specs\Warewolf.Tools.SpecTests.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{C1E44084-B760-4ABF-840F-6D695B1222E0}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Server\Service\Cleanup.bat = TestScripts\Server\Service\Cleanup.bat
+		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055-C1EF-4E32-9854-96684CAFB617}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
+		TestScripts\Tests\Compile All Tests.bat = TestScripts\Tests\Compile All Tests.bat
+		TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat = TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat
+		TestScripts\Tests\Run-All-Acceptance-Tests.ps1 = TestScripts\Tests\Run-All-Acceptance-Tests.ps1
+		TestScripts\Tests\Run-All-UI-Tests.ps1 = TestScripts\Tests\Run-All-UI-Tests.ps1
+		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -730,9 +740,10 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C6750CCC-03BB-42BF-8EB7-0D9ACB927923} = {20848FEE-00A7-4B96-9FA1-80F2890E37AB}
-		{BD257381-0CA0-49B8-9FC6-BCEAD24022CA} = {20848FEE-00A7-4B96-9FA1-80F2890E37AB}
 		{97031FE6-CCA7-4372-9370-01432C4D6439} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
 		{378E1780-68B0-4DCF-882F-235BA0423D3C} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
+		{C1E44084-B760-4ABF-840F-6D695B1222E0} = {97031FE6-CCA7-4372-9370-01432C4D6439}
+		{821BF055-C1EF-4E32-9854-96684CAFB617} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c

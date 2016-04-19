@@ -334,6 +334,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Decrypt Server Resources.ps1" />
     <None Include="packages.config" />
     <None Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
