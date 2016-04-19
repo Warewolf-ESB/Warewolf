@@ -7,12 +7,12 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Zip"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                MaxWidth="200"
                                Width="200"
                                mc:Ignorable="d"
@@ -48,7 +48,7 @@
                                 FilterType="All" 
                                 WrapInBrackets="False" 
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipFileFolder}"
+                                ToolTip="{x:Static languages:Core.ZipToolTipFileFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -58,7 +58,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpFileFolder}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpFileFolder}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.InputPath"
                                      SourcePropertyValue="{Binding  ModelItem.InputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -77,7 +77,7 @@
                                 DefaultText="[[ZipFileName]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipDestination}"
+                                ToolTip="{x:Static languages:Core.ZipToolTipDestination}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ZipNametxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -87,7 +87,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpDestination}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpDestination}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.OutputPath"
                                      SourcePropertyValue="{Binding ModelItem.OutputPath, UpdateSourceTrigger=PropertyChanged}"
@@ -108,9 +108,9 @@
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.ZipToolTipResult}">
+                                ToolTip="{x:Static languages:Core.ZipToolTipResult}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.ZipHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
                                      SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"

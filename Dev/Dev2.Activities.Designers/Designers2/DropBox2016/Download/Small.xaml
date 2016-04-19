@@ -7,7 +7,7 @@
                                xmlns:dropBoxUploadService ="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Download"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
@@ -15,6 +15,7 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:attachedProperties1="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                MinWidth="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
@@ -55,12 +56,12 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="[[Dropbox location]]"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxDownloadFileName}"
+                                ToolTip="{x:Static languages:Core.DropBoxDownloadFileName}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties1:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxDownloadFileName}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxDownloadFileName}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"
@@ -77,7 +78,7 @@
                                 WrapInBrackets="False"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}"
+                               ToolTip="{x:Static languages:Core.DropBoxToolTipLocalSource}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
@@ -88,7 +89,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="FromPath"
                                      SourcePropertyValue="{Binding  FromPath, UpdateSourceTrigger=PropertyChanged}"

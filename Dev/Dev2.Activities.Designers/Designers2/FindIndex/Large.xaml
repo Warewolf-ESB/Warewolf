@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.FindIndex"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
@@ -61,7 +61,7 @@
                                 DefaultText="InField"
                                 FilterType="All" 
                                 WrapInBrackets="False"
-                                ToolTip="{x:Static help:HelpTextResources.FindIndexToolTipInField}"
+                                ToolTip="{x:Static languages:Core.FindIndexToolTipInField}"
                                 Text="{Binding Path=ModelItem.InField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InFieldtxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -81,7 +81,7 @@
                   ItemsSource="{Binding Path=IndexList}"
                   SelectedValue="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Indextcbx_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.FindIndexToolTipIndexType}">
+                  ToolTip="{x:Static languages:Core.FindIndexToolTipIndexType}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.FindIndexHelpIndexType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -103,7 +103,7 @@
                                 DefaultText="Look for info" 
                                 Text="{Binding Path=ModelItem.Characters,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.FindIndexToolTipCharacters}"
+                                ToolTip="{x:Static languages:Core.FindIndexToolTipCharacters}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Characterstxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -123,7 +123,7 @@
                   ItemsSource="{Binding Path=DirectionList}"
                   SelectedValue="{Binding Path=SelectedDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directioncbx_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.FindIndexToolTipDirectionType}">
+                  ToolTip="{x:Static languages:Core.FindIndexToolTipDirectionType}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.FindIndexHelpDirectiontype}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -141,7 +141,7 @@
                                 FilterType="All"
                                 WrapInBrackets="True" 
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.FindIndexToolTipResult}"
+                                ToolTip="{x:Static languages:Core.FindIndexToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>

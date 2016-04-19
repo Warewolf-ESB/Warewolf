@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.CaseConvert"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
@@ -71,7 +71,7 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
                                                     Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.CaseConversionToolTipTextInput}"
+                                                    ToolTip="{x:Static languages:Core.CaseConversionToolTipTextInput}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.CaseConversionHelpTextInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -99,7 +99,7 @@
                                       Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=ConvertType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.CaseConversionToolTipConvertToCasetype}">
+                                      ToolTip="{x:Static languages:Core.CaseConversionToolTipConvertToCasetype}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.CaseConversionHelpConvertToCaseType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
