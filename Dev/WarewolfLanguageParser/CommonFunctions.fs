@@ -2,9 +2,11 @@
 
 open LanguageAST
 open DataASTMutable
+open System.Diagnostics.CodeAnalysis
+open System
 
 
-
+[<ExcludeFromCodeCoverage()>] 
 type WarewolfEvalResult = 
     | WarewolfAtomResult of WarewolfAtom
     | WarewolfAtomListresult of WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord> 
@@ -34,7 +36,7 @@ let parseAtom (lang:string) =
         | Int _ -> at 
         | Float _ ->  tryFloatParseAtom lang
         | _ -> at
-
+[<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>] 
 let IsAtomExpression (a:LanguageExpression ) =
     match a with
     |WarewolfAtomAtomExpression _ -> true
@@ -64,11 +66,7 @@ let evalResultToString (a:WarewolfEvalResult) =
     | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join(",",a)
 
 
-let evalResultToListOfString (a:WarewolfEvalResult) = 
-    match a with
-    | WarewolfAtomResult x -> [(atomtoString >> DataString) x]
-    | WarewolfAtomListresult x -> Seq.map  (atomtoString>>DataString) x |> List.ofSeq
-    | WarewolfRecordSetResult x -> failwith "unsupported operations. cannot convert recordset to list"
+
 
 
 let atomToJsonCompatibleObject (a:WarewolfAtom) :System.Object= 
@@ -90,11 +88,6 @@ let evalResultToJsonCompatibleObject (a:WarewolfEvalResult) :System.Object=
 
     | _ -> failwith "json eval results can only work on atoms" 
 
-let evalResultToStringNoCommas (a:WarewolfEvalResult) = 
-    match a with
-    | WarewolfAtomResult x -> atomtoString x
-    | WarewolfAtomListresult x -> Seq.map warewolfAtomRecordtoString x |> (Seq.fold (+) "")
-    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |> List.map snd |> Seq.collect (fun a->a) |> fun a->System.String.Join("",a)
 let atomToInt(a:WarewolfAtom) = 
     match a with
         | Int x -> if x<= 0 then failwith "invalid recordset index was less than 0" else x
@@ -156,14 +149,6 @@ let isNotAtomAndNotcomplex  (b:LanguageExpression list) (a:LanguageExpression) =
             |_ -> true
         else
             false
-
-let compare (left:WarewolfAtom) (right:WarewolfAtom) =
-    match (left,right) with
-    | (Nothing,Nothing) -> 0
-    | ( Int a, Int b ) -> a.CompareTo(b)
-    | (Float a, Float b ) -> a.CompareTo(b)
-    | (a,b) -> (atomtoString a).CompareTo(atomtoString b)
-
 let isNothing (a:WarewolfEvalResult) =
    match a with
    | WarewolfAtomResult a -> a=Nothing

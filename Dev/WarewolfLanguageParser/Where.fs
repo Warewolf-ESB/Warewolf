@@ -20,7 +20,7 @@ let rec  evalWhere  (env: WarewolfEnvironment) (lang:string) (update:int) (func:
         | WarewolfAtomAtomExpression _ -> failwith "unexpected expression"
         | RecordSetNameExpression x ->evalRecordsetWhere  x env func
         | ComplexExpression  _ -> failwith "unexpected expression"
-
+        | JsonIdentifierExpression _ -> failwith"where not supported for json"
 and evalRecordsSetExpressionWhere (recset:RecordSetIdentifier) (env: WarewolfEnvironment)  (update:int)  (func: WarewolfAtom->bool)  =
     if  not (env.RecordSets.ContainsKey recset.Name)       then 
         failwith "invalid recordset"     

@@ -15,9 +15,14 @@ open WarewolfDataEvaluationCommon
 open Microsoft.FSharp.Text.Lexing
 open System
 open System.Diagnostics.CodeAnalysis
-
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let Tokenisers = "!@#$%^&*()-=_+{}|:\"?><`~<>?:'{}| ".ToCharArray()
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let Tokenisers2 = "[]".ToCharArray()
+[<Obsolete("Deprecated Usewolf 1601 ")>]
+[<ExcludeFromCodeCoverage()>]
 let Tokenisers3 = "()".ToCharArray()
 
 [<Obsolete("Deprecated Usewolf 1601 ")>]
@@ -84,6 +89,7 @@ and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>] checkF
                         | (ComplexExpression _,_) when  data.StartsWith"[[" && data.EndsWith("]]")  -> (ComplexExpression lang,"invalid variable name")
                         | (ComplexExpression _,_) -> parsed
                         | (WarewolfAtomAtomExpression _,_) ->parsed
+                        | (JsonIdentifierExpression _,_) -> failwith"Obsolete"
         res
 
 and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  verifyComplexExpression (lang:LanguageExpression list) =
@@ -108,6 +114,7 @@ and [<Obsolete("Deprecated Usewolf 1601 ")>][<ExcludeFromCodeCoverage()>]  valid
             | ScalarExpression _ ->  ""
             | ComplexExpression _ -> parseLanguageExpressionAndValidate (languageExpressionToString a) |> snd
             | WarewolfAtomAtomExpression _ ->"Recordset index (" + languageExpressionToString a + ") contains invalid character(s)"
+            | JsonIdentifierExpression _ -> failwith"obsolete"
     | _ -> ""
         
 
