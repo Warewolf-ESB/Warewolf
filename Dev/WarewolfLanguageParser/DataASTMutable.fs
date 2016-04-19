@@ -66,7 +66,7 @@ type WarewolfRecordset =
         Optimisations : WarewolfAttribute;
         LastIndex:int;
         mutable Frame : int;
-        
+
 
     } with
     member this.PositionColumn = this.Data.[PositionColumn]

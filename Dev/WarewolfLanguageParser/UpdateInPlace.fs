@@ -24,6 +24,7 @@ let rec  evalUpdate  (env: WarewolfEnvironment) (lang:string) (update:int) (func
                                   if bob = lang
                                   then  failwith "invalid convert"
                                   else bob|> (fun a ->evalUpdate env a update func )
+        | JsonIdentifierExpression _ -> failwith"update not supported for json"
 
 and applyStarToColumn (func: WarewolfAtom->WarewolfAtom) (env:WarewolfEnvironment) (recset:RecordSetIdentifier)  = 
     if recset.Column = PositionColumn then
