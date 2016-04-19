@@ -221,11 +221,6 @@
     <Compile Include="Interfaces\IWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\PostWorker.cs" />
     <Compile Include="Test utils\WebTester\Workers\WebserverGetWorker.cs" />
-    <Compile Include="wizard_test_strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>wizard_test_strings.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ParserStrings.resx">
@@ -242,11 +237,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestResource.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="wizard_test_strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>wizard_test_strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
