@@ -56,7 +56,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalRecordsSet(new LanguageAST.RecordSetIdentifier("gerrs", "qqq", LanguageAST.Index.Last), env);
+            var res = WarewolfDataEvaluationCommon.evalRecordsSet(new LanguageAST.RecordSetColumnIdentifier("gerrs", "qqq", LanguageAST.Index.Last), env);
 
             //------------Assert Results-------------------------
 

@@ -5,6 +5,8 @@ open DataASTMutable
 open WarewolfDataEvaluationCommon
 open CommonFunctions
 
+
+/// apply a function to a recordset
 let rec evalUpdate (env : WarewolfEnvironment) (lang : string) (update : int) (func : WarewolfAtom -> WarewolfAtom) : WarewolfEnvironment = 
     let exp = ParseCache.TryFind lang
     
@@ -37,15 +39,15 @@ let rec evalUpdate (env : WarewolfEnvironment) (lang : string) (update : int) (f
         if bob = lang then failwith "invalid convert"
         else bob |> (fun a -> evalUpdate env a update func)
     | JsonIdentifierExpression _ -> failwith "update not supported for json"
-
-and applyStarToColumn (func : WarewolfAtom -> WarewolfAtom) (env : WarewolfEnvironment) (recset : RecordSetIdentifier) = 
+/// apply a function to a recordset column using star
+and applyStarToColumn (func : WarewolfAtom -> WarewolfAtom) (env : WarewolfEnvironment) (recset : RecordSetColumnIdentifier) = 
     if recset.Column = PositionColumn then env
     else 
         let column = env.RecordSets.[recset.Name].Data.[recset.Column]
         column.Apply(System.Func<WarewolfAtom, WarewolfAtom>(func)) |> ignore
         env
-
-and evalRecordsSetExpressionUpdate (recset : RecordSetIdentifier) (env : WarewolfEnvironment) (update : int) 
+/// apply a function to a recordset with an update
+and evalRecordsSetExpressionUpdate (recset : RecordSetColumnIdentifier) (env : WarewolfEnvironment) (update : int) 
     (func : WarewolfAtom -> WarewolfAtom) : WarewolfEnvironment = 
     if not (env.RecordSets.ContainsKey recset.Name) then failwith "invalid recordset"
     else 

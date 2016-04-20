@@ -31,13 +31,13 @@ let addToJsonObjects (env : WarewolfEnvironment) (name : string) (value : JConta
 
 let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
     match env.JsonObjects.TryFind name with
-    | Some a -> env
+    | Some _ -> env
     | _ -> addToJsonObjects env name value
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     evalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp, value)) update env
 
-and addToRecordSetFramed (env : WarewolfEnvironment) (name : RecordSetIdentifier) (value : WarewolfAtom) = 
+and addToRecordSetFramed (env : WarewolfEnvironment) (name : RecordSetColumnIdentifier) (value : WarewolfAtom) = 
     if (env.RecordSets.ContainsKey name.Name) then 
         let recordset = env.RecordSets.[name.Name]
         
@@ -60,7 +60,7 @@ and addToRecordSetFramed (env : WarewolfEnvironment) (name : RecordSetIdentifier
         let envwithRecset = addRecsetToEnv name.Name env
         addToRecordSetFramed envwithRecset name value
 
-and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordSetIdentifier) (value : WarewolfAtom seq) 
+and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordSetColumnIdentifier) (value : WarewolfAtom seq) 
     (shouldUseLast : bool) (update : int) (assignValue : IAssignValue option) = 
     if (env.RecordSets.ContainsKey name.Name) then 
         let data = env.RecordSets.[name.Name]
