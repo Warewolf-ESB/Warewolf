@@ -423,6 +423,16 @@
     <Compile Include="Network\ServiceProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
+    <Compile Include="ResolveExampleResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResolveExampleResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ResolveExampleResourceNames.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
+    </Compile>
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
@@ -490,6 +500,14 @@
     <None Include="SignalR.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ResolveExampleResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResolveExampleResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResolveExampleResourceNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResolveExampleResourceNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="StringResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources1.Designer.cs</LastGenOutput>
