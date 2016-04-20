@@ -3,9 +3,11 @@
 open DataASTMutable
 open System.Diagnostics.CodeAnalysis
 
+///Sclar identifier
 [<ExcludeFromCodeCoverage>]
 type ScalarId = string
 
+///Indexes are ints, floats star or another expression
 [<ExcludeFromCodeCoverage>]
 type Index = 
     | IntIndex of int
