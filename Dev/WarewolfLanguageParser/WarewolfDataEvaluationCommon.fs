@@ -106,23 +106,6 @@ and jsonExpressionToString a acc =
         jsonExpressionToString x.Next current
     | Terminal -> acc
 
-and [<System.Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] LanguageExpressionToSumOfInt(x : LanguageExpression list) = 
-    let expressionToInt (current : int) (y : LanguageExpression) = 
-        match current with
-        | -1 -> -99
-        | _ -> 
-            match y with
-            | RecordSetExpression _ -> current
-            | ScalarExpression _ -> current
-            | RecordSetNameExpression _ -> current
-            | ComplexExpression _ -> current
-            | WarewolfAtomAtomExpression _ when languageExpressionToString y = "]]" -> current - 1
-            | WarewolfAtomAtomExpression _ when languageExpressionToString y = "[[" -> current + 1
-            | WarewolfAtomAtomExpression _ -> current
-            | JsonIdentifierExpression _ -> current
-    
-    let sum = List.fold expressionToInt 0 x
-    sum
 
 and evalRecordsSet (recset : RecordSetIdentifier) (env : WarewolfEnvironment) = 
     if not (env.RecordSets.ContainsKey recset.Name) then 
@@ -261,10 +244,6 @@ and evalDataSetExpression (env : WarewolfEnvironment) (update : int) (name : Rec
         | IndexExpression b -> 
             let res = eval env update (languageExpressionToString b) |> evalResultToString
             match b with
-            | WarewolfAtomAtomExpression atom -> 
-                match atom with
-                | Int a -> WarewolfRecordSetResult(evalARow (getRecordSetIndexAsInt recset a) recset)
-                | _ -> failwith "non int index found"
             | _ -> eval env update (sprintf "[[%s(%s)]]" name.Name res)
     else raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found", name.Name))
 
@@ -272,13 +251,14 @@ and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEv
     if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then evalForCalculate env update lang
     else 
         let EvalComplex(exp : LanguageExpression list) = 
-            if ((List.length exp) = 1) then 
-                match exp.[0] with
-                | RecordSetExpression a -> evalRecordSetAsString env a
-                | ScalarExpression a -> (evalScalar a env)
-                | WarewolfAtomAtomExpression a -> a
-                | _ -> failwith "unspecified error"
-            else 
+//could not get this to happen from tests so commented out. but if it happens then uput it back
+//            if ((List.length exp) = 1) then 
+//                match exp.[0] with
+//                | RecordSetExpression a -> evalRecordSetAsString env a
+//                | ScalarExpression a -> (evalScalar a env)
+//                | WarewolfAtomAtomExpression a -> a
+//                | _ -> failwith "unspecified error"
+//            else 
                 let start = List.map languageExpressionToString exp |> (List.fold (+) "")
                 
                 let evaled = 
@@ -383,13 +363,14 @@ and evalForCalculate (env : WarewolfEnvironment) (update : int) (langs : string)
     let lang = reduceForCalculate env update langs
     
     let EvalComplex(exp : LanguageExpression list) = 
-        if ((List.length exp) = 1) then 
-            match exp.[0] with
-            | RecordSetExpression a -> evalRecordSetAsString env a
-            | ScalarExpression a -> (evalScalar a env)
-            | WarewolfAtomAtomExpression a -> a
-            | _ -> failwith "you should not get here"
-        else 
+    //probably unreachable code below. but if it is reachable then uncomment
+//        if ((List.length exp) = 1) then 
+//            match exp.[0] with
+//            | RecordSetExpression a -> evalRecordSetAsString env a
+//            | ScalarExpression a -> (evalScalar a env)
+//            | WarewolfAtomAtomExpression a -> a
+//            | _ -> failwith "you should not get here"
+//        else 
             let start = List.map languageExpressionToString exp |> (List.fold (+) "")
             
             let evaled = 
@@ -489,13 +470,6 @@ and evalToExpression (env : WarewolfEnvironment) (update : int) (langs : string)
 
 and evalWithPositions (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEvalResult = 
     let EvalComplex(exp : LanguageExpression list) = 
-        if ((List.length exp) = 1) then 
-            match exp.[0] with
-            | RecordSetExpression a -> evalRecordSetAsString env a
-            | ScalarExpression a -> (evalScalar a env)
-            | WarewolfAtomAtomExpression a -> a
-            | _ -> failwith "you should not get here"
-        else 
             let start = List.map languageExpressionToString exp |> (List.fold (+) "")
             
             let evaled = 

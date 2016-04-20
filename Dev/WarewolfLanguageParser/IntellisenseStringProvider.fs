@@ -24,6 +24,25 @@ let Tokenisers2 = "[]".ToCharArray()
 [<ExcludeFromCodeCoverage>]
 let Tokenisers3 = "()".ToCharArray()
 
+
+let [<System.Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] LanguageExpressionToSumOfInt(x : LanguageExpression list) = 
+    let expressionToInt (current : int) (y : LanguageExpression) = 
+        match current with
+        | -1 -> -99
+        | _ -> 
+            match y with
+            | RecordSetExpression _ -> current
+            | ScalarExpression _ -> current
+            | RecordSetNameExpression _ -> current
+            | ComplexExpression _ -> current
+            | WarewolfAtomAtomExpression _ when languageExpressionToString y = "]]" -> current - 1
+            | WarewolfAtomAtomExpression _ when languageExpressionToString y = "[[" -> current + 1
+            | WarewolfAtomAtomExpression _ -> current
+            | JsonIdentifierExpression _ -> current
+    
+    let sum = List.fold expressionToInt 0 x
+    sum
+
 [<Obsolete("Deprecated Usewolf 1601 ")>]
 [<ExcludeFromCodeCoverage>]
 type FilterOption = 
