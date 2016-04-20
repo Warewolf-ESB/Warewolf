@@ -106,10 +106,7 @@ let IsValidRecsetExpression(exp : string) =
         | Star -> true
         | IndexExpression indexp -> 
             match indexp with
-            | WarewolfAtomAtomExpression atom -> 
-                let inval = atomToInt atom
-                if inval < 0 then false
-                else true
+
             | _ -> true
     | _ -> true
 

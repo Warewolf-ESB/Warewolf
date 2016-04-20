@@ -169,6 +169,29 @@ namespace WarewolfParsingTest
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_AtomToJsonCompatable")]
+        [ExpectedException(typeof(Exception))]
+        public void CommonFunctions_getLastIndexFromRecordSet()
+        {
+            var env = CreateEnvironmentWithData();
+            var a = CommonFunctions.getLastIndexFromRecordSet("a",env);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CommonFunctions_AtomToJsonCompatable")]
+        [ExpectedException(typeof(Exception))]
+        public void CommonFunctions_deleteValues()
+        {
+            var env = CreateEnvironmentWithData();
+            var a = Delete.deleteValues("Resc",env);
+         
+
+        }
+
         public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
         {
 

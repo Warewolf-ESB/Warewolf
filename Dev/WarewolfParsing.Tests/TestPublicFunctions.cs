@@ -55,6 +55,30 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PublicFunctions_AddRecsetToEnvironment")]
+        public void PublicFunctions_EvalrecsetIndexes()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString( PublicFunctions.EvalRecordSetIndexes("[[Rec(*).a]]", 0, env)),"1,2,3,2");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("PublicFunctions_AddRecsetToEnvironment")]
+        public void PublicFunctions_EvalIndexes()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            Assert.AreEqual(PublicFunctions.GetIndexes("[[Rec(*)]]", 0, env).ToArray()[0], 1);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("PublicFunctions_AddRecsetToEnvironment")]
         public void PublicFunctions_RecsetExists()
         {
             //------------Setup for test--------------------------
@@ -77,6 +101,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec().a]]"));
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec(1).a]]"));
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec(*).a]]"));
+            Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec([[a]]).a]]"));
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[a.b.c]]"));
             Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("a"));
 

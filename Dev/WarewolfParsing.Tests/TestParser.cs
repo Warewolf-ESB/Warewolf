@@ -1156,6 +1156,103 @@ namespace WarewolfParsingTest
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_Scalar()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+
+
+
+            env.EvalDelete("[[a]]", 0);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Exp()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "3"), 0);
+
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+            Assert.AreEqual(items.Count,2);
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_Exp_fail()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "a"), 0);
+
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+            Assert.AreEqual(items.Count, 2);
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+    [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_NonExistent()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+
+
+
+            env.EvalDelete("[[fec(3)]]", 0);
+
+
+        }
 
 
         [TestMethod]

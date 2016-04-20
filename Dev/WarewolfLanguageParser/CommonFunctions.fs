@@ -164,3 +164,9 @@ let isNothing (a : WarewolfEvalResult) =
     match a with
     | WarewolfAtomResult a -> a = Nothing
     | _ -> false
+
+let getLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
+    let rset = env.RecordSets.TryFind exp
+    match rset with 
+    | Some values -> values.LastIndex                    
+    | None->failwith "recordset does not exist"
