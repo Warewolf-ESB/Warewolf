@@ -105,7 +105,7 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
             | IndexExpression _ -> failwith "Invalid assign from list" // logic below does not make sense. removed it. If there is a use case then add it back it. 
 //                let res = eval env update (languageExpressionToString b) |> evalResultToString
 //                match b, assignValue with
-//                | WarewolfAtomAtomExpression atom, _ -> 
+//                | WarewolfAtomExpression atom, _ -> 
 //                    match atom with
 //                    | Int a -> addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
 //                    | _ -> failwith "Invalid index"
@@ -135,10 +135,10 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                    | RecordSetExpression _ -> true
                    | _ -> false) a
             then l
-            else LanguageExpression.WarewolfAtomAtomExpression(languageExpressionToString l |> DataString)
+            else LanguageExpression.WarewolfAtomExpression(languageExpressionToString l |> DataString)
         | _ -> l    
     let rightParse = 
-        if value.Value = null then LanguageExpression.WarewolfAtomAtomExpression Nothing
+        if value.Value = null then LanguageExpression.WarewolfAtomExpression Nothing
         else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value update    
     let right = 
         if value.Value = null then WarewolfAtomResult Nothing
@@ -158,7 +158,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
         match left with
         | ScalarExpression a -> addToScalars env a x
         | RecordSetExpression b -> addToRecordSetFramed env b x
-        | WarewolfAtomAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
+        | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
         | _ -> 
             let expression = (evalToExpression env update value.Name)
             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
@@ -176,7 +176,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                     raise 
                         (new Dev2.Common.Common.NullValueInVariableException("The expression result is  null", 
                                                                              value.Value))
-        | WarewolfAtomAtomExpression _ -> failwith "invalid variable assigned to"
+        | WarewolfAtomExpression _ -> failwith "invalid variable assigned to"
         | _ -> 
             let expression = (evalToExpression env update value.Name)
             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
@@ -299,7 +299,7 @@ and evalDataShape (exp : string) (update : int) (env : WarewolfEnvironment) =
                                         (createEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count) 
                                         data.Data }
             replaceDataset env recordset name.Name
-    | WarewolfAtomAtomExpression _ -> env
+    | WarewolfAtomExpression _ -> env
     | _ -> failwith "input must be recordset or value"
 
 and replaceDataset (env : WarewolfEnvironment) (data : WarewolfRecordset) (name : string) = 
@@ -475,7 +475,7 @@ let languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
     match a with
     | ScalarExpression _ -> failwith "unspecified error"
     | ComplexExpression _ -> failwith "unspecified error"
-    | WarewolfAtomAtomExpression _ -> failwith "literal value on the left hand side of an assign"
+    | WarewolfAtomExpression _ -> failwith "literal value on the left hand side of an assign"
     | RecordSetNameExpression x -> 
         let next = Terminal
         { ObjectName = x.Name

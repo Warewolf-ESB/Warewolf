@@ -30,7 +30,7 @@ let deleteIndex  (exp:string) (index:int)   (env:WarewolfEnvironment) =
 let rec deleteExpressionIndex (b:RecordSetName) (ind: LanguageExpression) (update:int)  (env:WarewolfEnvironment)  =
     let data = languageExpressionToString ind |> (eval env update) |> evalResultToString
     match ind with 
-    | WarewolfAtomAtomExpression atom ->
+    | WarewolfAtomExpression atom ->
                 match atom with
                      | _ -> failwith "recordsets must have an integer star or empty index"
     |_->evalDelete( (sprintf "[[%s(%s)]]" b.Name data)) update env 

@@ -19,7 +19,7 @@ let rec evalWhere (env : WarewolfEnvironment) (lang : string) (update : int) (fu
     match buffer with
     | RecordSetExpression a -> (evalRecordsSetExpressionWhere a env update func)
     | ScalarExpression _ -> failwith "unexpected expression"
-    | WarewolfAtomAtomExpression _ -> failwith "unexpected expression"
+    | WarewolfAtomExpression _ -> failwith "unexpected expression"
     | RecordSetNameExpression x -> evalRecordsetWhere x env func
     | ComplexExpression _ -> failwith "unexpected expression"
     | JsonIdentifierExpression _ -> failwith "where not supported for json"

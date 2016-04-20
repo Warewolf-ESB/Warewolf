@@ -47,7 +47,7 @@ and [<ExcludeFromCodeCoverage>] ScalarIdentifier = string
 and [<ExcludeFromCodeCoverage>] LanguageExpression = 
     | RecordSetExpression of RecordSetColumnIdentifier
     | ScalarExpression of ScalarIdentifier
-    | WarewolfAtomAtomExpression of WarewolfAtom
+    | WarewolfAtomExpression of WarewolfAtom
     | ComplexExpression of LanguageExpression list
     | RecordSetNameExpression of RecordSetName
     | JsonIdentifierExpression of JsonIdentifierExpression

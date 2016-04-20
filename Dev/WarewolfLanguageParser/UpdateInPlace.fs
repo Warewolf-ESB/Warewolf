@@ -21,7 +21,7 @@ let rec evalUpdate (env : WarewolfEnvironment) (lang : string) (update : int) (f
     | ScalarExpression a -> 
         let data = evalScalar a env |> func
         AssignEvaluation.evalAssign (languageExpressionToString (ScalarExpression a)) (data.ToString()) update env
-    | WarewolfAtomAtomExpression _ -> failwith "invalid convert"
+    | WarewolfAtomExpression _ -> failwith "invalid convert"
     | RecordSetNameExpression x -> 
         let data = env.RecordSets.[x.Name].Data
         Map.map (fun a _ -> 
@@ -75,7 +75,7 @@ and evalRecordsSetExpressionUpdate (recset : RecordSetColumnIdentifier) (env : W
         | IndexExpression b -> 
             let res = eval env update (languageExpressionToString b) |> evalResultToString
             match b with
-            | WarewolfAtomAtomExpression atom -> 
+            | WarewolfAtomExpression atom -> 
                 match atom with
                 | Int _ -> 
                     let data = 

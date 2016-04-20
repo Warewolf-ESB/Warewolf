@@ -549,7 +549,7 @@ namespace WarewolfParsingTest
             var arr = new JArray();
             //------------Execute Test---------------------------
             // ReSharper disable once AccessToStaticMemberViaDerivedType
-            var res = AssignEvaluation.indexToInt(LanguageAST.Index.IndexExpression.NewIndexExpression(LanguageAST.LanguageExpression.NewWarewolfAtomAtomExpression(DataASTMutable.WarewolfAtom.Nothing)), arr);
+            var res = AssignEvaluation.indexToInt(LanguageAST.Index.IndexExpression.NewIndexExpression(LanguageAST.LanguageExpression.NewWarewolfAtomExpression(DataASTMutable.WarewolfAtom.Nothing)), arr);
             //------------Assert Results-------------------------
         }
 

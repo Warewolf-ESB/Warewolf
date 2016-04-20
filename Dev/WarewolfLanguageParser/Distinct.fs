@@ -19,7 +19,7 @@ let assignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) 
     let data = List.ofSeq datas
     let mutable env = oldenv
     match parsed with 
-        | LanguageExpression.WarewolfAtomAtomExpression _ -> env
+        | LanguageExpression.WarewolfAtomExpression _ -> env
         | LanguageExpression.ComplexExpression _ -> failwith "this method is not intended for use with complex expressions"
         | ScalarExpression _ -> AssignEvaluation.evalAssign exp (System.String.Join("," ,data)) update env
         | RecordSetExpression recset -> match recset.Index with
@@ -35,9 +35,8 @@ let assignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) 
                                                       env
 
                                             | IndexExpression indexp ->  match indexp with 
-                                                                            |  WarewolfAtomAtomExpression atom -> let inval = atomToInt atom
-
-                                                                                                                  if inval<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" inval) else AssignEvaluation.evalAssign exp (Seq.last data) update env
+                                                                            |  WarewolfAtomExpression atom ->   let inval = atomToInt atom
+                                                                                                                if inval<=0 then failwith (sprintf "Recordset index [ %i ] is not greater than zero" inval) else AssignEvaluation.evalAssign exp (Seq.last data) update env
                                                                             | _ -> failwith "this method is not intended for use with complex expressions"
         | _ -> failwith "only recsets and scalars allowed" 
 
