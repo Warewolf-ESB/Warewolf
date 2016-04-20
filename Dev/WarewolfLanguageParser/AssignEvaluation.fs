@@ -371,7 +371,8 @@ let addValueToJArray (arr : JArray) (ind : int) (value : JToken) =
             arr.Add(null)
         arr.[index] <- value
         (arr.[index], arr)
-    else (arr.[index], arr)
+    else arr.[index] <- value 
+         (arr.[index], arr)
 
 let indexToInt (a : Index) (arr : JArray) = 
     match a with
