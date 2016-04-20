@@ -6,7 +6,7 @@ open DataASTMutable
 open WarewolfParserInterop
 open WarewolfDataEvaluationCommon
 open CommonFunctions
-
+/// apply a function to filter a recordset
 let rec evalWhere (env : WarewolfEnvironment) (lang : string) (update : int) (func : WarewolfAtom -> bool) : List<int> = 
     let exp = ParseCache.TryFind lang
     
@@ -24,7 +24,8 @@ let rec evalWhere (env : WarewolfEnvironment) (lang : string) (update : int) (fu
     | ComplexExpression _ -> failwith "unexpected expression"
     | JsonIdentifierExpression _ -> failwith "where not supported for json"
 
-and evalRecordsSetExpressionWhere (recset : RecordSetIdentifier) (env : WarewolfEnvironment) (update : int) 
+/// apply a function to a recordset
+and evalRecordsSetExpressionWhere (recset : RecordSetColumnIdentifier) (env : WarewolfEnvironment) (update : int) 
     (func : WarewolfAtom -> bool) = 
     if not (env.RecordSets.ContainsKey recset.Name) then failwith "invalid recordset"
     else 
@@ -40,12 +41,13 @@ and evalRecordsSetExpressionWhere (recset : RecordSetIdentifier) (env : Warewolf
             |> List.ofSeq
         | _ -> failwith "Unknown evaluation type"
 
+//figure out the list positions
 and evalListPositions (column : WarewolfAtomList<WarewolfAtom>) (positions : WarewolfAtomList<WarewolfAtom>) 
     (func : WarewolfAtom -> bool) = 
     column.Where(System.Func<WarewolfAtom, bool>(func))
     |> Seq.map (fun a -> atomToInt positions.[a])
     |> List.ofSeq
-
+/// apply a function to a recordset
 and evalRecordsetWhere (recset : RecordSetName) (env : WarewolfEnvironment) (func : WarewolfAtom -> bool) = 
     if not (env.RecordSets.ContainsKey recset.Name) then List.empty
     else 

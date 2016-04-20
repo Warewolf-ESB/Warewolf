@@ -8,29 +8,29 @@ open CommonFunctions
 open Delete
 
 let PositionColumn = "WarewolfPositionColumn"
-
+///Create a RecordSet
 let CreateDataSet(a : string) = 
     let col = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing)
     { Data = [ (PositionColumn, col) ] |> Map.ofList
       Optimisations = Ordinal
       LastIndex = 0
       Frame = 0 }
-
+///Create an Environment
 let CreateEnv(vals : string) = 
     { RecordSets = Map.empty
       Scalar = Map.empty
       JsonObjects = Map.empty }
-
+///Add a Recordset to an environment
 let AddRecsetToEnv (name : string) (env : WarewolfEnvironment) = 
     if env.RecordSets.ContainsKey name then env
     else 
         let b = CreateDataSet ""
         let a = { env with RecordSets = (Map.add name b env.RecordSets) }
         a
-
+///Evalutae an expression
 let EvalEnvExpression (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.eval env update exp
-
+///eval and return positions
 let EvalWithPositions (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.evalWithPositions env update exp
 
@@ -38,9 +38,9 @@ let innerConvert (i : int) (a : WarewolfAtom) =
     match a with
     | PositionedValue(a, b) -> new Dev2.Common.RecordSetSearchPayload(a, atomtoString b)
     | b -> new Dev2.Common.RecordSetSearchPayload(i, atomtoString b)
-
+///helper function. best move this to C#
 let AtomListToSearchTo(atoms : WarewolfAtom seq) = Seq.mapi innerConvert atoms
-
+///helper function. best move this to C#
 let RecordsetToSearchTo(recordset : WarewolfRecordset) = 
     let cols = recordset.Data
     let data = Seq.map atomToInt cols.[PositionColumn]

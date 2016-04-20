@@ -20,7 +20,7 @@
 %start start   
 %type <LanguageAST.LanguageExpression> start  
 %type <LanguageAST.LanguageExpression> langExpression   
-%type <LanguageAST.RecordSetIdentifier> recset 
+%type <LanguageAST.RecordSetColumnIdentifier> recset 
 %type <DataASTMutable.WarewolfAtom> atom   
 %type <LanguageAST.ScalarIdentifier> scalar
 

@@ -12,7 +12,8 @@ open System.Diagnostics.CodeAnalysis
 let mutable ParseCache : Map<string, LanguageExpression> = Map.empty
 let PositionColumn = "WarewolfPositionColumn"
 
-let evalRecordSetStarIndex (recset : WarewolfRecordset) (identifier : RecordSetIdentifier) = 
+/// given a recordset identifier, return a list of data that matches the identifier
+let evalRecordSetStarIndex (recset : WarewolfRecordset) (identifier : RecordSetColumnIdentifier) = 
     match recset.Optimisations with
     | Ordinal -> recset.Data.[identifier.Column]
     | Sorted -> recset.Data.[identifier.Column]
@@ -22,11 +23,13 @@ let evalRecordSetStarIndex (recset : WarewolfRecordset) (identifier : RecordSetI
         |> Seq.map snd
         |> fun a -> new WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing, a)
 
-let evalRecordSetStarIndexWithPositions (recset : WarewolfRecordset) (identifier : RecordSetIdentifier) = 
+/// given a recordset identifier, return a list of data that matches the identifier and the positions of the corresponding atoms
+let evalRecordSetStarIndexWithPositions (recset : WarewolfRecordset) (identifier : RecordSetColumnIdentifier) = 
     Seq.zip (Seq.map atomToInt recset.Data.[PositionColumn]) recset.Data.[identifier.Column] 
     |> Seq.map (fun a -> PositionedValue a)
 
-let evalRecordSetLastIndex (recset : WarewolfRecordset) (identifier : RecordSetIdentifier) = 
+/// given a recordset identifier, return a list of data that contains only the last atom from the recset
+let evalRecordSetLastIndex (recset : WarewolfRecordset) (identifier : RecordSetColumnIdentifier) = 
     if recset.LastIndex = 0 then Nothing
     else 
         match recset.Optimisations with
@@ -36,6 +39,7 @@ let evalRecordSetLastIndex (recset : WarewolfRecordset) (identifier : RecordSetI
             let index = Seq.findIndex (fun a -> a = data) recset.Data.[PositionColumn]
             recset.Data.[identifier.Column].[index]
 
+/// return a scalar from an environment
 let evalScalar (scalarName : ScalarIdentifier) (env : WarewolfEnvironment) = 
     if env.Scalar.ContainsKey scalarName then (env.Scalar.[scalarName])
     else 
@@ -43,6 +47,7 @@ let evalScalar (scalarName : ScalarIdentifier) (env : WarewolfEnvironment) =
             (new Dev2.Common.Common.NullValueInVariableException(sprintf "Scalar value { %s } is NULL" scalarName, 
                                                                  scalarName))
 
+/// convert hte index type to a string
 let rec IndexToString(x : Index) = 
     match x with
     | IntIndex a -> a.ToString()
@@ -50,6 +55,7 @@ let rec IndexToString(x : Index) =
     | Last -> ""
     | IndexExpression a -> languageExpressionToString a
 
+/// If an atom is an int that is greater than 0 then return it otherwise fail
 and getIntFromAtom (a : WarewolfAtom) = 
     match a with
     | Int x -> 
@@ -60,6 +66,7 @@ and getIntFromAtom (a : WarewolfAtom) =
         if couldParse then parsed
         else failwith "index was not an int"
 
+/// convert an indes expression to an actual index. this would evaluate the [[a]] in [[Rec([[a]]).a]]
 and evalIndex (env : WarewolfEnvironment) (update : int) (exp : string) = 
     let getIntFromAtomList (a : WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) = 
         match a.Count with
@@ -72,6 +79,7 @@ and evalIndex (env : WarewolfEnvironment) (update : int) (exp : string) =
     | WarewolfAtomListresult a -> getIntFromAtomList a
     | _ -> failwith "invalid recordset index was a list"
 
+// the reverse of parsing an expression. Takes an expression and returnsa a string
 and languageExpressionToString (x : LanguageExpression) = 
     match x with
     | RecordSetExpression a -> sprintf "[[%s(%s).%s]]" a.Name (IndexToString a.Index) a.Column
@@ -87,6 +95,7 @@ and languageExpressionToString (x : LanguageExpression) =
     | ComplexExpression a -> List.fold (fun c d -> c + languageExpressionToString d) "" a
     | RecordSetNameExpression a -> sprintf "[[%s(%s)]]" a.Name (IndexToString a.Index)
 
+/// convert a json expression to a string. uses an accumulater to append to while traversing an expression
 and jsonExpressionToString a acc = 
     match a with
     | NameExpression x -> 
@@ -106,8 +115,8 @@ and jsonExpressionToString a acc =
         jsonExpressionToString x.Next current
     | Terminal -> acc
 
-
-and evalRecordsSet (recset : RecordSetIdentifier) (env : WarewolfEnvironment) = 
+/// Eval a recordset
+and evalRecordsSet (recset : RecordSetColumnIdentifier) (env : WarewolfEnvironment) = 
     if not (env.RecordSets.ContainsKey recset.Name) then 
         raise 
             (new Dev2.Common.Common.NullValueInVariableException((sprintf "Variable { %s } is NULL." (recset.Name)), 
@@ -133,8 +142,8 @@ and evalRecordsSet (recset : RecordSetIdentifier) (env : WarewolfEnvironment) =
                                                                                  env.RecordSets.[recset.Name] recset 
                                                                                  (languageExpressionToString a 
                                                                                   |> (evalIndex env 0)) ])
-
-and evalRecordsSetWithPositions (recset : RecordSetIdentifier) (env : WarewolfEnvironment) = 
+///eval a recordset and also return the positions
+and evalRecordsSetWithPositions (recset : RecordSetColumnIdentifier) (env : WarewolfEnvironment) = 
     if not (env.RecordSets.ContainsKey recset.Name) then 
         raise (new Dev2.Common.Common.NullValueInVariableException(recset.Index.ToString(), recset.Name))
     else 
@@ -162,7 +171,8 @@ and evalRecordsSetWithPositions (recset : RecordSetIdentifier) (env : WarewolfEn
                                                                                  (languageExpressionToString a 
                                                                                   |> (evalIndex env 0)) ])
 
-and evalRecordSetAsString (env : WarewolfEnvironment) (a : RecordSetIdentifier) = 
+///Eval a recordset and convert the result to a string
+and evalRecordSetAsString (env : WarewolfEnvironment) (a : RecordSetColumnIdentifier) = 
     match a.Index with
     | IntIndex _ -> (evalRecordsSet a env).[0]
     | _ -> 
@@ -171,6 +181,7 @@ and evalRecordSetAsString (env : WarewolfEnvironment) (a : RecordSetIdentifier) 
         |> (Seq.fold (+) "")
         |> DataString
 
+/// Filter out empty expressions when parsing. this will not be needed if the language is simplified
 and Clean(buffer : LanguageExpression) = 
     match buffer with
     | RecordSetExpression a -> RecordSetExpression a
@@ -183,6 +194,7 @@ and Clean(buffer : LanguageExpression) =
         if (List.length a) = 1 then Clean a.[0]
         else ComplexExpression a)
 
+///Simple parse. convert a string to a language expression
 and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression = 
     if (lang.Contains "[[") then 
         let exp = ParseCache.TryFind lang
@@ -196,6 +208,7 @@ and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression =
             res
     else WarewolfAtomAtomExpression(parseAtom lang)
 
+///Simple parse. convert a string to a language expression and replace * with the update value
 and parseLanguageExpression (lang : string) (update : int) : LanguageExpression = 
     let data = parseLanguageExpressionWithoutUpdate lang
     match update with
@@ -213,6 +226,7 @@ and parseLanguageExpression (lang : string) (update : int) : LanguageExpression 
         | ComplexExpression p -> List.map (updateComplex update) p |> LanguageExpression.ComplexExpression
         | _ -> data
 
+/// replace the * in a complex expression with an update value
 and updateComplex update data = 
     match data with
     | RecordSetExpression a -> 
@@ -225,6 +239,7 @@ and updateComplex update data =
         | _ -> a |> LanguageExpression.RecordSetNameExpression
     | _ -> data
 
+/// Evaluate a row from a record set
 and evalARow (index : int) (recset : WarewolfRecordset) = 
     let blank = 
         Map.map (fun a _ -> 
@@ -234,6 +249,7 @@ and evalARow (index : int) (recset : WarewolfRecordset) =
                                                  |> DataString ])) recset.Data
     { recset with Data = blank }
 
+//. evaluate a complete recordset [[Rec()]]
 and evalDataSetExpression (env : WarewolfEnvironment) (update : int) (name : RecordSetName) = 
     if env.RecordSets.ContainsKey(name.Name) then 
         let recset = env.RecordSets.[name.Name]
@@ -246,6 +262,9 @@ and evalDataSetExpression (env : WarewolfEnvironment) (update : int) (name : Rec
             match b with
             | _ -> eval env update (sprintf "[[%s(%s)]]" name.Name res)
     else raise (new Dev2.Common.Common.NullValueInVariableException("Recordset not found", name.Name))
+
+///overiding eval functions
+/// take a string then pasre it and call one of the child functions
 
 and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEvalResult = 
     if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then evalForCalculate env update lang
@@ -278,7 +297,7 @@ and eval (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEv
             WarewolfAtomResult(EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a))
         | RecordSetNameExpression a when env.RecordSets.ContainsKey a.Name -> evalDataSetExpression env update a
         | _ -> evalJson env update buffer
-
+///convert a warewolf language expressiom to JsonPath
 and languageExpressionToJPath (lang : LanguageExpression) = 
     match lang with
     | RecordSetExpression a -> 
@@ -297,7 +316,7 @@ and languageExpressionToJPath (lang : LanguageExpression) =
         | _ -> failwith "not supported for JSON types"
     | ComplexExpression _ -> failwith "not supported for JSON types"
     | JsonIdentifierExpression a -> jsonIdentifierToJsonPathLevel1 a
-
+///Convert a jsonIdentifierExpression to jsonPath
 and jsonIdentifierToJsonPath (a : JsonIdentifierExpression) (accx : string) = 
     let acc = 
         if accx = "" then ""
@@ -314,21 +333,21 @@ and jsonIdentifierToJsonPath (a : JsonIdentifierExpression) (accx : string) =
             | _ -> failwith "not supported for JSON types"
         (jsonIdentifierToJsonPath x.Next (acc + x.ObjectName + "." + index))
     | Terminal -> accx
-
+// treat the head of the expression as a special case
 and jsonIdentifierToJsonPathLevel1 (a : JsonIdentifierExpression) = 
     match a with
     | NameExpression x -> x.Name
     | NestedNameExpression x -> (jsonIdentifierToJsonPath x.Next "")
     | IndexNestedNameExpression x -> (jsonIdentifierToJsonPath x.Next "")
     | Terminal -> ""
-
+/// get the name of the object from an expression
 and jsonIdentifierToName (a : JsonIdentifierExpression) = 
     match a with
     | NameExpression x -> x.Name
     | NestedNameExpression x -> x.ObjectName
     | IndexNestedNameExpression x -> x.ObjectName
     | Terminal -> ""
-
+///evaluate Json. Convert warewolf expression to jsonpath and evaluate it
 and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpression) = 
     let jPath = "$." + languageExpressionToJPath (lang)
     match lang with
@@ -359,6 +378,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (lang : LanguageExpressi
     | ComplexExpression _ -> failwith "no current use case please contact the warewolf product owner "
     | WarewolfAtomAtomExpression _ -> failwith "no current use case please contact the warewolf product owner "
 
+//specialise eval for calculate. Its just eval with the addition of some quotes. can be merged into eval function at the expense of complexity for c# developers
 and evalForCalculate (env : WarewolfEnvironment) (update : int) (langs : string) : WarewolfEvalResult = 
     let lang = reduceForCalculate env update langs
     
@@ -402,7 +422,7 @@ and evalForCalculate (env : WarewolfEnvironment) (update : int) (langs : string)
             |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
             |> WarewolfAtomListresult
         | _ -> failwith "recordest results callot be supported by calculate"
-
+/// simplify a calculate expression
 and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : string) : string = 
     let lang = langs.Trim()
     let exp = ParseCache.TryFind lang
@@ -433,9 +453,11 @@ and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : strin
     | JsonIdentifierExpression a -> lang
     | _ -> lang
 
+/// get the base expression given a string [[[[a]]] could evaluate to [[b]] for instance
 and evalToExpressionAndParse (env : WarewolfEnvironment) (update : int) (langs : string) = 
     evalToExpression env update langs |> fun a -> parseLanguageExpression a update
 
+/// get the base expression given a string [[[[a]]] could evaluate to [[b]] for instance
 and evalToExpression (env : WarewolfEnvironment) (update : int) (langs : string) : string = 
     let lang = langs.Trim()
     let exp = ParseCache.TryFind lang
@@ -468,6 +490,8 @@ and evalToExpression (env : WarewolfEnvironment) (update : int) (langs : string)
         | _ -> buffer |> languageExpressionToString
     | _ -> lang
 
+
+//specialise eval with Positions. Its just eval with the addition of some ints. can be merged into eval function at the expense of complexity for c# developers
 and evalWithPositions (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEvalResult = 
     let EvalComplex(exp : LanguageExpression list) = 
             let start = List.map languageExpressionToString exp |> (List.fold (+) "")
@@ -497,6 +521,7 @@ and evalWithPositions (env : WarewolfEnvironment) (update : int) (lang : string)
         WarewolfAtomResult(EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a))
     | JsonIdentifierExpression _ -> failwith "Json Expression Not Supported"
 
+///helper function for eval with positions
 and evalRecordSetIndexes (env : WarewolfEnvironment) (recset : RecordSetName) : int seq = 
     match recset.Index with
     | IntIndex _ -> { 1..1 }
@@ -504,6 +529,7 @@ and evalRecordSetIndexes (env : WarewolfEnvironment) (recset : RecordSetName) : 
     | Last -> getRecordSetPositionsAsInts env.RecordSets.[recset.Name]
     | IndexExpression _ -> { 1..1 }
 
+///helper function for eval with positions
 and evalIndexes (env : WarewolfEnvironment) (update : int) (lang : string) = 
     let EvalComplex(exp : LanguageExpression list) = 
         if ((List.length exp) = 1) then 
@@ -524,22 +550,23 @@ and evalIndexes (env : WarewolfEnvironment) (update : int) (lang : string) =
     | ComplexExpression a -> EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a)
     | RecordSetNameExpression a -> evalRecordSetIndexes env a
     | _ -> failwith "not a recordset"
-
+///Create the list data for a column
 let createEmpty (length : int) (count : int) = 
     new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, 
                                                                    seq { 
                                                                        for _ in 1..length do
                                                                            yield Nothing
                                                                    }, count)
-
+/// Add to a list
 let addToList (lst : WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) (value : WarewolfAtomRecord) = 
     lst.AddSomething value
     lst
-
+/// add nothing to a column
 let addNothingToList (lst : WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>) = 
     lst.AddNothing()
     lst
 
+/// all recordsets have a hidden column for positions. this function gets that column. 
 let getPositionFromRecset (rset : WarewolfRecordset) (columnName : string) = 
     if rset.Data.ContainsKey(columnName) then 
         if rset.Data.[columnName].Count = 0 then 1
@@ -552,12 +579,12 @@ let getPositionFromRecset (rset : WarewolfRecordset) (columnName : string) =
         match rset.Frame with
         | 0 -> (rset.LastIndex) + 1
         | _ -> max (rset.LastIndex) (rset.Frame)
-
+/// create a column filled with a single value
 let createFilled (count : int) (value : WarewolfAtom) : WarewolfColumnData = 
     new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, 
                                                                    seq { 
                                                                        for _ in 1..count do
                                                                            yield value
                                                                    })
-
+/// get the indexes froma column
 let getIndexes (name : string) (env : WarewolfEnvironment) = evalIndexes env 0 name

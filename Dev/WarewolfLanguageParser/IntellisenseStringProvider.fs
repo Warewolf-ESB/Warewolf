@@ -177,7 +177,7 @@ and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineExp
 and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineScalar (a : ScalarIdentifier) = 
     [ ScalarExpression a |> languageExpressionToString ]
 
-and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineRecset (a : RecordSetIdentifier) 
+and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineRecset (a : RecordSetColumnIdentifier) 
                                                                       (level : int) 
                                                                       (variables : LanguageExpression list) 
                                                                       (startAtzero : bool) = 
@@ -208,7 +208,7 @@ and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineInd
     "*" :: "" :: combined
 
 and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineIndexAtZero (_ : int) 
-                                                                      (_ : RecordSetIdentifier) = "*" :: [ "" ]
+                                                                      (_ : RecordSetColumnIdentifier) = "*" :: [ "" ]
 
 [<Obsolete("Deprecated Usewolf 1601 ")>]
 [<ExcludeFromCodeCoverage>]

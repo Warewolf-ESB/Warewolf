@@ -131,7 +131,7 @@ let getRecordSetIndexAsInt (recset : WarewolfRecordset) (position : int) =
             Seq.findIndex (fun a -> a = positionAsAtom) indexes
         with :? System.Collections.Generic.KeyNotFoundException as ex -> failwith ("row does not exist" + ex.Message)
 
-let evalRecordSetIndex (recset : WarewolfRecordset) (identifier : RecordSetIdentifier) (position : int) = 
+let evalRecordSetIndex (recset : WarewolfRecordset) (identifier : RecordSetColumnIdentifier) (position : int) = 
     let index = getRecordSetIndex recset position
     match index with
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
