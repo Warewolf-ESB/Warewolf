@@ -207,7 +207,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 34 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                              WarewolfAtomAtomExpression _1
+                              WarewolfAtomExpression _1
                    )
 # 34 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -272,7 +272,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 40 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                      WarewolfAtomAtomExpression (DataString "[[")
+                                      WarewolfAtomExpression (DataString "[[")
                    )
 # 40 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -282,7 +282,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 41 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                       WarewolfAtomAtomExpression (DataString "]]")
+                                       WarewolfAtomExpression (DataString "]]")
                    )
 # 41 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -292,7 +292,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 42 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                     WarewolfAtomAtomExpression (DataString "(")
+                                     WarewolfAtomExpression (DataString "(")
                    )
 # 42 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -302,7 +302,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 43 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                       WarewolfAtomAtomExpression (DataString ")")
+                                       WarewolfAtomExpression (DataString ")")
                    )
 # 43 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -312,7 +312,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 44 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                              WarewolfAtomAtomExpression (DataString "*")
+                              WarewolfAtomExpression (DataString "*")
                    )
 # 44 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -322,7 +322,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 45 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                             WarewolfAtomAtomExpression (DataString ".")
+                             WarewolfAtomExpression (DataString ".")
                    )
 # 45 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -377,7 +377,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 51 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                              [WarewolfAtomAtomExpression _1]
+                              [WarewolfAtomExpression _1]
                    )
 # 51 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'variableExpression));
@@ -651,7 +651,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 83 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                             IndexExpression ( WarewolfAtomAtomExpression ( tryParseAtom _1))
+                             IndexExpression ( WarewolfAtomExpression ( tryParseAtom _1))
                    )
 # 83 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'intindex));

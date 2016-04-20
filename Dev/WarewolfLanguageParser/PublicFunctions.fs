@@ -94,7 +94,7 @@ let EvalDataShape (exp : string) (env : WarewolfEnvironment) = AssignEvaluation.
 let IsValidRecsetExpression(exp : string) = 
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
     match parsed with
-    | LanguageExpression.WarewolfAtomAtomExpression _ -> true
+    | LanguageExpression.WarewolfAtomExpression _ -> true
     | LanguageExpression.ComplexExpression _ -> true
     | ScalarExpression _ -> true
     | RecordSetExpression recset -> 
@@ -113,7 +113,7 @@ let IsValidRecsetExpression(exp : string) =
 let RecordsetExpressionExists (exp : string) (env : WarewolfEnvironment) = 
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
     match parsed with
-    | LanguageExpression.WarewolfAtomAtomExpression _ -> false
+    | LanguageExpression.WarewolfAtomExpression _ -> false
     | LanguageExpression.ComplexExpression _ -> false
     | ScalarExpression _ -> false
     | RecordSetExpression recset -> 

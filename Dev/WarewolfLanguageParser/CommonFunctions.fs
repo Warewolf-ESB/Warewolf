@@ -23,7 +23,7 @@ let enQuote (atom : WarewolfAtom) =
 
 let isNotAtom (a : LanguageExpression) = 
     match a with
-    | WarewolfAtomAtomExpression _ -> false
+    | WarewolfAtomExpression _ -> false
     | _ -> true
 
 let getRecordSetPositionsAsInts (recset : WarewolfRecordset) = 
@@ -45,7 +45,7 @@ let parseAtom (lang : string) =
 [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>]
 let IsAtomExpression(a : LanguageExpression) = 
     match a with
-    | WarewolfAtomAtomExpression _ -> true
+    | WarewolfAtomExpression _ -> true
     | _ -> false
 
 let atomtoString (x : WarewolfAtom) = 
@@ -142,7 +142,7 @@ let LanguageExpressionToStringWithoutStuff(x : LanguageExpression) =
     match x with
     | RecordSetExpression _ -> ""
     | ScalarExpression _ -> ""
-    | WarewolfAtomAtomExpression a -> atomtoString a
+    | WarewolfAtomExpression a -> atomtoString a
     | ComplexExpression _ -> ""
     | RecordSetNameExpression _ -> ""
     | JsonIdentifierExpression _ -> ""
@@ -156,7 +156,7 @@ let isNotAtomAndNotcomplex (b : LanguageExpression list) (a : LanguageExpression
     let reserved = [ "[["; "]]" ] |> Set.ofList
     if not (Set.intersect set reserved |> Set.isEmpty) then 
         match a with
-        | WarewolfAtomAtomExpression _ -> false
+        | WarewolfAtomExpression _ -> false
         | _ -> true
     else false
 

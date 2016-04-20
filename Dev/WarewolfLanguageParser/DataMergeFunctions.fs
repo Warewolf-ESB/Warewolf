@@ -19,7 +19,7 @@ let rec evalForDataMerge (env : WarewolfEnvironment) (update : int) (lang : stri
     match buffer with
     | RecordSetExpression a -> [ WarewolfAtomListresult((evalRecordsSet a env)) ]
     | ScalarExpression a -> [ WarewolfAtomResult(evalScalar a env) ]
-    | WarewolfAtomAtomExpression a -> [ WarewolfAtomResult a ]
+    | WarewolfAtomExpression a -> [ WarewolfAtomResult a ]
     | RecordSetNameExpression x -> [ evalDataSetExpression env update x ]
     | ComplexExpression a -> (EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a))
     | JsonIdentifierExpression a -> failwith "not sup[ported for json data"

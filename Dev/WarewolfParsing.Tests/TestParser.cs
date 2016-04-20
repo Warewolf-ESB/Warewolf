@@ -43,8 +43,8 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[1].IsScalarExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[2].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[2].IsWarewolfAtomExpression);
             }
             else
             {
@@ -67,10 +67,10 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[2].IsScalarExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[1].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[3].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[4].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[1].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[3].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[4].IsWarewolfAtomExpression);
             }
             else
             {
@@ -93,10 +93,10 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[2].IsRecordSetExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[1].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[3].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[4].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[1].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[3].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[4].IsWarewolfAtomExpression);
 
                 var x = data[2] as LanguageAST.LanguageExpression.RecordSetExpression;
                 Assert.IsNotNull(x);
