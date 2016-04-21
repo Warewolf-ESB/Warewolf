@@ -7,7 +7,7 @@
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+                               xmlns:activities="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
@@ -89,7 +89,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*" Header="Variable" d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                <DataGridTemplateColumn Width="*" Header="Variable" d:DataContext="{d:DesignInstance Type=activities:AssignObjectDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
@@ -127,7 +127,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*" Header="New Value" d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                <DataGridTemplateColumn Width="*" Header="New Value" d:DataContext="{d:DesignInstance Type=activities:AssignObjectDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
