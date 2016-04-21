@@ -1407,7 +1407,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 426
  testRunner.And("I assign the value \"=SUM([[[[b]]]],1)\" to a variable \"[[Result.a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 427
- testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 428
  testRunner.Then("the value of \"[[Result.a]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 429
