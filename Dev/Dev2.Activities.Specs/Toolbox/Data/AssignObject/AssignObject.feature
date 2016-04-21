@@ -424,7 +424,7 @@ Scenario: Assign the value of a negative json index
 	Given I assign the value 1 to a variable "[[a]]"
 	And I assign the value "a" to a variable "[[b]]"
 	And I assign the value "=SUM([[[[b]]]],1)" to a variable "[[Result.a]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the value of "[[Result.a]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as
