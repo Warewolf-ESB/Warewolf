@@ -457,6 +457,21 @@ Scenario: Assign the value of a negative json index
 	| 3 | [[Result.a]] =  2       |
 
 
+	Scenario: Evaluating recursive invalid recordset variable in a group calculation
+	Given I assign the value 1 to a variable "[[rec(1).a]]"
+	And I assign the value "rec(1).a*" to a variable "[[rec(1).b]]"
+	And I assign the value "=[[[[rec(1).b]]]]+1" to a variable "[[Result.c]]"
+	When the assign object tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	| # | Variable         | New Value |
+	| 1 | [[rec(1).a]]   = | 1         |
+	| 2 | [[rec(1).b]]   = | rec(1).a* |
+	And the debug output as
+	| # |                          |
+	| 1 | [[rec(1).a]] = 1         |
+	| 2 | [[rec(1).b]] = rec(1).a* |
+
 @ignore
 #failing - person.name = bob, person.age = 25, staff = person -> is this valid?
 Scenario: Assign a populated json object to a new json object
