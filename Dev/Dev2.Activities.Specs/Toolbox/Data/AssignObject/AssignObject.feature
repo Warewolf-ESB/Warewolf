@@ -381,7 +381,7 @@ Scenario: Assign the value of a negative json index
 	Given I assign the value 30 to a variable "[[rec(1).a]]"
 	And I assign the value 30 to a variable "[[rec(1).b]]"
 	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result.a]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the value of "[[Result.a]]" equals "60"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -402,7 +402,7 @@ Scenario: Assign the value of a negative json index
 	And I assign the value [[a]] to a variable "[[rec(1).a]]"
 	And I assign the value [[b]] to a variable "[[rec(1).b]]"
 	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result.a]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the value of "[[Result.a]]" equals "3"
 	And the execution has "NO" error
 	And the debug inputs as
@@ -442,7 +442,7 @@ Scenario: Assign the value of a negative json index
 	Given I assign the value 1 to a variable "[[rec(1).a]]"
 	And I assign the value "rec(1).a" to a variable "[[rec(1).b]]"
 	And I assign the value "=[[[[rec(1).b]]]]+1" to a variable "[[Result.a]]"
-	When the assign tool is executed
+	When the assign object tool is executed
 	Then the value of "[[Result.a]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as
