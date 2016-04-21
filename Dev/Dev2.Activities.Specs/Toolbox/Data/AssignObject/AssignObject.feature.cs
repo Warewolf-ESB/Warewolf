@@ -1324,13 +1324,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 399
  this.ScenarioSetup(scenarioInfo);
 #line 400
- testRunner.Given("I assign the value 1 to a variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I assign the value 1 to a variable \"[[a.b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 401
- testRunner.And("I assign the value 2 to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value 2 to a variable \"[[b.a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 402
- testRunner.And("I assign the value [[a]] to a variable \"[[rec(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value [[a.b]] to a variable \"[[rec(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 403
- testRunner.And("I assign the value [[b]] to a variable \"[[rec(1).b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value [[b.a]] to a variable \"[[rec(1).b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 404
  testRunner.And("I assign the value \"=SUM([[rec(1).a]],[[rec(1).b]])\" to a variable \"[[Result.a]]\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1347,20 +1347,20 @@ this.ScenarioSetup(scenarioInfo);
                         "New Value"});
             table43.AddRow(new string[] {
                         "1",
-                        "[[a]]          =",
+                        "[[a.b]]          =",
                         "1"});
             table43.AddRow(new string[] {
                         "2",
-                        "[[b]]          =",
+                        "[[b.a]]          =",
                         "2"});
             table43.AddRow(new string[] {
                         "3",
                         "[[rec(1).a]]   =",
-                        "[[a]] = 1"});
+                        "[[a.b]] = 1"});
             table43.AddRow(new string[] {
                         "4",
                         "[[rec(1).b]]   =",
-                        "[[b]] = 2"});
+                        "[[b.a]] = 2"});
             table43.AddRow(new string[] {
                         "5",
                         "[[Result.a]] =",
@@ -1373,10 +1373,10 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table44.AddRow(new string[] {
                         "1",
-                        "[[a]] = 1"});
+                        "[[a.b]] = 1"});
             table44.AddRow(new string[] {
                         "2",
-                        "[[b]] = 2"});
+                        "[[b.a]] = 2"});
             table44.AddRow(new string[] {
                         "3",
                         "[[rec(1).a]] = 1"});
@@ -1401,11 +1401,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 423
  this.ScenarioSetup(scenarioInfo);
 #line 424
- testRunner.Given("I assign the value 1 to a variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I assign the value 1 to a variable \"[[a.b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 425
- testRunner.And("I assign the value \"a\" to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value \"a\" to a variable \"[[b.a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 426
- testRunner.And("I assign the value \"=SUM([[[[b]]]],1)\" to a variable \"[[Result.a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value \"=SUM(1,1)\" to a variable \"[[Result.a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 427
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 428
@@ -1419,16 +1419,16 @@ this.ScenarioSetup(scenarioInfo);
                         "New Value"});
             table45.AddRow(new string[] {
                         "1",
-                        "[[a]]    =",
+                        "[[a.b]]    =",
                         "1"});
             table45.AddRow(new string[] {
                         "2",
-                        "[[b]]    =",
+                        "[[b.a]]    =",
                         "a"});
             table45.AddRow(new string[] {
                         "3",
                         "[[Result.a]] =",
-                        "SUM([[[[b]]]],1) = SUM(1,1)"});
+                        "=SUM(1,1)"});
 #line 430
  testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
@@ -1437,10 +1437,10 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table46.AddRow(new string[] {
                         "1",
-                        "[[a]]     =        1"});
+                        "[[a.b]]     =        1"});
             table46.AddRow(new string[] {
                         "2",
-                        "[[b]]     =        a"});
+                        "[[b.a]]     =        a"});
             table46.AddRow(new string[] {
                         "3",
                         "[[Result.a]]     =  2"});
@@ -1463,7 +1463,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 443
  testRunner.And("I assign the value \"rec(1).a\" to a variable \"[[rec(1).b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 444
- testRunner.And("I assign the value \"=[[[[rec(1).b]]]]+1\" to a variable \"[[Result.a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value \"=sum(1+1)\" to a variable \"[[Result.a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 445
  testRunner.When("the assign object tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 446
@@ -1486,7 +1486,7 @@ this.ScenarioSetup(scenarioInfo);
             table47.AddRow(new string[] {
                         "3",
                         "[[Result.a]] =",
-                        "[[[[rec(1).b]]]]+1 = 1+1"});
+                        "=sum(1+1)"});
 #line 448
  testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
 #line hidden
