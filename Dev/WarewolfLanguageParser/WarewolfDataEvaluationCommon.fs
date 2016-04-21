@@ -403,17 +403,17 @@ and evalForCalculate (env : WarewolfEnvironment) (update : int) (langs : string)
     
     let buffer = parseLanguageExpression lang update
     match buffer with
-    | RecordSetExpression a -> 
+    | RecordSetExpression   a when env.RecordSets.ContainsKey a.Name  -> 
         evalRecordsSet a env
         |> Seq.map enQuote
         |> (fun x -> new WarewolfAtomList<WarewolfAtom>(Nothing, x))
         |> WarewolfAtomListresult
     | ScalarExpression a -> WarewolfAtomResult(evalScalar a env |> enQuote)
     | WarewolfAtomExpression a -> WarewolfAtomResult a
-    | RecordSetNameExpression x -> evalDataSetExpression env update x
+    | RecordSetNameExpression x  when env.RecordSets.ContainsKey x.Name -> evalDataSetExpression env update x
     | ComplexExpression a -> 
         WarewolfAtomResult(EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a))
-    | JsonIdentifierExpression _ -> 
+    |  _ -> 
         let res = evalJson env update buffer
         match res with
         | WarewolfAtomListresult a -> 
