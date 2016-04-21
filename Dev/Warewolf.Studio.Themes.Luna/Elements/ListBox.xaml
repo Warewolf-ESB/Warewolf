@@ -685,6 +685,7 @@
 
     <!--  Button Styling in the Toolbox ***********  ListBoxItem Style  *********************************  -->
     <Style x:Key="ListBoxToolBoxItemStyle" TargetType="ListBoxItem">
+        <Setter Property="AutomationProperties.AutomationId" Value="{Binding Name}"/>
         <Setter Property="Background" Value="{StaticResource ListBoxItemBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
