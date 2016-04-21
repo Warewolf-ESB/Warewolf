@@ -1,6 +1,8 @@
 ﻿<UserControl x:Class="Dev2.Studio.Views.DataList.DataListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:Models="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
@@ -10,14 +12,24 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
+             xmlns:dataPresenter="http://infragistics.com/DataPresenter"
+             xmlns:dataList1="clr-namespace:Dev2.Studio.ViewModels.DataList;assembly=Dev2.Studio.Core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              LostKeyboardFocus="UserControlLostKeyboardFocus"
              KeyboardNavigation.DirectionalNavigation="Continue" KeyboardNavigation.TabNavigation="Cycle"
              x:Name="DataListViewControl"
-             AutomationProperties.AutomationId="UI_DataListView_AutoID">
+             AutomationProperties.AutomationId="UI_DataListView_AutoID"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance dataList1:DataListViewModel}">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />       
-    </UserControl.Resources>    
-        <i:Interaction.Behaviors>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <i:Interaction.Behaviors>
         <behaviors:UserControlFocusNextAndPreviousBehaviour />
     </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
@@ -83,7 +95,7 @@
                       HorizontalAlignment="Stretch"
                       Margin="{StaticResource ElementBorderTop}"
                       x:Name="ScalarExplorer"
-                      Focusable="False"
+                      Focusable="False" Visibility="Collapsed"
                       HorizontalContentAlignment="Stretch"
                       Style="{StaticResource VariablesTreeViewStyle}"
                       Grid.IsSharedSizeScope="True"
@@ -205,6 +217,133 @@
                 </TreeView.Resources>
             </TreeView>
         </Grid>
-        
+
+        <Grid Grid.Row="1">
+            <dataPresenter:XamTreeGrid x:Name="xtg" DataSource="{Binding Path=BaseCollection}" Background="Transparent" Margin="{StaticResource ElementBorderTop}">
+                <dataPresenter:XamTreeGrid.FieldLayoutSettings>
+                    <dataPresenter:FieldLayoutSettings AutoGenerateFields="False" RecordSelectorLocation="None" />
+                </dataPresenter:XamTreeGrid.FieldLayoutSettings>
+                <dataPresenter:XamTreeGrid.FieldLayouts>
+                    <dataPresenter:FieldLayout>
+                        
+                        <dataPresenter:FieldLayout.Fields>
+                            
+                            <dataPresenter:TextField Name="DisplayName" Width="*" Label="Display Name" />
+
+                            <!--<dataPresenter:TemplateField Name="DisplayName" Label="Display Name" Width="*" AllowEdit="False">
+                                <dataPresenter:TemplateField.Settings>
+                                    <dataPresenter:FieldSettings>
+                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                            <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" Margin="10,3,0,0"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                    </dataPresenter:FieldSettings>
+                                </dataPresenter:TemplateField.Settings>
+                            </dataPresenter:TemplateField>-->
+
+                            <!--<dataPresenter:TextField Name="DisplayName" Label="Display Name" Width="*" AllowEdit="False">
+                                <dataPresenter:TextField.Settings>
+                                    <dataPresenter:FieldSettings>
+                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                            <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" Margin="10,3,0,0"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                    </dataPresenter:FieldSettings>
+                                </dataPresenter:TextField.Settings>
+                            </dataPresenter:TextField>-->
+
+                            <dataPresenter:Field Name="Children" Width="*" AllowEdit="True">
+                                <dataPresenter:Field.Settings>
+                                    <dataPresenter:FieldSettings>
+                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                            <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" Margin="{StaticResource ControlBorderTop}"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                    </dataPresenter:FieldSettings>
+                                </dataPresenter:Field.Settings>
+                            </dataPresenter:Field>
+
+                            <dataPresenter:CheckBoxField Name="InputNew" Label="Input" Width="60" AllowEdit="False" IsThreeState="False">
+                                <dataPresenter:CheckBoxField.Settings>
+                                    <dataPresenter:FieldSettings CellMinWidth="60">
+                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                            <CheckBox HorizontalAlignment="Center" 
+                                                                      CommandParameter="{Binding}" 
+                                                                      IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}"
+                                                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}">
+                                                                <i:Interaction.Behaviors>
+                                                                    <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
+                                                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
+                                                                </i:Interaction.Behaviors>
+                                                            </CheckBox>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                    </dataPresenter:FieldSettings>
+                                </dataPresenter:CheckBoxField.Settings>
+                            </dataPresenter:CheckBoxField>
+                            
+                            <dataPresenter:CheckBoxField Name="OutputNew" Label="Output" Width="60" AllowEdit="True" IsThreeState="False">
+                                <dataPresenter:CheckBoxField.Settings>
+                                    <dataPresenter:FieldSettings CellMinWidth="60" AllowResize="False" AllowGroupBy="False" AllowHiding="Never">
+                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
+                                                            <CheckBox HorizontalAlignment="Center" 
+                                                                      CommandParameter="{Binding}" 
+                                                                      IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}"
+                                                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}">
+                                                                <i:Interaction.Behaviors>
+                                                                    <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
+                                                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
+                                                                </i:Interaction.Behaviors>
+                                                            </CheckBox>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
+                                    </dataPresenter:FieldSettings>
+                                </dataPresenter:CheckBoxField.Settings>
+                            </dataPresenter:CheckBoxField>
+                        </dataPresenter:FieldLayout.Fields>
+                    </dataPresenter:FieldLayout>
+                </dataPresenter:XamTreeGrid.FieldLayouts>
+                <dataPresenter:XamTreeGrid.ViewSettings>
+                    <dataPresenter:TreeViewSettings TreeLineVisibility="Hidden" TreeLinePen="{StaticResource CustomPenBrush}" />
+                </dataPresenter:XamTreeGrid.ViewSettings>
+
+            </dataPresenter:XamTreeGrid>
+        </Grid>
+
     </Grid>
 </UserControl>

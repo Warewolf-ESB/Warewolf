@@ -56,6 +56,8 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         bool IsExpanded { get; set; }
         string FilterText { get; set; }
+        bool Input { get; set; }
+        bool Output { get; set; }
 
         void SetError(string errorMessage);
 
