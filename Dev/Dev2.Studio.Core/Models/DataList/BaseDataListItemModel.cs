@@ -24,6 +24,8 @@ namespace Dev2.Studio.Core.Models.DataList
         private string _displayName;
         private bool _isExpanded = true;
         private ObservableCollection<IDataListItemModel> _children;
+        private bool _inputNew;
+        private bool _outputNew;
 
         #endregion Fields
 
@@ -53,6 +55,31 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 _name = ValidateName(value);
                 NotifyOfPropertyChange(() => Name);
+            }
+        }
+
+        public bool InputNew
+        {
+            get
+            {
+                return _inputNew;
+            }
+            set
+            {
+                _inputNew = value;
+                NotifyOfPropertyChange(() => InputNew);
+            }
+        }
+        public bool OutputNew
+        {
+            get
+            {
+                return _outputNew;
+            }
+            set
+            {
+                _outputNew = value;
+                NotifyOfPropertyChange(() => OutputNew);
             }
         }
 
