@@ -10832,7 +10832,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "ReadFolder";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Read Folder";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10846,7 +10846,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mReadFolderImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mReadFolderImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ReadFolder";
+                    this.mReadFolderImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Read Folder";
                     this.mReadFolderImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
