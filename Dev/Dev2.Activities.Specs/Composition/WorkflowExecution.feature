@@ -4395,7 +4395,7 @@ Scenario: SQL Recordset has invalid character
 
 
 #Wolf-1262
-Scenario: backward Compatiblity
+Scenario: Data connector backward Compatiblity
 	Given I have a workflow "DataMigration"
 	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service                | To Variable                    |
@@ -4412,7 +4412,7 @@ Scenario: Mappings from nested workflow
 	When "OutterWolf1371" is executed
 	Then the workflow execution has "NO" error
 
-Scenario: backward Compatiblity2
+Scenario: Plugin connector backward Compatiblity
 	Given I have a workflow "PluginMigration"
 	And "PluginMigration" contains "PluginService" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service      | To Variable          |
