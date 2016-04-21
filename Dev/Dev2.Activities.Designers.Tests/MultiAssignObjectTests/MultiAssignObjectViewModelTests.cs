@@ -11,6 +11,7 @@
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Activities.Presentation.Model;
@@ -45,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignObjectTests
             //------------Execute Test---------------------------
             var dsfMultiAssignObjectActivityViewModel = CreateDsfMultiAssignObjectActivityViewModel();
             //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(dsfMultiAssignObjectActivityViewModel, typeof(ActivityCollectionDesignerViewModel<ActivityDTO>));
+            Assert.IsInstanceOfType(dsfMultiAssignObjectActivityViewModel, typeof(ActivityCollectionDesignerViewModel<AssignObjectDTO>));
         }
 
         [TestMethod]

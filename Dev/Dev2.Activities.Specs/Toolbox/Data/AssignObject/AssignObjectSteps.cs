@@ -1,5 +1,6 @@
 ﻿using ActivityUnitTests;
 using Dev2.Data.Util;
+using Dev2.TO;
 using NUnit.Framework;
 using System;
 using System.Activities.Statements;
@@ -28,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
@@ -39,11 +40,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
             if (fieldCollection == null)
             {
-                fieldCollection = new List<ActivityDTO>();
+                fieldCollection = new List<AssignObjectDTO>();
                 ScenarioContext.Current.Add("fieldCollection", fieldCollection);
             }
 
-            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
         }
 
         [When(@"the assign object tool is executed")]
@@ -118,7 +119,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
@@ -129,11 +130,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
             if (fieldCollection == null)
             {
-                fieldCollection = new List<ActivityDTO>();
+                fieldCollection = new List<AssignObjectDTO>();
                 ScenarioContext.Current.Add("fieldCollection", fieldCollection);
             }
 
-            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
         }
 
         [Given(@"I assign a json object value ""(.*)"" to a variable ""(.*)""")]
@@ -150,7 +151,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
@@ -161,11 +162,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
             if (fieldCollection == null)
             {
-                fieldCollection = new List<ActivityDTO>();
+                fieldCollection = new List<AssignObjectDTO>();
                 ScenarioContext.Current.Add("fieldCollection", fieldCollection);
             }
 
-            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
         }
 
         [Given(@"I assign a json object value ""(.*)"" to a json object ""(.*)""")]
@@ -182,7 +183,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
@@ -193,18 +194,18 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
             if (fieldCollection == null)
             {
-                fieldCollection = new List<ActivityDTO>();
+                fieldCollection = new List<AssignObjectDTO>();
                 ScenarioContext.Current.Add("fieldCollection", fieldCollection);
             }
 
-            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
         }
 
         protected void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             var multiAssign = new DsfMultiAssignObjectActivity();

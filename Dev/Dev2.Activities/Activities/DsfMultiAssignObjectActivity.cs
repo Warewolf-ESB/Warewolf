@@ -20,6 +20,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
+using Dev2.TO;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -48,14 +49,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        private IList<ActivityDTO> _fieldsCollection;
+        private IList<AssignObjectDTO> _fieldsCollection;
 
         #endregion Fields
 
         #region Properties
 
         // ReSharper disable ConvertToAutoProperty
-        public IList<ActivityDTO> FieldsCollection
+        public IList<AssignObjectDTO> FieldsCollection
         // ReSharper restore ConvertToAutoProperty
         {
             get
@@ -87,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfMultiAssignObjectActivity()
             : base("Assign Object")
         {
-            _fieldsCollection = new List<ActivityDTO>();
+            _fieldsCollection = new List<AssignObjectDTO>();
         }
 
         #endregion Ctor
@@ -122,7 +123,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!errors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach (ActivityDTO t in FieldsCollection)
+                    foreach (AssignObjectDTO t in FieldsCollection)
                     {
                         try
                         {
