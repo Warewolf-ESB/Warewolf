@@ -376,6 +376,87 @@ Scenario: Assign the value of a negative json index
 	| # |                     |
 	| 1 | [[rec.set(1)]] = 10 |
 
+
+	Scenario: Assign a record set variable equal to a group calculation (sum)
+	Given I assign the value 30 to a variable "[[rec(1).a]]"
+	And I assign the value 30 to a variable "[[rec(1).b]]"
+	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result.a]]"
+	When the assign tool is executed
+	Then the value of "[[Result.a]]" equals "60"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value    |
+	| 1 | [[rec(1).a]]   = | 30           |
+	| 2 | [[rec(1).b]]   = | 30           |
+	| 3 | [[Result.a]] =     | SUM([[rec(1).a]],[[rec(1).b]]) = SUM(30,30) |
+	And the debug output as
+	| # |                   |
+	| 1 | [[rec(1).a]] = 30 |
+	| 2 | [[rec(1).b]] = 30 |
+	| 3 | [[Result.a]] = 60 |
+
+
+	Scenario: Assign a variable equal to a group calculation with scalar and recordset
+	Given I assign the value 1 to a variable "[[a]]"
+	And I assign the value 2 to a variable "[[b]]"
+	And I assign the value [[a]] to a variable "[[rec(1).a]]"
+	And I assign the value [[b]] to a variable "[[rec(1).b]]"
+	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result.a]]"
+	When the assign tool is executed
+	Then the value of "[[Result.a]]" equals "3"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value |
+	| 1 | [[a]]          = | 1         |
+	| 2 | [[b]]          = | 2         |
+	| 3 | [[rec(1).a]]   = | [[a]] = 1 |
+	| 4 | [[rec(1).b]]   = | [[b]] = 2 |
+	| 5 | [[Result.a]] =     | SUM([[rec(1).a]],[[rec(1).b]]) = SUM(1,2)  |
+	And the debug output as
+	| # |                  |
+	| 1 | [[a]] = 1        |
+	| 2 | [[b]] = 2        |
+	| 3 | [[rec(1).a]] = 1 |
+	| 4 | [[rec(1).b]] = 2 |
+	| 5 | [[Result.a]] = 3 |
+
+	Scenario: Evaluating recursive variable in a group calculation
+	Given I assign the value 1 to a variable "[[a]]"
+	And I assign the value "a" to a variable "[[b]]"
+	And I assign the value "=SUM([[[[b]]]],1)" to a variable "[[Result.a]]"
+	When the assign tool is executed
+	Then the value of "[[Result.a]]" equals "2"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable       | New Value                   |
+	| 1 | [[a]]    =     | 1                           |
+	| 2 | [[b]]    =     | a                           |
+	| 3 | [[Result.a]] = | SUM([[[[b]]]],1) = SUM(1,1) |
+	And the debug output as
+	| # |                       |
+	| 1 | [[a]]     =        1  |
+	| 2 | [[b]]     =        a  |
+	| 3 | [[Result.a]]     =  2 |
+
+	Scenario: Evaluating recursive recordset variable in a group calculation
+	Given I assign the value 1 to a variable "[[rec(1).a]]"
+	And I assign the value "rec(1).a" to a variable "[[rec(1).b]]"
+	And I assign the value "=[[[[rec(1).b]]]]+1" to a variable "[[Result.a]]"
+	When the assign tool is executed
+	Then the value of "[[Result.a]]" equals "2"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value                |
+	| 1 | [[rec(1).a]]   = | 1                        |
+	| 2 | [[rec(1).b]]   = | rec(1).a                 |
+	| 3 | [[Result.a]] =   | [[[[rec(1).b]]]]+1 = 1+1 |
+	And the debug output as
+	| # |                         |
+	| 1 | [[rec(1).a]] = 1        |
+	| 2 | [[rec(1).b]] = rec(1).a |
+	| 3 | [[Result.a]] =  2       |
+
+
 @ignore
 #failing - person.name = bob, person.age = 25, staff = person -> is this valid?
 Scenario: Assign a populated json object to a new json object
