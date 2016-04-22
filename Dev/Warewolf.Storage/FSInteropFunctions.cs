@@ -16,5 +16,7 @@
         {
             return EvaluationFunctions.languageExpressionToString(exp);
         }
+
+        public static string PositionColumn { get { return EvaluationFunctions.PositionColumn; } }
     }
 }
