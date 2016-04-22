@@ -43,7 +43,7 @@ namespace Dev2.Studio.Views.DataList
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
             DataContextChanged += OnDataContextChanged;
-            KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
+            //KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
 
@@ -201,8 +201,8 @@ namespace Dev2.Studio.Views.DataList
                     return DeleteButton.Command.CanExecute(null);
                 case "Sort Variables":
                     return SortButton.Command.CanExecute(null);
-                case "Variables":
-                    return ScalarExplorer.IsEnabled;
+                //case "Variables":
+                //    return ScalarExplorer.IsEnabled;
             }
             return false;
         }

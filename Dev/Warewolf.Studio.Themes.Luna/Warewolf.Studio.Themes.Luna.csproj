@@ -164,6 +164,9 @@
     <Compile Include="XamGrid\ContextMenuOpeningEventArgs.cs" />
     <Compile Include="XamGrid\ContextMenuSettings.cs" />
     <Compile Include="XamGrid\XamGridEx.cs" />
+    <Resource Include="Images\Filter.png" />
+    <Resource Include="Images\FilterClearButton.png" />
+    <Resource Include="Images\MagnifyingGlass.png" />
     <Resource Include="Images\Resize_Grip.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
