@@ -120,7 +120,7 @@
                               ItemsSource="{Binding ActionRegion.Actions}"
                               DisplayMemberPath="Method" 
                               IsEnabled="{Binding ActionRegion.IsActionEnabled}"
-                              ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                              ToolTip="{x:Static languages:Core.PluginServiceSelectActionToolTip}"
                               IsEditable="False"
                               SelectedItem="{Binding ActionRegion.SelectedAction}">
                 <i:Interaction.Behaviors>
@@ -160,11 +160,11 @@
                               ItemsSource="{Binding NamespaceRegion.Namespaces}"
                               DisplayMemberPath="FullName" 
                               IsEnabled="{Binding NamespaceRegion.IsNamespaceEnabled}"
-                              ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
+                              ToolTip="{x:Static languages:Core.PluginServiceSelectNamespaceToolTip}"
                               IsEditable="False"
                               SelectedItem="{Binding NamespaceRegion.SelectedNamespace}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectActionHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:Core.PluginServiceSelectNamespaceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
             <Button x:Name="NamespaceRefreshButton" 
@@ -251,7 +251,7 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipInputColumn}"
+                                                    ToolTip="{x:Static languages:Core.InputDefaultValueToolTip}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
@@ -308,7 +308,10 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center">
+                                        <CheckBox 
+                                            IsChecked="{Binding Path=EmptyIsNull}" 
+                                            HorizontalAlignment="Center"
+                                            ToolTip="{x:Static languages:Core.InputEmptyIsNullToolTip}">
                                             <i:Interaction.Behaviors>
                                                 <core:HelpSetter Text="{x:Static languages:Core.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                             </i:Interaction.Behaviors>

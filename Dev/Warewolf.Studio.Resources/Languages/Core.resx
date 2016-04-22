@@ -791,8 +791,17 @@ Change the connection string from, say, a development DLL to a live DLL.&lt;br/&
   <data name="PluginServiceNewSourceHelp" xml:space="preserve">
     <value>To create a reference to a new dll, click New.</value>
   </data>
+  <data name="PluginServiceSelectNamespaceToolTip" xml:space="preserve">
+    <value>Select a namespace to help find the correct action.</value>
+  </data>
+  <data name="PluginServiceSelectNamespaceHelp" xml:space="preserve">
+    <value>Select a namespace if it exists to filter the actions you can perform.</value>
+  </data>
+  <data name="PluginServiceSelectActionToolTip" xml:space="preserve">
+    <value>Select method to execute.</value>
+  </data>
   <data name="PluginServiceSelectActionHelp" xml:space="preserve">
-    <value>Select the method in the DLL you want to execute.</value>
+    <value>Select the method in the DLL you want to execute. You can provide a namespace filter above if you want.</value>
   </data>
   <data name="PluginServiceRefreshHelp" xml:space="preserve">
     <value>Refresh the available actions.</value>
@@ -905,8 +914,14 @@ This account needs to be a valid email address/account for the Host server.</val
   <data name="InputDefaultValueHelp" xml:space="preserve">
     <value>The variable or the value that you want passed into this action.</value>
   </data>
+  <data name="InputDefaultValueToolTip" xml:space="preserve">
+    <value>Hard coded values or variables.</value>
+  </data>
   <data name="InputEmptyIsNullDefaultValueHelp" xml:space="preserve">
-    <value>If the variable coming in has not value assigned to it, this will allow you to pass it in as NULL.</value>
+    <value>If the variable coming in has no value assigned to it, this will allow you to pass it in as NULL.</value>
+  </data>
+  <data name="InputEmptyIsNullToolTip" xml:space="preserve">
+    <value>Use NULL when empty.</value>
   </data>
   <data name="InputGenerateOutputsDefaultHelp" xml:space="preserve">
     <value>To get the response data of this action, put some test data in. The transaction will be rolled back if possible.</value>
@@ -1087,7 +1102,7 @@ Connected Servers will be Disconnected and vice versa. &lt;br/&gt;
     <value>http://warewolf.io/knowledge-base/</value>
   </data>
   <data name="WarewolfCopyright" xml:space="preserve">
-    <value>Copyright © 2015 Warewolf, All rights reserved.</value>
+    <value>Copyright © 2016 Warewolf, All rights reserved.</value>
   </data>
   <data name="WarewolfHelpURL" xml:space="preserve">
     <value>http://warewolf.io/knowledge-base/</value>
