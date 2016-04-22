@@ -157,13 +157,17 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             foreach (var dataListItemModel in toList)
             {
-                var recset = "[[" + dataListItemModel.DisplayName + "]]";
-                accList.Add(recset);
+                var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.Name);
+                var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.Name,true);
+
+                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
+                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
                 foreach (var listItemModel in dataListItemModel.Children)
                 {
                     var rec = "[[" + listItemModel.DisplayName + "]]";
                     if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
                     {
+                        accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
                         accList.Add(rec);
                     }
                 }
@@ -258,7 +262,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }, CanDelete);
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
-            Provider = new Dev2TrieSugggestionProvider(0);
+            Provider = new Dev2TrieSugggestionProvider();
         }
 
         bool CanDelete(Object itemx)
