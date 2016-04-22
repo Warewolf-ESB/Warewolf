@@ -19,6 +19,7 @@ namespace Dev2.Common.Interfaces
         All,
         RecordsetsOnly,
         ScalarsOnly,
-        RecordsetFields
+        RecordsetFields,
+        JsonObject
     }
 }
