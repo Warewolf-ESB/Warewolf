@@ -58,52 +58,55 @@ if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /Tests:"
 }
 
-
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir | ? {$_.PSIsContainer -and ((($_.Name.StartsWith("Dev2.") -or $_.Name.StartsWith("Warewolf.")) -and $_.Name.EndsWith(".Specs")) -or $_.Name.StartsWith("Warewolf.AcceptanceTesting.")) -and $_.Name -ne "Dev2.Installer.Specs" -and $_.Name -ne "Warewolf.AcceptanceTesting.Scheduler"} ) {
-    $TestAssembliesList = "`"$SolutionDir\" + $file.Name + "\bin\Debug\" + $file.Name + ".dll`" " + $TestAssembliesList 
+foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll, Warewolf.AcceptanceTesting.*.dll -Exclude Dev2.Installer.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
+    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + "/logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 
 # Display full command including full argument string.
-Write-Host $SolutionDir> `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`" $FullArgsList
+Write-Host `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Run VSTest with full argument string.
 Start-Process -FilePath "$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe" -ArgumentList @($FullArgsList) -verb RunAs -WorkingDirectory $SolutionDir -Wait
 
 # Write failing tests playlist.
 [string]$testResultsFolder = $SolutionDir + "\TestResults"
-Write-Host Writing all test failures in `"$testResultsFolder`" to a playlist file
+if (Test-Path $testResultsFolder\*.trx) {
+    Write-Host Writing all test failures in `"$testResultsFolder`" to a playlist file
 
-Get-ChildItem "$testResultsFolder" -Filter *.trx | Rename-Item -NewName {$_.name -replace ' ','_' }
+    Get-ChildItem "$testResultsFolder" -Filter *.trx | Rename-Item -NewName {$_.name -replace ' ','_' }
 
-$PlayList = "<Playlist Version=`"1.0`">"
-Get-ChildItem "$testResultsFolder" -Filter *.trx | `
-Foreach-Object{
-	[xml]$trxContent = Get-Content $_.FullName
-	if ($trxContent.TestRun.Results.UnitTestResult.count -le 0) {
-		Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
-		Continue
-	}
-	foreach( $TestResult in $trxContent.TestRun.Results.UnitTestResult) {
-		if ($TestResult.outcome -eq "Passed") {
-			Continue
-		}
-		if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -le 0) {
-			Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
-			Continue
-		}
-		foreach( $TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
-			if ($TestDefinition.name -eq $TestResult.testName) {
-				$PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
-			}
-		}
-	}
+    $PlayList = "<Playlist Version=`"1.0`">"
+    Get-ChildItem "$testResultsFolder" -Filter *.trx | `
+    Foreach-Object{
+	    [xml]$trxContent = Get-Content $_.FullName
+	    if ($trxContent.TestRun.Results.UnitTestResult.count -le 0) {
+		    Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+		    Continue
+	    }
+	    foreach( $TestResult in $trxContent.TestRun.Results.UnitTestResult) {
+		    if ($TestResult.outcome -eq "Passed") {
+			    Continue
+		    }
+		    if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -le 0) {
+			    Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
+			    Continue
+		    }
+		    foreach( $TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
+			    if ($TestDefinition.name -eq $TestResult.testName) {
+				    $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
+			    }
+		    }
+	    }
+    }
+    $PlayList += "</Playlist>"
+    $OutPlaylistPath = $testResultsFolder + "\TestFailures.playlist"
+    $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
+    Write-Host Playlist file written to `"$OutPlaylistPath`".
+} else {
+    Write-Host Failed! Try running the above command from the commandline.
 }
-$PlayList += "</Playlist>"
-$OutPlaylistPath = $testResultsFolder + "\TestFailures.playlist"
-$PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
-Write-Host Playlist file written to `"$OutPlaylistPath`".
