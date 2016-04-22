@@ -374,12 +374,22 @@ let addValueToJArray (arr : JArray) (ind : int) (value : JToken) =
     else arr.[index] <- value 
          (arr.[index], arr)
 
+let addOrGetValueFromJArray (arr : JArray) (ind : int) (value : JToken) = 
+    let index = ind - 1
+    if (ind > arr.Count) then 
+        let x = arr.Count
+        for _ in x..ind - 1 do
+            arr.Add(null)
+        arr.[index] <- value
+        arr.[index]
+    else arr.[index]  
+
 let indexToInt (a : Index) (arr : JArray) = 
     match a with
     | IntIndex a -> [ a ]
     | Last -> [ arr.Count + 1 ]
     | Star -> [ 1..arr.Count ]
-    | _ -> failwith "I'll be back"
+    | _ -> failwith "invalid index"
 
 let addPropertyToJsonNoValue (obj : Newtonsoft.Json.Linq.JObject) (name : string) = 
     let props = obj.Properties()
@@ -433,7 +443,7 @@ and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalRes
         let asJObj = toJOArray obj
         match b.Index with
         | IntIndex a -> 
-            let objToFill = new JObject()
+            let objToFill = addOrGetValueFromJArray (obj:?> JArray) a (new JObject())
             let subObj = expressionToObject (objToFill) b.Next res
             addValueToJArray asJObj a objToFill |> ignore
         | Last -> 
