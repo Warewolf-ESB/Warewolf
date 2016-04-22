@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces;
 using Gma.DataStructures.StringSearch;
+using Warewolf.Storage;
 
 namespace Dev2
 {
@@ -28,7 +29,7 @@ namespace Dev2
                 PatriciaTrie = new SuffixTrie<string>(1);
 
 #pragma warning disable 618
-                var vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a), Level, IntellisenseStringProvider.FilterOption.All);
+                var vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => FsInteropFunctions.ParseLanguageExpression(a, 0)).OrderBy(a => a), Level, IntellisenseStringProvider.FilterOption.All);
 #pragma warning restore 618
                 foreach (var @var in vars)
                 {
@@ -36,7 +37,7 @@ namespace Dev2
                 }
                 PatriciaTrieScalars = new SuffixTrie<string>(1);
 #pragma warning disable 618
-                vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsScalarExpression), Level, IntellisenseStringProvider.FilterOption.Scalars);
+                vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => FsInteropFunctions.ParseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsScalarExpression), Level, IntellisenseStringProvider.FilterOption.Scalars);
 #pragma warning restore 618
                 foreach (var @var in vars)
                 {
@@ -44,7 +45,7 @@ namespace Dev2
                 }
                 PatriciaTrieRecsets = new SuffixTrie<string>(1);
 #pragma warning disable 618
-                vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression), Level, IntellisenseStringProvider.FilterOption.RecordSetNames);
+                vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => FsInteropFunctions.ParseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression), Level, IntellisenseStringProvider.FilterOption.RecordSetNames);
 #pragma warning restore 618
                 foreach (var @var in vars)
                 {
@@ -52,7 +53,7 @@ namespace Dev2
                 }
                 PatriciaTrieRecsetsFields = new SuffixTrie<string>(1);
 #pragma warning disable 618
-                vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression), Level, IntellisenseStringProvider.FilterOption.Recordsets);
+                vars = IntellisenseStringProvider.getOptions(_variableList.Select(a => FsInteropFunctions.ParseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression), Level, IntellisenseStringProvider.FilterOption.Recordsets);
 #pragma warning restore 618
                 foreach (var @var in vars)
                 {
