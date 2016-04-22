@@ -42,7 +42,7 @@ namespace Dev2.TO
 
         string CalculateDestinationNameFromSourceName(string sourceName)
         {
-            LanguageAST.LanguageExpression parsed = WarewolfDataEvaluationCommon.parseLanguageExpression(sourceName,0);
+            LanguageAST.LanguageExpression parsed = FsInteropFunctions.ParseLanguageExpression(sourceName,0);
             if (parsed.IsScalarExpression)
             {
                 return ((LanguageAST.LanguageExpression.ScalarExpression)parsed).Item;
@@ -133,7 +133,7 @@ namespace Dev2.TO
             }
             else
             {
-                if (WarewolfDataEvaluationCommon.parseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
+                if (FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
                 {
                     Evaluations = new List<JsonMappingEvaluated> { new JsonMappingEvaluated(_env, Compound.SourceName) };
                 }
@@ -142,10 +142,10 @@ namespace Dev2.TO
                     // we know this is a comma seperated list of expressions
                     Evaluations =
                         // ReSharper disable MaximumChainedReferences
-                        ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.parseLanguageExpression(Compound.SourceName,0))
+                        ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomExpression)
-                            .Select(WarewolfDataEvaluationCommon.languageExpressionToString)
+                            .Select(FsInteropFunctions.LanguageExpressionToString)
                             .Select(x =>
                                 new JsonMappingEvaluated(_env, x))
                             .ToList();
@@ -168,9 +168,9 @@ namespace Dev2.TO
             {
                 if (_isCompound == null)
                 {
-                    _isCompound = WarewolfDataEvaluationCommon.parseLanguageExpression(
+                    _isCompound = FsInteropFunctions.ParseLanguageExpression(
                         Compound.SourceName,0)
-                        .IsComplexExpression || WarewolfDataEvaluationCommon.parseLanguageExpression(
+                        .IsComplexExpression || FsInteropFunctions.ParseLanguageExpression(
                             Compound.SourceName,0)
                             .IsRecordSetNameExpression;
 
@@ -285,7 +285,7 @@ namespace Dev2.TO
                     var a = new JObject();
                     foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
                     {
-                        if (pair.Key != WarewolfDataEvaluationCommon.PositionColumn)
+                        if (pair.Key != FsInteropFunctions.PositionColumn)
                         {
                             try
                             {
@@ -318,7 +318,7 @@ namespace Dev2.TO
         {
             try
             {
-                var parsed = WarewolfDataEvaluationCommon.parseLanguageExpression(sourceName,0);
+                var parsed = FsInteropFunctions.ParseLanguageExpression(sourceName,0);
                 if (parsed.IsComplexExpression)
                 {
                     var complex = (LanguageAST.LanguageExpression.ComplexExpression)parsed;
@@ -334,7 +334,7 @@ namespace Dev2.TO
                            .Where(i => i % 2 == 1)
                            .Select(i =>
 
-                                        WarewolfDataEvaluationCommon.languageExpressionToString(
+                                        FsInteropFunctions.languageExpressionToString(
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
@@ -365,7 +365,7 @@ namespace Dev2.TO
                 return
                     IsCompound &&
                     Evaluations.Any(x =>
-                    WarewolfDataEvaluationCommon.parseLanguageExpression(x.Simple.SourceName,0).IsRecordSetNameExpression);
+                    FsInteropFunctions.ParseLanguageExpression(x.Simple.SourceName,0).IsRecordSetNameExpression);
             }
         }
     }

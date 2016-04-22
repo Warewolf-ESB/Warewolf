@@ -9,7 +9,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
-
+using Warewolf.Storage;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -215,7 +215,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return Outputs.Where(a => WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
+                return Outputs.Where(a => FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression).Select(a => "Invalid Output Mapping" + a.ToString()).ToList();
             }
         }
 

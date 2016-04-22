@@ -36,7 +36,7 @@ namespace Dev2.Data
                     var stringValue = "";
                     foreach (var item in listResult.Item.Data)
                     {
-                        if (item.Key != WarewolfDataEvaluationCommon.PositionColumn)
+                        if (item.Key != EvaluationFunctions.PositionColumn)
                         {
                             var data = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                             var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
