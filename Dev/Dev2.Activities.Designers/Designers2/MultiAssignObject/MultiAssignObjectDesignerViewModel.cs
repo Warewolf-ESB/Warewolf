@@ -17,7 +17,6 @@ using Dev2.TO;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.MultiAssignObject
 {
@@ -48,6 +47,15 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
             if (dto == null)
             {
                 yield break;
+            }
+
+            foreach (var error in dto.GetRuleSet("FieldName", GetDatalistString()).ValidateRules("'Variable'", () => mi.SetProperty("IsFieldNameFocused", true)))
+            {
+                yield return error;
+            }
+            foreach (var error in dto.GetRuleSet("FieldValueAndCalculate", GetDatalistString()).ValidateRules("'New Value'", () => mi.SetProperty("IsFieldValueFocused", true)))
+            {
+                yield return error;
             }
         }
 

@@ -13,17 +13,20 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Dev2.TO
 {
+    // ReSharper disable once InconsistentNaming
     public class AssignObjectDTO : ValidatedObject, IDev2TOFn
     {
-        private string fieldName;
-        private string fieldValue;
-        private int indexNumber;
-        private bool isFieldNameFocused;
-        private bool isFieldValueFocused;
+        private string _fieldName;
+        private string _fieldValue;
+        private int _indexNumber;
+        private bool _isFieldNameFocused;
+        private bool _isFieldValueFocused;
 
         public AssignObjectDTO()
             : this("[[Variable]]", "Expression", 0)
@@ -32,9 +35,9 @@ namespace Dev2.TO
 
         public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber, bool inserted = false)
         {
-            this.fieldName = fieldName;
-            this.fieldValue = fieldValue;
-            this.indexNumber = indexNumber;
+            this._fieldName = fieldName;
+            this._fieldValue = fieldValue;
+            this._indexNumber = indexNumber;
             this.Inserted = inserted;
             OutList = new List<string>();
         }
@@ -44,13 +47,13 @@ namespace Dev2.TO
         {
             get
             {
-                return fieldName;
+                return _fieldName;
             }
             set
             {
-                if (fieldName != value)
+                if (_fieldName != value)
                 {
-                    fieldName = value;
+                    _fieldName = value;
                     OnPropertyChanged();
                     RaiseCanAddRemoveChanged();
                 }
@@ -63,13 +66,13 @@ namespace Dev2.TO
         {
             get
             {
-                return fieldValue;
+                return _fieldValue;
             }
             set
             {
-                if (fieldValue != value)
+                if (_fieldValue != value)
                 {
-                    fieldValue = value;
+                    _fieldValue = value;
                     OnPropertyChanged();
                     RaiseCanAddRemoveChanged();
                 }
@@ -81,11 +84,11 @@ namespace Dev2.TO
         {
             get
             {
-                return indexNumber;
+                return _indexNumber;
             }
             set
             {
-                indexNumber = value;
+                _indexNumber = value;
                 OnPropertyChanged();
             }
         }
@@ -94,11 +97,11 @@ namespace Dev2.TO
         {
             get
             {
-                return isFieldNameFocused;
+                return _isFieldNameFocused;
             }
             set
             {
-                OnPropertyChanged(ref isFieldNameFocused, value);
+                OnPropertyChanged(ref _isFieldNameFocused, value);
             }
         }
 
@@ -106,11 +109,11 @@ namespace Dev2.TO
         {
             get
             {
-                return isFieldValueFocused;
+                return _isFieldValueFocused;
             }
             set
             {
-                OnPropertyChanged(ref isFieldValueFocused, value);
+                OnPropertyChanged(ref _isFieldValueFocused, value);
             }
         }
 
@@ -132,7 +135,6 @@ namespace Dev2.TO
             bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
             return result;
         }
-
 
         public bool CanAdd()
         {
@@ -158,6 +160,50 @@ namespace Dev2.TO
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
             // ReSharper restore ExplicitCallerInfoArgument
+        }
+
+        /// <summary>
+        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="datalist"></param>
+        /// <returns></returns>
+        public bool Validate(Expression<Func<string>> property, string datalist)
+        {
+            var propertyName = GetPropertyName(property);
+            return Validate(propertyName, datalist);
+        }
+
+        /// <summary>
+        /// Validates the property name with the default rule set in <value>ActivityDTO</value>
+        /// </summary>
+        /// <param name="property">Property to validate</param>
+        /// <param name="ruleSet">Ruleset to use during validation</param>
+        /// <returns></returns>
+        public bool Validate(Expression<Func<string>> property, RuleSet ruleSet)
+        {
+            var propertyName = GetPropertyName(property);
+            return Validate(propertyName, ruleSet);
+        }
+
+        private static string GetPropertyName<TU>(Expression<Func<TU>> propertyName)
+        {
+            if (propertyName.NodeType != ExpressionType.Lambda)
+            {
+                throw new ArgumentException(@"Value must be a lamda expression", "propertyName");
+            }
+
+            var body = propertyName.Body as MemberExpression;
+
+            if (body == null)
+            {
+                throw new ArgumentException("Must have body");
+            }
+            if (body.Member == null)
+            {
+                throw new ArgumentException("Body must have Member");
+            }
+            return body.Member.Name;
         }
     }
 }
