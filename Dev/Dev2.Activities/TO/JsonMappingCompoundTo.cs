@@ -144,7 +144,7 @@ namespace Dev2.TO
                         // ReSharper disable MaximumChainedReferences
                         ((LanguageAST.LanguageExpression.ComplexExpression)WarewolfDataEvaluationCommon.parseLanguageExpression(Compound.SourceName,0))
                             .Item
-                            .Where(x => !x.IsWarewolfAtomAtomExpression)
+                            .Where(x => !x.IsWarewolfAtomExpression)
                             .Select(WarewolfDataEvaluationCommon.languageExpressionToString)
                             .Select(x =>
                                 new JsonMappingEvaluated(_env, x))
@@ -346,7 +346,7 @@ namespace Dev2.TO
                 else if (!parsed.IsRecordSetNameExpression &&
                         !parsed.IsRecordSetExpression &&
                         !parsed.IsScalarExpression &&
-                        !parsed.IsWarewolfAtomAtomExpression)
+                        !parsed.IsWarewolfAtomExpression)
                 {
                     return "Can only have a scalar, a RecordSet or a RecordSet with column qualification as input";
                 }

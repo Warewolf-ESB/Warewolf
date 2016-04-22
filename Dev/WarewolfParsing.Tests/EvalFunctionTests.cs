@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+using Dev2.Common.Common;
 // ReSharper disable InconsistentNaming
 
 namespace WarewolfParsingTest
@@ -42,6 +43,25 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),  "3" );
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(NullValueInVariableException))]
+        public void Eval_RecSet_NonExistent()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalRecordsSet(new LanguageAST.RecordSetColumnIdentifier("gerrs", "qqq", LanguageAST.Index.Last), env);
+
+            //------------Assert Results-------------------------
+
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
@@ -93,7 +113,6 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
-     
         public void Eval_RecSet_Index()
         {
             //------------Setup for test--------------------------
@@ -106,6 +125,75 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),  "1" );
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_RecSet_Index_MixedUpLast()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 0, "[[non().a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_Indexes()  
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalIndex(env, 0, "[[non().a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(res, 1);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void Eval_Indexes_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalIndex(env, 0, "[[non(*).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(res, 1);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void Eval_RecSet_Index_NonExistent()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 0, "[[eeerRec(1).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1");
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
@@ -125,6 +213,37 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
+        public void Eval_RecSet_AsString()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate( "[[Rec(*).a]]")).Item);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.atomtoString(res), "123");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_RecSet_AsStringind()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalRecordSetAsString(env, ((LanguageAST.LanguageExpression.RecordSetExpression)WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Rec(1).a]]")).Item);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.atomtoString(res), "1");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
         public void Eval_RecSet_Complete()
         {
             //------------Setup for test--------------------------
@@ -136,6 +255,71 @@ namespace WarewolfParsingTest
             var res = WarewolfDataEvaluationCommon.eval(env, 0, "[[Rec(*)]]");
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,2,3,a,b,c");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_RecSet_Complete_WithUpdate()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 1, "[[Rec(*)]][[Rec(*)]]");
+            //------------Assert Results-------------------------
+            // note this is currently undefined behaviour
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,a1,a");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_RecSet_Complete_WithUpdate_Mixed()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 1, "[[Rec(*)]][[Rec(3)]]");
+            //------------Assert Results-------------------------
+            // note this is currently undefined behaviour
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,a3,c");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_RecSet_Complete_WithUpdate_Recset()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 1, "[[Rec(*).a]][[Rec(*).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "11");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_RecSet_Complete_WithUpdate_Recset_Mixed()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.eval(env, 1, "[[Rec(*).a]][[Rec(3).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "13");
         }
 
         [TestMethod]
@@ -262,6 +446,87 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), "3");
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_PositionsRecSet_Complete()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[Rec()]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "3,c");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_PositionsRecSet_Complete_Star()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[Rec(*)]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,2,3,a,b,c");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_PositionsRecSet_Complete_Last()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[Rec()]] ");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "3,c ");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_PositionsRecSet_Complete_Star_Complex()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[Rec(*)]] ");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,2,3,a,b,c ");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void Eval_PositionsRecSet_ComplexScalar()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[a]] ");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1 ");
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
@@ -291,6 +556,40 @@ namespace WarewolfParsingTest
             var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[Rec(*).a]]");
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,2,3");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_PositionsRecSet_Exp()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[Rec([[x]]).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1");
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        [ExpectedException(typeof(NullValueInVariableException))]
+        public void Eval_PositionsRecSet_ExpNonExist()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalWithPositions(env, 0, "[[greRec([[x]]).a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1");
         }
 
         [TestMethod]
@@ -578,6 +877,9 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(1).a]]", "1", 0);
             env.Assign("[[Rec(2).a]]", "2", 0);
             env.Assign("[[Rec(3).a]]", "3", 0);
+            env.Assign("[[non(3).a]]", "1", 0);
+            env.Assign("[[non(2).a]]", "2", 0);
+            env.Assign("[[non(1).a]]", "3", 0);
             env.Assign("[[Rec(1).b]]", "a", 0);
             env.Assign("[[Rec(2).b]]", "b", 0);
             env.Assign("[[Rec(3).b]]", "c", 0);

@@ -24,6 +24,25 @@ let Tokenisers2 = "[]".ToCharArray()
 [<ExcludeFromCodeCoverage>]
 let Tokenisers3 = "()".ToCharArray()
 
+
+let [<System.Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] LanguageExpressionToSumOfInt(x : LanguageExpression list) = 
+    let expressionToInt (current : int) (y : LanguageExpression) = 
+        match current with
+        | -1 -> -99
+        | _ -> 
+            match y with
+            | RecordSetExpression _ -> current
+            | ScalarExpression _ -> current
+            | RecordSetNameExpression _ -> current
+            | ComplexExpression _ -> current
+            | WarewolfAtomExpression _ when languageExpressionToString y = "]]" -> current - 1
+            | WarewolfAtomExpression _ when languageExpressionToString y = "[[" -> current + 1
+            | WarewolfAtomExpression _ -> current
+            | JsonIdentifierExpression _ -> current
+    
+    let sum = List.fold expressionToInt 0 x
+    sum
+
 [<Obsolete("Deprecated Usewolf 1601 ")>]
 [<ExcludeFromCodeCoverage>]
 type FilterOption = 
@@ -45,32 +64,32 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
             | RecordSetNameExpression e -> (res, validateRecordsetIndex e.Index)
             | ScalarExpression _ -> (res, "")
             | ComplexExpression x -> verifyComplexExpression (x)
-            | WarewolfAtomAtomExpression _ -> (res, "")
+            | WarewolfAtomExpression _ -> (res, "")
             | JsonIdentifierExpression _ -> (res, "")
         with ex when ex.Message.ToLower() = "parse error" -> 
             if (lang.Length > 2) then 
                 let startswithNum, _ = System.Int32.TryParse(lang.[2].ToString())
                 match startswithNum with
                 | true -> 
-                    (WarewolfAtomAtomExpression(DataASTMutable.DataString lang), 
+                    (WarewolfAtomExpression(DataASTMutable.DataString lang), 
                      "Variable name " + lang + " begins with a number")
                 | false -> 
-                    (WarewolfAtomAtomExpression(DataASTMutable.DataString lang), 
+                    (WarewolfAtomExpression(DataASTMutable.DataString lang), 
                      "Variable name " + lang + " contains invalid character(s)")
             else 
-                (WarewolfAtomAtomExpression(DataASTMutable.DataString lang), 
+                (WarewolfAtomExpression(DataASTMutable.DataString lang), 
                  "Variable name " + lang + " contains invalid character(s)")
-    else (WarewolfAtomAtomExpression(parseAtom lang), "")
+    else (WarewolfAtomExpression(parseAtom lang), "")
 
 and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] checkForInvalidVariables (lang : LanguageExpression list) = 
     let updateLanguageExpression (a : LanguageExpression) = 
         match a with
-        | RecordSetExpression _ -> WarewolfAtomAtomExpression(DataASTMutable.DataString "")
-        | RecordSetNameExpression _ -> WarewolfAtomAtomExpression(DataASTMutable.DataString "")
-        | ScalarExpression _ -> WarewolfAtomAtomExpression(DataASTMutable.DataString "")
+        | RecordSetExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
+        | RecordSetNameExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
+        | ScalarExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
         | ComplexExpression _ -> a
-        | WarewolfAtomAtomExpression _ -> a
-        | JsonIdentifierExpression _ -> WarewolfAtomAtomExpression(DataASTMutable.DataString "")
+        | WarewolfAtomExpression _ -> a
+        | JsonIdentifierExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
     
     let data = 
         List.map (languageExpressionToString << updateLanguageExpression) lang |> fun a -> System.String.Join("", a)
@@ -92,7 +111,7 @@ and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] checkForIn
             | (ComplexExpression _, _) when data.StartsWith "[[" && data.EndsWith("]]") -> 
                 (ComplexExpression lang, "invalid variable name")
             | (ComplexExpression _, _) -> parsed
-            | (WarewolfAtomAtomExpression _, _) -> parsed
+            | (WarewolfAtomExpression _, _) -> parsed
             | (JsonIdentifierExpression _, _) -> failwith "Obsolete"
         res
 
@@ -114,7 +133,7 @@ and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] validateRe
         | RecordSetNameExpression _ -> ""
         | ScalarExpression _ -> ""
         | ComplexExpression _ -> parseLanguageExpressionAndValidate (languageExpressionToString a) |> snd
-        | WarewolfAtomAtomExpression _ -> 
+        | WarewolfAtomExpression _ -> 
             "Recordset index (" + languageExpressionToString a + ") contains invalid character(s)"
         | JsonIdentifierExpression _ -> failwith "obsolete"
     | _ -> ""
@@ -151,14 +170,14 @@ and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineExp
     | ScalarExpression a -> combineScalar a
     | RecordSetExpression b -> combineRecset b level variables startAtzero
     | RecordSetNameExpression c -> combineRecsetName c level variables
-    | WarewolfAtomAtomExpression _ -> List.empty
+    | WarewolfAtomExpression _ -> List.empty
     | ComplexExpression _ -> List.empty // cant have complex expressions in intellisense because the variable list is made up of simple expressions
     | JsonIdentifierExpression _ -> List.empty
 
 and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineScalar (a : ScalarIdentifier) = 
     [ ScalarExpression a |> languageExpressionToString ]
 
-and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineRecset (a : RecordSetIdentifier) 
+and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineRecset (a : RecordSetColumnIdentifier) 
                                                                       (level : int) 
                                                                       (variables : LanguageExpression list) 
                                                                       (startAtzero : bool) = 
@@ -189,7 +208,7 @@ and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineInd
     "*" :: "" :: combined
 
 and [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>] combineIndexAtZero (_ : int) 
-                                                                      (_ : RecordSetIdentifier) = "*" :: [ "" ]
+                                                                      (_ : RecordSetColumnIdentifier) = "*" :: [ "" ]
 
 [<Obsolete("Deprecated Usewolf 1601 ")>]
 [<ExcludeFromCodeCoverage>]
@@ -198,7 +217,7 @@ let rec processLanguageExpressionList (lst : LanguageExpression list) (acc : str
     match lst with
     | h :: t -> 
         match h with
-        | WarewolfAtomAtomExpression _ -> processLanguageExpressionList t (acc + replacement) "" caretPosition
+        | WarewolfAtomExpression _ -> processLanguageExpressionList t (acc + replacement) "" caretPosition
         | _ -> 
             let exp = WarewolfDataEvaluationCommon.languageExpressionToString h
             processLanguageExpressionList t (acc + exp) replacement caretPosition
@@ -259,9 +278,9 @@ let rec doReplace (text : string) (caretPosition : int) (replacement : string) =
                     (doReplace (languageExpressionToString b.[caret]) (getCaretPositionInString a caretPosition "" 0 0) 
                          replacement)
             | _ -> replacement
-        b.[caret] <- (LanguageAST.WarewolfAtomAtomExpression(DataASTMutable.DataString(str + rep + app)))
+        b.[caret] <- (LanguageAST.WarewolfAtomExpression(DataASTMutable.DataString(str + rep + app)))
         if caret > 0 && (languageExpressionToString b.[caret - 1]) = "[[" then 
-            b.[caret - 1] <- (LanguageAST.WarewolfAtomAtomExpression(DataASTMutable.DataString("")))
+            b.[caret - 1] <- (LanguageAST.WarewolfAtomExpression(DataASTMutable.DataString("")))
         let x = Array.map languageExpressionToString b |> fun ax -> System.String.Join("", ax)
         
         let cx = 
@@ -270,7 +289,7 @@ let rec doReplace (text : string) (caretPosition : int) (replacement : string) =
             |> Array.map languageExpressionToString
             |> fun ax -> System.String.Join("", ax)
         (x, cx.Length)
-    | WarewolfAtomAtomExpression _ -> 
+    | WarewolfAtomExpression _ -> 
         let b = (languageExpressionToString parsed)
         let first = b.Substring(0, caretPosition)
         let last = b.Substring(caretPosition)

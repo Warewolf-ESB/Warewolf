@@ -207,7 +207,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 34 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                              WarewolfAtomAtomExpression _1
+                              WarewolfAtomExpression _1
                    )
 # 34 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -224,7 +224,7 @@ let _fsyacc_reductions ()  =    [|
                  : LanguageAST.LanguageExpression));
 # 225 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.RecordSetIdentifier)) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.RecordSetColumnIdentifier)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
@@ -272,7 +272,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 40 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                      WarewolfAtomAtomExpression (DataString "[[")
+                                      WarewolfAtomExpression (DataString "[[")
                    )
 # 40 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -282,7 +282,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 41 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                       WarewolfAtomAtomExpression (DataString "]]")
+                                       WarewolfAtomExpression (DataString "]]")
                    )
 # 41 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -292,7 +292,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 42 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                     WarewolfAtomAtomExpression (DataString "(")
+                                     WarewolfAtomExpression (DataString "(")
                    )
 # 42 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -302,7 +302,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 43 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                                       WarewolfAtomAtomExpression (DataString ")")
+                                       WarewolfAtomExpression (DataString ")")
                    )
 # 43 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -312,7 +312,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 44 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                              WarewolfAtomAtomExpression (DataString "*")
+                              WarewolfAtomExpression (DataString "*")
                    )
 # 44 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -322,7 +322,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 45 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                             WarewolfAtomAtomExpression (DataString ".")
+                             WarewolfAtomExpression (DataString ".")
                    )
 # 45 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : LanguageAST.LanguageExpression));
@@ -351,7 +351,7 @@ let _fsyacc_reductions ()  =    [|
                  : 'variableExpression));
 # 352 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.RecordSetIdentifier)) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : LanguageAST.RecordSetColumnIdentifier)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
@@ -377,7 +377,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 51 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                              [WarewolfAtomAtomExpression _1]
+                              [WarewolfAtomExpression _1]
                    )
 # 51 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'variableExpression));
@@ -393,7 +393,7 @@ let _fsyacc_reductions ()  =    [|
                                                                                                           {Name = _2; Column = _7; Index =tryParseIndex(_4) ;}
                    )
 # 53 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : LanguageAST.RecordSetIdentifier));
+                 : LanguageAST.RecordSetColumnIdentifier));
 # 397 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -405,7 +405,7 @@ let _fsyacc_reductions ()  =    [|
                                                                                                       {Name = _2; Column = _7; Index =Star ;}
                    )
 # 54 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : LanguageAST.RecordSetIdentifier));
+                 : LanguageAST.RecordSetColumnIdentifier));
 # 409 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -417,7 +417,7 @@ let _fsyacc_reductions ()  =    [|
                                                                                                     {Name = _2; Column = _6; Index =Last ;}
                    )
 # 55 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : LanguageAST.RecordSetIdentifier));
+                 : LanguageAST.RecordSetColumnIdentifier));
 # 421 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -430,7 +430,7 @@ let _fsyacc_reductions ()  =    [|
                                                                                                                 {Name = _2; Column = _7; Index = IndexExpression _4 ;}
                    )
 # 56 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : LanguageAST.RecordSetIdentifier));
+                 : LanguageAST.RecordSetColumnIdentifier));
 # 434 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -651,7 +651,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 83 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                             IndexExpression ( WarewolfAtomAtomExpression ( tryParseAtom _1))
+                             IndexExpression ( WarewolfAtomExpression ( tryParseAtom _1))
                    )
 # 83 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
                  : 'intindex));

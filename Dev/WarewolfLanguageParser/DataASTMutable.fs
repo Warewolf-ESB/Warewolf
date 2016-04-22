@@ -14,12 +14,14 @@ let GetDecimalPlaces(decimalNumber : float) =
             decimalPlaces <- decimalPlaces + 1
     decimalPlaces
 
+/// Performance enhancements
 [<ExcludeFromCodeCoverage>]
 type WarewolfAttribute = 
     | Ordinal
     | Sorted
     | Fragmented
 
+/// basic atomic types supported by warewolf
 [<CustomEquality; CustomComparison>]
 type WarewolfAtom = 
     | Float of float
@@ -61,12 +63,17 @@ type WarewolfAtom =
                 | (a, b) -> (a.ToString()).CompareTo(b.ToString())
             | a -> x.ToString().CompareTo(a.ToString())
 
+/// Atom Alias. Actually has no real purpose other than supporting a possible future divergance between scalars and recordset types 
 type WarewolfAtomRecord = WarewolfAtom
 
+/// Recordset Column
 type WarewolfColumnData = WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>
 
+///Name of a Column
 type WarewolfColumnHeader = string
 
+/// A Recordset is a dictionary od strings to lists of attoms
+/// Last index is maintained as well as the count
 [<ExcludeFromCodeCoverage>]
 type WarewolfRecordset = 
     { Data : Map<WarewolfColumnHeader, WarewolfColumnData>
@@ -76,12 +83,14 @@ type WarewolfRecordset =
     member this.PositionColumn = this.Data.[PositionColumn]
     member this.Count = this.PositionColumn.Count
 
+///An Environment is a dictionary of recordsets, a dictionary of scalars and a dictionary of json objects
 [<ExcludeFromCodeCoverage>]
 type WarewolfEnvironment = 
     { RecordSets : Map<string, WarewolfRecordset>
       Scalar : Map<string, WarewolfAtom>
       JsonObjects : Map<string, Newtonsoft.Json.Linq.JContainer> }
 
+///Parse atom from string. Order of precedence is int then float then string
 let rec tryParseAtom (data : string) = 
     let mutable value = 0
     if data = "0" then Int(0)
@@ -91,6 +100,7 @@ let rec tryParseAtom (data : string) =
         if success then Int value
         else tryFloatParseAtom data
 
+///Parse a float. 
 and tryFloatParseAtom (data : string) = 
     let mutable value = 0.0m
     let mutable valuse = 0.0
@@ -102,7 +112,7 @@ and tryFloatParseAtom (data : string) =
             else Float(System.Convert.ToDouble(value))
         else DataString data
     else DataString data
-
+/// Comparison between atoms
 let CompareAtoms (x : WarewolfAtom) (y : WarewolfAtom) = 
     match (x, y) with
     | (Nothing, DataString b) when System.String.IsNullOrEmpty(b) -> 0
@@ -119,3 +129,4 @@ let CompareAtoms (x : WarewolfAtom) (y : WarewolfAtom) =
     | (Nothing, Nothing) -> 0
     | (Nothing, _) -> -1
     | (a, b) -> (a.ToString()).CompareTo(b.ToString())
+

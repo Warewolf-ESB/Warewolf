@@ -20,7 +20,7 @@
 %start start   
 %type <LanguageAST.LanguageExpression> start  
 %type <LanguageAST.LanguageExpression> langExpression   
-%type <LanguageAST.RecordSetIdentifier> recset 
+%type <LanguageAST.RecordSetColumnIdentifier> recset 
 %type <DataASTMutable.WarewolfAtom> atom   
 %type <LanguageAST.ScalarIdentifier> scalar
 
@@ -31,24 +31,24 @@
 start: langExpression	{$1}
 
 langExpression : 
-	| atom {WarewolfAtomAtomExpression $1}
+	| atom {WarewolfAtomExpression $1}
 	| scalar {  ScalarExpression $1 }	
 	| recset { RecordSetExpression $1 }
 	| recsetName { RecordSetNameExpression $1 }
 	| variableExpression { ComplexExpression $1 }
 	| jsonIdentifierExpression { JsonIdentifierExpression $1 }
-	| OPENLANGUAGE {WarewolfAtomAtomExpression (DataString "[[")}
-	| CLOSELANGAUGE {WarewolfAtomAtomExpression (DataString "]]")}
-	| OPENBRACKET {WarewolfAtomAtomExpression (DataString "(")}
-	| CLOSEDBRACKET {WarewolfAtomAtomExpression (DataString ")")}
-	| STAR {WarewolfAtomAtomExpression (DataString "*")}
-	| DOT {WarewolfAtomAtomExpression (DataString ".")}
+	| OPENLANGUAGE {WarewolfAtomExpression (DataString "[[")}
+	| CLOSELANGAUGE {WarewolfAtomExpression (DataString "]]")}
+	| OPENBRACKET {WarewolfAtomExpression (DataString "(")}
+	| CLOSEDBRACKET {WarewolfAtomExpression (DataString ")")}
+	| STAR {WarewolfAtomExpression (DataString "*")}
+	| DOT {WarewolfAtomExpression (DataString ".")}
 variableExpression 	:
 	| langExpression  variableExpression   {   $1::$2}
 	| scalar {  [ScalarExpression $1] }	
 	| recset { [RecordSetExpression $1] }
 	| EOF {[]}
-	| atom {[WarewolfAtomAtomExpression $1]}
+	| atom {[WarewolfAtomExpression $1]}
 recset : 
     |OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =tryParseIndex($4) ;}}
 	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = $2; Column = $7; Index =Star ;}}
@@ -80,7 +80,7 @@ recsetName :
 index :
 	| INT {IntIndex ( System.Int32.Parse (  $1))}
 intindex :
-	| INT {IndexExpression ( WarewolfAtomAtomExpression ( tryParseAtom $1))}
+	| INT {IndexExpression ( WarewolfAtomExpression ( tryParseAtom $1))}
 scalar : 
 	|OPENLANGUAGE VARNAME CLOSELANGAUGE {$2}
 atom : 

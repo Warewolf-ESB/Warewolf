@@ -4,6 +4,7 @@ open LanguageAST
 open DataASTMutable
 open WarewolfDataEvaluationCommon
 
+/// sort a recordset. its a bit of a weird function but corresponds to the tool
 let rec sortRecst (recset : WarewolfRecordset) (colName : string) (desc : bool) = 
     let data = recset.Data.[colName]
     let positions = [ 0..recset.Data.[PositionColumn].Count - 1 ]
@@ -22,7 +23,7 @@ let rec sortRecst (recset : WarewolfRecordset) (colName : string) (desc : bool) 
     { recset with Data = data
                   Optimisations = Ordinal
                   LastIndex = positions.Length }
-
+/// after you get a set of sorted indexes then apply the indexes to a recset. ensures the sort is stable
 and applyIndexes (data : WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (indexes : int []) (name : string) = 
     let newdata = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>(WarewolfAtom.Nothing)
     if name = PositionColumn then 
@@ -33,7 +34,7 @@ and applyIndexes (data : WarewolfParserInterop.WarewolfAtomList<WarewolfAtom>) (
         for x in indexes do
             newdata.AddSomething data.[x]
         newdata
-
+///overall sort function
 and sortRecset (exp : string) (desc : bool) (update : int) (env : WarewolfEnvironment) = 
     let left = parseLanguageExpression exp update
     match left with

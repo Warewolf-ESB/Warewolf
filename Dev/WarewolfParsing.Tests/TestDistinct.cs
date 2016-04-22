@@ -28,6 +28,40 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Distinct_EvalDistinct")]
+        [ExpectedException(typeof(Exception))]
+        public void Distinct_EvalDistinct_MultipleRecsetsExpectSomethingBad()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]][[bec().a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
+
+            //------------Assert Results-------------------------
+            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[Bec(*).a]]"));
+            Assert.AreEqual(res, "1,2,3");
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Distinct_EvalDistinct")]
+        public void Distinct_EvalDistinct_HappyPath_ExpectDistinctResults_Expression()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec([[z]]).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
+
+            //------------Assert Results-------------------------
+            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[Bec(*).a]]"));
+            Assert.AreEqual(res, "1,2,3");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Distinct_EvalDistinct")]
         public void Distinct_EvalDistinct_HappyPath_Last_ExpectDistinctResults()
         {
             //------------Setup for test--------------------------
@@ -103,6 +137,7 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(4).b]]", "c", 0);
             env.Assign("[[x]]", "1", 0);
             env.Assign("[[y]]", "y", 0);
+            env.Assign("[[z]]", "*", 0);
             env.AssignJson(new AssignValue("[[Person.Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[Person.Age]]", "22"), 0);
             env.AssignJson(new AssignValue("[[Person.Spouse.Name]]", "dora"), 0);
