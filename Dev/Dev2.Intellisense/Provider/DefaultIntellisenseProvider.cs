@@ -47,7 +47,7 @@ namespace Dev2.Studio.InterfaceImplementors
             }
             else
             {
-                _trieSugggestionProvider = new Dev2TrieSugggestionProvider(0);
+                _trieSugggestionProvider = new Dev2TrieSugggestionProvider();
             }
             HandlesResultInsertion = true;
             IntellisenseProviderType = IntellisenseProviderType.Default;
