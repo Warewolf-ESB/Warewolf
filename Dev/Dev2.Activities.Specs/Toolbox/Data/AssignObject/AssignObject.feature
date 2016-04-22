@@ -420,23 +420,7 @@ Scenario: Assign the value of a negative json index
 	| 4 | [[rec(1).b]] = 2 |
 	| 5 | [[Result.a]] = 3 |  
 
-	Scenario: Evaluating recursive variable in a group calculation
-	Given I assign the value 1 to a variable "[[a.b]]"
-	And I assign the value "a" to a variable "[[b.a]]"
-	And I assign the value "=SUM(1,1)" to a variable "[[Result.a]]"
-	When the assign object tool is executed
-	Then the value of "[[Result.a]]" equals "2"
-	And the execution has "NO" error
-	And the debug inputs as
-	| # | Variable       | New Value |
-	| 1 | [[a.b]]    =   | 1         |
-	| 2 | [[b.a]]    =   | a         |
-	| 3 | [[Result.a]] = | =SUM(1,1) |  
-	And the debug output as
-	| # |                        |
-	| 1 | [[a.b]]     =        1 |
-	| 2 | [[b.a]]     =        a |
-	| 3 | [[Result.a]]     =  2  |  
+	 
 
 	Scenario: Evaluating recursive recordset variable in a group calculation
 	Given I assign the value 1 to a variable "[[rec(1).a]]"
