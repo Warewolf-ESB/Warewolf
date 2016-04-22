@@ -7,7 +7,7 @@ module IntellisenseStringProvider
 open LanguageAST
 //open LanguageEval
 open CommonFunctions
-open WarewolfDataEvaluationCommon
+open EvaluationFunctions
 open Microsoft.FSharp.Text.Lexing
 open System
 open System.Diagnostics.CodeAnalysis
@@ -61,25 +61,25 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
                 let startswithNum, _ = System.Int32.TryParse(lang.[2].ToString())
                 match startswithNum with
                 | true -> 
-                    (WarewolfAtomExpression(DataASTMutable.DataString lang), 
+                    (WarewolfAtomExpression(DataStorage.DataString lang), 
                      "Variable name " + lang + " begins with a number")
                 | false -> 
-                    (WarewolfAtomExpression(DataASTMutable.DataString lang), 
+                    (WarewolfAtomExpression(DataStorage.DataString lang), 
                      "Variable name " + lang + " contains invalid character(s)")
             else 
-                (WarewolfAtomExpression(DataASTMutable.DataString lang), 
+                (WarewolfAtomExpression(DataStorage.DataString lang), 
                  "Variable name " + lang + " contains invalid character(s)")
     else (WarewolfAtomExpression(parseAtom lang), "")
 
 and checkForInvalidVariables (lang : LanguageExpression list) = 
     let updateLanguageExpression (a : LanguageExpression) = 
         match a with
-        | RecordSetExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
-        | RecordSetNameExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
-        | ScalarExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
+        | RecordSetExpression _ -> WarewolfAtomExpression(DataStorage.DataString "")
+        | RecordSetNameExpression _ -> WarewolfAtomExpression(DataStorage.DataString "")
+        | ScalarExpression _ -> WarewolfAtomExpression(DataStorage.DataString "")
         | ComplexExpression _ -> a
         | WarewolfAtomExpression _ -> a
-        | JsonIdentifierExpression _ -> WarewolfAtomExpression(DataASTMutable.DataString "")
+        | JsonIdentifierExpression _ -> WarewolfAtomExpression(DataStorage.DataString "")
     
     let data = 
         List.map (languageExpressionToString << updateLanguageExpression) lang |> fun a -> System.String.Join("", a)
@@ -139,7 +139,7 @@ let rec takeNonAlphabets (a : string) (acc : string) =
 let rec getCaretPosition (lst : LanguageExpression list) (caretPosition : int) (acc : string) (i : int) = 
     match lst with
     | h :: t -> 
-        let exp = acc + WarewolfDataEvaluationCommon.languageExpressionToString h
+        let exp = acc + EvaluationFunctions.languageExpressionToString h
         if exp.Length >= caretPosition then i
         else getCaretPosition t caretPosition exp (i + 1)
     | [] -> i
@@ -148,15 +148,15 @@ let rec getCaretPositionInString (lst : LanguageExpression list) (caretPosition 
         (currenti : int) = 
     match lst with
     | h :: t -> 
-        let exp = acc + WarewolfDataEvaluationCommon.languageExpressionToString h
+        let exp = acc + EvaluationFunctions.languageExpressionToString h
         if exp.Length >= caretPosition then caretPosition - currenti
         else 
             getCaretPositionInString t caretPosition exp (i + 1) 
-                (currenti + (WarewolfDataEvaluationCommon.languageExpressionToString h).Length)
+                (currenti + (EvaluationFunctions.languageExpressionToString h).Length)
     | [] -> i
 
 let rec doReplace (text : string) (caretPosition : int) (replacement : string) = 
-    let parsed = WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate text
+    let parsed = EvaluationFunctions.parseLanguageExpressionWithoutUpdate text
     match parsed with
     | ComplexExpression a -> 
         let caret = getCaretPosition a caretPosition "" 0
@@ -176,9 +176,9 @@ let rec doReplace (text : string) (caretPosition : int) (replacement : string) =
                     (doReplace (languageExpressionToString b.[caret]) (getCaretPositionInString a caretPosition "" 0 0) 
                          replacement)
             | _ -> replacement
-        b.[caret] <- (LanguageAST.WarewolfAtomExpression(DataASTMutable.DataString(str + rep + app)))
+        b.[caret] <- (LanguageAST.WarewolfAtomExpression(DataStorage.DataString(str + rep + app)))
         if caret > 0 && (languageExpressionToString b.[caret - 1]) = "[[" then 
-            b.[caret - 1] <- (LanguageAST.WarewolfAtomExpression(DataASTMutable.DataString("")))
+            b.[caret - 1] <- (LanguageAST.WarewolfAtomExpression(DataStorage.DataString("")))
         let x = Array.map languageExpressionToString b |> fun ax -> System.String.Join("", ax)
         
         let cx = 

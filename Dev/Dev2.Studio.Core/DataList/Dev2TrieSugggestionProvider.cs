@@ -30,7 +30,7 @@ namespace Dev2
 
                 PatriciaTrieScalars = new SuffixTrie<string>(1);
 #pragma warning disable 618
-                var vars = _variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsScalarExpression);
+                var vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsScalarExpression);
 #pragma warning restore 618
                 foreach (var @var in vars)
                 {
@@ -41,7 +41,7 @@ namespace Dev2
                     }
                 }
                 PatriciaTrieRecsets = new SuffixTrie<string>(1);
-                vars = _variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression);
+                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetNameExpression);
                 foreach (var @var in vars)
                 {
                     var currentVar = @var as LanguageAST.LanguageExpression.RecordSetNameExpression;
@@ -52,7 +52,7 @@ namespace Dev2
                     }
                 }
                 PatriciaTrieRecsetsFields = new SuffixTrie<string>(1);
-                vars = _variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression);
+                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsRecordSetExpression || a.IsRecordSetNameExpression);
                 foreach (var @var in vars)
                 {
                     var currentVar = @var as LanguageAST.LanguageExpression.RecordSetExpression;
@@ -68,7 +68,7 @@ namespace Dev2
                     }
                 }
                 PatriciaTrieJsonObjects = new SuffixTrie<string>(1);
-                vars = _variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a=>a.IsJsonIdentifierExpression);
+                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a).Where(a => a.IsJsonIdentifierExpression);
                 foreach (var @var in vars)
                 {
                     var jsonIdentifierExpression = @var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
@@ -77,7 +77,7 @@ namespace Dev2
                         AddJsonVariables(jsonIdentifierExpression.Item,null);
                     }
                 }
-                vars = _variableList.Select(a => WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0)).OrderBy(a => a);
+                vars = _variableList.Select(a => EvaluationFunctions.parseLanguageExpression(a, 0)).OrderBy(a => a);
                 foreach (var @var in vars)
                 {
                     var recordSetExpression = @var as LanguageAST.LanguageExpression.RecordSetExpression;
