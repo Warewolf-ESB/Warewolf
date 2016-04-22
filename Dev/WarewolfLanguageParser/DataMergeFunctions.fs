@@ -4,7 +4,7 @@ open LanguageAST
 open DataASTMutable
 open CommonFunctions
 open WarewolfDataEvaluationCommon
-
+//specialise eval for calculate. Its just eval with different meaning for *. can be merged into eval function at the expense of complexity for c# developers 
 let rec evalForDataMerge (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEvalResult list = 
     let EvalComplex(exp : LanguageExpression list) : WarewolfEvalResult list = 
         List.map (languageExpressionToString >> eval env update) exp
@@ -19,7 +19,7 @@ let rec evalForDataMerge (env : WarewolfEnvironment) (update : int) (lang : stri
     match buffer with
     | RecordSetExpression a -> [ WarewolfAtomListresult((evalRecordsSet a env)) ]
     | ScalarExpression a -> [ WarewolfAtomResult(evalScalar a env) ]
-    | WarewolfAtomAtomExpression a -> [ WarewolfAtomResult a ]
+    | WarewolfAtomExpression a -> [ WarewolfAtomResult a ]
     | RecordSetNameExpression x -> [ evalDataSetExpression env update x ]
     | ComplexExpression a -> (EvalComplex(List.filter (fun b -> "" <> (languageExpressionToString b)) a))
     | JsonIdentifierExpression a -> failwith "not sup[ported for json data"

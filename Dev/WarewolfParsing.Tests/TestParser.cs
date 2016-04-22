@@ -43,8 +43,8 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[1].IsScalarExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[2].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[2].IsWarewolfAtomExpression);
             }
             else
             {
@@ -67,10 +67,10 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[2].IsScalarExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[1].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[3].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[4].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[1].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[3].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[4].IsWarewolfAtomExpression);
             }
             else
             {
@@ -93,10 +93,10 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[2].IsRecordSetExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[1].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[3].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[4].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[1].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[3].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[4].IsWarewolfAtomExpression);
 
                 var x = data[2] as LanguageAST.LanguageExpression.RecordSetExpression;
                 Assert.IsNotNull(x);
@@ -594,6 +594,54 @@ namespace WarewolfParsingTest
             Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
 
         }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_FramedAssign_List_IndexExpression()
+        {
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[a]]", "1"),
+
+             };
+            var env = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var envx = PublicFunctions.EvalMultiAssign(assigns, 0, env);
+             envx = AssignEvaluation.evalMultiAssignList(envx, new List<DataASTMutable.WarewolfAtom> { DataASTMutable.WarewolfAtom.NewInt(1), DataASTMutable.WarewolfAtom.NewInt(2) }, "[[bec([[a]]).a]]", 0, true);
+
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_With_LastOnOneSideList()
+        {
+
+
+
+            var env = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var envx = AssignEvaluation.evalMultiAssignList(env, new List<DataASTMutable.WarewolfAtom> { DataASTMutable.WarewolfAtom.NewInt(1), DataASTMutable.WarewolfAtom.NewInt(2) }, "[[bec().a]]", 0, true);
+
+
+            var recordSet = envx.RecordSets["bec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 2);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -1108,6 +1156,103 @@ namespace WarewolfParsingTest
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_Scalar()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+
+
+
+            env.EvalDelete("[[a]]", 0);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Exp()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "3"), 0);
+
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+            Assert.AreEqual(items.Count,2);
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_Exp_fail()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "a"), 0);
+
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+            Assert.AreEqual(items.Count, 2);
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+    [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_NonExistent()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+
+
+
+            env.EvalDelete("[[fec(3)]]", 0);
+
+
+        }
 
 
         [TestMethod]

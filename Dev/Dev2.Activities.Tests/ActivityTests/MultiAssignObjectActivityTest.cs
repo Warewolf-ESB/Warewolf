@@ -10,6 +10,7 @@
 
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.ObjectModel;
@@ -30,8 +31,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "somevalue", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -52,8 +53,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithSpecialCharsInValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "somevalue@#", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue@#", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -74,9 +75,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithNewValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "somevalue1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "somevalue2", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue2", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -97,11 +98,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithMultipleValues()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "somevalue1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value2]]", "somevalue2", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value3]]", "somevalue3", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value4]]", "somevalue4", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "somevalue1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value2]]", "somevalue2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value3]]", "somevalue3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value4]]", "somevalue4", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -128,8 +129,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithAnEmptyField()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value]]", "", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value]]", "", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -150,8 +151,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MutiAssignObjectInvalidJsonObjectLeft()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test..value]]", "testData", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test..value]]", "testData", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -168,8 +169,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MutiAssignObjectInvalidJsonObjectRight()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "[[test..value2]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "[[test..value2]]", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -186,8 +187,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithValue4LayersDeap()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1.value2.value3.value4]]", "somevalue", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1.value2.value3.value4]]", "somevalue", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -208,8 +209,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithCalculatedValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", GlobalConstants.CalculateTextConvertPrefix + "SUM(1,2,3) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", GlobalConstants.CalculateTextConvertPrefix + "SUM(1,2,3) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -230,12 +231,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithCalculatedValueFromJson()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value1]]", "1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value2]]", "2", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value3]]", "3", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
-                "SUM([[test.value1]], [[test.value2]], [[test.value3]]) + 1" + 
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value1]]", "1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value2]]", "2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value3]]", "3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
+                "SUM([[test.value1]], [[test.value2]], [[test.value3]]) + 1" +
                 GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
@@ -257,11 +258,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectArrayWithMultipleValues()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value(1)]]", "somevalue1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value(2)]]", "somevalue2", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value(3)]]", "somevalue3", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value(4)]]", "somevalue4", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value(1)]]", "somevalue1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value(2)]]", "somevalue2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value(3)]]", "somevalue3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value(4)]]", "somevalue4", fieldCollection.Count));
 
             SetupArguments(
                            ActivityStrings.scalarShape
@@ -288,11 +289,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
         public void MultiAssignObjectWithCalculatedValueFromJsonArray()
         {
-            var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[test.value(1)]]", "1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value(2)]]", "2", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.value(3)]]", "3", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[test.value(1)]]", "1", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value(2)]]", "2", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.value(3)]]", "3", fieldCollection.Count));
+            fieldCollection.Add(new AssignObjectDTO("[[test.total1]]", GlobalConstants.CalculateTextConvertPrefix +
                 "SUM([[test.value(*)]]) + 1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
@@ -313,7 +314,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
+        private void SetupArguments(string currentDL, string testData, ObservableCollection<AssignObjectDTO> fieldCollection, string outputMapping = null)
         {
             if (outputMapping == null)
             {

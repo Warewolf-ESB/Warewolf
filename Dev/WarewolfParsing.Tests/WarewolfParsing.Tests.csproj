@@ -80,6 +80,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssignJsonTests.cs" />
+    <Compile Include="TestPublicFunctions.cs" />
     <Compile Include="TestUpdate.cs" />
   </ItemGroup>
   <ItemGroup>

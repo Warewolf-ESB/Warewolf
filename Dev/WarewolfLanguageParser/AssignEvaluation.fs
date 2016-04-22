@@ -31,13 +31,13 @@ let addToJsonObjects (env : WarewolfEnvironment) (name : string) (value : JConta
 
 let rec addOrReturnJsonObjects (env : WarewolfEnvironment) (name : string) (value : JContainer) = 
     match env.JsonObjects.TryFind name with
-    | Some a -> env
+    | Some _ -> env
     | _ -> addToJsonObjects env name value
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     evalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp, value)) update env
 
-and addToRecordSetFramed (env : WarewolfEnvironment) (name : RecordSetIdentifier) (value : WarewolfAtom) = 
+and addToRecordSetFramed (env : WarewolfEnvironment) (name : RecordSetColumnIdentifier) (value : WarewolfAtom) = 
     if (env.RecordSets.ContainsKey name.Name) then 
         let recordset = env.RecordSets.[name.Name]
         
@@ -60,7 +60,7 @@ and addToRecordSetFramed (env : WarewolfEnvironment) (name : RecordSetIdentifier
         let envwithRecset = addRecsetToEnv name.Name env
         addToRecordSetFramed envwithRecset name value
 
-and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordSetIdentifier) (value : WarewolfAtom seq) 
+and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordSetColumnIdentifier) (value : WarewolfAtom seq) 
     (shouldUseLast : bool) (update : int) (assignValue : IAssignValue option) = 
     if (env.RecordSets.ContainsKey name.Name) then 
         let data = env.RecordSets.[name.Name]
@@ -93,6 +93,8 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
                                              false
                         index <- index + 1
                     recsetmutated
+            //!!!!!!!!!!!!!!!!!Note the calling method handles Star and everything els uses the first index. 
+            // If this is incorrect then uncomment the lines below.
             | Last -> 
                 let mutable recsetmutated = recordset
                 let mutable index = recordset.LastIndex + 1
@@ -100,21 +102,21 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
                     recsetmutated <- addAtomToRecordSetWithFraming recordset name.Column a index false
                     index <- index + 1
                 recsetmutated
-            | IndexExpression b -> 
-                let res = eval env update (languageExpressionToString b) |> evalResultToString
-                match b, assignValue with
-                | WarewolfAtomAtomExpression atom, _ -> 
-                    match atom with
-                    | Int a -> addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
-                    | _ -> failwith "Invalid index"
-                | _, Some av -> 
-                    let data : WarewolfEnvironment = 
-                        (evalAssignWithFrame 
-                             (new WarewolfParserInterop.AssignValue((sprintf " // added 0 here!
-                                                                               [[%s(%s).%s]]" name.Name res name.Column), 
-                                                                    av.Value)) update env)
-                    data.RecordSets.[name.Name]
-                | _, _ -> failwith "Invalid assign from list"
+            | IndexExpression _ -> failwith "Invalid assign from list" // logic below does not make sense. removed it. If there is a use case then add it back it. 
+//                let res = eval env update (languageExpressionToString b) |> evalResultToString
+//                match b, assignValue with
+//                | WarewolfAtomExpression atom, _ -> 
+//                    match atom with
+//                    | Int a -> addAtomToRecordSetWithFraming recordset name.Column (Seq.last value) a false
+//                    | _ -> failwith "Invalid index"
+//                | _, Some av -> 
+//                    let data : WarewolfEnvironment = 
+//                        (evalAssignWithFrame 
+//                             (new WarewolfParserInterop.AssignValue((sprintf " // added 0 here!
+//                                                                               [[%s(%s).%s]]" name.Name res name.Column), 
+//                                                                    av.Value)) update env)
+//                    data.RecordSets.[name.Name]
+//                | _, _ -> failwith "Invalid assign from list"
         
         let recsets = Map.remove name.Name env.RecordSets |> fun a -> Map.add name.Name recsetAdded a
         { env with RecordSets = recsets }
@@ -123,8 +125,7 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
         addToRecordSetFramedWithAtomList envwithRecset name value shouldUseLast update assignValue
 
 and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
-    let l = WarewolfDataEvaluationCommon.parseLanguageExpression value.Name update
-    
+    let l = WarewolfDataEvaluationCommon.parseLanguageExpression value.Name update    
     let left = 
         match l with
         | ComplexExpression a -> 
@@ -134,17 +135,14 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                    | RecordSetExpression _ -> true
                    | _ -> false) a
             then l
-            else LanguageExpression.WarewolfAtomAtomExpression(languageExpressionToString l |> DataString)
-        | _ -> l
-    
+            else LanguageExpression.WarewolfAtomExpression(languageExpressionToString l |> DataString)
+        | _ -> l    
     let rightParse = 
-        if value.Value = null then LanguageExpression.WarewolfAtomAtomExpression Nothing
-        else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value update
-    
+        if value.Value = null then LanguageExpression.WarewolfAtomExpression Nothing
+        else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value update    
     let right = 
         if value.Value = null then WarewolfAtomResult Nothing
-        else WarewolfDataEvaluationCommon.eval env update value.Value
-    
+        else WarewolfDataEvaluationCommon.eval env update value.Value    
     let shouldUseLast = 
         match rightParse with
         | RecordSetExpression a -> 
@@ -160,7 +158,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
         match left with
         | ScalarExpression a -> addToScalars env a x
         | RecordSetExpression b -> addToRecordSetFramed env b x
-        | WarewolfAtomAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
+        | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to%s" value.Name)
         | _ -> 
             let expression = (evalToExpression env update value.Name)
             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
@@ -178,7 +176,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
                     raise 
                         (new Dev2.Common.Common.NullValueInVariableException("The expression result is  null", 
                                                                              value.Value))
-        | WarewolfAtomAtomExpression _ -> failwith "invalid variabe assigned to"
+        | WarewolfAtomExpression _ -> failwith "invalid variable assigned to"
         | _ -> 
             let expression = (evalToExpression env update value.Name)
             if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
@@ -301,7 +299,7 @@ and evalDataShape (exp : string) (update : int) (env : WarewolfEnvironment) =
                                         (createEmpty data.Data.[PositionColumn].Length data.Data.[PositionColumn].Count) 
                                         data.Data }
             replaceDataset env recordset name.Name
-    | WarewolfAtomAtomExpression _ -> env
+    | WarewolfAtomExpression _ -> env
     | _ -> failwith "input must be recordset or value"
 
 and replaceDataset (env : WarewolfEnvironment) (data : WarewolfRecordset) (name : string) = 
@@ -373,14 +371,25 @@ let addValueToJArray (arr : JArray) (ind : int) (value : JToken) =
             arr.Add(null)
         arr.[index] <- value
         (arr.[index], arr)
-    else (arr.[index], arr)
+    else arr.[index] <- value 
+         (arr.[index], arr)
+
+let addOrGetValueFromJArray (arr : JArray) (ind : int) (value : JToken) = 
+    let index = ind - 1
+    if (ind > arr.Count) then 
+        let x = arr.Count
+        for _ in x..ind - 1 do
+            arr.Add(null)
+        arr.[index] <- value
+        arr.[index]
+    else arr.[index]  
 
 let indexToInt (a : Index) (arr : JArray) = 
     match a with
     | IntIndex a -> [ a ]
     | Last -> [ arr.Count + 1 ]
     | Star -> [ 1..arr.Count ]
-    | _ -> failwith "I'll be back"
+    | _ -> failwith "invalid index"
 
 let addPropertyToJsonNoValue (obj : Newtonsoft.Json.Linq.JObject) (name : string) = 
     let props = obj.Properties()
@@ -434,7 +443,7 @@ and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalRes
         let asJObj = toJOArray obj
         match b.Index with
         | IntIndex a -> 
-            let objToFill = new JObject()
+            let objToFill = addOrGetValueFromJArray (obj:?> JArray) a (new JObject())
             let subObj = expressionToObject (objToFill) b.Next res
             addValueToJArray asJObj a objToFill |> ignore
         | Last -> 
@@ -477,7 +486,7 @@ let languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
     match a with
     | ScalarExpression _ -> failwith "unspecified error"
     | ComplexExpression _ -> failwith "unspecified error"
-    | WarewolfAtomAtomExpression _ -> failwith "literal value on the left hand side of an assign"
+    | WarewolfAtomExpression _ -> failwith "literal value on the left hand side of an assign"
     | RecordSetNameExpression x -> 
         let next = Terminal
         { ObjectName = x.Name

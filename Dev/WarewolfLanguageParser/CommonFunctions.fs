@@ -23,7 +23,7 @@ let enQuote (atom : WarewolfAtom) =
 
 let isNotAtom (a : LanguageExpression) = 
     match a with
-    | WarewolfAtomAtomExpression _ -> false
+    | WarewolfAtomExpression _ -> false
     | _ -> true
 
 let getRecordSetPositionsAsInts (recset : WarewolfRecordset) = 
@@ -45,7 +45,7 @@ let parseAtom (lang : string) =
 [<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>]
 let IsAtomExpression(a : LanguageExpression) = 
     match a with
-    | WarewolfAtomAtomExpression _ -> true
+    | WarewolfAtomExpression _ -> true
     | _ -> false
 
 let atomtoString (x : WarewolfAtom) = 
@@ -131,7 +131,7 @@ let getRecordSetIndexAsInt (recset : WarewolfRecordset) (position : int) =
             Seq.findIndex (fun a -> a = positionAsAtom) indexes
         with :? System.Collections.Generic.KeyNotFoundException as ex -> failwith ("row does not exist" + ex.Message)
 
-let evalRecordSetIndex (recset : WarewolfRecordset) (identifier : RecordSetIdentifier) (position : int) = 
+let evalRecordSetIndex (recset : WarewolfRecordset) (identifier : RecordSetColumnIdentifier) (position : int) = 
     let index = getRecordSetIndex recset position
     match index with
     | IndexFoundPosition a -> recset.Data.[identifier.Column].[a]
@@ -142,7 +142,7 @@ let LanguageExpressionToStringWithoutStuff(x : LanguageExpression) =
     match x with
     | RecordSetExpression _ -> ""
     | ScalarExpression _ -> ""
-    | WarewolfAtomAtomExpression a -> atomtoString a
+    | WarewolfAtomExpression a -> atomtoString a
     | ComplexExpression _ -> ""
     | RecordSetNameExpression _ -> ""
     | JsonIdentifierExpression _ -> ""
@@ -156,7 +156,7 @@ let isNotAtomAndNotcomplex (b : LanguageExpression list) (a : LanguageExpression
     let reserved = [ "[["; "]]" ] |> Set.ofList
     if not (Set.intersect set reserved |> Set.isEmpty) then 
         match a with
-        | WarewolfAtomAtomExpression _ -> false
+        | WarewolfAtomExpression _ -> false
         | _ -> true
     else false
 
@@ -164,3 +164,9 @@ let isNothing (a : WarewolfEvalResult) =
     match a with
     | WarewolfAtomResult a -> a = Nothing
     | _ -> false
+
+let getLastIndexFromRecordSet (exp:string)  (env:WarewolfEnvironment)  =
+    let rset = env.RecordSets.TryFind exp
+    match rset with 
+    | Some values -> values.LastIndex                    
+    | None->failwith "recordset does not exist"

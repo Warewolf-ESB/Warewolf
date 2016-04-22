@@ -412,6 +412,57 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix );
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_RecsetIndex()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec([[x]]).a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_Scalar_Complex()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[x]][[z]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(12)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EvalCalculate")]
+        public void EvalCalculate_recset_ComplexIndex()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[[[q]]]])" + GlobalConstants.CalculateTextConvertSuffix);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix);
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("EvalCalculate")]
@@ -582,6 +633,23 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "3");
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Eval")]
+        public void Eval_DataMergeRecSet_Name()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+
+
+            //------------Execute Test---------------------------
+            var res = DataMergeFunctions.evalForDataMerge(env, 0, "[[Rec()]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(CommonFunctions.evalResultToString(res.First()), "3,c");
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Eval")]
@@ -723,6 +791,9 @@ namespace WarewolfParsingTest
             env.Assign("[[Rec(3).b]]", "c", 0);
             env.Assign("[[x]]","1",0);
             env.Assign("[[y]]", "y", 0);
+            env.Assign("[[z]]", "2", 0);
+            env.Assign("[[q]]", "r", 0);
+            env.Assign("[[r]]", "1", 0);
             env.AssignJson(new AssignValue("[[Person.Name]]","bob"),0 );
             env.AssignJson(new AssignValue("[[Person.Age]]", "22"), 0);
             env.AssignJson(new AssignValue("[[Person.Spouse.Name]]", "dora"), 0);

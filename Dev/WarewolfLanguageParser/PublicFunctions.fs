@@ -8,28 +8,29 @@ open CommonFunctions
 open Delete
 
 let PositionColumn = "WarewolfPositionColumn"
-
+///Create a RecordSet
 let CreateDataSet(a : string) = 
     let col = new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing)
     { Data = [ (PositionColumn, col) ] |> Map.ofList
       Optimisations = Ordinal
       LastIndex = 0
       Frame = 0 }
-
+///Create an Environment
 let CreateEnv(vals : string) = 
     { RecordSets = Map.empty
       Scalar = Map.empty
       JsonObjects = Map.empty }
-
+///Add a Recordset to an environment
 let AddRecsetToEnv (name : string) (env : WarewolfEnvironment) = 
     if env.RecordSets.ContainsKey name then env
     else 
         let b = CreateDataSet ""
         let a = { env with RecordSets = (Map.add name b env.RecordSets) }
         a
-
+///Evalutae an expression
 let EvalEnvExpression (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.eval env update exp
+///eval and return positions
 let EvalWithPositions (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.evalWithPositions env update exp
 
@@ -37,9 +38,9 @@ let innerConvert (i : int) (a : WarewolfAtom) =
     match a with
     | PositionedValue(a, b) -> new Dev2.Common.RecordSetSearchPayload(a, atomtoString b)
     | b -> new Dev2.Common.RecordSetSearchPayload(i, atomtoString b)
-
+///helper function. best move this to C#
 let AtomListToSearchTo(atoms : WarewolfAtom seq) = Seq.mapi innerConvert atoms
-
+///helper function. best move this to C#
 let RecordsetToSearchTo(recordset : WarewolfRecordset) = 
     let cols = recordset.Data
     let data = Seq.map atomToInt cols.[PositionColumn]
@@ -51,14 +52,19 @@ let RecordsetToSearchTo(recordset : WarewolfRecordset) =
 
 let EvalRecordSetIndexes (exp : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.eval env update exp
+
 let EvalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssign exp value update env
+
 let EvalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
     AssignEvaluation.evalMultiAssignOp env update value
+
 let EvalMultiAssign (values : IAssignValue seq) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalMultiAssign values update env
+
 let EvalAssignWithFrame (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssignWithFrame value update env
+
 let EvalAssignFromList (value : string) (data : WarewolfAtom seq) (env : WarewolfEnvironment) (update : int) 
     (shouldUseLast : bool) = AssignEvaluation.evalMultiAssignList env data value update shouldUseLast
 
@@ -67,22 +73,28 @@ let RemoveFraming(env : WarewolfEnvironment) =
     { env with RecordSets = recsets }
 
 let AtomtoString a = atomtoString a
+
 let GetIndexes (name : string) (update : int) (env : WarewolfEnvironment) = 
     WarewolfDataEvaluationCommon.evalIndexes env update name
+
 let EvalDelete (exp : string) (update : int) (env : WarewolfEnvironment) = Delete.evalDelete exp update env
+
 let SortRecset (exp : string) (desc : bool) (update : int) (env : WarewolfEnvironment) = 
     Sort.sortRecset exp desc update env
+
 let EvalWhere (exp : string) (env : WarewolfEnvironment) (update : int) (func : System.Func<WarewolfAtom, bool>) = 
     Where.evalWhere env exp update (fun a -> func.Invoke(a))
+
 let EvalUpdate (exp : string) (env : WarewolfEnvironment) (update : int) 
     (func : System.Func<WarewolfAtom, WarewolfAtom>) = UpdateInPlace.evalUpdate env exp update (fun a -> func.Invoke(a))
 //let EvalDistinct (exp:string list)  (env:WarewolfEnvironment)  = Where.EvalDistinct env exp
+
 let EvalDataShape (exp : string) (env : WarewolfEnvironment) = AssignEvaluation.evalDataShape exp 0 env
 
 let IsValidRecsetExpression(exp : string) = 
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
     match parsed with
-    | LanguageExpression.WarewolfAtomAtomExpression _ -> true
+    | LanguageExpression.WarewolfAtomExpression _ -> true
     | LanguageExpression.ComplexExpression _ -> true
     | ScalarExpression _ -> true
     | RecordSetExpression recset -> 
@@ -94,17 +106,14 @@ let IsValidRecsetExpression(exp : string) =
         | Star -> true
         | IndexExpression indexp -> 
             match indexp with
-            | WarewolfAtomAtomExpression atom -> 
-                let inval = atomToInt atom
-                if inval < 0 then false
-                else true
+
             | _ -> true
     | _ -> true
 
 let RecordsetExpressionExists (exp : string) (env : WarewolfEnvironment) = 
     let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
     match parsed with
-    | LanguageExpression.WarewolfAtomAtomExpression _ -> false
+    | LanguageExpression.WarewolfAtomExpression _ -> false
     | LanguageExpression.ComplexExpression _ -> false
     | ScalarExpression _ -> false
     | RecordSetExpression recset -> 

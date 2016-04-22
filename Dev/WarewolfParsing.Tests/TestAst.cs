@@ -19,6 +19,8 @@ namespace WarewolfParsingTest
             var e = DataASTMutable.WarewolfAtom.NewFloat(1.1) as IComparable;
             var f = DataASTMutable.WarewolfAtom.NewFloat(1.1) as IComparable;
             var g = DataASTMutable.WarewolfAtom.NewFloat(1) as IComparable;
+            var h = DataASTMutable.WarewolfAtom.NewPositionedValue(new Tuple<int, DataASTMutable.WarewolfAtom>(1,DataASTMutable.WarewolfAtom.NewDataString("1"))) as IComparable;
+            var i = DataASTMutable.WarewolfAtom.NewPositionedValue(new Tuple<int, DataASTMutable.WarewolfAtom>(1, DataASTMutable.WarewolfAtom.NewDataString("1"))) as IComparable;
             //------------Execute Test---------------------------
             Assert.IsTrue(0==a.CompareTo(b));
             Assert.IsTrue(0 == c.CompareTo(d));
@@ -28,10 +30,16 @@ namespace WarewolfParsingTest
             Assert.IsTrue(0 == a.CompareTo(c));
             Assert.IsTrue(0 == g.CompareTo(a));
             Assert.IsTrue(0 == (DataASTMutable.WarewolfAtom.Nothing as IComparable).CompareTo(DataASTMutable.WarewolfAtom.Nothing));
+            Assert.IsFalse(0 == (DataASTMutable.WarewolfAtom.Nothing as IComparable).CompareTo(c));
+
             Assert.IsTrue(0 == a.CompareTo(g));
             Assert.IsTrue(0 == c.CompareTo(g));
             Assert.IsTrue(0 == c.CompareTo(a));
+            Assert.IsTrue(0 == h.CompareTo(i));
             Assert.IsTrue(-1==(DataASTMutable.WarewolfAtom.Nothing as IComparable).CompareTo(1));
+            Assert.AreEqual(e.ToString(),"1.1");
+            Assert.AreEqual(h.ToString(), "1");
+            Assert.AreEqual(DataASTMutable.PositionColumn, "WarewolfPositionColumn");
             //------------Assert Results-------------------------
         }
 
