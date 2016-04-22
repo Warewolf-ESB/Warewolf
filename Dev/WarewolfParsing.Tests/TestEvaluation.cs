@@ -31,10 +31,10 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
+            var evalled = EvaluationFunctions.eval(added, 0, "[[bob]]");
             Assert.IsTrue(evalled.IsWarewolfAtomResult);
             var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
-            var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
+            var str = (res as DataStorage.WarewolfAtom.DataString).ToString();
             Assert.AreEqual(str,j.ToString());
         }
 
@@ -52,7 +52,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = CommonFunctions.evalResultToString( WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Name]]"));
+            var evalled = CommonFunctions.evalResultToString( EvaluationFunctions.eval(added, 0, "[[bob.Name]]"));
 
             Assert.AreEqual(evalled, "n");
         }
@@ -71,7 +71,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             Assert.AreEqual((added.JsonObjects["bob"] as JObject).GetValue("Name").ToString(), "n");
-            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Spouse.Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Spouse.Name]]"));
 
             Assert.AreEqual(evalled, "o");
         }
@@ -90,7 +90,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(1).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children(1).Name]]"));
 
             Assert.AreEqual(evalled, "p");
         }
@@ -111,7 +111,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*).Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children(*).Name]]"));
 
             Assert.AreEqual(evalled, "p,q");
         }
@@ -129,7 +129,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children(*)]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children(*)]]"));
             Assert.IsTrue(evalled.Contains(@"""Name"": ""p"""));
             Assert.IsTrue(evalled.Contains(@"""Name"": ""q"""));
 
@@ -149,7 +149,7 @@ namespace WarewolfParsingTest
             //------------Assert Results-------------------------
             Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
 
-            var evalled = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(added, 0, "[[bob.Children().Name]]"));
+            var evalled = CommonFunctions.evalResultToString(EvaluationFunctions.eval(added, 0, "[[bob.Children().Name]]"));
 
             Assert.AreEqual(evalled, "q");
         }
@@ -170,10 +170,10 @@ namespace WarewolfParsingTest
             ////------------Assert Results-------------------------
             //Assert.IsTrue(added.JsonObjects.ContainsKey("bob"));
             //Assert.AreEqual(added.JsonObjects["bob"].GetValue("Name").ToString(), "n");
-            //var evalled = WarewolfDataEvaluationCommon.eval(added, 0, "[[bob]]");
+            //var evalled = EvaluationFunctions.eval(added, 0, "[[bob]]");
             //Assert.IsTrue(evalled.IsWarewolfAtomResult);
             //var res = (evalled as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
-            //var str = (res as DataASTMutable.WarewolfAtom.DataString).ToString();
+            //var str = (res as DataStorage.WarewolfAtom.DataString).ToString();
             //Assert.AreEqual(str, j.ToString());
         }
 
@@ -408,7 +408,7 @@ namespace WarewolfParsingTest
 
             
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[x]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[x]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res),GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix );
         }
@@ -424,7 +424,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec([[x]]).a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec([[x]]).a]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -441,7 +441,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[x]][[z]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[x]][[z]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(12)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -458,7 +458,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[[[q]]]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[[[q]]]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -474,7 +474,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec().a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec().a]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(3)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -489,7 +489,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(1).a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(1).a]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -504,7 +504,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1,2,3)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -520,7 +520,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]][[x]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec(*).a]][[x]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(1,2,31)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -536,7 +536,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Age]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Age]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"22\")" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -552,7 +552,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(1)]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(1)]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\")" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -568,7 +568,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(*)]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Person.Score(*)]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(\"2\",\"3\")" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -584,7 +584,7 @@ namespace WarewolfParsingTest
 
 
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( 1 2 3)" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( 1 2 3)" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum( 1 2 3)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -597,7 +597,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = WarewolfDataEvaluationCommon.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( [[Rec()]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( [[Rec()]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.CalculateTextConvertPrefix + "Sum(3,c)" + GlobalConstants.CalculateTextConvertSuffix);
         }
@@ -779,7 +779,7 @@ namespace WarewolfParsingTest
         }
 
 
-        public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
+        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
             
             ExecutionEnvironment env = new ExecutionEnvironment();
@@ -803,7 +803,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[Person.Score(2)]]", "3"), 0);
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             PrivateObject p = new PrivateObject(env);
-            return (DataASTMutable.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+            return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
 
         [TestMethod]

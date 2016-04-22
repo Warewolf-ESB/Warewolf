@@ -1,9 +1,9 @@
 ﻿module DataMergeFunctions
 
 open LanguageAST
-open DataASTMutable
+open DataStorage
 open CommonFunctions
-open WarewolfDataEvaluationCommon
+open EvaluationFunctions
 //specialise eval for calculate. Its just eval with different meaning for *. can be merged into eval function at the expense of complexity for c# developers 
 let rec evalForDataMerge (env : WarewolfEnvironment) (update : int) (lang : string) : WarewolfEvalResult list = 
     let EvalComplex(exp : LanguageExpression list) : WarewolfEvalResult list = 

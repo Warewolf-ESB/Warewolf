@@ -1,9 +1,9 @@
 ﻿module Delete
 open LanguageAST
-open DataASTMutable
+open DataStorage
 open WarewolfParserInterop
 open CommonFunctions
-open WarewolfDataEvaluationCommon
+open EvaluationFunctions
 
 /// delete a one or more rows from a recordset
 let deleteValues (exp:string)  (env:WarewolfEnvironment) =

@@ -1,6 +1,6 @@
 ﻿module LanguageAST
 
-open DataASTMutable
+open DataStorage
 open System.Diagnostics.CodeAnalysis
 
 ///Sclar identifier

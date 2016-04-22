@@ -21,7 +21,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
             
             //------------Assert Results-------------------------
-           var res = CommonFunctions.evalResultToString( WarewolfDataEvaluationCommon.eval(modified, 0, "[[Bec(*).a]]"));
+           var res = CommonFunctions.evalResultToString( EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
             Assert.AreEqual(res,"1,2,3");
         }
 
@@ -38,7 +38,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]][[bec().a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
@@ -55,7 +55,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec([[z]]).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec(*).a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
@@ -71,7 +71,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec().a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
@@ -88,7 +88,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[Bec([[x]]).a]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[Bec(*).a]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[Bec(*).a]]"));
             Assert.AreEqual(res, "3");
         }
         [TestMethod]
@@ -103,7 +103,7 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[ax]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[ax]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[ax]]"));
             Assert.AreEqual(res, "1,2,3");
         }
         [TestMethod]
@@ -119,11 +119,11 @@ namespace WarewolfParsingTest
             var modified = Distinct.evalDistinct(env, new List<string>() { "[[Rec(*).a]]" }, new List<string> { "[[Rec(*).a]]" }, 0, new List<string> { "[[ax]] [[bx]]" });
 
             //------------Assert Results-------------------------
-            var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(modified, 0, "[[ax]]"));
+            var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(modified, 0, "[[ax]]"));
             Assert.AreEqual(res, "1,2,3");
         }
 
-        public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
+        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
             ExecutionEnvironment env = new ExecutionEnvironment();
@@ -149,7 +149,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
             PrivateObject p = new PrivateObject(env);
-            return (DataASTMutable.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+            return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
     }
 

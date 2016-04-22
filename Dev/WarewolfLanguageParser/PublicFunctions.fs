@@ -2,7 +2,7 @@
 
 open LanguageAST
 //open LanguageEval
-open DataASTMutable
+open DataStorage
 open Dev2.Common.Interfaces
 open CommonFunctions
 open Delete
@@ -29,10 +29,10 @@ let AddRecsetToEnv (name : string) (env : WarewolfEnvironment) =
         a
 ///Evalutae an expression
 let EvalEnvExpression (exp : string) (update : int) (env : WarewolfEnvironment) = 
-    WarewolfDataEvaluationCommon.eval env update exp
+    EvaluationFunctions.eval env update exp
 ///eval and return positions
 let EvalWithPositions (exp : string) (update : int) (env : WarewolfEnvironment) = 
-    WarewolfDataEvaluationCommon.evalWithPositions env update exp
+    EvaluationFunctions.evalWithPositions env update exp
 
 let innerConvert (i : int) (a : WarewolfAtom) = 
     match a with
@@ -51,7 +51,7 @@ let RecordsetToSearchTo(recordset : WarewolfRecordset) =
     |> Seq.map (fun (a, b) -> innerConvert a b)
 
 let EvalRecordSetIndexes (exp : string) (update : int) (env : WarewolfEnvironment) = 
-    WarewolfDataEvaluationCommon.eval env update exp
+    EvaluationFunctions.eval env update exp
 
 let EvalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssign exp value update env
@@ -75,7 +75,7 @@ let RemoveFraming(env : WarewolfEnvironment) =
 let AtomtoString a = atomtoString a
 
 let GetIndexes (name : string) (update : int) (env : WarewolfEnvironment) = 
-    WarewolfDataEvaluationCommon.evalIndexes env update name
+    EvaluationFunctions.evalIndexes env update name
 
 let EvalDelete (exp : string) (update : int) (env : WarewolfEnvironment) = Delete.evalDelete exp update env
 
@@ -92,7 +92,7 @@ let EvalUpdate (exp : string) (env : WarewolfEnvironment) (update : int)
 let EvalDataShape (exp : string) (env : WarewolfEnvironment) = AssignEvaluation.evalDataShape exp 0 env
 
 let IsValidRecsetExpression(exp : string) = 
-    let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
+    let parsed = EvaluationFunctions.parseLanguageExpression exp 0
     match parsed with
     | LanguageExpression.WarewolfAtomExpression _ -> true
     | LanguageExpression.ComplexExpression _ -> true
@@ -111,7 +111,7 @@ let IsValidRecsetExpression(exp : string) =
     | _ -> true
 
 let RecordsetExpressionExists (exp : string) (env : WarewolfEnvironment) = 
-    let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp 0
+    let parsed = EvaluationFunctions.parseLanguageExpression exp 0
     match parsed with
     | LanguageExpression.WarewolfAtomExpression _ -> false
     | LanguageExpression.ComplexExpression _ -> false

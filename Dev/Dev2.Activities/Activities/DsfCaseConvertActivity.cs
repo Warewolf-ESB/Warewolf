@@ -146,7 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private Func<DataASTMutable.WarewolfAtom,DataASTMutable.WarewolfAtom> TryConvertFunc(ICaseConvertTO conversionType,IExecutionEnvironment env,int update)
+        private Func<DataStorage.WarewolfAtom,DataStorage.WarewolfAtom> TryConvertFunc(ICaseConvertTO conversionType,IExecutionEnvironment env,int update)
         {
             var convertFunct = CaseConverter.GetFuncs();
             Func<string, string> returnedFunc;
@@ -168,10 +168,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 return warewolfAtomResult.Item;
                             }
-                            return DataASTMutable.WarewolfAtom.Nothing;
+                            return DataStorage.WarewolfAtom.Nothing;
                         }
 
-                        return DataASTMutable.WarewolfAtom.NewDataString( CommonFunctions.evalResultToString(evalled));
+                        return DataStorage.WarewolfAtom.NewDataString( CommonFunctions.evalResultToString(evalled));
                     };
                 }
             }

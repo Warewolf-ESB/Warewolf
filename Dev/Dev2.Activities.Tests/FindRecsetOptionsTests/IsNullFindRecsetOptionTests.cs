@@ -17,8 +17,8 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
             var rsOpIsNull = new RsOpIsNull();
             
             //------------Execute Test---------------------------
-            var func = rsOpIsNull.CreateFunc(new List<DataASTMutable.WarewolfAtom>{DataASTMutable.WarewolfAtom.Nothing}, null,null, false);
-            var isNull = func.Invoke(DataASTMutable.WarewolfAtom.Nothing);
+            var func = rsOpIsNull.CreateFunc(new List<DataStorage.WarewolfAtom>{DataStorage.WarewolfAtom.Nothing}, null,null, false);
+            var isNull = func.Invoke(DataStorage.WarewolfAtom.Nothing);
             //------------Assert Results-------------------------
             Assert.IsTrue(isNull);
         }
@@ -32,8 +32,8 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
             var rsOpIsNull = new RsOpIsNull();
 
             //------------Execute Test---------------------------
-            var func = rsOpIsNull.CreateFunc(new List<DataASTMutable.WarewolfAtom> { DataASTMutable.WarewolfAtom.Nothing }, null, null, false);
-            var isNull = func.Invoke(DataASTMutable.WarewolfAtom.NewDataString("bob"));
+            var func = rsOpIsNull.CreateFunc(new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.Nothing }, null, null, false);
+            var isNull = func.Invoke(DataStorage.WarewolfAtom.NewDataString("bob"));
             //------------Assert Results-------------------------
             Assert.IsFalse(isNull);
         }

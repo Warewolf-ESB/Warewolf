@@ -1,6 +1,6 @@
 ﻿%{
     open LanguageAST
-    open DataASTMutable
+    open DataStorage
 %}
 
 
@@ -21,7 +21,7 @@
 %type <LanguageAST.LanguageExpression> start  
 %type <LanguageAST.LanguageExpression> langExpression   
 %type <LanguageAST.RecordSetColumnIdentifier> recset 
-%type <DataASTMutable.WarewolfAtom> atom   
+%type <DataStorage.WarewolfAtom> atom   
 %type <LanguageAST.ScalarIdentifier> scalar
 
 %%

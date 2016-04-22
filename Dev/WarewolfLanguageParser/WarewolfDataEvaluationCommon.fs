@@ -1,9 +1,9 @@
-﻿module WarewolfDataEvaluationCommon
+﻿module EvaluationFunctions
 
 open LanguageAST
 //open LanguageEval
 open Microsoft.FSharp.Text.Lexing
-open DataASTMutable
+open DataStorage
 open WarewolfParserInterop
 open CommonFunctions
 open System.Diagnostics.CodeAnalysis

@@ -20,7 +20,7 @@ namespace WarewolfParsingTest
            var env2 = Sort.sortRecset("[[Rec(*).a]]", false, 0, env);
             //------------Assert Results-------------------------
 
-           var res = CommonFunctions.evalResultToString(WarewolfDataEvaluationCommon.eval(env2, 0, "[[Rec(*).a]]"));
+           var res = CommonFunctions.evalResultToString(EvaluationFunctions.eval(env2, 0, "[[Rec(*).a]]"));
 
             Assert.AreEqual("1,2,2,3",res);
         }
@@ -36,12 +36,12 @@ namespace WarewolfParsingTest
             var env2 = Sort.sortRecset("[[Rec(*).a]]", true, 0, env);
             //------------Assert Results-------------------------
 
-            var res = CommonFunctions.evalResultToString( WarewolfDataEvaluationCommon.eval(env2, 0, "[[Rec(*).a]]"));
+            var res = CommonFunctions.evalResultToString( EvaluationFunctions.eval(env2, 0, "[[Rec(*).a]]"));
 
             Assert.AreEqual("3,2,2,1", res);
         }
 
-        public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
+        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
             ExecutionEnvironment env = new ExecutionEnvironment();
@@ -66,7 +66,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
             PrivateObject p = new PrivateObject(env);
-            return (DataASTMutable.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+            return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
     }
 }
