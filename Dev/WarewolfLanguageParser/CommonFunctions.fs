@@ -42,7 +42,6 @@ let parseAtom (lang : string) =
     | Float _ -> tryFloatParseAtom lang
     | _ -> at
 
-[<Obsolete("Deprecated Usewolf 1601 "); ExcludeFromCodeCoverage>]
 let IsAtomExpression(a : LanguageExpression) = 
     match a with
     | WarewolfAtomExpression _ -> true
