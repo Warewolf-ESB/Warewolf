@@ -6,7 +6,7 @@ open Microsoft.FSharp.Text.Parsing.ParseHelpers
 # 1 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
 
     open LanguageAST
-    open DataASTMutable
+    open DataStorage
 
 # 11 "WarewolfLanguage.fs"
 // This type is the type of tokens accepted by the parser
@@ -202,7 +202,7 @@ let _fsyacc_reductions ()  =    [|
                  : LanguageAST.LanguageExpression));
 # 203 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : DataASTMutable.WarewolfAtom)) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : DataStorage.WarewolfAtom)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
@@ -372,7 +372,7 @@ let _fsyacc_reductions ()  =    [|
                  : 'variableExpression));
 # 373 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : DataASTMutable.WarewolfAtom)) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : DataStorage.WarewolfAtom)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
@@ -676,7 +676,7 @@ let _fsyacc_reductions ()  =    [|
                                   tryFloatParseAtom _1 
                    )
 # 87 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : DataASTMutable.WarewolfAtom));
+                 : DataStorage.WarewolfAtom));
 # 680 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -687,7 +687,7 @@ let _fsyacc_reductions ()  =    [|
                                 tryParseAtom _1 
                    )
 # 88 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : DataASTMutable.WarewolfAtom));
+                 : DataStorage.WarewolfAtom));
 # 691 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -698,7 +698,7 @@ let _fsyacc_reductions ()  =    [|
                                    DataString _1 
                    )
 # 89 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : DataASTMutable.WarewolfAtom));
+                 : DataStorage.WarewolfAtom));
 # 702 "WarewolfLanguage.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -709,7 +709,7 @@ let _fsyacc_reductions ()  =    [|
                                   DataString _1 
                    )
 # 90 "..\WarewolfLanguageParser\WarewolfLanguage.fsy"
-                 : DataASTMutable.WarewolfAtom));
+                 : DataStorage.WarewolfAtom));
 |]
 # 714 "WarewolfLanguage.fs"
 let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> = 

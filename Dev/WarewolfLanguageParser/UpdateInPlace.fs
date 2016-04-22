@@ -1,8 +1,8 @@
 ﻿module UpdateInPlace
 
 open LanguageAST
-open DataASTMutable
-open WarewolfDataEvaluationCommon
+open DataStorage
+open EvaluationFunctions
 open CommonFunctions
 
 
@@ -54,7 +54,7 @@ and evalRecordsSetExpressionUpdate (recset : RecordSetColumnIdentifier) (env : W
         match recset.Index with
         | IntIndex _ -> 
             let data = 
-                WarewolfDataEvaluationCommon.eval env update (languageExpressionToString (RecordSetExpression recset))
+                EvaluationFunctions.eval env update (languageExpressionToString (RecordSetExpression recset))
                 |> evalResultToString
                 |> DataString
                 |> func
@@ -66,7 +66,7 @@ and evalRecordsSetExpressionUpdate (recset : RecordSetColumnIdentifier) (env : W
             env
         | Last -> 
             let data = 
-                WarewolfDataEvaluationCommon.eval env update (languageExpressionToString (RecordSetExpression recset))
+                EvaluationFunctions.eval env update (languageExpressionToString (RecordSetExpression recset))
                 |> evalResultToString
                 |> DataString
                 |> func
@@ -79,7 +79,7 @@ and evalRecordsSetExpressionUpdate (recset : RecordSetColumnIdentifier) (env : W
                 match atom with
                 | Int _ -> 
                     let data = 
-                        WarewolfDataEvaluationCommon.eval env update 
+                        EvaluationFunctions.eval env update 
                             (languageExpressionToString (RecordSetExpression recset))
                         |> evalResultToString
                         |> DataString

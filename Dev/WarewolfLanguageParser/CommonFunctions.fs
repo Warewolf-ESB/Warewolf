@@ -1,7 +1,7 @@
 ﻿module CommonFunctions
 
 open LanguageAST
-open DataASTMutable
+open DataStorage
 open System.Diagnostics.CodeAnalysis
 open System
 

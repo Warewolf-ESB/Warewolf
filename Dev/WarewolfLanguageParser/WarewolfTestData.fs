@@ -1,10 +1,10 @@
 ﻿module WarewolfTestData
 
 open LanguageAST
-open WarewolfDataEvaluationCommon
+open EvaluationFunctions
 //open LanguageEval
 open Microsoft.FSharp.Text.Lexing
-open DataASTMutable
+open DataStorage
 open CommonFunctions
 
 let PositionColumn = "WarewolfPositionColumn"

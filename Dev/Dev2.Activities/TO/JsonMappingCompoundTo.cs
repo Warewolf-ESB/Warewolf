@@ -80,11 +80,11 @@ namespace Dev2.TO
                         var x = e as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                         if (x != null && x.Item.IsDataString)
                         {
-                            if (((DataASTMutable.WarewolfAtom.DataString)x.Item).Item == "true")
+                            if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
                             {
                                 _evalResultAsObject = true;
                             }
-                            else if (((DataASTMutable.WarewolfAtom.DataString)x.Item).Item == "false")
+                            else if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
                             {
                                 _evalResultAsObject = false;
                             }
@@ -259,7 +259,7 @@ namespace Dev2.TO
         {
             if (evalResult.IsWarewolfAtomListresult)
             {
-                WarewolfAtomList<DataASTMutable.WarewolfAtom> lst = ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
+                WarewolfAtomList<DataStorage.WarewolfAtom> lst = ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
                 if (i > lst.Count)
                 {
                     return null;
@@ -276,14 +276,14 @@ namespace Dev2.TO
             }
             if (evalResult.IsWarewolfRecordSetResult)
             {
-                DataASTMutable.WarewolfRecordset recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+                DataStorage.WarewolfRecordset recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
 
-                KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>>[] data = recset.Data.ToArray();
+                KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>>[] data = recset.Data.ToArray();
                 var jObjects = new List<JObject>();
                 for (int j = 0; j < recset.Count; j++)
                 {
                     var a = new JObject();
-                    foreach (KeyValuePair<string, WarewolfAtomList<DataASTMutable.WarewolfAtom>> pair in data)
+                    foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
                     {
                         if (pair.Key != WarewolfDataEvaluationCommon.PositionColumn)
                         {

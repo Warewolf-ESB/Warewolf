@@ -1,8 +1,8 @@
 ﻿module Distinct
 
 open LanguageAST
-open DataASTMutable
-open WarewolfDataEvaluationCommon
+open DataStorage
+open EvaluationFunctions
 open CommonFunctions
 
 ///Get the indexes of distinct columns
@@ -15,7 +15,7 @@ let distinctValues (recset:WarewolfRecordset) (columnName:string) (positions:int
 
 /// asign a listof values to a column
 let assignFromList (oldenv:WarewolfEnvironment) (datas:string seq) (exp:string) (update:int) (startPositions:Map<string,int>) =
-    let parsed = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
+    let parsed = EvaluationFunctions.parseLanguageExpression exp update
     let data = List.ofSeq datas
     let mutable env = oldenv
     match parsed with 

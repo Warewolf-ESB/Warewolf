@@ -19,7 +19,7 @@ namespace Dev2.BussinessLogic
 {
     public class RsOpNotBetween : AbstractRecsetSearchValidation
     {
-        public override Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> tovals, bool all)
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, bool all)
         {
 
             return a => !RunBetween(warewolfAtoms, tovals, a);
@@ -27,7 +27,7 @@ namespace Dev2.BussinessLogic
         }
 
 
-        static bool RunBetween(IEnumerable<DataASTMutable.WarewolfAtom> warewolfAtoms, IEnumerable<DataASTMutable.WarewolfAtom> tovals, DataASTMutable.WarewolfAtom a)
+        static bool RunBetween(IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, DataStorage.WarewolfAtom a)
         {
             WarewolfListIterator iterator = new WarewolfListIterator();
             var from = new WarewolfAtomIterator(warewolfAtoms);

@@ -1,7 +1,7 @@
 ﻿module AssignEvaluation
 
-open DataASTMutable
-open WarewolfDataEvaluationCommon
+open DataStorage
+open EvaluationFunctions
 open Dev2.Common.Interfaces
 open LanguageAST
 open Newtonsoft.Json.Linq
@@ -125,7 +125,7 @@ and addToRecordSetFramedWithAtomList (env : WarewolfEnvironment) (name : RecordS
         addToRecordSetFramedWithAtomList envwithRecset name value shouldUseLast update assignValue
 
 and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
-    let l = WarewolfDataEvaluationCommon.parseLanguageExpression value.Name update    
+    let l = EvaluationFunctions.parseLanguageExpression value.Name update    
     let left = 
         match l with
         | ComplexExpression a -> 
@@ -139,10 +139,10 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
         | _ -> l    
     let rightParse = 
         if value.Value = null then LanguageExpression.WarewolfAtomExpression Nothing
-        else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value update    
+        else EvaluationFunctions.parseLanguageExpression value.Value update    
     let right = 
         if value.Value = null then WarewolfAtomResult Nothing
-        else WarewolfDataEvaluationCommon.eval env update value.Value    
+        else EvaluationFunctions.eval env update value.Value    
     let shouldUseLast = 
         match rightParse with
         | RecordSetExpression a -> 
@@ -260,7 +260,7 @@ and addAtomToRecordSetWithFraming (rset : WarewolfRecordset) (columnName : strin
 
 and evalMultiAssignList (env : WarewolfEnvironment) (value : WarewolfAtom seq) (exp : string) (update : int) 
     (shouldUseLast : bool) = 
-    let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
+    let left = EvaluationFunctions.parseLanguageExpression exp update
     match left with
     | RecordSetExpression b -> addToRecordSetFramedWithAtomList env b value shouldUseLast update None
     | ScalarExpression s -> 
@@ -270,7 +270,7 @@ and evalMultiAssignList (env : WarewolfEnvironment) (value : WarewolfAtom seq) (
     | _ -> failwith "Only recsets and scalars can be assigned from a list"
 
 and evalDataShape (exp : string) (update : int) (env : WarewolfEnvironment) = 
-    let left = WarewolfDataEvaluationCommon.parseLanguageExpression exp update
+    let left = EvaluationFunctions.parseLanguageExpression exp update
     match left with
     | ScalarExpression a -> 
         match env.Scalar.TryFind a with

@@ -20,7 +20,7 @@ namespace WarewolfParsingTest
             var data =  CreateEnvironmentWithData();
             
             //------------Execute Test---------------------------
-            WarewolfDataEvaluationCommon.evalScalar("a", data);
+            EvaluationFunctions.evalScalar("a", data);
 
             //------------Assert Results-------------------------
         }
@@ -34,7 +34,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = WarewolfDataEvaluationCommon.getIntFromAtom(DataASTMutable.WarewolfAtom.NewInt(1));
+            var x = EvaluationFunctions.getIntFromAtom(DataStorage.WarewolfAtom.NewInt(1));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x,1);
@@ -51,7 +51,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = WarewolfDataEvaluationCommon.getIntFromAtom(DataASTMutable.WarewolfAtom.NewInt(-11));
+            var x = EvaluationFunctions.getIntFromAtom(DataStorage.WarewolfAtom.NewInt(-11));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x, 1);
@@ -69,7 +69,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = WarewolfDataEvaluationCommon.getIntFromAtom(DataASTMutable.WarewolfAtom.NewDataString("a"));
+            var x = EvaluationFunctions.getIntFromAtom(DataStorage.WarewolfAtom.NewDataString("a"));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x, 1);
@@ -84,7 +84,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = WarewolfDataEvaluationCommon.parseLanguageExpression("[[rec([[a]]).a]]", 1);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec([[a]]).a]]", 1);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
@@ -102,7 +102,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = WarewolfDataEvaluationCommon.parseLanguageExpression("[[rec(1).a]]", 3);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec(1).a]]", 3);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
@@ -120,7 +120,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = WarewolfDataEvaluationCommon.parseLanguageExpression("[[rec(1)]]", 3);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec(1)]]", 3);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
@@ -138,7 +138,7 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = WarewolfDataEvaluationCommon.parseLanguageExpression("[[rec([[a]])]]", 1);
+            var x = EvaluationFunctions.parseLanguageExpression("[[rec([[a]])]]", 1);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetNameExpression, true);
@@ -224,7 +224,7 @@ namespace WarewolfParsingTest
         }
 
 
-        public static DataASTMutable.WarewolfEnvironment CreateEnvironmentWithData()
+        public static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
             ExecutionEnvironment env = new ExecutionEnvironment();
@@ -247,7 +247,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
             PrivateObject p = new PrivateObject(env);
-            return (DataASTMutable.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+            return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
     }
 }

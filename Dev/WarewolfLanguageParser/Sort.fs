@@ -1,8 +1,8 @@
 ﻿module Sort
 
 open LanguageAST
-open DataASTMutable
-open WarewolfDataEvaluationCommon
+open DataStorage
+open EvaluationFunctions
 
 /// sort a recordset. its a bit of a weird function but corresponds to the tool
 let rec sortRecst (recset : WarewolfRecordset) (colName : string) (desc : bool) = 

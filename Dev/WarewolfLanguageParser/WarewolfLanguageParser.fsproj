@@ -90,7 +90,7 @@
       <Link>Properties\AssemblyCommonInfo.fs</Link>
     </Compile>
     <None Include="Script.fsx" />
-    <Compile Include="DataASTMutable.fs" />
+    <Compile Include="DataStorage.fs" />
     <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />
     <FsYacc Include="..\WarewolfLanguageParser\WarewolfLanguage.fsy">
