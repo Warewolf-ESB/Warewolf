@@ -52,7 +52,8 @@
                                Height="Auto"
                                Margin="0,6,0,0"
                                VerticalAlignment="Center"
-                               Source="{Binding Icon}" />
+                               Source="{Binding Icon}"
+                               AutomationProperties.AutomationId="{Binding Name}"/>
                     </Label.Content>
                 </Label>
 

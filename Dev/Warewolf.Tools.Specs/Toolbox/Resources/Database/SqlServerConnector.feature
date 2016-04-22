@@ -185,7 +185,7 @@ Scenario: Recordset has invalid character
 
 #Wolf-1262
 @ignore
-Scenario: backward Compatiblity
+Scenario: SqlServer backward Compatiblity
 	Given I have a workflow "DataMigration"
 	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
       | Input to Service | From Variable | Output from Service                | To Variable                    |
