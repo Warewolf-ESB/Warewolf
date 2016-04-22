@@ -3461,11 +3461,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the variable coming in has not value assigned to it, this will allow you to pass it in as NULL..
+        ///   Looks up a localized string similar to Hard coded values or variables..
+        /// </summary>
+        public static string InputDefaultValueToolTip {
+            get {
+                return ResourceManager.GetString("InputDefaultValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the variable coming in has no value assigned to it, this will allow you to pass it in as NULL..
         /// </summary>
         public static string InputEmptyIsNullDefaultValueHelp {
             get {
                 return ResourceManager.GetString("InputEmptyIsNullDefaultValueHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use NULL when empty..
+        /// </summary>
+        public static string InputEmptyIsNullToolTip {
+            get {
+                return ResourceManager.GetString("InputEmptyIsNullToolTip", resourceCulture);
             }
         }
         
@@ -5345,11 +5363,38 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the method in the DLL you want to execute..
+        ///   Looks up a localized string similar to Select the method in the DLL you want to execute. You can provide a namespace filter above if you want..
         /// </summary>
         public static string PluginServiceSelectActionHelp {
             get {
                 return ResourceManager.GetString("PluginServiceSelectActionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select method to execute..
+        /// </summary>
+        public static string PluginServiceSelectActionToolTip {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectActionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a namespace if it exists to filter the actions you can perform..
+        /// </summary>
+        public static string PluginServiceSelectNamespaceHelp {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectNamespaceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a namespace to help find the correct action..
+        /// </summary>
+        public static string PluginServiceSelectNamespaceToolTip {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectNamespaceToolTip", resourceCulture);
             }
         }
         
@@ -8351,7 +8396,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copyright © 2015 Warewolf, All rights reserved..
+        ///   Looks up a localized string similar to Copyright © 2016 Warewolf, All rights reserved..
         /// </summary>
         public static string WarewolfCopyright {
             get {
