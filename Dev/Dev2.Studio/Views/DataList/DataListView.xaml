@@ -14,7 +14,6 @@
              xmlns:dataList="clr-namespace:Dev2.Studio.Views.DataList"
              xmlns:dataPresenter="http://infragistics.com/DataPresenter"
              xmlns:dataList1="clr-namespace:Dev2.Studio.ViewModels.DataList;assembly=Dev2.Studio.Core"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              LostKeyboardFocus="UserControlLostKeyboardFocus"
              KeyboardNavigation.DirectionalNavigation="Continue" KeyboardNavigation.TabNavigation="Cycle"
              x:Name="DataListViewControl"
@@ -90,251 +89,114 @@
             </Button>
         </Grid>
 
-        <Grid Grid.Row="1" Focusable="False">
-            <TreeView ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay}"
-                      HorizontalAlignment="Stretch"
-                      Margin="{StaticResource ElementBorderTop}"
-                      x:Name="ScalarExplorer"
-                      Focusable="False" Visibility="Collapsed"
-                      HorizontalContentAlignment="Stretch"
-                      Style="{StaticResource VariablesTreeViewStyle}"
-                      Grid.IsSharedSizeScope="True"
-                      AutomationProperties.AutomationId="UI_VariableTreeView_AutoID">
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type Models:DataListItemModel}" ItemsSource="{Binding Path=Children}">
-                        <Grid HorizontalAlignment="Stretch" 
-                              Visibility="{Binding IsVisable,Converter={StaticResource BoolToVisibilityConverter}}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="38" SharedSizeGroup="B" />
-                                <ColumnDefinition Width="38" SharedSizeGroup="C" />
-                                <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
-                            </Grid.ColumnDefinitions>
-                            <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto" Name="varsScrolBar">
-                                <customControls:VariableTextBox LostFocus="NametxtFocusLost"
-                                                                Background="{StaticResource WareWolfWhiteBrush}"
-                                                                TextChanged="NametxtTextChanged"
-                                                                HorizontalAlignment="Stretch"
-                                                                MinWidth="75"
-                                                                Height="22"
-                                                                x:Name="VariableInput"
-                                                                AcceptsReturn="False"
-                                                                Focusable="True"
-                                                                IsTabStop="True"
-                                                                MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
-                                                                DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
-                                                                Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                IsUsed="{Binding IsUsed}"
-                                                                AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
-                                    <customControls:VariableTextBox.Style>
-                                        <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableTextboxStyle}">
-                                            <Style.Triggers>
-                                                <Trigger Property="Text" Value="">
-                                                    <Setter Property="Background" Value="{StaticResource DataListItemName}" />
-                                                </Trigger>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
-                                                    <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
-                                                </DataTrigger>
-                                                <Trigger Property="IsSelectionActive" Value="True">
-                                                    <Setter Property="IsTabStop" Value="True"/>
-                                                    <Setter Property="Focusable" Value="True"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </customControls:VariableTextBox.Style>
-                                    <i:Interaction.Behaviors>
-                                        <behaviors:TextboxSelectAllOnFocusBehavior />
-                                        <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
-                                    </i:Interaction.Behaviors>
-                                </customControls:VariableTextBox>
-                            </ScrollViewer>
-
-                            <CheckBox IsTabStop="True"
-                                      Grid.Column="1"
-                                      HorizontalAlignment="Center"
-                                      Margin="0,-1,0,-1"
-                                      IsChecked="{Binding Input}"
-                                      VerticalAlignment="Center"
-                                      Focusable="True"
-                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
-                                      Checked="Inputcbx_OnChecked"
-                                      Unchecked="Inputcbx_OnChecked"
-                                      AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
-                                </i:Interaction.Behaviors>
-                            </CheckBox>
-
-                            <CheckBox IsTabStop="True"
-                                      Grid.Column="2"
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding Output}"
-                                      VerticalAlignment="Center"
-                                      Margin="0,-1,0,-1"
-                                      Focusable="True"
-                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
-                                      Checked="Outputcbx_OnChecked"
-                                      Unchecked="Outputcbx_OnChecked"
-                                      AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
-                                <i:Interaction.Behaviors>
-                                    <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
-                                </i:Interaction.Behaviors>
-                            </CheckBox>
-                        </Grid>
-                    </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type Models:DataListHeaderItemModel}" ItemsSource="{Binding Path=Children}">
-                        <StackPanel>
-                            <Grid Height="24" Margin="{StaticResource ControlBorderRight}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition SharedSizeGroup="B" />
-                                    <ColumnDefinition SharedSizeGroup="C" />
-                                    <ColumnDefinition SharedSizeGroup="A" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" Foreground="Black" />
-                                    <TextBlock Text="Name" FontWeight="SemiBold" Foreground="Black" />
-                                </StackPanel>
-                                <TextBlock Grid.Column="1"
-                                           Text="Input"
-                                           HorizontalAlignment="Center"
-                                           FontWeight="SemiBold"
-                                           Foreground="Black" />
-                                <TextBlock Grid.Column="2"
-                                           Text="Output"
-                                           HorizontalAlignment="Center"
-                                           FontWeight="SemiBold"
-                                           Foreground="Black" />
-                            </Grid>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.Resources>
-            </TreeView>
-        </Grid>
-
         <Grid Grid.Row="1">
-            <dataPresenter:XamTreeGrid x:Name="xtg" DataSource="{Binding Path=BaseCollection}" Background="Transparent" Margin="{StaticResource ElementBorderTop}">
+            <dataPresenter:XamTreeGrid x:Name="xtg" DataSource="{Binding Path=BaseCollection}" Background="Transparent" Margin="{StaticResource ElementBorderTop}" >
                 <dataPresenter:XamTreeGrid.FieldLayoutSettings>
                     <dataPresenter:FieldLayoutSettings AutoGenerateFields="False" RecordSelectorLocation="None" />
                 </dataPresenter:XamTreeGrid.FieldLayoutSettings>
-                <dataPresenter:XamTreeGrid.FieldLayouts>
-                    <dataPresenter:FieldLayout>
+                <dataPresenter:XamTreeGrid.FieldSettings>
+                    <dataPresenter:FieldSettings AllowRecordFiltering="True" />
+                </dataPresenter:XamTreeGrid.FieldSettings>
+                <dataPresenter:XamTreeGrid.FieldLayouts >
+                    <dataPresenter:FieldLayout Key="DataListItemModel">
                         
-                        <dataPresenter:FieldLayout.Fields>
-                            
-                            <dataPresenter:TextField Name="DisplayName" Width="*" Label="Display Name" />
+                        <dataPresenter:FieldLayout.Fields >
 
-                            <!--<dataPresenter:TemplateField Name="DisplayName" Label="Display Name" Width="*" AllowEdit="False">
-                                <dataPresenter:TemplateField.Settings>
-                                    <dataPresenter:FieldSettings>
-                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                            <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" Margin="10,3,0,0"/>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                    </dataPresenter:FieldSettings>
-                                </dataPresenter:TemplateField.Settings>
-                            </dataPresenter:TemplateField>-->
+                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" Name="DisplayName" BindingType="UseAlternateBinding" Label="Display Name" Width="*" AllowEdit="False">
+                                <dataPresenter:TemplateField.DisplayTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <!--<TextBlock Text="{Binding Path=DisplayName}" Visibility="{Binding Path=IsParentNode}" />-->
+                                            <customControls:VariableTextBox LostFocus="NametxtFocusLost"
+                                                                            Background="{StaticResource WareWolfWhiteBrush}"
+                                                                            TextChanged="NametxtTextChanged"
+                                                                            HorizontalAlignment="Stretch"
+                                                                            MinWidth="75"
+                                                                            Height="22"
+                                                                            x:Name="VariableInput"
+                                                                            AcceptsReturn="False"
+                                                                            Focusable="True"
+                                                                            IsTabStop="True" 
+                                                                            ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
+                                                                            DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
+                                                                            Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                            IsEnabled="{Binding Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            IsUsed="{Binding Path=IsUsed}"
+                                                                            Margin="{StaticResource ControlBorderTop}" 
+                                                                            aprop:FocusAttachedProperty.IsFocused="{Binding Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
+                                                <customControls:VariableTextBox.Style>
+                                                    <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableTextboxStyle}">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="Text" Value="">
+                                                                <Setter Property="Background" Value="{StaticResource DataListItemName}" />
+                                                            </Trigger>
+                                                            <DataTrigger Binding="{Binding Path=DataContext.HasError, UpdateSourceTrigger=PropertyChanged}" Value="true">
+                                                                <Setter Property="Foreground" Value="{StaticResource ValidationErrorElement}" />
+                                                            </DataTrigger>
+                                                            <Trigger Property="IsSelectionActive" Value="True">
+                                                                <Setter Property="IsTabStop" Value="True"/>
+                                                                <Setter Property="Focusable" Value="True"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </customControls:VariableTextBox.Style>
+                                                <i:Interaction.Behaviors>
+                                                    <behaviors:TextboxSelectAllOnFocusBehavior />
+                                                    <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
+                                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
+                                                </i:Interaction.Behaviors>
+                                            </customControls:VariableTextBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </dataPresenter:TemplateField.DisplayTemplate>
+                            </dataPresenter:TemplateField>
 
-                            <!--<dataPresenter:TextField Name="DisplayName" Label="Display Name" Width="*" AllowEdit="False">
-                                <dataPresenter:TextField.Settings>
-                                    <dataPresenter:FieldSettings>
-                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                            <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" Margin="10,3,0,0"/>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                    </dataPresenter:FieldSettings>
-                                </dataPresenter:TextField.Settings>
-                            </dataPresenter:TextField>-->
+                            <dataPresenter:Field Name="Children" Width="*" AllowEdit="True"/>
 
-                            <dataPresenter:Field Name="Children" Width="*" AllowEdit="True">
-                                <dataPresenter:Field.Settings>
-                                    <dataPresenter:FieldSettings>
-                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                            <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" Margin="{StaticResource ControlBorderTop}"/>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                    </dataPresenter:FieldSettings>
-                                </dataPresenter:Field.Settings>
-                            </dataPresenter:Field>
+                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" Name="Input" Label="Input" Width="60" AllowEdit="False" >
+                                <dataPresenter:TemplateField.DisplayTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsTabStop="True"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="0,-1,0,-1"
+                                                  IsChecked="{Binding Path=Input}"
+                                                  VerticalAlignment="Center"
+                                                  Focusable="True"
+                                                  ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
+                                                  Checked="Inputcbx_OnChecked"
+                                                  Unchecked="Inputcbx_OnChecked"
+                                                  AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
+                                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
+                                            </i:Interaction.Behaviors>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </dataPresenter:TemplateField.DisplayTemplate>
+                            </dataPresenter:TemplateField>
 
-                            <dataPresenter:CheckBoxField Name="InputNew" Label="Input" Width="60" AllowEdit="False" IsThreeState="False">
-                                <dataPresenter:CheckBoxField.Settings>
-                                    <dataPresenter:FieldSettings CellMinWidth="60">
-                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                            <CheckBox HorizontalAlignment="Center" 
-                                                                      CommandParameter="{Binding}" 
-                                                                      IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}"
-                                                                      ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}">
-                                                                <i:Interaction.Behaviors>
-                                                                    <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
-                                                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
-                                                                </i:Interaction.Behaviors>
-                                                            </CheckBox>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                    </dataPresenter:FieldSettings>
-                                </dataPresenter:CheckBoxField.Settings>
-                            </dataPresenter:CheckBoxField>
-                            
-                            <dataPresenter:CheckBoxField Name="OutputNew" Label="Output" Width="60" AllowEdit="True" IsThreeState="False">
-                                <dataPresenter:CheckBoxField.Settings>
-                                    <dataPresenter:FieldSettings CellMinWidth="60" AllowResize="False" AllowGroupBy="False" AllowHiding="Never">
-                                        <dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                            <Style TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dataPresenter:CellValuePresenter}">
-                                                            <CheckBox HorizontalAlignment="Center" 
-                                                                      CommandParameter="{Binding}" 
-                                                                      IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}"
-                                                                      ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}">
-                                                                <i:Interaction.Behaviors>
-                                                                    <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
-                                                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
-                                                                </i:Interaction.Behaviors>
-                                                            </CheckBox>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dataPresenter:FieldSettings.CellValuePresenterStyle>
-                                    </dataPresenter:FieldSettings>
-                                </dataPresenter:CheckBoxField.Settings>
-                            </dataPresenter:CheckBoxField>
+                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" Name="Output" Label="Output" Width="60" AllowEdit="False" >
+                                <dataPresenter:TemplateField.DisplayTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsTabStop="True"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="0,-1,0,-1"
+                                                  IsChecked="{Binding Path=Output}"
+                                                  VerticalAlignment="Center"
+                                                  Focusable="True"
+                                                  ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
+                                                  Checked="Outputcbx_OnChecked"
+                                                  Unchecked="Outputcbx_OnChecked"
+                                                  AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
+                                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
+                                            </i:Interaction.Behaviors>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </dataPresenter:TemplateField.DisplayTemplate>
+                            </dataPresenter:TemplateField>
                         </dataPresenter:FieldLayout.Fields>
                     </dataPresenter:FieldLayout>
                 </dataPresenter:XamTreeGrid.FieldLayouts>
