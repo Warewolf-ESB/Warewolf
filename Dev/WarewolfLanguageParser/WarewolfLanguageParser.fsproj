@@ -102,7 +102,7 @@
     <Compile Include="WarewolfLanguage.fs" />
     <Compile Include="WarewolfLanguageLex.fs" />
     <Compile Include="CommonFunctions.fs" />
-    <Compile Include="WarewolfDataEvaluationCommon.fs" />
+    <Compile Include="EvaluationFunctions.fs" />
     <Compile Include="Sort.fs" />
     <Compile Include="Delete.fs" />
     <Compile Include="DataMergeFunctions.fs" />

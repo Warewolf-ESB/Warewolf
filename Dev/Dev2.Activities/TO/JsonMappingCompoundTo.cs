@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
@@ -334,7 +333,7 @@ namespace Dev2.TO
                            .Where(i => i % 2 == 1)
                            .Select(i =>
 
-                                        FsInteropFunctions.languageExpressionToString(
+                                        FsInteropFunctions.LanguageExpressionToString(
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
