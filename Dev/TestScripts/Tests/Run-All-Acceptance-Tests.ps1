@@ -60,7 +60,7 @@ if ($TestList.StartsWith(",")) {
 
 # Create assemblies list.
 $TestAssembliesList = ''
-foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll, Warewolf.AcceptanceTesting.*.dll -Exclude Dev2.Installer.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | sort-object -Property Name -Unique ) {
+foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Specs.dll, Warewolf.*.Specs.dll, Warewolf.AcceptanceTesting.*.dll -Exclude Dev2.Installer.Specs.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 }
 
