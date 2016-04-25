@@ -1,5 +1,6 @@
 ﻿using ActivityUnitTests;
 using Dev2.Data.Util;
+using Dev2.TO;
 using NUnit.Framework;
 using System;
 using System.Activities.Statements;
@@ -28,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
@@ -39,11 +40,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
             if (fieldCollection == null)
             {
-                fieldCollection = new List<ActivityDTO>();
+                fieldCollection = new List<AssignObjectDTO>();
                 ScenarioContext.Current.Add("fieldCollection", fieldCollection);
             }
 
-            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
         }
 
         [When(@"the assign object tool is executed")]
@@ -72,6 +73,38 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             }
         }
 
+        [Then(@"the variable ""(.*)"" equals ""(.*)""")]
+        public void ThenTheVariableEquals(string variable, string value)
+        {
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+
+            if (DataListUtil.IsValueRecordset(variable))
+            {
+                var recordSetValues = result.Environment.EvalAsListOfStrings(variable, 0);
+                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+                value = value.Replace('"', ' ').Trim();
+
+                if (string.IsNullOrEmpty(value))
+                {
+                    Assert.IsTrue(recordSetValues.Count == 0);
+                }
+                else
+                {
+                    Assert.AreEqual(recordSetValues[0], value);
+                }
+            }
+            else
+            {
+                string actualValue;
+                value = value.Replace('"', ' ').Trim();
+                string error;
+                GetScalarValueFromEnvironment(result.Environment, variable,
+                                           out actualValue, out error);
+                actualValue = actualValue.Replace('"', ' ').Trim();
+                Assert.AreEqual(value, actualValue);
+            }
+        }
+
         [Given(@"I assign the json object ""(.*)"" to a json object ""(.*)""")]
         public void GivenIAssignTheJsonObjectToAJsonObject(string value, string variable)
         {
@@ -86,7 +119,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             if (variableList == null)
@@ -97,18 +130,82 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
 
             if (fieldCollection == null)
             {
-                fieldCollection = new List<ActivityDTO>();
+                fieldCollection = new List<AssignObjectDTO>();
                 ScenarioContext.Current.Add("fieldCollection", fieldCollection);
             }
 
-            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
+        }
+
+        [Given(@"I assign a json object value ""(.*)"" to a variable ""(.*)""")]
+        public void GivenIAssignAJsonObjectValueToAVariable(string value, string variable)
+        {
+            value = value.Replace('"', ' ').Trim();
+
+            if (value.StartsWith("="))
+            {
+                value = value.Replace("=", "");
+                value = string.Format("!~calculation~!{0}!~~calculation~!", value);
+            }
+
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            List<AssignObjectDTO> fieldCollection;
+            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            if (fieldCollection == null)
+            {
+                fieldCollection = new List<AssignObjectDTO>();
+                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+            }
+
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
+        }
+
+        [Given(@"I assign a json object value ""(.*)"" to a json object ""(.*)""")]
+        public void GivenIAssignAJsonObjectValueToAJsonObject(string value, string variable)
+        {
+            value = value.Replace('"', ' ').Trim();
+
+            if (value.StartsWith("="))
+            {
+                value = value.Replace("=", "");
+                value = string.Format("!~calculation~!{0}!~~calculation~!", value);
+            }
+
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            List<AssignObjectDTO> fieldCollection;
+            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            if (fieldCollection == null)
+            {
+                fieldCollection = new List<AssignObjectDTO>();
+                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+            }
+
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
         }
 
         protected void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            List<ActivityDTO> fieldCollection;
+            List<AssignObjectDTO> fieldCollection;
             ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             var multiAssign = new DsfMultiAssignObjectActivity();

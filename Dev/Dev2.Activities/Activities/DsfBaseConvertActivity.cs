@@ -175,7 +175,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env, int update)
+        Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env, int update)
         {
                 return a =>
                 {
@@ -190,7 +190,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (String.IsNullOrEmpty(value))
                     {
                            
-                        return DataASTMutable.WarewolfAtom.NewDataString("");
+                        return DataStorage.WarewolfAtom.NewDataString("");
                             
                     }
                     var upper = broker.Convert(value);
@@ -202,9 +202,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             return warewolfAtomResult.Item;
                         }
-                        return DataASTMutable.WarewolfAtom.Nothing;
+                        return DataStorage.WarewolfAtom.Nothing;
                     }
-                    return DataASTMutable.WarewolfAtom.NewDataString(CommonFunctions.evalResultToString(evalled));
+                    return DataStorage.WarewolfAtom.NewDataString(CommonFunctions.evalResultToString(evalled));
                 };
 
         }

@@ -44,7 +44,7 @@ namespace Warewolf.Storage
 
         private string UpdateDataSourceWithIterativeValueBob(string datasource, int update, string exp)
         {
-            return exp.Replace(_alias,WarewolfDataEvaluationCommon.languageExpressionToString( WarewolfDataEvaluationCommon.parseLanguageExpression(datasource,update)));
+            return exp.Replace(_alias,EvaluationFunctions.languageExpressionToString( EvaluationFunctions.parseLanguageExpression(datasource,update)));
         }
         private string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
         {
@@ -126,19 +126,19 @@ namespace Warewolf.Storage
             return _inner.ToStar(expression.Replace(_alias, _datasource));
         }
 
-        public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false)
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false)
         {
            
             return _inner.EvalAsList(UpdateDataSourceWithIterativeValue(_datasource, update, searchCriteria), 0, throwsifnotexists);
         }
 
-        public IEnumerable<int> EvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update)
+        public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update)
         {
 
             return _inner.EvalWhere(UpdateDataSourceWithIterativeValue(_datasource, update, expression), clause, 0);
         }
 
-        public void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause, int update)
+        public void ApplyUpdate(string expression, Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> clause, int update)
         {
 
             _inner.ApplyUpdate(UpdateDataSourceWithIterativeValue(_datasource, update, expression), clause, 0);

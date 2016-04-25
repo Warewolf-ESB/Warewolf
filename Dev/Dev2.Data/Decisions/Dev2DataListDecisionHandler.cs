@@ -243,7 +243,7 @@ namespace Dev2.Data.Decision
 
         static CommonFunctions.WarewolfEvalResult GetWarewolfEvalResult(IExecutionEnvironment env, string col,int update)
         {
-            var warewolfEvalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+            var warewolfEvalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             try
             {
                 warewolfEvalResult = env.Eval(col, update);

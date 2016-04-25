@@ -69,1700 +69,1776 @@ namespace Dev2.Activities.Specs.LanguageParser
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void ParseTextInputNew(string name, string variable, string error, string message, string[] exampleTags)
+        public virtual void ParseTextInput(string name, string variable, string error, string message, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parse text input New", exampleTags);
-#line 148
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parse text input", exampleTags);
+#line 6
 this.ScenarioSetup(scenarioInfo);
-#line 149
+#line 7
  testRunner.Given(string.Format("I have text \'{0}\' as input", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 150
+#line 8
     testRunner.When("I Parse", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
+#line 9
  testRunner.Then(string.Format("error will be \'{0}\'.", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 152
+#line 10
  testRunner.And(string.Format("the new error  will be \'{0}\'", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_1()
+        public virtual void ParseTextInput_1()
         {
-            this.ParseTextInputNew("1", "[[var]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("1", "[[var]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var1]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_2()
+        public virtual void ParseTextInput_2()
         {
-            this.ParseTextInputNew("2", "[[var1]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("2", "[[var1]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var1]]asdf<[[var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_3()
+        public virtual void ParseTextInput_3()
         {
-            this.ParseTextInputNew("3", "[[var1]]asdf<[[var]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("3", "[[var1]]asdf<[[var]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var@]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_4()
+        public virtual void ParseTextInput_4()
         {
-            this.ParseTextInputNew("4", "[[var@]]", "true", "Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("4", "[[var@]]", "true", "Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var#]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var#]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_5()
+        public virtual void ParseTextInput_5()
         {
-            this.ParseTextInputNew("5", "[[var#]]", "true", "Variable name [[var#]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("5", "[[var#]]", "true", "Variable name [[var#]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var$]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var$]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_6()
+        public virtual void ParseTextInput_6()
         {
-            this.ParseTextInputNew("6", "[[var$]]", "true", "Variable name [[var$]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("6", "[[var$]]", "true", "Variable name [[var$]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var%]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var%]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_7()
+        public virtual void ParseTextInput_7()
         {
-            this.ParseTextInputNew("7", "[[var%]]", "true", "Variable name [[var%]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("7", "[[var%]]", "true", "Variable name [[var%]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var^]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var^]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_8()
+        public virtual void ParseTextInput_8()
         {
-            this.ParseTextInputNew("8", "[[var^]]", "true", "Variable name [[var^]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("8", "[[var^]]", "true", "Variable name [[var^]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var&]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var&]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_9()
+        public virtual void ParseTextInput_9()
         {
-            this.ParseTextInputNew("9", "[[var&]]", "true", "Variable name [[var&]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("9", "[[var&]]", "true", "Variable name [[var&]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var]]00]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_10()
+        public virtual void ParseTextInput_10()
         {
-            this.ParseTextInputNew("10", "[[var]]00]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("10", "[[var]]00]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var]]@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_11()
+        public virtual void ParseTextInput_11()
         {
-            this.ParseTextInputNew("11", "[[var]]@]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("11", "[[var]]@]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_12()
+        public virtual void ParseTextInput_12()
         {
-            this.ParseTextInputNew("12", "[[var]]]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("12", "[[var]]]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[[[var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: An open [[ without a related close ]]")]
-        public virtual void ParseTextInputNew_13()
+        public virtual void ParseTextInput_13()
         {
-            this.ParseTextInputNew("13", "[[[[var]]", "true", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
+            this.ParseTextInput("13", "[[[[var]]", "true", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[(1var)]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[(1var)]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_14()
+        public virtual void ParseTextInput_14()
         {
-            this.ParseTextInputNew("14", "[[(1var)]]", "true", "Variable name [[(1var)]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("14", "[[(1var)]]", "true", "Variable name [[(1var)]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[1var)]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[1var)]] begins with a number")]
-        public virtual void ParseTextInputNew_15()
+        public virtual void ParseTextInput_15()
         {
-            this.ParseTextInputNew("15", "[[1var)]]", "true", "Variable name [[1var)]] begins with a number", ((string[])(null)));
+            this.ParseTextInput("15", "[[1var)]]", "true", "Variable name [[1var)]] begins with a number", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var.()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var.()]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_16()
+        public virtual void ParseTextInput_16()
         {
-            this.ParseTextInputNew("16", "[[var.()]]", "true", "Variable name [[var.()]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("16", "[[var.()]]", "true", "Variable name [[var.()]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_17()
+        public virtual void ParseTextInput_17()
         {
-            this.ParseTextInputNew("17", "[[]]", "true", "Variable name [[]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("17", "[[]]", "true", "Variable name [[]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[()]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_18()
+        public virtual void ParseTextInput_18()
         {
-            this.ParseTextInputNew("18", "[[()]]", "true", "Variable name [[()]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("18", "[[()]]", "true", "Variable name [[()]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[(1)]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[(1)]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_19()
+        public virtual void ParseTextInput_19()
         {
-            this.ParseTextInputNew("19", "[[(1)]]", "true", "Variable name [[(1)]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("19", "[[(1)]]", "true", "Variable name [[(1)]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var  ]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var  ]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_20()
+        public virtual void ParseTextInput_20()
         {
-            this.ParseTextInputNew("20", "[[var  ]]", "true", "Variable name [[var  ]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("20", "[[var  ]]", "true", "Variable name [[var  ]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var~]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var~]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_21()
+        public virtual void ParseTextInput_21()
         {
-            this.ParseTextInputNew("21", "[[var~]]", "true", "Variable name [[var~]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("21", "[[var~]]", "true", "Variable name [[var~]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var+]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var+]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_22()
+        public virtual void ParseTextInput_22()
         {
-            this.ParseTextInputNew("22", "[[var+]]", "true", "Variable name [[var+]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("22", "[[var+]]", "true", "Variable name [[var+]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var]a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var]a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_23()
+        public virtual void ParseTextInput_23()
         {
-            this.ParseTextInputNew("23", "[[var]a]]", "true", "Variable name [[var]a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("23", "[[var]a]]", "true", "Variable name [[var]a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var[a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_24()
+        public virtual void ParseTextInput_24()
         {
-            this.ParseTextInputNew("24", "[[var[a]]", "true", "Variable name [[var[a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("24", "[[var[a]]", "true", "Variable name [[var[a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var[[a]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_25()
+        public virtual void ParseTextInput_25()
         {
-            this.ParseTextInputNew("25", "[[var[[a]]]]", "true", "Variable name [[var[[a]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("25", "[[var[[a]]]]", "true", "Variable name [[var[[a]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "26")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var[[]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var[[]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_26()
+        public virtual void ParseTextInput_26()
         {
-            this.ParseTextInputNew("26", "[[var[[]]", "true", "Variable name [[var[[]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("26", "[[var[[]]", "true", "Variable name [[var[[]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "27")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var[[1]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var[[1]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_27()
+        public virtual void ParseTextInput_27()
         {
-            this.ParseTextInputNew("27", "[[var[[1]]]]", "true", "Variable name [[var[[1]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("27", "[[var[[1]]]]", "true", "Variable name [[var[[1]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var.a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var.a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_28()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
+        public virtual void ParseTextInput_28()
         {
-            this.ParseTextInputNew("28", "[[var.a]]", "true", "Variable name [[var.a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("28", "[[var.a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "29")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var1.a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var1.a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_29()
-        {
-            this.ParseTextInputNew("29", "[[var1.a]]", "true", "Variable name [[var1.a]] contains invalid character(s)", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var]][[var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_30()
+        public virtual void ParseTextInput_30()
         {
-            this.ParseTextInputNew("30", "[[var]][[var]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("30", "[[var]][[var]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[a]].[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_31()
+        public virtual void ParseTextInput_31()
         {
-            this.ParseTextInputNew("31", "[[a]].[[b]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("31", "[[a]].[[b]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[[[a]].[[b]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "invalid variable name")]
-        public virtual void ParseTextInputNew_32()
+        public virtual void ParseTextInput_32()
         {
-            this.ParseTextInputNew("32", "[[[[a]].[[b]]]]", "true", "invalid variable name", ((string[])(null)));
+            this.ParseTextInput("32", "[[[[a]].[[b]]]]", "true", "invalid variable name", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[[[a]].[[b]]]]cd]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_33()
+        public virtual void ParseTextInput_33()
         {
-            this.ParseTextInputNew("33", "[[[[a]].[[b]]]]cd]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("33", "[[[[a]].[[b]]]]cd]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var*]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var*]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_34()
+        public virtual void ParseTextInput_34()
         {
-            this.ParseTextInputNew("34", "[[var*]]", "true", "Variable name [[var*]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("34", "[[var*]]", "true", "Variable name [[var*]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "35")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "35")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[1var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[1var]] begins with a number")]
-        public virtual void ParseTextInputNew_35()
-        {
-            this.ParseTextInputNew("35", "[[1var]]", "true", "Variable name [[1var]] begins with a number", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[@var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[@var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_36()
+        public virtual void ParseTextInput_36()
         {
-            this.ParseTextInputNew("36", "[[@var]]", "true", "Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("36", "[[@var]]", "true", "Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[#var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[#var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_37()
+        public virtual void ParseTextInput_37()
         {
-            this.ParseTextInputNew("37", "[[#var]]", "true", "Variable name [[#var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("37", "[[#var]]", "true", "Variable name [[#var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[$var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[$var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_38()
+        public virtual void ParseTextInput_38()
         {
-            this.ParseTextInputNew("38", "[[$var]]", "true", "Variable name [[$var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("38", "[[$var]]", "true", "Variable name [[$var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[%var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[%var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_39()
+        public virtual void ParseTextInput_39()
         {
-            this.ParseTextInputNew("39", "[[%var]]", "true", "Variable name [[%var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("39", "[[%var]]", "true", "Variable name [[%var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[^var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[^var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_40()
+        public virtual void ParseTextInput_40()
         {
-            this.ParseTextInputNew("40", "[[^var]]", "true", "Variable name [[^var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("40", "[[^var]]", "true", "Variable name [[^var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[&var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[&var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_41()
+        public virtual void ParseTextInput_41()
         {
-            this.ParseTextInputNew("41", "[[&var]]", "true", "Variable name [[&var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("41", "[[&var]]", "true", "Variable name [[&var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[*var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[*var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_42()
+        public virtual void ParseTextInput_42()
         {
-            this.ParseTextInputNew("42", "[[*var]]", "true", "Variable name [[*var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("42", "[[*var]]", "true", "Variable name [[*var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[(var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[(var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_43()
+        public virtual void ParseTextInput_43()
         {
-            this.ParseTextInputNew("43", "[[(var]]", "true", "Variable name [[(var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("43", "[[(var]]", "true", "Variable name [[(var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "44")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var]](var)]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_44()
+        public virtual void ParseTextInput_44()
         {
-            this.ParseTextInputNew("44", "[[var]](var)]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("44", "[[var]](var)]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "45")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var,]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var,]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_45()
+        public virtual void ParseTextInput_45()
         {
-            this.ParseTextInputNew("45", "[[var,]]", "true", "Variable name [[var,]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("45", "[[var,]]", "true", "Variable name [[var,]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "46")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var/]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var/]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_46()
+        public virtual void ParseTextInput_46()
         {
-            this.ParseTextInputNew("46", "[[var/]]", "true", "Variable name [[var/]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("46", "[[var/]]", "true", "Variable name [[var/]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "47")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var:]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var:]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_47()
+        public virtual void ParseTextInput_47()
         {
-            this.ParseTextInputNew("47", "[[var:]]", "true", "Variable name [[var:]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("47", "[[var:]]", "true", "Variable name [[var:]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "48")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var\"]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var\"]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_48()
+        public virtual void ParseTextInput_48()
         {
-            this.ParseTextInputNew("48", "[[var\"]]", "true", "Variable name [[var\"]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("48", "[[var\"]]", "true", "Variable name [[var\"]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "49")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var\']]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var\']] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_49()
+        public virtual void ParseTextInput_49()
         {
-            this.ParseTextInputNew("49", "[[var\']]", "true", "Variable name [[var\']] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("49", "[[var\']]", "true", "Variable name [[var\']] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "50")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var;]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var;]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_50()
+        public virtual void ParseTextInput_50()
         {
-            this.ParseTextInputNew("50", "[[var;]]", "true", "Variable name [[var;]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("50", "[[var;]]", "true", "Variable name [[var;]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "51")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var?]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var?]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_51()
+        public virtual void ParseTextInput_51()
         {
-            this.ParseTextInputNew("51", "[[var?]]", "true", "Variable name [[var?]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("51", "[[var?]]", "true", "Variable name [[var?]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "52")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[var 1]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[var 1]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_52()
+        public virtual void ParseTextInput_52()
         {
-            this.ParseTextInputNew("52", "[[var 1]]", "true", "Variable name [[var 1]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("52", "[[var 1]]", "true", "Variable name [[var 1]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "53")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[:var 1]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[:var 1]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_53()
+        public virtual void ParseTextInput_53()
         {
-            this.ParseTextInputNew("53", "[[:var 1]]", "true", "Variable name [[:var 1]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("53", "[[:var 1]]", "true", "Variable name [[:var 1]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "54")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[,var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[,var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_54()
+        public virtual void ParseTextInput_54()
         {
-            this.ParseTextInputNew("54", "[[,var]]", "true", "Variable name [[,var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("54", "[[,var]]", "true", "Variable name [[,var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "55")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[test,var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[test,var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_55()
+        public virtual void ParseTextInput_55()
         {
-            this.ParseTextInputNew("55", "[[test,var]]", "true", "Variable name [[test,var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("55", "[[test,var]]", "true", "Variable name [[test,var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "56")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[test. var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[test. var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_56()
+        public virtual void ParseTextInput_56()
         {
-            this.ParseTextInputNew("56", "[[test. var]]", "true", "Variable name [[test. var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("56", "[[test. var]]", "true", "Variable name [[test. var]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "57")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[test.var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[test.var]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_57()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
+        public virtual void ParseTextInput_57()
         {
-            this.ParseTextInputNew("57", "[[test.var]]", "true", "Variable name [[test.var]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("57", "[[test.var]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "58")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[test. 1]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[test. 1]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_58()
+        public virtual void ParseTextInput_58()
         {
-            this.ParseTextInputNew("58", "[[test. 1]]", "true", "Variable name [[test. 1]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("58", "[[test. 1]]", "true", "Variable name [[test. 1]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "59")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_59()
+        public virtual void ParseTextInput_59()
         {
-            this.ParseTextInputNew("59", "[[rec().a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("59", "[[rec().a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(1).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_60()
+        public virtual void ParseTextInput_60()
         {
-            this.ParseTextInputNew("60", "[[rec(1).a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("60", "[[rec(1).a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "61")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_61()
+        public virtual void ParseTextInput_61()
         {
-            this.ParseTextInputNew("61", "[[rec(*).a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("61", "[[rec(*).a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "62")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(*).&]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(*).&]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_62()
+        public virtual void ParseTextInput_62()
         {
-            this.ParseTextInputNew("62", "[[rec(*).&]]", "true", "Variable name [[rec(*).&]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("62", "[[rec(*).&]]", "true", "Variable name [[rec(*).&]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "63")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(),a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(),a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_63()
+        public virtual void ParseTextInput_63()
         {
-            this.ParseTextInputNew("63", "[[rec(),a]]", "true", "Variable name [[rec(),a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("63", "[[rec(),a]]", "true", "Variable name [[rec(),a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()*a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()*a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_64()
+        public virtual void ParseTextInput_64()
         {
-            this.ParseTextInputNew("64", "[[rec()*a]]", "true", "Variable name [[rec()*a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("64", "[[rec()*a]]", "true", "Variable name [[rec()*a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "65")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()&a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()&a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_65()
+        public virtual void ParseTextInput_65()
         {
-            this.ParseTextInputNew("65", "[[rec()&a]]", "true", "Variable name [[rec()&a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("65", "[[rec()&a]]", "true", "Variable name [[rec()&a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "66")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()!a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()!a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_66()
+        public virtual void ParseTextInput_66()
         {
-            this.ParseTextInputNew("66", "[[rec()!a]]", "true", "Variable name [[rec()!a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("66", "[[rec()!a]]", "true", "Variable name [[rec()!a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "67")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()@a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()@a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_67()
+        public virtual void ParseTextInput_67()
         {
-            this.ParseTextInputNew("67", "[[rec()@a]]", "true", "Variable name [[rec()@a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("67", "[[rec()@a]]", "true", "Variable name [[rec()@a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "68")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()(a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()(a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_68()
+        public virtual void ParseTextInput_68()
         {
-            this.ParseTextInputNew("68", "[[rec()(a]]", "true", "Variable name [[rec()(a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("68", "[[rec()(a]]", "true", "Variable name [[rec()(a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "69")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()%`a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()%`a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_69()
+        public virtual void ParseTextInput_69()
         {
-            this.ParseTextInputNew("69", "[[rec()%`a]]", "true", "Variable name [[rec()%`a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("69", "[[rec()%`a]]", "true", "Variable name [[rec()%`a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "70")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()         a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()         a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_70()
+        public virtual void ParseTextInput_70()
         {
-            this.ParseTextInputNew("70", "[[rec()         a]]", "true", "Variable name [[rec()         a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("70", "[[rec()         a]]", "true", "Variable name [[rec()         a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "71")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(1)]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_71()
+        public virtual void ParseTextInput_71()
         {
-            this.ParseTextInputNew("71", "[[rec(1)]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("71", "[[rec(1)]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "72")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(1).[[rec().1]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(1).[[rec().1]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_72()
+        public virtual void ParseTextInput_72()
         {
-            this.ParseTextInputNew("72", "[[rec(1).[[rec().1]]]]", "true", "Variable name [[rec(1).[[rec().1]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("72", "[[rec(1).[[rec().1]]]]", "true", "Variable name [[rec(1).[[rec().1]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "73")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(a).[[rec().a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(a).[[rec().a]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_73()
+        public virtual void ParseTextInput_73()
         {
-            this.ParseTextInputNew("73", "[[rec(a).[[rec().a]]]]", "true", "Variable name [[rec(a).[[rec().a]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("73", "[[rec(a).[[rec().a]]]]", "true", "Variable name [[rec(a).[[rec().a]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "74")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().[[rec().a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec().[[rec().a]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_74()
+        public virtual void ParseTextInput_74()
         {
-            this.ParseTextInputNew("74", "[[rec().[[rec().a]]]]", "true", "Variable name [[rec().[[rec().a]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("74", "[[rec().[[rec().a]]]]", "true", "Variable name [[rec().[[rec().a]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "75")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().[[b]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec().[[b]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_75()
+        public virtual void ParseTextInput_75()
         {
-            this.ParseTextInputNew("75", "[[rec().[[b]]]]", "true", "Variable name [[rec().[[b]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("75", "[[rec().[[b]]]]", "true", "Variable name [[rec().[[b]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[{{rec(_).a}}]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[{{rec(_).a}}]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_76()
+        public virtual void ParseTextInput_76()
         {
-            this.ParseTextInputNew("76", "[[{{rec(_).a}}]]]", "true", "Variable name [[{{rec(_).a}}]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("76", "[[{{rec(_).a}}]]]", "true", "Variable name [[{{rec(_).a}}]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "77")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[*[{{rec(_).a}}]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[*[{{rec(_).a}}]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_77()
+        public virtual void ParseTextInput_77()
         {
-            this.ParseTextInputNew("77", "[[*[{{rec(_).a}}]]]", "true", "Variable name [[*[{{rec(_).a}}]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("77", "[[*[{{rec(_).a}}]]]", "true", "Variable name [[*[{{rec(_).a}}]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "78")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(23).[[var}]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(23).[[var}]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_78()
+        public virtual void ParseTextInput_78()
         {
-            this.ParseTextInputNew("78", "[[rec(23).[[var}]]]]", "true", "Variable name [[rec(23).[[var}]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("78", "[[rec(23).[[var}]]]]", "true", "Variable name [[rec(23).[[var}]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "79")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(23).[[var*]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(23).[[var*]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_79()
+        public virtual void ParseTextInput_79()
         {
-            this.ParseTextInputNew("79", "[[rec(23).[[var*]]]]", "true", "Variable name [[rec(23).[[var*]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("79", "[[rec(23).[[var*]]]]", "true", "Variable name [[rec(23).[[var*]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "80")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(23).[[var%^&%]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(23).[[var%^&%]]]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_80()
+        public virtual void ParseTextInput_80()
         {
-            this.ParseTextInputNew("80", "[[rec(23).[[var%^&%]]]]", "true", "Variable name [[rec(23).[[var%^&%]]]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("80", "[[rec(23).[[var%^&%]]]]", "true", "Variable name [[rec(23).[[var%^&%]]]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "81")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]]234234]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_81()
+        public virtual void ParseTextInput_81()
         {
-            this.ParseTextInputNew("81", "[[rec().a]]234234]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("81", "[[rec().a]]234234]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "82")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]]=]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_82()
+        public virtual void ParseTextInput_82()
         {
-            this.ParseTextInputNew("82", "[[rec().a]]=]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("82", "[[rec().a]]=]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "83")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()..]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()..]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_83()
+        public virtual void ParseTextInput_83()
         {
-            this.ParseTextInputNew("83", "[[rec()..]]", "true", "Variable name [[rec()..]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("83", "[[rec()..]]", "true", "Variable name [[rec()..]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "84")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a.b]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec().a.b]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_84()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
+        public virtual void ParseTextInput_84()
         {
-            this.ParseTextInputNew("84", "[[rec().a.b]]", "true", "Variable name [[rec().a.b]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("84", "[[rec().a.b]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "85")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]].a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Invalid region detected: A close ]] without a related open [[")]
-        public virtual void ParseTextInputNew_85()
+        public virtual void ParseTextInput_85()
         {
-            this.ParseTextInputNew("85", "[[rec().a]].a]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
+            this.ParseTextInput("85", "[[rec().a]].a]]", "true", "Invalid region detected: A close ]] without a related open [[", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "86")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_86()
+        public virtual void ParseTextInput_86()
         {
-            this.ParseTextInputNew("86", "[[rec()]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("86", "[[rec()]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "87")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "87")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(@).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (@) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_87()
+        public virtual void ParseTextInput_87()
         {
-            this.ParseTextInputNew("87", "[[rec(@).a]]", "true", "Recordset index (@) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("87", "[[rec(@).a]]", "true", "Recordset index (@) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(#).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (#) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_88()
+        public virtual void ParseTextInput_88()
         {
-            this.ParseTextInputNew("88", "[[rec(#).a]]", "true", "Recordset index (#) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("88", "[[rec(#).a]]", "true", "Recordset index (#) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "89")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec($).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index ($) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_89()
+        public virtual void ParseTextInput_89()
         {
-            this.ParseTextInputNew("89", "[[rec($).a]]", "true", "Recordset index ($) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("89", "[[rec($).a]]", "true", "Recordset index ($) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "90")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(%).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (%) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_90()
+        public virtual void ParseTextInput_90()
         {
-            this.ParseTextInputNew("90", "[[rec(%).a]]", "true", "Recordset index (%) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("90", "[[rec(%).a]]", "true", "Recordset index (%) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "91")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "91")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(^).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (^) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_91()
+        public virtual void ParseTextInput_91()
         {
-            this.ParseTextInputNew("91", "[[rec(^).a]]", "true", "Recordset index (^) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("91", "[[rec(^).a]]", "true", "Recordset index (^) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "92")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "92")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(&).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (&) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_92()
+        public virtual void ParseTextInput_92()
         {
-            this.ParseTextInputNew("92", "[[rec(&).a]]", "true", "Recordset index (&) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("92", "[[rec(&).a]]", "true", "Recordset index (&) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "93")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "93")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(*).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_93()
+        public virtual void ParseTextInput_93()
         {
-            this.ParseTextInputNew("93", "[[rec(*).a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("93", "[[rec(*).a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "94")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "94")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (() contains invalid character(s)")]
-        public virtual void ParseTextInputNew_94()
+        public virtual void ParseTextInput_94()
         {
-            this.ParseTextInputNew("94", "[[rec(().a]]", "true", "Recordset index (() contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("94", "[[rec(().a]]", "true", "Recordset index (() contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "95")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "95")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index ()) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_95()
+        public virtual void ParseTextInput_95()
         {
-            this.ParseTextInputNew("95", "[[rec()).a]]", "true", "Recordset index ()) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("95", "[[rec()).a]]", "true", "Recordset index ()) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "96")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(+).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (+) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_96()
+        public virtual void ParseTextInput_96()
         {
-            this.ParseTextInputNew("96", "[[rec(+).a]]", "true", "Recordset index (+) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("96", "[[rec(+).a]]", "true", "Recordset index (+) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "97")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(-).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (-) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_97()
+        public virtual void ParseTextInput_97()
         {
-            this.ParseTextInputNew("97", "[[rec(-).a]]", "true", "Recordset index (-) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("97", "[[rec(-).a]]", "true", "Recordset index (-) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "98")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "98")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(!).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (!) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_98()
+        public virtual void ParseTextInput_98()
         {
-            this.ParseTextInputNew("98", "[[rec(!).a]]", "true", "Recordset index (!) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("98", "[[rec(!).a]]", "true", "Recordset index (!) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "99")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(q).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (q) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_99()
+        public virtual void ParseTextInput_99()
         {
-            this.ParseTextInputNew("99", "[[rec(q).a]]", "true", "Recordset index (q) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("99", "[[rec(q).a]]", "true", "Recordset index (q) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(w).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (w) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_100()
+        public virtual void ParseTextInput_100()
         {
-            this.ParseTextInputNew("100", "[[rec(w).a]]", "true", "Recordset index (w) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("100", "[[rec(w).a]]", "true", "Recordset index (w) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "101")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "101")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(e).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (e) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_101()
+        public virtual void ParseTextInput_101()
         {
-            this.ParseTextInputNew("101", "[[rec(e).a]]", "true", "Recordset index (e) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("101", "[[rec(e).a]]", "true", "Recordset index (e) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "102")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "102")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(r).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (r) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_102()
+        public virtual void ParseTextInput_102()
         {
-            this.ParseTextInputNew("102", "[[rec(r).a]]", "true", "Recordset index (r) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("102", "[[rec(r).a]]", "true", "Recordset index (r) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "103")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "103")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(t).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (t) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_103()
+        public virtual void ParseTextInput_103()
         {
-            this.ParseTextInputNew("103", "[[rec(t).a]]", "true", "Recordset index (t) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("103", "[[rec(t).a]]", "true", "Recordset index (t) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "104")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "104")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(y).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (y) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_104()
+        public virtual void ParseTextInput_104()
         {
-            this.ParseTextInputNew("104", "[[rec(y).a]]", "true", "Recordset index (y) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("104", "[[rec(y).a]]", "true", "Recordset index (y) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "105")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "105")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(u).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (u) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_105()
+        public virtual void ParseTextInput_105()
         {
-            this.ParseTextInputNew("105", "[[rec(u).a]]", "true", "Recordset index (u) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("105", "[[rec(u).a]]", "true", "Recordset index (u) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "106")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "106")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(d).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (d) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_106()
+        public virtual void ParseTextInput_106()
         {
-            this.ParseTextInputNew("106", "[[rec(d).a]]", "true", "Recordset index (d) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("106", "[[rec(d).a]]", "true", "Recordset index (d) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "107")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "107")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(b).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (b) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_107()
+        public virtual void ParseTextInput_107()
         {
-            this.ParseTextInputNew("107", "[[rec(b).a]]", "true", "Recordset index (b) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("107", "[[rec(b).a]]", "true", "Recordset index (b) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "108")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "108")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(.).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (.) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_108()
+        public virtual void ParseTextInput_108()
         {
-            this.ParseTextInputNew("108", "[[rec(.).a]]", "true", "Recordset index (.) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("108", "[[rec(.).a]]", "true", "Recordset index (.) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "109")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "109")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(:).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (:) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_109()
+        public virtual void ParseTextInput_109()
         {
-            this.ParseTextInputNew("109", "[[rec(:).a]]", "true", "Recordset index (:) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("109", "[[rec(:).a]]", "true", "Recordset index (:) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "110")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "110")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(,).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Recordset index (,) contains invalid character(s)")]
-        public virtual void ParseTextInputNew_110()
+        public virtual void ParseTextInput_110()
         {
-            this.ParseTextInputNew("110", "[[rec(,).a]]", "true", "Recordset index (,) contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("110", "[[rec(,).a]]", "true", "Recordset index (,) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "111")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "111")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec\"()\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec\"()\".a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_111()
+        public virtual void ParseTextInput_111()
         {
-            this.ParseTextInputNew("111", "[[rec\"()\".a]]", "true", "Variable name [[rec\"()\".a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("111", "[[rec\"()\".a]]", "true", "Variable name [[rec\"()\".a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "112")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "112")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec\'()\'.a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec\'()\'.a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_112()
+        public virtual void ParseTextInput_112()
         {
-            this.ParseTextInputNew("112", "[[rec\'()\'.a]]", "true", "Variable name [[rec\'()\'.a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("112", "[[rec\'()\'.a]]", "true", "Variable name [[rec\'()\'.a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "113")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "113")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec\").a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec\").a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_113()
+        public virtual void ParseTextInput_113()
         {
-            this.ParseTextInputNew("113", "[[rec\").a]]", "true", "Variable name [[rec\").a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("113", "[[rec\").a]]", "true", "Variable name [[rec\").a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "114")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec{a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec{a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_114()
+        public virtual void ParseTextInput_114()
         {
-            this.ParseTextInputNew("114", "[[rec{a]]", "true", "Variable name [[rec{a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("114", "[[rec{a]]", "true", "Variable name [[rec{a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "115")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "115")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec{a}]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec{a}]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_115()
+        public virtual void ParseTextInput_115()
         {
-            this.ParseTextInputNew("115", "[[rec{a}]]", "true", "Variable name [[rec{a}]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("115", "[[rec{a}]]", "true", "Variable name [[rec{a}]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "116")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "116")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec()*.a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec()*.a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_116()
+        public virtual void ParseTextInput_116()
         {
-            this.ParseTextInputNew("116", "[[rec()*.a]]", "true", "Variable name [[rec()*.a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("116", "[[rec()*.a]]", "true", "Variable name [[rec()*.a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "117")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "117")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec().a[[a]] contains invalid character(s)")]
-        public virtual void ParseTextInputNew_117()
+        public virtual void ParseTextInput_117()
         {
-            this.ParseTextInputNew("117", "[[rec().a[[a]]", "true", "Variable name [[rec().a[[a]] contains invalid character(s)", ((string[])(null)));
+            this.ParseTextInput("117", "[[rec().a[[a]]", "true", "Variable name [[rec().a[[a]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "118")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "118")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]][[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_118()
+        public virtual void ParseTextInput_118()
         {
-            this.ParseTextInputNew("118", "[[rec().a]][[a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("118", "[[rec().a]][[a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "119")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "119")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]].[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_119()
+        public virtual void ParseTextInput_119()
         {
-            this.ParseTextInputNew("119", "[[rec().a]].[[a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("119", "[[rec().a]].[[a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "120")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "120")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "asdf[[rec().a]]*[[a]]asdf")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_120()
+        public virtual void ParseTextInput_120()
         {
-            this.ParseTextInputNew("120", "asdf[[rec().a]]*[[a]]asdf", "false", "", ((string[])(null)));
+            this.ParseTextInput("120", "asdf[[rec().a]]*[[a]]asdf", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "121")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "121")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[v]],[[a]][[rec().a]]@[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_121()
+        public virtual void ParseTextInput_121()
         {
-            this.ParseTextInputNew("121", "[[v]],[[a]][[rec().a]]@[[a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("121", "[[v]],[[a]][[rec().a]]@[[a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "122")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "122")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[v]],[[a]][[rec(*).a]]@[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_122()
+        public virtual void ParseTextInput_122()
         {
-            this.ParseTextInputNew("122", "[[v]],[[a]][[rec(*).a]]@[[a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("122", "[[v]],[[a]][[rec(*).a]]@[[a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "123")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec([[a]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_123()
+        public virtual void ParseTextInput_123()
         {
-            this.ParseTextInputNew("123", "[[rec([[a]]).a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("123", "[[rec([[a]]).a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "124")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "124")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec([[rec(*).a]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_124()
+        public virtual void ParseTextInput_124()
         {
-            this.ParseTextInputNew("124", "[[rec([[rec(*).a]]).a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("124", "[[rec([[rec(*).a]]).a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "125")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "125")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]]%[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_125()
+        public virtual void ParseTextInput_125()
         {
-            this.ParseTextInputNew("125", "[[rec().a]]%[[a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("125", "[[rec().a]]%[[a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "126")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "126")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "a[[rec([[[[b]]]]).a]]@")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_126()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name a[[rec([[[[b]]]]).a]]@ contains invalid character(s)")]
+        public virtual void ParseTextInput_126()
         {
-            this.ParseTextInputNew("126", "a[[rec([[[[b]]]]).a]]@", "false", "", ((string[])(null)));
+            this.ParseTextInput("126", "a[[rec([[[[b]]]]).a]]@", "true", "Variable name a[[rec([[[[b]]]]).a]]@ contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "127")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "127")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a]]&[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_127()
+        public virtual void ParseTextInput_127()
         {
-            this.ParseTextInputNew("127", "[[rec().a]]&[[a]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("127", "[[rec().a]]&[[a]]", "false", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "128")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "128")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a.b*]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]] contains invalid characte" +
-            "r(s)")]
-        public virtual void ParseTextInputNew_128()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec().a.b*]] contains invalid character(s)")]
+        public virtual void ParseTextInput_128()
         {
-            this.ParseTextInputNew("128", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "true", "Variable name [[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]] contains invalid characte" +
-                    "r(s)", ((string[])(null)));
+            this.ParseTextInput("128", "[[rec().a.b*]]", "true", "Variable name [[rec().a.b*]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input New")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "129")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "129")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[[[[[[[[[[[[[[[[[[[y]]]]]]]]]]]]]]]]]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec.a*]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec.a*]] contains invalid character(s)")]
+        public virtual void ParseTextInput_129()
+        {
+            this.ParseTextInput("129", "[[rec.a*]]", "true", "Variable name [[rec.a*]] contains invalid character(s)", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "130")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "130")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec&.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec&.a]] contains invalid character(s)")]
+        public virtual void ParseTextInput_130()
+        {
+            this.ParseTextInput("130", "[[rec&.a]]", "true", "Variable name [[rec&.a]] contains invalid character(s)", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "131")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "131")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec.a.b.*]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec.a.b.*]] contains invalid character(s)")]
+        public virtual void ParseTextInput_131()
+        {
+            this.ParseTextInput("131", "[[rec.a.b.*]]", "true", "Variable name [[rec.a.b.*]] contains invalid character(s)", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "132")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "132")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a.b.*]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec().a.b.*]] contains invalid character(s)")]
+        public virtual void ParseTextInput_132()
+        {
+            this.ParseTextInput("132", "[[rec().a.b.*]]", "true", "Variable name [[rec().a.b.*]] contains invalid character(s)", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "133")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "133")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a.b().c]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
-        public virtual void ParseTextInputNew_129()
+        public virtual void ParseTextInput_133()
         {
-            this.ParseTextInputNew("129", "[[[[[[[[[[[[[[[[[[[[y]]]]]]]]]]]]]]]]]]]]", "false", "", ((string[])(null)));
+            this.ParseTextInput("133", "[[rec().a.b().c]]", "false", "", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "134")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "134")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a.b().c(*).d]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
+        public virtual void ParseTextInput_134()
+        {
+            this.ParseTextInput("134", "[[rec().a.b().c(*).d]]", "false", "", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "135")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "135")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().a.b().c(*)]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
+        public virtual void ParseTextInput_135()
+        {
+            this.ParseTextInput("135", "[[rec().a.b().c(*)]]", "false", "", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "136")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "136")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(*).a.b().c(*)]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "")]
+        public virtual void ParseTextInput_136()
+        {
+            this.ParseTextInput("136", "[[rec(*).a.b().c(*)]]", "false", "", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parse text input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Language Parser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "137")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "137")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(*).a.b().c(*)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:message", "Variable name [[rec(*).a.b().c(*) contains invalid character(s)")]
+        public virtual void ParseTextInput_137()
+        {
+            this.ParseTextInput("137", "[[rec(*).a.b().c(*)", "true", "Variable name [[rec(*).a.b().c(*) contains invalid character(s)", ((string[])(null)));
         }
     }
 }

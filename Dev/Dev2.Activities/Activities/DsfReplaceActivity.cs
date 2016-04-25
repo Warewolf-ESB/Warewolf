@@ -177,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                                 if (!string.IsNullOrEmpty(findValue))
                                 {
-                                    dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)), update);
+                                    dataObject.Environment.ApplyUpdate(s, a => DataStorage.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)), update);
                                 }
 
                                 replacementTotal += replacementCount;

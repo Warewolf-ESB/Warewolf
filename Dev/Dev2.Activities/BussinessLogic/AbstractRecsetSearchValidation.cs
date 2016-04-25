@@ -22,21 +22,21 @@ namespace Dev2.DataList
     /// </summary>
     public abstract class AbstractRecsetSearchValidation : IFindRecsetOptions
     {
-        public virtual Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from,IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        public virtual Func<DataStorage.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from,IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             return CreateFunc(values,from,to,all);
         }
 
         public abstract int ArgumentCount { get; }
 
-        public virtual Func<DataASTMutable.WarewolfAtom, bool> CreateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all)
+        public virtual Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             return null;
         }
 
         public abstract string HandlesType();
 
-        public virtual  Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, bool all)
+        public virtual  Func<DataStorage.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataStorage.WarewolfAtom> values, bool all)
         {
             return values.Contains;
         }

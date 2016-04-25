@@ -26,6 +26,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>bin\Debug\WarewolfLanguageParser.XML</DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>25</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -88,7 +90,7 @@
       <Link>Properties\AssemblyCommonInfo.fs</Link>
     </Compile>
     <None Include="Script.fsx" />
-    <Compile Include="DataASTMutable.fs" />
+    <Compile Include="DataStorage.fs" />
     <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />
     <FsYacc Include="..\WarewolfLanguageParser\WarewolfLanguage.fsy">
@@ -100,7 +102,7 @@
     <Compile Include="WarewolfLanguage.fs" />
     <Compile Include="WarewolfLanguageLex.fs" />
     <Compile Include="CommonFunctions.fs" />
-    <Compile Include="WarewolfDataEvaluationCommon.fs" />
+    <Compile Include="EvaluationFunctions.fs" />
     <Compile Include="Sort.fs" />
     <Compile Include="Delete.fs" />
     <Compile Include="DataMergeFunctions.fs" />
