@@ -37,5 +37,5 @@ Please note that Warewolf is built for Windows 8.1, Windows 10, Windows Server 2
 Developed with the help of ReSharper
 
 
-[![resharper logo](http://warewolf.io/images/Resharper%20Logo.png)](https://www.jetbrains.com/resharper/)
+[![Resharper Logo](http://warewolf.io/images/NewResharper%20Logo.png)](https://www.jetbrains.com/resharper/)
 

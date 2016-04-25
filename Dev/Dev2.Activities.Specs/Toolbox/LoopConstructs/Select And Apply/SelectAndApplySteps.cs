@@ -13,6 +13,7 @@ using Dev2.Data.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs
 {

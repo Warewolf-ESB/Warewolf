@@ -377,7 +377,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             Assert.AreEqual(3, getResults.Count);
- 
+
         }
 
         [TestMethod]
@@ -591,7 +591,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             Assert.AreEqual(7, getResults.Count);
-            Assert.IsTrue(getResults.Any(a=>a.ToString()=="[[City("));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
@@ -1016,7 +1016,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
             Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
-           
+
         }
 
         [TestMethod]
@@ -1168,7 +1168,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void DefaultIntellisenseProvider_Dispose_IsDisposedIsSetToTrue()
         {
             var provider = new DefaultIntellisenseProvider();
-   
+
             provider.Dispose();
 
             Assert.IsFalse(provider.Optional);

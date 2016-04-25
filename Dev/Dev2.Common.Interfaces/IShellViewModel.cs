@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 
 namespace Dev2.Common.Interfaces
@@ -15,6 +16,7 @@ namespace Dev2.Common.Interfaces
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key = null);
 
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
+        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
 
         void NewResource(string resourceType,string resourcePath);
 

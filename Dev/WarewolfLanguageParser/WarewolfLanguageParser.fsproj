@@ -114,6 +114,7 @@
     <Compile Include="WarewolfTestData.fs" />
     <Compile Include="IntellisenseStringProvider.fs" />
     <None Include="app.config" />
+    <Compile Include="WarewolfDataEvaluationCommon.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

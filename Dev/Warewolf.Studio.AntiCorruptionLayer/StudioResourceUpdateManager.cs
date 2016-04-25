@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -97,6 +98,19 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
         }
 
+        public void Save(IExchangeSource exchangeSource)
+        {
+            UpdateManagerProxy.SaveExchangeSource(exchangeSource, GlobalConstants.ServerWorkspaceID);
+            if (ExchangedServiceSourceSaved != null)
+            {
+                ExchangedServiceSourceSaved(exchangeSource);
+            }
+            if (ItemSaved != null)
+            {
+                ItemSaved();
+            }
+        }
+
         public void TestConnection(IServerSource serverSource)
         {
             UpdateManagerProxy.TestConnection(serverSource);
@@ -106,6 +120,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public string TestConnection(IEmailServiceSource emailServiceSource)
         {
             return UpdateManagerProxy.TestEmailServiceSource(emailServiceSource);
+        }
+
+        public string TestConnection(IExchangeSource emailServiceSourceSource)
+        {
+            return UpdateManagerProxy.TestExchangeServiceSource(emailServiceSourceSource);
         }
 
         public void TestConnection(IWebServiceSource resource)
@@ -211,6 +230,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public event Action<IDbSource> DatabaseServiceSourceSaved;
         public event Action<IPluginSource> PluginServiceSourceSaved;
         public event Action<IEmailServiceSource> EmailServiceSourceSaved;
+        public event Action<IExchangeSource> ExchangedServiceSourceSaved;
 
         public event Action<ISharepointServerSource> SharePointServiceSourceSaved;
 

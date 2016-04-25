@@ -624,6 +624,16 @@
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
+                                                    <ig:XamMenuItem Name="NewExchangeSource"
+                                                                    Command="{Binding Path=Data.NewCommand}"
+                                                                    CommandParameter="{x:Static data:ResourceType.ExchangeSource}"
+                                                                    Header="New Exchange Source"
+                                                                    Visibility="{Binding Path=Data.CanCreateExchangeSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Width="12" Height="12" Source="{StaticResource EmailSourceImageLogo}" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+
                                                     <ig:XamMenuItem Name="NewDropboxSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="{x:Static data:ResourceType.DropboxSource}"
@@ -835,6 +845,15 @@
                                                                     CommandParameter="{x:Static data:ResourceType.EmailSource}"
                                                                     Header="New Email Source"
                                                                     Visibility="{Binding Path=Data.CanCreateEmailSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Width="12" Height="12" Source="{StaticResource EmailSourceImageLogo}" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+                                                    <ig:XamMenuItem Name="NewExchangeSource"
+                                                                    Command="{Binding Path=Data.NewCommand}"
+                                                                    CommandParameter="{x:Static data:ResourceType.ExchangeSource}"
+                                                                    Header="New Exchange Source"
+                                                                    Visibility="{Binding Path=Data.CanCreateExchangeSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12" Height="12" Source="{StaticResource EmailSourceImageLogo}" />
                                                         </ig:XamMenuItem.Icon>
