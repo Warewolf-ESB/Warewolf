@@ -20,14 +20,16 @@ using Warewolf.Storage;
 using Dev2.Studio.Core.Activities.Utils;
 using Moq;
 using System.Linq.Expressions;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities.Specs
 {
-    class SelectTestTool:DsfNativeActivity<string>
+    class SelectTestTool : DsfNativeActivity<string>
     {
         private bool _throws;
 
-        public SelectTestTool():base(false,"")
+        public SelectTestTool()
+            : base(false, "")
         {
             DisplayName = "Comment";
         }
@@ -59,12 +61,12 @@ namespace Dev2.Activities.Specs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-   
+
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-         
+
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -84,7 +86,7 @@ namespace Dev2.Activities.Specs
         [Given(@"I drag a new Select and Apply tool to the design surface")]
         public void GivenIDragANewSelectAndApplyToolToTheDesignSurface()
         {
-          
+
             var selectAndApplyTool = new DsfSelectAndApplyActivity();
             var modelItem = ModelItemUtils.CreateModelItem(selectAndApplyTool);
             var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
@@ -92,13 +94,13 @@ namespace Dev2.Activities.Specs
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
-           
+
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-           
-          
+
+
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
@@ -125,7 +127,7 @@ namespace Dev2.Activities.Specs
         {
             var mock = ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
             return mock;
-        } 
+        }
 
         private const string ResultRecordsetVariable = "[[r().v]]";
         protected override void BuildDataList()
@@ -164,7 +166,7 @@ namespace Dev2.Activities.Specs
 
             var dsfNumberFormatActivity = new SelectTestTool();
             var alias = ScenarioContext.Current.Get<string>("Alias");
-            ScenarioContext.Current.Add("InnerActivity",dsfNumberFormatActivity);
+            ScenarioContext.Current.Add("InnerActivity", dsfNumberFormatActivity);
             bool error = ScenarioContext.Current.Any(a => a.Key == "throws");
             dsfNumberFormatActivity.Throws = error;
             /*var dsfSelectAndApply = new DsfSelectAndApplyActivity
@@ -177,7 +179,6 @@ namespace Dev2.Activities.Specs
             GetSelectAndApplyActivity().DataSource = recordSet;
             GetSelectAndApplyActivity().Alias = alias;
             GetSelectAndApplyActivity().ApplyActivityFunc.Handler = dsfNumberFormatActivity;
-
             TestStartNode = new FlowStep
             {
                 Action = GetSelectAndApplyActivity()
@@ -185,6 +186,61 @@ namespace Dev2.Activities.Specs
 
             ScenarioContext.Current.Add("activity", GetSelectAndApplyActivity());
         }
+
+        /*protected void BuildObjectDataList()
+        {
+            List<Tuple<string, string>> objList;
+            ScenarioContext.Current.TryGetValue("objList", out objList);
+
+            if (objList == null)
+            {
+                objList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("objList", objList);
+            }
+
+            objList.Add(new Tuple<string, string>(ResultRecordsetVariable, ""));
+
+            string outMapTo;
+            if (ScenarioContext.Current.TryGetValue("outMapTo", out outMapTo))
+            {
+                objList.Add(new Tuple<string, string>(outMapTo, ""));
+            }
+
+            BuildShapeAndTestData();
+
+            var activityType = ScenarioContext.Current.Get<string>("activityType");
+
+            dynamic activity;
+
+            activity = new SelectTestTool();
+            string recordSet;
+            if (!ScenarioContext.Current.TryGetValue("Datasource", out recordSet))
+            {
+                recordSet = string.Empty;
+            }
+
+
+
+            var dsfNumberFormatActivity = new SelectTestTool();
+            var alias = ScenarioContext.Current.Get<string>("Alias");
+            bool error = ScenarioContext.Current.Any(a => a.Key == "throws");
+            dsfNumberFormatActivity.Throws = error;
+            /*var dsfSelectAndApply = new DsfSelectAndApplyActivity
+            {
+                DataSource = recordSet,
+                Alias = alias,
+               // ApplyActivity = dsfNumberFormatActivity
+            };
+
+            GetSelectAndApplyActivity().DataSource = recordSet;
+            GetSelectAndApplyActivity().Alias = alias;
+            GetSelectAndApplyActivity().ApplyActivityFunc.Handler = dsfNumberFormatActivity;
+            TestStartNode = new FlowStep
+            {
+                Action = GetSelectAndApplyActivity()
+            };
+
+        }*/
 
         private string BuildInputMappings()
         {
@@ -221,20 +277,56 @@ namespace Dev2.Activities.Specs
             return outputMappings.ToString();
         }
 
-      
+        [Given(@"There is a complexobject in the datalist with this shape")]
+        public void GivenThereIsAComplexobjectInTheDatalistWithThisShape(Table table)
+        {
+            List<TableRow> rows = table.Rows.ToList();
+
+            if (rows.Count == 0)
+            {
+                var obj = table.Header.ToArray()[0];
+                var field = table.Header.ToArray()[1];
+
+                List<Tuple<string, string>> emptyRecordset;
+
+                bool isAdded = ScenarioContext.Current.TryGetValue("obj", out emptyRecordset);
+                if (!isAdded)
+                {
+                    emptyRecordset = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("obj", emptyRecordset);
+                }
+                emptyRecordset.Add(new Tuple<string, string>(obj, field));
+            }
+
+            foreach (TableRow tableRow in rows)
+            {
+                List<Tuple<string, string>> objList;
+                ScenarioContext.Current.TryGetValue("objList", out objList);
+
+                if (objList == null)
+                {
+                    objList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("objList", objList);
+                }
+                objList.Add(new Tuple<string, string>(tableRow[0], tableRow[1]));
+            }
+        }
+
+
         [When(@"the selectAndApply tool is executed")]
         public void WhenTheSelectAndApplyToolIsExecuted()
         {
             BuildDataList();
+            //BuildObjectDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb());
             ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the selectAndApply executes (.*) times")]
         public void ThenTheSelectAndApplyExecutesTimes(int numOfIterations)
         {
             var act = ScenarioContext.Current.Get<SelectTestTool>("InnerActivity");
-                Assert.AreEqual(act.Called,numOfIterations);
+            Assert.AreEqual(act.Called, numOfIterations);
         }
 
         [Given(@"Alias is ""(.*)""")]
