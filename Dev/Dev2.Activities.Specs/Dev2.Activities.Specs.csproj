@@ -228,6 +228,12 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
+    <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplyComplex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SelectAndApplyComplex.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplyComplexSteps.cs" />
     <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplySteps.cs" />
     <Compile Include="Toolbox\Data\AssignObject\AssignObject.feature.cs">
       <AutoGen>True</AutoGen>
@@ -685,6 +691,10 @@
     <None Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SelectAndApply.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplyComplex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SelectAndApplyComplex.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Length\Length.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

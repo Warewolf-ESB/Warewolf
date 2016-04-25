@@ -22,6 +22,24 @@ Scenario: Execute a selectAndApply over a tool using a recordset with 3 rows
 	    | [[rs(*).field]] |
 	    | As = [[bob]]    |
 
+Scenario: Execute a selectAndApply over a tool using a complexobject with 3 properties
+	Given I open New Workflow
+	And I drag a new Select and Apply tool to the design surface  
+	Given There is a complexobject in the datalist with this shape
+	| rs              | value |
+	| [[Person().name]] | Micky |
+	| [[Person().name]] | John  |
+	| [[Person().name]] | Scott |  
+	And Alias is "[[bob]]"
+	And Datasource is "[[Person(*).name]]"
+	And the underlying dropped activity is "SelectTestTool"
+	When the selectAndApply tool is executed
+	Then the selectAndApply executes 3 times
+	And the execution has "NO" error
+	And the debug inputs as
+	    | [[Person(*).name]] |
+	    | As = [[bob]]    |
+
 
 Scenario: Execute a selectAndApply over a tool using an empty recordset
 	Given I open New Workflow

@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using TechTalk.SpecFlow;
+using WarewolfParserInterop;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -70,7 +71,6 @@ namespace Dev2.Activities.Specs.BaseTypes
                                 DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), value, 0);
                             }
                         }
-                        //Build(variable, shape, data, row);
                         row++;
                     }
                 }
@@ -82,6 +82,36 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
             }
 
+            dynamic objList;
+            ScenarioContext.Current.TryGetValue("objList", out objList);
+            if (objList != null)
+            {
+                try
+                {
+                    foreach (dynamic variable in objList)
+                    {
+                        if (!string.IsNullOrEmpty(variable.Item1) && !string.IsNullOrEmpty(variable.Item2))
+                        {
+                            string value = variable.Item2 == "blank" ? "" : variable.Item2;
+                            if (value.ToUpper() == "NULL")
+                            {
+                                DataObject.Environment.AssignDataShape(variable.Item1);
+                            }
+                            else
+                            {
+                                DataObject.Environment.AssignJson(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), value), 0);
+                            }
+                        }
+                        row++;
+                    }
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+
+                }
+            }
             List<Tuple<string, string>> emptyRecordset;
             bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
             if (isAdded)
@@ -89,17 +119,6 @@ namespace Dev2.Activities.Specs.BaseTypes
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
                 {
                     DataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(emptyRecord.Item1), emptyRecord.Item2, 0);
-                    //var recSetElement = shape
-                    //                  .Descendants(emptyRecord.Item1)
-                    //                  .FirstOrDefault();
-                    //if (recSetElement == null)
-                    //{
-                    //    shape.Add(new XElement(emptyRecord.Item1, new XElement(emptyRecord.Item2)));
-                    //}
-                    //else
-                    //{
-                    //    recSetElement.Add(new XElement(emptyRecord.Item2));
-                    //}
                 }
             }
 
