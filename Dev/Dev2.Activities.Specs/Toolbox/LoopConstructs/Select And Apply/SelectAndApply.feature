@@ -5,6 +5,8 @@
 
 @mytag
 Scenario: Execute a selectAndApply over a tool using a recordset with 3 rows
+	Given I open New Workflow
+	And I drag a new Select and Apply tool to the design surface  
 	Given There is a recordset in the datalist with this shape
 	| rs             | value |
 	| [[rs().field]] | 1     |
@@ -12,7 +14,7 @@ Scenario: Execute a selectAndApply over a tool using a recordset with 3 rows
 	| [[rs().field]] | 3     |	
 	And Alias is "[[bob]]"
 	And Datasource is "[[rs(*).field]]"
-	And the underlying dropped activity is "Tool"
+	And the underlying dropped activity is "SelectTestTool"
 	When the selectAndApply tool is executed
 	Then the selectAndApply executes 3 times
 	And the execution has "NO" error
@@ -22,6 +24,8 @@ Scenario: Execute a selectAndApply over a tool using a recordset with 3 rows
 
 
 Scenario: Execute a selectAndApply over a tool using an empty recordset
+	Given I open New Workflow
+	And I drag a new Select and Apply tool to the design surface  
 	Given Alias is "[[bob]]"
 	And Datasource is "[[bs(*).field]]"
 	And the underlying dropped activity is "Tool"
@@ -30,6 +34,8 @@ Scenario: Execute a selectAndApply over a tool using an empty recordset
 	And the execution has "AN" error
 
 Scenario: Execute a selectAndApply over a tool throws an error
+	Given I open New Workflow
+	And I drag a new Select and Apply tool to the design surface  
 	Given There is a recordset in the datalist with this shape
 	| rs             | value |
 	| [[rs().field]] | 1     |

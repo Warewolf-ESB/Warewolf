@@ -4,6 +4,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Activities.Designers2.SelectAndApply;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach;
@@ -13,6 +14,12 @@ using Dev2.Data.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Caliburn.Micro;
+using Dev2.Studio.Core.Interfaces;
+using Warewolf.Storage;
+using Dev2.Studio.Core.Activities.Utils;
+using Moq;
+using System.Linq.Expressions;
 
 namespace Dev2.Activities.Specs
 {
@@ -73,6 +80,53 @@ namespace Dev2.Activities.Specs
     [Binding]
     public class SelectAndApplySteps : RecordSetBases
     {
+
+        [Given(@"I drag a new Select and Apply tool to the design surface")]
+        public void GivenIDragANewSelectAndApplyToolToTheDesignSurface()
+        {
+          
+            var selectAndApplyTool = new DsfSelectAndApplyActivity();
+            var modelItem = ModelItemUtils.CreateModelItem(selectAndApplyTool);
+            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
+            var mockEventAggregator = new Mock<IEventAggregator>();
+           
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+           
+          
+
+            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+            var selectAndApplyVm = new SelectAndApplyDesignerViewModel(modelItem);
+            ScenarioContext.Current.Add("downloadViewModel", selectAndApplyVm);
+            ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
+            ScenarioContext.Current.Add("selectAndApplyTool", selectAndApplyTool);
+        }
+
+        private DsfSelectAndApplyActivity GetSelectAndApplyActivity()
+        {
+            var activity = ScenarioContext.Current.Get<DsfSelectAndApplyActivity>("selectAndApplyTool");
+            return activity;
+        }
+
+        private SelectAndApplyDesignerViewModel GetViewModel()
+        {
+            var designerViewModel = ScenarioContext.Current.Get<SelectAndApplyDesignerViewModel>("downloadViewModel");
+            return designerViewModel;
+        }
+        private Mock<IEnvironmentModel> GetEnvModel()
+        {
+            var mock = ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
+            return mock;
+        } 
+
         private const string ResultRecordsetVariable = "[[r().v]]";
         protected override void BuildDataList()
         {
@@ -113,19 +167,23 @@ namespace Dev2.Activities.Specs
             ScenarioContext.Current.Add("InnerActivity",dsfNumberFormatActivity);
             bool error = ScenarioContext.Current.Any(a => a.Key == "throws");
             dsfNumberFormatActivity.Throws = error;
-            var dsfSelectAndApply = new DsfSelectAndApplyActivity
+            /*var dsfSelectAndApply = new DsfSelectAndApplyActivity
             {
                 DataSource = recordSet,
                 Alias = alias,
                // ApplyActivity = dsfNumberFormatActivity
-            };
+            };*/
+
+            GetSelectAndApplyActivity().DataSource = recordSet;
+            GetSelectAndApplyActivity().Alias = alias;
+            GetSelectAndApplyActivity().ApplyActivityFunc.Handler = dsfNumberFormatActivity;
 
             TestStartNode = new FlowStep
             {
-                Action = dsfSelectAndApply
+                Action = GetSelectAndApplyActivity()
             };
 
-            ScenarioContext.Current.Add("activity", dsfSelectAndApply);
+            ScenarioContext.Current.Add("activity", GetSelectAndApplyActivity());
         }
 
         private string BuildInputMappings()
@@ -163,6 +221,7 @@ namespace Dev2.Activities.Specs
             return outputMappings.ToString();
         }
 
+      
         [When(@"the selectAndApply tool is executed")]
         public void WhenTheSelectAndApplyToolIsExecuted()
         {
