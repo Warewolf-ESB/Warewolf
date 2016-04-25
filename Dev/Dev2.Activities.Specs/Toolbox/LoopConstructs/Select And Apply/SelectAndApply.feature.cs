@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.SelectAndApply
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SelectAndApply", "In order to avoid silly mistakes\nAs a math idiot\nI want to be told the sum of two" +
-                    " numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SelectAndApply", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
+                    "wo numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -79,6 +79,10 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.SelectAndApply
                         "mytag"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
+#line 8
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
+ testRunner.And("I drag a new Select and Apply tool to the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -92,26 +96,26 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "[[rs().field]]",
                         "3"});
-#line 8
+#line 10
  testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table1, "Given ");
-#line 13
- testRunner.And("Alias is \"[[bob]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
- testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("the underlying dropped activity is \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Alias is \"[[bob]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
- testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.Then("the selectAndApply executes 3 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("the underlying dropped activity is \"SelectTestTool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+ testRunner.Then("the selectAndApply executes 3 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rs(*).field]]"});
             table2.AddRow(new string[] {
                         "As = [[bob]]"});
-#line 19
+#line 21
  testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -123,19 +127,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolUsingAnEmptyRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool using an empty recordset", ((string[])(null)));
-#line 24
-this.ScenarioSetup(scenarioInfo);
-#line 25
- testRunner.Given("Alias is \"[[bob]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
- testRunner.And("Datasource is \"[[bs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 27
- testRunner.And("the underlying dropped activity is \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
- testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I drag a new Select and Apply tool to the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
- testRunner.Then("the selectAndApply executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Alias is \"[[bob]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
+ testRunner.And("Datasource is \"[[bs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+ testRunner.And("the underlying dropped activity is \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 32
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 33
+ testRunner.Then("the selectAndApply executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 34
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -147,8 +155,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteASelectAndApplyOverAToolThrowsAnError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply over a tool throws an error", ((string[])(null)));
-#line 32
+#line 36
 this.ScenarioSetup(scenarioInfo);
+#line 37
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 38
+ testRunner.And("I drag a new Select and Apply tool to the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -162,28 +174,28 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "[[rs().field]]",
                         "3"});
-#line 33
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table3, "Given ");
-#line 38
- testRunner.And("Alias is \"[[bob]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
- testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
- testRunner.And("the underlying dropped activity is \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.And("the tool throws an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
- testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
- testRunner.Then("the selectAndApply executes 3 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table3, "Given ");
 #line 44
+ testRunner.And("Alias is \"[[bob]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+ testRunner.And("Datasource is \"[[rs(*).field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+ testRunner.And("the underlying dropped activity is \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+ testRunner.And("the tool throws an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 49
+ testRunner.Then("the selectAndApply executes 3 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 50
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rs(*).field]]"});
             table4.AddRow(new string[] {
                         "As = [[bob]]"});
-#line 45
+#line 51
  testRunner.And("the debug inputs as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
