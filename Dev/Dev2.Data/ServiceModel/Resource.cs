@@ -46,6 +46,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.PluginService, "Service" },
             { ResourceType.PluginSource, "Source" },
             { ResourceType.EmailSource, "Source" },
+            { ResourceType.ExchangeSource, "Source" },
             { ResourceType.WebSource, "Source" },
             { ResourceType.WebService, "Service" },
             { ResourceType.WorkflowService, "Service" },
@@ -118,6 +119,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                             break;
                         case enSourceType.SqlDatabase:
                         case enSourceType.MySqlDatabase:
+                            ResourceType = ResourceType.DbSource;
+                            IsUpgraded = true;
+                            break;
+                        case enSourceType.Oracle:
+                            ResourceType = ResourceType.DbSource;
+                            IsUpgraded = true;
+                            break;
+                        case enSourceType.ODBC:
                             ResourceType = ResourceType.DbSource;
                             IsUpgraded = true;
                             break;

@@ -30,6 +30,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         private string _toPath;
         private string _result;
         private string _fromPath;
+        private bool _overwriteFile;
 
         [ExcludeFromCodeCoverage]
         public DropBoxDownloadViewModel(ModelItem modelItem)
@@ -116,6 +117,20 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             {
                 _toPath = value;
                 SetModelItemProperty(_toPath);
+                OnPropertyChanged();
+            }
+        }
+        public bool OverwriteFile
+        {
+            get
+            {
+                _overwriteFile = Convert.ToBoolean(GetModelPropertyName());
+                return _overwriteFile;
+            }
+            set
+            {
+                _overwriteFile = value;
+                SetModelItemProperty(_overwriteFile);
                 OnPropertyChanged();
             }
         }

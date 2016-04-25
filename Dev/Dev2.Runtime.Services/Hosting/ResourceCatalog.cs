@@ -431,6 +431,9 @@ namespace Dev2.Runtime.Hosting
                 case enSourceType.SharepointServerSource:
                     result = BuildSharepointSourceList(resources);
                     break;
+                case enSourceType.ExchangeSource:
+                    result = BuildExchangeList(resources);
+                    break;
                 default:
                     result = null;
                     break;
@@ -1125,6 +1128,11 @@ namespace Dev2.Runtime.Hosting
         private IEnumerable BuildWebList(IEnumerable<IResource> resources)
         {
             return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new WebSource(xe)).ToList();
+        }
+
+        private IEnumerable BuildExchangeList(IEnumerable<IResource> resources)
+        {
+            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new ExchangeSource(xe)).ToList();
         }
 
         #endregion

@@ -26,8 +26,8 @@ using Dev2.Studio.Core.Messages;
 namespace Dev2.Studio.InterfaceImplementors
 // ReSharper restore CheckNamespace
 {
-    
-    public  class  DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider, IHandle<UpdateIntellisenseMessage>
+
+    public class DefaultIntellisenseProvider : DependencyObject, IIntellisenseProvider, IHandle<UpdateIntellisenseMessage>
     {
         #region Implementation of IDisposable
 
@@ -39,9 +39,9 @@ namespace Dev2.Studio.InterfaceImplementors
         {
         }
 
-        public  DefaultIntellisenseProvider()
+        public DefaultIntellisenseProvider()
         {
-            if(DataListSingleton.ActiveDataList != null)
+            if (DataListSingleton.ActiveDataList != null)
             {
                 _trieSugggestionProvider = DataListSingleton.ActiveDataList.Provider;
             }
@@ -63,8 +63,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public string PerformResultInsertion(string input, IntellisenseProviderContext context)
         {
-            VerifyArgument.IsNotNull("context",context);
-            if(input==String.Empty)
+            VerifyArgument.IsNotNull("context", context);
+            if (input == String.Empty)
             {
                 return context.InputText;
             }
@@ -91,8 +91,8 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
-            if(context== null ) return  new List<IntellisenseProviderResult>();
-            return DataListSingleton.ActiveDataList.Provider.GetSuggestions(context.InputText, context.CaretPosition, true, context.FilterType).Select(a => new IntellisenseProviderResult(this, a,String.Empty)).ToList();
+            if (context == null) return new List<IntellisenseProviderResult>();
+            return DataListSingleton.ActiveDataList.Provider.GetSuggestions(context.InputText, context.CaretPosition, true, context.FilterType).Select(a => new IntellisenseProviderResult(this, a, String.Empty)).ToList();
         }
 
         #endregion
@@ -101,7 +101,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Handle(UpdateIntellisenseMessage message)
         {
-          
+
         }
 
         #endregion

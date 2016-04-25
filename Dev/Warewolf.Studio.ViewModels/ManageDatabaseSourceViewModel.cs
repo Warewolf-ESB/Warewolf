@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,7 +28,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
-
+using System.Collections.ObjectModel;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
@@ -59,7 +58,47 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDisposed;
         string _path;
         string _emptyServerName;
-        public IComputerNameProvider Provider { get;  set; }
+        private bool _canSelectWindows;
+        private bool _canSelectServer;
+        private bool _canSelectUser;
+        public IComputerNameProvider Provider { get; set; }
+
+        public bool CanSelectWindows
+        {
+            get
+            {
+                return _canSelectWindows;
+            }
+            set
+            {
+                _canSelectWindows = value;
+                OnPropertyChanged(() => CanSelectWindows);
+            }
+        }
+        public bool CanSelectUser
+        {
+            get
+            {
+                return _canSelectUser;
+            }
+            set
+            {
+                _canSelectUser = value;
+                OnPropertyChanged(() => CanSelectUser);
+            }
+        }
+        public bool CanSelectServer
+        {
+            get
+            {
+                return _canSelectServer;
+            }
+            set
+            {
+                _canSelectServer = value;
+                OnPropertyChanged(() => CanSelectServer);
+            }
+        }
 
         private void PerformInitialise(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
         {
@@ -73,14 +112,21 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
             Testing = false;
-            Types = new List<NameValue> { new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() }, new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() } };
+            Types = new List<NameValue>
+            {
+                new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() },
+                new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() },
+                new NameValue { Name = "PostgreSql Database", Value = enSourceType.PostgreSql.ToString() },
+                new NameValue { Name = "Oracle Database", Value = enSourceType.Oracle.ToString() },
+                new NameValue { Name = "ODBC Database", Value = enSourceType.ODBC.ToString() }
+            };
             ServerType = Types[0];
             _testPassed = false;
             _testFailed = false;
             DatabaseNames = new List<string>();
             ComputerNames = new List<ComputerName>();
             Provider = new ComputerNameProvider(new ComputerName[0]);
-            
+
         }
 
         void GetLoadComputerNamesTask(Action additionalUiAction)
@@ -93,7 +139,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     additionalUiAction();
                 }
-            },exception =>
+            }, exception =>
             {
                 TestFailed = true;
                 TestPassed = false;
@@ -104,7 +150,7 @@ namespace Warewolf.Studio.ViewModels
                 TestMessage = exception.Message;
             });
         }
-        
+
         bool CanCancelTest()
         {
             return Testing;
@@ -128,12 +174,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ManageDatabaseSourceViewModel(IAsyncWorker asyncWorker):base(ResourceType.DbSource)
+        public ManageDatabaseSourceViewModel(IAsyncWorker asyncWorker)
+            : base(ResourceType.DbSource)
         {
             AsyncWorker = asyncWorker;
         }
 
-        public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker):this(asyncWorker)
+        public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker)
+            : this(asyncWorker)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             PerformInitialise(updateManager, aggregator);
@@ -146,7 +194,7 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
             PerformInitialise(updateManager, aggregator);
-            _warewolfserverName = updateManager.ServerName??"";
+            _warewolfserverName = updateManager.ServerName ?? "";
             _dbSource = dbSource;
             Item = new DbSourceDefinition
             {
@@ -160,13 +208,13 @@ namespace Warewolf.Studio.ViewModels
                 UserName = _dbSource.UserName,
                 Type = _dbSource.Type
             };
-            
+
             GetLoadComputerNamesTask(() =>
             {
                 FromModel(_dbSource);
                 SetupHeaderTextFromExisting();
             });
-            
+
         }
 
         void SetupHeaderTextFromExisting()
@@ -267,22 +315,22 @@ namespace Warewolf.Studio.ViewModels
             if (_dbSource == null)
             {
                 RequestServiceNameViewModel.Wait();
-                if(RequestServiceNameViewModel.Exception == null)
-                { 
-
-                var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
-
-                if (res == MessageBoxResult.OK)
+                if (RequestServiceNameViewModel.Exception == null)
                 {
-                    _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
-                    var src = ToDbSource();
 
-                    src.Path = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
-                    Save(src);
-                    _dbSource = src;
-                    Path = _dbSource.Path;
-                    SetupHeaderTextFromExisting();
-                }
+                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
+
+                    if (res == MessageBoxResult.OK)
+                    {
+                        _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                        var src = ToDbSource();
+
+                        src.Path = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        Save(src);
+                        _dbSource = src;
+                        Path = _dbSource.Path;
+                        SetupHeaderTextFromExisting();
+                    }
                 }
                 else
                 {
@@ -314,7 +362,7 @@ namespace Warewolf.Studio.ViewModels
                 Item = toDbSource;
                 SetupHeaderTextFromExisting();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TestMessage = ex.Message;
                 TestFailed = true;
@@ -344,7 +392,7 @@ namespace Warewolf.Studio.ViewModels
                     DatabaseNames.Clear();
                 });
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 TestFailed = true;
                 TestPassed = false;
@@ -374,7 +422,7 @@ namespace Warewolf.Studio.ViewModels
                 ServerName = GetServerName(),
                 Password = Password,
                 UserName = UserName,
-                Type = (enSourceType)Enum.Parse(typeof( enSourceType), ServerType.Value),
+                Type = (enSourceType)Enum.Parse(typeof(enSourceType), ServerType.Value),
                 Name = ResourceName,
                 DbName = DatabaseName,
                 Id = _dbSource == null ? Guid.NewGuid() : _dbSource.Id
@@ -383,7 +431,7 @@ namespace Warewolf.Studio.ViewModels
 
         private string GetServerName()
         {
-            string serverName =null ;
+            string serverName = null;
             if (ServerName != null)
             {
                 serverName = ServerName.Name;
@@ -400,7 +448,7 @@ namespace Warewolf.Studio.ViewModels
                     ServerName = GetServerName(),
                     Password = Password,
                     UserName = UserName,
-                    Type = (enSourceType)Enum.Parse(typeof( enSourceType), ServerType.Value),
+                    Type = (enSourceType)Enum.Parse(typeof(enSourceType), ServerType.Value),
                     Path = Path,
                     Name = ResourceName,
                     DbName = DatabaseName,
@@ -476,6 +524,32 @@ namespace Warewolf.Studio.ViewModels
                 _serverType = value;
                 OnPropertyChanged(() => ServerType);
                 OnPropertyChanged(() => Header);
+                if (ServerType.Value == enSourceType.ODBC.ToString())
+                {
+                    CanSelectUser = false;
+                    CanSelectWindows = true;
+                    CanSelectServer = false;
+                    ServerName.Name = "Localhost";
+                    EmptyServerName = "Localhost";
+                    AuthenticationType = AuthenticationType.Windows;
+                }
+                else if (ServerType.Value == enSourceType.Oracle.ToString())
+                {
+                    CanSelectWindows = false;
+                    CanSelectServer = true;
+                    ServerName.Name = "";
+                    AuthenticationType = AuthenticationType.User;
+                    CanSelectUser = true;
+                }
+                else
+                {
+                    CanSelectWindows = ServerType.Value != enSourceType.PostgreSql.ToString();
+                    CanSelectUser = ServerType.Value != enSourceType.PostgreSql.ToString();
+                    CanSelectServer = true;
+                    ServerName.Name = "";
+                }
+
+
             }
         }
 
@@ -488,8 +562,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _authenticationType = value;
                     if (_dbSource != null && _authenticationType == AuthenticationType.User && _authenticationType == _dbSource.AuthenticationType)
-                    {    Password = _dbSource.Password;
-                         UserName = _dbSource.UserName;
+                    {
+                        Password = _dbSource.Password;
+                        UserName = _dbSource.UserName;
                     }
                     else
                     {
@@ -499,7 +574,7 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => AuthenticationType);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => UserAuthenticationSelected);
-                    if(DatabaseNames != null)
+                    if (DatabaseNames != null)
                     {
                         DatabaseNames.Clear();
                     }
@@ -698,7 +773,7 @@ namespace Warewolf.Studio.ViewModels
                 if (RequestServiceNameViewModel.Result != null) RequestServiceNameViewModel.Result.Dispose();
                 RequestServiceNameViewModel.Dispose();
             }
-          Dispose(true);
+            Dispose(true);
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.

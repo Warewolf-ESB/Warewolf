@@ -110,13 +110,13 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if(DataList == null || DataList.Count == 0)
+                if (DataList == null || DataList.Count == 0)
                 {
                     return false;
                 }
                 return DataList.Any(model =>
                 {
-                    if(RecordSetHasChildren(model))
+                    if (RecordSetHasChildren(model))
                     {
                         return model.HasError || model.Children.Any(child => child.HasError);
                     }
@@ -129,10 +129,10 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if(_scalarCollection == null)
+                if (_scalarCollection == null)
                 {
-                   _scalarCollection = new ObservableCollection<IDataListItemModel>();
-                    
+                    _scalarCollection = new ObservableCollection<IDataListItemModel>();
+
                     _scalarCollection.CollectionChanged += (o, args) =>
                     {
                         RemoveItemPropertyChangeEvent(args);
@@ -147,7 +147,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             foreach (var dataListItemModel in toList)
             {
-                accList.Add("[["+dataListItemModel.DisplayName+"]]");
+                accList.Add("[[" + dataListItemModel.DisplayName + "]]");
             }
             return accList;
         }
@@ -158,7 +158,7 @@ namespace Dev2.Studio.ViewModels.DataList
             foreach (var dataListItemModel in toList)
             {
                 var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.Name);
-                var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.Name,true);
+                var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.Name, true);
 
                 accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
                 accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
@@ -179,7 +179,7 @@ namespace Dev2.Studio.ViewModels.DataList
                         accList.Add(rec);
                     }
                 }
-               
+
             }
             return accList;
         }
@@ -187,11 +187,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if(args.NewItems != null)
+            if (args.NewItems != null)
             {
-                foreach(INotifyPropertyChanged item in args.NewItems)
+                foreach (INotifyPropertyChanged item in args.NewItems)
                 {
-                    if(item != null)
+                    if (item != null)
                     {
                         item.PropertyChanged += ItemPropertyChanged;
                     }
@@ -201,11 +201,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if(args.OldItems != null)
+            if (args.OldItems != null)
             {
-                foreach(INotifyPropertyChanged item in args.OldItems)
+                foreach (INotifyPropertyChanged item in args.OldItems)
                 {
-                    if(item != null)
+                    if (item != null)
                     {
                         item.PropertyChanged -= ItemPropertyChanged;
                     }
@@ -215,7 +215,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(FindUnusedAndMissingCommand != null)
+            if (FindUnusedAndMissingCommand != null)
             {
                 FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
                 SortCommand.RaiseCanExecuteChanged();
@@ -226,14 +226,14 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if(_recsetCollection == null)
+                if (_recsetCollection == null)
                 {
                     _recsetCollection = new ObservableCollection<IDataListItemModel>();
                     _recsetCollection.CollectionChanged += (o, args) =>
-                        {
-                            RemoveItemPropertyChangeEvent(args);
-                            AddItemPropertyChangeEvent(args);
-                        };                    
+                    {
+                        RemoveItemPropertyChangeEvent(args);
+                        AddItemPropertyChangeEvent(args);
+                    };
                 }
                 return _recsetCollection;
             }
@@ -268,7 +268,7 @@ namespace Dev2.Studio.ViewModels.DataList
         bool CanDelete(Object itemx)
         {
 
-           var item =itemx as IDataListItemModel;
+            var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
         }
 
@@ -319,9 +319,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
-            foreach(var part in parts)
+            foreach (var part in parts)
             {
-                if(part.IsScalar)
+                if (part.IsScalar)
                 {
                     SetScalarPartIsUsed(part, isUsed);
                 }
@@ -343,20 +343,20 @@ namespace Dev2.Studio.ViewModels.DataList
 
         static void ProcessFoundRecordSets(IDataListVerifyPart part, IDataListItemModel recsetToRemove, bool isUsed)
         {
-            if(string.IsNullOrEmpty(part.Field))
+            if (string.IsNullOrEmpty(part.Field))
             {
-                if(recsetToRemove != null)
+                if (recsetToRemove != null)
                 {
                     recsetToRemove.IsUsed = isUsed;
                 }
             }
             else
             {
-                if(recsetToRemove == null) return;
+                if (recsetToRemove == null) return;
                 var childrenToRemove = recsetToRemove.Children.Where(c => c.Name == part.Field && c.IsField);
                 childrenToRemove.ToList().ForEach(childToRemove =>
                 {
-                    if(childToRemove != null)
+                    if (childToRemove != null)
                     {
                         childToRemove.IsUsed = isUsed;
                     }
@@ -369,7 +369,7 @@ namespace Dev2.Studio.ViewModels.DataList
             var scalarsToRemove = ScalarCollection.Where(c => c.Name == part.Field);
             scalarsToRemove.ToList().ForEach(scalarToRemove =>
             {
-                if(scalarToRemove != null)
+                if (scalarToRemove != null)
                 {
                     scalarToRemove.IsUsed = isUsed;
                 }
@@ -379,29 +379,29 @@ namespace Dev2.Studio.ViewModels.DataList
         public void RemoveUnusedDataListItems()
         {
             var unusedScalars = ScalarCollection.Where(c => c.IsUsed == false).ToList();
-            if(unusedScalars.Any())
+            if (unusedScalars.Any())
             {
-                foreach(var dataListItemModel in unusedScalars)
+                foreach (var dataListItemModel in unusedScalars)
                 {
                     ScalarCollection.Remove(dataListItemModel);
                 }
             }
             var unusedRecordsets = RecsetCollection.Where(c => c.IsUsed == false).ToList();
-            if(unusedRecordsets.Any())
+            if (unusedRecordsets.Any())
             {
-                foreach(var dataListItemModel in unusedRecordsets)
+                foreach (var dataListItemModel in unusedRecordsets)
                 {
                     RecsetCollection.Remove(dataListItemModel);
                 }
             }
-            foreach(var recset in RecsetCollection)
+            foreach (var recset in RecsetCollection)
             {
-                if(recset.Children.Count > 0)
+                if (recset.Children.Count > 0)
                 {
                     var unusedRecsetChildren = recset.Children.Where(c => c.IsUsed == false).ToList();
-                    if(unusedRecsetChildren.Any())
+                    if (unusedRecsetChildren.Any())
                     {
-                        foreach(var unusedRecsetChild in unusedRecsetChildren)
+                        foreach (var unusedRecsetChild in unusedRecsetChildren)
                         {
                             recset.Children.Remove(unusedRecsetChild);
                         }
@@ -417,14 +417,14 @@ namespace Dev2.Studio.ViewModels.DataList
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)
         {
             IList<IDataListItemModel> tmpRecsetList = new List<IDataListItemModel>();
-            foreach(var part in parts)
+            foreach (var part in parts)
             {
-                if(part.IsScalar)
+                if (part.IsScalar)
                 {
-                    if(ScalarCollection.FirstOrDefault(c => c.Name == part.Field) == null)
+                    if (ScalarCollection.FirstOrDefault(c => c.Name == part.Field) == null)
                     {
-                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field,part.Description,enDev2ColumnArgumentDirection.None);
-                        if(ScalarCollection.Count > ScalarCollection.Count - 1 && ScalarCollection.Count > 0)
+                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
+                        if (ScalarCollection.Count > ScalarCollection.Count - 1 && ScalarCollection.Count > 0)
                         {
                             ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
                         }
@@ -441,14 +441,14 @@ namespace Dev2.Studio.ViewModels.DataList
 
                     IDataListItemModel tmpRecset = tmpRecsetList.FirstOrDefault(c => c.Name == part.Recordset);
 
-                    if(recsetToAddTo != null)
+                    if (recsetToAddTo != null)
                     {
-                        if(recsetToAddTo.Children.FirstOrDefault(c => c.Name == part.Field) == null)
+                        if (recsetToAddTo.Children.FirstOrDefault(c => c.Name == part.Field) == null)
                         {
                             IDataListItemModel child = DataListItemModelFactory.CreateDataListModel(part.Field,
                                                                                                     part.Description,
                                                                                                     recsetToAddTo);
-                            if(recsetToAddTo.Children.Count > 0)
+                            if (recsetToAddTo.Children.Count > 0)
                             {
                                 recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
                             }
@@ -458,7 +458,7 @@ namespace Dev2.Studio.ViewModels.DataList
                             }
                         }
                     }
-                    else if(tmpRecset != null)
+                    else if (tmpRecset != null)
                     {
                         IDataListItemModel child = DataListItemModelFactory.CreateDataListModel
                             (part.Field, part.Description, tmpRecset);
@@ -475,13 +475,13 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-            foreach(var item in tmpRecsetList)
+            foreach (var item in tmpRecsetList)
             {
-                if(item.Children.Count == 0)
+                if (item.Children.Count == 0)
                 {
                     item.Children.Add(DataListItemModelFactory.CreateDataListModel(string.Empty, string.Empty, item));
                 }
-                if(RecsetCollection.Count > 0)
+                if (RecsetCollection.Count > 0)
                 {
                     RecsetCollection.Insert(RecsetCollection.Count - 1, item);
                 }
@@ -497,7 +497,7 @@ namespace Dev2.Studio.ViewModels.DataList
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
 
-            if(parts.Count > 0)
+            if (parts.Count > 0)
             {
                 AddBlankRow(null);
             }
@@ -512,11 +512,11 @@ namespace Dev2.Studio.ViewModels.DataList
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
             Resource = resourceModel;
-            if(Resource == null) return;
+            if (Resource == null) return;
 
             string errorString;
             CreateListsOfIDataListItemModelToBindTo(out errorString);
-            if(!string.IsNullOrEmpty(errorString))
+            if (!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
             }
@@ -525,7 +525,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
         public void InitializeDataListViewModel()
         {
-            if(Resource == null) return;
+            if (Resource == null) return;
             InitializeDataListViewModel(Resource);
         }
 
@@ -565,13 +565,13 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 _backupRecsets.Add(dataListItemModel);
             }
-            
-            for(int index = 0; index < ScalarCollection.Count; index++)
+
+            for (int index = 0; index < ScalarCollection.Count; index++)
             {
                 var item = ScalarCollection[index];
                 if (!item.Name.ToUpper().Contains(SearchText.ToUpper()))
                     ScalarCollection.Remove(item);
-                
+
             }
 
             for (int index = 0; index < RecsetCollection.Count; index++)
@@ -580,17 +580,17 @@ namespace Dev2.Studio.ViewModels.DataList
                 item.Filter(SearchText);
                 if (!item.FilterText.ToUpper().Contains(SearchText.ToUpper()))
                     RecsetCollection.Remove(item);
-               
+
             }
 
-         
+
         }
 
         public void AddBlankRow(IDataListItemModel item)
         {
-            if(item != null)
+            if (item != null)
             {
-                if(!item.IsRecordset && !item.IsField)
+                if (!item.IsRecordset && !item.IsField)
                 {
                     AddRowToScalars();
                 }
@@ -608,13 +608,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void RemoveBlankRows(IDataListItemModel item)
         {
-            if(item == null) return;
+            if (item == null) return;
 
-            if(!item.IsRecordset && !item.IsField)
+            if (!item.IsRecordset && !item.IsField)
             {
                 RemoveBlankScalars();
             }
-            else if(item.IsRecordset)
+            else if (item.IsRecordset)
             {
                 RemoveBlankRecordsets();
             }
@@ -626,21 +626,21 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void RemoveDataListItem(IDataListItemModel itemToRemove)
         {
-            if(itemToRemove == null) return;
+            if (itemToRemove == null) return;
 
-            if(!itemToRemove.IsRecordset && !itemToRemove.IsField)
+            if (!itemToRemove.IsRecordset && !itemToRemove.IsField)
             {
                 ScalarCollection.Remove(itemToRemove);
                 CheckDataListItemsForDuplicates(DataList);
             }
-            else if(itemToRemove.IsRecordset)
+            else if (itemToRemove.IsRecordset)
             {
                 RecsetCollection.Remove(itemToRemove);
                 CheckDataListItemsForDuplicates(DataList);
             }
             else
             {
-                foreach(var recset in RecsetCollection)
+                foreach (var recset in RecsetCollection)
                 {
                     recset.Children.Remove(itemToRemove);
                     CheckDataListItemsForDuplicates(recset.Children);
@@ -653,9 +653,9 @@ namespace Dev2.Studio.ViewModels.DataList
             ScalarCollection.ForEach(FixNamingForScalar);
             AddRecordsetNamesIfMissing();
             var result = GetDataListString();
-            if(Resource != null)
+            if (Resource != null)
             {
-                    Resource.DataList = result;
+                Resource.DataList = result;
             }
             return result;
         }
@@ -665,26 +665,26 @@ namespace Dev2.Studio.ViewModels.DataList
             var recsetNum = RecsetCollection != null ? RecsetCollection.Count : 0;
             int recsetCount = 0;
 
-            while(recsetCount < recsetNum)
+            while (recsetCount < recsetNum)
             {
-                if(RecsetCollection != null)
+                if (RecsetCollection != null)
                 {
                     IDataListItemModel recset = RecsetCollection[recsetCount];
 
-                    if(!string.IsNullOrWhiteSpace(recset.DisplayName))
+                    if (!string.IsNullOrWhiteSpace(recset.DisplayName))
                     {
                         FixNamingForRecset(recset);
                         int childrenNum = recset.Children.Count;
                         int childrenCount = 0;
 
-                        while(childrenCount < childrenNum)
+                        while (childrenCount < childrenNum)
                         {
                             IDataListItemModel child = recset.Children[childrenCount];
-                            
-                            if(!string.IsNullOrWhiteSpace(child.DisplayName))
+
+                            if (!string.IsNullOrWhiteSpace(child.DisplayName))
                             {
                                 int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
-                                if(indexOfDot > -1)
+                                if (indexOfDot > -1)
                                 {
                                     string recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
                                     child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
@@ -706,13 +706,13 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void ValidateNames(IDataListItemModel item)
         {
-            if(item == null) return;
+            if (item == null) return;
 
-            if(item.IsRecordset)
+            if (item.IsRecordset)
             {
                 ValidateRecordset();
             }
-            else if(item.IsField)
+            else if (item.IsField)
             {
                 ValidateRecordsetChildren(item.Parent);
             }
@@ -728,7 +728,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 (c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank)
                                                                  .ToList();
 
-            if(blankList.Count <= 1) return;
+            if (blankList.Count <= 1) return;
 
             RecsetCollection.Remove(blankList.First());
         }
@@ -737,18 +737,18 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             List<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
 
-            if(blankList.Count <= 1) return;
+            if (blankList.Count <= 1) return;
 
             ScalarCollection.Remove(blankList.First());
         }
 
         public void RemoveBlankRecordsetFields()
         {
-            foreach(var recset in RecsetCollection)
+            foreach (var recset in RecsetCollection)
             {
                 List<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
 
-                if(blankChildList.Count <= 1) continue;
+                if (blankChildList.Count <= 1) continue;
 
                 recset.Children.Remove(blankChildList.First());
             }
@@ -783,7 +783,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void CheckForEmptyRecordset()
         {
-            foreach(var recordset in RecsetCollection.Where(c => c.Children.Count == 0 || c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].Name) && !string.IsNullOrEmpty(c.Name)))
+            foreach (var recordset in RecsetCollection.Where(c => c.Children.Count == 0 || c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].Name) && !string.IsNullOrEmpty(c.Name)))
             {
                 recordset.SetError(StringResources.ErrorMessageEmptyRecordSet);
             }
@@ -791,9 +791,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void CheckForFixedEmptyRecordsets()
         {
-            foreach(var recset in RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].Name)))
+            foreach (var recset in RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].Name)))
             {
-                if(recset.ErrorMessage != StringResources.ErrorMessageDuplicateRecordset || recset.ErrorMessage != StringResources.ErrorMessageInvalidChar)
+                if (recset.ErrorMessage != StringResources.ErrorMessageDuplicateRecordset || recset.ErrorMessage != StringResources.ErrorMessageInvalidChar)
                 {
                     recset.RemoveError();
                 }
@@ -805,9 +805,9 @@ namespace Dev2.Studio.ViewModels.DataList
         void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
         {
             List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.Name).ToList();
-            foreach(var duplicate in duplicates)
+            foreach (var duplicate in duplicates)
             {
-                if(duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
+                if (duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
                 {
                     duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
                 }
@@ -815,7 +815,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     duplicate.ForEach(model =>
                     {
-                        if(model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
                         {
                             model.RemoveError();
                         }
@@ -827,7 +827,7 @@ namespace Dev2.Studio.ViewModels.DataList
         void AddRowToScalars()
         {
             List<IDataListItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
-            if(blankList.Count != 0) return;
+            if (blankList.Count != 0) return;
 
             IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(string.Empty);
             ScalarCollection.Add(scalar);
@@ -838,15 +838,15 @@ namespace Dev2.Studio.ViewModels.DataList
             List<IDataListItemModel> blankList = RecsetCollection.Where
                 (c => c.IsBlank && c.Children.Count == 1 && c.Children[0].IsBlank).ToList();
 
-            if(blankList.Count == 0)
+            if (blankList.Count == 0)
             {
                 AddRecordSet();
             }
 
-            foreach(var recset in RecsetCollection)
+            foreach (var recset in RecsetCollection)
             {
                 List<IDataListItemModel> blankChildList = recset.Children.Where(c => c.IsBlank).ToList();
-                if(blankChildList.Count != 0) continue;
+                if (blankChildList.Count != 0) continue;
 
                 IDataListItemModel newChild = DataListItemModelFactory.CreateDataListModel(string.Empty);
                 newChild.Parent = recset;
@@ -856,7 +856,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         static void FixNamingForRecset(IDataListItemModel recset)
         {
-            if(!recset.DisplayName.EndsWith("()"))
+            if (!recset.DisplayName.EndsWith("()"))
             {
                 recset.DisplayName = string.Concat(recset.DisplayName, "()");
             }
@@ -865,7 +865,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         static void FixNamingForScalar(IDataListItemModel scalar)
         {
-            if(scalar.DisplayName.Contains("()"))
+            if (scalar.DisplayName.Contains("()"))
             {
                 scalar.DisplayName = scalar.DisplayName.Replace("()", "");
             }
@@ -874,7 +874,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         static void FixCommonNamingProblems(IDataListItemModel recset)
         {
-            if(recset.DisplayName.Contains("[") || recset.DisplayName.Contains("]"))
+            if (recset.DisplayName.Contains("[") || recset.DisplayName.Contains("]"))
             {
                 recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
             }
@@ -882,27 +882,27 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private bool HasAnyUnusedItems()
         {
-            if(!HasItems())
+            if (!HasItems())
             {
                 return false;
             }
 
             bool hasUnused = false;
 
-            if(ScalarCollection != null)
+            if (ScalarCollection != null)
             {
                 hasUnused = ScalarCollection.Any(sc => !sc.IsUsed);
-                if(hasUnused)
+                if (hasUnused)
                 {
                     DeleteCommand.RaiseCanExecuteChanged();
                     return true;
                 }
             }
 
-            if(RecsetCollection != null)
+            if (RecsetCollection != null)
             {
                 hasUnused = RecsetCollection.Any(sc => !sc.IsUsed);
-                if(hasUnused)
+                if (hasUnused)
                 {
                     DeleteCommand.RaiseCanExecuteChanged();
                     return true;
@@ -920,11 +920,11 @@ namespace Dev2.Studio.ViewModels.DataList
         private OptomizedObservableCollection<IDataListItemModel> CreateFullDataList()
         {
             var fullDataList = new OptomizedObservableCollection<IDataListItemModel>();
-            foreach(var item in ScalarCollection)
+            foreach (var item in ScalarCollection)
             {
                 fullDataList.Add(item);
             }
-            foreach(var item in RecsetCollection)
+            foreach (var item in RecsetCollection)
             {
                 fullDataList.Add(item);
             }
@@ -958,10 +958,10 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             finally { IsSorting = false; }
 
-        
+
         }
 
-        public bool IsSorting  { get; set; }
+        public bool IsSorting { get; set; }
 
         /// <summary>
         ///     Sorts the scalars.
@@ -969,7 +969,7 @@ namespace Dev2.Studio.ViewModels.DataList
         private void SortScalars(bool ascending)
         {
             IList<IDataListItemModel> newScalarCollection;
-            if(ascending)
+            if (ascending)
             {
                 newScalarCollection = ScalarCollection.OrderBy(c => c.DisplayName).Where(c => !c.IsBlank).ToList();
             }
@@ -993,7 +993,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             IList<IDataListItemModel> newRecsetCollection = @ascending ? RecsetCollection.OrderBy(c => c.DisplayName).ToList() : RecsetCollection.OrderByDescending(c => c.DisplayName).ToList();
             RecsetCollection.Clear();
-            foreach(var item in newRecsetCollection.Where(c => !c.IsBlank))
+            foreach (var item in newRecsetCollection.Where(c => !c.IsBlank))
             {
                 RecsetCollection.Add(item);
             }
@@ -1009,14 +1009,14 @@ namespace Dev2.Studio.ViewModels.DataList
         public void CreateListsOfIDataListItemModelToBindTo(out string errorString)
         {
             errorString = string.Empty;
-            if(!string.IsNullOrEmpty(Resource.DataList))
+            if (!string.IsNullOrEmpty(Resource.DataList))
             {
                 ErrorResultTO errors = new ErrorResultTO();
                 try
                 {
                     ConvertDataListStringToCollections(Resource.DataList);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     errors.AddError("Invalid variable list. Please ensure that your variable list has valid entries");
                 }
@@ -1031,7 +1031,7 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
 
             DataListHeaderItemModel varNode = DataListItemModelFactory.CreateDataListHeaderItem("Variable");
-            if(ScalarCollection.Count == 0)
+            if (ScalarCollection.Count == 0)
             {
                 var dataListItemModel = DataListItemModelFactory.CreateDataListModel(string.Empty);
                 ScalarCollection.Add(dataListItemModel);
@@ -1040,7 +1040,7 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection.Add(varNode);
 
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
-            if(RecsetCollection.Count == 0)
+            if (RecsetCollection.Count == 0)
             {
                 AddRecordSet();
             }
@@ -1097,19 +1097,19 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 Dev2Logger.Error(e);
             }
-            
+
 
         }
 
         void AddScalars(XmlNode c)
         {
-            if(c.Attributes != null)
+            if (c.Attributes != null)
             {
                 var scalar = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
                 scalar.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
-                if(String.IsNullOrEmpty(_searchText))
-                ScalarCollection.Add(scalar);
-                else if(scalar.Name.ToUpper().StartsWith(_searchText.ToUpper()))
+                if (String.IsNullOrEmpty(_searchText))
+                    ScalarCollection.Add(scalar);
+                else if (scalar.Name.ToUpper().StartsWith(_searchText.ToUpper()))
                 {
                     ScalarCollection.Add(scalar);
                 }
@@ -1131,7 +1131,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             var cols = new List<IDataListItemModel>();
             {
-                foreach(XmlNode subc in c.ChildNodes)
+                foreach (XmlNode subc in c.ChildNodes)
                 {
                     // It is possible for the .Attributes property to be null, a check should be added
                     CreateColumns(subc, cols);
@@ -1143,7 +1143,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         static void AddColumnsToRecordSet(IEnumerable<IDataListItemModel> cols, IDataListItemModel recset)
         {
-            foreach(var col in cols)
+            foreach (var col in cols)
             {
                 col.Parent = recset;
                 recset.Children.Add(col);
@@ -1153,7 +1153,7 @@ namespace Dev2.Studio.ViewModels.DataList
         IDataListItemModel CreateRecordSet(XmlNode c)
         {
             IDataListItemModel recset;
-            if(c.Attributes != null)
+            if (c.Attributes != null)
             {
                 recset = DataListItemModelFactory.CreateDataListModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
                 recset.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
@@ -1171,7 +1171,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void CreateColumns(XmlNode subc, List<IDataListItemModel> cols)
         {
-            if(subc.Attributes != null)
+            if (subc.Attributes != null)
             {
                 var child = DataListItemModelFactory.CreateDataListModel(subc.Name, ParseDescription(subc.Attributes[Description]), ParseColumnIODirection(subc.Attributes[GlobalConstants.DataListIoColDirection]));
                 child.IsEditable = ParseIsEditable(subc.Attributes[IsEditable]);
@@ -1318,9 +1318,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
         {
-            if(resourceModel == Resource)
+            if (resourceModel == Resource)
             {
-                if(listOfUnused != null && listOfUnused.Count != 0)
+                if (listOfUnused != null && listOfUnused.Count != 0)
                 {
                     SetIsUsedDataListItems(listOfUnused, false);
                 }
@@ -1331,7 +1331,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 if (listOfUsed != null && listOfUsed.Count > 0)
                 {
-                    SetIsUsedDataListItems(listOfUsed,true);
+                    SetIsUsedDataListItems(listOfUsed, true);
                 }
             }
         }
@@ -1344,12 +1344,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void SetRecordSetItemsAsUsed()
         {
-            if(RecsetCollection.Any(rc => rc.IsUsed == false))
+            if (RecsetCollection.Any(rc => rc.IsUsed == false))
             {
-                foreach(var dataListItemModel in RecsetCollection)
+                foreach (var dataListItemModel in RecsetCollection)
                 {
                     dataListItemModel.IsUsed = true;
-                    foreach(var listItemModel in dataListItemModel.Children)
+                    foreach (var listItemModel in dataListItemModel.Children)
                     {
                         listItemModel.IsUsed = true;
                     }
@@ -1359,9 +1359,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void SetScalarItemsAsUsed()
         {
-            if(ScalarCollection.Any(sc => sc.IsUsed == false))
+            if (ScalarCollection.Any(sc => sc.IsUsed == false))
             {
-                foreach(var dataListItemModel in ScalarCollection)
+                foreach (var dataListItemModel in ScalarCollection)
                 {
                     dataListItemModel.IsUsed = true;
                 }
@@ -1380,23 +1380,23 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
 
-            if(DataList != null)
+            if (DataList != null)
             {
-                foreach(var dataListItem in DataList)
+                foreach (var dataListItem in DataList)
                 {
-                    if(String.IsNullOrEmpty(dataListItem.Name))
+                    if (String.IsNullOrEmpty(dataListItem.Name))
                     {
                         continue;
                     }
-                    if(dataListItem.Children.Count > 0)
+                    if (dataListItem.Children.Count > 0)
                     {
-                        if(partsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                        if (partsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
                         {
                             //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            if(dataListItem.IsEditable)
+                            if (dataListItem.IsEditable)
                             {
                                 // skip it if unused and exclude is on ;)
-                                if(excludeUnusedItems && !dataListItem.IsUsed)
+                                if (excludeUnusedItems && !dataListItem.IsUsed)
                                 {
                                     continue;
                                 }
@@ -1405,13 +1405,13 @@ namespace Dev2.Studio.ViewModels.DataList
                                                                                               String.Empty,
                                                                                               dataListItem.Description));
                                 // ReSharper disable LoopCanBeConvertedToQuery
-                                foreach(var child in dataListItem.Children)
+                                foreach (var child in dataListItem.Children)
                                 // ReSharper restore LoopCanBeConvertedToQuery
                                 {
-                                    if(!String.IsNullOrEmpty(child.Name))
+                                    if (!String.IsNullOrEmpty(child.Name))
                                     {
                                         //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                        if(dataListItem.IsEditable)
+                                        if (dataListItem.IsEditable)
                                         {
                                             missingWorkflowParts.Add(
                                                 IntellisenseFactory.CreateDataListValidationRecordsetPart(
@@ -1424,15 +1424,15 @@ namespace Dev2.Studio.ViewModels.DataList
                         else
                         {
                             // ReSharper disable LoopCanBeConvertedToQuery
-                            foreach(var child in dataListItem.Children)
+                            foreach (var child in dataListItem.Children)
                                 // ReSharper restore LoopCanBeConvertedToQuery
-                                if(partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
+                                if (partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
                                 {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if(child.IsEditable)
+                                    if (child.IsEditable)
                                     {
                                         // skip it if unused and exclude is on ;)
-                                        if(excludeUnusedItems && !dataListItem.IsUsed)
+                                        if (excludeUnusedItems && !dataListItem.IsUsed)
                                         {
                                             continue;
                                         }
@@ -1442,12 +1442,12 @@ namespace Dev2.Studio.ViewModels.DataList
                                 }
                         }
                     }
-                    else if(partsToVerify.Count(part => part.Field == dataListItem.Name && part.IsScalar) == 0)
+                    else if (partsToVerify.Count(part => part.Field == dataListItem.Name && part.IsScalar) == 0)
                     {
-                        if(dataListItem.IsEditable)
+                        if (dataListItem.IsEditable)
                         {
                             // skip it if unused and exclude is on ;)
-                            if(excludeUnusedItems && !dataListItem.IsUsed)
+                            if (excludeUnusedItems && !dataListItem.IsUsed)
                             {
                                 continue;
                             }
@@ -1471,9 +1471,9 @@ namespace Dev2.Studio.ViewModels.DataList
         public List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify)
         {
             var missingDataParts = new List<IDataListVerifyPart>();
-            foreach(var part in partsToVerify)
+            foreach (var part in partsToVerify)
             {
-                if(DataList != null)
+                if (DataList != null)
                 {
                     FindMissingPartsForRecordset(part, missingDataParts);
                     FindMissingForScalar(part, missingDataParts);
@@ -1484,9 +1484,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FindMissingForScalar(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
         {
-            if(part.IsScalar)
+            if (part.IsScalar)
             {
-                if(DataList.Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
+                if (DataList.Count(c => c.Name == part.Field && !c.IsRecordset) == 0)
                 {
                     missingDataParts.Add(part);
                 }
@@ -1495,16 +1495,16 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FindMissingPartsForRecordset(IDataListVerifyPart part, List<IDataListVerifyPart> missingDataParts)
         {
-            if(!part.IsScalar)
+            if (!part.IsScalar)
             {
                 var recset = DataList.Where(c => c.Name == part.Recordset && c.IsRecordset).ToList();
-                if(!recset.Any())
+                if (!recset.Any())
                 {
                     missingDataParts.Add(part);
                 }
                 else
                 {
-                    if(!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
+                    if (!string.IsNullOrEmpty(part.Field) && recset[0].Children.Count(c => c.Name == part.Field) == 0)
                     {
                         missingDataParts.Add(part);
                     }
@@ -1516,9 +1516,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
-            ShowUnusedDataListVariables(resourceModel, removeParts,workflowFields);
+            ShowUnusedDataListVariables(resourceModel, removeParts, workflowFields);
 
-            if(resourceModel == Resource)
+            if (resourceModel == Resource)
             {
                 AddMissingDataListItems(filteredDataListParts);
                 return filteredDataListParts;
@@ -1531,16 +1531,16 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if(HasErrors)
+                if (HasErrors)
                 {
                     var allErrorMessages = DataList.Select(model =>
                     {
                         string errorMessage;
-                        if(BuildRecordSetErrorMessages(model, out errorMessage))
+                        if (BuildRecordSetErrorMessages(model, out errorMessage))
                         {
                             return errorMessage;
                         }
-                        if(model.HasError)
+                        if (model.HasError)
                         {
                             return BuildErrorMessage(model);
                         }
@@ -1556,9 +1556,9 @@ namespace Dev2.Studio.ViewModels.DataList
         static bool BuildRecordSetErrorMessages(IDataListItemModel model, out string errorMessage)
         {
             errorMessage = "";
-            if(RecordSetHasChildren(model))
+            if (RecordSetHasChildren(model))
             {
-                if(model.HasError)
+                if (model.HasError)
                 {
                     {
                         errorMessage = BuildErrorMessage(model);

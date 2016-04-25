@@ -17,9 +17,7 @@
         mc:Ignorable="d"
         KeyUp="SplashPage_OnKeyUp"
         Closing="SplashPage_OnClosing"
-        MouseUp="SplashPage_OnMouseUp"
-        d:DataContext="{d:DesignInstance Type=interfaces:ISplashViewModel,
-                                              IsDesignTimeCreatable=False}">
+        d:DataContext="{d:DesignInstance Type=interfaces:ISplashViewModel, IsDesignTimeCreatable=False}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -28,10 +26,16 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid ToolTip="To close this view, click on the box or press the Esc key on your keyboard">
+    <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Warewolf.Studio.Themes.Luna;component/Images/newmoon.jpg"/>
         </Grid.Background>
+        <Grid Margin="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Button VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource SplashPageButtonTransparentStyle}"
+                    Click="ButtonBase_OnClick" >
+                <TextBlock Text="X" FontSize="18" FontWeight="Bold" />
+            </Button>
+        </Grid>
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*"/>

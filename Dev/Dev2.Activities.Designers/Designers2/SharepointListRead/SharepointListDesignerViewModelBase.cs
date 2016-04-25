@@ -155,7 +155,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             }
             set
             {
-                SetValue(ListItemsProperty, value);
+                SetValue(ListItemsProperty, value);            
                 OnPropertyChanged();
             }
         }

@@ -1,4 +1,4 @@
-﻿using Dev2.Common.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
 using System;
