@@ -21,7 +21,7 @@ namespace Dev2.DataList.Contract
     public interface IFindRecsetOptions
     {
         string HandlesType();
-        Func<DataASTMutable.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataASTMutable.WarewolfAtom> values, IEnumerable<DataASTMutable.WarewolfAtom> from, IEnumerable<DataASTMutable.WarewolfAtom> to, bool all);
+        Func<DataStorage.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all);
         int ArgumentCount { get; }
     }
 }

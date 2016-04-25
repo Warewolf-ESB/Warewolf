@@ -26,6 +26,7 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Utils
 {
@@ -107,7 +108,7 @@ namespace Dev2.Utils
             }
             try
             {
-                WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate(activityField);
+                FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(activityField);
             }
             catch(Exception)
             {

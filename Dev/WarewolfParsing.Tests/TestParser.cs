@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -14,7 +15,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         public void TestScalar()
         {
-            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[a]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[a]]", 0);
             Assert.IsTrue(ast.IsScalarExpression);
             var astval = ast as LanguageAST.LanguageExpression.ScalarExpression;
             if (astval != null)
@@ -34,7 +35,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_Nested_ExpectComplex()
         {
 
-            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[[[a]]]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[[[a]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
             var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
             if (astval != null)
@@ -42,8 +43,8 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[1].IsScalarExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[2].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[2].IsWarewolfAtomExpression);
             }
             else
             {
@@ -58,7 +59,7 @@ namespace WarewolfParsingTest
         {
            
 
-            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[[[[[a]]]]]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
             var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
             if (astval != null)
@@ -66,10 +67,10 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[2].IsScalarExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[1].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[3].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[4].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[1].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[3].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[4].IsWarewolfAtomExpression);
             }
             else
             {
@@ -84,7 +85,7 @@ namespace WarewolfParsingTest
         public void WarewolfParse_Parse_NestedDataSet_ExpectComplex_MultiNested()
         {
 
-            var ast = WarewolfDataEvaluationCommon.parseLanguageExpression("[[[[[[rec(1).a]]]]]]", 0);
+            var ast = EvaluationFunctions.parseLanguageExpression("[[[[[[rec(1).a]]]]]]", 0);
             Assert.IsTrue(ast.IsComplexExpression);
             var astval = ast as LanguageAST.LanguageExpression.ComplexExpression;
             if (astval != null)
@@ -92,10 +93,10 @@ namespace WarewolfParsingTest
                 Assert.IsNotNull(astval);
                 var data = astval.Item.ToArray();
                 Assert.IsTrue(data[2].IsRecordSetExpression);
-                Assert.IsTrue(data[0].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[1].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[3].IsWarewolfAtomAtomExpression);
-                Assert.IsTrue(data[4].IsWarewolfAtomAtomExpression);
+                Assert.IsTrue(data[0].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[1].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[3].IsWarewolfAtomExpression);
+                Assert.IsTrue(data[4].IsWarewolfAtomExpression);
 
                 var x = data[2] as LanguageAST.LanguageExpression.RecordSetExpression;
                 Assert.IsNotNull(x);
@@ -125,7 +126,7 @@ namespace WarewolfParsingTest
             var val = x.Item.First();
 
             Assert.IsTrue(val.IsInt);
-            var intval = val as DataASTMutable.WarewolfAtom.Int;
+            var intval = val as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(2, intval.Item);
             // ReSharper restore PossibleNullReferenceException
         }
@@ -145,12 +146,12 @@ namespace WarewolfParsingTest
             var val = x.Item.First();
 
             Assert.IsTrue(val.IsInt);
-            var intval = val as DataASTMutable.WarewolfAtom.Int;
+            var intval = val as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(3, intval.Item);
             // ReSharper restore PossibleNullReferenceException
         }
 
-        private DataASTMutable.WarewolfEnvironment CreateTestEnvWithData()
+        private DataStorage.WarewolfEnvironment CreateTestEnvWithData()
         {
 
             IEnumerable<IAssignValue> assigns = new List<IAssignValue>
@@ -183,7 +184,7 @@ namespace WarewolfParsingTest
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x.Item.IsDataString);
-            var val = x.Item as DataASTMutable.WarewolfAtom.DataString;
+            var val = x.Item as DataStorage.WarewolfAtom.DataString;
             Assert.AreEqual("a", val.Item);
             // ReSharper restore PossibleNullReferenceException
         }
@@ -206,7 +207,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(x != null && x.Item.IsInt);
             // ReSharper restore PossibleNullReferenceException
             // ReSharper restore PossibleNullReferenceException
-            var val = x.Item as DataASTMutable.WarewolfAtom.Int;
+            var val = x.Item as DataStorage.WarewolfAtom.Int;
             // ReSharper disable PossibleNullReferenceException
             if (val != null)
             {
@@ -229,7 +230,7 @@ namespace WarewolfParsingTest
             var x = ast as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x.Item.IsDataString);
-            var val = x.Item as DataASTMutable.WarewolfAtom.DataString;
+            var val = x.Item as DataStorage.WarewolfAtom.DataString;
             Assert.AreEqual("a", val.Item);
             // ReSharper rstore PossibleNullReferenceException
         }
@@ -250,7 +251,7 @@ namespace WarewolfParsingTest
 
             // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue(x.IsInt);
-            var val = x as DataASTMutable.WarewolfAtom.Int;
+            var val = x as DataStorage.WarewolfAtom.Int;
             Assert.AreEqual(2, val.Item);
             // ReSharper rstore PossibleNullReferenceException
         }
@@ -259,7 +260,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
-        [ExpectedException(typeof(NullValueInVariableException))]
+        [ExpectedException(typeof(Exception))]
         public void WarewolfParse_Eval_Scalar_NonExistent_ExpectException()
         {
 
@@ -301,8 +302,8 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 30);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 30);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 30);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 30);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -336,14 +337,14 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("b"));
             Assert.AreEqual(recordSet.Data["b"].Count, 2);
             Assert.IsTrue(recordSet.Data["b"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 30);
-            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 30);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 30);
+            Assert.AreEqual((recordSet.Data["b"][1] as DataStorage.WarewolfAtom.Int).Item, 30);
 
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 33);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -363,10 +364,10 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 3);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 22);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 21);
-            Assert.AreEqual(recordSet.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
+            Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -386,10 +387,10 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 3);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 22);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 21);
-            Assert.AreEqual(recordSet.Optimisations, DataASTMutable.WarewolfAttribute.Ordinal);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
+            Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Ordinal);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -408,10 +409,10 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 3);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 22);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 21);
-            Assert.AreEqual(recordSet.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
+            Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Sorted);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -430,10 +431,10 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 3);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 22);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 21);
-            Assert.AreEqual(recordSet.Optimisations, DataASTMutable.WarewolfAttribute.Ordinal);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 22);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 21);
+            Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Ordinal);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -456,11 +457,11 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 4);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 22);
-            Assert.AreEqual((recordSet.Data["a"][3] as DataASTMutable.WarewolfAtom.Int).Item, 21);
-            Assert.AreEqual(recordSet.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 22);
+            Assert.AreEqual((recordSet.Data["a"][3] as DataStorage.WarewolfAtom.Int).Item, 21);
+            Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Sorted);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -482,11 +483,11 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 4);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 22);
-            Assert.AreEqual((recordSet.Data["a"][3] as DataASTMutable.WarewolfAtom.Int).Item, 21);
-            Assert.AreEqual(recordSet.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 22);
+            Assert.AreEqual((recordSet.Data["a"][3] as DataStorage.WarewolfAtom.Int).Item, 21);
+            Assert.AreEqual(recordSet.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
             // ReSharper rstore PossibleNullReferenceException
         }
 
@@ -513,12 +514,12 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 3);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataASTMutable.WarewolfAtom.Int).Item, 3);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataStorage.WarewolfAtom.Int).Item, 3);
 
         }
 
@@ -546,12 +547,12 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 3);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataASTMutable.WarewolfAtom.Int).Item, 3);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][2] as DataStorage.WarewolfAtom.Int).Item, 3);
 
         }
 
@@ -586,13 +587,61 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 27);
 
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
         }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_FramedAssign_List_IndexExpression()
+        {
+            var assigns = new List<IAssignValue>
+             {
+                 new AssignValue("[[rec().a]]", "25"),
+                 new AssignValue("[[rec().b]]", "33"),
+                 new AssignValue("[[rec().a]]", "26"),
+                 new AssignValue("[[a]]", "1"),
+
+             };
+            var env = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var envx = PublicFunctions.EvalMultiAssign(assigns, 0, env);
+             envx = AssignEvaluation.evalMultiAssignList(envx, new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewInt(1), DataStorage.WarewolfAtom.NewInt(2) }, "[[bec([[a]]).a]]", 0, true);
+
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_FramedAssign_With_LastOnOneSideList()
+        {
+
+
+
+            var env = WarewolfTestData.CreateTestEnvEmpty("");
+
+            var envx = AssignEvaluation.evalMultiAssignList(env, new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewInt(1), DataStorage.WarewolfAtom.NewInt(2) }, "[[bec().a]]", 0, true);
+
+
+            var recordSet = envx.RecordSets["bec"];
+            Assert.IsTrue(recordSet.Data.ContainsKey("a"));
+            Assert.AreEqual(recordSet.Data["a"].Count, 2);
+            Assert.IsTrue(recordSet.Data["a"][0].IsInt);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
+
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
+
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -624,11 +673,11 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 27);
 
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
         }
 
@@ -663,11 +712,11 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 33);
 
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
         }
 
@@ -694,12 +743,12 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["b"][1] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
 
         }
@@ -736,9 +785,9 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 1);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
 
 
         }
@@ -776,9 +825,9 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 1);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
 
 
         }
@@ -814,9 +863,9 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 1);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
 
 
         }
@@ -844,12 +893,12 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
             Assert.IsTrue(recordSet.Data["a"][1].IsNothing);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["b"][1] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
 
         }
@@ -878,13 +927,13 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
             Assert.IsTrue(recordSet.Data["a"][1].IsNothing);
             Assert.IsFalse(recordSet.Data["b"][0].IsNothing);
-            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["b"][1] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
 
         }
@@ -927,7 +976,7 @@ namespace WarewolfParsingTest
             var res = PublicFunctions.EvalEnvExpression("[[rec()]]", 0, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
             var x = (res as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult).Item;
-            Assert.AreEqual("29", x.Data[DataASTMutable.PositionColumn][0].ToString());
+            Assert.AreEqual("29", x.Data[DataStorage.PositionColumn][0].ToString());
             Assert.AreEqual("26", x.Data["b"][0].ToString());
         }
 
@@ -949,7 +998,7 @@ namespace WarewolfParsingTest
             var res = PublicFunctions.EvalEnvExpression("[[rec(27)]]", 0, testEnv3);
             Assert.IsTrue(res.IsWarewolfRecordSetResult);
             var x = (res as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult).Item;
-            Assert.AreEqual("27", x.Data[DataASTMutable.PositionColumn][0].ToString());
+            Assert.AreEqual("27", x.Data[DataStorage.PositionColumn][0].ToString());
             Assert.AreEqual("33", x.Data["b"][0].ToString());
         }
 
@@ -1001,12 +1050,12 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 2);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["b"][1] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
             var env4 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv2);
 
@@ -1014,16 +1063,16 @@ namespace WarewolfParsingTest
             Assert.IsTrue(recordSet.Data.ContainsKey("a"));
             Assert.AreEqual(recordSet.Data["a"].Count, 4);
             Assert.IsTrue(recordSet.Data["a"][0].IsInt);
-            Assert.AreEqual((recordSet.Data["a"][0] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][1] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["a"][2] as DataASTMutable.WarewolfAtom.Int).Item, 25);
-            Assert.AreEqual((recordSet.Data["a"][3] as DataASTMutable.WarewolfAtom.Int).Item, 27);
-            Assert.AreEqual((recordSet.Data["b"][0] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["b"][1] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["b"][2] as DataASTMutable.WarewolfAtom.Int).Item, 33);
-            Assert.AreEqual((recordSet.Data["b"][3] as DataASTMutable.WarewolfAtom.Int).Item, 26);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataASTMutable.WarewolfAtom.Int).Item, 1);
-            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataASTMutable.WarewolfAtom.Int).Item, 2);
+            Assert.AreEqual((recordSet.Data["a"][0] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][1] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["a"][2] as DataStorage.WarewolfAtom.Int).Item, 25);
+            Assert.AreEqual((recordSet.Data["a"][3] as DataStorage.WarewolfAtom.Int).Item, 27);
+            Assert.AreEqual((recordSet.Data["b"][0] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["b"][1] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["b"][2] as DataStorage.WarewolfAtom.Int).Item, 33);
+            Assert.AreEqual((recordSet.Data["b"][3] as DataStorage.WarewolfAtom.Int).Item, 26);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][0] as DataStorage.WarewolfAtom.Int).Item, 1);
+            Assert.AreEqual((recordSet.Data["WarewolfPositionColumn"][1] as DataStorage.WarewolfAtom.Int).Item, 2);
 
         }
 
@@ -1059,6 +1108,31 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_WithIndexExpAndMultipleColumns_Multipleresults()
+        {
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "1"), 0);
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+
+            Assert.AreEqual(items[0], "26");
+            Assert.AreEqual(items[1], "25");
+            Assert.AreEqual(items[2], "28");
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_Eval_Delete_Mid()
         {
 
@@ -1082,6 +1156,103 @@ namespace WarewolfParsingTest
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_Scalar()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+
+
+
+            env.EvalDelete("[[a]]", 0);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        public void WarewolfParse_Eval_Delete_Exp()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "3"), 0);
+
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+            Assert.AreEqual(items.Count,2);
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+        [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_Exp_fail()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[a]]", "a"), 0);
+
+
+
+            env.EvalDelete("[[rec([[a]])]]", 0);
+            var items = env.EvalAsListOfStrings("[[rec(*).a]]", 0);
+
+            Assert.AreEqual(items.Count, 2);
+            Assert.AreEqual(items[0], "25");
+            Assert.AreEqual(items[1], "26");
+
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WarewolfParse_Eval")]
+    [ExpectedException(typeof(Exception))]
+        public void WarewolfParse_Eval_Delete_NonExistent()
+        {
+
+
+
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "26"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "25"), 0);
+            env.AssignWithFrame(new AssignValue("[[rec().a]]", "28"), 0);
+
+
+
+            env.EvalDelete("[[fec(3)]]", 0);
+
+
+        }
 
 
         [TestMethod]
@@ -1133,9 +1304,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[1], "28");
             Assert.AreEqual(items[2], "25");
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
             Assert.AreEqual(recset.LastIndex, 5);
         }
 
@@ -1163,9 +1334,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[1], "25");
             Assert.AreEqual(items[2], "28");
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);
             Assert.AreEqual(recset.LastIndex, 4);
         }
 
@@ -1195,9 +1366,9 @@ namespace WarewolfParsingTest
 
             Assert.AreEqual(items[0], "26");
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);
             Assert.AreEqual(recset.LastIndex, 1);
             Assert.AreEqual(recset.Count, 1);
         }
@@ -1238,9 +1409,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[2], "27");
             Assert.AreEqual(items[3], "uuu");
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);
             Assert.AreEqual(recset.LastIndex, 17);
             Assert.AreEqual(recset.Count, 4);
         }
@@ -1287,9 +1458,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[3], "444");
             Assert.AreEqual(items[4], "uuu");
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
             Assert.AreEqual(recset.LastIndex, 17);
             Assert.AreEqual(recset.Count, 5);
         }
@@ -1336,9 +1507,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[3], "uuu");
 
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
             Assert.AreEqual(recset.LastIndex, 17);
             Assert.AreEqual(recset.Count, 4);
         }
@@ -1387,9 +1558,9 @@ namespace WarewolfParsingTest
 
 
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
             Assert.AreEqual(recset.LastIndex, 4);
             Assert.AreEqual(recset.Count, 3);
         }
@@ -1415,7 +1586,7 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[2], "1");
 
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
             Assert.AreEqual(recset.LastIndex, 4);
             Assert.AreEqual(recset.Count, 3);
@@ -1457,9 +1628,9 @@ namespace WarewolfParsingTest
 
 
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Fragmented);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Fragmented);
             Assert.AreEqual(recset.LastIndex, 0);
             Assert.AreEqual(recset.Count, 0);
         }
@@ -1489,9 +1660,9 @@ namespace WarewolfParsingTest
             Assert.AreEqual(items[1], "25");
             Assert.AreEqual(items[2], "28");
             PrivateObject p = new PrivateObject(env);
-            var inner = p.GetField("_env") as DataASTMutable.WarewolfEnvironment;
+            var inner = p.GetField("_env") as DataStorage.WarewolfEnvironment;
             var recset = inner.RecordSets["rec"];
-            Assert.AreEqual(recset.Optimisations, DataASTMutable.WarewolfAttribute.Sorted);
+            Assert.AreEqual(recset.Optimisations, DataStorage.WarewolfAttribute.Sorted);
             Assert.AreEqual(recset.LastIndex, 7);
         }
 
@@ -1584,7 +1755,7 @@ namespace WarewolfParsingTest
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
 
-            var env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2,0,"[[rec([[a]]).a]]");
+            var env3 = EvaluationFunctions.evalToExpression(testEnv2,0,"[[rec([[a]]).a]]");
             Assert.AreEqual(env3, "[[rec(1).a]]");
 
 
@@ -1608,11 +1779,11 @@ namespace WarewolfParsingTest
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
 
-            var env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 0, "[[[[a]]]]");
+            var env3 = EvaluationFunctions.evalToExpression(testEnv2, 0, "[[[[a]]]]");
             Assert.AreEqual(env3, "[[a]]");
 
 
-            env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 1, "[[[[a]]]]");
+            env3 = EvaluationFunctions.evalToExpression(testEnv2, 1, "[[[[a]]]]");
             Assert.AreEqual(env3, "[[a]]");
 
         }
@@ -1636,10 +1807,10 @@ namespace WarewolfParsingTest
 
             var testEnv2 = PublicFunctions.EvalMultiAssign(assigns, 0, testEnv);
 
-            var env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 0, "[[a]]");
+            var env3 = EvaluationFunctions.evalToExpression(testEnv2, 0, "[[a]]");
             Assert.AreEqual(env3, "[[a]]");
 
-             env3 = WarewolfDataEvaluationCommon.evalToExpression(testEnv2, 0, "[[rec().a]]");
+             env3 = EvaluationFunctions.evalToExpression(testEnv2, 0, "[[rec().a]]");
             Assert.AreEqual(env3, "[[rec().a]]");
 
         }
@@ -1651,7 +1822,7 @@ namespace WarewolfParsingTest
         [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_LanguageExpressionToString_NestedJsonArrayOfObjects()
         {
-            var str = WarewolfDataEvaluationCommon.languageExpressionToString(WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Person.Child(*).Age]]"));
+            var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child(*).Age]]"));
             Assert.AreEqual(str, "[[Person.Child(*).Age]]");
         }
 
@@ -1660,9 +1831,11 @@ namespace WarewolfParsingTest
         [TestCategory("WarewolfParse_Eval")]
         public void WarewolfParse_LanguageExpressionToString_NestedProperty()
         {
-            var str = WarewolfDataEvaluationCommon.languageExpressionToString(WarewolfDataEvaluationCommon.parseLanguageExpressionWithoutUpdate("[[Person.Child]]"));
+            var str = EvaluationFunctions.languageExpressionToString(EvaluationFunctions.parseLanguageExpressionWithoutUpdate("[[Person.Child]]"));
             Assert.AreEqual(str, "[[Person.Child]]");
         }
+
+
 
 
 
@@ -1673,7 +1846,7 @@ namespace WarewolfParsingTest
         {
             var testEnv = WarewolfTestData.CreateTestEnvEmpty("");
 
-            var env3 = PublicFunctions.EvalAssignFromList("[[a]]", new List<DataASTMutable.WarewolfAtom>() { DataASTMutable.WarewolfAtom.NewDataString("a"), DataASTMutable.WarewolfAtom.NewDataString("b") }, testEnv, 0, true);
+            var env3 = PublicFunctions.EvalAssignFromList("[[a]]", new List<DataStorage.WarewolfAtom>() { DataStorage.WarewolfAtom.NewDataString("a"), DataStorage.WarewolfAtom.NewDataString("b") }, testEnv, 0, true);
 
        
             var items = PublicFunctions.EvalEnvExpression("[[a]]", 0, env3);
@@ -1682,7 +1855,7 @@ namespace WarewolfParsingTest
                 var lst = (items as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult).Item;
 
                 Assert.IsTrue(lst.IsDataString);
-                Assert.AreEqual((lst as DataASTMutable.WarewolfAtom.DataString).Item, "a,b");
+                Assert.AreEqual((lst as DataStorage.WarewolfAtom.DataString).Item, "a,b");
 
             }
 

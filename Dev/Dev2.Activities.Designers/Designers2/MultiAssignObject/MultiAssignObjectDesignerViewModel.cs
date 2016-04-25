@@ -13,14 +13,14 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.TO;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.MultiAssignObject
 {
-    public class MultiAssignObjectDesignerViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
+    public class MultiAssignObjectDesignerViewModel : ActivityCollectionDesignerViewModel<AssignObjectDTO>
     {
         public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            var dto = mi.GetCurrentValue() as ActivityDTO;
+            var dto = mi.GetCurrentValue() as AssignObjectDTO;
             if (dto == null)
             {
                 yield break;

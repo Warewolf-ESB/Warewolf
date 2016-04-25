@@ -9,75 +9,9 @@ using WarewolfParserInterop;
 
 namespace Warewolf.Storage
 {
-    public interface IExecutionEnvironment
-    {
-        CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = true);
-
-        CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update);
-
-        void Assign(string exp, string value, int update);
-
-        void AssignWithFrame(IAssignValue values, int update);
-
-        int GetLength(string recordSetName);
-
-        int GetCount(string recordSetName);
-
-        IList<int> EvalRecordSetIndexes(string recordsetName, int update);
-
-        bool HasRecordSet(string recordsetName);
-
-        IList<string> EvalAsListOfStrings(string expression, int update);
-
-        void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
-
-        void EvalAssignFromNestedLast(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
-
-        void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update);
-
-        void EvalDelete(string exp, int update);
-
-        void CommitAssign();
-
-        void SortRecordSet(string sortField, bool descOrder, int update);
-
-        string ToStar(string expression);
-
-        IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false);
-
-        IEnumerable<int> EvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update);
-
-        void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause, int update);
-
-        HashSet<string> Errors { get; }
-        HashSet<string> AllErrors { get; }
-
-        void AddError(string error);
-
-        void AssignDataShape(string p);
-
-        string FetchErrors();
-
-        bool HasErrors();
-
-        string EvalToExpression(string exp, int update);
-
-        IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update);
-
-        void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update);
-
-        CommonFunctions.WarewolfEvalResult EvalForJson(string exp);
-
-        void AddToJsonObjects(string exp, JContainer jContainer);
-
-        void AssignJson(IEnumerable<IAssignValue> values, int update);
-
-        void AssignJson(IAssignValue value, int update);
-    }
-
     public class ExecutionEnvironment : IExecutionEnvironment
     {
-        private DataASTMutable.WarewolfEnvironment _env;
+        private DataStorage.WarewolfEnvironment _env;
 
         public ExecutionEnvironment()
         {
@@ -99,7 +33,7 @@ namespace Warewolf.Storage
             catch (Exception e)
             {
                 if (throwsifnotexists || e is IndexOutOfRangeException || e.Message.Contains("index was not an int")) throw;
-                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
         }
 
@@ -107,7 +41,7 @@ namespace Warewolf.Storage
         {
             if (string.IsNullOrEmpty(exp))
             {
-                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
             try
             {
@@ -122,11 +56,11 @@ namespace Warewolf.Storage
                 if (e is IndexOutOfRangeException) throw;
                 if (IsRecordsetIdentifier(exp))
                 {
-                    var res = new WarewolfAtomList<DataASTMutable.WarewolfAtom>(DataASTMutable.WarewolfAtom.Nothing);
+                    var res = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing);
                     res.AddNothing();
                     return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(res);
                 }
-                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.Nothing);
+                return CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
         }
 
@@ -235,7 +169,7 @@ namespace Warewolf.Storage
 
         public bool HasRecordSet(string recordsetName)
         {
-            var x = WarewolfDataEvaluationCommon.parseLanguageExpression(recordsetName, 0);
+            var x = EvaluationFunctions.parseLanguageExpression(recordsetName, 0);
             if (x.IsRecordSetNameExpression)
             {
                 var recsetName = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
@@ -268,7 +202,7 @@ namespace Warewolf.Storage
             throw new Exception(string.Format("Could not retrieve list of strings from expression {0}", expression));
         }
 
-        public static string WarewolfAtomToString(DataASTMutable.WarewolfAtom a)
+        public static string WarewolfAtomToString(DataStorage.WarewolfAtom a)
         {
             if (a == null)
             {
@@ -277,12 +211,12 @@ namespace Warewolf.Storage
             return a.ToString();
         }
 
-        public static string WarewolfAtomToStringNullAsNothing(DataASTMutable.WarewolfAtom a)
+        public static string WarewolfAtomToStringNullAsNothing(DataStorage.WarewolfAtom a)
         {
             return a == null ? null : (a.IsNothing ? null : a.ToString());
         }
 
-        public static string WarewolfAtomToStringErrorIfNull(DataASTMutable.WarewolfAtom a)
+        public static string WarewolfAtomToStringErrorIfNull(DataStorage.WarewolfAtom a)
         {
             if (a == null)
             {
@@ -299,7 +233,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(a, 0);
+                var x = EvaluationFunctions.parseLanguageExpression(a, 0);
                 return x.IsRecordSetNameExpression;
             }
             catch (Exception)
@@ -313,7 +247,7 @@ namespace Warewolf.Storage
             errorMessage = "";
             try
             {
-                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(expression, update);
+                var x = EvaluationFunctions.parseLanguageExpression(expression, update);
                 if (x.IsRecordSetExpression || x.IsScalarExpression || x.IsJsonIdentifierExpression || x.IsRecordSetNameExpression)
                 {
                     return true;
@@ -384,7 +318,7 @@ namespace Warewolf.Storage
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        private void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataASTMutable.WarewolfAtom> item, bool shouldUseLast, int update)
+        private void AssignWithFrameAndList(string assignValue, WarewolfAtomList<DataStorage.WarewolfAtom> item, bool shouldUseLast, int update)
         {
             _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
         }
@@ -412,7 +346,7 @@ namespace Warewolf.Storage
 
         public string ToStar(string expression)
         {
-            var exp = WarewolfDataEvaluationCommon.parseLanguageExpression(expression, 0);
+            var exp = EvaluationFunctions.parseLanguageExpression(expression, 0);
             if (exp.IsRecordSetExpression)
             {
                 var rec = exp as LanguageAST.LanguageExpression.RecordSetExpression;
@@ -433,7 +367,7 @@ namespace Warewolf.Storage
             return expression;
         }
 
-        public IEnumerable<DataASTMutable.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists = false)
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists = false)
         {
             var result = Eval(expression, update, throwsifnotexists);
             if (result.IsWarewolfAtomResult)
@@ -444,7 +378,7 @@ namespace Warewolf.Storage
                 {
                     var x = warewolfAtomResult.Item;
                     // ReSharper restore PossibleNullReferenceException
-                    return new List<DataASTMutable.WarewolfAtom> { x };
+                    return new List<DataStorage.WarewolfAtom> { x };
                 }
                 throw new Exception("null when f# said it should not be");
             }
@@ -460,12 +394,12 @@ namespace Warewolf.Storage
             }
         }
 
-        public IEnumerable<int> EvalWhere(string expression, Func<DataASTMutable.WarewolfAtom, bool> clause, int update)
+        public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update)
         {
             return PublicFunctions.EvalWhere(expression, _env, update, clause);
         }
 
-        public void ApplyUpdate(string expression, Func<DataASTMutable.WarewolfAtom, DataASTMutable.WarewolfAtom> clause, int update)
+        public void ApplyUpdate(string expression, Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> clause, int update)
         {
             var temp = PublicFunctions.EvalUpdate(expression, _env, update, clause);
             _env = temp;
@@ -502,12 +436,12 @@ namespace Warewolf.Storage
 
         public string EvalToExpression(string exp, int update)
         {
-            return string.IsNullOrEmpty(exp) ? "" : WarewolfDataEvaluationCommon.evalToExpression(_env, update, exp);
+            return string.IsNullOrEmpty(exp) ? "" : EvaluationFunctions.evalToExpression(_env, update, exp);
         }
 
         public static string ConvertToIndex(string outputVar, int i)
         {
-            var output = WarewolfDataEvaluationCommon.parseLanguageExpression(outputVar, 0);
+            var output = EvaluationFunctions.parseLanguageExpression(outputVar, 0);
             if (output.IsRecordSetExpression)
             {
                 var outputidentifier = (output as LanguageAST.LanguageExpression.RecordSetExpression).Item;
@@ -521,7 +455,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(assignVar, 0);
+                var x = EvaluationFunctions.parseLanguageExpression(assignVar, 0);
                 return x.IsRecordSetExpression;
             }
             catch (Exception)
@@ -534,7 +468,7 @@ namespace Warewolf.Storage
         {
             try
             {
-                var x = WarewolfDataEvaluationCommon.parseLanguageExpression(assignVar, 0);
+                var x = EvaluationFunctions.parseLanguageExpression(assignVar, 0);
                 return x.IsScalarExpression;
             }
             catch (Exception)
@@ -550,16 +484,16 @@ namespace Warewolf.Storage
 
         public static string GetPositionColumnExpression(string recordset)
         {
-            var rec = WarewolfDataEvaluationCommon.parseLanguageExpression(recordset, 0);
+            var rec = EvaluationFunctions.parseLanguageExpression(recordset, 0);
             if (rec.IsRecordSetExpression)
             {
                 var index = (rec as LanguageAST.LanguageExpression.RecordSetExpression).Item;
-                return "[[" + index.Name + "(" + "*" + ")." + WarewolfDataEvaluationCommon.PositionColumn + "]]";
+                return "[[" + index.Name + "(" + "*" + ")." + EvaluationFunctions.PositionColumn + "]]";
             }
             if (rec.IsRecordSetNameExpression)
             {
                 var index = (rec as LanguageAST.LanguageExpression.RecordSetNameExpression).Item;
-                return "[[" + index.Name + "(" + "*" + ")." + WarewolfDataEvaluationCommon.PositionColumn + "]]";
+                return "[[" + index.Name + "(" + "*" + ")." + EvaluationFunctions.PositionColumn + "]]";
             }
             return recordset;
         }

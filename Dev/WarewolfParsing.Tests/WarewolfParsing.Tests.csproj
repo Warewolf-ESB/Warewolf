@@ -67,13 +67,21 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AssignTests.cs" />
+    <Compile Include="EvalFunctionTests.cs" />
+    <Compile Include="SortTest.cs" />
+    <Compile Include="TestAst.cs" />
+    <Compile Include="TestCommonFunctions.cs" />
     <Compile Include="TestDataStructure.cs" />
+    <Compile Include="TestDistinct.cs" />
     <Compile Include="TestEvaluation.cs" />
     <Compile Include="TestParser.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="AssignJsonTests.cs" />
+    <Compile Include="TestPublicFunctions.cs" />
+    <Compile Include="TestUpdate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

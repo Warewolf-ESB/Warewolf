@@ -105,7 +105,9 @@ namespace Dev2.Activities.Specs.Language_Parser
             try
             {
                 var variable = ScenarioContext.Current.Get<string>("variable");
+#pragma warning disable 618
                 var result = IntellisenseStringProvider.parseLanguageExpressionAndValidate(variable);
+#pragma warning restore 618
                 if (result.Item2 != String.Empty)
                 {
                     ScenarioContext.Current.Add("error", result.Item2);

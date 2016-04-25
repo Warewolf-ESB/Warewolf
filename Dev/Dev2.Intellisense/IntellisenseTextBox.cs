@@ -1200,7 +1200,9 @@ namespace Dev2.UI
         void EnsureErrorStatus()
         {
             if(string.IsNullOrEmpty(Text)) return;
+#pragma warning disable 618
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(Text);
+#pragma warning restore 618
             if (FilterType == enIntellisensePartType.RecordsetsOnly && !error.Item1.IsRecordSetNameExpression)
             {
                 ToolTip = error.Item2 != String.Empty ? error.Item2 : "Invalid recordset";
