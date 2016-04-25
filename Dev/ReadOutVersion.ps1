@@ -25,5 +25,5 @@ foreach ($file in Get-ChildItem -recurse $WarewolfGitRepoDirectory) {
         }
 	}
 }
-"FullVersionString=$HighestReadVersion" | Out-File -LiteralPath FullVersionString -Encoding utf8
+Out-File -LiteralPath FullVersionString -InputObject "FullVersionString=$HighestReadVersion" -Encoding default
 Write-Host Compile has completed successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
