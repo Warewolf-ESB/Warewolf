@@ -18,15 +18,16 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.SignalR.Wrappers.Old;
-using Microsoft.AspNet.SignalR.Client.Old;
+using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
@@ -273,30 +274,16 @@ namespace Dev2.Runtime.ServiceModel
                     {
                         // Credentials = client.Credentials 
                         hub = new HubConnection(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
+                        hub.Error +=exception => {};
                         ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
 #pragma warning disable 168
                         var proxy = hub.CreateHubProxy("esb"); // this is the magic line that causes proper validation
 #pragma warning restore 168
                         hub.Start().Wait();
-                  
+                        CheckServerVersion(proxy);
                         Dev2Logger.Debug("Hub State : " + hub.State);
-
                         return "Success";
                     }
-                        catch(Exception)
-                        {
-                            // Credentials = client.Credentials 
-                            var hub2 = new HubConnectionWrapperOld(connection.FetchTestConnectionAddress()) { Credentials = client.Credentials };
-                            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-#pragma warning disable 168
-                            var proxy = hub2.CreateHubProxy("esb"); // this is the magic line that causes proper validation
-#pragma warning restore 168
-                            hub2.Start().Wait();
-                            
-                            Dev2Logger.Debug("Hub State : " + hub2.State);
-
-                            return "Success";
-                        }
                     finally
                     {
                         if(hub != null)
@@ -312,6 +299,35 @@ namespace Dev2.Runtime.ServiceModel
                 if(context != null && connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     context.Undo();
+                }
+            }
+        }
+
+        private static void CheckServerVersion(IHubProxy proxy)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var esbExecuteRequest = new EsbExecuteRequest { ServiceName = "GetServerVersion" };
+            Envelope envelope = new Envelope
+            {
+                Content = serializer.Serialize(esbExecuteRequest),
+                Type = typeof(Envelope)
+            };
+            var messageId = Guid.NewGuid();
+            proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).Wait();
+            Task<string> fragmentInvoke = proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+            var serverVersion = fragmentInvoke.Result;
+            if(!string.IsNullOrEmpty(serverVersion))
+            {
+                Version sourceVersionNumber;
+                Version.TryParse(serverVersion, out sourceVersionNumber);
+                Version destVersionNumber;
+                Version.TryParse("0.0.0.6", out destVersionNumber);
+                if(sourceVersionNumber != null && destVersionNumber != null)
+                {
+                    if(sourceVersionNumber < destVersionNumber)
+                    {
+                        throw new VersionConflictException(sourceVersionNumber, destVersionNumber);
+                    }
                 }
             }
         }
