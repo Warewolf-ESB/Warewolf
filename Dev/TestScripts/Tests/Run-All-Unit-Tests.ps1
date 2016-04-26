@@ -1,5 +1,6 @@
 ﻿$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.FullName
 # Read playlists and args.
+$TestList = ""
 if ($Args.Count -gt 0) {
     $TestList = $Args.ForEach({ "," + $_ })
 } else {
