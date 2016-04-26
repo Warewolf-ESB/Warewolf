@@ -3,7 +3,6 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
 Scenario: Execute a selectAndApply over a tool using a recordset with 3 rows
 	Given I open New Workflow
 	And I drag a new Select and Apply tool to the design surface  
@@ -40,6 +39,62 @@ Scenario: Execute a selectAndApply over a tool using a complexobject with 3 prop
 	    | [[Person(*).name]] |
 	    | As = [[bob]]    |
 
+Scenario: Number Format tool with complext object deeper level
+	Given I open New Workflow
+	And I drag a new Select and Apply tool to the design surface  
+	Given There is a complexobject in the datalist with this shape
+	| rs                     | value |
+	| [[Person.Score().Avg]] | 0.3   |
+	| [[Person.Score().Avg]] | 0.45  |
+	| [[Person.Score().Avg]] | 0.12  |
+	And Alias is "[[Avg]]"
+	And Datasource is "[[Person.Score(*).Avg]]"
+	And I use a Number Format tool configured as
+		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
+		| [[Avg]] | Up       | 2              | 3                | [[Avg]] |
+	When the selectAndApply tool is executed
+	Then the execution has "NO" error
+	And "[[Person.Score(1).Avg]]" has a value of "0.300"
+	And "[[Person.Score(2).Avg]]" has a value of "0.450"
+	And "[[Person.Score(3).Avg]]" has a value of "0.120"
+
+Scenario: Number Format tool with complext object multi array
+	Given I open New Workflow
+	And I drag a new Select and Apply tool to the design surface  
+	Given There is a complexobject in the datalist with this shape
+	| rs                     | value |
+	| [[Person().Score().Avg]] | 0.3   |
+	| [[Person().Score().Avg]] | 0.45  |
+	| [[Person().Score().Avg]] | 0.12  |
+	And Alias is "[[Avg]]"
+	And Datasource is "[[Person(*).Score(*).Avg]]"
+	And I use a Number Format tool configured as
+		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
+		| [[Avg]] | Up       | 2              | 3                | [[Avg]] |
+	When the selectAndApply tool is executed
+	Then the execution has "NO" error
+	And "[[Person(1).Score(1).Avg]]" has a value of "0.300"
+	And "[[Person(2).Score(2).Avg]]" has a value of "0.450"
+	And "[[Person(3).Score(3).Avg]]" has a value of "0.120"
+
+Scenario: Number Format tool with complext object
+	Given I open New Workflow
+	And I drag a new Select and Apply tool to the design surface  
+	Given There is a complexobject in the datalist with this shape
+	| rs                 | value |
+	| [[Person().Level]] | 0.3   |
+	| [[Person().Level]] | 0.45  |
+	| [[Person().Level]] | 0.12  |  
+	And Alias is "[[bob]]"
+	And Datasource is "[[Person(*).Level]]"
+	And I use a Number Format tool configured as
+		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
+		| [[bob]] | Up       | 2              | 3                | [[bob]] |
+	When the selectAndApply tool is executed
+	Then the execution has "NO" error
+	And "[[Person(1).Level]]" has a value of "0.300"
+	And "[[Person(2).Level]]" has a value of "0.450"
+	And "[[Person(3).Level]]" has a value of "0.120"
 
 Scenario: Execute a selectAndApply over a tool using an empty recordset
 	Given I open New Workflow
