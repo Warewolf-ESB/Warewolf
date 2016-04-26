@@ -74,7 +74,7 @@ namespace Dev2.DataList.Contract
         {
             return RecordSetCollection(parsedOutput, isOutput, true);
         }
-        
+
         static IRecordSetCollection RecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput, bool isDbService)
         {
             RecordSetCollectionBuilder b = new RecordSetCollectionBuilder();
@@ -91,12 +91,12 @@ namespace Dev2.DataList.Contract
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
-            foreach(IDev2Definition def in parsedOutput)
+            foreach (IDev2Definition def in parsedOutput)
             {
-                if(isOutput)
+                if (isOutput)
                 {
 
-                    if(!def.IsRecordSet)
+                    if (!def.IsRecordSet)
                     {
                         result.Add(def);
                     }
@@ -104,7 +104,7 @@ namespace Dev2.DataList.Contract
                 else
                 {
 
-                    if(!def.IsRecordSet)
+                    if (!def.IsRecordSet)
                     {
                         result.Add(def);
                     }
@@ -125,7 +125,7 @@ namespace Dev2.DataList.Contract
             return new InputLanguageParser();
         }
 
-        
+
         public static ISystemTag CreateSystemTag(enSystemTag tag)
         {
             return new SystemTag(tag.ToString());

@@ -37,6 +37,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
@@ -729,6 +730,9 @@ namespace Dev2.Studio.ViewModels
                 case "EmailSource":
                     EditEmailSource(resourceModel);
                     break;
+                case "ExchangeSource":
+                    EditExchangeSource(resourceModel);
+                    break;
                 case "SharepointServerSource":
                     EditSharePointSource(resourceModel);
                     break;
@@ -856,6 +860,26 @@ namespace Dev2.Studio.ViewModels
                 EnableSsl = db.EnableSsl
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.EmailSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        void EditExchangeSource(IContextualResourceModel resourceModel)
+        {
+            var db = new ExchangeSource(resourceModel.WorkflowXaml.ToXElement());
+
+            var def = new ExchangeSourceDefinition()
+            {
+                AutoDiscoverUrl = db.AutoDiscoverUrl,
+                Id = db.ResourceID,
+                Password = db.Password,
+                UserName = db.UserName,
+                Timeout = db.Timeout,
+                ResourceName = db.ResourceName,
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
@@ -1065,6 +1089,25 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var emailSourceViewModel = new ManageExchangeSourceViewModel(new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource);
+            var vm = new SourceViewModel<IExchangeSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageExchangeSourceControl());
+
+            if (workSurfaceKey == null)
+            {
+                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+                workSurfaceKey.ResourceID = selectedSource.ResourceID;
+                workSurfaceKey.ServerID = ActiveServer.ServerID;
+            }
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
         public void EditResource(ISharepointServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var viewModel = new SharepointServerSourceViewModel(new SharepointServerSourceModel(ActiveServer.UpdateRepository, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker, null);
@@ -1129,6 +1172,11 @@ namespace Dev2.Studio.ViewModels
             {
                 AddNewSharePointServerSource(saveViewModel);
             }
+
+            else if (resourceType == "ExchangeSource")
+            {
+                AddExchangeWorkSurface(saveViewModel);
+            }
             else
             {
                 var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
@@ -1144,6 +1192,9 @@ namespace Dev2.Studio.ViewModels
             switch (resourceType.ToLower())
             {
                 case "emailsource":
+                    header = Warewolf.Studio.Resources.Languages.Core.EmailSourceNewHeaderLabel;
+                    break;
+                case "exchangesource":
                     header = Warewolf.Studio.Resources.Languages.Core.EmailSourceNewHeaderLabel;
                     break;
                 case "dropboxsource":
@@ -1437,6 +1488,13 @@ namespace Dev2.Studio.ViewModels
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.EmailSource) as WorkSurfaceKey, new SourceViewModel<IEmailServiceSource>(EventPublisher, new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()), PopupProvider, new ManageEmailSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
 
+        }
+
+        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
+        void AddExchangeWorkSurface(Task<IRequestServiceNameViewModel> saveViewModel)
+        {
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange) as WorkSurfaceKey, new SourceViewModel<IExchangeSource>(EventPublisher, new ManageExchangeSourceViewModel(new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()), PopupProvider, new ManageExchangeSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         async void AddHelpTabWorkSurface(string uriToDisplay)

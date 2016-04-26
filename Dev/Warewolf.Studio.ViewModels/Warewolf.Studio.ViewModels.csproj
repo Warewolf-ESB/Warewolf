@@ -114,7 +114,10 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Runtime" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -132,6 +135,7 @@
     <Compile Include="EmailAttachmentModel.cs" />
     <Compile Include="EmailAttachmentVm.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
+    <Compile Include="ExchangeServiceModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />
@@ -145,6 +149,8 @@
     <Compile Include="ManageDbServiceModel.cs" />
     <Compile Include="ManageEmailSourceModel.cs" />
     <Compile Include="ManageEmailSourceViewModel.cs" />
+    <Compile Include="ManageExchangeSourceModel.cs" />
+    <Compile Include="ManageExchangeSourceViewModel.cs" />
     <Compile Include="ManageNewServerSourceModel.cs" />
     <Compile Include="ManageNewServerViewModel.cs" />
     <Compile Include="ManagePluginServiceModel.cs" />

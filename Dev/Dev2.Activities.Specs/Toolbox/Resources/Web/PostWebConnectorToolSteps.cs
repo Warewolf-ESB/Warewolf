@@ -86,7 +86,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         [When(@"Post Test Inputs is Successful")]
         public void WhenTestInputsIsSuccessful()
         {
-            
+
             PostViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
         }
 
@@ -118,7 +118,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         [When(@"I click Post Edit")]
         public void WhenIClickEdit()
         {
-           PostViewModel().SourceRegion.EditSourceCommand.Execute(null);
+            PostViewModel().SourceRegion.EditSourceCommand.Execute(null);
         }
 
         [Then(@"Post Header is Enabled")]
@@ -131,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenHeaderAppearsAs(Table table)
         {
             var headers = PostViewModel().InputArea.Headers;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var name = tableRow["Header"];
                 var value = tableRow["Value"];
@@ -208,18 +208,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenUrlAs(string url)
         {
             var webServicePostViewModel = PostViewModel();
-            Assert.AreEqual(url,webServicePostViewModel.InputArea.RequestUrl);
+            Assert.AreEqual(url, webServicePostViewModel.InputArea.RequestUrl);
         }
 
         [Then(@"I add Post Header as")]
         public void ThenIAddHeaderAs(Table table)
         {
             var headers = PostViewModel().InputArea.Headers;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var name = tableRow["Name"];
                 var value = tableRow["Value"];
-                headers.Add(new NameValue(name,value));
+                headers.Add(new NameValue(name, value));
             }
         }
 
@@ -227,7 +227,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenInputVariablesAre(Table table)
         {
             var serviceInputs = PostViewModel().ManageServiceInputViewModel.InputArea.Inputs;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var inputName = tableRow["Name"];
                 var found = serviceInputs.FirstOrDefault(input => input.Name == inputName);
@@ -270,7 +270,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         public void ThenResponseAppearsAs(string response)
         {
             var webServicePostViewModel = PostViewModel();
-            Assert.AreEqual(response,webServicePostViewModel.ManageServiceInputViewModel.TestResults);
+            Assert.AreEqual(response, webServicePostViewModel.ManageServiceInputViewModel.TestResults);
         }
 
         [Then(@"Post Mappings is Disabled")]
@@ -295,7 +295,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         {
             var webServicePostViewModel = PostViewModel();
             var outputs = webServicePostViewModel.OutputsRegion.Outputs;
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var mappedFrom = tableRow["Mapped From"];
                 var mappedTo = tableRow["Mapped To"];

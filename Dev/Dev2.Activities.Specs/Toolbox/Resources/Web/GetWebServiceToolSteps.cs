@@ -105,29 +105,29 @@
 //            vm.SourceRegion.SelectedSource = vm.SourceRegion.Sources.First(a=>a.Name=="WebHeloo");
 //            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
-        
+
 //        [When(@"Request header is enabled")]
 //        public void WhenRequestHeaderIsEnabled()
 //        {
 //            var vm = GetViewModel();
 //            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
-        
+
 //        [When(@"Request Url is enabled")]
 //        public void WhenRequestUrlIsEnabled()
 //        {
 //            var vm = GetViewModel();
-    
+
 //            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
-        
+
 //        [When(@"Generate Outputs is enabled")]
 //        public void WhenGenerateOutputsIsEnabled()
 //        {
 //            var vm = GetViewModel();
 //            Assert.IsTrue(vm.TestInputCommand.CanExecute());
 //        }
-        
+
 //        [When(@"Outputs are")]
 //        public void WhenOutputsAre(Table table)
 //        {
@@ -135,10 +135,10 @@
 //            foreach(var row in table.Rows)
 //            {
 //                Assert.IsTrue(outputs.Any(a=>a.MappedFrom==row[0] && a.MappedTo==row[1]));
-       
+
 //            }
 //        }
-        
+
 //        [When(@"Recordset is ""(.*)""")]
 //        public void WhenRecordsetIs(string p0)
 //        {
@@ -149,32 +149,32 @@
 //            else
 //            Assert.AreEqual(GetViewModel().OutputsRegion.RecordsetName,p0);
 //        }
-        
+
 //        [When(@"there are ""(.*)"" validation errors of ""(.*)""")]
 //        public void WhenThereAreValidationErrorsOf(string p0, string p1)
 //        {
 //            if(p0.ToLower()=="no")
 //                Assert.IsTrue(GetViewModel().Errors == null || GetViewModel().Errors.Count == 0);
 //        }
-        
+
 //        [When(@"I Select Dev(.*)CountriesWebService as Source")]
 //        public void WhenISelectDevCountriesWebServiceAsSource(int p0)
 //        {
 
 //        }
-        
+
 //        [When(@"I click Generate Outputs")]
 //        public async void WhenIClickGenerateOutputs()
 //        {
 //            await GetViewModel().TestInputCommand.Execute();
 //        }
-        
+
 //        [When(@"Test Request Variables is Successful")]
 //        public void WhenTestRequestVariablesIsSuccessful()
 //        {
 //            GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
 //        }
-        
+
 //        [When(@"I click Done")]
 //        public void WhenIClickDone()
 //        {
@@ -196,61 +196,61 @@
 //        {
 //            Assert.IsTrue(GetViewModel().SourceRegion.NewSourceCommand.CanExecute(null));
 //        }
-        
+
 //        [When(@"Edit is Enabled")]
 //        public void WhenEditIsEnabled()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [When(@"I click Edit")]
 //        public void WhenIClickEdit()
 //        {
 //            GetViewModel().SourceRegion.EditSourceCommand.Execute(null);
 //        }
-        
+
 //        [When(@"Test Inputs is Successful")]
 //        public void WhenTestInputsIsSuccessful()
 //        {
-         
+
 //        }
-        
+
 //        [When(@"I change Source from Dev(.*)CountriesWebService  to Google Address Lookup")]
 //        public void WhenIChangeSourceFromDevCountriesWebServiceToGoogleAddressLookup(int p0)
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [When(@"I Select TestingReturnText as Source")]
 //        public void WhenISelectTestingReturnTextAsSource()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [When(@"Test is Successful")]
 //        public void WhenTestIsSuccessful()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [When(@"Outputs is Enabled")]
 //        public void WhenOutputsIsEnabled()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [When(@"I click ""(.*)""")]
 //        public void WhenIClick(string p0)
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [When(@"I click Cancel")]
 //        public void WhenIClickCancel()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [When(@"I change Source from WebHeloo  to Google Address Lookup")]
 //        public void WhenIChangeSourceFromWebHelooToGoogleAddressLookup()
 //        {
@@ -264,7 +264,7 @@
 //            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
 
-        
+
 //        [Then(@"Source is Enabled")]
 //        public void ThenSourceIsEnabled()
 //        {
@@ -291,7 +291,7 @@
 
 //            Assert.IsTrue(vm.SourceRegion.NewSourceCommand.CanExecute(null));
 //        }
-        
+
 //        [Then(@"Edit is Enabled")]
 //        public void ThenEditIsEnabled()
 //        {
@@ -332,7 +332,7 @@
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"Url is Enabled")]
 //        public void ThenUrlIsEnabled()
 //        {
@@ -340,7 +340,7 @@
 
 //            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
-        
+
 //        [Then(@"Query is Enabled")]
 //        public void ThenQueryIsEnabled()
 //        {
@@ -348,7 +348,7 @@
 
 //            Assert.IsTrue(vm.InputArea.IsEnabled);
 //        }
-        
+
 //        [Then(@"Generate Outputs is Enabled")]
 //        public void ThenGenerateOutputsIsEnabled()
 //        {
@@ -356,7 +356,7 @@
 
 //            Assert.IsTrue(vm.TestInputCommand.CanExecute());
 //        }
-        
+
 //        [Then(@"the Generate Outputs window is opened")]
 //        public void ThenTheGenerateOutputsWindowIsOpened()
 //        {
@@ -364,7 +364,7 @@
 
 //            Assert.IsTrue(vm.GenerateOutputsVisible);
 //        }
-        
+
 //        [Then(@"Variables to test appear as")]
 //        public void ThenVariablesToTestAppearAs(Table table)
 //        {
@@ -375,45 +375,45 @@
 //                vm.ManageServiceInputViewModel.InputArea.Inputs.First(a => a.Name == row[0]).Value=row[1];
 //            }
 //        }
-        
+
 //        [Then(@"the response is loaded")]
 //        public void ThenTheResponseIsLoaded()
 //        {
 //            GetViewModel().ManageServiceInputViewModel.OutputArea.Outputs = new List<IServiceOutputMapping>() { new ServiceOutputMapping("CountryID", "CountryID",""), new ServiceOutputMapping("Description","Description","") };
-            
+
 //            Assert.IsFalse(GetViewModel().ManageServiceInputViewModel.PasteResponseVisible);
 //        }
-        
+
 //        [Then(@"Mapping is Enabled")]
 //        public void ThenMappingIsEnabled()
 //        {
-          
+
 //        }
-        
+
 //        [Then(@"output mappings are")]
 //        public void ThenOutputMappingsAre(Table table)
 //        {
-      
+
 //        }
-        
+
 //        [Then(@"""(.*)"" is ""(.*)""")]
 //        public void ThenIs(string p0, string p1)
 //        {
-          
+
 //        }
-        
+
 //        [Then(@"the Dev(.*)CountriesWebService Source tab is opened")]
 //        public void ThenTheDevCountriesWebServiceSourceTabIsOpened(int p0)
 //        {
 //            Assert.IsTrue(GetModel().EditSourceCalled);
 //        }
-        
+
 //        [Then(@"Url is Visible")]
 //        public void ThenUrlIsVisible()
 //        {
 //            Assert.IsTrue(GetViewModel().InputArea.IsEnabled);
 //        }
-        
+
 //        [Then(@"Query is Visible")]
 //        public void ThenQueryIsVisible()
 //        {
@@ -463,61 +463,61 @@
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"I edit the Header as")]
 //        public void ThenIEditTheHeaderAs(Table table)
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"Test is Enabled")]
 //        public void ThenTestIsEnabled()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"Paste is Enabled")]
 //        public void ThenPasteIsEnabled()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"I Paste into Response")]
 //        public void ThenIPasteIntoResponse()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"service input mappings are")]
 //        public void ThenServiceInputMappingsAre(Table table)
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"Mappings is Disabled")]
 //        public void ThenMappingsIsDisabled()
 //        {
 //            Assert.IsFalse(GetViewModel().OutputsRegion.IsEnabled);
 //        }
-        
+
 //        [Then(@"I click Generate Outputs")]
 //        public void ThenIClickGenerateOutputs()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"Generate Outputs window is Enabled")]
 //        public void ThenGenerateOutputsWindowIsEnabled()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"Variables is Enabled")]
 //        public void ThenVariablesIsEnabled()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"I click Test")]
 //        public void ThenIClickTest()
 //        {
@@ -530,17 +530,17 @@
 //            Assert.AreEqual(output,GetViewModel().ManageServiceInputViewModel.TestResults);
 //        }
 
-        
+
 //        [Then(@"I click Done")]
 //        public void ThenIClickDone()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"Recordset Name equals rec")]
 //        public void ThenRecordsetNameEqualsRec()
 //        {
-      
+
 //        }
 
 //        [Then(@"web Recordset Name equals ""(.*)""")]
@@ -549,24 +549,24 @@
 //            Assert.AreEqual(GetViewModel().OutputsRegion.RecordsetName, p0);
 //        }
 
-        
+
 //        [Then(@"Mapping is Disabled")]
 //        public void ThenMappingIsDisabled()
 //        {
 //            ScenarioContext.Current.Pending();
 //        }
-        
+
 //        [Then(@"I click Cancel")]
 //        public void ThenIClickCancel()
 //        {
 //            // ReSharper disable once PossibleNullReferenceException
 //            (GetViewModel().ManageServiceInputViewModel as ManageWebServiceInputViewModel).ExecuteClose();
 //        }
-        
+
 //        [Then(@"I change Source from Google Address Lookup  to WebHeloo")]
 //        public void ThenIChangeSourceFromGoogleAddressLookupToWebHeloo()
 //        {
-     
+
 //        }
 //    }
 //}

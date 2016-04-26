@@ -11,7 +11,6 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                Width="250"
                                MaxWidth="250"

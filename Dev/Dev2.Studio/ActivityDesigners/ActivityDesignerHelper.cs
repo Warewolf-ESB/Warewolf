@@ -30,6 +30,7 @@ using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.Designers2.Email;
+using Dev2.Activities.Designers2.ExchangeEmail;
 using Dev2.Activities.Designers2.FindIndex;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.Foreach;
@@ -74,6 +75,10 @@ using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
+using Dev2.Activities.Designers2.Oracle;
+using Dev2.Activities.Designers2.ODBC;
+using Dev2.Activities.Designers2.PostgreSql;
+using Dev2.Activities.Exchange;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -127,6 +132,10 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
+                { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
+                  { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
+                  { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
+                {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                  { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                  { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },

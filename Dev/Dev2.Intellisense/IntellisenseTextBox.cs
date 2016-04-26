@@ -70,19 +70,19 @@ namespace Dev2.UI
         {
             var container = listBox.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
 
-            if(container != null)
+            if (container != null)
             {
-                if(ScrollViewer.GetCanContentScroll(listBox))
+                if (ScrollViewer.GetCanContentScroll(listBox))
                 {
                     var scrollInfo = VisualTreeHelper.GetParent(container) as IScrollInfo;
 
-                    if(null != scrollInfo)
+                    if (null != scrollInfo)
                     {
                         var stackPanel = scrollInfo as StackPanel;
                         var virtualizingStackPanel = scrollInfo as VirtualizingStackPanel;
                         int index = listBox.ItemContainerGenerator.IndexFromContainer(container);
 
-                        if(stackPanel != null && Orientation.Horizontal == stackPanel.Orientation || virtualizingStackPanel != null && Orientation.Horizontal == virtualizingStackPanel.Orientation)
+                        if (stackPanel != null && Orientation.Horizontal == stackPanel.Orientation || virtualizingStackPanel != null && Orientation.Horizontal == virtualizingStackPanel.Orientation)
                         {
                             scrollInfo.SetHorizontalOffset(index - (int)(scrollInfo.ViewportWidth / 2));
                         }
@@ -101,10 +101,10 @@ namespace Dev2.UI
                     {
                         constrainingParent = VisualTreeHelper.GetParent(constrainingParent) as FrameworkElement;
                     }
-                        // ReSharper disable PossibleUnintendedReferenceComparison
-                    while(constrainingParent != null && listBox != constrainingParent && !(constrainingParent is ScrollContentPresenter));
+                    // ReSharper disable PossibleUnintendedReferenceComparison
+                    while (constrainingParent != null && listBox != constrainingParent && !(constrainingParent is ScrollContentPresenter));
 
-                    if(null != constrainingParent)
+                    if (null != constrainingParent)
                     {
                         rect.Inflate(Math.Max((constrainingParent.ActualWidth - rect.Width) / 2, 0), Math.Max((constrainingParent.ActualHeight - rect.Height) / 2, 0));
                     }
@@ -212,7 +212,7 @@ namespace Dev2.UI
         {
             var box = sender as IntellisenseTextBox;
 
-            if(box != null)
+            if (box != null)
             {
                 box.OnAllowMultilinePasteChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -240,7 +240,7 @@ namespace Dev2.UI
         {
             var box = sender as IntellisenseTextBox;
 
-            if(box != null)
+            if (box != null)
             {
                 box.OnAllowUserInsertLineChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -270,7 +270,7 @@ namespace Dev2.UI
         {
             var box = sender as IntellisenseTextBox;
 
-            if(box != null)
+            if (box != null)
             {
                 box.OnAllowUserCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -298,7 +298,7 @@ namespace Dev2.UI
         {
             var box = sender as IntellisenseTextBox;
 
-            if(box != null)
+            if (box != null)
             {
                 box.OnIsInCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -392,13 +392,13 @@ namespace Dev2.UI
         static void ErrorTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var errorText = dependencyPropertyChangedEventArgs.NewValue as string;
-            if(String.IsNullOrEmpty(errorText))
+            if (String.IsNullOrEmpty(errorText))
             {
                 return;
             }
 
             var box = dependencyObject as IntellisenseTextBox;
-            if(box != null)
+            if (box != null)
             {
                 box._toolTip.Content = errorText;
             }
@@ -426,7 +426,7 @@ namespace Dev2.UI
         {
             var box = sender as IntellisenseTextBox;
 
-            if(box != null)
+            if (box != null)
             {
                 box.OnIntellisenseProviderChanged((IIntellisenseProvider)args.OldValue, (IIntellisenseProvider)args.NewValue);
             }
@@ -702,7 +702,7 @@ namespace Dev2.UI
         // ReSharper disable InconsistentNaming
         void ToolTip_ToolTipOpening(object sender, ToolTipEventArgs e)
         {
- 
+
         }
 
         #endregion
@@ -739,14 +739,14 @@ namespace Dev2.UI
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
         {
             bool isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
-            if(!isText)
+            if (!isText)
             {
                 return;
             }
 
             var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
 
-            if(text != null && text.Contains("\t"))
+            if (text != null && text.Contains("\t"))
             {
                 RaiseRoutedEvent(TabInsertedEvent);
             }
@@ -758,7 +758,7 @@ namespace Dev2.UI
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -768,7 +768,7 @@ namespace Dev2.UI
         {
             base.OnPreviewTextInput(e);
 
-            if(!_suppressChangeOpen)
+            if (!_suppressChangeOpen)
             {
                 _possibleCaretPositionOnPopup = CaretIndex;
             }
@@ -778,18 +778,18 @@ namespace Dev2.UI
         {
             try
             {
-                if(CheckHasUnicodeInText(Text))
+                if (CheckHasUnicodeInText(Text))
                 {
                     return;
                 }
 
-                if(AllowUserInsertLine && GetLastVisibleLineIndex() + 1 == LineCount)
+                if (AllowUserInsertLine && GetLastVisibleLineIndex() + 1 == LineCount)
                 {
                     double lineHeight = FontSize * FontFamily.LineSpacing;
                     double extentHeight = ExtentHeight;
                     double adjustedHeight = Height;
 
-                    while(adjustedHeight - lineHeight > extentHeight)
+                    while (adjustedHeight - lineHeight > extentHeight)
                     {
                         adjustedHeight -= lineHeight;
                     }
@@ -797,11 +797,11 @@ namespace Dev2.UI
                     Height = adjustedHeight;
                 }
 
-                if(!_suppressChangeOpen)
+                if (!_suppressChangeOpen)
                 {
                     bool wasOpen = IsOpen;
 
-                    if(!wasOpen)
+                    if (!wasOpen)
                     {
                         _caretPositionOnPopup = _possibleCaretPositionOnPopup;
                         _textOnPopup = Text;
@@ -809,9 +809,9 @@ namespace Dev2.UI
 
                     EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.ClosestMatch);
 
-                    if(IsKeyboardFocused && IsKeyboardFocusWithin)
+                    if (IsKeyboardFocused && IsKeyboardFocusWithin)
                     {
-                        if(!wasOpen && _listBox != null && _listBox.HasItems)
+                        if (!wasOpen && _listBox != null && _listBox.HasItems)
                         {
                             _expectOpen = true;
                             _desiredResultSet = (IntellisenseDesiredResultSet)4;
@@ -828,18 +828,18 @@ namespace Dev2.UI
 
                 int maxLines = AllowUserInsertLine ? MaxLines : 1;
 
-                if(LineCount >= maxLines)
+                if (LineCount >= maxLines)
                 {
                     int caretPosition = CaretIndex;
                     string nText = "";
 
-                    for(int i = 0; i < maxLines; i++)
+                    for (int i = 0; i < maxLines; i++)
                     {
                         string lineText = GetLineText(i);
 
-                        if(i + 1 >= maxLines)
+                        if (i + 1 >= maxLines)
                         {
-                            if(lineText.EndsWith(Environment.NewLine))
+                            if (lineText.EndsWith(Environment.NewLine))
                             {
                                 lineText = lineText.Substring(0, lineText.Length - Environment.NewLine.Length);
                             }
@@ -848,7 +848,7 @@ namespace Dev2.UI
                         nText += lineText;
                     }
 
-                    if(caretPosition > nText.Length)
+                    if (caretPosition > nText.Length)
                     {
                         caretPosition = nText.Length;
                     }
@@ -856,7 +856,7 @@ namespace Dev2.UI
                     Select(caretPosition, 0);
                 }
             }
-            catch(InvalidOperationException)
+            catch (InvalidOperationException)
             {
             }
         }
@@ -864,7 +864,7 @@ namespace Dev2.UI
         public bool CheckHasUnicodeInText(string inputText)
         {
             bool hasUnicode = inputText.ContainsUnicodeCharacter();
-            if(hasUnicode)
+            if (hasUnicode)
             {
                 string previousInput = inputText;
                 Text = "";
@@ -895,24 +895,24 @@ namespace Dev2.UI
 
         protected virtual void OnIsOpenChanged(bool oldValue, bool newValue)
         {
-            if(newValue)
+            if (newValue)
             {
-                if(DesignerProperties.GetIsInDesignMode(this))
+                if (DesignerProperties.GetIsInDesignMode(this))
                 {
                     IsOpen = false;
-                    if(_toolTip != null)
+                    if (_toolTip != null)
                     {
                         _toolTip.IsOpen = false;
                     }
                 }
                 else
                 {
-                    if(_listBox != null)
+                    if (_listBox != null)
                     {
-                        if(_expectOpen)
+                        if (_expectOpen)
                         {
                             _expectOpen = false;
-                            if((int)_desiredResultSet < 4)
+                            if ((int)_desiredResultSet < 4)
                             {
                                 EnsureIntellisenseResults(Text, true, _desiredResultSet);
                             }
@@ -922,7 +922,7 @@ namespace Dev2.UI
                             EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
                         }
 
-                        if(_listBox.HasItems)
+                        if (_listBox.HasItems)
                         {
                             _caretPositionOnPopup = CaretIndex;
                             _textOnPopup = Text;
@@ -962,21 +962,21 @@ namespace Dev2.UI
 
         public virtual void OnIntellisenseProviderChanged(IIntellisenseProvider oldValue, IIntellisenseProvider newValue)
         {
-            if(oldValue != null)
+            if (oldValue != null)
             {
                 oldValue.Dispose();
                 _lastResultInputKey = new KeyValuePair<int, int>(0, 0);
                 _lastResultHasError = false;
             }
 
-            if(newValue == null)
+            if (newValue == null)
             {
                 EnsureIntellisenseProvider();
             }
             else
             {
                 // What we need to do is cache the results from each provider. Only on a change to DL, text do we re gather results? ;)
-                if(Text.Length > 0)
+                if (Text.Length > 0)
                 {
                     EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
                 }
@@ -1066,10 +1066,10 @@ namespace Dev2.UI
                     if (results != null && results.Count > 0)
                     {
                         _cachedState = context.State;
-     
+
                         bool cleared = false;
                         bool hasError = false;
-                       
+
                         IntellisenseProviderResult popup = null;
 
                         // ReSharper disable ForCanBeConvertedToForeach
@@ -1078,9 +1078,9 @@ namespace Dev2.UI
                         {
                             IntellisenseProviderResult currentResult = results[i];
 
-                          
 
-                            
+
+
 
                             if (!currentResult.IsError)
                             {
@@ -1099,7 +1099,7 @@ namespace Dev2.UI
                                     {
                                         Items.Add(currentResult);
                                     }
-                                
+
                                 }
                                 else
                                 {
@@ -1111,7 +1111,7 @@ namespace Dev2.UI
                         _lastResultHasError = hasError;
 
 
-         
+
 
                         if (popup != null)
                         {
@@ -1148,8 +1148,8 @@ namespace Dev2.UI
                     }
                     else
                     {
-                       
- 
+
+
 
                         ToolTip = _toolTip;
 
@@ -1180,11 +1180,11 @@ namespace Dev2.UI
 
         void EnsureIntellisenseProvider()
         {
-            if(IntellisenseProvider == null)
+            if (IntellisenseProvider == null)
             {
                 IIntellisenseProvider instance = CreateIntellisenseProviderInstance();
 
-                if(instance == null)
+                if (instance == null)
                 {
                     throw new InvalidOperationException("CreateIntellisenseProviderInstance cannot return null.");
                 }
@@ -1199,7 +1199,7 @@ namespace Dev2.UI
 
         void EnsureErrorStatus()
         {
-            if(string.IsNullOrEmpty(Text)) return;
+            if (string.IsNullOrEmpty(Text)) return;
 #pragma warning disable 618
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(Text);
 #pragma warning restore 618
@@ -1231,18 +1231,18 @@ namespace Dev2.UI
 
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
-            if(IsOpen)
+            if (IsOpen)
             {
                 bool originIsListbox = false;
 
-                if(e.OriginalSource is DependencyObject)
+                if (e.OriginalSource is DependencyObject)
                 {
                     var parent = e.OriginalSource as DependencyObject;
 
                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                    if(parent != null)
+                    if (parent != null)
                     {
-                        if(parent is Run)
+                        if (parent is Run)
                         {
                             parent = ((Run)parent).Parent;
                         }
@@ -1251,14 +1251,14 @@ namespace Dev2.UI
                             parent = VisualTreeHelper.GetParent(parent);
                         }
 
-                        while(parent != null && !(parent is ListBox))
+                        while (parent != null && !(parent is ListBox))
                         {
                             parent = VisualTreeHelper.GetParent(parent);
                         }
 
-                        if(parent != null)
+                        if (parent != null)
                         {
-                            if(parent == _listBox)
+                            if (parent == _listBox)
                             {
                                 originIsListbox = true;
                             }
@@ -1266,11 +1266,11 @@ namespace Dev2.UI
                     }
                 }
 
-                if(!originIsListbox)
+                if (!originIsListbox)
                 {
                     IsOpen = false;
 
-                    if(_forcedOpen)
+                    if (_forcedOpen)
                     {
                         _toolTip.IsOpen = _forcedOpen = false;
                     }
@@ -1290,12 +1290,12 @@ namespace Dev2.UI
         /// </summary>
         void CloseDropDown(bool closeToolTip)
         {
-            if(IsOpen)
+            if (IsOpen)
             {
                 IsOpen = false;
             }
 
-            if(closeToolTip && _toolTip != null)
+            if (closeToolTip && _toolTip != null)
             {
                 _toolTip.IsOpen = _forcedOpen = false;
             }
@@ -1311,11 +1311,11 @@ namespace Dev2.UI
         {
             base.OnGotKeyboardFocus(e);
             BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
-            if(be != null)
+            if (be != null)
             {
                 be.UpdateSource();
             }
-            if(SelectAllOnGotFocus)
+            if (SelectAllOnGotFocus)
             {
                 SelectAll();
             }
@@ -1335,7 +1335,7 @@ namespace Dev2.UI
             CloseDropDown(true);
 
             BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
-            if(be != null)
+            if (be != null)
             {
                 be.UpdateSource();
             }
@@ -1343,18 +1343,18 @@ namespace Dev2.UI
 
         void ExecWrapBrackets()
         {
-            if(_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused &&
+            if (_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused &&
                !_listBox.IsKeyboardFocusWithin)
             {
                 CloseDropDown(true);
             }
 
-            if(WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
+            if (WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
             {
                 Text = AddBracketsToExpression(Text);
             }
 
-            if(IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
+            if (IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
             {
                 Text = AddRecordsetNotationToExpresion(Text);
             }
@@ -1362,9 +1362,9 @@ namespace Dev2.UI
 
         public string AddRecordsetNotationToExpresion(string expression)
         {
-            if(expression.EndsWith("]]"))
+            if (expression.EndsWith("]]"))
             {
-                if(!expression.Contains("()"))
+                if (!expression.Contains("()"))
                 {
                     expression = expression.Insert(expression.IndexOf("]", StringComparison.Ordinal), "()");
                 }
@@ -1380,7 +1380,7 @@ namespace Dev2.UI
         {
             string result = expression.Trim();
 
-            if(!result.StartsWith("[["))
+            if (!result.StartsWith("[["))
             {
                 result = string.Concat(!result.StartsWith("[") ? "[[" : "[", result);
             }
@@ -1401,28 +1401,28 @@ namespace Dev2.UI
             int index = CaretIndex;
             IIntellisenseProvider currentProvider = new DefaultIntellisenseProvider(); //Bug 8437
 
-            if(isOpen || force)
+            if (isOpen || force)
             {
                 var intellisenseProviderResult = item as IntellisenseProviderResult;
-                if(intellisenseProviderResult != null)
+                if (intellisenseProviderResult != null)
                 {
                     currentProvider = intellisenseProviderResult.Provider; //Bug 8437
                 }
 
                 object selectedItem = item;
 
-                if(_listBox != null)
+                if (_listBox != null)
                 {
                     // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
-                    if(selectedItem is IDataListVerifyPart)
-                        // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
+                    if (selectedItem is IDataListVerifyPart)
+                    // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
                     {
                         var part = selectedItem as IDataListVerifyPart;
                         appendText = part.DisplayValue;
                     }
                     else
                     {
-                        if(selectedItem != null)
+                        if (selectedItem != null)
                         {
                             appendText = selectedItem.ToString();
                         }
@@ -1434,14 +1434,14 @@ namespace Dev2.UI
                 }
             }
 
-            if(appendText != null)
+            if (appendText != null)
             {
                 string currentText = Text;
 
                 int foundLength = 0;
-                if(isInsert)
+                if (isInsert)
                 {
-                    if(currentProvider.HandlesResultInsertion) //Bug 8437
+                    if (currentProvider.HandlesResultInsertion) //Bug 8437
                     {
                         _suppressChangeOpen = true;
                         var context = new IntellisenseProviderContext { CaretPosition = index, InputText = currentText, State = _cachedState, TextBox = this };
@@ -1450,9 +1450,9 @@ namespace Dev2.UI
                         {
                             Text = currentProvider.PerformResultInsertion(appendText, context);
                         }
-                            // ReSharper disable EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
                         catch
-                            // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                         {
                             //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                             //This catch is intentionally blanks since if a provider throws an exception the intellisense
@@ -1468,20 +1468,20 @@ namespace Dev2.UI
                     {
                         int foundMinimum = -1;
 
-                        for(int i = index - 1; i >= 0; i--)
+                        for (int i = index - 1; i >= 0; i--)
                         {
-                            if(appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
+                            if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
                             {
                                 foundMinimum = i;
                                 foundLength = index - i;
                             }
-                            else if(foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                            else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
                             {
                                 i = -1;
                             }
                         }
 
-                        if(foundMinimum != -1)
+                        if (foundMinimum != -1)
                         {
                             index = foundMinimum;
                             Text = currentText = currentText.Remove(foundMinimum, foundLength);
@@ -1489,11 +1489,11 @@ namespace Dev2.UI
                     }
                 }
 
-                if(appendText != null)
+                if (appendText != null)
                 {
                     _suppressChangeOpen = true;
 
-                    if(currentText.Length == index)
+                    if (currentText.Length == index)
                     {
                         AppendText(appendText);
                         Select(Text.Length, 0);
@@ -1518,35 +1518,35 @@ namespace Dev2.UI
             base.OnPreviewKeyDown(e);
             bool isOpen = IsOpen;
 
-            if(e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
+            if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
                 object appendText = null;
                 const bool isInsert = false;
                 bool expand = false;
 
-                if(AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+                if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
                 {
-                    if(LineCount < MaxLines)
+                    if (LineCount < MaxLines)
                     {
                         appendText = Environment.NewLine;
                         expand = true;
                     }
                 }
 
-                if(isOpen && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+                if (isOpen && e.KeyboardDevice.Modifiers == ModifierKeys.None)
                 {
                     object selectedItem;
 
-                    if(_listBox != null && (selectedItem = _listBox.SelectedItem) != null)
+                    if (_listBox != null && (selectedItem = _listBox.SelectedItem) != null)
                     {
                         // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
-                        if(selectedItem is IDataListVerifyPart)
-                            // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
+                        if (selectedItem is IDataListVerifyPart)
+                        // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
                         {
                             var part = selectedItem as IDataListVerifyPart;
                             appendText = part.DisplayValue;
                         }
-                        else if(_listBox.SelectedItem is IntellisenseProviderResult)
+                        else if (_listBox.SelectedItem is IntellisenseProviderResult)
                         {
                             appendText = _listBox.SelectedItem as IntellisenseProviderResult;
                         }
@@ -1558,15 +1558,15 @@ namespace Dev2.UI
                     }
                 }
 
-                if(appendText != null && IsOpen)
+                if (appendText != null && IsOpen)
                 {
                     e.Handled = true;
                 }
                 InsertItem(appendText, isInsert);
 
-                if(e.Key != Key.Tab)
+                if (e.Key != Key.Tab)
                 {
-                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
+                    if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
                     {
                     }
                     else
@@ -1575,15 +1575,15 @@ namespace Dev2.UI
                     }
                 }
 
-                if(expand)
+                if (expand)
                 {
                     double lineHeight = FontSize * FontFamily.LineSpacing;
                     Height += lineHeight;
                 }
             }
-            else if(e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
-                if(!isOpen)
+                if (!isOpen)
                 {
                     _expectOpen = true;
                     _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
@@ -1592,11 +1592,11 @@ namespace Dev2.UI
 
                 e.Handled = true;
             }
-            else if(IsListBoxInputKey(e) && isOpen)
+            else if (IsListBoxInputKey(e) && isOpen)
             {
                 EmulateEventOnListBox(e);
             }
-            else if(e.Key == Key.Home || e.Key == Key.End)
+            else if (e.Key == Key.Home || e.Key == Key.End)
             {
                 CloseDropDown(true);
             }
@@ -1608,7 +1608,7 @@ namespace Dev2.UI
 
             base.OnKeyDown(e);
 
-            if(e.Key == Key.Escape)
+            if (e.Key == Key.Escape)
             {
                 CloseDropDown(true);
             }
@@ -1616,7 +1616,7 @@ namespace Dev2.UI
 
         public void HandleWrapInBrackets(Key e)
         {
-            if(_wrapInBracketKey.Contains(e))
+            if (_wrapInBracketKey.Contains(e))
             {
                 ExecWrapBrackets();
             }
@@ -1624,7 +1624,7 @@ namespace Dev2.UI
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if(e.ClickCount >= 3)
+            if (e.ClickCount >= 3)
             {
                 SelectAll();
             }
@@ -1632,18 +1632,18 @@ namespace Dev2.UI
             bool isItemSelected = false;
             object context = null;
 
-            if(directlyOver is FrameworkElement)
+            if (directlyOver is FrameworkElement)
             {
                 var element = directlyOver as FrameworkElement;
                 context = element.DataContext;
             }
-            else if(directlyOver is FrameworkContentElement)
+            else if (directlyOver is FrameworkContentElement)
             {
                 var element = directlyOver as FrameworkContentElement;
                 context = element.DataContext;
             }
 
-            if(context is IntellisenseProviderResult)
+            if (context is IntellisenseProviderResult)
             {
                 InsertItem(context, false);
                 isItemSelected = true;
@@ -1651,7 +1651,7 @@ namespace Dev2.UI
 
             try
             {
-                if(!isItemSelected)
+                if (!isItemSelected)
                 {
                     base.OnPreviewMouseLeftButtonDown(e);
                 }
@@ -1662,7 +1662,7 @@ namespace Dev2.UI
 
                 Focus();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 e.Handled = true;
             }
@@ -1684,17 +1684,17 @@ namespace Dev2.UI
 
         void EmulateEventOnListBox(KeyEventArgs e)
         {
-            if(_listBox != null)
+            if (_listBox != null)
             {
                 int count = Items.Count;
                 int index = _listBox.SelectedIndex;
                 bool scrolled = false;
 
-                if(e.Key == Key.Down || e.Key == Key.PageDown)
+                if (e.Key == Key.Down || e.Key == Key.PageDown)
                 {
-                    if(count != 0)
+                    if (count != 0)
                     {
-                        if(index == -1)
+                        if (index == -1)
                         {
                             _listBox.SelectedIndex = 0;
                         }
@@ -1703,7 +1703,7 @@ namespace Dev2.UI
                             int adjust = e.Key == Key.Down ? 1 : 4;
                             adjust = Math.Min(index + adjust, count - 1);
 
-                            if(adjust != index)
+                            if (adjust != index)
                             {
                                 _listBox.SelectedIndex = adjust;
                             }
@@ -1714,9 +1714,9 @@ namespace Dev2.UI
                 }
                 else
                 {
-                    if(count != 0)
+                    if (count != 0)
                     {
-                        if(index == -1)
+                        if (index == -1)
                         {
                             _listBox.SelectedIndex = 0;
                         }
@@ -1725,7 +1725,7 @@ namespace Dev2.UI
                             int adjust = e.Key == Key.Up ? -1 : -4;
                             adjust = Math.Max(index + adjust, 0);
 
-                            if(adjust != index)
+                            if (adjust != index)
                             {
                                 _listBox.SelectedIndex = adjust;
                             }
@@ -1735,7 +1735,7 @@ namespace Dev2.UI
                     }
                 }
 
-                if(scrolled)
+                if (scrolled)
                 {
                     ScrollIntoViewCentered(_listBox, _listBox.SelectedItem);
                 }

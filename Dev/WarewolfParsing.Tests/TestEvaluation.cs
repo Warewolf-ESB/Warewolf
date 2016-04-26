@@ -4,9 +4,9 @@ using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+using Newtonsoft.Json.Linq;
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable InconsistentNaming
 
@@ -15,8 +15,6 @@ namespace WarewolfParsingTest
     [TestClass]
     public class TestEvaluation
     {
-
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("CreateDataSet_ExpectColumnsIncludePositionAndEmpty")]
@@ -176,10 +174,6 @@ namespace WarewolfParsingTest
             //var str = (res as DataStorage.WarewolfAtom.DataString).ToString();
             //Assert.AreEqual(str, j.ToString());
         }
-
-
-
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

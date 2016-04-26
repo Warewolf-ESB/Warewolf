@@ -25,7 +25,8 @@ namespace Warewolf.Studio.Core
             Spacer = 99,
             Execute = 98,
             View = 97,
-            StartPage = 16384
+            StartPage = 16384,
+            ExchangeSource
 
 
         }
@@ -44,6 +45,7 @@ namespace Warewolf.Studio.Core
             {MenuIcons.WebSource, "Explorer-WebService-Create"},
             {MenuIcons.PluginSource, "Explorer-DLL-Create"},
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
+            {MenuIcons.ExchangeSource, "EmailSourceImageLogo"},
             {MenuIcons.DbSource, "Explorer-DB-Create"},
             {MenuIcons.ServerSource, "System-Logo-Create"},
             {MenuIcons.Server, "System-Logo"},
@@ -151,6 +153,14 @@ namespace Warewolf.Studio.Core
             get
             {
                 return MenuIconsDictionary[MenuIcons.EmailSource];
+            }
+        }
+
+        public static string ExchangeSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.ExchangeSource];
             }
         }
 

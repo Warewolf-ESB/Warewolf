@@ -28,7 +28,6 @@ using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -63,26 +62,26 @@ namespace Dev2.Runtime.ESB.Execution
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             // Set server ID, only if not set yet - original server;
-            if (DataObject.ServerID == Guid.Empty)
+            if(DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 
             // Set resource ID, only if not set yet - original resource;
-            if (DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
+            if(DataObject.ResourceID == Guid.Empty && ServiceAction != null && ServiceAction.Service != null)
                 DataObject.ResourceID = ServiceAction.Service.ID;
 
             // Travis : Now set Data List
             DataObject.DataList = ServiceAction.DataListSpecification;
             // Set original instance ID, only if not set yet - original resource;
-            if (DataObject.OriginalInstanceID == Guid.Empty)
+            if(DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
-            Dev2Logger.Info(String.Format("Started Execution for Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
+            Dev2Logger.Info(String.Format("Started Execution for Service Name:{0} Resource Id:{1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             //Set execution origin
-            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
                 DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
             }
-            else if (DataObject.IsDebug)
+            else if(DataObject.IsDebug)
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             }
@@ -92,8 +91,8 @@ namespace Dev2.Runtime.ESB.Execution
             }
             var userPrinciple = Thread.CurrentPrincipal;
             ErrorResultTO to = errors;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(to); });
-            foreach (var err in DataObject.Environment.Errors)
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple,()=>{result = ExecuteWf(to);});
+            foreach(var err in DataObject.Environment.Errors)
             {
                 errors.AddError(err);
             }
@@ -102,7 +101,7 @@ namespace Dev2.Runtime.ESB.Execution
                 errors.AddError(err);
             }
 
-            Dev2Logger.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
+            Dev2Logger.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             return result;
         }
 
@@ -121,18 +120,18 @@ namespace Dev2.Runtime.ESB.Execution
                 IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
                 DataObject.ExecutionToken = exeToken;
                 ErrorResultTO invokeErrors;
-                if (DataObject.IsDebugMode())
+                if(DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
                 }
                 Eval(DataObject.ResourceID, DataObject);
-                if (DataObject.IsDebugMode())
+                if(DataObject.IsDebugMode())
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);
                 }
                 result = DataObject.DataListID;
             }
-            catch (InvalidWorkflowException iwe)
+            catch(InvalidWorkflowException iwe)
             {
                 Dev2Logger.Error(iwe);
                 var msg = iwe.Message;
@@ -142,7 +141,7 @@ namespace Dev2.Runtime.ESB.Execution
                 // trap the no start node error so we can replace it with something nicer ;)
                 to.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Error(ex);
                 to.AddError(ex.Message);
@@ -165,15 +164,15 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, ErrorResultTO errors)
+        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs,  ErrorResultTO errors)
         {
-            if (errors == null)
+            if(errors == null)
             {
                 throw new ArgumentNullException("errors");
             }
 
             var results = new List<DebugItem>();
-            foreach (IDev2Definition dev2Definition in inputs)
+            foreach(IDev2Definition dev2Definition in inputs)
             {
                 var variableName = GetVariableName(dev2Definition);
                 DebugItem itemToAdd = new DebugItem();
@@ -181,7 +180,7 @@ namespace Dev2.Runtime.ESB.Execution
                 results.Add(itemToAdd);
             }
 
-            foreach (IDebugItem debugInput in results)
+            foreach(IDebugItem debugInput in results)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -200,62 +199,29 @@ namespace Dev2.Runtime.ESB.Execution
             debugItem.AddRange(debugItemResults);
         }
 
-        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
+        public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject,int update)
         {
             IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
 
             EvalInner(dsfDataObject, resource, update);
         }
 
-        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
+        static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource,int update)
         {
-            JContainer j = JObject.FromObject(new Person()
-            {
-                Name = "n", 
-                Children = new List<Person>
-                {
-                    new Person()
-                    {
-                        Name = "p", Children = new List<Person>{       new Person()
-                    {
-                        Name = "r", Children = new List<Person>()
-                    },        new Person()
-                    {
-                        Name = "s", Children = new List<Person>()
-                    } }
-
-                    }, 
-                    new Person()
-                    {
-                        Name = "q", Children = new List<Person>(){       new Person()
-                    {
-                        Name = "r", Children = new List<Person>()
-                    },        new Person()
-                    {
-                        Name = "s", Children = new List<Person>()
-                    } }
-                    }
-                }, 
-                Spouse = new Person()
-                {
-                    Name = "o", Children = new List<Person>()
-                }
-            });
-            dsfDataObject.Environment.AddToJsonObjects("bob", j);
-            if (resource == null)
+            if(resource == null)
             {
                 return;
             }
             WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
             var next = resource.Execute(dsfDataObject, update);
-            while (next != null)
+            while(next != null)
             {
                 if (!dsfDataObject.StopExecution)
                 {
                     next = next.Execute(dsfDataObject, update);
-                    if (dsfDataObject.Environment.Errors.Count > 0)
+                    if(dsfDataObject.Environment.Errors.Count>0)
                     {
-                        foreach (var e in dsfDataObject.Environment.Errors)
+                        foreach(var e in dsfDataObject.Environment.Errors)
                         {
                             dsfDataObject.Environment.AllErrors.Add(e);
                         }

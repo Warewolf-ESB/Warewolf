@@ -18,6 +18,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
@@ -290,6 +292,45 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Assert_Decision_Dialog_Done_Button_Exists - Use 'Assert_Decision_Dialog_Done_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Decision_Dialog_Done_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Done' button equals 'True'
+            Assert.AreEqual(this.Assert_Decision_Dialog_Done_Button_ExistsExpectedValues.DoneButtonExists, doneButton.Exists, "Decision dialog done button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Decision_Dialog_Exists - Use 'Assert_Decision_Dialog_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Decision_Dialog_Exists()
+        {
+            #region Variable Declarations
+            WpfWindow decisionDialog = this.DecisionDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Decision_Dialog_ExistsExpectedValues.DecisionDialogExists, decisionDialog.Exists, "Decision dialog does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Deploy_Ribbon_Button_Exists - Use 'Assert_Deploy_Ribbon_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Deploy_Ribbon_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton deployButton = this.MainStudioWindow.SideMenuBar.DeployButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Move resources between Warewolf servers' button equals 'True'
+            Assert.AreEqual(this.Assert_Deploy_Ribbon_Button_ExistsExpectedValues.DeployButtonExists, deployButton.Exists, "Deploy ribbon button does not exist");
+        }
+        
+        /// <summary>
         /// Assert_DeployButton_DestinationServer_Exists - Use 'Assert_DeployButton_DestinationServer_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_DeployButton_DestinationServer_Exists()
@@ -430,6 +471,32 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Verify that the 'Exists' property of '' button equals 'True'
             Assert.AreEqual(this.Assert_Maximize_Button_Exists_TopRibbonExpectedValues.MaximizeStudioButtonExists, maximizeStudioButton.Exists, "Maximize Button in the Top Ribbon does not Exist");
+        }
+        
+        /// <summary>
+        /// Assert_MessageBox_No_Button_Exists - Use 'Assert_MessageBox_No_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_MessageBox_No_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton noButton = this.MessageBoxWindow.NoButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'No' button equals 'True'
+            Assert.AreEqual(this.Assert_MessageBox_No_Button_ExistsExpectedValues.NoButtonExists, noButton.Exists, "Message box No button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_MessageBox_Yes_Button_Exists - Use 'Assert_MessageBox_Yes_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_MessageBox_Yes_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Yes' button equals 'True'
+            Assert.AreEqual(this.Assert_MessageBox_Yes_Button_ExistsExpectedValues.YesButtonExists, yesButton.Exists, "Message box Yes button does not exist");
         }
         
         /// <summary>
@@ -1070,6 +1137,58 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Assert_Server_Version_Exists - Use 'Assert_Server_Version_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Server_Version_Exists()
+        {
+            #region Variable Declarations
+            WpfWindow splashPageWindow = this.SplashPageWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'SplashPage' window equals 'True'
+            Assert.AreEqual(this.Assert_Server_Version_ExistsExpectedValues.SplashPageWindowExists, splashPageWindow.Exists, "Server version splash page does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Cancel_Button_Exists - Use 'Assert_Service_Picker_Cancel_Button_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Cancel_Button_Exists()
+        {
+            #region Variable Declarations
+            WpfButton cancel = this.MainStudioWindow.ServicePickerDialog.Cancel;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Cancel' button equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Cancel_Button_ExistsExpectedValues.CancelExists, cancel.Exists, "Service picker dialog cancel button does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Dialog_Exists - Use 'Assert_Service_Picker_Dialog_ExistsExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Dialog_Exists()
+        {
+            #region Variable Declarations
+            WpfWindow servicePickerDialog = this.MainStudioWindow.ServicePickerDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Dialog_ExistsExpectedValues.ServicePickerDialogExists, servicePickerDialog.Exists, "Service picker dialog does not exist");
+        }
+        
+        /// <summary>
+        /// Assert_Service_Picker_Exists_OnDesignSurface - Use 'Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Service_Picker_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfWindow servicePickerWindow = this.ServicePickerWindow;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues.ServicePickerWindowExists, servicePickerWindow.Exists, "Services Picker tool on the design surface does not exist");
+        }
+        
+        /// <summary>
         /// Assert_ServiceLabel_DestinationServer_Exists - Use 'Assert_ServiceLabel_DestinationServer_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_ServiceLabel_DestinationServer_Exists()
@@ -1304,16 +1423,29 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Assert_Switch_Window_Exists_OnDesignSurface - Use 'Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Assert_Switch_Window_Exists_OnDesignSurface()
+        {
+            #region Variable Declarations
+            WpfWindow decisionDialog = this.DecisionDialog;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Wpf' window equals 'True'
+            Assert.AreEqual(this.Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues.DecisionDialogExists, decisionDialog.Exists, "Switch Window does not exist");
+        }
+        
+        /// <summary>
         /// Assert_TabHeader_Exists - Use 'Assert_TabHeader_ExistsExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Assert_TabHeader_Exists()
         {
             #region Variable Declarations
-            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu;
+            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.HelpTab;
             #endregion
 
             // Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
-            Assert.AreEqual(this.Assert_TabHeader_ExistsExpectedValues.TabContextMenuExists, tabContextMenu.Exists, "Tab header does not exist");
+            Assert.AreEqual(this.Assert_TabHeader_ExistsExpectedValues.HelpTabExists, helpTab.Exists, "Tab header does not exist");
         }
         
         /// <summary>
@@ -1353,40 +1485,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Verify that the 'Exists' property of 'Lock / unlock the menu' button equals 'True'
             Assert.AreEqual(this.Assert_UnLock_Button_ExistsExpectedValues.LockMenuButtonExists, lockMenuButton.Exists, "Assert unlock does not exist on the side menu");
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_AddedRecordset - Use 'Assert_VariableList_AddedRecordsetParams' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_AddedRecordset()
-        {
-            #region Variable Declarations
-            WpfCell uIItemUnlimitedApplicaCell = this.UIWarewolfDEV2LEROYWARWindow.UISmallViewContentCustom.UISmallDataGridTable.UIUI_ActivityGridRow_1Row.UIItemUnlimitedApplicaCell;
-            WpfTree uIUI_VariableTreeView_Tree = this.UIWarewolfDEV2LEROYWARWindow.UIVARIABLESCustom.UIUI_VariablesControl_Custom.UIUI_VariableTreeView_Tree;
-            #endregion
-
-            // Type 'rec().set' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-            uIItemUnlimitedApplicaCell.Value = this.Assert_VariableList_AddedRecordsetParams.UIItemUnlimitedApplicaCellValue;
-
-            // Click 'UI_VariableTreeView_AutoID' tree
-            Mouse.Click(uIUI_VariableTreeView_Tree, new Point(173, 187));
-        }
-        
-        /// <summary>
-        /// Assert_VariableList_AddedVariable - Use 'Assert_VariableList_AddedVariableParams' to pass parameters into this method.
-        /// </summary>
-        public void Assert_VariableList_AddedVariable()
-        {
-            #region Variable Declarations
-            WpfCell uIItemUnlimitedApplicaCell = this.UIWarewolfDEV2LEROYWARWindow.UISmallViewContentCustom.UISmallDataGridTable.UIUI_ActivityGridRow_0Row.UIItemUnlimitedApplicaCell;
-            WpfTree uIUI_VariableTreeView_Tree = this.UIWarewolfDEV2LEROYWARWindow.UIVARIABLESCustom.UIUI_VariablesControl_Custom.UIUI_VariableTreeView_Tree;
-            #endregion
-
-            // Type '[[var]]' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-            uIItemUnlimitedApplicaCell.Value = this.Assert_VariableList_AddedVariableParams.UIItemUnlimitedApplicaCellValue;
-
-            // Click 'UI_VariableTreeView_AutoID' tree
-            Mouse.Click(uIUI_VariableTreeView_Tree, new Point(164, 152));
         }
         
         /// <summary>
@@ -1611,16 +1709,29 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Click_Cancel_Service_Picker_Dialog
+        /// </summary>
+        public void Click_Cancel_Service_Picker_Dialog()
+        {
+            #region Variable Declarations
+            WpfButton cancel = this.MainStudioWindow.ServicePickerDialog.Cancel;
+            #endregion
+
+            // Click 'Cancel' button
+            Mouse.Click(cancel, new Point(57, 6));
+        }
+        
+        /// <summary>
         /// Click_Close_FullScreen
         /// </summary>
         public void Click_Close_FullScreen()
         {
             #region Variable Declarations
-            WpfHyperlink uIExitFullScreenF11Hyperlink = this.UIWarewolfDEV2LEROYWARWindow.UIExitFullScreenF11Text.UIExitFullScreenF11Hyperlink;
+            WpfHyperlink exitFullScreenF11Hyperlink = this.MainStudioWindow.ExitFullScreenF11Text.ExitFullScreenF11Hyperlink;
             #endregion
 
             // Click 'Exit Full Screen (F11)' link
-            Mouse.Click(uIExitFullScreenF11Hyperlink, new Point(64, 5));
+            Mouse.Click(exitFullScreenF11Hyperlink, new Point(64, 5));
         }
         
         /// <summary>
@@ -1650,92 +1761,29 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Click_Decision_Dialog_Done_Button
+        /// </summary>
+        public void Click_Decision_Dialog_Done_Button()
+        {
+            #region Variable Declarations
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
+            #endregion
+
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(10, 14));
+        }
+        
+        /// <summary>
         /// Click_Deploy_Ribbon_Button
         /// </summary>
         public void Click_Deploy_Ribbon_Button()
         {
             #region Variable Declarations
-            WpfText deployIcon = this.MainStudioWindow.SideMenuBar.CollapsedSideMenu.DeployIcon;
+            WpfButton deployButton = this.MainStudioWindow.SideMenuBar.DeployButton;
             #endregion
 
-            // Click '' label
-            Mouse.Click(deployIcon, new Point(16, 11));
-        }
-        
-        /// <summary>
-        /// Click_Dock_DebugOutput
-        /// </summary>
-        public void Click_Dock_DebugOutput()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(63, 85));
-            Mouse.StartDragging(uIItemCustom4, new Point(176, 13));
-            Mouse.StopDragging(uIItemCustom, new Point(63, 85));
-        }
-        
-        /// <summary>
-        /// Click_Dock_Documentor
-        /// </summary>
-        public void Click_Dock_Documentor()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(54, 96));
-            Mouse.StartDragging(uIItemCustom4, new Point(260, 12));
-            Mouse.StopDragging(uIItemCustom, new Point(54, 96));
-        }
-        
-        /// <summary>
-        /// Click_Dock_Explorer
-        /// </summary>
-        public void Click_Dock_Explorer()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            #endregion
-
-            // Move custom control
-            Mouse.StartDragging(uIItemCustom4, new Point(250, 16));
-            Mouse.StopDragging(uIItemCustom4, -216, 217);
-        }
-        
-        /// <summary>
-        /// Click_Dock_ToolBox
-        /// </summary>
-        public void Click_Dock_ToolBox()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            #endregion
-
-            // Move custom control
-            Mouse.StartDragging(uIItemCustom4, new Point(234, 18));
-            Mouse.StopDragging(uIItemCustom4, -66, -27);
-        }
-        
-        /// <summary>
-        /// Click_Dock_VariableList
-        /// </summary>
-        public void Click_Dock_VariableList()
-        {
-            #region Variable Declarations
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(54, 13));
-            Mouse.StartDragging(uIItemCustom4, new Point(251, 15));
-            Mouse.StopDragging(uIItemCustom, new Point(54, 13));
+            // Click 'Move resources between Warewolf servers' button
+            Mouse.Click(deployButton, new Point(16, 11));
         }
         
         /// <summary>
@@ -1843,6 +1891,19 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
+        /// Click_MessageBox_No
+        /// </summary>
+        public void Click_MessageBox_No()
+        {
+            #region Variable Declarations
+            WpfButton noButton = this.MessageBoxWindow.NoButton;
+            #endregion
+
+            // Click 'No' button
+            Mouse.Click(noButton, new Point(32, 5));
+        }
+        
+        /// <summary>
         /// Click_Minimize_TopRibbon_Button
         /// </summary>
         public void Click_Minimize_TopRibbon_Button()
@@ -1853,22 +1914,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Click '' button
             Mouse.Click(minimizeStudioButton, new Point(6, 14));
-        }
-        
-        /// <summary>
-        /// Click_Move_ToolboxWindow
-        /// </summary>
-        public void Click_Move_ToolboxWindow()
-        {
-            #region Variable Declarations
-            WpfCustom uITOOLBOXCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDockManagerCustom.UIZ9651af96607d48d7b87Custom.UITOOLBOXCustom;
-            WpfCustom uIItemCustom = this.UIWpfWindow.UIItemCustom;
-            #endregion
-
-            // Move 'TOOL BOX' custom control to custom control
-            uIItemCustom.EnsureClickable(new Point(57, 90));
-            Mouse.StartDragging(uITOOLBOXCustom, new Point(445, 28));
-            Mouse.StopDragging(uIItemCustom, new Point(57, 90));
         }
         
         /// <summary>
@@ -1986,6 +2031,71 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
 
             // Select 'UI_IsOutputCheckbox_AutoID' check box
             variableOutputCheckbox.Checked = this.Click_Output_OnVariable_InVariableListParams.VariableOutputCheckboxChecked;
+        }
+        
+        /// <summary>
+        /// Click_Pin_Toggle_DebugOutput
+        /// </summary>
+        public void Click_Pin_Toggle_DebugOutput()
+        {
+            #region Variable Declarations
+            WpfButton debugOutputUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn;
+            #endregion
+
+            // Click 'unpinBtn' button
+            Mouse.Click(debugOutputUnpinBtn, new Point(11, 10));
+        }
+        
+        /// <summary>
+        /// Click_Pin_Toggle_Documentor
+        /// </summary>
+        public void Click_Pin_Toggle_Documentor()
+        {
+            #region Variable Declarations
+            WpfButton documentorUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn;
+            #endregion
+
+            // Click 'unpinBtn' button
+            Mouse.Click(documentorUnpinBtn, new Point(2, 11));
+        }
+        
+        /// <summary>
+        /// Click_Pin_Toggle_Explorer
+        /// </summary>
+        public void Click_Pin_Toggle_Explorer()
+        {
+            #region Variable Declarations
+            WpfButton explorerUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn;
+            #endregion
+
+            // Click 'unpinBtn' button
+            Mouse.Click(explorerUnpinBtn, new Point(12, 9));
+        }
+        
+        /// <summary>
+        /// Click_Pin_Toggle_Toolbox
+        /// </summary>
+        public void Click_Pin_Toggle_Toolbox()
+        {
+            #region Variable Declarations
+            WpfButton toolUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn;
+            #endregion
+
+            // Click 'unpinBtn' button
+            Mouse.Click(toolUnpinBtn, new Point(10, 8));
+        }
+        
+        /// <summary>
+        /// Click_Pin_Toggle_VariableList
+        /// </summary>
+        public void Click_Pin_Toggle_VariableList()
+        {
+            #region Variable Declarations
+            WpfButton variableUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariableUnpinBtn;
+            #endregion
+
+            // Click 'unpinBtn' button
+            Mouse.Click(variableUnpinBtn, new Point(10, 14));
         }
         
         /// <summary>
@@ -2236,165 +2346,29 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
-        /// Click_Toggle_Pin_DebugOutput
+        /// Click_Switch_Dialog_Done_Button
         /// </summary>
-        public void Click_Toggle_Pin_DebugOutput()
+        public void Click_Switch_Dialog_Done_Button()
         {
             #region Variable Declarations
-            WpfButton debugOutputUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn;
+            WpfButton doneButton = this.DecisionDialog.DoneButton;
             #endregion
 
-            // Click 'unpinBtn' button
-            Mouse.Click(debugOutputUnpinBtn, new Point(11, 10));
+            // Click 'Done' button
+            Mouse.Click(doneButton, new Point(24, 7));
         }
         
         /// <summary>
-        /// Click_Toggle_Pin_Documentor
+        /// Click_Test_Plugin_Connector
         /// </summary>
-        public void Click_Toggle_Pin_Documentor()
+        public void Click_Test_Plugin_Connector()
         {
             #region Variable Declarations
-            WpfButton documentorUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn;
+            WpfButton testButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.TestButton;
             #endregion
 
-            // Click 'unpinBtn' button
-            Mouse.Click(documentorUnpinBtn, new Point(2, 11));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Pin_Explorer
-        /// </summary>
-        public void Click_Toggle_Pin_Explorer()
-        {
-            #region Variable Declarations
-            WpfButton explorerUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(explorerUnpinBtn, new Point(12, 9));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Pin_Toolbox
-        /// </summary>
-        public void Click_Toggle_Pin_Toolbox()
-        {
-            #region Variable Declarations
-            WpfButton toolUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(toolUnpinBtn, new Point(10, 8));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Pin_VariableList
-        /// </summary>
-        public void Click_Toggle_Pin_VariableList()
-        {
-            #region Variable Declarations
-            WpfButton variableUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariableUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(variableUnpinBtn, new Point(10, 14));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Unpiin_Toolbox
-        /// </summary>
-        public void Click_Toggle_Unpiin_Toolbox()
-        {
-            #region Variable Declarations
-            WpfButton toolUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(toolUnpinBtn, new Point(15, 13));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Unpin_DebugOutput
-        /// </summary>
-        public void Click_Toggle_Unpin_DebugOutput()
-        {
-            #region Variable Declarations
-            WpfButton debugOutputUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(debugOutputUnpinBtn, new Point(8, 14));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Unpin_Documentor
-        /// </summary>
-        public void Click_Toggle_Unpin_Documentor()
-        {
-            #region Variable Declarations
-            WpfButton documentorUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(documentorUnpinBtn, new Point(14, 13));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Unpin_Explorer
-        /// </summary>
-        public void Click_Toggle_Unpin_Explorer()
-        {
-            #region Variable Declarations
-            WpfButton explorerUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(explorerUnpinBtn, new Point(13, 7));
-        }
-        
-        /// <summary>
-        /// Click_Toggle_Unpin_VariableList
-        /// </summary>
-        public void Click_Toggle_Unpin_VariableList()
-        {
-            #region Variable Declarations
-            WpfButton variableUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneRight.Variables.VariableUnpinBtn;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(variableUnpinBtn, new Point(14, 15));
-        }
-        
-        /// <summary>
-        /// Click_UnDock_DebugOutput
-        /// </summary>
-        public void Click_UnDock_DebugOutput()
-        {
-            #region Variable Declarations
-            WpfCustom uIOUTPUTCustom = this.UIWarewolfDEV2LEROYWARWindow.UIZaaf3f1dc2d1d407cadbCustom.UIZ74f8d4a07ae44ffcbd8Custom.UIOUTPUTCustom;
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            #endregion
-
-            // Move 'OUTPUT' custom control to custom control
-            uIItemCustom4.EnsureClickable(new Point(220, 26));
-            Mouse.StartDragging(uIOUTPUTCustom, new Point(220, 25));
-            Mouse.StopDragging(uIItemCustom4, new Point(220, 26));
-        }
-        
-        /// <summary>
-        /// Click_UnDock_Documentor
-        /// </summary>
-        public void Click_UnDock_Documentor()
-        {
-            #region Variable Declarations
-            WpfText uIWHATDOESTHISDOText = this.UIWarewolfDEV2LEROYWARWindow.UIZ16e631b821c94d90bacCustom.UIZ2da82c89e9c54f37a62TabList.UIWHATDOESTHISDOTabPage.UIWHATDOESTHISDOCustom.UIWHATDOESTHISDOText;
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            #endregion
-
-            // Move 'WHAT DOES THIS DO?' label to custom control
-            uIItemCustom4.EnsureClickable(new Point(186, 25));
-            Mouse.StartDragging(uIWHATDOESTHISDOText, new Point(167, 13));
-            Mouse.StopDragging(uIItemCustom4, new Point(186, 25));
+            // Click 'Test' button
+            Mouse.Click(testButton, new Point(59, 9));
         }
         
         /// <summary>
@@ -2403,43 +2377,11 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Click_UnDock_Explorer()
         {
             #region Variable Declarations
-            WpfCustom explorer = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer;
+            WpfButton explorerUnpinBtn = this.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn;
             #endregion
 
-            // Click 'UI_ExplorerControl_AutoID' custom control
-            Mouse.Click(explorer, new Point(177, -13));
-        }
-        
-        /// <summary>
-        /// Click_UnDock_ToolBox
-        /// </summary>
-        public void Click_UnDock_ToolBox()
-        {
-            #region Variable Declarations
-            WpfCustom uITOOLBOXCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDockManagerCustom.UIZcfe13fc0d52945a9a79Custom.UITOOLBOXCustom;
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            #endregion
-
-            // Move 'TOOL BOX' custom control to custom control
-            uIItemCustom4.EnsureClickable(new Point(216, 19));
-            Mouse.StartDragging(uITOOLBOXCustom, new Point(502, 18));
-            Mouse.StopDragging(uIItemCustom4, new Point(216, 19));
-        }
-        
-        /// <summary>
-        /// Click_UnDock_VariableList
-        /// </summary>
-        public void Click_UnDock_VariableList()
-        {
-            #region Variable Declarations
-            WpfCustom uIVARIABLESCustom = this.UIWarewolfDEV2LEROYWARWindow.UIZaaf3f1dc2d1d407cadbCustom.UIZ74f8d4a07ae44ffcbd8Custom.UIVARIABLESCustom;
-            WpfCustom uIItemCustom4 = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom4;
-            #endregion
-
-            // Move 'VARIABLES' custom control to custom control
-            uIItemCustom4.EnsureClickable(new Point(242, 20));
-            Mouse.StartDragging(uIVARIABLESCustom, new Point(242, 20));
-            Mouse.StopDragging(uIItemCustom4, new Point(242, 20));
+            // Click 'unpinBtn' button
+            Mouse.Click(explorerUnpinBtn, new Point(177, -13));
         }
         
         /// <summary>
@@ -2469,20 +2411,16 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
-        /// Close_New_Workflow_Tab_Without_Saving
+        /// Click_Yes_DeleteConfirmDialog
         /// </summary>
-        public void Close_New_Workflow_Tab_Without_Saving()
+        public void Click_Yes_DeleteConfirmDialog()
         {
             #region Variable Declarations
-            WpfButton uIItemButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.WorkflowTab.UIItemButton;
-            WpfButton nOButton = this.MessageBoxWindow.NOButton;
+            WpfButton yesButton = this.MessageBoxWindow.YesButton;
             #endregion
 
-            // Click '' button
-            Mouse.Click(uIItemButton, new Point(12, 7));
-
-            // Click 'No' button
-            Mouse.Click(nOButton, new Point(32, 5));
+            // Click 'Yes' button
+            Mouse.Click(yesButton, new Point(36, 6));
         }
         
         /// <summary>
@@ -2567,56 +2505,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
-        /// Edit_Database_Source_From_Connector
-        /// </summary>
-        public void Edit_Database_Source_From_Connector()
-        {
-            #region Variable Declarations
-            WpfButton uIItemButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIItemButton;
-            WpfButton uIItemButton1 = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIItemButton1;
-            #endregion
-
-            // Click '' button
-            Mouse.Click(uIItemButton, new Point(12, 12));
-
-            // Click '...' button
-            Mouse.Click(uIItemButton1, new Point(9, 18));
-        }
-        
-        /// <summary>
-        /// Expand_And_Colapse_Tool_Area
-        /// </summary>
-        public void Expand_And_Colapse_Tool_Area()
-        {
-            #region Variable Declarations
-            WpfGroup uIControlFlowGroup = this.UIWarewolfDEV2LEROYWARWindow.UIUI_ToolboxControl_AuCustom.UIToolListBoxList.UIControlFlowGroup;
-            #endregion
-
-            // Click 'Control Flow' group
-            Mouse.Click(uIControlFlowGroup, new Point(1354, 10));
-
-            // Click 'Control Flow' group
-            Mouse.Click(uIControlFlowGroup, new Point(1349, 7));
-        }
-        
-        /// <summary>
-        /// Plugin_Connectot_Test_Connector_Calculate_Outputs - Use 'Plugin_Connectot_Test_Connector_Calculate_OutputsParams' to pass parameters into this method.
-        /// </summary>
-        public void Plugin_Connectot_Test_Connector_Calculate_Outputs()
-        {
-            #region Variable Declarations
-            WpfCell uIValueCell = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom2.UIInputGridTable.UIValueCell;
-            WpfButton uITestButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage1.UIDev2StudioViewModelsCustom.UITestButton;
-            #endregion
-
-            // Type 'test' in 'Value' cell
-            uIValueCell.Value = this.Plugin_Connectot_Test_Connector_Calculate_OutputsParams.UIValueCellValue;
-
-            // Click 'Test' button
-            Mouse.Click(uITestButton, new Point(59, 9));
-        }
-        
-        /// <summary>
         /// Right_Click_Context_Menu_InExplorer
         /// </summary>
         public void Right_Click_Context_Menu_InExplorer()
@@ -2630,20 +2518,29 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         /// <summary>
-        /// Select_Action_Droplist
+        /// Right_Click_Help_Tab
         /// </summary>
-        public void Select_Action_Droplist()
+        public void Right_Click_Help_Tab()
+        {
+            #region Variable Declarations
+            WpfTabPage helpTab = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.HelpTab;
+            #endregion
+
+            // Right-Click 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab
+            Mouse.Click(helpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
+        }
+        
+        /// <summary>
+        /// Select_Action_Droplist_DB_Connector
+        /// </summary>
+        public void Select_Action_Droplist_DB_Connector()
         {
             #region Variable Declarations
             WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.ActionsComboBox;
-            WpfCustom uIDboPr_CitiesGetCountCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDboPr_CitiesGetCountCustom;
             #endregion
 
             // Click 'ActionsComboBox' custom control
             Mouse.Click(actionsComboBox, new Point(226, 6));
-
-            // Click 'dbo.Pr_CitiesGetCountries' custom control
-            Mouse.Click(uIDboPr_CitiesGetCountCustom, new Point(156, 10));
         }
         
         /// <summary>
@@ -2666,14 +2563,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         {
             #region Variable Declarations
             WpfCustom actionsComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.ActionsComboBox;
-            WpfCustom uIDummySentCustom = this.UIWarewolfDEV2LEROYWARWindow.UIDummySentCustom;
             #endregion
 
             // Click 'ActionsComboBox' custom control
             Mouse.Click(actionsComboBox, new Point(233, 6));
-
-            // Click 'DummySent' custom control
-            Mouse.Click(uIDummySentCustom, new Point(200, 8));
         }
         
         /// <summary>
@@ -2683,14 +2576,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         {
             #region Variable Declarations
             WpfCustom namespacesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.NamespacesComboBox;
-            WpfText uIUnlimitedFrameworkPlText = this.UIWarewolfDEV2LEROYWARWindow.UIUnlimitedFrameworkPlCustom.UIUnlimitedFrameworkPlText;
             #endregion
 
             // Click 'NamespaceComboBox' custom control
             Mouse.Click(namespacesComboBox, new Point(233, 8));
-
-            // Click 'Unlimited.Framework.Plugins.EmailPlugin' label
-            Mouse.Click(uIUnlimitedFrameworkPlText, new Point(200, 11));
         }
         
         /// <summary>
@@ -2700,27 +2589,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         {
             #region Variable Declarations
             WpfCustom sourcesComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewPluginConnectorTab.WorkSurfaceContext.SourcesComboBox;
-            WpfCustom uIEmailPluginCustom = this.UIWarewolfDEV2LEROYWARWindow.UIEmailPluginCustom;
             #endregion
 
             // Click 'SourcesComboBox' custom control
             Mouse.Click(sourcesComboBox, new Point(231, 16));
-
-            // Click 'Email Plugin' custom control
-            Mouse.Click(uIEmailPluginCustom, new Point(193, 5));
-        }
-        
-        /// <summary>
-        /// Tab_Context_Menu
-        /// </summary>
-        public void Tab_Context_Menu()
-        {
-            #region Variable Declarations
-            WpfTabPage tabContextMenu = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.TabContextMenu;
-            #endregion
-
-            // Right-Click 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab
-            Mouse.Click(tabContextMenu, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
         }
         
         /// <summary>
@@ -2729,15 +2601,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         public void Test_Connector_Calculate_Outputs()
         {
             #region Variable Declarations
-            WpfEdit uITestdataEdit = this.UIWarewolfDEV2LEROYWARWindow.UIItemCustom1.UIInputsListList.UIWarewolfCoreServiceIListItem.UITestdataEdit;
-            WpfButton uITestButton = this.UIWarewolfDEV2LEROYWARWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UITestButton;
+            WpfEdit testData = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.NewDBConnectorWizard.InputsList.ListItem.TestData;
+            WpfButton testActionButton = this.MainStudioWindow.DockManager.SplitPaneMiddle.SplitPaneContent.TabMan.NewDBConnectorTab.WorkSurfaceContext.TestActionButton;
             #endregion
 
             // Type 's' in 'Test data' text box
-            uITestdataEdit.Text = this.Test_Connector_Calculate_OutputsParams.UITestdataEditText;
+            testData.Text = this.Test_Connector_Calculate_OutputsParams.TestDataText;
 
             // Click 'Test' button
-            Mouse.Click(uITestButton, new Point(47, 18));
+            Mouse.Click(testActionButton, new Point(47, 18));
         }
         
         #region Properties
@@ -2981,6 +2853,42 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public virtual Assert_Decision_Dialog_Done_Button_ExistsExpectedValues Assert_Decision_Dialog_Done_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues = new Assert_Decision_Dialog_Done_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Decision_Dialog_ExistsExpectedValues Assert_Decision_Dialog_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Decision_Dialog_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Decision_Dialog_ExistsExpectedValues = new Assert_Decision_Dialog_ExistsExpectedValues();
+                }
+                return this.mAssert_Decision_Dialog_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Deploy_Ribbon_Button_ExistsExpectedValues Assert_Deploy_Ribbon_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Deploy_Ribbon_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Deploy_Ribbon_Button_ExistsExpectedValues = new Assert_Deploy_Ribbon_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Deploy_Ribbon_Button_ExistsExpectedValues;
+            }
+        }
+        
         public virtual Assert_DeployButton_DestinationServer_ExistsExpectedValues Assert_DeployButton_DestinationServer_ExistsExpectedValues
         {
             get
@@ -3110,6 +3018,30 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mAssert_Maximize_Button_Exists_TopRibbonExpectedValues = new Assert_Maximize_Button_Exists_TopRibbonExpectedValues();
                 }
                 return this.mAssert_Maximize_Button_Exists_TopRibbonExpectedValues;
+            }
+        }
+        
+        public virtual Assert_MessageBox_No_Button_ExistsExpectedValues Assert_MessageBox_No_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_MessageBox_No_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_MessageBox_No_Button_ExistsExpectedValues = new Assert_MessageBox_No_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_MessageBox_No_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_MessageBox_Yes_Button_ExistsExpectedValues Assert_MessageBox_Yes_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_MessageBox_Yes_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_MessageBox_Yes_Button_ExistsExpectedValues = new Assert_MessageBox_Yes_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_MessageBox_Yes_Button_ExistsExpectedValues;
             }
         }
         
@@ -3701,6 +3633,54 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public virtual Assert_Server_Version_ExistsExpectedValues Assert_Server_Version_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Server_Version_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Server_Version_ExistsExpectedValues = new Assert_Server_Version_ExistsExpectedValues();
+                }
+                return this.mAssert_Server_Version_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Cancel_Button_ExistsExpectedValues Assert_Service_Picker_Cancel_Button_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues = new Assert_Service_Picker_Cancel_Button_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Dialog_ExistsExpectedValues Assert_Service_Picker_Dialog_ExistsExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Dialog_ExistsExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Dialog_ExistsExpectedValues = new Assert_Service_Picker_Dialog_ExistsExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Dialog_ExistsExpectedValues;
+            }
+        }
+        
+        public virtual Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues = new Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
         public virtual Assert_ServiceLabel_DestinationServer_ExistsExpectedValues Assert_ServiceLabel_DestinationServer_ExistsExpectedValues
         {
             get
@@ -3917,6 +3897,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
+        public virtual Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues
+        {
+            get
+            {
+                if ((this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues == null))
+                {
+                    this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues = new Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues();
+                }
+                return this.mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues;
+            }
+        }
+        
         public virtual Assert_TabHeader_ExistsExpectedValues Assert_TabHeader_ExistsExpectedValues
         {
             get
@@ -3962,30 +3954,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mAssert_UnLock_Button_ExistsExpectedValues = new Assert_UnLock_Button_ExistsExpectedValues();
                 }
                 return this.mAssert_UnLock_Button_ExistsExpectedValues;
-            }
-        }
-        
-        public virtual Assert_VariableList_AddedRecordsetParams Assert_VariableList_AddedRecordsetParams
-        {
-            get
-            {
-                if ((this.mAssert_VariableList_AddedRecordsetParams == null))
-                {
-                    this.mAssert_VariableList_AddedRecordsetParams = new Assert_VariableList_AddedRecordsetParams();
-                }
-                return this.mAssert_VariableList_AddedRecordsetParams;
-            }
-        }
-        
-        public virtual Assert_VariableList_AddedVariableParams Assert_VariableList_AddedVariableParams
-        {
-            get
-            {
-                if ((this.mAssert_VariableList_AddedVariableParams == null))
-                {
-                    this.mAssert_VariableList_AddedVariableParams = new Assert_VariableList_AddedVariableParams();
-                }
-                return this.mAssert_VariableList_AddedVariableParams;
             }
         }
         
@@ -4421,18 +4389,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public virtual Plugin_Connectot_Test_Connector_Calculate_OutputsParams Plugin_Connectot_Test_Connector_Calculate_OutputsParams
-        {
-            get
-            {
-                if ((this.mPlugin_Connectot_Test_Connector_Calculate_OutputsParams == null))
-                {
-                    this.mPlugin_Connectot_Test_Connector_Calculate_OutputsParams = new Plugin_Connectot_Test_Connector_Calculate_OutputsParams();
-                }
-                return this.mPlugin_Connectot_Test_Connector_Calculate_OutputsParams;
-            }
-        }
-        
         public virtual Test_Connector_Calculate_OutputsParams Test_Connector_Calculate_OutputsParams
         {
             get
@@ -4469,18 +4425,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIWarewolfDEV2LEROYWARWindow UIWarewolfDEV2LEROYWARWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2LEROYWARWindow == null))
-                {
-                    this.mUIWarewolfDEV2LEROYWARWindow = new UIWarewolfDEV2LEROYWARWindow();
-                }
-                return this.mUIWarewolfDEV2LEROYWARWindow;
-            }
-        }
-        
         public DebugInputWindow DebugInputWindow
         {
             get
@@ -4493,18 +4437,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public UIWpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new UIWpfWindow();
-                }
-                return this.mUIWpfWindow;
-            }
-        }
-        
         public SaveDialogWindow SaveDialogWindow
         {
             get
@@ -4514,6 +4446,42 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mSaveDialogWindow = new SaveDialogWindow();
                 }
                 return this.mSaveDialogWindow;
+            }
+        }
+        
+        public ServicePickerWindow ServicePickerWindow
+        {
+            get
+            {
+                if ((this.mServicePickerWindow == null))
+                {
+                    this.mServicePickerWindow = new ServicePickerWindow();
+                }
+                return this.mServicePickerWindow;
+            }
+        }
+        
+        public SplashPageWindow SplashPageWindow
+        {
+            get
+            {
+                if ((this.mSplashPageWindow == null))
+                {
+                    this.mSplashPageWindow = new SplashPageWindow();
+                }
+                return this.mSplashPageWindow;
+            }
+        }
+        
+        public DecisionDialog DecisionDialog
+        {
+            get
+            {
+                if ((this.mDecisionDialog == null))
+                {
+                    this.mDecisionDialog = new DecisionDialog();
+                }
+                return this.mDecisionDialog;
             }
         }
         #endregion
@@ -4559,6 +4527,12 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private Assert_DebugInput_Xml_Window_ExistsExpectedValues mAssert_DebugInput_Xml_Window_ExistsExpectedValues;
         
+        private Assert_Decision_Dialog_Done_Button_ExistsExpectedValues mAssert_Decision_Dialog_Done_Button_ExistsExpectedValues;
+        
+        private Assert_Decision_Dialog_ExistsExpectedValues mAssert_Decision_Dialog_ExistsExpectedValues;
+        
+        private Assert_Deploy_Ribbon_Button_ExistsExpectedValues mAssert_Deploy_Ribbon_Button_ExistsExpectedValues;
+        
         private Assert_DeployButton_DestinationServer_ExistsExpectedValues mAssert_DeployButton_DestinationServer_ExistsExpectedValues;
         
         private Assert_Edit_Button_Destination_Server_ExistsExpectedValues mAssert_Edit_Button_Destination_Server_ExistsExpectedValues;
@@ -4580,6 +4554,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private Assert_LockAndUnlock_Button_Exists_TopRibbonExpectedValues mAssert_LockAndUnlock_Button_Exists_TopRibbonExpectedValues;
         
         private Assert_Maximize_Button_Exists_TopRibbonExpectedValues mAssert_Maximize_Button_Exists_TopRibbonExpectedValues;
+        
+        private Assert_MessageBox_No_Button_ExistsExpectedValues mAssert_MessageBox_No_Button_ExistsExpectedValues;
+        
+        private Assert_MessageBox_Yes_Button_ExistsExpectedValues mAssert_MessageBox_Yes_Button_ExistsExpectedValues;
         
         private Assert_Minimize_Button_Exists_TopRibbonExpectedValues mAssert_Minimize_Button_Exists_TopRibbonExpectedValues;
         
@@ -4679,6 +4657,14 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private Assert_Scheduler_WorkflowLabel_ExistsExpectedValues mAssert_Scheduler_WorkflowLabel_ExistsExpectedValues;
         
+        private Assert_Server_Version_ExistsExpectedValues mAssert_Server_Version_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Cancel_Button_ExistsExpectedValues mAssert_Service_Picker_Cancel_Button_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Dialog_ExistsExpectedValues mAssert_Service_Picker_Dialog_ExistsExpectedValues;
+        
+        private Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues mAssert_Service_Picker_Exists_OnDesignSurfaceExpectedValues;
+        
         private Assert_ServiceLabel_DestinationServer_ExistsExpectedValues mAssert_ServiceLabel_DestinationServer_ExistsExpectedValues;
         
         private Assert_ServicesCount_Label_ExistsExpectedValues mAssert_ServicesCount_Label_ExistsExpectedValues;
@@ -4715,6 +4701,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private Assert_SuccessMessage_Label_ExistsExpectedValues mAssert_SuccessMessage_Label_ExistsExpectedValues;
         
+        private Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues mAssert_Switch_Window_Exists_OnDesignSurfaceExpectedValues;
+        
         private Assert_TabHeader_ExistsExpectedValues mAssert_TabHeader_ExistsExpectedValues;
         
         private Assert_Toolbox_FilterTextbox_ExistsExpectedValues mAssert_Toolbox_FilterTextbox_ExistsExpectedValues;
@@ -4722,10 +4710,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private Assert_Toolbox_RefreshButton_ExistsExpectedValues mAssert_Toolbox_RefreshButton_ExistsExpectedValues;
         
         private Assert_UnLock_Button_ExistsExpectedValues mAssert_UnLock_Button_ExistsExpectedValues;
-        
-        private Assert_VariableList_AddedRecordsetParams mAssert_VariableList_AddedRecordsetParams;
-        
-        private Assert_VariableList_AddedVariableParams mAssert_VariableList_AddedVariableParams;
         
         private Assert_VariableList_DataInputTree_ExistsExpectedValues mAssert_VariableList_DataInputTree_ExistsExpectedValues;
         
@@ -4799,21 +4783,21 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private DebugOutput_SettingsButton_ExistsExpectedValues mDebugOutput_SettingsButton_ExistsExpectedValues;
         
-        private Plugin_Connectot_Test_Connector_Calculate_OutputsParams mPlugin_Connectot_Test_Connector_Calculate_OutputsParams;
-        
         private Test_Connector_Calculate_OutputsParams mTest_Connector_Calculate_OutputsParams;
         
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
         
-        private UIWarewolfDEV2LEROYWARWindow mUIWarewolfDEV2LEROYWARWindow;
-        
         private DebugInputWindow mDebugInputWindow;
         
-        private UIWpfWindow mUIWpfWindow;
-        
         private SaveDialogWindow mSaveDialogWindow;
+        
+        private ServicePickerWindow mServicePickerWindow;
+        
+        private SplashPageWindow mSplashPageWindow;
+        
+        private DecisionDialog mDecisionDialog;
         #endregion
     }
     
@@ -5118,6 +5102,51 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Decision_Dialog_Done_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Decision_Dialog_Done_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Done' button equals 'True'
+        /// </summary>
+        public bool DoneButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Decision_Dialog_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Decision_Dialog_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool DecisionDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Deploy_Ribbon_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Deploy_Ribbon_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Move resources between Warewolf servers' button equals 'True'
+        /// </summary>
+        public bool DeployButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_DeployButton_DestinationServer_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -5279,6 +5308,36 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// Verify that the 'Exists' property of '' button equals 'True'
         /// </summary>
         public bool MaximizeStudioButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_MessageBox_No_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_MessageBox_No_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'No' button equals 'True'
+        /// </summary>
+        public bool NoButtonExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_MessageBox_Yes_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_MessageBox_Yes_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Yes' button equals 'True'
+        /// </summary>
+        public bool YesButtonExists = true;
         #endregion
     }
     
@@ -6018,6 +6077,66 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Server_Version_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Server_Version_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'SplashPage' window equals 'True'
+        /// </summary>
+        public bool SplashPageWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Cancel_Button_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Service_Picker_Cancel_Button_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Cancel' button equals 'True'
+        /// </summary>
+        public bool CancelExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Dialog_Exists'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Service_Picker_Dialog_ExistsExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool ServicePickerDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Assert_Service_Picker_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Service_Picker_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool ServicePickerWindowExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_ServiceLabel_DestinationServer_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -6288,6 +6407,21 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     /// <summary>
+    /// Parameters to be passed into 'Assert_Switch_Window_Exists_OnDesignSurface'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class Assert_Switch_Window_Exists_OnDesignSurfaceExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Wpf' window equals 'True'
+        /// </summary>
+        public bool DecisionDialogExists = true;
+        #endregion
+    }
+    
+    /// <summary>
     /// Parameters to be passed into 'Assert_TabHeader_Exists'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -6298,7 +6432,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// <summary>
         /// Verify that the 'Exists' property of 'Dev2.Studio.ViewModels.Help.HelpViewModel' tab equals 'True'
         /// </summary>
-        public bool TabContextMenuExists = true;
+        public bool HelpTabExists = true;
         #endregion
     }
     
@@ -6344,36 +6478,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// Verify that the 'Exists' property of 'Lock / unlock the menu' button equals 'True'
         /// </summary>
         public bool LockMenuButtonExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_AddedRecordset'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_VariableList_AddedRecordsetParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'rec().set' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-        /// </summary>
-        public string UIItemUnlimitedApplicaCellValue = "rec().set";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Assert_VariableList_AddedVariable'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Assert_VariableList_AddedVariableParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type '[[var]]' in 'Item: Unlimited.Applications.BusinessDesignStudio....' cell
-        /// </summary>
-        public string UIItemUnlimitedApplicaCellValue = "[[var]]";
         #endregion
     }
     
@@ -6923,21 +7027,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Plugin_Connectot_Test_Connector_Calculate_Outputs'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class Plugin_Connectot_Test_Connector_Calculate_OutputsParams
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type 'test' in 'Value' cell
-        /// </summary>
-        public string UIValueCellValue = "test";
-        #endregion
-    }
-    
-    /// <summary>
     /// Parameters to be passed into 'Test_Connector_Calculate_Outputs'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
@@ -6948,7 +7037,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         /// <summary>
         /// Type 's' in 'Test data' text box
         /// </summary>
-        public string UITestdataEditText = "s";
+        public string TestDataText = "s";
         #endregion
     }
     
@@ -6967,6 +7056,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public ExitFullScreenF11Text ExitFullScreenF11Text
+        {
+            get
+            {
+                if ((this.mExitFullScreenF11Text == null))
+                {
+                    this.mExitFullScreenF11Text = new ExitFullScreenF11Text(this);
+                }
+                return this.mExitFullScreenF11Text;
+            }
+        }
+        
         public WpfButton LockStudioButton
         {
             get
@@ -7070,9 +7171,23 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mDockManager;
             }
         }
+        
+        public ServicePickerDialog ServicePickerDialog
+        {
+            get
+            {
+                if ((this.mServicePickerDialog == null))
+                {
+                    this.mServicePickerDialog = new ServicePickerDialog(this);
+                }
+                return this.mServicePickerDialog;
+            }
+        }
         #endregion
         
         #region Fields
+        private ExitFullScreenF11Text mExitFullScreenF11Text;
+        
         private WpfButton mLockStudioButton;
         
         private WpfButton mMinimizeStudioButton;
@@ -7086,6 +7201,44 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private SideMenuBar mSideMenuBar;
         
         private DockManager mDockManager;
+        
+        private ServicePickerDialog mServicePickerDialog;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ExitFullScreenF11Text : WpfText
+    {
+        
+        public ExitFullScreenF11Text(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "Exit Full Screen (F11)";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink ExitFullScreenF11Hyperlink
+        {
+            get
+            {
+                if ((this.mExitFullScreenF11Hyperlink == null))
+                {
+                    this.mExitFullScreenF11Hyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mExitFullScreenF11Hyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "Exit Full Screen (F11)";
+                    this.mExitFullScreenF11Hyperlink.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mExitFullScreenF11Hyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mExitFullScreenF11Hyperlink;
         #endregion
     }
     
@@ -7099,6 +7252,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
             this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
@@ -7257,6 +7411,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     #region Search Criteria
                     this.mDeployButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Move resources between Warewolf servers";
                     this.mDeployButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    this.mDeployButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
                 return this.mDeployButton;
@@ -9632,19 +9787,31 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WpfTabPage TabContextMenu
+        public StartPage StartPage
         {
             get
             {
-                if ((this.mTabContextMenu == null))
+                if ((this.mStartPage == null))
                 {
-                    this.mTabContextMenu = new WpfTabPage(this);
+                    this.mStartPage = new StartPage(this);
+                }
+                return this.mStartPage;
+            }
+        }
+        
+        public WpfTabPage HelpTab
+        {
+            get
+            {
+                if ((this.mHelpTab == null))
+                {
+                    this.mHelpTab = new WpfTabPage(this);
                     #region Search Criteria
-                    this.mTabContextMenu.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
-                    this.mTabContextMenu.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    this.mHelpTab.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
+                    this.mHelpTab.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
-                return this.mTabContextMenu;
+                return this.mHelpTab;
             }
         }
         
@@ -9774,7 +9941,9 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private WpfTabPage mTabContextMenu;
+        private StartPage mStartPage;
+        
+        private WpfTabPage mHelpTab;
         
         private DeployTab mDeployTab;
         
@@ -9795,6 +9964,227 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private FilesMenu mFilesMenu;
         
         private WpfButton mNavigatorButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class StartPage : WpfTabPage
+    {
+        
+        public StartPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Help.HelpViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WorksurfaceContext WorksurfaceContext
+        {
+            get
+            {
+                if ((this.mWorksurfaceContext == null))
+                {
+                    this.mWorksurfaceContext = new WorksurfaceContext(this);
+                }
+                return this.mWorksurfaceContext;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WorksurfaceContext mWorksurfaceContext;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WorksurfaceContext : WpfCustom
+    {
+        
+        public WorksurfaceContext(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public BrowserHostPane BrowserHostPane
+        {
+            get
+            {
+                if ((this.mBrowserHostPane == null))
+                {
+                    this.mBrowserHostPane = new BrowserHostPane(this);
+                }
+                return this.mBrowserHostPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private BrowserHostPane mBrowserHostPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class BrowserHostPane : WpfPane
+    {
+        
+        public BrowserHostPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.HwndHost";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "WebBrowserHost";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemClient ItemClient
+        {
+            get
+            {
+                if ((this.mItemClient == null))
+                {
+                    this.mItemClient = new ItemClient(this);
+                }
+                return this.mItemClient;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemClient mItemClient;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ItemClient : WinClient
+    {
+        
+        public ItemClient(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WinControl.PropertyNames.ClassName] = "Internet Explorer_Server";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public CommunityPage CommunityPage
+        {
+            get
+            {
+                if ((this.mCommunityPage == null))
+                {
+                    this.mCommunityPage = new CommunityPage(this);
+                }
+                return this.mCommunityPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private CommunityPage mCommunityPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class CommunityPage : HtmlDocument
+    {
+        
+        public CommunityPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[HtmlDocument.PropertyNames.Id] = null;
+            this.SearchProperties[HtmlDocument.PropertyNames.RedirectingPage] = "False";
+            this.SearchProperties[HtmlDocument.PropertyNames.FrameDocument] = "False";
+            this.FilterProperties[HtmlDocument.PropertyNames.Title] = "Community / Warewolf";
+            this.FilterProperties[HtmlDocument.PropertyNames.AbsolutePath] = "/";
+            this.FilterProperties[HtmlDocument.PropertyNames.PageUrl] = "http://community.warewolf.io/";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WrapPane WrapPane
+        {
+            get
+            {
+                if ((this.mWrapPane == null))
+                {
+                    this.mWrapPane = new WrapPane(this);
+                }
+                return this.mWrapPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WrapPane mWrapPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class WrapPane : HtmlDiv
+    {
+        
+        public WrapPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[HtmlDiv.PropertyNames.Id] = "wrap";
+            this.SearchProperties[HtmlDiv.PropertyNames.Name] = null;
+            this.FilterProperties[HtmlDiv.PropertyNames.InnerText] = "function showSigninPanel(locResult){ par";
+            this.FilterProperties[HtmlDiv.PropertyNames.Title] = null;
+            this.FilterProperties[HtmlDiv.PropertyNames.Class] = null;
+            this.FilterProperties[HtmlDiv.PropertyNames.ControlDefinition] = "id=\"wrap\"";
+            this.FilterProperties[HtmlDiv.PropertyNames.TagInstance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public HtmlDiv KnowledgebasePane
+        {
+            get
+            {
+                if ((this.mKnowledgebasePane == null))
+                {
+                    this.mKnowledgebasePane = new HtmlDiv(this);
+                    #region Search Criteria
+                    this.mKnowledgebasePane.SearchProperties[HtmlDiv.PropertyNames.Id] = null;
+                    this.mKnowledgebasePane.SearchProperties[HtmlDiv.PropertyNames.Name] = null;
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.InnerText] = @"
+                                                            Warewolf
+
+                                                            Knowledge base
+
+                                                            function
+                                                          ";
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.Title] = null;
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.Class] = "container";
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.ControlDefinition] = "class=\"container\"";
+                    this.mKnowledgebasePane.FilterProperties[HtmlDiv.PropertyNames.TagInstance] = "6";
+                    this.mKnowledgebasePane.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mKnowledgebasePane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private HtmlDiv mKnowledgebasePane;
         #endregion
     }
     
@@ -9839,12 +10229,30 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                 return this.mSourceServerName;
             }
         }
+        
+        public WpfButton TabCloseButton
+        {
+            get
+            {
+                if ((this.mTabCloseButton == null))
+                {
+                    this.mTabCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTabCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "closeBtn";
+                    this.mTabCloseButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTabCloseButton;
+            }
+        }
         #endregion
         
         #region Fields
         private DestinationServer mDestinationServer;
         
         private WpfTreeItem mSourceServerName;
+        
+        private WpfButton mTabCloseButton;
         #endregion
     }
     
@@ -10225,13 +10633,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WorkSurfaceContext WorkSurfaceContext
+        public WorkSurfaceContext1 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext1(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -10239,15 +10647,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private WorkSurfaceContext mWorkSurfaceContext;
+        private WorkSurfaceContext1 mWorkSurfaceContext;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext : WpfCustom
+    public class WorkSurfaceContext1 : WpfCustom
     {
         
-        public WorkSurfaceContext(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -10294,13 +10702,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WorkSurfaceContext1 WorkSurfaceContext
+        public WorkSurfaceContext2 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext1(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext2(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -10438,7 +10846,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private WorkSurfaceContext1 mWorkSurfaceContext;
+        private WorkSurfaceContext2 mWorkSurfaceContext;
         
         private WpfButton mTabCloseButton;
         
@@ -10459,10 +10867,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext1 : WpfCustom
+    public class WorkSurfaceContext2 : WpfCustom
     {
         
-        public WorkSurfaceContext1(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -11711,13 +12119,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WorkSurfaceContext2 WorkSurfaceContext
+        public WorkSurfaceContext3 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext2(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext3(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -11741,17 +12149,17 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private WorkSurfaceContext2 mWorkSurfaceContext;
+        private WorkSurfaceContext3 mWorkSurfaceContext;
         
         private WpfButton mUIItemButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext2 : WpfCustom
+    public class WorkSurfaceContext3 : WpfCustom
     {
         
-        public WorkSurfaceContext2(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -12839,13 +13247,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
-        public WorkSurfaceContext3 WorkSurfaceContext
+        public WorkSurfaceContext4 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext3(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -12885,7 +13293,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
-        private WorkSurfaceContext3 mWorkSurfaceContext;
+        private WorkSurfaceContext4 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -12894,10 +13302,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext3 : WpfCustom
+    public class WorkSurfaceContext4 : WpfCustom
     {
         
-        public WorkSurfaceContext3(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -13377,6 +13785,18 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         }
         
         #region Properties
+        public InputsList InputsList
+        {
+            get
+            {
+                if ((this.mInputsList == null))
+                {
+                    this.mInputsList = new InputsList(this);
+                }
+                return this.mInputsList;
+            }
+        }
+        
         public EditButton EditButton
         {
             get
@@ -13427,6 +13847,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #endregion
         
         #region Fields
+        private InputsList mInputsList;
+        
         private EditButton mEditButton;
         
         private NewButton mNewButton;
@@ -13434,6 +13856,74 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         private ActionsComboBox mActionsComboBox;
         
         private MappingsView mMappingsView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class InputsList : WpfList
+    {
+        
+        public InputsList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public ListItem ListItem
+        {
+            get
+            {
+                if ((this.mListItem == null))
+                {
+                    this.mListItem = new ListItem(this);
+                }
+                return this.mListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ListItem mListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ListItem : WpfListItem
+    {
+        
+        public ListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Core.ServiceInput";
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TestData
+        {
+            get
+            {
+                if ((this.mTestData == null))
+                {
+                    this.mTestData = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTestData.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
+                    this.mTestData.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+                    #endregion
+                }
+                return this.mTestData;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTestData;
         #endregion
     }
     
@@ -14030,13 +14520,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public WorkSurfaceContext4 WorkSurfaceContext
+        public WorkSurfaceContext5 WorkSurfaceContext
         {
             get
             {
                 if ((this.mWorkSurfaceContext == null))
                 {
-                    this.mWorkSurfaceContext = new WorkSurfaceContext4(this);
+                    this.mWorkSurfaceContext = new WorkSurfaceContext5(this);
                 }
                 return this.mWorkSurfaceContext;
             }
@@ -14092,7 +14582,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         private WpfButton mNewPluginConnectorTabCloseButton;
         
-        private WorkSurfaceContext4 mWorkSurfaceContext;
+        private WorkSurfaceContext5 mWorkSurfaceContext;
         
         private WpfScrollBar mVerticalScrollBar;
         
@@ -14101,10 +14591,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WorkSurfaceContext4 : WpfCustom
+    public class WorkSurfaceContext5 : WpfCustom
     {
         
-        public WorkSurfaceContext4(UITestControl searchLimitContainer) : 
+        public WorkSurfaceContext5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18203,6 +18693,44 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ServicePickerDialog : WpfWindow
+    {
+        
+        public ServicePickerDialog(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "UI_SelectServiceWindow_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton Cancel
+        {
+            get
+            {
+                if ((this.mCancel == null))
+                {
+                    this.mCancel = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancel.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SelectServiceCancelButton_AutoID";
+                    this.mCancel.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mCancel;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mCancel;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class MessageBoxWindow : WpfWindow
     {
         
@@ -18228,15 +18756,15 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
             }
         }
         
-        public NOButton NOButton
+        public NoButton NoButton
         {
             get
             {
-                if ((this.mNOButton == null))
+                if ((this.mNoButton == null))
                 {
-                    this.mNOButton = new NOButton(this);
+                    this.mNoButton = new NoButton(this);
                 }
-                return this.mNOButton;
+                return this.mNoButton;
             }
         }
         
@@ -18256,7 +18784,7 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         #region Fields
         private YesButton mYesButton;
         
-        private NOButton mNOButton;
+        private NoButton mNoButton;
         
         private CancelButton mCancelButton;
         #endregion
@@ -18299,10 +18827,10 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class NOButton : WpfButton
+    public class NoButton : WpfButton
     {
         
-        public NOButton(UITestControl searchLimitContainer) : 
+        public NoButton(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -18371,2932 +18899,13 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfDEV2LEROYWARWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2LEROYWARWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\LEROY.WARNER)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        
-        public UIItemCustom1 UIItemCustom1
-        {
-            get
-            {
-                if ((this.mUIItemCustom1 == null))
-                {
-                    this.mUIItemCustom1 = new UIItemCustom1(this);
-                }
-                return this.mUIItemCustom1;
-            }
-        }
-        
-        public WpfCustom UIGreenPointCustom
-        {
-            get
-            {
-                if ((this.mUIGreenPointCustom == null))
-                {
-                    this.mUIGreenPointCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIGreenPointCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mUIGreenPointCustom.SearchProperties[WpfControl.PropertyNames.Name] = "GreenPoint";
-                    this.mUIGreenPointCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIGreenPointCustom;
-            }
-        }
-        
-        public WpfCustom UIDboPr_CitiesGetCountCustom
-        {
-            get
-            {
-                if ((this.mUIDboPr_CitiesGetCountCustom == null))
-                {
-                    this.mUIDboPr_CitiesGetCountCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDboPr_CitiesGetCountCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mUIDboPr_CitiesGetCountCustom.SearchProperties[WpfControl.PropertyNames.Name] = "dbo.Pr_CitiesGetCountries";
-                    this.mUIDboPr_CitiesGetCountCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIDboPr_CitiesGetCountCustom;
-            }
-        }
-        
-        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
-                {
-                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
-                }
-                return this.mUIUI_SplitPane_AutoIDCustom;
-            }
-        }
-        
-        public UIItemCustom2 UIItemCustom2
-        {
-            get
-            {
-                if ((this.mUIItemCustom2 == null))
-                {
-                    this.mUIItemCustom2 = new UIItemCustom2(this);
-                }
-                return this.mUIItemCustom2;
-            }
-        }
-        
-        public WpfCustom UIEmailPluginCustom
-        {
-            get
-            {
-                if ((this.mUIEmailPluginCustom == null))
-                {
-                    this.mUIEmailPluginCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIEmailPluginCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mUIEmailPluginCustom.SearchProperties[WpfControl.PropertyNames.Name] = "Email Plugin";
-                    this.mUIEmailPluginCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIEmailPluginCustom;
-            }
-        }
-        
-        public UIUnlimitedFrameworkPlCustom UIUnlimitedFrameworkPlCustom
-        {
-            get
-            {
-                if ((this.mUIUnlimitedFrameworkPlCustom == null))
-                {
-                    this.mUIUnlimitedFrameworkPlCustom = new UIUnlimitedFrameworkPlCustom(this);
-                }
-                return this.mUIUnlimitedFrameworkPlCustom;
-            }
-        }
-        
-        public WpfCustom UIDummySentCustom
-        {
-            get
-            {
-                if ((this.mUIDummySentCustom == null))
-                {
-                    this.mUIDummySentCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDummySentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-                    this.mUIDummySentCustom.SearchProperties[WpfControl.PropertyNames.Name] = "DummySent";
-                    this.mUIDummySentCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIDummySentCustom;
-            }
-        }
-        
-        public UIUI_ToolboxControl_AuCustom UIUI_ToolboxControl_AuCustom
-        {
-            get
-            {
-                if ((this.mUIUI_ToolboxControl_AuCustom == null))
-                {
-                    this.mUIUI_ToolboxControl_AuCustom = new UIUI_ToolboxControl_AuCustom(this);
-                }
-                return this.mUIUI_ToolboxControl_AuCustom;
-            }
-        }
-        
-        public UIActivityBuilderCustom UIActivityBuilderCustom
-        {
-            get
-            {
-                if ((this.mUIActivityBuilderCustom == null))
-                {
-                    this.mUIActivityBuilderCustom = new UIActivityBuilderCustom(this);
-                }
-                return this.mUIActivityBuilderCustom;
-            }
-        }
-        
-        public WpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new WpfWindow(this);
-                    #region Search Criteria
-                    this.mUIWpfWindow.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Data Connector";
-                    this.mUIWpfWindow.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-                    this.mUIWpfWindow.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWpfWindow;
-            }
-        }
-        
-        public WpfWindow UIWpfWindow1
-        {
-            get
-            {
-                if ((this.mUIWpfWindow1 == null))
-                {
-                    this.mUIWpfWindow1 = new WpfWindow(this);
-                    #region Search Criteria
-                    this.mUIWpfWindow1.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
-                    this.mUIWpfWindow1.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-                    this.mUIWpfWindow1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWpfWindow1;
-            }
-        }
-        
-        public UIDockManagerCustom UIDockManagerCustom
-        {
-            get
-            {
-                if ((this.mUIDockManagerCustom == null))
-                {
-                    this.mUIDockManagerCustom = new UIDockManagerCustom(this);
-                }
-                return this.mUIDockManagerCustom;
-            }
-        }
-        
-        public UISourceNavigationViewCustom UISourceNavigationViewCustom
-        {
-            get
-            {
-                if ((this.mUISourceNavigationViewCustom == null))
-                {
-                    this.mUISourceNavigationViewCustom = new UISourceNavigationViewCustom(this);
-                }
-                return this.mUISourceNavigationViewCustom;
-            }
-        }
-        
-        public UIDev2StudioViewModelsCustom2 UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom2(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        
-        public UIExitFullScreenF11Text UIExitFullScreenF11Text
-        {
-            get
-            {
-                if ((this.mUIExitFullScreenF11Text == null))
-                {
-                    this.mUIExitFullScreenF11Text = new UIExitFullScreenF11Text(this);
-                }
-                return this.mUIExitFullScreenF11Text;
-            }
-        }
-        
-        public UIZ16e631b821c94d90bacCustom1 UIZ16e631b821c94d90bacCustom
-        {
-            get
-            {
-                if ((this.mUIZ16e631b821c94d90bacCustom == null))
-                {
-                    this.mUIZ16e631b821c94d90bacCustom = new UIZ16e631b821c94d90bacCustom1(this);
-                }
-                return this.mUIZ16e631b821c94d90bacCustom;
-            }
-        }
-        
-        public UIZ74f8d4a07ae44ffcbd8Custom UIZ74f8d4a07ae44ffcbd8Custom
-        {
-            get
-            {
-                if ((this.mUIZ74f8d4a07ae44ffcbd8Custom == null))
-                {
-                    this.mUIZ74f8d4a07ae44ffcbd8Custom = new UIZ74f8d4a07ae44ffcbd8Custom(this);
-                }
-                return this.mUIZ74f8d4a07ae44ffcbd8Custom;
-            }
-        }
-        
-        public UIZcfe13fc0d52945a9a79Custom1 UIZcfe13fc0d52945a9a79Custom
-        {
-            get
-            {
-                if ((this.mUIZcfe13fc0d52945a9a79Custom == null))
-                {
-                    this.mUIZcfe13fc0d52945a9a79Custom = new UIZcfe13fc0d52945a9a79Custom1(this);
-                }
-                return this.mUIZcfe13fc0d52945a9a79Custom;
-            }
-        }
-        
-        public UISmallViewContentCustom UISmallViewContentCustom
-        {
-            get
-            {
-                if ((this.mUISmallViewContentCustom == null))
-                {
-                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
-                }
-                return this.mUISmallViewContentCustom;
-            }
-        }
-        
-        public UIVARIABLESCustom UIVARIABLESCustom
-        {
-            get
-            {
-                if ((this.mUIVARIABLESCustom == null))
-                {
-                    this.mUIVARIABLESCustom = new UIVARIABLESCustom(this);
-                }
-                return this.mUIVARIABLESCustom;
-            }
-        }
-        
-        public WpfCustom UIItemCustom4
-        {
-            get
-            {
-                if ((this.mUIItemCustom4 == null))
-                {
-                    this.mUIItemCustom4 = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItemCustom4.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolWindow";
-                    this.mUIItemCustom4.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemCustom4;
-            }
-        }
-        
-        public UIZaaf3f1dc2d1d407cadbCustom UIZaaf3f1dc2d1d407cadbCustom
-        {
-            get
-            {
-                if ((this.mUIZaaf3f1dc2d1d407cadbCustom == null))
-                {
-                    this.mUIZaaf3f1dc2d1d407cadbCustom = new UIZaaf3f1dc2d1d407cadbCustom(this);
-                }
-                return this.mUIZaaf3f1dc2d1d407cadbCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemCustom mUIItemCustom;
-        
-        private UIItemCustom1 mUIItemCustom1;
-        
-        private WpfCustom mUIGreenPointCustom;
-        
-        private WpfCustom mUIDboPr_CitiesGetCountCustom;
-        
-        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
-        
-        private UIItemCustom2 mUIItemCustom2;
-        
-        private WpfCustom mUIEmailPluginCustom;
-        
-        private UIUnlimitedFrameworkPlCustom mUIUnlimitedFrameworkPlCustom;
-        
-        private WpfCustom mUIDummySentCustom;
-        
-        private UIUI_ToolboxControl_AuCustom mUIUI_ToolboxControl_AuCustom;
-        
-        private UIActivityBuilderCustom mUIActivityBuilderCustom;
-        
-        private WpfWindow mUIWpfWindow;
-        
-        private WpfWindow mUIWpfWindow1;
-        
-        private UIDockManagerCustom mUIDockManagerCustom;
-        
-        private UISourceNavigationViewCustom mUISourceNavigationViewCustom;
-        
-        private UIDev2StudioViewModelsCustom2 mUIDev2StudioViewModelsCustom;
-        
-        private UIExitFullScreenF11Text mUIExitFullScreenF11Text;
-        
-        private UIZ16e631b821c94d90bacCustom1 mUIZ16e631b821c94d90bacCustom;
-        
-        private UIZ74f8d4a07ae44ffcbd8Custom mUIZ74f8d4a07ae44ffcbd8Custom;
-        
-        private UIZcfe13fc0d52945a9a79Custom1 mUIZcfe13fc0d52945a9a79Custom;
-        
-        private UISmallViewContentCustom mUISmallViewContentCustom;
-        
-        private UIVARIABLESCustom mUIVARIABLESCustom;
-        
-        private WpfCustom mUIItemCustom4;
-        
-        private UIZaaf3f1dc2d1d407cadbCustom mUIZaaf3f1dc2d1d407cadbCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom : WpfCustom
-    {
-        
-        public UIItemCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemText UIItemText
-        {
-            get
-            {
-                if ((this.mUIItemText == null))
-                {
-                    this.mUIItemText = new UIItemText(this);
-                }
-                return this.mUIItemText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemText mUIItemText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemText : WpfText
-    {
-        
-        public UIItemText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = " ";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIItemText1
-        {
-            get
-            {
-                if ((this.mUIItemText1 == null))
-                {
-                    this.mUIItemText1 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIItemText1.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mUIItemText1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemText1;
-            }
-        }
-        
-        public WpfText UIItemText11
-        {
-            get
-            {
-                if ((this.mUIItemText11 == null))
-                {
-                    this.mUIItemText11 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIItemText11.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mUIItemText11.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemText11;
-            }
-        }
-        
-        public WpfText UIItemText12
-        {
-            get
-            {
-                if ((this.mUIItemText12 == null))
-                {
-                    this.mUIItemText12 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIItemText12.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mUIItemText12.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemText12;
-            }
-        }
-        
-        public WpfText UIItemText13
-        {
-            get
-            {
-                if ((this.mUIItemText13 == null))
-                {
-                    this.mUIItemText13 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIItemText13.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mUIItemText13.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemText13;
-            }
-        }
-        
-        public WpfText UIItemText14
-        {
-            get
-            {
-                if ((this.mUIItemText14 == null))
-                {
-                    this.mUIItemText14 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIItemText14.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mUIItemText14.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemText14;
-            }
-        }
-        
-        public WpfText UIItemText15
-        {
-            get
-            {
-                if ((this.mUIItemText15 == null))
-                {
-                    this.mUIItemText15 = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIItemText15.SearchProperties[WpfText.PropertyNames.Name] = "";
-                    this.mUIItemText15.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemText15;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIItemText1;
-        
-        private WpfText mUIItemText11;
-        
-        private WpfText mUIItemText12;
-        
-        private WpfText mUIItemText13;
-        
-        private WpfText mUIItemText14;
-        
-        private WpfText mUIItemText15;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom1 : WpfCustom
-    {
-        
-        public UIItemCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManageDatabaseServiceControl";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInputsListList UIInputsListList
-        {
-            get
-            {
-                if ((this.mUIInputsListList == null))
-                {
-                    this.mUIInputsListList = new UIInputsListList(this);
-                }
-                return this.mUIInputsListList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInputsListList mUIInputsListList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInputsListList : WpfList
-    {
-        
-        public UIInputsListList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "InputsList";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWarewolfCoreServiceIListItem UIWarewolfCoreServiceIListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfCoreServiceIListItem == null))
-                {
-                    this.mUIWarewolfCoreServiceIListItem = new UIWarewolfCoreServiceIListItem(this);
-                }
-                return this.mUIWarewolfCoreServiceIListItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWarewolfCoreServiceIListItem mUIWarewolfCoreServiceIListItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWarewolfCoreServiceIListItem : WpfListItem
-    {
-        
-        public UIWarewolfCoreServiceIListItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Core.ServiceInput";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UITestdataEdit
-        {
-            get
-            {
-                if ((this.mUITestdataEdit == null))
-                {
-                    this.mUITestdataEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUITestdataEdit.SearchProperties[WpfEdit.PropertyNames.HelpText] = "Test data";
-                    this.mUITestdataEdit.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITestdataEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUITestdataEdit;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
-    {
-        
-        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
-        {
-            get
-            {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
-                {
-                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
-                }
-                return this.mUIUI_TabManager_AutoIDTabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_TabManager_AutoIDTabList : WpfTabList
-    {
-        
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2ViewModelsSourceTabPage UIDev2ViewModelsSourceTabPage
-        {
-            get
-            {
-                if ((this.mUIDev2ViewModelsSourceTabPage == null))
-                {
-                    this.mUIDev2ViewModelsSourceTabPage = new UIDev2ViewModelsSourceTabPage(this);
-                }
-                return this.mUIDev2ViewModelsSourceTabPage;
-            }
-        }
-        
-        public UIDev2ViewModelsSourceTabPage1 UIDev2ViewModelsSourceTabPage1
-        {
-            get
-            {
-                if ((this.mUIDev2ViewModelsSourceTabPage1 == null))
-                {
-                    this.mUIDev2ViewModelsSourceTabPage1 = new UIDev2ViewModelsSourceTabPage1(this);
-                }
-                return this.mUIDev2ViewModelsSourceTabPage1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2ViewModelsSourceTabPage mUIDev2ViewModelsSourceTabPage;
-        
-        private UIDev2ViewModelsSourceTabPage1 mUIDev2ViewModelsSourceTabPage1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2ViewModelsSourceTabPage : WpfTabPage
-    {
-        
-        public UIDev2ViewModelsSourceTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.DB.IDatabaseService]";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2StudioViewModelsCustom : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UITestButton
-        {
-            get
-            {
-                if ((this.mUITestButton == null))
-                {
-                    this.mUITestButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUITestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
-                    this.mUITestButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITestButton;
-            }
-        }
-        
-        public WpfButton UIItemButton
-        {
-            get
-            {
-                if ((this.mUIItemButton == null))
-                {
-                    this.mUIItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "RefreshButton";
-                    this.mUIItemButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemButton;
-            }
-        }
-        
-        public WpfButton UIItemButton1
-        {
-            get
-            {
-                if ((this.mUIItemButton1 == null))
-                {
-                    this.mUIItemButton1 = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton1.SearchProperties[WpfButton.PropertyNames.Name] = " ... ";
-                    this.mUIItemButton1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemButton1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUITestButton;
-        
-        private WpfButton mUIItemButton;
-        
-        private WpfButton mUIItemButton1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2ViewModelsSourceTabPage1 : WpfTabPage
-    {
-        
-        public UIDev2ViewModelsSourceTabPage1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SourceViewModel`1[Dev2.Common.Interfaces.IPluginService]";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsCustom1 UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom1(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsCustom1 mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2StudioViewModelsCustom1 : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UITestButton
-        {
-            get
-            {
-                if ((this.mUITestButton == null))
-                {
-                    this.mUITestButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUITestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestButton";
-                    this.mUITestButton.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITestButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUITestButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom2 : WpfCustom
-    {
-        
-        public UIItemCustom2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ManagePluginServiceControl";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIInputGridTable UIInputGridTable
-        {
-            get
-            {
-                if ((this.mUIInputGridTable == null))
-                {
-                    this.mUIInputGridTable = new UIInputGridTable(this);
-                }
-                return this.mUIInputGridTable;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIInputGridTable mUIInputGridTable;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIInputGridTable : WpfTable
-    {
-        
-        public UIInputGridTable(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "InputGrid";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCell UIValueCell
-        {
-            get
-            {
-                if ((this.mUIValueCell == null))
-                {
-                    this.mUIValueCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUIValueCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIValueCell.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIValueCell;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCell mUIValueCell;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUnlimitedFrameworkPlCustom : WpfCustom
-    {
-        
-        public UIUnlimitedFrameworkPlCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Unlimited.Framework.Plugins.EmailPlugin";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIUnlimitedFrameworkPlText
-        {
-            get
-            {
-                if ((this.mUIUnlimitedFrameworkPlText == null))
-                {
-                    this.mUIUnlimitedFrameworkPlText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIUnlimitedFrameworkPlText.SearchProperties[WpfText.PropertyNames.Name] = "Unlimited.Framework.Plugins.EmailPlugin";
-                    this.mUIUnlimitedFrameworkPlText.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIUnlimitedFrameworkPlText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIUnlimitedFrameworkPlText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_ToolboxControl_AuCustom : WpfCustom
-    {
-        
-        public UIUI_ToolboxControl_AuCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolboxView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ToolboxControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIToolListBoxList UIToolListBoxList
-        {
-            get
-            {
-                if ((this.mUIToolListBoxList == null))
-                {
-                    this.mUIToolListBoxList = new UIToolListBoxList(this);
-                }
-                return this.mUIToolListBoxList;
-            }
-        }
-        
-        public UIToolButtonImageText UIToolButtonImageText
-        {
-            get
-            {
-                if ((this.mUIToolButtonImageText == null))
-                {
-                    this.mUIToolButtonImageText = new UIToolButtonImageText(this);
-                }
-                return this.mUIToolButtonImageText;
-            }
-        }
-        
-        public UIToolButtonImageText1 UIToolButtonImageText1
-        {
-            get
-            {
-                if ((this.mUIToolButtonImageText1 == null))
-                {
-                    this.mUIToolButtonImageText1 = new UIToolButtonImageText1(this);
-                }
-                return this.mUIToolButtonImageText1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIToolListBoxList mUIToolListBoxList;
-        
-        private UIToolButtonImageText mUIToolButtonImageText;
-        
-        private UIToolButtonImageText1 mUIToolButtonImageText1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIToolListBoxList : WpfList
-    {
-        
-        public UIToolListBoxList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "ToolListBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIControlFlowGroup UIControlFlowGroup
-        {
-            get
-            {
-                if ((this.mUIControlFlowGroup == null))
-                {
-                    this.mUIControlFlowGroup = new UIControlFlowGroup(this);
-                }
-                return this.mUIControlFlowGroup;
-            }
-        }
-        
-        public UIFileFolderGroup UIFileFolderGroup
-        {
-            get
-            {
-                if ((this.mUIFileFolderGroup == null))
-                {
-                    this.mUIFileFolderGroup = new UIFileFolderGroup(this);
-                }
-                return this.mUIFileFolderGroup;
-            }
-        }
-        
-        public UILoopConstructsGroup UILoopConstructsGroup
-        {
-            get
-            {
-                if ((this.mUILoopConstructsGroup == null))
-                {
-                    this.mUILoopConstructsGroup = new UILoopConstructsGroup(this);
-                }
-                return this.mUILoopConstructsGroup;
-            }
-        }
-        
-        public UIRecordsetGroup UIRecordsetGroup
-        {
-            get
-            {
-                if ((this.mUIRecordsetGroup == null))
-                {
-                    this.mUIRecordsetGroup = new UIRecordsetGroup(this);
-                }
-                return this.mUIRecordsetGroup;
-            }
-        }
-        
-        public UIScriptingGroup UIScriptingGroup
-        {
-            get
-            {
-                if ((this.mUIScriptingGroup == null))
-                {
-                    this.mUIScriptingGroup = new UIScriptingGroup(this);
-                }
-                return this.mUIScriptingGroup;
-            }
-        }
-        
-        public UISharepointGroup UISharepointGroup
-        {
-            get
-            {
-                if ((this.mUISharepointGroup == null))
-                {
-                    this.mUISharepointGroup = new UISharepointGroup(this);
-                }
-                return this.mUISharepointGroup;
-            }
-        }
-        
-        public UIUtilityGroup UIUtilityGroup
-        {
-            get
-            {
-                if ((this.mUIUtilityGroup == null))
-                {
-                    this.mUIUtilityGroup = new UIUtilityGroup(this);
-                }
-                return this.mUIUtilityGroup;
-            }
-        }
-        
-        public WpfGroup UIConnectorsGroup
-        {
-            get
-            {
-                if ((this.mUIConnectorsGroup == null))
-                {
-                    this.mUIConnectorsGroup = new WpfGroup(this);
-                    #region Search Criteria
-                    this.mUIConnectorsGroup.SearchProperties[WpfGroup.PropertyNames.Name] = "Connectors";
-                    this.mUIConnectorsGroup.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIConnectorsGroup;
-            }
-        }
-        
-        public UIResourcesGroup UIResourcesGroup
-        {
-            get
-            {
-                if ((this.mUIResourcesGroup == null))
-                {
-                    this.mUIResourcesGroup = new UIResourcesGroup(this);
-                }
-                return this.mUIResourcesGroup;
-            }
-        }
-        
-        public UIDataGroup UIDataGroup
-        {
-            get
-            {
-                if ((this.mUIDataGroup == null))
-                {
-                    this.mUIDataGroup = new UIDataGroup(this);
-                }
-                return this.mUIDataGroup;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIControlFlowGroup mUIControlFlowGroup;
-        
-        private UIFileFolderGroup mUIFileFolderGroup;
-        
-        private UILoopConstructsGroup mUILoopConstructsGroup;
-        
-        private UIRecordsetGroup mUIRecordsetGroup;
-        
-        private UIScriptingGroup mUIScriptingGroup;
-        
-        private UISharepointGroup mUISharepointGroup;
-        
-        private UIUtilityGroup mUIUtilityGroup;
-        
-        private WpfGroup mUIConnectorsGroup;
-        
-        private UIResourcesGroup mUIResourcesGroup;
-        
-        private UIDataGroup mUIDataGroup;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIControlFlowGroup : WpfGroup
-    {
-        
-        public UIControlFlowGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Control Flow";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem1;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem2
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem2 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem2 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mUIWarewolfStudioViewMoListItem2.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem2;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem1;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem2;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIFileFolderGroup : WpfGroup
-    {
-        
-        public UIFileFolderGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "File & Folder";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
-                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem1;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem2
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem2 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem2 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
-                    this.mUIWarewolfStudioViewMoListItem2.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem2;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem3
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem3 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem3 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem3.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem3.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
-                    this.mUIWarewolfStudioViewMoListItem3.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem3;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem4
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem4 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem4 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem4.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem4.SearchProperties[WpfListItem.PropertyNames.Instance] = "7";
-                    this.mUIWarewolfStudioViewMoListItem4.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem4;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem5
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem5 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem5 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem5.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem5.SearchProperties[WpfListItem.PropertyNames.Instance] = "10";
-                    this.mUIWarewolfStudioViewMoListItem5.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem5;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem1;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem2;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem3;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem4;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem5;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UILoopConstructsGroup : WpfGroup
-    {
-        
-        public UILoopConstructsGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Loop Constructs";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIRecordsetGroup : WpfGroup
-    {
-        
-        public UIRecordsetGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Recordset";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "7";
-                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIScriptingGroup : WpfGroup
-    {
-        
-        public UIScriptingGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Scripting";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem1;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem2
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem2 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem2 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
-                    this.mUIWarewolfStudioViewMoListItem2.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem2;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem3
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem3 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem3 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem3.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem3.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
-                    this.mUIWarewolfStudioViewMoListItem3.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem3;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem1;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem2;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem3;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UISharepointGroup : WpfGroup
-    {
-        
-        public UISharepointGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Sharepoint";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUtilityGroup : WpfGroup
-    {
-        
-        public UIUtilityGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Utility";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
-                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem1;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem2
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem2 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem2 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "9";
-                    this.mUIWarewolfStudioViewMoListItem2.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem2;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem1;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem2;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIResourcesGroup : WpfGroup
-    {
-        
-        public UIResourcesGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Resources";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDataGroup : WpfGroup
-    {
-        
-        public UIDataGroup(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Data";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfListItem UIWarewolfStudioViewMoListItem
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem;
-            }
-        }
-        
-        public WpfListItem UIWarewolfStudioViewMoListItem1
-        {
-            get
-            {
-                if ((this.mUIWarewolfStudioViewMoListItem1 == null))
-                {
-                    this.mUIWarewolfStudioViewMoListItem1 = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-                    this.mUIWarewolfStudioViewMoListItem1.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
-                    this.mUIWarewolfStudioViewMoListItem1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWarewolfStudioViewMoListItem1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfListItem mUIWarewolfStudioViewMoListItem;
-        
-        private WpfListItem mUIWarewolfStudioViewMoListItem1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIToolButtonImageText : WpfText
-    {
-        
-        public UIToolButtonImageText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfImage UIItemImage
-        {
-            get
-            {
-                if ((this.mUIItemImage == null))
-                {
-                    this.mUIItemImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfImage mUIItemImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIToolButtonImageText1 : WpfText
-    {
-        
-        public UIToolButtonImageText1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "ToolButtonImage";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfImage UIItemImage
-        {
-            get
-            {
-                if ((this.mUIItemImage == null))
-                {
-                    this.mUIItemImage = new WpfImage(this);
-                    #region Search Criteria
-                    this.mUIItemImage.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemImage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfImage mUIItemImage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIActivityBuilderCustom : WpfCustom
-    {
-        
-        public UIActivityBuilderCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
-                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        
-        public WpfCustom UIFlowchartCustom1
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom1 == null))
-                {
-                    this.mUIFlowchartCustom1 = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIFlowchartCustom1.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom1.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 3(FlowchartDesigner)";
-                    this.mUIFlowchartCustom1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIFlowchartCustom1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIFlowchartCustom;
-        
-        private WpfCustom mUIFlowchartCustom1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDockManagerCustom : WpfCustom
-    {
-        
-        public UIDockManagerCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DockManager";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIZ16e631b821c94d90bacCustom UIZ16e631b821c94d90bacCustom
-        {
-            get
-            {
-                if ((this.mUIZ16e631b821c94d90bacCustom == null))
-                {
-                    this.mUIZ16e631b821c94d90bacCustom = new UIZ16e631b821c94d90bacCustom(this);
-                }
-                return this.mUIZ16e631b821c94d90bacCustom;
-            }
-        }
-        
-        public UIZcfe13fc0d52945a9a79Custom UIZcfe13fc0d52945a9a79Custom
-        {
-            get
-            {
-                if ((this.mUIZcfe13fc0d52945a9a79Custom == null))
-                {
-                    this.mUIZcfe13fc0d52945a9a79Custom = new UIZcfe13fc0d52945a9a79Custom(this);
-                }
-                return this.mUIZcfe13fc0d52945a9a79Custom;
-            }
-        }
-        
-        public UIZ9651af96607d48d7b87Custom UIZ9651af96607d48d7b87Custom
-        {
-            get
-            {
-                if ((this.mUIZ9651af96607d48d7b87Custom == null))
-                {
-                    this.mUIZ9651af96607d48d7b87Custom = new UIZ9651af96607d48d7b87Custom(this);
-                }
-                return this.mUIZ9651af96607d48d7b87Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIZ16e631b821c94d90bacCustom mUIZ16e631b821c94d90bacCustom;
-        
-        private UIZcfe13fc0d52945a9a79Custom mUIZcfe13fc0d52945a9a79Custom;
-        
-        private UIZ9651af96607d48d7b87Custom mUIZ9651af96607d48d7b87Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZ16e631b821c94d90bacCustom : WpfCustom
-    {
-        
-        public UIZ16e631b821c94d90bacCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Z16e631b821c94d90bac5a069b4483750";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIWHATDOESTHISDOCustom
-        {
-            get
-            {
-                if ((this.mUIWHATDOESTHISDOCustom == null))
-                {
-                    this.mUIWHATDOESTHISDOCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIWHATDOESTHISDOCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIWHATDOESTHISDOCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Help";
-                    this.mUIWHATDOESTHISDOCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWHATDOESTHISDOCustom;
-            }
-        }
-        
-        public WpfCustom UIEXPLORERCustom
-        {
-            get
-            {
-                if ((this.mUIEXPLORERCustom == null))
-                {
-                    this.mUIEXPLORERCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIEXPLORERCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIEXPLORERCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Explorer";
-                    this.mUIEXPLORERCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIEXPLORERCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIWHATDOESTHISDOCustom;
-        
-        private WpfCustom mUIEXPLORERCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZcfe13fc0d52945a9a79Custom : WpfCustom
-    {
-        
-        public UIZcfe13fc0d52945a9a79Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Zcfe13fc0d52945a9a794a85eb08d97f5";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UITOOLBOXCustom
-        {
-            get
-            {
-                if ((this.mUITOOLBOXCustom == null))
-                {
-                    this.mUITOOLBOXCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Toolbox";
-                    this.mUITOOLBOXCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITOOLBOXCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUITOOLBOXCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZ9651af96607d48d7b87Custom : WpfCustom
-    {
-        
-        public UIZ9651af96607d48d7b87Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Z9651af96607d48d7b87bf874413e658d";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UITOOLBOXCustom
-        {
-            get
-            {
-                if ((this.mUITOOLBOXCustom == null))
-                {
-                    this.mUITOOLBOXCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Toolbox";
-                    this.mUITOOLBOXCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITOOLBOXCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUITOOLBOXCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UISourceNavigationViewCustom : WpfCustom
-    {
-        
-        public UISourceNavigationViewCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceNavigationView";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UISearchTextBoxEdit
-        {
-            get
-            {
-                if ((this.mUISearchTextBoxEdit == null))
-                {
-                    this.mUISearchTextBoxEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUISearchTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-                    this.mUISearchTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUISearchTextBoxEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUISearchTextBoxEdit;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIDev2StudioViewModelsCustom2 : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_SchedulerView_AutCustom UIUI_SchedulerView_AutCustom
-        {
-            get
-            {
-                if ((this.mUIUI_SchedulerView_AutCustom == null))
-                {
-                    this.mUIUI_SchedulerView_AutCustom = new UIUI_SchedulerView_AutCustom(this);
-                }
-                return this.mUIUI_SchedulerView_AutCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_SchedulerView_AutCustom mUIUI_SchedulerView_AutCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_SchedulerView_AutCustom : WpfCustom
-    {
-        
-        public UIUI_SchedulerView_AutCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SchedulerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SchedulerView_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIItemButton1
-        {
-            get
-            {
-                if ((this.mUIItemButton1 == null))
-                {
-                    this.mUIItemButton1 = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton1.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_EditTriggerButton_AutoID";
-                    this.mUIItemButton1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemButton1;
-            }
-        }
-        
-        public WpfCheckBox UIRuntaskassoonaspossiCheckBox
-        {
-            get
-            {
-                if ((this.mUIRuntaskassoonaspossiCheckBox == null))
-                {
-                    this.mUIRuntaskassoonaspossiCheckBox = new WpfCheckBox(this);
-                    #region Search Criteria
-                    this.mUIRuntaskassoonaspossiCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_RunAsapCheckBox";
-                    this.mUIRuntaskassoonaspossiCheckBox.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIRuntaskassoonaspossiCheckBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIItemButton1;
-        
-        private WpfCheckBox mUIRuntaskassoonaspossiCheckBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIExitFullScreenF11Text : WpfText
-    {
-        
-        public UIExitFullScreenF11Text(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfText.PropertyNames.Name] = "Exit Full Screen (F11)";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfHyperlink UIExitFullScreenF11Hyperlink
-        {
-            get
-            {
-                if ((this.mUIExitFullScreenF11Hyperlink == null))
-                {
-                    this.mUIExitFullScreenF11Hyperlink = new WpfHyperlink(this);
-                    #region Search Criteria
-                    this.mUIExitFullScreenF11Hyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "Exit Full Screen (F11)";
-                    this.mUIExitFullScreenF11Hyperlink.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIExitFullScreenF11Hyperlink;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfHyperlink mUIExitFullScreenF11Hyperlink;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZ16e631b821c94d90bacCustom1 : WpfCustom
-    {
-        
-        public UIZ16e631b821c94d90bacCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Z16e631b821c94d90bac5a069b4483750";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIEXPLORERCustom
-        {
-            get
-            {
-                if ((this.mUIEXPLORERCustom == null))
-                {
-                    this.mUIEXPLORERCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIEXPLORERCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIEXPLORERCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Explorer";
-                    this.mUIEXPLORERCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIEXPLORERCustom;
-            }
-        }
-        
-        public UIZ2da82c89e9c54f37a62TabList UIZ2da82c89e9c54f37a62TabList
-        {
-            get
-            {
-                if ((this.mUIZ2da82c89e9c54f37a62TabList == null))
-                {
-                    this.mUIZ2da82c89e9c54f37a62TabList = new UIZ2da82c89e9c54f37a62TabList(this);
-                }
-                return this.mUIZ2da82c89e9c54f37a62TabList;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIEXPLORERCustom;
-        
-        private UIZ2da82c89e9c54f37a62TabList mUIZ2da82c89e9c54f37a62TabList;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZ2da82c89e9c54f37a62TabList : WpfTabList
-    {
-        
-        public UIZ2da82c89e9c54f37a62TabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "Z2da82c89e9c54f37a622562186283aaf";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWHATDOESTHISDOTabPage UIWHATDOESTHISDOTabPage
-        {
-            get
-            {
-                if ((this.mUIWHATDOESTHISDOTabPage == null))
-                {
-                    this.mUIWHATDOESTHISDOTabPage = new UIWHATDOESTHISDOTabPage(this);
-                }
-                return this.mUIWHATDOESTHISDOTabPage;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWHATDOESTHISDOTabPage mUIWHATDOESTHISDOTabPage;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWHATDOESTHISDOTabPage : WpfTabPage
-    {
-        
-        public UIWHATDOESTHISDOTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "WHAT DOES THIS DO?";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWHATDOESTHISDOCustom UIWHATDOESTHISDOCustom
-        {
-            get
-            {
-                if ((this.mUIWHATDOESTHISDOCustom == null))
-                {
-                    this.mUIWHATDOESTHISDOCustom = new UIWHATDOESTHISDOCustom(this);
-                }
-                return this.mUIWHATDOESTHISDOCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWHATDOESTHISDOCustom mUIWHATDOESTHISDOCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWHATDOESTHISDOCustom : WpfCustom
-    {
-        
-        public UIWHATDOESTHISDOCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Help";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIWHATDOESTHISDOText
-        {
-            get
-            {
-                if ((this.mUIWHATDOESTHISDOText == null))
-                {
-                    this.mUIWHATDOESTHISDOText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIWHATDOESTHISDOText.SearchProperties[WpfText.PropertyNames.Name] = "WHAT DOES THIS DO?";
-                    this.mUIWHATDOESTHISDOText.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIWHATDOESTHISDOText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIWHATDOESTHISDOText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZ74f8d4a07ae44ffcbd8Custom : WpfCustom
-    {
-        
-        public UIZ74f8d4a07ae44ffcbd8Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Z74f8d4a07ae44ffcbd8a047e14ef9e9c";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIVARIABLESCustom
-        {
-            get
-            {
-                if ((this.mUIVARIABLESCustom == null))
-                {
-                    this.mUIVARIABLESCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIVARIABLESCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIVARIABLESCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-                    this.mUIVARIABLESCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIVARIABLESCustom;
-            }
-        }
-        
-        public WpfCustom UIOUTPUTCustom
-        {
-            get
-            {
-                if ((this.mUIOUTPUTCustom == null))
-                {
-                    this.mUIOUTPUTCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
-                    this.mUIOUTPUTCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIOUTPUTCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIVARIABLESCustom;
-        
-        private WpfCustom mUIOUTPUTCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZcfe13fc0d52945a9a79Custom1 : WpfCustom
-    {
-        
-        public UIZcfe13fc0d52945a9a79Custom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Zcfe13fc0d52945a9a794a85eb08d97f5";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UITOOLBOXCustom
-        {
-            get
-            {
-                if ((this.mUITOOLBOXCustom == null))
-                {
-                    this.mUITOOLBOXCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUITOOLBOXCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Toolbox";
-                    this.mUITOOLBOXCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUITOOLBOXCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUITOOLBOXCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UISmallViewContentCustom : WpfCustom
-    {
-        
-        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISmallDataGridTable UISmallDataGridTable
-        {
-            get
-            {
-                if ((this.mUISmallDataGridTable == null))
-                {
-                    this.mUISmallDataGridTable = new UISmallDataGridTable(this);
-                }
-                return this.mUISmallDataGridTable;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISmallDataGridTable mUISmallDataGridTable;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UISmallDataGridTable : WpfTable
-    {
-        
-        public UISmallDataGridTable(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_ActivityGridRow_0Row UIUI_ActivityGridRow_0Row
-        {
-            get
-            {
-                if ((this.mUIUI_ActivityGridRow_0Row == null))
-                {
-                    this.mUIUI_ActivityGridRow_0Row = new UIUI_ActivityGridRow_0Row(this);
-                }
-                return this.mUIUI_ActivityGridRow_0Row;
-            }
-        }
-        
-        public UIUI_ActivityGridRow_1Row UIUI_ActivityGridRow_1Row
-        {
-            get
-            {
-                if ((this.mUIUI_ActivityGridRow_1Row == null))
-                {
-                    this.mUIUI_ActivityGridRow_1Row = new UIUI_ActivityGridRow_1Row(this);
-                }
-                return this.mUIUI_ActivityGridRow_1Row;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_ActivityGridRow_0Row mUIUI_ActivityGridRow_0Row;
-        
-        private UIUI_ActivityGridRow_1Row mUIUI_ActivityGridRow_1Row;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_ActivityGridRow_0Row : WpfRow
-    {
-        
-        public UIUI_ActivityGridRow_0Row(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCell UIItemUnlimitedApplicaCell
-        {
-            get
-            {
-                if ((this.mUIItemUnlimitedApplicaCell == null))
-                {
-                    this.mUIItemUnlimitedApplicaCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUIItemUnlimitedApplicaCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIItemUnlimitedApplicaCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-                    this.mUIItemUnlimitedApplicaCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
-                    this.mUIItemUnlimitedApplicaCell.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemUnlimitedApplicaCell;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCell mUIItemUnlimitedApplicaCell;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_ActivityGridRow_1Row : WpfRow
-    {
-        
-        public UIUI_ActivityGridRow_1Row(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_1_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCell UIItemUnlimitedApplicaCell
-        {
-            get
-            {
-                if ((this.mUIItemUnlimitedApplicaCell == null))
-                {
-                    this.mUIItemUnlimitedApplicaCell = new WpfCell(this);
-                    #region Search Criteria
-                    this.mUIItemUnlimitedApplicaCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIItemUnlimitedApplicaCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-                    this.mUIItemUnlimitedApplicaCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
-                    this.mUIItemUnlimitedApplicaCell.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIItemUnlimitedApplicaCell;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCell mUIItemUnlimitedApplicaCell;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIVARIABLESCustom : WpfCustom
-    {
-        
-        public UIVARIABLESCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_VariablesControl_Custom UIUI_VariablesControl_Custom
-        {
-            get
-            {
-                if ((this.mUIUI_VariablesControl_Custom == null))
-                {
-                    this.mUIUI_VariablesControl_Custom = new UIUI_VariablesControl_Custom(this);
-                }
-                return this.mUIUI_VariablesControl_Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_VariablesControl_Custom mUIUI_VariablesControl_Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIUI_VariablesControl_Custom : WpfCustom
-    {
-        
-        public UIUI_VariablesControl_Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_VariablesControl_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTree UIUI_VariableTreeView_Tree
-        {
-            get
-            {
-                if ((this.mUIUI_VariableTreeView_Tree == null))
-                {
-                    this.mUIUI_VariableTreeView_Tree = new WpfTree(this);
-                    #region Search Criteria
-                    this.mUIUI_VariableTreeView_Tree.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_VariableTreeView_AutoID";
-                    this.mUIUI_VariableTreeView_Tree.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIUI_VariableTreeView_Tree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfTree mUIUI_VariableTreeView_Tree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZaaf3f1dc2d1d407cadbCustom : WpfCustom
-    {
-        
-        public UIZaaf3f1dc2d1d407cadbCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Zaaf3f1dc2d1d407cadb945c85197b0f6";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIZ74f8d4a07ae44ffcbd8Custom1 UIZ74f8d4a07ae44ffcbd8Custom
-        {
-            get
-            {
-                if ((this.mUIZ74f8d4a07ae44ffcbd8Custom == null))
-                {
-                    this.mUIZ74f8d4a07ae44ffcbd8Custom = new UIZ74f8d4a07ae44ffcbd8Custom1(this);
-                }
-                return this.mUIZ74f8d4a07ae44ffcbd8Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIZ74f8d4a07ae44ffcbd8Custom1 mUIZ74f8d4a07ae44ffcbd8Custom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIZ74f8d4a07ae44ffcbd8Custom1 : WpfCustom
-    {
-        
-        public UIZ74f8d4a07ae44ffcbd8Custom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Z74f8d4a07ae44ffcbd8a047e14ef9e9c";
-            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIOUTPUTCustom
-        {
-            get
-            {
-                if ((this.mUIOUTPUTCustom == null))
-                {
-                    this.mUIOUTPUTCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
-                    this.mUIOUTPUTCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIOUTPUTCustom;
-            }
-        }
-        
-        public WpfCustom UIVARIABLESCustom
-        {
-            get
-            {
-                if ((this.mUIVARIABLESCustom == null))
-                {
-                    this.mUIVARIABLESCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIVARIABLESCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIVARIABLESCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-                    this.mUIVARIABLESCustom.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
-                    #endregion
-                }
-                return this.mUIVARIABLESCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIOUTPUTCustom;
-        
-        private WpfCustom mUIVARIABLESCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class DebugInputWindow : WpfWindow
     {
         
         public DebugInputWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\LEROY.WARNER)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
             #endregion
@@ -21312,7 +18921,8 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
                     this.mDebugInputWindow1 = new WpfWindow(this);
                     #region Search Criteria
                     this.mDebugInputWindow1.SearchProperties[WpfWindow.PropertyNames.Name] = "Debug input data";
-                    this.mDebugInputWindow1.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+                    this.mDebugInputWindow1.SearchProperties[WpfWindow.PropertyNames.ClassName] = "Uia.Window";
+                    this.mDebugInputWindow1.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "UI_DebugInputWindow_AutoID";
                     this.mDebugInputWindow1.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
                     #endregion
                 }
@@ -21648,412 +19258,6 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWpfWindow : WpfWindow
-    {
-        
-        public UIWpfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIDoneButton
-        {
-            get
-            {
-                if ((this.mUIDoneButton == null))
-                {
-                    this.mUIDoneButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    #endregion
-                }
-                return this.mUIDoneButton;
-            }
-        }
-        
-        public UIExplorerViewCustom UIExplorerViewCustom
-        {
-            get
-            {
-                if ((this.mUIExplorerViewCustom == null))
-                {
-                    this.mUIExplorerViewCustom = new UIExplorerViewCustom(this);
-                }
-                return this.mUIExplorerViewCustom;
-            }
-        }
-        
-        public UIItemCustom3 UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom3(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIDoneButton;
-        
-        private UIExplorerViewCustom mUIExplorerViewCustom;
-        
-        private UIItemCustom3 mUIItemCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIExplorerViewCustom : WpfCustom
-    {
-        
-        public UIExplorerViewCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ExplorerView";
-            #endregion
-        }
-        
-        #region Properties
-        public UISearchTextBoxEdit UISearchTextBoxEdit
-        {
-            get
-            {
-                if ((this.mUISearchTextBoxEdit == null))
-                {
-                    this.mUISearchTextBoxEdit = new UISearchTextBoxEdit(this);
-                }
-                return this.mUISearchTextBoxEdit;
-            }
-        }
-        
-        public WpfButton UIItemButton
-        {
-            get
-            {
-                if ((this.mUIItemButton == null))
-                {
-                    this.mUIItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIItemButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
-                    #endregion
-                }
-                return this.mUIItemButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISearchTextBoxEdit mUISearchTextBoxEdit;
-        
-        private WpfButton mUIItemButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UISearchTextBoxEdit : WpfEdit
-    {
-        
-        public UISearchTextBoxEdit(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfText UIFilterText
-        {
-            get
-            {
-                if ((this.mUIFilterText == null))
-                {
-                    this.mUIFilterText = new WpfText(this);
-                    #region Search Criteria
-                    this.mUIFilterText.SearchProperties[WpfText.PropertyNames.AutomationId] = "LabelText";
-                    #endregion
-                }
-                return this.mUIFilterText;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfText mUIFilterText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIItemCustom3 : WpfCustom
-    {
-        
-        public UIItemCustom3(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolWindow";
-            #endregion
-        }
-        
-        #region Properties
-        public UIVARIABLESCustom1 UIVARIABLESCustom
-        {
-            get
-            {
-                if ((this.mUIVARIABLESCustom == null))
-                {
-                    this.mUIVARIABLESCustom = new UIVARIABLESCustom1(this);
-                }
-                return this.mUIVARIABLESCustom;
-            }
-        }
-        
-        public UIOUTPUTCustom UIOUTPUTCustom
-        {
-            get
-            {
-                if ((this.mUIOUTPUTCustom == null))
-                {
-                    this.mUIOUTPUTCustom = new UIOUTPUTCustom(this);
-                }
-                return this.mUIOUTPUTCustom;
-            }
-        }
-        
-        public UIEXPLORERCustom UIEXPLORERCustom
-        {
-            get
-            {
-                if ((this.mUIEXPLORERCustom == null))
-                {
-                    this.mUIEXPLORERCustom = new UIEXPLORERCustom(this);
-                }
-                return this.mUIEXPLORERCustom;
-            }
-        }
-        
-        public UIWHATDOESTHISDOCustom1 UIWHATDOESTHISDOCustom
-        {
-            get
-            {
-                if ((this.mUIWHATDOESTHISDOCustom == null))
-                {
-                    this.mUIWHATDOESTHISDOCustom = new UIWHATDOESTHISDOCustom1(this);
-                }
-                return this.mUIWHATDOESTHISDOCustom;
-            }
-        }
-        
-        public UITOOLBOXCustom UITOOLBOXCustom
-        {
-            get
-            {
-                if ((this.mUITOOLBOXCustom == null))
-                {
-                    this.mUITOOLBOXCustom = new UITOOLBOXCustom(this);
-                }
-                return this.mUITOOLBOXCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIVARIABLESCustom1 mUIVARIABLESCustom;
-        
-        private UIOUTPUTCustom mUIOUTPUTCustom;
-        
-        private UIEXPLORERCustom mUIEXPLORERCustom;
-        
-        private UIWHATDOESTHISDOCustom1 mUIWHATDOESTHISDOCustom;
-        
-        private UITOOLBOXCustom mUITOOLBOXCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIVARIABLESCustom1 : WpfCustom
-    {
-        
-        public UIVARIABLESCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Variables";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIOUTPUTCustom : WpfCustom
-    {
-        
-        public UIOUTPUTCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIEXPLORERCustom : WpfCustom
-    {
-        
-        public UIEXPLORERCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Explorer";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UIWHATDOESTHISDOCustom1 : WpfCustom
-    {
-        
-        public UIWHATDOESTHISDOCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Help";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class UITOOLBOXCustom : WpfCustom
-    {
-        
-        public UITOOLBOXCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Toolbox";
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton UIUnpinBtnButton
-        {
-            get
-            {
-                if ((this.mUIUnpinBtnButton == null))
-                {
-                    this.mUIUnpinBtnButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIUnpinBtnButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "unpinBtn";
-                    #endregion
-                }
-                return this.mUIUnpinBtnButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mUIUnpinBtnButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
     public class SaveDialogWindow : WpfWindow
     {
         
@@ -22295,6 +19499,67 @@ namespace Warewolf.Studio.UISpecs.OutsideWorkflowDesignSurfaceUIMapClasses
         
         #region Fields
         private WpfTreeItem mExplorerTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class ServicePickerWindow : WpfWindow
+    {
+        
+        public ServicePickerWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Select A Service";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\LEROY.WARNER)");
+            #endregion
+        }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class SplashPageWindow : WpfWindow
+    {
+        
+        public SplashPageWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "SplashPage";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("SplashPage");
+            #endregion
+        }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
+    public class DecisionDialog : WpfWindow
+    {
+        
+        public DecisionDialog()
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDoneButton;
         #endregion
     }
 }
