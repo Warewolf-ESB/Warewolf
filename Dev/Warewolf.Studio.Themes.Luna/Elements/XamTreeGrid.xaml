@@ -188,38 +188,11 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BackgroundHover" Value="Transparent"/>
         <Setter Property="BorderHoverBrush" Value="Transparent"/>
-        <Setter Property="BackgroundActive" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#FF85A2B2"/>
-                        <GradientStop Offset="1.1" Color="#00FFFFFF"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
-        <!--PIETER-->
-        <!--<Setter Property="BorderActiveBrush" Value="#00151C55"/>-->
+        <Setter Property="BackgroundActive" Value="Transparent"/>
         <Setter Property="BorderActiveBrush" Value="Transparent"/>
-        <Setter Property="BackgroundSelected" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#FFCAEBFF"/>
-                        <GradientStop Offset="1.1" Color="#00FFFFFF"/>
-                        <GradientStop Color="#83CAEBFF" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
+        <Setter Property="BackgroundSelected" Value="Transparent"/>
         <Setter Property="BorderSelectedBrush" Value="#FF666666"/>
-        <Setter Property="BackgroundFieldSelected" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#FFDDDDDD"/>
-                        <GradientStop Offset="1.1" Color="#00FFFFFF"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
+        <Setter Property="BackgroundFieldSelected" Value="Transparent"/>
         <Setter Property="BorderFieldSelectedBrush" Value="#FF666666"/>
         <Setter Property="BackgroundPrimary" Value="#7FE9E9E9"/>
         <Setter Property="BorderPrimaryBrush" Value="#FFE9E9E9"/>
@@ -237,7 +210,7 @@
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="2,0,0,0"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -393,36 +366,11 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BackgroundHover" Value="Transparent"/>
         <Setter Property="BorderHoverBrush" Value="Transparent"/>
-        <Setter Property="BackgroundActive" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#FF85A2B2"/>
-                        <GradientStop Offset="1.1" Color="#00FFFFFF"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
+        <Setter Property="BackgroundActive" Value="Transparent"/>
         <Setter Property="BorderActiveBrush" Value="#00151C55"/>
-        <Setter Property="BackgroundSelected" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#FFCAEBFF"/>
-                        <GradientStop Offset="1.1" Color="#00FFFFFF"/>
-                        <GradientStop Color="#83CAEBFF" Offset="1"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
+        <Setter Property="BackgroundSelected" Value="Transparent"/>
         <Setter Property="BorderSelectedBrush" Value="#FF666666"/>
-        <Setter Property="BackgroundFieldSelected" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#FFDDDDDD"/>
-                        <GradientStop Offset="1.1" Color="#00FFFFFF"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
+        <Setter Property="BackgroundFieldSelected" Value="Transparent"/>
         <Setter Property="BorderFieldSelectedBrush" Value="#FF666666"/>
         <Setter Property="BackgroundPrimary" Value="#7FE9E9E9"/>
         <Setter Property="BorderPrimaryBrush" Value="#FFE9E9E9"/>
@@ -472,10 +420,11 @@
                         <controls:ExpansionIndicator x:Name="PART_Expander"
                                                          Panel.ZIndex="1"
                                                          Grid.Column="1"
+                                                     Margin="0,7,0,0"
                                                          Visibility="{Binding Path=ExpansionIndicatorVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                                          Command="{x:Static igDp:DataPresenterCommands.ToggleRecordIsExpanded}"
                                                          CommandParameter="{TemplateBinding Record}"
-                                                         VerticalAlignment="Center"
+                                                         VerticalAlignment="Top"
                                                          ToggleMode="Manual"
                                                          Style="{StaticResource ExpanderStyle}"
                                                          IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -606,10 +555,6 @@
                                                              IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                             <!-- Header Background -->
                             <controls:CardPanel x:Name="SpacerFill" RenderTransform="{TemplateBinding FixedNearElementTransform}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Visibility="Visible">
-                                <!--PIETER-->
-                                <!--<Rectangle x:Name="fill" Margin="0,0,0,0" Fill="{TemplateBinding HeaderAreaBackground}"/>
-                                    <Rectangle x:Name="lightLine" Fill="#3FFFFFFF" VerticalAlignment="Top" Margin="0,1,0,0" Width="Auto" Height="1"/>
-                                    <Rectangle x:Name="darkLine" Fill="#66000000" VerticalAlignment="Top" Margin="0,0,0,0" Width="Auto" Height="1"/>-->
                                 <Rectangle x:Name="fill" Margin="0,0,0,0" Fill="Transparent"/>
                                 <Rectangle x:Name="lightLine" Fill="Transparent" VerticalAlignment="Top" Margin="0,1,0,0" Width="Auto" Height="1"/>
                                 <Rectangle x:Name="darkLine" Fill="Transparent" VerticalAlignment="Top" Margin="0,0,0,0" Width="Auto" Height="1"/>
@@ -845,27 +790,9 @@
             </Setter.Value>
         </Setter>
         <Setter Property="BorderBrush" Value="#00000000"/>
-        <Setter Property="BackgroundHover" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#FFD3F5FF"/>
-                        <GradientStop Offset="1" Color="#FFB9D8FF"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
-        <!--PIETER-->
-        <!--<Setter Property="BorderHoverBrush" Value="#FFAECDF9"/>-->
+        <Setter Property="BackgroundHover" Value="Transparent"/>
         <Setter Property="BorderHoverBrush" Value="Transparent"/>
-        <Setter Property="BackgroundActive" Value="Transparent">
-            <!--PIETER-->
-            <!--<Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#BFE8E8E8"/>
-                        <GradientStop Offset="1" Color="#00EEEEEE"/>
-                    </LinearGradientBrush>
-                </Setter.Value>-->
-        </Setter>
+        <Setter Property="BackgroundActive" Value="Transparent"/>
         <Setter Property="BorderActiveBrush" Value="#00000000"/>
         <Setter Property="BackgroundAlternate">
             <Setter.Value>
@@ -1887,13 +1814,12 @@
     <!-- _________________________ LabelPresenter __________________________________________ -->
     <Style TargetType="{x:Type igDp:LabelPresenter}">
         <Setter Property="Padding" Value="7,4"/>
-        <!--PIETER-->
-        <!--<Setter Property="Background" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDp:XamDataGrid}, ResourceId=LabelBackground}}"/>-->
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="LabelHighlight" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDp:XamDataGrid}, ResourceId=LabelHighlight}}"/>
         <Setter Property="InnerBorderBrush" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDp:XamDataGrid}, ResourceId=LabelInnerBorder}}"/>
         <Setter Property="OuterBorderBrush" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDp:XamDataGrid}, ResourceId=LabelOuterBorder}}"/>
         <Setter Property="Foreground" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDp:XamDataGrid}, ResourceId=LabelForeground}}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding Path=Field.LabelTextAlignmentResolved, Converter={StaticResource TextAlignmentToHorizontalAlignmentConverter}, RelativeSource={x:Static RelativeSource.Self}}"/>
         <Setter Property="ToolTip" Value="{Binding Path=Field.ToolTip, RelativeSource={x:Static RelativeSource.Self}}" />
         <Setter Property="Template">
@@ -1960,20 +1886,11 @@
                         <Border x:Name="background" Width="Auto" Height="Auto" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True" Background="{TemplateBinding Background}"
                                     CornerRadius="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDp:XamDataGrid}, ResourceId=LabelCornerRadius}}" />
                         <!-- Highlight -->
-
-                        <!--PIETER-->
-                        <!--<Border x:Name="highlight" Opacity="0" Width="Auto" Height="Auto" CornerRadius="2,2,2,2" Background="{TemplateBinding LabelHighlight}" SnapsToDevicePixels="True"/>-->
                         <!-- ReSharper disable once Xaml.MissingGridIndex -->
                         <Border x:Name="highlight" Opacity="0" Width="Auto" Height="Auto" CornerRadius="0" Background="Transparent" SnapsToDevicePixels="True"/>
-                        <!--PIETER-->
-                        <!--<Border x:Name="lineOuter" BorderBrush="{TemplateBinding OuterBorderBrush}" BorderThickness="1" CornerRadius="1.55015910897703" Background="Transparent" 
-                                    Margin="0,0,0,0" Width="Auto" Height="Auto" SnapsToDevicePixels="True"/>-->
                         <!-- ReSharper disable once Xaml.MissingGridIndex -->
-                        <Border x:Name="lineOuter" BorderBrush="{TemplateBinding OuterBorderBrush}" BorderThickness="0,0,1,0" CornerRadius="1.55015910897703" Background="Transparent" 
+                        <Border x:Name="lineOuter" BorderBrush="{TemplateBinding OuterBorderBrush}" BorderThickness="0,0,0,0" CornerRadius="1.55015910897703" Background="Transparent" 
                                     Margin="0,0,0,0" Width="Auto" Height="Auto" SnapsToDevicePixels="True"/>
-                        <!--PIETER-->
-                        <!--<Border x:Name="lineInner" BorderBrush="{TemplateBinding InnerBorderBrush}" BorderThickness="1" CornerRadius="0.550159108977027" Background="Transparent"
-                                    Margin="1,1,1,1" Width="Auto" Height="Auto" SnapsToDevicePixels="True"/>-->
                         <!-- ReSharper disable once Xaml.MissingGridIndex -->
                         <Border x:Name="lineInner" BorderBrush="{TemplateBinding InnerBorderBrush}" BorderThickness="0" CornerRadius="0.550159108977027" Background="Transparent"
                                     Margin="1,1,1,1" Width="Auto" Height="Auto" SnapsToDevicePixels="True"/>
@@ -3284,7 +3201,7 @@
                     </Path.Fill>
                 </Path>
             </Canvas>
-            <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Grid.Column="1"
+            <TextBlock Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" Grid.Column="1"
                            Text="{Binding Path=Value, Source={x:Static igDp:ResourcesDataPresenter.FilterDropDownLoadingIndicator}}" />
         </Grid>
         <!--</Border>-->
@@ -3367,23 +3284,23 @@
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         <Grid Margin="{TemplateBinding Padding}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
+                                <!--<ColumnDefinition Width="Auto"/>-->
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <controls:ComparisonOperatorSelector Grid.Column="0"
+                            <!--<controls:ComparisonOperatorSelector Grid.Column="0"
                                                                      IsDropDownOpen="{Binding Path=IsOperatorDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                                      AllowableOperators="{Binding Path=Field.FilterOperatorDropDownItemsResolved, RelativeSource={RelativeSource TemplatedParent}}"
                                                                      SelectedOperator="{Binding Path=Operator, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                                      Visibility="{Binding Path=Field.FilterOperatorVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                     Foreground="{TemplateBinding Foreground}"/>
+                                                                     Foreground="{TemplateBinding Foreground}"/>-->
                             <Button Style="{DynamicResource {x:Static igDp:DataPresenterBase.FilterCellClearButtonStyleKey}}"
-                                        Grid.Column="2"
+                                        Grid.Column="1"
                                         Command="{x:Static igDp:DataPresenterCommands.ClearActiveCellFilters}"
                                         Visibility="{Binding Path=Field.FilterClearButtonVisibilityResolved, RelativeSource={RelativeSource TemplatedParent}}"
                                         Margin="2,0,4,0"/>
                             <ContentPresenter x:Name="PART_EditorSite"
-                                                  Grid.Column="1"
+                                                  Grid.Column="0"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                   Style="{TemplateBinding ForegroundStyle}"/>
