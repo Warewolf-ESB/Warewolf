@@ -1,18 +1,22 @@
-﻿# Read playlists.
-$TestList = ""
-Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
-Foreach-Object{
-	[xml]$playlistContent = Get-Content $_.FullName
-	if ($playlistContent.Playlist.Add.count -gt 0) {
-	    foreach( $TestName in $playlistContent.Playlist.Add) {
-		    $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
-	    }
-	} else {        
-        if ($playlistContent.Playlist.Add.Test -ne $null) {
-            $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
-        } else {
-	        Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	        Continue
+﻿$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.FullName
+# Read playlists and args.
+if ($Args.Count -gt 0) {
+    $TestList = $Args.ForEach({ "," + $_ })
+} else {
+    Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+    Foreach-Object{
+	    [xml]$playlistContent = Get-Content $_.FullName
+	    if ($playlistContent.Playlist.Add.count -gt 0) {
+	        foreach( $TestName in $playlistContent.Playlist.Add) {
+		        $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+	        }
+	    } else {        
+            if ($playlistContent.Playlist.Add.Test -ne $null) {
+                $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+            } else {
+	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+	            Continue
+            }
         }
     }
 }
@@ -21,7 +25,6 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create assemblies list.
-$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.FullName
 $TestAssembliesList = ''
 foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Tests.dll, Warewolf.*.Tests.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
     $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
