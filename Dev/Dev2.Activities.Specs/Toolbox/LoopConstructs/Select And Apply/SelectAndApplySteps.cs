@@ -9,8 +9,6 @@ using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Enums;
-using Dev2.Data.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -20,7 +18,6 @@ using Warewolf.Storage;
 using Dev2.Studio.Core.Activities.Utils;
 using Moq;
 using System.Linq.Expressions;
-using WarewolfParserInterop;
 
 namespace Dev2.Activities.Specs
 {
@@ -150,12 +147,6 @@ namespace Dev2.Activities.Specs
             }
 
             BuildShapeAndTestData();
-
-            var activityType = ScenarioContext.Current.Get<string>("activityType");
-
-            dynamic activity;
-
-            activity = new SelectTestTool();
             string recordSet;
             if (!ScenarioContext.Current.TryGetValue("Datasource", out recordSet))
             {
@@ -163,28 +154,58 @@ namespace Dev2.Activities.Specs
             }
 
 
-
+            var innerActivity = ScenarioContext.Current.Get<Activity>("innerActivity");
             var dsfNumberFormatActivity = new SelectTestTool();
             var alias = ScenarioContext.Current.Get<string>("Alias");
-            ScenarioContext.Current.Add("InnerActivity", dsfNumberFormatActivity);
+            //ScenarioContext.Current.Add("InnerActivity", dsfNumberFormatActivity);
             bool error = ScenarioContext.Current.Any(a => a.Key == "throws");
             dsfNumberFormatActivity.Throws = error;
-            /*var dsfSelectAndApply = new DsfSelectAndApplyActivity
-            {
-                DataSource = recordSet,
-                Alias = alias,
-               // ApplyActivity = dsfNumberFormatActivity
-            };*/
 
             GetSelectAndApplyActivity().DataSource = recordSet;
             GetSelectAndApplyActivity().Alias = alias;
-            GetSelectAndApplyActivity().ApplyActivityFunc.Handler = dsfNumberFormatActivity;
+            GetSelectAndApplyActivity().ApplyActivityFunc.Handler = innerActivity ?? dsfNumberFormatActivity;
             TestStartNode = new FlowStep
             {
                 Action = GetSelectAndApplyActivity()
             };
 
             ScenarioContext.Current.Add("activity", GetSelectAndApplyActivity());
+        }
+
+        [Given(@"I use a Number Format tool configured as")]
+        public void GivenIUseANumberFormatToolConfiguredAs(Table table)
+        {
+            var activity = new DsfNumberFormatActivity();
+            activity.Expression = table.Rows[0]["Number"];
+            activity.DecimalPlacesToShow = table.Rows[0]["Decimals to show"];
+            activity.RoundingType = table.Rows[0]["Rounding"];
+            activity.RoundingDecimalPlaces = table.Rows[0]["Rounding Value"];
+            activity.Result = table.Rows[0]["Result"];
+
+            ScenarioContext.Current.Add("innerActivity",activity);
+        }
+        [Then(@"""(.*)"" has a value of ""(.*)""")]
+        public void ThenHasAValueOf(string p0, string p1)
+        {
+            var warewolfEvalResult = DataObject.Environment.Eval(p0, 0);
+            if (warewolfEvalResult.IsWarewolfAtomResult)
+            {
+                var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                if (result != null)
+                {
+                    Assert.AreEqual(p1,result.Item.ToString());
+                }
+            }
+
+            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            {
+                var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                if (result != null && result.Item.Count == 1)
+                {
+                    var warewolfAtom = result.Item[0];
+                    Assert.AreEqual(p1, warewolfAtom.ToString());
+                }
+            }
         }
 
         /*protected void BuildObjectDataList()
