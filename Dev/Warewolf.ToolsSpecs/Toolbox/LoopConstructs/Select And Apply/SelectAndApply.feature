@@ -77,6 +77,8 @@ Scenario: Number Format tool with complext object deeper level
 	And "[[Person.Score(2).Avg]]" has a value of "0.450"
 	And "[[Person.Score(3).Avg]]" has a value of "0.120"
 
+@ignore
+#Double stars not support at this stage
 Scenario: Number Format tool with complext object multi array
 	Given I open New Workflow
 	And I drag a new Select and Apply tool to the design surface  

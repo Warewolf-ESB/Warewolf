@@ -224,6 +224,15 @@ and parseLanguageExpression (lang : string) (update : int) : LanguageExpression 
             | Star -> { a with Index = IntIndex update } |> LanguageExpression.RecordSetNameExpression
             | _ -> a |> LanguageExpression.RecordSetNameExpression
         | ComplexExpression p -> List.map (updateComplex update) p |> LanguageExpression.ComplexExpression
+        | JsonIdentifierExpression a ->
+            match a with
+            | IndexNestedNameExpression b-> {b with Index = IntIndex update} |> JsonIdentifierExpression.IndexNestedNameExpression |> JsonIdentifierExpression
+            | NestedNameExpression b -> 
+                match b.Next with 
+                | IndexNestedNameExpression x-> {x with Index = IntIndex update} |> JsonIdentifierExpression.IndexNestedNameExpression |> JsonIdentifierExpression
+                |_->data
+            | Terminal _ -> data
+            | _ -> data
         | _ -> data
 
 /// replace the * in a complex expression with an update value
