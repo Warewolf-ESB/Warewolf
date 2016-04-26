@@ -1,7 +1,7 @@
 ﻿using ActivityUnitTests;
 using Dev2.Data.Util;
 using Dev2.TO;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;

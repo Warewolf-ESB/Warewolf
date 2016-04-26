@@ -135,6 +135,12 @@
       <DependentUpon>Switch.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Switch\SwitchSteps.cs" />
+    <Compile Include="Toolbox\Data\AssignObject\AssignObject.feature.cs">
+      <DependentUpon>AssignObject.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Toolbox\Data\AssignObject\AssignObjectSteps.cs" />
     <Compile Include="Toolbox\Data\Assign\Assign.feature.cs">
       <DependentUpon>Assign.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -734,6 +740,10 @@
     <None Include="Toolbox\ControlFlow\Switch\Switch.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Switch.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\AssignObject\AssignObject.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AssignObject.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\Assign\Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
