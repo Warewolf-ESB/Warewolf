@@ -198,8 +198,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                     Assert.AreEqual(p1, result.Item.ToString());
                 }
             }
-
-            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            else if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
                 var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                 if (result != null && result.Item.Count == 1)
@@ -207,7 +206,16 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                     var warewolfAtom = result.Item[0];
                     Assert.AreEqual(p1, warewolfAtom.ToString());
                 }
+                else
+                {
+                    Assert.Fail("Result not matched");
+                }
             }
+            else
+            {
+                Assert.Fail("Result not matched");
+            }
+
         }
 
 
