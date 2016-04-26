@@ -50,30 +50,30 @@ namespace Dev2.Data.Parsers
         public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> dataListParts)
         {
             return WrapAndClear(() =>
-           {
+            {
 
-               if (string.IsNullOrEmpty(expression) || dataListParts == null)
-               {
-                   return new List<IIntellisenseResult>();
-               }
-               var canCache = Regex.Matches(expression, "\\[\\[").Count == 1;
-               if (canCache && _expressionCache.ContainsKey(expression))
-               {
-                   return _expressionCache[expression];
-               }
+                if (string.IsNullOrEmpty(expression) || dataListParts == null)
+                {
+                    return new List<IIntellisenseResult>();
+                }
+                var canCache = Regex.Matches(expression, "\\[\\[").Count == 1;
+                if (canCache && _expressionCache.ContainsKey(expression))
+                {
+                    return _expressionCache[expression];
+                }
 
 
-               IList<IIntellisenseResult> result = PartsGeneration(expression, dataListParts, true);
-               if (result != null && canCache && !result.Any(a => a.Type == enIntellisenseResultType.Error))
-                   try
-                   {
-                       _expressionCache.TryAdd(expression, result);
-                   }
-                   // ReSharper disable once EmptyGeneralCatchClause
-                   catch { }
-                   
-               return result;
-           }, _expressionCache);
+                IList<IIntellisenseResult> result = PartsGeneration(expression, dataListParts, true);
+                if (result != null && canCache && !result.Any(a => a.Type == enIntellisenseResultType.Error))
+                    try
+                    {
+                        _expressionCache.TryAdd(expression, result);
+                    }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch { }
+
+                return result;
+            }, _expressionCache);
         }
 
 
@@ -102,17 +102,17 @@ namespace Dev2.Data.Parsers
                 IList<IDev2DataLanguageIntellisensePart> parts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, filterTo);
 
                 IList<IDev2DataLanguageIntellisensePart> additionalParts = new List<IDev2DataLanguageIntellisensePart>();
-                if(filterTo != null && filterTo.FilterType == enIntellisensePartType.RecordsetsOnly)
+                if (filterTo != null && filterTo.FilterType == enIntellisensePartType.RecordsetsOnly)
                 {
-                    additionalParts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, new IntellisenseFilterOpsTO(){FilterCondition = filterTo.FilterCondition,FilterType = enIntellisensePartType.All});
+                    additionalParts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, new IntellisenseFilterOpsTO() { FilterCondition = filterTo.FilterCondition, FilterType = enIntellisensePartType.All });
                 }
-                IList<IIntellisenseResult> result = PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense,additionalParts);
+                IList<IIntellisenseResult> result = PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense, additionalParts);
                 if (result != null && result.Count > 0 && !result.Any(a => a.Type == enIntellisenseResultType.Error))
                     try
                     {
                         _payloadCache.TryAdd(key, result);
                     }
-                        // ReSharper disable once EmptyGeneralCatchClause
+                    // ReSharper disable once EmptyGeneralCatchClause
                     catch { }
                 return result;
             }, _payloadCache);
@@ -176,7 +176,7 @@ namespace Dev2.Data.Parsers
 
         #region Private Methods
 
-        private IList<IIntellisenseResult> PartsGeneration(string payload, IList<IDev2DataLanguageIntellisensePart> parts, bool addCompleteParts, bool isFromIntellisense = false, IList<IDev2DataLanguageIntellisensePart> additionalParts=null)
+        private IList<IIntellisenseResult> PartsGeneration(string payload, IList<IDev2DataLanguageIntellisensePart> parts, bool addCompleteParts, bool isFromIntellisense = false, IList<IDev2DataLanguageIntellisensePart> additionalParts = null)
         {
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
             try
@@ -246,7 +246,7 @@ namespace Dev2.Data.Parsers
                         .ToList()
                         .ForEach(evalPart =>
                         {
-                            IList<IIntellisenseResult> tmp = ExtractIntellisenseOptions(evalPart, parts, !isFromIntellisense && addCompleteParts,additionalParts);
+                            IList<IIntellisenseResult> tmp = ExtractIntellisenseOptions(evalPart, parts, !isFromIntellisense && addCompleteParts, additionalParts);
                             if (tmp != null)
                             {
                                 result = result.Union(tmp).ToList();
@@ -634,7 +634,7 @@ namespace Dev2.Data.Parsers
         /// <param name="additionalParts"></param>
         /// <returns></returns>
         /// <exception cref="Dev2DataLanguageParseError">Invalid syntax - [[ + payload.Payload + ]] is a recordset with out the (). Please use [[ + payload.Payload + ()]] instead.</exception>
-        private IList<IIntellisenseResult> ExtractIntellisenseOptions(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IDev2DataLanguageIntellisensePart> additionalParts=null)
+        private IList<IIntellisenseResult> ExtractIntellisenseOptions(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IDev2DataLanguageIntellisensePart> additionalParts = null)
         {
             StringBuilder tmp = new StringBuilder(payload.Payload);
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
@@ -649,7 +649,7 @@ namespace Dev2.Data.Parsers
                 // region to evaluate
                 if (tmp.Length > 0)
                 {
-                    ProcessRegion(payload, refParts, addCompleteParts, tmp, result,additionalParts);
+                    ProcessRegion(payload, refParts, addCompleteParts, tmp, result, additionalParts);
                 }
                 else
                 {
@@ -692,7 +692,7 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
-        void ProcessRegion(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, StringBuilder tmp, IList<IIntellisenseResult> result, IList<IDev2DataLanguageIntellisensePart> additionalParts=null)
+        void ProcessRegion(ParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, StringBuilder tmp, IList<IIntellisenseResult> result, IList<IDev2DataLanguageIntellisensePart> additionalParts = null)
         {
             bool emptyOk = false;
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -1028,12 +1028,12 @@ namespace Dev2.Data.Parsers
                                     part = IntellisenseFactory.CreateDataListValidationRecordsetPart(display, "");
                                 }
                                 // add error
-                                if(additionalParts==null)
-                                result.Add(!display.Contains(' ') ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your variable list", code, !payload.HangingOpen) : IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, !payload.HangingOpen));
-                                else if(!additionalParts.Select(a=>a.Name).Contains(display))
+                                if (additionalParts == null)
+                                    result.Add(!display.Contains(' ') ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your variable list", code, !payload.HangingOpen) : IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, !payload.HangingOpen));
+                                else if (!additionalParts.Select(a => a.Name).Contains(display))
                                 {
                                     result.Add(!display.Contains(' ') ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your variable list", code, !payload.HangingOpen) : IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, !payload.HangingOpen));
-  
+
                                 }
                             }
                         }

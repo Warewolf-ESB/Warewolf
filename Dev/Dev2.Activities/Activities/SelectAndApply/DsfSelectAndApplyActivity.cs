@@ -122,9 +122,7 @@ namespace Dev2.Activities.SelectAndApply
                         AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
                     }
                     //Eval list using DataSource
-                    var warewolfEvalResult = dataObject.Environment.EvalForJson(DataSource);
                     var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true);
-                    
                     //Create a new Execution Environment
                     var executionEnvironment = new ScopedEnvironment(dataObject.Environment,DataSource,Alias);
 
@@ -197,6 +195,4 @@ namespace Dev2.Activities.SelectAndApply
         }
         #endregion
     }
-
-    
 }

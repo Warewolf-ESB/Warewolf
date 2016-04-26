@@ -5,10 +5,10 @@
 
 Scenario Outline: Parse text input
 	Given I have text '<variable>' as input
-    When I Parse
-	Then error will be '<error>'.
-	And the new error  will be '<message>'
-Examples: 	
+    When I validate
+	Then has error will be '<error>'.
+	And the error message will be '<message>'
+Examples:
 	| Name | variable                      | error | message                                                             |
 	| 1    | [[var]]                       | false |                                                                     |
 	| 2    | [[var1]]                      | false |                                                                     |

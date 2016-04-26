@@ -59,15 +59,11 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
         }
 
-
         [Given(@"I have the following intellisense options '(.*)'")]
         public void GivenIHaveTheFollowingIntellisenseOptions(string p0)
         {
             ScenarioContext.Current["datalistOptions"] = p0.Split( new char[]{','});
         }
-
-
-
 
         [Given(@"the filter type is '(.*)'")]
         public void GivenTheFilterTypeIs(string filterType)
@@ -303,7 +299,5 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             Assert.AreEqual(res.Result,p0);
             Assert.AreEqual(p1,res.CaretPosition);
         }
-
-
     }
 }

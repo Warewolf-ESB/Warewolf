@@ -124,9 +124,9 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            else if (activityType == typeof(DsfDotNetDllActivity))
+            else if (activityType == typeof(DsfOracleDatabaseActivity))
             {
-                var maAct = activity as DsfDotNetDllActivity;
+                var maAct = activity as DsfOracleDatabaseActivity;
                 if (maAct != null)
                 {
                     if (maAct.Inputs != null)
@@ -148,9 +148,9 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            else if (activityType == typeof(DsfWebGetActivity))
+            else if (activityType == typeof(DsfODBCDatabaseActivity))
             {
-                var maAct = activity as DsfWebGetActivity;
+                var maAct = activity as DsfODBCDatabaseActivity;
                 if (maAct != null)
                 {
                     if (maAct.Inputs != null)
@@ -160,19 +160,6 @@ namespace Dev2.FindMissingStrategies
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
-                    if (maAct.QueryString != null)
-                    {
-                        results.Add(maAct.QueryString);
-                    }
-                    if (maAct.Headers != null)
-                    {
-                        foreach(var nameValue in maAct.Headers)
-                        {
-                            results.Add(nameValue.Name);
-                            results.Add(nameValue.Value);
-                        }
-
                     }
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {

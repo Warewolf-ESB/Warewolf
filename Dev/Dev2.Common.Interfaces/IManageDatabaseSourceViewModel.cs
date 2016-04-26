@@ -111,6 +111,8 @@ namespace Dev2.Common.Interfaces
 
         IList<ComputerName> ComputerNames { get; set; }
         IComputerNameProvider Provider { get; set; }
+        bool CanSelectWindows { get; set; }
+        bool CanSelectServer { get; set; }
     }
 
     public interface IManageDatabaseSourceModel
