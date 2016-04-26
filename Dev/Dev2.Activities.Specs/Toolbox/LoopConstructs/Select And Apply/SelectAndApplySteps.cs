@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using Dev2.Activities.Designers2.SelectAndApply;
 using Dev2.Activities.SelectAndApply;
-using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +17,7 @@ using Warewolf.Storage;
 using Dev2.Studio.Core.Activities.Utils;
 using Moq;
 using System.Linq.Expressions;
+using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs
 {
