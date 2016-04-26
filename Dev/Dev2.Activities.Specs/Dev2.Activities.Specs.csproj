@@ -47,29 +47,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
-    <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeleteWebConnectorTool.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Web\GetWebConnector.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GetWebConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PostWebConnectorTool.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Web\PostWebConnectorToolSteps.cs" />
-    <Compile Include="Toolbox\Resources\Web\PutWebConnectorTool.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PutWebConnectorTool.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Web\PutWebConnectoToolSteps.cs" />
     <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.DotMemoryUnit.2.1.20150828.125449\Lib\dotMemory.Unit.dll</HintPath>
       <Private>True</Private>
@@ -240,14 +217,6 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
-    <Compile Include="Toolbox\Data\AssignObject\AssignObject.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AssignObject.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Data\AssignObject\AssignObjectSteps.cs" />
-    <Compile Include="Toolbox\Resources\Web\DeleteWebConnectoToolSteps.cs" />
-    <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -284,32 +253,6 @@
     <None Include="Settings Permissions.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Data\AssignObject\AssignObject.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AssignObject.feature.cs</LastGenOutput>
-    </None>
-    <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\TestFile.zip" />
-    <None Include="Toolbox\FileAndFolder\Unzip\Test.zip" />
-    <None Include="Toolbox\FileAndFolder\Unzip\Unzip.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Unzip.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Web\PostWebConnectorTool.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostWebConnectorTool.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Web\PutWebConnectorTool.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PutWebConnectorTool.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Web\GetWebConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GetWebConnector.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
