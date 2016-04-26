@@ -361,11 +361,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SelectAndApply.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplySteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <DependentUpon>Count.feature</DependentUpon>

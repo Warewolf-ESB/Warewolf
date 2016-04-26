@@ -1,7 +1,7 @@
 ﻿Feature: SelectAndApply
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to execute select and apply
+	As a Warewolf user
+	I want to add a tool that will allow me to construct and execute tools using an alias within the select and apply
 
 Scenario: Execute a selectAndApply over a tool using a recordset with 3 rows
 	Given I open New Workflow

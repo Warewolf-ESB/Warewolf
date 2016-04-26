@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.SelectAndApply
+namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.SelectAndApply
 {
     using TechTalk.SpecFlow;
     
@@ -31,8 +31,9 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.SelectAndApply
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SelectAndApply", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
-                    "wo numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SelectAndApply", "In order to execute select and apply\nAs a Warewolf user\nI want to add a tool that" +
+                    " will allow me to construct and execute tools using an alias within the select a" +
+                    "nd apply", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -49,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.SelectAndApply
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "SelectAndApply")))
             {
-                Dev2.Activities.Specs.Toolbox.LoopConstructs.SelectAndApply.SelectAndApplyFeature.FeatureSetup(null);
+                Warewolf.ToolsSpecs.Toolbox.LoopConstructs.SelectAndApply.SelectAndApplyFeature.FeatureSetup(null);
             }
         }
         
