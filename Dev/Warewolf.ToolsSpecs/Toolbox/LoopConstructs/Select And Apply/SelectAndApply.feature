@@ -3,98 +3,102 @@
 	As a Warewolf user
 	I want to add a tool that will allow me to construct and execute tools using an alias within the select and apply
 
-#Scenario: Execute a selectAndApply over a tool using a recordset with 3 rows
-#	Given I open New Workflow
-#	And I drag a new Select and Apply tool to the design surface  
-#	Given There is a recordset in the datalist with this shape
-#	| rs             | value |
-#	| [[rs().field]] | 1     |
-#	| [[rs().field]] | 2     |
-#	| [[rs().field]] | 3     |	
-#	And Alias is "[[bob]]"
-#	And Datasource is "[[rs(*).field]]"
-#	And the underlying dropped activity is "SelectTestTool"
-#	When the selectAndApply tool is executed
-#	Then the selectAndApply executes 3 times
-#	And the execution has "NO" error
-#	And the debug inputs as
-#	    | [[rs(*).field]] |
-#	    | As = [[bob]]    |
-
-#Scenario: Execute a selectAndApply over a tool using a complexobject with 3 properties
-#	Given I open New Workflow
-#	And I drag a new Select and Apply tool to the design surface  
-#	Given There is a complexobject in the datalist with this shape
-#	| rs              | value |
-#	| [[Person().name]] | Micky |
-#	| [[Person().name]] | John  |
-#	| [[Person().name]] | Scott |  
-#	And Alias is "[[bob]]"
-#	And Datasource is "[[Person(*).name]]"
-#	And the underlying dropped activity is "SelectTestTool"
-#	When the selectAndApply tool is executed
-#	Then the selectAndApply executes 3 times
-#	And the execution has "NO" error
-#	And the debug inputs as
-#	    | [[Person(*).name]] |
-#	    | As = [[bob]]    |
-
-Scenario: Number Format tool with complext object
-	Given I open New Workflow
-	And I drag a new Select and Apply tool to the design surface  
+Scenario: Execute a selectAndApply tool with a mocked test tool with a json object array
 	Given There is a complexobject in the datalist with this shape
-	| rs                 | value |
-	| [[Person().Level]] | 0.3   |
-	| [[Person().Level]] | 0.45  |
-	| [[Person().Level]] | 0.12  |  
-	And Alias is "[[bob]]"
-	And Datasource is "[[Person(*).Level]]"
+	| rs			| value |
+	| [[Score()]]	| 0.3   |
+	| [[Score()]]	| 0.45  |
+	| [[Score()]]	| 0.12  |
+	And Alias is "[[Score]]"
+	And Datasource is "[[Score(*)]]"
+	And the underlying dropped activity is a mocked test tool
+	When the selectAndApply tool is executed
+	Then the selectAndApply executes 3 times
+	And the execution has "NO" error
+	And the debug inputs as
+	    | [[Score(*)]]		|
+	    | As = [[Score]]	|
+
+Scenario: Execute a selectAndApply tool with a Number Format tool with a json object
+	Given There is a complexobject in the datalist with this shape
+	| rs				| value |
+	| [[Person.Score]]	| 0.3	|
+	And Alias is "[[Score]]"
+	And Datasource is "[[Person.Score]]"
 	And I use a Number Format tool configured as
 		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
-		| [[bob]] | Up       | 2              | 3                | [[bob]] |
+		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
 	Then the execution has "NO" error
-	And "[[Person(1).Level]]" has a value of "0.300"
-	And "[[Person(2).Level]]" has a value of "0.450"
-	And "[[Person(3).Level]]" has a value of "0.120"
+	And "[[Person.Score]]" has a value of "0.300"
 
-Scenario: Number Format tool with complext object deeper level
-	Given I open New Workflow
-	And I drag a new Select and Apply tool to the design surface  
+Scenario: Execute a selectAndApply tool with a Number Format tool with a json object array of json objects
 	Given There is a complexobject in the datalist with this shape
-	| rs                     | value |
-	| [[Person.Score().Avg]] | 0.3   |
-	| [[Person.Score().Avg]] | 0.45  |
-	| [[Person.Score().Avg]] | 0.12  |
-	And Alias is "[[Avg]]"
-	And Datasource is "[[Person.Score(*).Avg]]"
+	| rs				| value |
+	| [[Score().Value]]	| 0.3   |
+	| [[Score().Value]]	| 0.45  |
+	| [[Score().Value]]	| 0.12  |
+	And Alias is "[[Score]]"
+	And Datasource is "[[Score(*).Value]]"
 	And I use a Number Format tool configured as
 		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
-		| [[Avg]] | Up       | 2              | 3                | [[Avg]] |
+		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
 	Then the execution has "NO" error
-	And "[[Person.Score(1).Avg]]" has a value of "0.300"
-	And "[[Person.Score(2).Avg]]" has a value of "0.450"
-	And "[[Person.Score(3).Avg]]" has a value of "0.120"
+	And "[[Score(1).Value]]" has a value of "0.300"
+	And "[[Score(2).Value]]" has a value of "0.450"
+	And "[[Score(3).Value]]" has a value of "0.120"
 
-Scenario: Number Format tool with complext object multi array
-	Given I open New Workflow
-	And I drag a new Select and Apply tool to the design surface  
+Scenario: Execute a selectAndApply tool with a Number Format tool with a json object array of literals
 	Given There is a complexobject in the datalist with this shape
-	| rs                     | value |
-	| [[Person().Score().Avg]] | 0.3   |
-	| [[Person().Score().Avg]] | 0.45  |
-	| [[Person().Score().Avg]] | 0.12  |
-	And Alias is "[[Avg]]"
-	And Datasource is "[[Person(*).Score(*).Avg]]"
+	| rs				| value |
+	| [[Score()]]	| 0.3   |
+	| [[Score()]]	| 0.45  |
+	| [[Score()]]	| 0.12  |
+	And Alias is "[[Score]]"
+	And Datasource is "[[Score(*)]]"
 	And I use a Number Format tool configured as
 		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
-		| [[Avg]] | Up       | 2              | 3                | [[Avg]] |
+		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
 	Then the execution has "NO" error
-	And "[[Person(1).Score(1).Avg]]" has a value of "0.300"
-	And "[[Person(2).Score(2).Avg]]" has a value of "0.450"
-	And "[[Person(3).Score(3).Avg]]" has a value of "0.120"
+	And "[[Score(1)]]" has a value of "0.300"
+	And "[[Score(2)]]" has a value of "0.450"
+	And "[[Score(3)]]" has a value of "0.120"
+
+Scenario: Execute a selectAndApply tool with a Number Format tool with json object array within a json object
+	Given There is a complexobject in the datalist with this shape
+	| rs					| value |
+	| [[Person.Score()]]	| 0.3	|
+	| [[Person.Score()]]	| 0.45	|
+	| [[Person.Score()]]	| 0.12	|
+	And Alias is "[[Score]]"
+	And Datasource is "[[Person.Score(*)]]"
+	And I use a Number Format tool configured as
+		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
+		| [[Score]] | Up       | 2              | 3                | [[Score]] |
+	When the selectAndApply tool is executed
+	Then the execution has "NO" error
+	And "[[Person.Score(1)]]" has a value of "0.300"
+	And "[[Person.Score(2)]]" has a value of "0.450"
+	And "[[Person.Score(3)]]" has a value of "0.120"
+
+Scenario: Execute a selectAndApply tool with a Number Format tool with a json object array within a json object array
+	Given There is a complexobject in the datalist with this shape
+	| rs                    | value |
+	| [[Person().Score()]]	| 0.3   |
+	| [[Person().Score()]]	| 0.45  |
+	| [[Person().Score()]]	| 0.12  |
+	And Alias is "[[Score]]"
+	And Datasource is "[[Person(*).Score(*)]]"
+	And I use a Number Format tool configured as
+		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
+		| [[Score]] | Up       | 2              | 3                | [[Score]] |
+	When the selectAndApply tool is executed
+	Then the execution has "NO" error
+	And "[[Person(1).Score(1)]]" has a value of "0.300"
+	And "[[Person(2).Score(2)]]" has a value of "0.450"
+	And "[[Person(3).Score(3)]]" has a value of "0.120"
 
 #Scenario: Execute a selectAndApply over a tool using an empty recordset
 #	Given I open New Workflow
