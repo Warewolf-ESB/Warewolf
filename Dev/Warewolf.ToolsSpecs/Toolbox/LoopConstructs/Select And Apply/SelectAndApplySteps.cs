@@ -184,7 +184,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             activity.RoundingDecimalPlaces = table.Rows[0]["Rounding Value"];
             activity.Result = table.Rows[0]["Result"];
 
-            ScenarioContext.Current.Add("innerActivity",activity);
+            ScenarioContext.Current.Add("innerActivity", activity);
         }
         [Then(@"""(.*)"" has a value of ""(.*)""")]
         public void ThenHasAValueOf(string p0, string p1)
@@ -195,7 +195,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                 var result = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 if (result != null)
                 {
-                    Assert.AreEqual(p1,result.Item.ToString());
+                    Assert.AreEqual(p1, result.Item.ToString());
                 }
             }
 
@@ -210,60 +210,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             }
         }
 
-        /*protected void BuildObjectDataList()
-        {
-            List<Tuple<string, string>> objList;
-            ScenarioContext.Current.TryGetValue("objList", out objList);
-
-            if (objList == null)
-            {
-                objList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("objList", objList);
-            }
-
-            objList.Add(new Tuple<string, string>(ResultRecordsetVariable, ""));
-
-            string outMapTo;
-            if (ScenarioContext.Current.TryGetValue("outMapTo", out outMapTo))
-            {
-                objList.Add(new Tuple<string, string>(outMapTo, ""));
-            }
-
-            BuildShapeAndTestData();
-
-            var activityType = ScenarioContext.Current.Get<string>("activityType");
-
-            dynamic activity;
-
-            activity = new SelectTestTool();
-            string recordSet;
-            if (!ScenarioContext.Current.TryGetValue("Datasource", out recordSet))
-            {
-                recordSet = string.Empty;
-            }
-
-
-
-            var dsfNumberFormatActivity = new SelectTestTool();
-            var alias = ScenarioContext.Current.Get<string>("Alias");
-            bool error = ScenarioContext.Current.Any(a => a.Key == "throws");
-            dsfNumberFormatActivity.Throws = error;
-            /*var dsfSelectAndApply = new DsfSelectAndApplyActivity
-            {
-                DataSource = recordSet,
-                Alias = alias,
-               // ApplyActivity = dsfNumberFormatActivity
-            };
-
-            GetSelectAndApplyActivity().DataSource = recordSet;
-            GetSelectAndApplyActivity().Alias = alias;
-            GetSelectAndApplyActivity().ApplyActivityFunc.Handler = dsfNumberFormatActivity;
-            TestStartNode = new FlowStep
-            {
-                Action = GetSelectAndApplyActivity()
-            };
-
-        }*/
 
         private string BuildInputMappings()
         {
