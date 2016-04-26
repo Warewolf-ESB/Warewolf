@@ -1,6 +1,31 @@
-﻿# Create test settings.
+﻿$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.FullName
+# Read playlists and args.
+if ($Args.Count -gt 0) {
+    $TestList = $Args.ForEach({ "," + $_ })
+} else {
+    Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+    Foreach-Object{
+	    [xml]$playlistContent = Get-Content $_.FullName
+	    if ($playlistContent.Playlist.Add.count -gt 0) {
+	        foreach( $TestName in $playlistContent.Playlist.Add) {
+		        $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+	        }
+	    } else {        
+            if ($playlistContent.Playlist.Add.Test -ne $NULL) {
+                $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+            } else {
+	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+	            Continue
+            }
+        }
+    }
+}
+if ($TestList.StartsWith(",")) {
+	$TestList = $TestList -replace "^.", " /Tests:"
+}
+
+# Create test settings.
 $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
-$SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
 <TestSettings name=`"Local Acceptance Run`" id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
@@ -35,28 +60,6 @@ $SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
   </Execution>
 </TestSettings>
 "@)
-
-# Read playlists.
-$TestList = ""
-Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
-Foreach-Object{
-	[xml]$playlistContent = Get-Content $_.FullName
-	if ($playlistContent.Playlist.Add.count -gt 0) {
-	    foreach( $TestName in $playlistContent.Playlist.Add) {
-		    $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
-	    }
-	} else {        
-        if ($playlistContent.Playlist.Add.Test -ne $null) {
-            $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
-        } else {
-	        Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	        Continue
-        }
-    }
-}
-if ($TestList.StartsWith(",")) {
-	$TestList = $TestList -replace "^.", " /Tests:"
-}
 
 # Create assemblies list.
 $TestAssembliesList = ''
