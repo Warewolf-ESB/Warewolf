@@ -1,15 +1,16 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using Dev2.Activities.Debug;
+﻿using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using System;
+using System.Activities;
+using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.SelectAndApply
@@ -24,7 +25,6 @@ namespace Dev2.Activities.SelectAndApply
             {
                 DisplayName = "Data Action",
                 Argument = new DelegateInArgument<string>(string.Format("explicitData_{0}", DateTime.Now.ToString("yyyyMMddhhmmss")))
-
             };
         }
 
@@ -34,21 +34,22 @@ namespace Dev2.Activities.SelectAndApply
 
             base.CacheMetadata(metadata);
         }
+
         #region Overrides of DsfNativeActivity<bool>
+
         public string DataSource { get; set; }
         public string Alias { get; set; }
         public ActivityFunc<string, bool> ApplyActivityFunc { get; set; }
 
-        readonly object _selectApplyExecutionObject = new object();
-        string _previousParentId;
+        private readonly object _selectApplyExecutionObject = new object();
+        private string _previousParentId;
 
         /// <summary>
-        /// When overridden runs the activity's execution logic 
+        /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-
         }
 
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
@@ -56,7 +57,6 @@ namespace Dev2.Activities.SelectAndApply
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
             UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
         }
-
 
         protected override void OnBeforeExecute(NativeActivityContext context)
         {
@@ -97,12 +97,10 @@ namespace Dev2.Activities.SelectAndApply
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-
             return _debugOutputs;
-
         }
 
-        #endregion Get Inputs/Outputs
+        #endregion Get Debug Inputs/Outputs
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -124,7 +122,7 @@ namespace Dev2.Activities.SelectAndApply
                     //Eval list using DataSource
                     var atoms = dataObject.Environment.EvalAsList(dataObject.Environment.ToStar(DataSource), update, true);
                     //Create a new Execution Environment
-                    var executionEnvironment = new ScopedEnvironment(dataObject.Environment,DataSource,Alias);
+                    var executionEnvironment = new ScopedEnvironment(dataObject.Environment, DataSource, Alias);
 
                     //Push the new environment
                     dataObject.PushEnvironment(executionEnvironment);
@@ -144,7 +142,7 @@ namespace Dev2.Activities.SelectAndApply
                     foreach (var warewolfAtom in atoms)
                     {
                         upd++;
-                        
+
                         //Assign the warewolfAtom to Alias using new environment
                         executionEnvironment.Assign(Alias, warewolfAtom.ToString(), upd);
 
@@ -163,7 +161,7 @@ namespace Dev2.Activities.SelectAndApply
                 finally
                 {
                     dataObject.PopEnvironment();
-                    
+
                     dataObject.ForEachNestingLevel--;
                     if (allErrors.HasErrors())
                     {
@@ -184,7 +182,7 @@ namespace Dev2.Activities.SelectAndApply
                             var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                             AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", DataSource, "", "", "="));
                         }
-                       
+
                         var dt = DateTime.Now;
                         DispatchDebugState(dataObject, StateType.End, update, dt);
                     }
@@ -193,6 +191,7 @@ namespace Dev2.Activities.SelectAndApply
                 }
             }
         }
-        #endregion
+
+        #endregion Overrides of DsfNativeActivity<bool>
     }
 }
