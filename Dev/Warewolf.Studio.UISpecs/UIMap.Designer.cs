@@ -2193,13 +2193,13 @@ namespace Warewolf.Studio.UISpecs
         public void Drag_Toolbox_Write_File_Onto_DesignSurface()
         {
             #region Variable Declarations
-            WpfImage writeFolderImage = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.WriteFolder.WriteFolderImage;
+            WpfImage writeFileImage = this.MainStudioWindow.ToolBox.ToolListBox.FileAndFTP.WriteFile.WriteFileImage;
             WpfCustom flowchart = this.MainStudioWindow.SplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
-            // Move 'WriteFolder' image to 'Flowchart' custom control
+            // Move 'WriteFile' image to 'Flowchart' custom control
             flowchart.EnsureClickable(new Point(306, 132));
-            Mouse.StartDragging(writeFolderImage, new Point(10, 18));
+            Mouse.StartDragging(writeFileImage, new Point(10, 18));
             Mouse.StopDragging(flowchart, new Point(306, 132));
         }
         
@@ -9869,6 +9869,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Decision";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -9905,6 +9906,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Switch";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -9941,6 +9943,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Sequence";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10093,6 +10096,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Assign";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10129,6 +10133,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Data Merge";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10165,6 +10170,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Base Convert";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10201,6 +10207,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Case Convert";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10237,6 +10244,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Data Split";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10273,6 +10281,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Find Index";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10309,6 +10318,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Replace";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10405,6 +10415,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "MySQL";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10441,6 +10452,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "SQL Bulk Insert";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10477,6 +10489,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "SQL Server";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10590,15 +10603,15 @@ namespace Warewolf.Studio.UISpecs
             }
         }
         
-        public WriteFolder WriteFolder
+        public WriteFile WriteFile
         {
             get
             {
-                if ((this.mWriteFolder == null))
+                if ((this.mWriteFile == null))
                 {
-                    this.mWriteFolder = new WriteFolder(this);
+                    this.mWriteFile = new WriteFile(this);
                 }
-                return this.mWriteFolder;
+                return this.mWriteFile;
             }
         }
         
@@ -10652,7 +10665,7 @@ namespace Warewolf.Studio.UISpecs
         
         private ReadFile mReadFile;
         
-        private WriteFolder mWriteFolder;
+        private WriteFile mWriteFile;
         
         private Rename mRename;
         
@@ -10671,6 +10684,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Create";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10707,6 +10721,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Copy";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10743,6 +10758,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Delete";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10779,7 +10795,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
-            this.SearchProperties[WpfListItem.PropertyNames.Instance] = "4";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Move";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10816,6 +10832,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Read Folder";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10829,7 +10846,7 @@ namespace Warewolf.Studio.UISpecs
                 {
                     this.mReadFolderImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mReadFolderImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "ReadFolder";
+                    this.mReadFolderImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Read Folder";
                     this.mReadFolderImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
@@ -10852,6 +10869,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Read File";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10880,38 +10898,39 @@ namespace Warewolf.Studio.UISpecs
     }
     
     [GeneratedCode("Coded UITest Builder", "12.0.40629.0")]
-    public class WriteFolder : WpfListItem
+    public class WriteFile : WpfListItem
     {
         
-        public WriteFolder(UITestControl searchLimitContainer) : 
+        public WriteFile(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Write File";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
         
         #region Properties
-        public WpfImage WriteFolderImage
+        public WpfImage WriteFileImage
         {
             get
             {
-                if ((this.mWriteFolderImage == null))
+                if ((this.mWriteFileImage == null))
                 {
-                    this.mWriteFolderImage = new WpfImage(this);
+                    this.mWriteFileImage = new WpfImage(this);
                     #region Search Criteria
-                    this.mWriteFolderImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "WriteFolder";
-                    this.mWriteFolderImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mWriteFileImage.SearchProperties[WpfImage.PropertyNames.AutomationId] = "Write File";
+                    this.mWriteFileImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
-                return this.mWriteFolderImage;
+                return this.mWriteFileImage;
             }
         }
         #endregion
         
         #region Fields
-        private WpfImage mWriteFolderImage;
+        private WpfImage mWriteFileImage;
         #endregion
     }
     
@@ -10924,6 +10943,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Rename";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10960,6 +10980,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "UnZip";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -10996,6 +11017,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Zip";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11106,6 +11128,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "DELETE";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11142,6 +11165,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "GET";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11178,6 +11202,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "POST";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11214,6 +11239,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "PUT";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11282,6 +11308,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "ForEach";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11420,6 +11447,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Length";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11456,6 +11484,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Find Records";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11492,6 +11521,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Delete";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11528,6 +11558,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Sort";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11564,6 +11595,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Count";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11600,6 +11632,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Unique Records";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11682,6 +11715,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "DotNet DLL Connector";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11718,6 +11752,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Service";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11800,6 +11835,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "CMD Script";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11836,6 +11872,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Script";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11946,6 +11983,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Create List Item(s)";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -11982,6 +12020,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Delete List Item(s)";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12018,6 +12057,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Read List Item(s)";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12054,6 +12094,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Update List Item(s)";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12150,6 +12191,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Dropbox Download";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12186,6 +12228,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Dropbox Upload";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12222,6 +12265,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Select and apply";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12430,6 +12474,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Create JSON";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12466,6 +12511,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Calculate";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12502,6 +12548,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Date Time";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12538,6 +12585,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Date Time Diff";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12574,6 +12622,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Sys Info";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12610,6 +12659,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Format Number";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12646,6 +12696,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Random";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12682,6 +12733,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Email";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12718,6 +12770,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Web Request";
             #endregion
         }
         
@@ -12753,6 +12806,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Comment";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
@@ -12789,6 +12843,7 @@ namespace Warewolf.Studio.UISpecs
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "XPath";
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
