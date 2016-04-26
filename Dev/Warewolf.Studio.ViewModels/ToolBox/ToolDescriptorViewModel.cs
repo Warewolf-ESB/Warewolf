@@ -91,7 +91,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             get
             {
-                return GetImage( Tool.Icon,Tool.IconUri);
+                return GetImage(Tool.Icon, Tool.IconUri);
             }
         }
 
