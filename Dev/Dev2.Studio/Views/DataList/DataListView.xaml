@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:Models="clr-namespace:Dev2.Studio.Core.Models.DataList;assembly=Dev2.Studio.Core"
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
@@ -32,7 +31,6 @@
         <behaviors:UserControlFocusNextAndPreviousBehaviour />
     </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
-          
           LostKeyboardFocus="UIElement_OnLostKeyboardFocus" 
           Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
@@ -45,40 +43,35 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <!--<customControls:SearchTextBox Grid.Row="0" 
-                                              Margin="{StaticResource ControlBorderTopRight}"
-                                              Grid.Column="0"
-                                              x:Name="SearchTextBox" 
-                                              Style="{StaticResource SearchTextboxStyle}"
-                                              ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
-                                              LabelText="Filter"
-                                              HorizontalAlignment="Stretch"
-                                              Text="{Binding Path=SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}" >
-            </customControls:SearchTextBox>-->
-            <TextBlock Grid.Column="0" Text="Delete changes"></TextBlock>
+            <customControls:SearchTextBox Grid.Row="0" 
+                                          Margin="{StaticResource ControlBorderRight}"
+                                          Grid.Column="0"
+                                          x:Name="SearchTextBox" 
+                                          Style="{StaticResource SearchTextboxStyle}"
+                                          ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
+                                          LabelText="Filter"
+                                          HorizontalAlignment="Stretch" >
+            </customControls:SearchTextBox>
             <Button Grid.Column="1"
                     x:Name="DeleteButton"
                     Focusable="True"
                     FocusManager.FocusedElement="{Binding ElementName=VariableInput}"
                     AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
-                    Margin="{StaticResource ControlBorderTopRight}"
+                    Margin="{StaticResource ControlBorderRight}"
                     Command="{Binding FindUnusedAndMissingCommand}"
                     ToolTip="Removes all unused variables from the variable list">
                 <fa:FontAwesome Icon="Trash" FontSize="15"></fa:FontAwesome>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DataListDeleteButtonHelp}"
-                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
+                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <TextBlock Grid.Column="2" Text="Sort list"></TextBlock>
-            <Button Grid.Column="3"
+            <Button Grid.Column="2"
                     x:Name="SortButton"
                     Focusable="True"
                     AutomationProperties.AutomationId="UI_Sortbtn_AutoID"
-                    Margin="{StaticResource ControlBorderTop}"
                     Command="{Binding SortCommand}"
                     ToolTip="Sorts the items alphabeticaly">
                 <fa:FontAwesome Icon="Sort" FontSize="15"></fa:FontAwesome>
@@ -90,22 +83,32 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <dataPresenter:XamTreeGrid x:Name="xtg" DataSource="{Binding Path=BaseCollection}" Background="Transparent" Margin="{StaticResource ElementBorderTop}" >
+            <dataPresenter:XamTreeGrid x:Name="Xtg" 
+                                       DataSource="{Binding Path=BaseCollection}" 
+                                       Background="Transparent" Margin="{StaticResource ElementBorderTop}" 
+                                       customControls:DataPresenterHelpers.FilterText="{Binding ElementName=SearchTextBox, Path=Text}">
                 <dataPresenter:XamTreeGrid.FieldLayoutSettings>
-                    <dataPresenter:FieldLayoutSettings AutoGenerateFields="False" RecordSelectorLocation="None" />
+                    <dataPresenter:FieldLayoutSettings AutoGenerateFields="False" RecordSelectorLocation="None" FilterAction="Hide" />
                 </dataPresenter:XamTreeGrid.FieldLayoutSettings>
                 <dataPresenter:XamTreeGrid.FieldSettings>
-                    <dataPresenter:FieldSettings AllowRecordFiltering="True" />
+                    <dataPresenter:FieldSettings LabelClickAction="Nothing"/>
                 </dataPresenter:XamTreeGrid.FieldSettings>
                 <dataPresenter:XamTreeGrid.FieldLayouts >
                     <dataPresenter:FieldLayout Key="DataListItemModel">
-                        
                         <dataPresenter:FieldLayout.Fields >
-
-                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" Name="DisplayName" BindingType="UseAlternateBinding" Label="Display Name" Width="*" AllowEdit="False">
+                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" 
+                                                         Name="DisplayName" 
+                                                         BindingType="UseAlternateBinding" 
+                                                         Label=" Display Name" 
+                                                         Width="*" 
+                                                         AllowResize="False"
+                                                         AllowEdit="False" 
+                                                         Height="Auto"
+                                                         AllowRecordFiltering="False">
                                 <dataPresenter:TemplateField.DisplayTemplate>
                                     <DataTemplate>
                                         <StackPanel>
+                                            <!-- Add IsVisible property -->
                                             <!--<TextBlock Text="{Binding Path=DisplayName}" Visibility="{Binding Path=IsParentNode}" />-->
                                             <customControls:VariableTextBox LostFocus="NametxtFocusLost"
                                                                             Background="{StaticResource WareWolfWhiteBrush}"
@@ -147,6 +150,13 @@
                                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                                 </i:Interaction.Behaviors>
                                             </customControls:VariableTextBox>
+                                            <TextBox Margin="{StaticResource ControlBorderTop}" Height="75" MinHeight="25" MaxHeight="75" Text="As they rounded a bend in the path that ran beside the river, Lara recognized the silhouette of a fig tree atop a nearby hill. The weather was hot and the days were long. The fig tree was in full leaf, but not yet bearing fruit.
+Soon Lara spotted other landmarks—an outcropping of limestone beside the path that had a silhouette like a man's face, a marshy spot beside the river where the waterfowl were easily startled, a tall tree that looked like a man with his arms upraised. They were drawing near to the place where there was an island in the river. The island was a good spot to make camp. They would sleep on the island tonight.
+Lara had been back and forth along the river path many times in her short life. Her people had not created the path—it had always been there, like the river—but their deerskin-shod feet and the wooden wheels of their handcarts kept the path well worn. Lara's people were salt traders, and their livelihood took them on a continual journey.
+At the mouth of the river, the little group of half a dozen intermingled families gathered salt from the great salt beds beside the sea. They groomed and sifted the salt and loaded it into handcarts. When the carts were full, most of the group would stay behind, taking shelter amid rocks and simple lean-tos, while a band of fifteen or so of the heartier members set out on the path that ran alongside the river.
+With their precious cargo of salt, the travelers crossed the coastal lowlands and traveled toward the mountains. But Lara's people never reached the mountaintops; they traveled only as far as the foothills. Many people lived in the forests and grassy meadows of the foothills, gathered in small villages. In return for salt, these people would give Lara's people dried meat, animal skins, cloth spun from wool, clay pots, needles and scraping tools carved from bone, and little toys made of wood." TextWrapping="Wrap">
+                                                
+                                            </TextBox>
                                         </StackPanel>
                                     </DataTemplate>
                                 </dataPresenter:TemplateField.DisplayTemplate>
@@ -154,12 +164,19 @@
 
                             <dataPresenter:Field Name="Children" Width="*" AllowEdit="True"/>
 
-                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" Name="Input" Label="Input" Width="60" AllowEdit="False" >
+                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" 
+                                                         Name="Input" 
+                                                         Label="Input" 
+                                                         Width="60" 
+                                                         AllowResize="False"
+                                                         AllowEdit="False" 
+                                                         AllowRecordFiltering="False">
                                 <dataPresenter:TemplateField.DisplayTemplate>
                                     <DataTemplate>
+                                        <!-- Add IsVisible property -->
                                         <CheckBox IsTabStop="True"
                                                   HorizontalAlignment="Center"
-                                                  Margin="0,-1,0,-1"
+                                                  Margin="0,2,0,0"
                                                   IsChecked="{Binding Path=Input}"
                                                   VerticalAlignment="Center"
                                                   Focusable="True"
@@ -176,12 +193,19 @@
                                 </dataPresenter:TemplateField.DisplayTemplate>
                             </dataPresenter:TemplateField>
 
-                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" Name="Output" Label="Output" Width="60" AllowEdit="False" >
+                            <dataPresenter:TemplateField AlternateBinding="{Binding .}" 
+                                                         Name="Output" 
+                                                         Label="Output" 
+                                                         Width="60" 
+                                                         AllowResize="False"
+                                                         AllowEdit="False" 
+                                                         AllowRecordFiltering="False">
                                 <dataPresenter:TemplateField.DisplayTemplate>
                                     <DataTemplate>
+                                        <!-- Add IsVisible property -->
                                         <CheckBox IsTabStop="True"
                                                   HorizontalAlignment="Center"
-                                                  Margin="0,-1,0,-1"
+                                                  Margin="0,2,0,0"
                                                   IsChecked="{Binding Path=Output}"
                                                   VerticalAlignment="Center"
                                                   Focusable="True"
