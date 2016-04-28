@@ -69,6 +69,8 @@ let rec parseLanguageExpressionAndValidate (lang : string) : LanguageExpression 
             else 
                 (WarewolfAtomExpression(DataStorage.DataString lang), 
                  "Variable name " + lang + " contains invalid character(s)")
+            | :? System.IndexOutOfRangeException as ex ->
+                (WarewolfAtomExpression(DataStorage.DataString lang), ex.Message)
     else (WarewolfAtomExpression(parseAtom lang), "")
 
 and checkForInvalidVariables (lang : LanguageExpression list) = 
