@@ -33,6 +33,8 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
   <Description>These are default test settings for a local acceptance test run.</Description>
     <Deployment>
 		  <DeploymentItem filename=`"Dev2.Server\bin\Debug\`" outputDirectory=`"Server`" />
+		  <DeploymentItem filename=`"packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll`" />
+		  <DeploymentItem filename=`"packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll`" />
     </Deployment>
   <NamingScheme baseName=`"AcceptanceTesting`" appendTimeStamp=`"false`" useDefault=`"false`" />
     <Scripts setupScript=`"TestScripts\Server\Startup.bat`" cleanupScript=`"TestScripts\Server\Cleanup.bat`" />
