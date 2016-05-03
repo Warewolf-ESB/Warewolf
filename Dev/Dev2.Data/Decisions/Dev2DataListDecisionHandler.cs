@@ -16,7 +16,6 @@ using System.Data;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;

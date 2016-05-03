@@ -92,8 +92,6 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                         ServiceName = "SpecflowForeachActivityTest"
                     };
                     break;
-                default:
-                    break;
             }
             ScenarioContext.Current.Add("innerActivity", innerActivity);
         }
