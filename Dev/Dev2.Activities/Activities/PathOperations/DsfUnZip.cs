@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Activities.PathOperations;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.PathOperations.Interfaces;

@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
