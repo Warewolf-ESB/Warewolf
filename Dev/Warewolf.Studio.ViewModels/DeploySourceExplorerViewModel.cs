@@ -233,11 +233,15 @@ namespace Warewolf.Studio.ViewModels
 
         async void ServerConnected(object _, IServer server)
         {
-            var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
-            _environments.Add(environmentModel);
-            await environmentModel.Load(IsDeploy);
-            OnPropertyChanged(() => Environments);
-            AfterLoad(server.EnvironmentID);
+            if (server != null &&
+                server.IsConnected)
+            {
+                var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
+                _environments.Add(environmentModel);
+                await environmentModel.Load(IsDeploy);
+                OnPropertyChanged(() => Environments);
+                AfterLoad(server.EnvironmentID);
+            }
         }
 
         private bool IsDeploy { get; set; }
