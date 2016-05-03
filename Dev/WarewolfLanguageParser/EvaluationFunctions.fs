@@ -201,11 +201,15 @@ and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression =
         match exp with
         | Some a -> a
         | None -> 
-            let lexbuf = LexBuffer<string>.FromString lang
-            let buffer = Parser.start Lexer.tokenstream lexbuf
-            let res = buffer |> Clean
-            ParseCache <- ParseCache.Add(lang, res)
-            res
+            try
+                let lexbuf = LexBuffer<string>.FromString lang
+                let buffer = Parser.start Lexer.tokenstream lexbuf
+                let res = buffer |> Clean
+                ParseCache <- ParseCache.Add(lang, res)
+                res
+            with
+                | :? System.IndexOutOfRangeException ->
+                    WarewolfAtomExpression(DataStorage.DataString lang)
     else WarewolfAtomExpression(parseAtom lang)
 
 ///Simple parse. convert a string to a language expression and replace * with the update value
