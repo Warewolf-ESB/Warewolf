@@ -17,14 +17,13 @@ namespace Warewolf.Storage
             _inner = inner;
             _datasource = datasource;
             _alias = alias;
-            _doReplace = UpdateDataSourceWithIterativeValueBob;
+            _doReplace = UpdateDataSourceWithIterativeValueFunction;
         }
 
         #region Implementation of IExecutionEnvironment
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = true)
         {
-  
             return _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists);
         }
 
@@ -42,10 +41,17 @@ namespace Warewolf.Storage
 
  
 
-        private string UpdateDataSourceWithIterativeValueBob(string datasource, int update, string exp)
+        private string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
         {
-            return exp.Replace(_alias,EvaluationFunctions.languageExpressionToString( EvaluationFunctions.parseLanguageExpression(datasource,update)));
+            var languageExpressionToString = ReplaceStarWithFixedIndex(datasource, update);
+            return exp.Replace(_alias,languageExpressionToString);
         }
+
+        static string ReplaceStarWithFixedIndex(string exp, int idx)
+        {
+            return idx > 0 ? exp.Replace("(*)", "(" + idx + ")") : exp;
+        }
+
         private string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
         {
             var magic = _doReplace(datasource, update,exp);
