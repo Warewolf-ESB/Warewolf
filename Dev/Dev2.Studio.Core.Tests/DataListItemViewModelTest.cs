@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests
         {
             IDataListItemModel childSet = DataListItemModelFactory.CreateDataListModel("TestChild", "", _dataListItemModel);
 
-            Assert.AreEqual("testItem", childSet.Parent.Name);
+            Assert.AreEqual("testItem", childSet.Parent.DisplayName);
         }
 
         #endregion Parent Property Tests
@@ -148,7 +148,7 @@ namespace Dev2.Core.Tests
         public void DataItemNameUpdate_ExpectedDataItemNameUpdated()
         {
             const string expected = "testItem";
-            string actual = _dataListItemModel.Name;
+            string actual = _dataListItemModel.DisplayName;
             Assert.AreEqual(expected, actual);
         }
 

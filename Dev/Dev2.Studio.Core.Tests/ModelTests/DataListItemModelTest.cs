@@ -36,7 +36,7 @@ namespace Dev2.Core.Tests.ModelTests
         {
             string dataListItemDisplayName = "TestItem";
             TestDataListItemModelSet(dataListItemDisplayName);
-            Assert.AreEqual(dataListItemDisplayName, _testDataListItemModel.Name);
+            Assert.AreEqual(dataListItemDisplayName, _testDataListItemModel.DisplayName);
         }
 
         [TestMethod]

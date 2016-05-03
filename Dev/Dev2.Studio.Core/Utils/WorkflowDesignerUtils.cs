@@ -143,13 +143,13 @@ namespace Dev2.Utils
             {
                 foreach(var dataListItem in DataListSingleton.ActiveDataList.DataList)
                 {
-                    if(String.IsNullOrEmpty(dataListItem.Name))
+                    if(String.IsNullOrEmpty(dataListItem.DisplayName))
                     {
                         continue;
                     }
                     if(dataListItem.Children.Count > 0)
                     {
-                        if(partsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                        if(partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0)
                         {
                             //19.09.2012: massimo.guerrera - Added in the description to creating the part
                             if(dataListItem.IsEditable)
@@ -160,7 +160,7 @@ namespace Dev2.Utils
                                     continue;
                                 }
                                 missingWorkflowParts.Add(
-                                    IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name,
+                                    IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
                                                                                               String.Empty,
                                                                                               dataListItem.Description));
                                 // ReSharper disable once LoopCanBeConvertedToQuery
@@ -173,7 +173,7 @@ namespace Dev2.Utils
                                         {
                                             missingWorkflowParts.Add(
                                                 IntellisenseFactory.CreateDataListValidationRecordsetPart(
-                                                    dataListItem.Name, child.Name, child.Description));
+                                                    dataListItem.DisplayName, child.Name, child.Description));
                                         }
                                     }
                                 }
@@ -196,12 +196,12 @@ namespace Dev2.Utils
 
                                         missingWorkflowParts.Add(
                                             IntellisenseFactory.CreateDataListValidationRecordsetPart(
-                                                dataListItem.Name, child.Name, child.Description));
+                                                dataListItem.DisplayName, child.Name, child.Description));
                                     }
                                 }
                         }
                     }
-                    else if(partsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
+                    else if(partsToVerify.Count(part => part.Field == dataListItem.DisplayName) == 0)
                     {
 
                         if(dataListItem.IsEditable)
@@ -214,7 +214,7 @@ namespace Dev2.Utils
 
                             //19.09.2012: massimo.guerrera - Added in the description to creating the part
                             missingWorkflowParts.Add(
-                                IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name,
+                                IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
                                                                                        dataListItem.Description));
                         }
 

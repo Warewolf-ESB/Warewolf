@@ -52,7 +52,7 @@ namespace Dev2.Studio.Core.Factories
             IDataListItemModel dataListModel = new DataListItemModel(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisable, isSelected);
             if(parent != null && !String.IsNullOrEmpty(displayname))
             {
-                dataListModel.Name = parent.DisplayName + "()." + displayname;
+                dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
             }
             return dataListModel;
         }
@@ -63,5 +63,4 @@ namespace Dev2.Studio.Core.Factories
             return dataListHeaderModel;
         }
     }
-
 }
