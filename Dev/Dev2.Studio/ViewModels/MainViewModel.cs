@@ -511,6 +511,7 @@ namespace Dev2.Studio.ViewModels
         {
             ActiveEnvironment = activeEnvironment;
             EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
+            SetActiveEnvironment(activeEnvironment.ID);
             ActiveEnvironment.AuthorizationServiceSet += (sender, args) => OnActiveEnvironmentChanged();
         }
 
@@ -1685,6 +1686,7 @@ namespace Dev2.Studio.ViewModels
             {
                 item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
             }
+            SetActiveEnvironment(item.Environment);
             if (ExplorerViewModel != null)
             {
                 //ExplorerViewModel.BringItemIntoView(item);
