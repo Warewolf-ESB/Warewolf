@@ -274,7 +274,7 @@ namespace Dev2.Core.Tests
             //-------------------------Execute Test ------------------------------------------
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
             //-------------------------Assert Resule------------------------------------------
-            int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && !model.IsRecordset && !string.IsNullOrEmpty(model.Name));
+            int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && !model.IsRecordset && !string.IsNullOrEmpty(model.DisplayName));
             Assert.AreEqual(2, actual);
         }
 
@@ -620,7 +620,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
             IDataListItemModel item = new DataListItemModel("ab().c");
-            item.Name = "c";
+            item.DisplayName = "c";
             item.Parent = _dataListViewModel.RecsetCollection[0];
 
             _dataListViewModel.RecsetCollection[0].Children.Insert(1, item);
@@ -665,7 +665,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
             IDataListItemModel item = new DataListItemModel("ab().c");
-            item.Name = "c";
+            item.DisplayName = "c";
             item.Parent = _dataListViewModel.RecsetCollection[0];
 
             _dataListViewModel.RecsetCollection[0].Children.Insert(1, item);
@@ -708,7 +708,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
             IDataListItemModel item = new DataListItemModel("de()");
-            item.Name = "de";
+            item.DisplayName = "de";
 
             _dataListViewModel.RecsetCollection.Insert(1, item);
 
@@ -1306,9 +1306,9 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, dataListItemModel1.ErrorMessage);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, dataListItemModel2.ErrorMessage);
 
-            var dataListItemModel = _dataListViewModel.ScalarCollection.FirstOrDefault(c => c.Name == "TestScalar1");
+            var dataListItemModel = _dataListViewModel.ScalarCollection.FirstOrDefault(c => c.DisplayName == "TestScalar1");
             Assert.IsNotNull(dataListItemModel);
-            dataListItemModel.Name = "TestScalar2";
+            dataListItemModel.DisplayName = "TestScalar2";
 
 
 
@@ -1783,12 +1783,12 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName) { IsVisable = true };
+            var scalarItem = new DataListItemModel(scalarName) { IsVisible = true };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "test";
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListViewModel.ScalarCollection[0].IsVisable);
+            Assert.IsFalse(dataListViewModel.ScalarCollection[0].IsVisible);
         }
 
         [Ignore]
@@ -1800,12 +1800,12 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName) { IsVisable = false };
+            var scalarItem = new DataListItemModel(scalarName) { IsVisible = false };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "sca";
             //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsVisible);
         }
 
          [Ignore]
@@ -1935,7 +1935,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
             IDataListItemModel item = new DataListItemModel("ab().c");
-            item.Name = "c";
+            item.DisplayName = "c";
             item.Parent = _dataListViewModel.RecsetCollection[0];
             return item;
         }
@@ -1949,7 +1949,7 @@ namespace Dev2.Core.Tests
 
 
             IDataListItemModel item = new DataListItemModel("ab");
-            item.Name = "ab";
+            item.DisplayName = "ab";
             _dataListViewModel.ScalarCollection.Insert(0, item);
             return item;
         }
@@ -1966,7 +1966,7 @@ namespace Dev2.Core.Tests
         static IDataListItemModel CreateFieldDataListModel(string fieldName, IDataListItemModel recSetDataModel)
         {
             IDataListItemModel fieldDataListModel = DataListItemModelFactory.CreateDataListModel(fieldName, "", recSetDataModel);
-            fieldDataListModel.Name = recSetDataModel.Name + "()." + fieldName;
+            fieldDataListModel.DisplayName = recSetDataModel.DisplayName + "()." + fieldName;
             return fieldDataListModel;
         }
 
@@ -2008,7 +2008,7 @@ namespace Dev2.Core.Tests
                 else
                 {
                     IDataListItemModel recset
-                        = results.FirstOrDefault(c => c.IsRecordset && c.Name == part.Recordset) ?? viewModel.DataList.FirstOrDefault(c => c.IsRecordset && c.Name == part.Recordset);
+                        = results.FirstOrDefault(c => c.IsRecordset && c.DisplayName == part.Recordset) ?? viewModel.DataList.FirstOrDefault(c => c.IsRecordset && c.DisplayName == part.Recordset);
 
                     if(recset == null && isAdd)
                     {

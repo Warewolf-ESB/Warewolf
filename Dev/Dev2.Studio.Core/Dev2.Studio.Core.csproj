@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2</RootNamespace>
+    <RootNamespace>Dev2.Studio.Core</RootNamespace>
     <AssemblyName>Dev2.Studio.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -283,10 +283,18 @@
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="InterfaceImplementors\FilePersistenceProvider.cs" />
+    <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
+    <Compile Include="Interfaces\DataList\IRecordSetFieldItemModel.cs" />
+    <Compile Include="Interfaces\DataList\IRecordSetItemModel.cs" />
+    <Compile Include="Interfaces\DataList\IScalarItemModel.cs" />
     <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
+    <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
+    <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />
+    <Compile Include="Models\DataList\RecordSetItemModel.cs" />
+    <Compile Include="Models\DataList\ScalarItemModel.cs" />
     <Compile Include="Models\ServerExplorerVersionProxy.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -406,8 +414,6 @@
     <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
     <Compile Include="Models\IExplorerItemModel.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
-    <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
-    <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
       <SubType>Code</SubType>
     </Compile>

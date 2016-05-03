@@ -1,41 +1,45 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+using Caliburn.Micro;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Parsers;
-using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces.DataList;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models.DataList
 {
-    public class DataListItemModel : BaseDataListItemModel, IDataListItemModel
+    public class DataListItemModel : PropertyChangedBase, IDataListItemModel
     {
         #region Fields
 
         private string _description;
-        private IDataListItemModel _parent;
+
+        //private IDataListItemModel _parent;
         private bool _hasError;
+
         private string _errorMessage;
         private bool _isEditable;
-        private bool _isVisable;
+        private bool _isVisible;
         private bool _isSelected;
-        private string _lastIndexedName;
+
+        //private string _lastIndexedName;
         private bool _isUsed;
+
+        private bool _isHeader;
+        private bool _isCheckBoxVisible;
+        private string _displayName;
+        private bool _isExpanded = true;
         private enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
-        string _filterText;
-        ObservableCollection<IDataListItemModel> _backupChildren    ;
+        //string _filterText;
+        //ObservableCollection<IDataListItemModel> _backupChildren    ;
 
         #endregion Fields
 
@@ -44,22 +48,22 @@ namespace Dev2.Studio.Core.Models.DataList
         /*
          * This is a piss poor implementation of optional parameters.... Constructor chaining would be far better suited to our needs, or even better a factory or builder!!!! ;)
          */
-        public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, bool isExpanded = true)
+
+        public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
         {
             Description = description;
-            Parent = parent;
-            Children = children;
+            //Parent = parent;
+            //Children = children;
             HasError = hasError;
             ErrorMessage = errorMessage;
             IsEditable = isEditable;
-            IsVisable = isVisable;
+            IsVisible = isVisible;
             DisplayName = displayname;
             IsSelected = isSelected;
             IsExpanded = isExpanded;
-            LastIndexedName = Name;
+            //LastIndexedName = Name;
             IsUsed = true;
             ColumnIODirection = dev2ColumnArgumentDirection;
-            
         }
 
         #endregion Ctor
@@ -81,18 +85,18 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public string LastIndexedName
-        {
-            get
-            {
-                return _lastIndexedName;
-            }
-            set
-            {
-                _lastIndexedName = value;
-                NotifyOfPropertyChange(() => LastIndexedName);
-            }
-        }
+        //public string LastIndexedName
+        //{
+        //    get
+        //    {
+        //        return _lastIndexedName;
+        //    }
+        //    set
+        //    {
+        //        _lastIndexedName = value;
+        //        NotifyOfPropertyChange(() => LastIndexedName);
+        //    }
+        //}
 
         public bool IsSelected
         {
@@ -104,6 +108,20 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 _isSelected = value;
                 NotifyOfPropertyChange(() => IsSelected);
+            }
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+            set
+            {
+                _displayName = ValidateName(value);
+                //Name = value;
+                NotifyOfPropertyChange(() => DisplayName);
             }
         }
 
@@ -120,18 +138,18 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public IDataListItemModel Parent
-        {
-            get
-            {
-                return _parent;
-            }
-            set
-            {
-                _parent = value;
-                NotifyOfPropertyChange(() => Parent);
-            }
-        }
+        //public IDataListItemModel Parent
+        //{
+        //    get
+        //    {
+        //        return _parent;
+        //    }
+        //    set
+        //    {
+        //        _parent = value;
+        //        NotifyOfPropertyChange(() => Parent);
+        //    }
+        //}
 
         public bool HasError
         {
@@ -150,7 +168,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                if(_errorMessage == string.Empty)
+                if (_errorMessage == string.Empty)
                 {
                     return null;
                 }
@@ -200,10 +218,10 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 SetColumnIODirectionFromInput(value);
-                if(Children.Count > 0)
-                {
-                    SetChildInputValues(value);
-                }
+                //if(Children.Count > 0)
+                //{
+                //    SetChildInputValues(value);
+                //}
             }
         }
 
@@ -216,23 +234,23 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 SetColumnIODirectionFromOutput(value);
-                if(Children.Count > 0)
-                {
-                    SetChildOutputValues(value);
-                }
+                //if(Children.Count > 0)
+                //{
+                //    SetChildOutputValues(value);
+                //}
             }
         }
 
-        public bool IsVisable
+        public bool IsVisible
         {
             get
             {
-                return _isVisable;
+                return _isVisible;
             }
             set
             {
-                _isVisable = value;
-                NotifyOfPropertyChange(() => IsVisable);
+                _isVisible = value;
+                NotifyOfPropertyChange(() => IsVisible);
             }
         }
 
@@ -244,22 +262,34 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public bool IsRecordset
-        {
-            get
-            {
-                return Children.Count > 0;
-            }
-        }
+        //public bool IsRecordset
+        //{
+        //    get
+        //    {
+        //        return Children.Count > 0;
+        //    }
+        //}
 
-        public bool IsField
+        //public bool IsField
+        //{
+        //    get
+        //    {
+        //        return Parent != null;
+        //    }
+        //}
+
+        public bool IsExpanded
         {
             get
             {
-                return Parent != null;
+                return _isExpanded;
+            }
+            set
+            {
+                _isExpanded = value;
+                NotifyOfPropertyChange(() => IsExpanded);
             }
         }
-       
 
         #endregion Properties
 
@@ -271,46 +301,73 @@ namespace Dev2.Studio.Core.Models.DataList
             ErrorMessage = string.Empty;
         }
 
-        public void Filter(string searchText)
-        {
-            Children.Clear();
-            if(_backupChildren != null)
-            {
-                foreach(var dataListItemModel in _backupChildren)
-                {
-                    Children.Add(dataListItemModel);
-                }
-            }
-            if(string.IsNullOrEmpty(searchText))
-            {
-                return;
-            }
+        //public void Filter(string searchText)
+        //{
+        //    Children.Clear();
+        //    if(_backupChildren != null)
+        //    {
+        //        foreach(var dataListItemModel in _backupChildren)
+        //        {
+        //            Children.Add(dataListItemModel);
+        //        }
+        //    }
+        //    if(string.IsNullOrEmpty(searchText))
+        //    {
+        //        return;
+        //    }
 
-            if(!String.IsNullOrEmpty(searchText))
-            {
-                
-                _backupChildren = _backupChildren?? new ObservableCollection<IDataListItemModel>();
-                foreach(var dataListItemModel in Children)
-                {
-                    _backupChildren.Add(dataListItemModel);
-                }
-            }
-            _backupChildren = Children;
-            Children = new ObservableCollection<IDataListItemModel>(Children.Where(a=>a.Name.ToUpper().Contains(searchText.ToUpper())));
-        }
+        //    if(!String.IsNullOrEmpty(searchText))
+        //    {
+        //        _backupChildren = _backupChildren?? new ObservableCollection<IDataListItemModel>();
+        //        foreach(var dataListItemModel in Children)
+        //        {
+        //            _backupChildren.Add(dataListItemModel);
+        //        }
+        //    }
+        //    _backupChildren = Children;
+        //    Children = new ObservableCollection<IDataListItemModel>(Children.Where(a=>a.DisplayName.ToUpper().Contains(searchText.ToUpper())));
+        //}
 
-        public string FilterText
+        //public string FilterText
+        //{
+        //    get
+        //    {
+        //        string child ="";
+        //        if(Children!= null)
+        //            child = String.Join("",Children.Select(a=>a.FilterText));
+        //        return DisplayName + child;
+        //    }
+        //    set
+        //    {
+        //        _filterText = value;
+        //    }
+        //}
+
+        public bool IsHeader
         {
             get
             {
-                string child ="";
-                if(Children!= null)
-                    child = String.Join("",Children.Select(a=>a.FilterText));
-                return Name + child;
+                return _isHeader;
             }
+
             set
             {
-                _filterText = value;
+                _isHeader = value;
+                NotifyOfPropertyChange(() => IsHeader);
+            }
+        }
+
+        public bool IsCheckBoxVisible
+        {
+            get
+            {
+                return _isCheckBoxVisible;
+            }
+
+            set
+            {
+                _isCheckBoxVisible = value;
+                NotifyOfPropertyChange(() => IsCheckBoxVisible);
             }
         }
 
@@ -327,131 +384,131 @@ namespace Dev2.Studio.Core.Models.DataList
         /// <returns>
         ///   <c>true</c> if [name is valid]; otherwise, <c>false</c>.
         /// </returns>
-        public override string ValidateName(string name)
+        public string ValidateName(string name)
         {
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-            if(!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
-                if(IsRecordset)
-                {
-                    name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                }
-                else if(IsField)
-                {
-                    name = DataListUtil.ExtractFieldNameFromValue(name);
-                }
+                //if(IsRecordset)
+                //{
+                //    name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
+                //}
+                //else if(IsField)
+                //{
+                //    name = DataListUtil.ExtractFieldNameFromValue(name);
+                //}
 
-                if(!string.IsNullOrEmpty(name))
-                {
-                    var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
-                    if(intellisenseResult != null)
-                    {
-                        SetError(intellisenseResult.Message);
-                    }
-                    else
-                    {
-                        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                        {
-                            RemoveError();
-                        }
-                    }
-                }
+                //if(!string.IsNullOrEmpty(name))
+                //{
+                //    var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
+                //    if(intellisenseResult != null)
+                //    {
+                //        SetError(intellisenseResult.Message);
+                //    }
+                //    else
+                //    {
+                //        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                //        {
+                //            RemoveError();
+                //        }
+                //    }
+                //}
             }
             return name;
         }
 
-        private void SetChildInputValues(bool value)
-        {
-            UpdatingChildren = true;
-            var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
-            if(Children != null)
-            {
-                foreach(var dataListItemModel in Children)
-                {
-                    var child = (DataListItemModel)dataListItemModel;
-                    if (!string.IsNullOrEmpty(child.DisplayName))
-                    {
-                        child.UpdatingChildren = true;
-                        child.Input = value;
-                        child.UpdatingChildren = false;
-                        updatedChildren.Add(child);
-                    }
-                }
-            }
-            UpdatingChildren = false;
-            if(Children != null)
-            {
-                Children.Clear();
-                foreach(var dataListItemModel in updatedChildren)
-                {
-                    Children.Add(dataListItemModel);
-                }
-            }
-        }
+        //private void SetChildInputValues(bool value)
+        //{
+        //    UpdatingChildren = true;
+        //    var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
+        //    if(Children != null)
+        //    {
+        //        foreach(var dataListItemModel in Children)
+        //        {
+        //            var child = (DataListItemModel)dataListItemModel;
+        //            if (!string.IsNullOrEmpty(child.DisplayName))
+        //            {
+        //                child.UpdatingChildren = true;
+        //                child.Input = value;
+        //                child.UpdatingChildren = false;
+        //                updatedChildren.Add(child);
+        //            }
+        //        }
+        //    }
+        //    UpdatingChildren = false;
+        //    if(Children != null)
+        //    {
+        //        Children.Clear();
+        //        foreach(var dataListItemModel in updatedChildren)
+        //        {
+        //            Children.Add(dataListItemModel);
+        //        }
+        //    }
+        //}
 
-        private void SetChildOutputValues(bool value)
-        {
-            UpdatingChildren = true;
-            var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
-            if(Children != null)
-            {
-                foreach(var dataListItemModel in Children)
-                {
-                    var child = (DataListItemModel)dataListItemModel;
-                    if (!string.IsNullOrEmpty(child.DisplayName))
-                    {
-                        child.UpdatingChildren = true;
-                        child.Output = value;
-                        child.UpdatingChildren = false;
-                        updatedChildren.Add(child);
-                    }
-                }
-            }
-            UpdatingChildren = false;
-            if(Children != null)
-            {
-                Children.Clear();
-                foreach(var dataListItemModel in updatedChildren)
-                {
-                    Children.Add(dataListItemModel);
-                }
+        //private void SetChildOutputValues(bool value)
+        //{
+        //    UpdatingChildren = true;
+        //    var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
+        //    if(Children != null)
+        //    {
+        //        foreach(var dataListItemModel in Children)
+        //        {
+        //            var child = (DataListItemModel)dataListItemModel;
+        //            if (!string.IsNullOrEmpty(child.DisplayName))
+        //            {
+        //                child.UpdatingChildren = true;
+        //                child.Output = value;
+        //                child.UpdatingChildren = false;
+        //                updatedChildren.Add(child);
+        //            }
+        //        }
+        //    }
+        //    UpdatingChildren = false;
+        //    if(Children != null)
+        //    {
+        //        Children.Clear();
+        //        foreach(var dataListItemModel in updatedChildren)
+        //        {
+        //            Children.Add(dataListItemModel);
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
         private void SetColumnIODirectionFromInput(bool value)
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
-            if(!value)
+            if (!value)
             {
-                if(_columnIODir == enDev2ColumnArgumentDirection.Both)
+                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Output;
                 }
-                else if(_columnIODir == enDev2ColumnArgumentDirection.Input)
+                else if (_columnIODir == enDev2ColumnArgumentDirection.Input)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.None;
                 }
             }
             else
             {
-                if(_columnIODir == enDev2ColumnArgumentDirection.Output)
+                if (_columnIODir == enDev2ColumnArgumentDirection.Output)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                else if(_columnIODir == enDev2ColumnArgumentDirection.None)
+                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }
             }
 
-            if(original != _columnIODir)
+            if (original != _columnIODir)
             {
-                if(!UpdatingChildren)
+                if (!UpdatingChildren)
                 {
                     NotifyIOPropertyChanged();
                 }
@@ -462,32 +519,32 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
-            if(!value)
+            if (!value)
             {
-                if(_columnIODir == enDev2ColumnArgumentDirection.Both)
+                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }
-                else if(_columnIODir == enDev2ColumnArgumentDirection.Output)
+                else if (_columnIODir == enDev2ColumnArgumentDirection.Output)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.None;
                 }
             }
             else
             {
-                if(_columnIODir == enDev2ColumnArgumentDirection.Input)
+                if (_columnIODir == enDev2ColumnArgumentDirection.Input)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                else if(_columnIODir == enDev2ColumnArgumentDirection.None)
+                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Output;
                 }
             }
 
-            if(original != _columnIODir)
+            if (original != _columnIODir)
             {
-                if(!UpdatingChildren)
+                if (!UpdatingChildren)
                 {
                     NotifyIOPropertyChanged();
                 }
@@ -500,7 +557,8 @@ namespace Dev2.Studio.Core.Models.DataList
             NotifyOfPropertyChange(() => Input);
             NotifyOfPropertyChange(() => Output);
         }
-        #endregion
+
+        #endregion Methods
 
         #region Overrides of Object
 
@@ -515,6 +573,6 @@ namespace Dev2.Studio.Core.Models.DataList
             return DisplayName;
         }
 
-        #endregion
+        #endregion Overrides of Object
     }
 }
