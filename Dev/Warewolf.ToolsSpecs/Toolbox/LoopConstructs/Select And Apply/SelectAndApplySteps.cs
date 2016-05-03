@@ -2,12 +2,15 @@
 using Dev2.Activities;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach;
+using Dev2.Common.Interfaces;
+using Dev2.Data.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
@@ -71,24 +74,41 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             ScenarioContext.Current["datasource"] = datasource;
         }
 
-        [Given(@"the underlying dropped activity is a mocked test tool")]
-        public void GivenTheUnderlyingDroppedActivityIsAMockedTestTool()
+        [Given(@"the underlying dropped activity is a\(n\) ""(.*)"" tool")]
+        public void GivenTheUnderlyingDroppedActivityIsANTool(string tool)
         {
-            SelectAndApplyTestTool innerActivity = new SelectAndApplyTestTool();
+            IDev2Activity innerActivity = null;
+            switch (tool)
+            {
+                case "SelectAndApplyTestTool":
+                    innerActivity = new SelectAndApplyTestTool();
+                    
+                    break;
+                case "Activity":
+                    innerActivity = new DsfActivity
+                    {
+                        InputMapping = BuildInputMappings(),
+                        OutputMapping = BuildOutputMappings(),
+                        ServiceName = "SpecflowForeachActivityTest"
+                    };
+                    break;
+                default:
+                    break;
+            }
             ScenarioContext.Current.Add("innerActivity", innerActivity);
         }
 
         [Given(@"I use a Number Format tool configured as")]
         public void GivenIUseANumberFormatToolConfiguredAs(Table table)
         {
-            var activity = new DsfNumberFormatActivity();
-            activity.Expression = table.Rows[0]["Number"];
-            activity.DecimalPlacesToShow = table.Rows[0]["Decimals to show"];
-            activity.RoundingType = table.Rows[0]["Rounding"];
-            activity.RoundingDecimalPlaces = table.Rows[0]["Rounding Value"];
-            activity.Result = table.Rows[0]["Result"];
+            DsfNumberFormatActivity numberFormatActivity = new DsfNumberFormatActivity();
+            numberFormatActivity.Expression = table.Rows[0]["Number"];
+            numberFormatActivity.DecimalPlacesToShow = table.Rows[0]["Decimals to show"];
+            numberFormatActivity.RoundingType = table.Rows[0]["Rounding"];
+            numberFormatActivity.RoundingDecimalPlaces = table.Rows[0]["Rounding Value"];
+            numberFormatActivity.Result = table.Rows[0]["Result"];
 
-            ScenarioContext.Current.Add("innerActivity", activity);
+            ScenarioContext.Current.Add("innerActivity", numberFormatActivity);
         }
 
         [When(@"the selectAndApply tool is executed")]
@@ -128,8 +148,124 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             {
                 Assert.Fail("Result not matched");
             }
-
         }
+
+        [Given(@"I have selected the selectAndApply type as ""(.*)"" and used ""(.*)""")]
+        public void GivenIHaveSelectedTheSelectAndApplyTypeAsAndUsed(string foreachType, string recordSet)
+        {
+            var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
+            ScenarioContext.Current.Add("foreachType", forEachType);
+            switch (forEachType)
+            {
+                case enForEachType.InRecordset:
+                    ScenarioContext.Current.Add("recordset", recordSet);
+                    break;
+            }
+        }
+
+        //[Given(@"I have selected the foreach type as ""(.*)"" and used ""(.*)""")]
+        //public void GivenIHaveSelectedTheForeachTypeAsAndUsed(string foreachType, string recordSet)
+        //{
+        //    var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
+        //    ScenarioContext.Current.Add("foreachType", forEachType);
+        //    switch (forEachType)
+        //    {
+        //        case enForEachType.NumOfExecution:
+        //            ScenarioContext.Current.Add("numberAs", recordSet);
+        //            break;
+        //        case enForEachType.InRange:
+        //            ScenarioContext.Current.Add("from", recordSet);
+        //            ScenarioContext.Current.Add("to", recordSet);
+        //            break;
+        //        case enForEachType.InCSV:
+        //            ScenarioContext.Current.Add("numberAs", recordSet);
+        //            break;
+        //        case enForEachType.InRecordset:
+        //            ScenarioContext.Current.Add("recordset", recordSet);
+        //            break;
+        //    }
+        //}
+
+        //[Given(@"I have selected the selectAndApply type as ""(.*)"" and used """"(.*)""""")]
+        //public void GivenIHaveSelectedTheSelectAndApplyTypeAsAndUsed(string foreachType, string recordSet)
+        //{
+        //    var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
+        //    ScenarioContext.Current.Add("foreachType", forEachType);
+        //    switch (forEachType)
+        //    {
+        //        //case enForEachType.NumOfExecution:
+        //        //    ScenarioContext.Current.Add("numberAs", recordSet);
+        //        //    break;
+        //        //case enForEachType.InRange:
+        //        //    ScenarioContext.Current.Add("from", recordSet);
+        //        //    ScenarioContext.Current.Add("to", recordSet);
+        //        //    break;
+        //        //case enForEachType.InCSV:
+        //        //    ScenarioContext.Current.Add("numberAs", recordSet);
+        //        //    break;
+        //        case enForEachType.InRecordset:
+        //            ScenarioContext.Current.Add("recordset", recordSet);
+        //            break;
+        //    }
+        //}
+
+        //[Given(@"There is a recordset in the datalist with this shape")]
+        //public void GivenThereIsARecordsetInTheDatalistWithThisShape(Table table)
+        //{
+        //    List<TableRow> rows = table.Rows.ToList();
+
+        //    if (rows.Count == 0)
+        //    {
+        //        var rs = table.Header.ToArray()[0];
+        //        var field = table.Header.ToArray()[1];
+
+        //        List<Tuple<string, string>> emptyRecordset;
+
+        //        bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+        //        if (!isAdded)
+        //        {
+        //            emptyRecordset = new List<Tuple<string, string>>();
+        //            ScenarioContext.Current.Add("rs", emptyRecordset);
+        //        }
+        //        emptyRecordset.Add(new Tuple<string, string>(rs, field));
+        //    }
+
+        //    foreach (TableRow tableRow in rows)
+        //    {
+        //        List<Tuple<string, string>> variableList;
+        //        ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+        //        if (variableList == null)
+        //        {
+        //            variableList = new List<Tuple<string, string>>();
+        //            ScenarioContext.Current.Add("variableList", variableList);
+        //        }
+        //        variableList.Add(new Tuple<string, string>(tableRow[0], tableRow[1]));
+        //    }
+        //}
+
+        //[Given(@"I have selected the selectAndApply type as ""(.*)"" and used ""(.*)""")]
+        //public void GivenIHaveSelectedTheForeachTypeAsAndUsed(string foreachType, string recordSet)
+        //{
+        //    var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
+        //    ScenarioContext.Current.Add("foreachType", forEachType);
+        //    switch (forEachType)
+        //    {
+        //        case enForEachType.NumOfExecution:
+        //            ScenarioContext.Current.Add("numberAs", recordSet);
+        //            break;
+        //        case enForEachType.InRange:
+        //            ScenarioContext.Current.Add("from", recordSet);
+        //            ScenarioContext.Current.Add("to", recordSet);
+        //            break;
+        //        case enForEachType.InCSV:
+        //            ScenarioContext.Current.Add("numberAs", recordSet);
+        //            break;
+        //        case enForEachType.InRecordset:
+        //            ScenarioContext.Current.Add("recordset", recordSet);
+        //            break;
+        //    }
+        //}
 
         private const string ResultRecordsetVariable = "[[r().v]]";
 
@@ -145,17 +281,22 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             }
 
             BuildShapeAndTestData();
-            string recordSet;
-            if (!ScenarioContext.Current.TryGetValue("datasource", out recordSet))
+            string datasource;
+            if (!ScenarioContext.Current.TryGetValue("datasource", out datasource))
             {
-                recordSet = string.Empty;
+                datasource = string.Empty;
             }
 
-            var selectAndApplyTool = new DsfSelectAndApplyActivity();
-            var innerActivity = ScenarioContext.Current.Get<Activity>("innerActivity");
-            var alias = ScenarioContext.Current.Get<string>("alias");
+            string alias;
+            if (!ScenarioContext.Current.TryGetValue("alias", out alias))
+            {
+                alias = string.Empty;
+            }
 
-            selectAndApplyTool.DataSource = recordSet;
+            Activity innerActivity = ScenarioContext.Current.Get<Activity>("innerActivity");
+
+            DsfSelectAndApplyActivity selectAndApplyTool = new DsfSelectAndApplyActivity();
+            selectAndApplyTool.DataSource = datasource;
             selectAndApplyTool.Alias = alias;
             selectAndApplyTool.ApplyActivityFunc.Handler = innerActivity;
             TestStartNode = new FlowStep
@@ -164,6 +305,41 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             };
 
             ScenarioContext.Current.Add("activity", selectAndApplyTool);
+        }
+
+        private string BuildInputMappings()
+        {
+            var inputMappings = new StringBuilder();
+            inputMappings.Append("<Inputs>");
+
+            var inMapTo = ScenarioContext.Current.Get<string>("inMapTo");
+            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
+            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
+
+            var inMapFrom = ScenarioContext.Current.Get<string>("inMapFrom");
+            inputMappings.Append(string.Format("<Input Name=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>", inColumn,
+                                               inMapFrom, inRecordset));
+
+            inputMappings.Append("</Inputs>");
+            return inputMappings.ToString();
+        }
+
+        private string BuildOutputMappings()
+        {
+            var outputMappings = new StringBuilder();
+            outputMappings.Append("<Outputs>");
+
+            var outMapFrom = ScenarioContext.Current.Get<string>("outMapFrom");
+            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
+            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
+
+            var outMapTo = ScenarioContext.Current.Get<string>("outMapTo");
+            outputMappings.Append(string.Format(
+                "<Output Name=\"{0}\" MapsTo=\"{1}\" Value=\"{1}\" Recordset=\"{2}\"/>", inColumn,
+                outMapTo, inRecordset));
+
+            outputMappings.Append("</Outputs>");
+            return outputMappings.ToString();
         }
     }
 
