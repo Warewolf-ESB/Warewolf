@@ -229,7 +229,9 @@ and parseLanguageExpression (lang : string) (update : int) : LanguageExpression 
             | IndexNestedNameExpression b-> {b with Index = IntIndex update} |> JsonIdentifierExpression.IndexNestedNameExpression |> JsonIdentifierExpression
             | NestedNameExpression b -> 
                 match b.Next with 
-                | IndexNestedNameExpression x-> {x with Index = IntIndex update} |> JsonIdentifierExpression.IndexNestedNameExpression |> JsonIdentifierExpression
+                | IndexNestedNameExpression x-> {b with 
+                                                    ObjectName = b.ObjectName
+                                                    Next = {x with Index = IntIndex update} |> IndexNestedNameExpression} |> NestedNameExpression |> JsonIdentifierExpression
                 |_->data
             | Terminal _ -> data
             | _ -> data

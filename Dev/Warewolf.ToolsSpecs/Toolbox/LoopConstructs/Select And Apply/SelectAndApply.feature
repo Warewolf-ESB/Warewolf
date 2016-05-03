@@ -26,7 +26,7 @@ Scenario: Execute a selectAndApply tool with a Number Format tool with a json ob
 	And Alias is "[[Score]]"
 	And Datasource is "[[Person.Score]]"
 	And I use a Number Format tool configured as
-		| Number  | Rounding | Rounding Value | Decimals to show | Result  |
+		| Number    | Rounding | Rounding Value | Decimals to show | Result    |
 		| [[Score]] | Up       | 2              | 3                | [[Score]] |
 	When the selectAndApply tool is executed
 	Then the execution has "NO" error

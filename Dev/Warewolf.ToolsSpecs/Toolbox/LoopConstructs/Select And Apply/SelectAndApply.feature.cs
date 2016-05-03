@@ -166,17 +166,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a selectAndApply tool with a Number Format tool with a json object array " +
             "of json objects")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void NumberFormatToolWithComplextObjectMultiArray()
+        public virtual void ExecuteASelectAndApplyToolWithANumberFormatToolWithAJsonObjectArrayOfJsonObjects()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complext object multi array", new string[] {
-                        "ignore"});
-#line 82
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply tool with a Number Format tool with a json object array " +
+                    "of json objects", ((string[])(null)));
+#line 35
 this.ScenarioSetup(scenarioInfo);
-#line 83
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 84
- testRunner.And("I drag a new Select and Apply tool to the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -190,12 +185,12 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "[[Score().Value]]",
                         "0.12"});
-#line 85
+#line 36
  testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table5, "Given ");
-#line 90
- testRunner.And("Alias is \"[[Avg]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
- testRunner.And("Datasource is \"[[Person(*).Score(*).Avg]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+ testRunner.And("Datasource is \"[[Score(*).Value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
@@ -208,10 +203,171 @@ this.ScenarioSetup(scenarioInfo);
                         "Up",
                         "2",
                         "3",
-                        "[[Avg]]"});
-#line 92
+                        "[[Score]]"});
+#line 43
  testRunner.And("I use a Number Format tool configured as", ((string)(null)), table6, "And ");
-#line 95
+#line 46
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 47
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 48
+ testRunner.And("\"[[Score(1).Value]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+ testRunner.And("\"[[Score(2).Value]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+ testRunner.And("\"[[Score(3).Value]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a selectAndApply tool with a Number Format tool with a json object array " +
+            "of literals")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
+        public virtual void ExecuteASelectAndApplyToolWithANumberFormatToolWithAJsonObjectArrayOfLiterals()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply tool with a Number Format tool with a json object array " +
+                    "of literals", ((string[])(null)));
+#line 52
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table7.AddRow(new string[] {
+                        "[[Score()]]",
+                        "0.3"});
+            table7.AddRow(new string[] {
+                        "[[Score()]]",
+                        "0.45"});
+            table7.AddRow(new string[] {
+                        "[[Score()]]",
+                        "0.12"});
+#line 53
+ testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table7, "Given ");
+#line 58
+ testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.And("Datasource is \"[[Score(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Number",
+                        "Rounding",
+                        "Rounding Value",
+                        "Decimals to show",
+                        "Result"});
+            table8.AddRow(new string[] {
+                        "[[Score]]",
+                        "Up",
+                        "2",
+                        "3",
+                        "[[Score]]"});
+#line 60
+ testRunner.And("I use a Number Format tool configured as", ((string)(null)), table8, "And ");
+#line 63
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 64
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 65
+ testRunner.And("\"[[Score(1)]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+ testRunner.And("\"[[Score(2)]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.And("\"[[Score(3)]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a selectAndApply tool with a Number Format tool with json object array wi" +
+            "thin a json object")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
+        public virtual void ExecuteASelectAndApplyToolWithANumberFormatToolWithJsonObjectArrayWithinAJsonObject()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a selectAndApply tool with a Number Format tool with json object array wi" +
+                    "thin a json object", ((string[])(null)));
+#line 69
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table9.AddRow(new string[] {
+                        "[[Person.Score()]]",
+                        "0.3"});
+            table9.AddRow(new string[] {
+                        "[[Person.Score()]]",
+                        "0.45"});
+            table9.AddRow(new string[] {
+                        "[[Person.Score()]]",
+                        "0.12"});
+#line 70
+ testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table9, "Given ");
+#line 75
+ testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+ testRunner.And("Datasource is \"[[Person.Score(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Number",
+                        "Rounding",
+                        "Rounding Value",
+                        "Decimals to show",
+                        "Result"});
+            table10.AddRow(new string[] {
+                        "[[Score]]",
+                        "Up",
+                        "2",
+                        "3",
+                        "[[Score]]"});
+#line 77
+ testRunner.And("I use a Number Format tool configured as", ((string)(null)), table10, "And ");
+#line 80
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 81
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 82
+ testRunner.And("\"[[Person.Score(1)]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 83
+ testRunner.And("\"[[Person.Score(2)]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 84
+ testRunner.And("\"[[Person.Score(3)]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Number Format tool with complext object multi array")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SelectAndApply")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void NumberFormatToolWithComplextObjectMultiArray()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Number Format tool with complext object multi array", new string[] {
+                        "ignore"});
+#line 88
+this.ScenarioSetup(scenarioInfo);
+#line 89
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 90
+ testRunner.And("I drag a new Select and Apply tool to the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table11.AddRow(new string[] {
+                        "[[Person().Score()]]",
+                        "0.3"});
+            table11.AddRow(new string[] {
+                        "[[Person().Score()]]",
+                        "0.45"});
+            table11.AddRow(new string[] {
+                        "[[Person().Score()]]",
+                        "0.12"});
+#line 91
+ testRunner.Given("There is a complexobject in the datalist with this shape", ((string)(null)), table11, "Given ");
+#line 96
+ testRunner.And("Alias is \"[[Score]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
  testRunner.And("Datasource is \"[[Person(*).Score(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -226,18 +382,18 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "3",
                         "[[Score]]"});
-#line 94
- testRunner.And("I use a Number Format tool configured as", ((string)(null)), table12, "And ");
-#line 97
- testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 96
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 97
- testRunner.And("\"[[Person(1).Score(1).Avg]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
- testRunner.And("\"[[Person(2).Score(2).Avg]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
- testRunner.And("\"[[Person(3).Score(3).Avg]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I use a Number Format tool configured as", ((string)(null)), table12, "And ");
+#line 101
+ testRunner.When("the selectAndApply tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 102
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 103
+ testRunner.And("\"[[Person(1).Score(1)]]\" has a value of \"0.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.And("\"[[Person(2).Score(2)]]\" has a value of \"0.450\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.And("\"[[Person(3).Score(3)]]\" has a value of \"0.120\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
