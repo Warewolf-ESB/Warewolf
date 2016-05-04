@@ -74,7 +74,7 @@ namespace Dev2.Studio.Core.Factories
 
         public static IRecordSetFieldItemModel CreateRecordSetFieldItemModel(string displayname, string description = "", IRecordSetItemModel parent = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
         {
-            IRecordSetFieldItemModel dataListModel = new RecordSetFieldItemModel(parent, displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            IRecordSetFieldItemModel dataListModel = new RecordSetFieldItemModel(displayname, parent, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
             if (parent != null && !String.IsNullOrEmpty(displayname))
             {
                 dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
