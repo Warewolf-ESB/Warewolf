@@ -416,12 +416,12 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[[Car]]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel ("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country"));
 
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
@@ -447,12 +447,12 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[Car]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country"));
 
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
@@ -478,12 +478,12 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[[Car]]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("[[Country]]", "name of Country", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("[[Country]]", "name of Country"));
 
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
@@ -508,12 +508,13 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[[Car]]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
-            var scalarDataListItemWithError = DataListItemModelFactory.CreateDataListModel("[[Country]]", "name of Country", enDev2ColumnArgumentDirection.Both);
+
+            var scalarDataListItemWithError = DataListItemModelFactory.CreateScalarItemModel("[[Country]]", "name of Country");
             scalarDataListItemWithError.HasError = true;
             scalarDataListItemWithError.ErrorMessage = "This is an Error";
             _dataListViewModel.ScalarCollection.Add(scalarDataListItemWithError);
@@ -544,12 +545,12 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[Car]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("[Country]", "name of Country", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("[Country]", "name of Country"));
 
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
@@ -574,12 +575,12 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("[Car]", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("Country()", "name of Country", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country()", "name of Country"));
 
             DataListSingleton.SetDataList(_dataListViewModel);
             //------------Execute Test---------------------------
