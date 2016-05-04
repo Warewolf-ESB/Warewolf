@@ -43,8 +43,9 @@ namespace Dev2.Core.Tests.ModelTests
         public void DataListItemModelCTORWithRecords_Expected_DataListItemModelCreatedWithRespectiveFieldsPopulated()
         {
             IDataListItemModel parent = CreateDataListItemModel("TestItem");
-            TestDataListItemModelSet("UnitTestDataListItem", true, parent);
-            Assert.IsTrue(_testDataListItemModel.IsRecordset && _testDataListItemModel.Children.Count == 10);
+            TestDataListItemModelSet("UnitTestDataListItem", true);
+            Assert.IsNotNull(_testDataListItemModel);
+            Assert.AreEqual(_testDataListItemModel.DisplayName, "TestItem");
         }
 
         #endregion CTOR Tests
@@ -89,14 +90,12 @@ namespace Dev2.Core.Tests.ModelTests
 
         #region Private Test Methods
 
-        private void TestDataListItemModelSet(string name, bool populateAllFields = false, IDataListItemModel parent = null)
+        private void TestDataListItemModelSet(string name, bool populateAllFields = false)
         {
             if(populateAllFields)
             {
                 _testDataListItemModel = new DataListItemModel(name, enDev2ColumnArgumentDirection.None
                                                              , "Test Description"
-                                                             , parent
-                                                             , CreateChildren(_testDataListItemModel, 10)
                                                              , false
                                                              , ""
                                                              , true
@@ -109,17 +108,6 @@ namespace Dev2.Core.Tests.ModelTests
                 _testDataListItemModel = new DataListItemModel(name);
             }
 
-        }
-
-        private OptomizedObservableCollection<IDataListItemModel> CreateChildren(IDataListItemModel parent, int numberOfChildrenToCreate)
-        {
-            OptomizedObservableCollection<IDataListItemModel> children = new OptomizedObservableCollection<IDataListItemModel>();
-            for(int i = 1; i <= numberOfChildrenToCreate; i++)
-            {
-                children.Add(new DataListItemModel("child" + i, enDev2ColumnArgumentDirection.None, "", parent));
-            }
-
-            return children;
         }
 
         private IDataListItemModel CreateDataListItemModel(string name)

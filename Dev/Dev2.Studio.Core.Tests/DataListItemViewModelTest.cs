@@ -58,13 +58,13 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for DataListItemViewModel Parent Property Setter
         ///</summary>
-        [TestMethod]
-        public void CreationofItemAsChild_ExpectedCorrectReferenceToParent()
-        {
-            IDataListItemModel childSet = DataListItemModelFactory.CreateDataListModel("TestChild", "", _dataListItemModel);
+        //[TestMethod]
+        //public void CreationofItemAsChild_ExpectedCorrectReferenceToParent()
+        //{
+        //    IDataListItemModel childSet = DataListItemModelFactory.CreateDataListModel("TestChild", "", _dataListItemModel);
 
-            Assert.AreEqual("testItem", childSet.Parent.DisplayName);
-        }
+        //    Assert.AreEqual("testItem", childSet.Parent.DisplayName);
+        //}
 
         #endregion Parent Property Tests
 
@@ -73,45 +73,45 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for Adding DataListItems to the DataListViewModel
         ///</summary>
-        [TestMethod]
-        public void AddChild_ExpectedChildCreationOnDataListItem()
-        {
-            IDataListItemModel dataListItemToAdd = DataListItemModelFactory.CreateDataListModel("testName");
-            int countBeforeAdd = _dataListItemModel.Children.Count;
-            _dataListItemModel.Children.Add(dataListItemToAdd);
-            Assert.IsTrue(_dataListItemModel.Children.Count > countBeforeAdd && _dataListItemModel.Children.Count < countBeforeAdd + 2);
-        }
+        //[TestMethod]
+        //public void AddChild_ExpectedChildCreationOnDataListItem()
+        //{
+        //    IDataListItemModel dataListItemToAdd = DataListItemModelFactory.CreateDataListModel("testName");
+        //    int countBeforeAdd = _dataListItemModel.Children.Count;
+        //    _dataListItemModel.Children.Add(dataListItemToAdd);
+        //    Assert.IsTrue(_dataListItemModel.Children.Count > countBeforeAdd && _dataListItemModel.Children.Count < countBeforeAdd + 2);
+        //}
 
 
         // Should this be checking for errors?
         /// <summary>
         /// A test for adding invalid children
         /// </summary>
-        [TestMethod]
-        public void AddChild_InvalidChildrenCollection_Expected_ChildrenContainErrors()
-        {
-            IDataListItemModel child = DataListItemModelFactory.CreateDataListModel("test!@#");
+        //[TestMethod]
+        //public void AddChild_InvalidChildrenCollection_Expected_ChildrenContainErrors()
+        //{
+        //    IDataListItemModel child = DataListItemModelFactory.CreateDataListModel("test!@#");
 
-            _dataListItemModel.Children.Add(child);
+        //    _dataListItemModel.Children.Add(child);
 
-            Assert.IsTrue(_dataListItemModel.Children.Count == 1 && _dataListItemModel.Children[0].HasError);
-        }
+        //    Assert.IsTrue(_dataListItemModel.Children.Count == 1 && _dataListItemModel.Children[0].HasError);
+        //}
 
         #endregion AddChildren Tests
 
         #region RemoveChild Tests
 
-        [TestMethod]
-        public void RemoveChild_ExpectRootDataListItemToHaveOneChild()
-        {
-            IDataListItemModel dataListItemToAdd = DataListItemModelFactory.CreateDataListModel("testDataListItem");
-            _dataListItemModel.Children.Add(dataListItemToAdd);
+        //[TestMethod]
+        //public void RemoveChild_ExpectRootDataListItemToHaveOneChild()
+        //{
+        //    IDataListItemModel dataListItemToAdd = DataListItemModelFactory.CreateDataListModel("testDataListItem");
+        //    _dataListItemModel.Children.Add(dataListItemToAdd);
 
-            int countBefore = _dataListItemModel.Children.Count;
-            _dataListItemModel.Children.Remove(dataListItemToAdd);
+        //    int countBefore = _dataListItemModel.Children.Count;
+        //    _dataListItemModel.Children.Remove(dataListItemToAdd);
 
-            Assert.AreNotEqual(_dataListItemModel.Children.Count, countBefore);
-        }
+        //    Assert.AreNotEqual(_dataListItemModel.Children.Count, countBefore);
+        //}
 
         #endregion RemoveChild Tests
 
@@ -120,26 +120,26 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for DisplayName
         ///</summary>
-        [TestMethod]
-        public void GetDisplayName_ExpectedReturnDataListItemDisplayName()
-        {
-            _dataListItemModel.Children.Add(DataListItemModelFactory.CreateDataListModel("testChild", "", _dataListItemModel));
-            const string expected = "testChild";
+        //[TestMethod]
+        //public void GetDisplayName_ExpectedReturnDataListItemDisplayName()
+        //{
+        //    _dataListItemModel.Children.Add(DataListItemModelFactory.CreateDataListModel("testChild", "", _dataListItemModel));
+        //    const string expected = "testChild";
 
-            string actual = _dataListItemModel.Children[0].DisplayName;
-            Assert.AreEqual(expected, actual);
-        }
+        //    string actual = _dataListItemModel.Children[0].DisplayName;
+        //    Assert.AreEqual(expected, actual);
+        //}
 
         /// <summary>
         ///A test for IsRecordSet
         ///</summary>
-        [TestMethod]
-        public void IsNotRecordSet_ExpectedDataItemNotContainChildren()
-        {
-            const bool expected = false;
-            bool actual = _dataListItemModel.IsRecordset;
-            Assert.AreEqual(expected, actual);
-        }
+        //[TestMethod]
+        //public void IsNotRecordSet_ExpectedDataItemNotContainChildren()
+        //{
+        //    const bool expected = false;
+        //    bool actual = _dataListItemModel.IsRecordset;
+        //    Assert.AreEqual(expected, actual);
+        //}
 
         /// <summary>
         ///A test for Name
