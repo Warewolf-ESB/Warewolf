@@ -708,7 +708,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
-            IDataListItemModel item = new DataListItemModel("de()");
+            IRecordSetItemModel item = new RecordSetItemModel("de()");
             item.DisplayName = "de";
 
             _dataListViewModel.RecsetCollection.Insert(1, item);
@@ -1519,7 +1519,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
-            var scalarItem = new DataListItemModel("scalar");
+            var scalarItem = new ScalarItemModel("scalar");
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //----------------------Precondition----------------------------
             Assert.AreEqual(1, dataListViewModel.ScalarCollection.Count);
@@ -1601,7 +1601,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName);
+            var scalarItem = new ScalarItemModel(scalarName);
             dataListViewModel.ScalarCollection.Add(scalarItem);
             var parts = new List<IDataListVerifyPart> { CreateScalarPart(scalarName).Object };
             //----------------------Precondition----------------------------
@@ -1716,7 +1716,7 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName) { IsUsed = false };
+            var scalarItem = new ScalarItemModel(scalarName) { IsUsed = false };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             var parts = new List<IDataListVerifyPart> { CreateScalarPart(scalarName).Object };
             //------------Execute Test---------------------------
@@ -1784,7 +1784,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName) { IsVisible = true };
+            var scalarItem = new ScalarItemModel(scalarName) { IsVisible = true };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "test";
@@ -1801,7 +1801,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName) { IsVisible = false };
+            var scalarItem = new ScalarItemModel(scalarName) { IsVisible = false };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "sca";
@@ -1821,13 +1821,13 @@ namespace Dev2.Core.Tests
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = false;
+            recSetDataModel.IsVisible = false;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "rec";
             //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.RecsetCollection[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.RecsetCollection[0].IsVisible);
         }
          [Ignore]
         [TestMethod]
@@ -1841,13 +1841,13 @@ namespace Dev2.Core.Tests
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = true;
+            recSetDataModel.IsVisible = true;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "bob";
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListViewModel.RecsetCollection[0].IsVisable);
+            Assert.IsFalse(dataListViewModel.RecsetCollection[0].IsVisible);
         }
          [Ignore]
         [TestMethod]
@@ -1861,14 +1861,14 @@ namespace Dev2.Core.Tests
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = false;
-            firstFieldDataListItemModel.IsVisable = false;
+            recSetDataModel.IsVisible = false;
+            firstFieldDataListItemModel.IsVisible = false;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "f";
             //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
+            Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsVisible);
         }
          [Ignore]
         [TestMethod]
@@ -1882,14 +1882,14 @@ namespace Dev2.Core.Tests
             const string firstFieldName = "f1";
             IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
             IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.IsVisable = true;
-            firstFieldDataListItemModel.IsVisable = true;
+            recSetDataModel.IsVisible = true;
+            firstFieldDataListItemModel.IsVisible = true;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "jim";
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
+            Assert.IsFalse(dataListViewModel.RecsetCollection[0].Children[0].IsVisible);
         }
 
         [TestMethod]
