@@ -18,6 +18,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Factory
