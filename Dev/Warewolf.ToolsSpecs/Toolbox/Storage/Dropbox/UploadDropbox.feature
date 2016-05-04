@@ -13,7 +13,8 @@ Scenario: Open new Dropbox Tool
 	And Dropbox File is Enabled
 	When I Click New
 	Then the New Dropbox Source window is opened
-	
+
+@ignore	
 Scenario: Editing Dropbox Tool
 	Given I open New Workflow
 	And I drag Upload Dropbox Tool onto the design surface
