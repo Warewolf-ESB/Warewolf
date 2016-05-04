@@ -233,8 +233,7 @@ namespace Warewolf.Studio.ViewModels
 
         async void ServerConnected(object _, IServer server)
         {
-            if (server != null &&
-                server.IsConnected)
+            if (server != null)
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
