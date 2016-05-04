@@ -408,6 +408,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Images\RabbitMQ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Images\Utility-PublishRabbitMQ.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
