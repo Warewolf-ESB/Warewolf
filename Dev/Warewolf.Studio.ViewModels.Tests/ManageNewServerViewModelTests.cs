@@ -227,6 +227,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                                         isCancelled = true;
                                     });
                         });
+            _target.Protocol = "http";
+            _target.SelectedPort = "3412";
+            _target.ServerName = new ComputerName {Name = "localhost"};
             _target.Address = "http://localhost/";
             _target.TestCommand.Execute(null);
 
@@ -322,6 +325,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         errorAction(null);
                     });
+            _target.Protocol = "http";
+            _target.SelectedPort = "3412";
+            _target.ServerName = new ComputerName { Name = "localhost" };
             //act
             _target.TestCommand.Execute(null);
 
@@ -348,6 +354,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         errorAction(new Exception(expectedExceptionMessage));
                     });
+            _target.Protocol = "http";
+            _target.SelectedPort = "3412";
+            _target.ServerName = new ComputerName { Name = "localhost" };
             _target.Address = "http://localhost/";
 
             //act
