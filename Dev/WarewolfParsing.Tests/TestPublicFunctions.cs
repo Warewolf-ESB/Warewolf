@@ -109,18 +109,6 @@ namespace WarewolfParsingTest
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("PublicFunctions_AddRecsetToEnvironment")]
-        [ExpectedException(typeof(IndexOutOfRangeException))]
-        public void PublicFunctions_IsValidRecsetExpFalse()
-        {
-            Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[a]]"));
-            Assert.IsTrue(PublicFunctions.IsValidRecsetExpression("[[rec(-1).a]]"));
-
-  
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
         [TestCategory("PublicFunctions_AtomListToSearchTo")]
         public void PublicFunctions_AtomListToSearchTo()
         {

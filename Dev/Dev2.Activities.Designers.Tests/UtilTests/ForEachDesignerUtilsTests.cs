@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
-using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Utils;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
