@@ -376,14 +376,14 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if (ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
                     {
-                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
+                        var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
                         if (ScalarCollection.Count > ScalarCollection.Count - 1 && ScalarCollection.Count > 0)
                         {
-                            ScalarCollection.Insert(ScalarCollection.Count - 1, (IScalarItemModel)scalar);
+                            ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
                         }
                         else
                         {
-                            ScalarCollection.Insert(ScalarCollection.Count, (IScalarItemModel)scalar);
+                            ScalarCollection.Insert(ScalarCollection.Count, scalar);
                         }
                     }
                 }
@@ -780,8 +780,8 @@ namespace Dev2.Studio.ViewModels.DataList
             List<IScalarItemModel> blankList = ScalarCollection.Where(c => c.IsBlank).ToList();
             if (blankList.Count != 0) return;
 
-            IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(string.Empty);
-            ScalarCollection.Add((IScalarItemModel)scalar);
+            var scalar = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
+            ScalarCollection.Add(scalar);
         }
 
         void AddRowToRecordsets()
@@ -1088,7 +1088,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     CreateColumns(subc, cols);
                 }
                 var recset = CreateRecordSet(c);
-                AddColumnsToRecordSet((IEnumerable<IRecordSetFieldItemModel>)cols, (IRecordSetItemModel)recset);
+                AddColumnsToRecordSet((IEnumerable<IRecordSetFieldItemModel>)cols, recset);
             }
         }
 
@@ -1101,7 +1101,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        IDataListItemModel CreateRecordSet(XmlNode c)
+        IRecordSetItemModel CreateRecordSet(XmlNode c)
         {
             IRecordSetItemModel recset;
             if (c.Attributes != null)
