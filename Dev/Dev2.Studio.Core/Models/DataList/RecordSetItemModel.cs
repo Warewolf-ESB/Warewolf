@@ -1,4 +1,6 @@
 ﻿using Dev2.Data.Binary_Objects;
+using Dev2.Data.Parsers;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces.DataList;
 using System;
 using System.Collections.ObjectModel;
@@ -12,6 +14,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         private string _filterText;
         private ObservableCollection<IRecordSetFieldItemModel> _children;
+        private string _displayName;
 
         public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IRecordSetFieldItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
@@ -34,196 +37,19 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        //public enDev2ColumnArgumentDirection ColumnIODirection
-        //{
-        //    get
-        //    {
-        //        return _columnIODir;
-        //    }
-        //    set
-        //    {
-        //        _columnIODir = value;
-
-        //        NotifyIOPropertyChanged();
-        //    }
-        //}
-
-        //public string Description
-        //{
-        //    get
-        //    {
-        //        return _description;
-        //    }
-        //    set
-        //    {
-        //        _description = value;
-        //        NotifyOfPropertyChange(() => Description);
-        //    }
-        //}
-
-        //public string DisplayName
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public string ErrorMessage
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool HasError
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool Input
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsBlank
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsCheckBoxVisible
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsEditable
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsExpanded
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsHeader
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsSelected
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsUsed
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool IsVisible
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
-        //public bool Output
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
+        public new string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+            set
+            {
+                _displayName = ValidateName(value);
+                //Name = value;
+                NotifyOfPropertyChange(() => DisplayName);
+            }
+        }
 
         public string FilterText
         {
@@ -271,45 +97,48 @@ namespace Dev2.Studio.Core.Models.DataList
             Children = new ObservableCollection<IRecordSetFieldItemModel>(Children.Where(a => a.DisplayName.ToUpper().Contains(searchText.ToUpper())));
         }
 
-        //public void RemoveError()
-        //{
-        //    HasError = false;
-        //    ErrorMessage = string.Empty;
-        //}
+        public string ValidateName(string name)
+        {
+            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+            if (!string.IsNullOrEmpty(name))
+            {
+                name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
 
-        //public void SetError(string errorMessage)
-        //{
-        //    HasError = true;
-        //    ErrorMessage = errorMessage;
-        //}
+                if (!string.IsNullOrEmpty(name))
+                {
+                    var intellisenseResult = parser.ValidateName(name, "Recordset");
+                    if (intellisenseResult != null)
+                    {
+                        SetError(intellisenseResult.Message);
+                    }
+                    else
+                    {
+                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                        {
+                            RemoveError();
+                        }
+                    }
+                }
+            }
+            return name;
+        }
 
-        //public string ValidateName(string name)
-        //{
-        //    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-        //    if (!string.IsNullOrEmpty(name))
-        //    {
-        //            name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                
-        //        if (!string.IsNullOrEmpty(name))
-        //        {
-        //            var intellisenseResult = parser.ValidateName(name, "Recordset");
-        //            if (intellisenseResult != null)
-        //            {
-        //                SetError(intellisenseResult.Message);
-        //            }
-        //            else
-        //            {
-        //                if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-        //                {
-        //                    RemoveError();
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return name;
-        //}
+        #region Overrides of Object
+
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override string ToString()
+        {
+            return DisplayName;
+        }
+
+        #endregion Overrides of Object
     }
 }
