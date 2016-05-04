@@ -71,5 +71,21 @@ namespace Dev2.Studio.Core.Factories
             }
             return dataListModel;
         }
+
+        public static IRecordSetFieldItemModel CreateRecordSetFieldItemModel(string displayname, string description = "", IRecordSetItemModel parent = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
+        {
+            IRecordSetFieldItemModel dataListModel = new RecordSetFieldItemModel(parent, displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            if (parent != null && !String.IsNullOrEmpty(displayname))
+            {
+                dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
+            }
+            return dataListModel;
+        }
+        
+        public static IScalarItemModel CreateScalarItemModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
+        {
+            IScalarItemModel dataListModel = new ScalarItemModel(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            return dataListModel;
+        }
     }
 }
