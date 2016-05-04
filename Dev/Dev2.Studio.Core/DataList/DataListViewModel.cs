@@ -111,7 +111,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     return false;
                 }
-                return DataList.Any(model =>
+                return RecsetCollection.Any(model =>
                 {
                     if(RecordSetHasChildren(model))
                     {
@@ -295,7 +295,7 @@ namespace Dev2.Studio.ViewModels.DataList
             recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
         }
 
-        static void ProcessFoundRecordSets(IDataListVerifyPart part, IDataListItemModel recsetToRemove, bool isUsed)
+        static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
         {
             if(string.IsNullOrEmpty(part.Field))
             {
@@ -307,7 +307,7 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 if(recsetToRemove == null) return;
-                var childrenToRemove = recsetToRemove.Children.Where(c => c.Name == part.Field && c.IsField);
+                var childrenToRemove = recsetToRemove.Children.Where(c => c.DisplayName == part.Field);
                 childrenToRemove.ToList().ForEach(childToRemove =>
                 {
                     if(childToRemove != null)
@@ -370,7 +370,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)
         {
-            IList<IRecordSetItemModel> tmpRecsetList = new List<IDataListItemModel>();
+            IList<IRecordSetItemModel> tmpRecsetList = new List<IRecordSetItemModel>();
             foreach(var part in parts)
             {
                 if(part.IsScalar)
@@ -479,7 +479,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FilterItems()
         {
-            //ConvertDataListStringToCollections(Resource.DataList);
             if (_backupScalars != null)
             {
                 ScalarCollection.Clear();
@@ -497,10 +496,8 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-
             if (SearchText == null)
             {
-
                 return;
             }
             _backupScalars = new ObservableCollection<IScalarItemModel>();
@@ -623,7 +620,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
                         while(childrenCount < childrenNum)
                         {
-                            IDataListItemModel child = recset.Children[childrenCount];
+                            IRecordSetFieldItemModel child = recset.Children[childrenCount];
                             
                             if(!string.IsNullOrWhiteSpace(child.DisplayName))
                             {
