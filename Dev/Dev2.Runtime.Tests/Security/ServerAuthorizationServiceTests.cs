@@ -1,17 +1,13 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Runtime.Security;
@@ -19,6 +15,9 @@ using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Dev2.Tests.Runtime.Security
 {
@@ -379,7 +378,7 @@ namespace Dev2.Tests.Runtime.Security
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetImage, string.Format(UrlFormat, "images/clear-filter.png"), queryString.Object, ResourceID),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetScript, string.Format(UrlFormat, "scripts/fx/jquery-1.9.1.min.js"), queryString.Object, ResourceID),
                 new TestAuthorizationRequest(AuthorizationContext.Any, WebServerRequestType.WebGetView, string.Format(UrlFormat, "views/services/dbservice.htm"), queryString.Object, ResourceID),
-                
+
                 new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetDecisions, string.Format(UrlFormat, "decisions/wizard.htm"), queryStringWithResource.Object, ResourceID),
                 new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetDialogs, string.Format(UrlFormat, "dialogs/savedialog.htm"), queryString.Object, ResourceID),
                 new TestAuthorizationRequest(AuthorizationContext.View, WebServerRequestType.WebGetServices, string.Format(UrlFormat, "services/webservice.htm"), queryString.Object, ResourceID),
@@ -448,13 +447,13 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(requests);
         }
 
-        void Verify_IsAuthorized(TestAuthorizationRequest[] requests)
+        private void Verify_IsAuthorized(TestAuthorizationRequest[] requests)
         {
             var isServers = new[] { false, true };
 
-            foreach(var isServer in isServers)
+            foreach (var isServer in isServers)
             {
-                foreach(var request in requests)
+                foreach (var request in requests)
                 {
                     Verify_IsAuthorized(Permissions.None, request, isServer);
                     Verify_IsAuthorized(Permissions.View, request, isServer);
@@ -470,14 +469,14 @@ namespace Dev2.Tests.Runtime.Security
             }
         }
 
-        void Verify_IsAuthorized(Permissions configPermissions, TestAuthorizationRequest authorizationRequest, bool isServer)
+        private void Verify_IsAuthorized(Permissions configPermissions, TestAuthorizationRequest authorizationRequest, bool isServer)
         {
             var configPermission = new WindowsGroupPermission { WindowsGroup = TestAuthorizationRequest.UserRole, IsServer = isServer, Permissions = configPermissions };
 
-            if(!isServer && !string.IsNullOrEmpty(authorizationRequest.Resource))
+            if (!isServer && !string.IsNullOrEmpty(authorizationRequest.Resource))
             {
                 Guid resourceID;
-                if(Guid.TryParse(authorizationRequest.Resource, out resourceID))
+                if (Guid.TryParse(authorizationRequest.Resource, out resourceID))
                 {
                     configPermission.ResourceID = resourceID;
                     configPermission.ResourceName = "TestCategory\\";
@@ -496,9 +495,9 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(configPermission, authorizationRequest);
         }
 
-        void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
+        private void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
         {
-            //------------Setup for test--------------------------           
+            //------------Setup for test--------------------------
             var allowedPermissions = AuthorizationHelpers.ToPermissions(authorizationRequest.AuthorizationContext);
             var expected = authorizationRequest.UserIsInRole && (configPermissions.Permissions & allowedPermissions) != 0;
 
@@ -512,6 +511,23 @@ namespace Dev2.Tests.Runtime.Security
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, authorized, string.Format("\nUserIsInRole: {0}\nAllowed: {1}\nConfig: {2}\nIsServer: {3}\nURL: {4}",
                 authorizationRequest.UserIsInRole, allowedPermissions, configPermissions.Permissions, configPermissions.IsServer, authorizationRequest.Url));
+        }
+
+        [TestMethod]
+        [Owner("Clint Stedman")]
+        [TestCategory("ServerAuthorizationService_IsAuthorized")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ServerAuthorizationService_IsAuthorized_ResourceIsNull_ThrowsArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+            var securityService = new Mock<ISecurityService>();
+
+            var authorizationService = new TestServerAuthorizationService(securityService.Object);
+
+            //------------Execute Test---------------------------
+            authorizationService.IsAuthorized(AuthorizationContext.Any, null);
+
+            //------------Assert Results-------------------------
         }
 
         // ReSharper restore InconsistentNaming
