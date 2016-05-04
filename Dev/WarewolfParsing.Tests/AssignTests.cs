@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable InconsistentNaming
 
 namespace WarewolfParsingTest
 {
@@ -221,6 +224,45 @@ namespace WarewolfParsingTest
             Assert.IsTrue(x.RecordSets.ContainsKey("Rec"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("d"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("a"));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Assign_JsonArrayIndex")]
+        public void Assign_ValueToJsonArrayAtIndex()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            AssignEvaluation.evalAssignWithFrame(new AssignValue("[[array(1)]]", "3"), 0, data);
+
+            //------------Assert Results-------------------------
+            var jsonObject = data.JsonObjects["array"];
+            Assert.IsNotNull(jsonObject);
+            var values = jsonObject.Values<string>();
+            var valueList = values as IList<string> ?? values.ToList();
+            Assert.AreEqual(1,valueList.Count);
+            Assert.AreEqual("3",valueList[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Assign_JsonProperty")]
+        public void Assign_ValueToJsonProperty()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            AssignEvaluation.evalAssignWithFrame(new AssignValue("[[Person.Name]]", "dora"), 0, data);
+
+            //------------Assert Results-------------------------
+            var jsonObject = data.JsonObjects["Person"];
+            Assert.IsNotNull(jsonObject);
+            var value = jsonObject.First;
+            var token = ((Newtonsoft.Json.Linq.JProperty)value).Value;
+            Assert.AreEqual("dora", token);
         }
 
 
