@@ -8,6 +8,7 @@ using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
+using Dev2.Studio.Core;
 
 // ReSharper disable MemberCanBePrivate.Global
 
