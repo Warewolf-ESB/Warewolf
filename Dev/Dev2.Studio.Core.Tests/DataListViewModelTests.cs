@@ -993,9 +993,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------            
             Setup();
-            var child = DataListItemModelFactory.CreateDataListModel("Child");
-            var originalchild = DataListItemModelFactory.CreateDataListModel("");
-            var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
+            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel("Child");
+            var originalchild = DataListItemModelFactory.CreateRecordSetFieldItemModel("");
+            var parent = DataListItemModelFactory.CreateRecordSetItemModel("RecordSet");
             parent.Children.Add(originalchild);
 
 
@@ -1021,7 +1021,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar()", children: new OptomizedObservableCollection<IDataListItemModel> { DataListItemModelFactory.CreateDataListModel("Child") });
+            var dataListItemModel = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar()", children: new OptomizedObservableCollection<IRecordSetFieldItemModel> { DataListItemModelFactory.CreateRecordSetFieldItemModel("Child") });
             //------------Execute Test---------------------------
             _dataListViewModel.RecsetCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1036,7 +1036,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar().", children: new OptomizedObservableCollection<IDataListItemModel> { DataListItemModelFactory.CreateDataListModel("Child") });
+            var dataListItemModel = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar().", children: new OptomizedObservableCollection<IRecordSetFieldItemModel> { DataListItemModelFactory.CreateRecordSetFieldItemModel("Child") });
             //------------Execute Test---------------------------
             _dataListViewModel.RecsetCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1052,7 +1052,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar()", children: new OptomizedObservableCollection<IDataListItemModel> { DataListItemModelFactory.CreateDataListModel("Child@") });
+            var dataListItemModel = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar()", children: new OptomizedObservableCollection<IRecordSetFieldItemModel> { DataListItemModelFactory.CreateRecordSetFieldItemModel("Child@") });
             //------------Execute Test---------------------------
             _dataListViewModel.RecsetCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel.Children[0]);
@@ -1068,8 +1068,8 @@ namespace Dev2.Core.Tests
         {
             Setup();
 
-            var child = DataListItemModelFactory.CreateDataListModel("");
-            var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
+            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel("");
+            var parent = DataListItemModelFactory.CreateRecordSetItemModel("RecordSet");
 
             parent.Children.Add(child);
             _dataListViewModel.RecsetCollection.Add(parent);
@@ -1086,8 +1086,8 @@ namespace Dev2.Core.Tests
             //------------Setup------------------------------------
             Setup();
 
-            var child = DataListItemModelFactory.CreateDataListModel("");
-            var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
+            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel("");
+            var parent = DataListItemModelFactory.CreateRecordSetItemModel("RecordSet");
 
             parent.Children.Add(child);
             _dataListViewModel.RecsetCollection.Add(parent);
@@ -1105,8 +1105,8 @@ namespace Dev2.Core.Tests
         {
             Setup();
 
-            var child = DataListItemModelFactory.CreateDataListModel("Child");
-            var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
+            var child = DataListItemModelFactory.CreateRecordSetFieldItemModel("Child");
+            var parent = DataListItemModelFactory.CreateRecordSetItemModel("RecordSet");
             parent.Children.Add(child);
             _dataListViewModel.RecsetCollection.Add(parent);
             _dataListViewModel.ValidateNames(parent);
@@ -1139,7 +1139,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel();
-            IDataListItemModel dataListItemModel = new DataListItemModel("test@");
+            IScalarItemModel dataListItemModel = new ScalarItemModel("test@");
             dataListItemModel.HasError = true;
             dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
             dataListViewModel.ScalarCollection.Add(dataListItemModel);
@@ -1157,7 +1157,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar!");
+            var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar!");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1173,7 +1173,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar.");
+            var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar.");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1189,7 +1189,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar.ad");
+            var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar.ad");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1205,7 +1205,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar()");
+            var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar()");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1221,7 +1221,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar_1");
+            var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar_1");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1236,7 +1236,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
@@ -1251,8 +1251,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
-            var dataListItemModel2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            var dataListItemModel1 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
+            var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
             _dataListViewModel.ValidateNames(dataListItemModel1);
@@ -1272,8 +1272,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
-            var dataListItemModel2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            var dataListItemModel1 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
+            var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
             _dataListViewModel.ValidateNames(dataListItemModel1);
@@ -1294,8 +1294,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
-            var dataListItemModel2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            var dataListItemModel1 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
+            var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
             _dataListViewModel.ValidateNames(dataListItemModel1);
@@ -1328,8 +1328,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
-            var dataListItemModel2 = DataListItemModelFactory.CreateDataListModel("TestScalar2");
+            var dataListItemModel1 = DataListItemModelFactory.CreateScalarItemModel("TestScalar1");
+            var dataListItemModel2 = DataListItemModelFactory.CreateScalarItemModel("TestScalar2");
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
             _dataListViewModel.ValidateNames(dataListItemModel1);
@@ -1351,9 +1351,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar");
-            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestScalar");
-            IDataListItemModel newItemsChild = DataListItemModelFactory.CreateDataListModel("Field");
+            var dataListItemModel1 = DataListItemModelFactory.CreateScalarItemModel("TestScalar");
+            var newItem = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar");
+            var newItemsChild = DataListItemModelFactory.CreateRecordSetFieldItemModel("Field");
             newItem.Children.Add(newItemsChild);
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
@@ -1374,9 +1374,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar");
-            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestScalar");
-            IDataListItemModel newItemsChild = DataListItemModelFactory.CreateDataListModel("Field");
+            var dataListItemModel1 = DataListItemModelFactory.CreateScalarItemModel("TestScalar");
+            var newItem = DataListItemModelFactory.CreateRecordSetItemModel("TestScalar");
+            var newItemsChild = DataListItemModelFactory.CreateRecordSetFieldItemModel("Field");
             newItem.Children.Add(newItemsChild);
             //------------Execute Test---------------------------
             _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
@@ -1396,11 +1396,11 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            IDataListItemModel existingRecordset = DataListItemModelFactory.CreateDataListModel("TestRecordset");
-            IDataListItemModel existingRecordsetChild = DataListItemModelFactory.CreateDataListModel("Field");
+            var existingRecordset = DataListItemModelFactory.CreateRecordSetItemModel("TestRecordset");
+            var existingRecordsetChild = DataListItemModelFactory.CreateRecordSetFieldItemModel("Field");
             existingRecordset.Children.Add(existingRecordsetChild);
 
-            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestRecordset");
+            var newItem = DataListItemModelFactory.CreateScalarItemModel("TestRecordset");
             //------------Execute Test---------------------------
             _dataListViewModel.RecsetCollection.Add(existingRecordset);
             _dataListViewModel.ValidateNames(existingRecordset);
@@ -1420,11 +1420,11 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            IDataListItemModel existingRecordset = DataListItemModelFactory.CreateDataListModel("TestRecordset");
-            IDataListItemModel existingRecordsetChild = DataListItemModelFactory.CreateDataListModel("Field");
+            var existingRecordset = DataListItemModelFactory.CreateRecordSetItemModel("TestRecordset");
+            var existingRecordsetChild = DataListItemModelFactory.CreateRecordSetFieldItemModel("Field");
             existingRecordset.Children.Add(existingRecordsetChild);
 
-            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("Field");
+            var newItem = DataListItemModelFactory.CreateScalarItemModel("Field");
             //------------Execute Test---------------------------            
             _dataListViewModel.RecsetCollection.Add(existingRecordset);
             _dataListViewModel.ValidateNames(existingRecordset);
@@ -1560,10 +1560,10 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
-            recSetDataModel.Children.Add(CreateFieldDataListModel("f2", recSetDataModel));
+            recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel("f2", recSetDataModel));
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             var dataListParts = new List<IDataListVerifyPart>();
             var part = CreateRecsetPart(recsetName, firstFieldName);
@@ -1641,8 +1641,8 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             var dataListParts = new List<IDataListVerifyPart>();
@@ -1665,10 +1665,10 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
-            recSetDataModel.Children.Add(CreateFieldDataListModel("f2", recSetDataModel));
+            recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel("f2", recSetDataModel));
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             var dataListParts = new List<IDataListVerifyPart>();
             var part = CreateRecsetPart(recsetName, firstFieldName);
@@ -1690,10 +1690,10 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
-            recSetDataModel.Children.Add(CreateFieldDataListModel("f2", recSetDataModel));
+            recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel("f2", recSetDataModel));
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             var dataListParts = new List<IDataListVerifyPart>();
             var part = CreateRecsetPart(recsetName, firstFieldName);
@@ -1736,9 +1736,9 @@ namespace Dev2.Core.Tests
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
             recSetDataModel.IsUsed = false;
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
             var dataListParts = new List<IDataListVerifyPart>();
@@ -1761,8 +1761,8 @@ namespace Dev2.Core.Tests
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.IsUsed = false;
             firstFieldDataListItemModel.IsUsed = false;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
@@ -1819,8 +1819,8 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.IsVisible = false;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
@@ -1839,8 +1839,8 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.IsVisible = true;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
             dataListViewModel.RecsetCollection.Add(recSetDataModel);
@@ -1859,8 +1859,8 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.IsVisible = false;
             firstFieldDataListItemModel.IsVisible = false;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
@@ -1880,8 +1880,8 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string recsetName = "recset";
             const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
             recSetDataModel.IsVisible = true;
             firstFieldDataListItemModel.IsVisible = true;
             recSetDataModel.Children.Add(firstFieldDataListItemModel);
