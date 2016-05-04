@@ -3,47 +3,6 @@
 	As a Warewolf user
 	I want to be able to select it from the intellisense drop down
 
-#FilterTypes: All, RecordsetsOnly, RecordsetFields
-#Providers: Calculate, File, DateTime, Default
-Scenario Outline: Insert for All FilterType and Default Provider
-	Given I have the following variable list '<varlist>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
-	Examples: 
-	| testName | varlist                               | filterType | input                  | index | dropDownList                                                                        | option          | result                      | provider | caretposition |
-	| 1        | <var/><var2/><rec><var/><var2/></rec> | All        | text var               | 8     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | text [[var]]                | Default  | 12            |
-	| 2        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[var              | 9     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var2]]        | text[[var2]]                | Default  | 12            |
-	| 3        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().var]]      | 15    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var2]]  | text[[rec().var2]]          | Default  | 16            |
-	| 4        | <var/><var2/><rec><var/><var2/></rec> | All        | [[                     | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var2]]        | [[var2]]                    | Default  | 8             |
-	| 5        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().[[var      | 17    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec(*).var2]] | text[[rec().[[rec(*).var2]] | Default  | 27            |
-	| 6        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().[[var]]    | 17    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var2]]  | text[[rec().[[rec().var2]]  | Default  | 26            |
-	| 7        | <var/><var2/><rec><var/><var2/></rec> | All        | text[[rec().[[var]]]]  | 17    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var]]   | text[[rec().[[rec().var]]]] | Default  | 25            |
-	| 8        | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]]v               | 8     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec().var]]   | [[var]][[rec().var]]        | Default  | 20            |
-	| 9        | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]][[              | 9     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[rec(*).var]]  | [[var]][[rec(*).var]]       | Default  | 21            |
-	| 10       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]][[var           | 12    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec(*).var2]] | [[var]][[rec(*).var2]]      | Default  | 22            |
-	| 11       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]][[var]]         | 12    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[rec(*).var1]] | [[var]][[rec(*).var1]]      | Default  | 22            |
-	| 12       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]]                | 7     |                                                                                     |                 | [[var]]                     | Default  | 7             |
-	| 13       | <var/><var2/><rec><var/><var2/></rec> | All        | [[var]] text           | 13    |                                                                                     |                 | [[var]] text                | Default  | 13            |
-	| 14       | <var/><var2/><rec><var/><var2/></rec> | All        | text[[var2]]text       | 10    | [[var2]],[[rec().var2]],[[rec(*).var2]]                                             | [[rec().var2]]  | text[[rec().var2]]text      | Default  | 18            |
-	| 15       | <var/><var2/><rec><var/><var2/></rec> | All        | r                      | 1     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[rec().var2]]  | [[rec().var2]]              | Default  | 14            |
-	| 16       | <var/><var2/><rec><var/><var2/></rec> | All        | re                     | 2     | [[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]                  | [[rec(          | [[rec(                      | Default  | 6             |
-	| 17       | <var/><var2/><rec><var/><var2/></rec> | All        | [[rec([[va]]).var]]    | 10    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[rec([[var]]).var]]        | Default  | 13            |
-	| 18       | <var/><var2/><rec><var/><var2/></rec> | All        | [[[[a]]]]              | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[[[var]]]]                 | Default  | 9             |
-	| 19       | <var/><var2/><rec><var/><var2/></rec> | All        | [[                     | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var]]         | [[var]]                     | Default  | 7             |
-#	| 20       | <a/><rec><a/><b/></rec>               | All        | [[rec().[[]]           | 10    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().[[[[a]]]]           | Default  | 15            |
-#	| 21       | <a/><rec><a/><b/></rec>               | All        | [[rec().a[[]]          | 11    | [[a]],[[rec]]                                                                       | [[a]]           | [[rec().a[[a]]]]            | Default  | 14            |
-#	| 22       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec()[[a]]           | 9     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[b]]           | [[rec()[[a]]a]]             | Default  | 12            |
-#	| 23       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec().a]]+[[rec().]] | 20    | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | [[rec().a]]+[[rec().[[a]]]] | Default  | 25            |
-#	| 24       | <a/><b/><rec><a/><b/></rec>           | All        | sin(45.)]]             | 7     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | sin(45.[[a]])               | Default  | 12            |
-#Bug 12133
-#	| 25       | <rec><a/><b/></rec><xs><a/><b/></xs>  | All        | [[().a]]              | 3     | [[xc(,[[xc().a]],[[xc(*).a]],[[x(,[[x().a]],[[x(*).a]]                              | [[x(            | [[xc().a]]                  | Default  | 5             |
-
 Scenario Outline: Insert for All FilterType and DateTime Provider
 	Given I have the following variable list '<varlist>'
 	And the filter type is '<filterType>'
@@ -54,7 +13,7 @@ Scenario Outline: Insert for All FilterType and DateTime Provider
 	When I select the following option '<option>'
 	Then the result text should be '<result>'
 	And the caret position will be '<caretposition>'
-	Examples:
+	Examples: 
 	| testName | varlist                        | filterType | input     | index | dropDownList                                                             | option          | result              | provider          | caretposition |
 	| 1        | <var/><var2/><rec><var/></rec> | All        | a         | 1     | [[rec(*).var]],[[rec().var]],[[var]],[[var2]],am/pm                      | am/pm           | am/pm               | Default, DateTime | 5             |
 	| 2        | <ww/><min/><rec><minss/></rec> | All        | m         | 1     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,min,mm,MM                   | min             | min                 | Default, DateTime | 3             |
@@ -122,8 +81,8 @@ Examples:
 	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true       | [[sum([[x]])]]    |
 	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[assc]])]] |
 	
-Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
-	Given I have the following variable list '<varlist>'
+Scenario Outline: Insert for All FilterType and Default Provider
+	Given I have the following intellisense options '<varlist>'
 	And the filter type is '<filterType>'
 	And the current text in the textbox is '<input>'
 	And the cursor is at index '<index>'		
@@ -151,6 +110,35 @@ Examples:
 	| 16       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]                                | All        | [[rec([[va]]).var]]   | 10    | [[var]],[[var2]],[[rec().var]],[[rec().var2]]                                | [[var]]         | [[rec([[var]]).var]]   | Default  | 13            |
 	| 17       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]                                | All        | [[[[a]]]]             | 5     | [[var]],[[var2]],[[rec().var]],[[rec().var2]]                                | [[var]]         | [[var]]]]              | Default  | 7             |
 	| 18       | [[var]],[[var2]],[[rec()]],[[rec().var2]],[[rec().var]]                                | All        | [[                    | 2     | [[var]],[[var2]],[[rec().var]],[[rec().var2]]                                | [[var]]         | [[var]]                | Default  | 7             |
+
+Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
+	Given I have the following intellisense options '<varlist>'
+		And the filter type is '<filterType>'
+	And the current text in the textbox is '<input>'
+	And the cursor is at index '<index>'		
+	And the provider used is '<provider>'	
+	And the suggestion list as '<dropDownList>'		
+	When I select the following string option '<option>'
+	Then the result text should be "<result>" with caret position will be '<caretposition>'
+	Examples: 
+	| testName | varlist                                                               | filterType      | input                  | index | dropDownList                                      | option       | result                  | provider | caretposition |
+	| 1        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | u                      | 1     | [[sum()]],[[mus()]]                               | [[sum()]]    | [[sum()]]               | Default  | 9             |
+	| 2        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | b                      | 1     |                                                   |              | b                       | Default  | 1             |
+	| 3        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | [[()]]                 | 3     |                                                   |              | [[()]]                  | Default  | 3             |
+	| 4        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | [[sum()]] s            | 11    | [[sum()]],[[mus()]]                               |              | [[sum()]] s             | Default  | 11            |
+	| 5        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | [[sum()]] [[           | 12    | [[sum()]],[[mus()]]                               | [[mus()]]    | [[sum()]] [[mus()]]     | Default  | 19            |
+	| 6        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | rec s                  | 5     | [[sum()]],[[mus()]]                               | [[mus()]]    | rec [[mus()]]           | Default  | 13            |
+	| 7        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]        | RecordsetFields | [[sum().b]]            | 9     | [[sum().b]],[[sum().ba]]                          | [[sum().ba]] | [[sum().ba]]            | Default  | 12            |
+	| 8        | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]        | All             | [[sum(b).b]]           | 7     | [[b]],[[sum().b]],[[sum().ba]],[[mus().b]]        | [[b]]        | [[sum([[b]]).b]]        | Default  | 11            |
+	| 9        | [[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]] | All             | [[sum([[b]]).b]]       | 14    | [[sum().b]],[[sum().ba]]                          | [[sum().ba]] | [[sum().ba]]            | Default  | 12            |
+	| 10       | [[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]] | All             | [[sum([[b]]).b]]       | 14    | [[sum().b]],[[sum().ba]]                          | [[sum().b]]  | [[sum().b]]             | Default  | 11            |
+	| 11       | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | u u                    | 3     | [[sum()]],[[mus()]]                               | [[sum()]]    | u [[sum()]]             | Default  | 11            |
+	| 12       | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | [[sum()]] s            | 11    | [[sum()]],[[mus()]]                               | [[mus()]]    | [[sum()]] [[mus()]]     | Default  | 19            |
+	| 13       | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]]        | RecordsetFields | [[sum().b]][[sum().b]] | 20    | [[sum().b]],[[sum().ba]],[[mus().b]]              | [[sum().ba]] | [[sum().b]][[sum().ba]] | Default  | 23            |
+	| 14       | [[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]] | All             | [[sum().b]]            | 9     | [[sum().b]],[[sum().ba]]                          | [[sum().ba]] | [[sum().ba]]            | Default  | 12            |
+	| 15       | [[ba]],[[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]],[[sum().ba]] | All             | [[sum().b]]b           | 12    | [[b]],[[ba]],[[sum().b]],[[sum().ba]],[[mus().b]] | [[ba]]       | [[sum().b]][[ba]]       | Default  | 17            |
+	| 16       | [[b]],[[sum().b]],[[mus().b]],[[sum()]],[[mus()]]                     | RecordsetsOnly  | =u                     | 2     | [[sum()]],[[mus()]]                               | [[sum()]]    | =[[sum()]]              | Default  | 10            |
+
 
 Scenario Outline: Insert for Json FilterType and Default Provider
 	Given I have the following intellisense options '<varlist>'
@@ -196,30 +184,26 @@ Scenario Outline: Insert for Json FilterType and Default Provider
 	| 42       | [[Person]],[[Person.Childs(*).name]],[[Person.Childs().name]]   | JsonObject | [[Person.Childs([[ | 18    | [[Person.Childs(*).name]],[[Person.Childs().name]]              | [[Person]]                | [[Person.Childs([[Person]]                | Default  | 26            |
 	| 43       | [[Person]],[[Person.Childs(*).name]],[[Person.Childs().name]]   | JsonObject | [[Person.Childs([[ | 18    | [[Person.Childs(*).name]],[[Person.Childs().name]]              | [[Person.Childs(*).name]] | [[Person.Childs([[Person.Childs(*).name]] | Default  | 41            |
 
+
 Scenario Outline: Insert for RecordsetFields FilterType and Default Provider
 	Given I have the following intellisense options '<varlist>'
-	And the filter type is '<filterType>'
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
+		And the filter type is '<filterType>'
+	And the current text in the textbox is '<input>'
+	And the cursor is at index '<index>'		
+	And the provider used is '<provider>'	
+	And the suggestion list as '<dropDownList>'		
+	When I select the following string option '<option>'
+	Then the result text should be "<result>" with caret position will be '<caretposition>'
 	Examples: 
-	| testName | varlist                                      | filterType      | input                              | index | dropDownList                                                                              | option       | result                                 | provider | caretposition |
-	| 1        | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | u                                  | 1     | [[sum()]],[[mus()]]                                                                       | [[sum()]]    | [[sum()]]                              | Default  | 9             |
-	| 2        | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | b                                  | 1     |                                                                                           |              | b                                      | Default  | 1             |
-	| 3        | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | [[()]]                             | 3     |                                                                                           |              | [[()]]                                 | Default  | 3             |
-	| 4        | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | [[sum()]] s                        | 11    | [[sum()]],[[mus()]]                                                                       |              | [[sum()]] s                            | Default  | 11            |
-	| 5        | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | [[sum()]] [[                       | 12    | [[sum()]],[[mus()]]                                                                       | [[mus()]]    | [[sum()]] [[mus()]]                    | Default  | 19            |
-	| 6        | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | rec s                              | 5     | [[sum()]],[[mus()]]                                                                       | [[mus()]]    | rec [[mus()]]                          | Default  | 13            |
-	| 7        | <b/><sum><b/><ba/></sum><mus><b/></mus>      | RecordsetFields | [[sum().b]]                        | 9     | [[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]              | [[sum().ba]] | [[sum().ba]]                           | Default  | 10            |
-	| 8        | <b/><sum><b/><ba/></sum><mus><b/></mus>      | All             | [[sum(b).b]]                       | 7     | [[b]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]        | [[b]]        | [[sum([[b]]).b]]                       | Default  | 11            |
-	| 9        | <b/><ba/><sum><b/><ba/></sum><mus><b/></mus> | All             | [[sum([[b]]).b]]                   | 14    | [[b]],[[ba]],[[sum().b]],[[sum().ba]]                                                     | [[ba]]       | [[sum([[b]]).[[ba]]]]                  | Default  | 19            |
-	| 10       | <b/><ba/><sum><b/><ba/></sum><mus><b/></mus> | All             | [[sum([[b]]).b]]                   | 14    | [[b]],[[ba]],[[sum().b]],[[sum().ba]]                                                     | [[sum().ba]] | [[sum([[b]]).ba]]                      | Default  | 15            |
-	| 11       | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | u u                                | 3     | [[sum()]],[[mus()]]                                                                       | [[sum()]]    | u [[sum()]]                            | Default  | 11            |
-	| 12       | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | [[sum()]] s                        | 11    | [[sum()]],[[mus()]]                                                                       | [[mus()]]    | [[sum()]] [[mus()]]                    | Default  | 19            |
-	| 13       | <b/><sum><b/><ba/></sum><mus><b/></mus>      | RecordsetFields | [[sum().b]][[sum().b]]             | 20    | [[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]              | [[sum().ba]] | [[sum().b]][[sum().ba]]                | Default  | 21            |
-	| 14       | <b/><sum><b/><ba/></sum><mus><b/></mus>      | All             | [[sum(b).b]][[sum(b).b]] some more | 19    | [[b]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]]        | [[b]]        | [[sum(b).b]][[sum([[b]]).b]] some more | Default  | 23            |
-	| 15       | <b/><ba/><sum><b/><ba/></sum><mus><b/></mus> | All             | [[sum([[b]]).b]]                   | 14    | [[b]],[[ba]],[[sum().b]],[[sum().ba]]                                                     | [[ba]]       | [[sum([[b]]).[[ba]]]]                  | Default  | 19            |
-	| 16       | <b/><ba/><sum><b/><ba/></sum><mus><b/></mus> | All             | [[sum().b]]                        | 9     | [[b]],[[ba]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]] | [[ba]]       | [[sum().[[ba]]]]                       | Default  | 14            |
-	| 17       | <b/><ba/><sum><b/><ba/></sum><mus><b/></mus> | All             | [[sum().b]]b                       | 12    | [[b]],[[ba]],[[sum().b]],[[sum(*).b]],[[sum().ba]],[[sum(*).ba]],[[mus().b]],[[mus(*).b]] | [[ba]]       | [[sum().b]][[ba]]                      | Default  | 17            |
-	| 18       | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | =u                                 | 2     | [[sum()]],[[mus()]]                                                                       | [[sum()]]    | =[[sum()]]                             | Default  | 10            |
+	| testName | varlist                                                                                           | filterType      | input                   | index | dropDownList                                      | option       | result                  | provider | caretposition |
+	| 1        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | a                       | 1     | [[rec().a]],[[rec(*).a]]                          | [[rec(*).a]] | [[rec(*).a]]            | Default  | 12            |
+	| 2        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | b                       | 1     |                                                   |              | b                       | Default  | 1             |
+	| 3        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | [[()]]                  | 3     |                                                   |              | [[()]]                  | Default  | 3             |
+	| 4        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | [[rec().a]]             | 11    |                                                   |              | [[rec().a]]             | Default  | 11            |
+	| 5        | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec().a]]             | 5     | [[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]] | [[rec().z]]  | [[rec().z]]             | Default  | 11            |
+	| 6        | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec                   | 5     | [[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]] | [[rec().z]]  | [[rec().z]]             | Default  | 11            |
+	| 7        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | rec e                   | 5     | [[rec().a]],[[rec(*).a]],[[set().z]],[[set(*).z]] | [[rec().a]]  | rec [[rec().a]]         | Default  | 15            |
+	| 8        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | a a                     | 1     | [[rec().a]],[[rec(*).a]]                          | [[rec(*).a]] | [[rec(*).a]] a          | Default  | 12            |
+	| 9        | [[a]],[[rec()]],[[rec().a]],[[set()]],[[set().z]],[[rec(*)]],[[rec(*).a]],[[set(*)]],[[set(*).z]] | RecordsetFields | b b                     | 1     |                                                   |              | b b                     | Default  | 1             |
+	| 10       | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec().a]],[[rec().a]] | 5     | [[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]] | [[rec().z]]  | [[rec().z]],[[rec().a]] | Default  | 11            |
+	| 11       | [[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]                      | RecordsetFields | [[rec [[rec().a]]       | 5     | [[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]] | [[rec().z]]  | [[rec().z]] [[rec().a]] | Default  | 12            |
