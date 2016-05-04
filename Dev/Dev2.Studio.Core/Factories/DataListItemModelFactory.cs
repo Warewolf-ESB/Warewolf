@@ -82,7 +82,7 @@ namespace Dev2.Studio.Core.Factories
             return dataListModel;
         }
         
-        public static IScalarItemModel CreateScalarItemModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
+        public static IScalarItemModel CreateScalarItemModel(string displayname, string description = "", enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
         {
             IScalarItemModel dataListModel = new ScalarItemModel(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
             return dataListModel;

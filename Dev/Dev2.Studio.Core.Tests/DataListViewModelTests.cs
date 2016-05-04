@@ -620,7 +620,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
-            IDataListItemModel item = new DataListItemModel("ab().c");
+            IRecordSetFieldItemModel item = new RecordSetFieldItemModel("ab().c");
             item.DisplayName = "c";
             item.Parent = _dataListViewModel.RecsetCollection[0];
 
@@ -665,7 +665,7 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
-            IDataListItemModel item = new DataListItemModel("ab().c");
+            IRecordSetFieldItemModel item = new RecordSetFieldItemModel("ab().c");
             item.DisplayName = "c";
             item.Parent = _dataListViewModel.RecsetCollection[0];
 
@@ -882,12 +882,12 @@ namespace Dev2.Core.Tests
         #region Internal Test Methods
         void SortInitialization()
         {
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("zzz"));
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("ttt"));
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("aaa"));
-            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateDataListModel("zzz"));
-            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateDataListModel("ttt"));
-            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateDataListModel("aaa"));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("zzz"));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("ttt"));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("aaa"));
+            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("zzz"));
+            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("ttt"));
+            _dataListViewModel.RecsetCollection.Add(DataListItemModelFactory.CreateRecordSetItemModel("aaa"));
         }
 
         void SortCleanup()
@@ -895,12 +895,12 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ScalarCollection.Clear();
             _dataListViewModel.RecsetCollection.Clear();
 
-            IDataListItemModel carRecordset = DataListItemModelFactory.CreateDataListModel("Car", "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Make", "Make of vehicle", carRecordset));
-            carRecordset.Children.Add(DataListItemModelFactory.CreateDataListModel("Model", "Model of vehicle", carRecordset));
+            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
+            carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
-            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+            _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country"));
         }
 
         #endregion Internal Test Methods
@@ -962,7 +962,7 @@ namespace Dev2.Core.Tests
             Setup();
             for(var i = 5000; i > 0; i--)
             {
-                _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateDataListModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
+                _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
             }
             var timeBefore = DateTime.Now;
 
@@ -1910,7 +1910,7 @@ namespace Dev2.Core.Tests
             eventAggregator.Verify(c => c.Publish(It.IsAny<UpdateIntellisenseMessage>()), Times.Once());
         }
 
-        IDataListItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()
+        IRecordSetFieldItemModel SetupForValidateNamesDuplicateRecordSetFieldsTests()
         {
             Setup();
             _dataListViewModel.RecsetCollection.Clear();
@@ -1935,38 +1935,36 @@ namespace Dev2.Core.Tests
 
             _dataListViewModel.AddMissingDataListItems(parts, false);
 
-            IDataListItemModel item = new DataListItemModel("ab().c");
+            IRecordSetFieldItemModel item = new RecordSetFieldItemModel("ab().c");
             item.DisplayName = "c";
             item.Parent = _dataListViewModel.RecsetCollection[0];
             return item;
         }
 
-        IDataListItemModel SetupForValidateNamesDuplicateScalarTests()
+        IScalarItemModel SetupForValidateNamesDuplicateScalarTests()
         {
             Setup();
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-
-
-            IDataListItemModel item = new DataListItemModel("ab");
+            IScalarItemModel item = new ScalarItemModel("ab");
             item.DisplayName = "ab";
             _dataListViewModel.ScalarCollection.Insert(0, item);
             return item;
         }
 
 
-        static IDataListItemModel CreateRecsetDataListModelWithTwoFields(string recsetName, string firstFieldName, string secondFieldName)
+        static IRecordSetItemModel CreateRecsetDataListModelWithTwoFields(string recsetName, string firstFieldName, string secondFieldName)
         {
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            recSetDataModel.Children.Add(CreateFieldDataListModel(firstFieldName, recSetDataModel));
-            recSetDataModel.Children.Add(CreateFieldDataListModel(secondFieldName, recSetDataModel));
+            IRecordSetItemModel recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel));
+            recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel(secondFieldName, recSetDataModel));
             return recSetDataModel;
         }
 
-        static IDataListItemModel CreateFieldDataListModel(string fieldName, IDataListItemModel recSetDataModel)
+        static IRecordSetFieldItemModel CreateRecordSetFieldDataListModel(string fieldName, IRecordSetItemModel recSetDataModel)
         {
-            IDataListItemModel fieldDataListModel = DataListItemModelFactory.CreateDataListModel(fieldName, "", recSetDataModel);
+            IRecordSetFieldItemModel fieldDataListModel = DataListItemModelFactory.CreateRecordSetFieldItemModel(fieldName, "", recSetDataModel);
             fieldDataListModel.DisplayName = recSetDataModel.DisplayName + "()." + fieldName;
             return fieldDataListModel;
         }

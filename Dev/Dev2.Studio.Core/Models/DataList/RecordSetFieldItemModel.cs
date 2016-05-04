@@ -13,6 +13,11 @@ namespace Dev2.Studio.Core.Models.DataList
             Parent = parent;
         }
 
+        public RecordSetFieldItemModel(string displayname)
+            : this(displayname, null)
+        {
+        }
+
         public IRecordSetItemModel Parent
         {
             get
