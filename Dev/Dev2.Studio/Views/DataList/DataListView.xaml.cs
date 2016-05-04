@@ -68,7 +68,7 @@ namespace Dev2.Studio.Views.DataList
                 if(txtbox != null)
                 {
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    if(itemThatChanged != null && itemThatChanged.IsRecordset)
+                    if (itemThatChanged != null) // && itemThatChanged.IsRecordset
                     {
                         itemThatChanged.IsExpanded = true;
                     }

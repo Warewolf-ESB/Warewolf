@@ -31,8 +31,8 @@ namespace Warewolf.AcceptanceTesting.Variables
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VariableList", "In order to manage my variables\r\nAs a Warewolf user\r\nI want to be told shown all " +
-                    "variables in my workflow service", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "VariableList", "In order to manage my variables\nAs a Warewolf user\nI want to be told shown all va" +
+                    "riables in my workflow service", ProgrammingLanguage.CSharp, new string[] {
                         "VariableList"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -126,6 +126,10 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I have variables as", ((string)(null)), table1, "Given ");
 #line 33
  testRunner.Then("\"Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 34
+ testRunner.And("variables filter box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And("\"Filter Clear\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.And("\"Delete Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
@@ -300,6 +304,10 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I have variables as", ((string)(null)), table6, "Given ");
 #line 70
  testRunner.Then("\"Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 71
+ testRunner.And("variables filter box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+ testRunner.And("\"Filter Clear\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
  testRunner.And("\"Delete Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
@@ -384,6 +392,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Output"});
 #line 90
  testRunner.And("the Recordset Names are", ((string)(null)), table12, "And ");
+#line 92
+ testRunner.When("I press the clear filter button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
