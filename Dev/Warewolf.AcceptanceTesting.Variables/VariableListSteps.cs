@@ -76,7 +76,7 @@ namespace Warewolf.AcceptanceTesting.Variables
                     var existingRecordSet = variableListViewModel.RecsetCollection.FirstOrDefault(model => model.DisplayName.Equals(recSetName, StringComparison.OrdinalIgnoreCase));
                     if (existingRecordSet == null)
                     {
-                        existingRecordSet = DataListItemModelFactory.CreateDataListModel(recSetName) as IRecordSetItemModel;
+                        existingRecordSet = DataListItemModelFactory.CreateRecordSetItemModel(recSetName);
                         if(existingRecordSet != null)
                         {
                             existingRecordSet.DisplayName = recSetName;
@@ -85,7 +85,7 @@ namespace Warewolf.AcceptanceTesting.Variables
                     }
                     if (!string.IsNullOrEmpty(columnName))
                     {
-                        var item = DataListItemModelFactory.CreateDataListModel(columnName, "", existingRecordSet) as IRecordSetFieldItemModel;
+                        var item = DataListItemModelFactory.CreateRecordSetFieldItemModel(columnName, "", existingRecordSet);
                         if(item != null)
                         {
                             item.DisplayName = variableName;
@@ -101,7 +101,7 @@ namespace Warewolf.AcceptanceTesting.Variables
                 else
                 {
                     var displayName = DataListUtil.RemoveLanguageBrackets(variableName);
-                    var item = DataListItemModelFactory.CreateDataListModel(displayName) as IScalarItemModel;
+                    var item = DataListItemModelFactory.CreateScalarItemModel(displayName);
                     if(item != null)
                     {
                         item.DisplayName = variableName;
