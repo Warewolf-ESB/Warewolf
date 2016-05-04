@@ -565,17 +565,25 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void RemoveDataListItem(IDataListItemModel itemToRemove)
         {
-            if (itemToRemove == null) return;
+            if (itemToRemove == null)
+                return;
 
-            var item = itemToRemove as IScalarItemModel;
-            if ((item != null))
+            if ((itemToRemove is IScalarItemModel))
             {
-                ScalarCollection.Remove(item);
+                IScalarItemModel item = ScalarCollection.Where(x => x.DisplayName == itemToRemove.DisplayName).SingleOrDefault();
+                if (item != null)
+                {
+                    ScalarCollection.Remove(item);
+                }
                 CheckDataListItemsForDuplicates(DataList);
             }
             else if (itemToRemove is IRecordSetItemModel)
             {
-                RecsetCollection.Remove((IRecordSetItemModel)itemToRemove);
+                IRecordSetItemModel item = RecsetCollection.Where(x => x.DisplayName == itemToRemove.DisplayName).SingleOrDefault();
+                if (item != null)
+                {
+                    RecsetCollection.Remove(item);
+                }
                 CheckDataListItemsForDuplicates(DataList);
             }
             else
@@ -968,7 +976,7 @@ namespace Dev2.Studio.ViewModels.DataList
             DataListHeaderItemModel variableNode = DataListItemModelFactory.CreateDataListHeaderItem("Variable");
             if (ScalarCollection.Count == 0)
             {
-                IScalarItemModel dataListItemModel = DataListItemModelFactory.CreateDataListModel(string.Empty) as IScalarItemModel;
+                IScalarItemModel dataListItemModel = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
                 ScalarCollection.Add(dataListItemModel);
             }
             variableNode.Children = new ObservableCollection<IDataListItemModel>(ScalarCollection.Select(x => new DataListItemModel(x.DisplayName)).ToList());
