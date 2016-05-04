@@ -139,85 +139,117 @@ namespace Dev2.Utils
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
 
-            if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
+            if(DataListSingleton.ActiveDataList != null)
             {
-                foreach(var dataListItem in DataListSingleton.ActiveDataList.DataList)
+                if (DataListSingleton.ActiveDataList.ScalarCollection != null)
                 {
-                    if(String.IsNullOrEmpty(dataListItem.DisplayName))
+                    foreach (var dataListItem in DataListSingleton.ActiveDataList.ScalarCollection)
                     {
-                        continue;
-                    }
-                    if(dataListItem.Children.Count > 0)
-                    {
-                        if(partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0)
+                        if (String.IsNullOrEmpty(dataListItem.DisplayName))
                         {
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            if(dataListItem.IsEditable)
+                            continue;
+                        }
+                        if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName) == 0)
+                        {
+
+                            if (dataListItem.IsEditable)
                             {
                                 // skip it if unused and exclude is on ;)
-                                if(excludeUnusedItems && !dataListItem.IsUsed)
+                                if (excludeUnusedItems && !dataListItem.IsUsed)
                                 {
                                     continue;
                                 }
-                                missingWorkflowParts.Add(
-                                    IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
-                                                                                              String.Empty,
-                                                                                              dataListItem.Description));
-                                // ReSharper disable once LoopCanBeConvertedToQuery
-                                foreach(var child in dataListItem.Children)
-                                {
-                                    if(!String.IsNullOrEmpty(child.Name))
-                                    {
-                                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                        if(dataListItem.IsEditable)
-                                        {
-                                            missingWorkflowParts.Add(
-                                                IntellisenseFactory.CreateDataListValidationRecordsetPart(
-                                                    dataListItem.DisplayName, child.Name, child.Description));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // ReSharper disable once LoopCanBeConvertedToQuery
-                            foreach(var child in dataListItem.Children)
-                                if(partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
-                                {
-                                    //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if(child.IsEditable)
-                                    {
-                                        // skip it if unused and exclude is on ;)
-                                        if(excludeUnusedItems && !dataListItem.IsUsed)
-                                        {
-                                            continue;
-                                        }
 
-                                        missingWorkflowParts.Add(
-                                            IntellisenseFactory.CreateDataListValidationRecordsetPart(
-                                                dataListItem.DisplayName, child.Name, child.Description));
-                                    }
-                                }
+                                //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                missingWorkflowParts.Add(
+                                    IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
+                                                                                           dataListItem.Description));
+                            }
+
                         }
                     }
-                    else if(partsToVerify.Count(part => part.Field == dataListItem.DisplayName) == 0)
-                    {
+                }
 
-                        if(dataListItem.IsEditable)
+                if (DataListSingleton.ActiveDataList.RecsetCollection != null)
+                {
+                    foreach (var dataListItem in DataListSingleton.ActiveDataList.RecsetCollection)
+                    {
+                        if (String.IsNullOrEmpty(dataListItem.DisplayName))
                         {
-                            // skip it if unused and exclude is on ;)
-                            if(excludeUnusedItems && !dataListItem.IsUsed)
+                            continue;
+                        }
+                        if (dataListItem.Children.Count > 0)
+                        {
+                            if (partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0)
                             {
-                                continue;
+                                //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                if (dataListItem.IsEditable)
+                                {
+                                    // skip it if unused and exclude is on ;)
+                                    if (excludeUnusedItems && !dataListItem.IsUsed)
+                                    {
+                                        continue;
+                                    }
+                                    missingWorkflowParts.Add(
+                                        IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
+                                                                                                  String.Empty,
+                                                                                                  dataListItem.Description));
+                                    // ReSharper disable once LoopCanBeConvertedToQuery
+                                    foreach (var child in dataListItem.Children)
+                                    {
+                                        if (!String.IsNullOrEmpty(child.DisplayName))
+                                        {
+                                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                            if (dataListItem.IsEditable)
+                                            {
+                                                missingWorkflowParts.Add(
+                                                    IntellisenseFactory.CreateDataListValidationRecordsetPart(
+                                                        dataListItem.DisplayName, child.DisplayName, child.Description));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // ReSharper disable once LoopCanBeConvertedToQuery
+                                foreach (var child in dataListItem.Children)
+                                    if (partsToVerify.Count(part => part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0)
+                                    {
+                                        //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                        if (child.IsEditable)
+                                        {
+                                            // skip it if unused and exclude is on ;)
+                                            if (excludeUnusedItems && !dataListItem.IsUsed)
+                                            {
+                                                continue;
+                                            }
+
+                                            missingWorkflowParts.Add(
+                                                IntellisenseFactory.CreateDataListValidationRecordsetPart(
+                                                    dataListItem.DisplayName, child.DisplayName, child.Description));
+                                        }
+                                    }
+                            }
+                        }
+                        else if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName) == 0)
+                        {
+
+                            if (dataListItem.IsEditable)
+                            {
+                                // skip it if unused and exclude is on ;)
+                                if (excludeUnusedItems && !dataListItem.IsUsed)
+                                {
+                                    continue;
+                                }
+
+                                //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                missingWorkflowParts.Add(
+                                    IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
+                                                                                           dataListItem.Description));
                             }
 
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            missingWorkflowParts.Add(
-                                IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
-                                                                                       dataListItem.Description));
                         }
-
                     }
                 }
             }

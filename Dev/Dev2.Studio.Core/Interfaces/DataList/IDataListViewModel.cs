@@ -24,9 +24,9 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         IResourceModel Resource { get; }
         RelayCommand FindUnusedAndMissingCommand { get; }
 
-        //ObservableCollection<IScalarItemModel> ScalarCollection { get; }
+        ObservableCollection<IScalarItemModel> ScalarCollection { get; }
 
-        //ObservableCollection<IRecordSetItemModel> RecsetCollection { get; }
+        ObservableCollection<IRecordSetItemModel> RecsetCollection { get; }
 
         ObservableCollection<IDataListItemModel> DataList { get; }
         bool HasErrors { get; }
