@@ -56,6 +56,7 @@ using Dev2.Utilities;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Studio.Core;
 
 //using System.Windows.Media.Imaging;
 // ReSharper disable InconsistentNaming
