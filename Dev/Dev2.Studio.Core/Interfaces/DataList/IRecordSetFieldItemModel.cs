@@ -3,5 +3,9 @@
     public interface IRecordSetFieldItemModel : IDataListItemModel
     {
         IRecordSetItemModel Parent { get; set; }
+
+        //string DisplayName { get; set; }
+
+        string ValidateName(string name);
     }
 }

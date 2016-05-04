@@ -119,7 +119,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
             set
             {
-                _displayName = ValidateName(value);
+                _displayName = value;
                 //Name = value;
                 NotifyOfPropertyChange(() => DisplayName);
             }
@@ -384,41 +384,41 @@ namespace Dev2.Studio.Core.Models.DataList
         /// <returns>
         ///   <c>true</c> if [name is valid]; otherwise, <c>false</c>.
         /// </returns>
-        public string ValidateName(string name)
-        {
-            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-            if (!string.IsNullOrEmpty(name))
-            {
-                //if(IsRecordset)
-                //{
-                //    name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                //}
-                //else if(IsField)
-                //{
-                //    name = DataListUtil.ExtractFieldNameFromValue(name);
-                //}
+        //public string ValidateName(string name)
+        //{
+        //    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+        //    if (!string.IsNullOrEmpty(name))
+        //    {
+        //        //if(IsRecordset)
+        //        //{
+        //        //    name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
+        //        //}
+        //        //else if(IsField)
+        //        //{
+        //        //    name = DataListUtil.ExtractFieldNameFromValue(name);
+        //        //}
 
-                //if(!string.IsNullOrEmpty(name))
-                //{
-                //    var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
-                //    if(intellisenseResult != null)
-                //    {
-                //        SetError(intellisenseResult.Message);
-                //    }
-                //    else
-                //    {
-                //        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                //        {
-                //            RemoveError();
-                //        }
-                //    }
-                //}
-            }
-            return name;
-        }
+        //        //if(!string.IsNullOrEmpty(name))
+        //        //{
+        //        //    var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
+        //        //    if(intellisenseResult != null)
+        //        //    {
+        //        //        SetError(intellisenseResult.Message);
+        //        //    }
+        //        //    else
+        //        //    {
+        //        //        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+        //        //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+        //        //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+        //        //            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+        //        //        {
+        //        //            RemoveError();
+        //        //        }
+        //        //    }
+        //        //}
+        //    }
+        //    return name;
+        //}
 
         //private void SetChildInputValues(bool value)
         //{
@@ -559,20 +559,5 @@ namespace Dev2.Studio.Core.Models.DataList
         }
 
         #endregion Methods
-
-        #region Overrides of Object
-
-        /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override string ToString()
-        {
-            return DisplayName;
-        }
-
-        #endregion Overrides of Object
     }
 }
