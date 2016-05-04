@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.WebServer;
@@ -39,9 +40,13 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //------------Setup for test--------------------------
             Mock<IPrincipal> principle = new Mock<IPrincipal>();
+            Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
+            mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");
+            principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
             principle.Setup(p => p.Identity.Name).Verifiable();
-
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
+            ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
             Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
             NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
             NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
@@ -66,8 +71,13 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //------------Setup for test--------------------------
             Mock<IPrincipal> principle = new Mock<IPrincipal>();
+            Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
+            mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");
+            principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
             principle.Setup(p => p.Identity.Name).Verifiable();
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
+            ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
 
             Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
             NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "website", "foo" }, { "path", "bar" } };

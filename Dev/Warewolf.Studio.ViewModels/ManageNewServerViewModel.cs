@@ -373,6 +373,10 @@ namespace Warewolf.Studio.ViewModels
 
         void TestConnection()
         {
+            if (string.IsNullOrEmpty(GetAddressName()))
+            {
+                return;
+            }
             _token = new CancellationTokenSource();
             AsyncWorker.Start(SetupProgressSpinner, () =>
             {
