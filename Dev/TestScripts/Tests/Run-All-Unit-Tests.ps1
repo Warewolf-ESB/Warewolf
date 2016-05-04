@@ -32,7 +32,7 @@ foreach ($file in Get-ChildItem $SolutionDir -Include Dev2.*.Tests.dll, Warewolf
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
+$FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs120comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
