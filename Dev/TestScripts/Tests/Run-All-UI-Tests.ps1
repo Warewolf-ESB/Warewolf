@@ -1,6 +1,32 @@
-﻿# Create test settings.
+﻿$SolutionDir = (Get-Item $PSScriptRoot ).parent.parent.FullName
+# Read playlists and args.
+$TestList = ""
+if ($Args.Count -gt 0) {
+    $TestList = $Args.ForEach({ "," + $_ })
+} else {
+    Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+    Foreach-Object{
+	    [xml]$playlistContent = Get-Content $_.FullName
+	    if ($playlistContent.Playlist.Add.count -gt 0) {
+	        foreach( $TestName in $playlistContent.Playlist.Add) {
+		        $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+	        }
+	    } else {        
+            if ($playlistContent.Playlist.Add.Test -ne $null) {
+                $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+            } else {
+	            Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+	            Continue
+            }
+        }
+    }
+}
+if ($TestList.StartsWith(",")) {
+	$TestList = $TestList -replace "^.", " /Tests:"
+}
+
+# Create test settings.
 $TestSettingsFile = "$PSScriptRoot\LocalUITesting.testsettings"
-$SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding=`"UTF-8`"?>
 <TestSettings name=`"UI Test`" id=`"" + [guid]::NewGuid() + @"`" xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
@@ -36,28 +62,6 @@ $SolutionDir = (get-item $PSScriptRoot ).parent.parent.FullName
   </Execution>
 </TestSettings>
 "@)
-
-# Read playlists.
-$TestList = ""
-Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
-Foreach-Object{
-	[xml]$playlistContent = Get-Content $_.FullName
-	if ($playlistContent.Playlist.Add.count -gt 0) {
-	    foreach( $TestName in $playlistContent.Playlist.Add) {
-		    $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
-	    }
-	} else {        
-        if ($playlistContent.Playlist.Add.Test -ne $null) {
-            $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
-        } else {
-	        Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
-	        Continue
-        }
-    }
-}
-if ($TestList.StartsWith(",")) {
-	$TestList = $TestList -replace "^.", " /Tests:"
-}
 
 # Create full VSTest argument string.
 $FullArgsList = "`"" + $SolutionDir + "\Warewolf.Studio.UISpecs\bin\Debug\Warewolf.Studio.UISpecs.dll`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
