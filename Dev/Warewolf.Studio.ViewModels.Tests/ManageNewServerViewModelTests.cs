@@ -265,9 +265,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.TestCommand.Execute(null);
 
             //assert
-            Assert.IsFalse(string.IsNullOrEmpty(_target.TestMessage));
             Assert.IsFalse(_target.TestPassed);
-            Assert.IsFalse(_target.Testing);
         }
 
         [TestMethod]
