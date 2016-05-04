@@ -8,7 +8,7 @@
         <ResourceDictionary Source="Images/Explorer-DLL.xaml" />
         <ResourceDictionary Source="Images/Explorer-WebService.xaml" />
         <ResourceDictionary Source="Images/Explorer-Spacer.xaml" />
-        
+
         <ResourceDictionary Source="Images/Explorer-Close.xaml" />
         <ResourceDictionary Source="Images/Explorer-Open.xaml" />
         <ResourceDictionary Source="Images/Explorer-Run.xaml" />
@@ -107,6 +107,7 @@
         <ResourceDictionary Source="Images/warewolf_logo_white.xaml" />
         <ResourceDictionary Source="Images/warewolf_logo_black.xaml" />
 
+        <ResourceDictionary Source="Images/SelectApply.xaml" />
         <ResourceDictionary Source="Images/DatabaseLogo.xaml" />
         <ResourceDictionary Source="Images/PluginLogo.xaml" />
         <ResourceDictionary Source="Images/WebLogo.xaml" />

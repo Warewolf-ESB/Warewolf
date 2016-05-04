@@ -411,6 +411,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Images\SelectApply.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Images\WebLogo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
