@@ -10,7 +10,6 @@
 
 // ReSharper disable once CheckNamespace
 using Dev2.Data.Binary_Objects;
-using System.Collections.ObjectModel;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {

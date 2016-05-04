@@ -6,6 +6,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.Views.DataList;
 using Microsoft.Practices.Prism.Mvvm;
@@ -75,27 +76,39 @@ namespace Warewolf.AcceptanceTesting.Variables
                     var existingRecordSet = variableListViewModel.RecsetCollection.FirstOrDefault(model => model.DisplayName.Equals(recSetName, StringComparison.OrdinalIgnoreCase));
                     if (existingRecordSet == null)
                     {
-                        existingRecordSet = DataListItemModelFactory.CreateDataListModel(recSetName);
-                        existingRecordSet.DisplayName = recSetName;
-                        variableListViewModel.RecsetCollection.Add(existingRecordSet);
+                        existingRecordSet = DataListItemModelFactory.CreateDataListModel(recSetName) as IRecordSetItemModel;
+                        if(existingRecordSet != null)
+                        {
+                            existingRecordSet.DisplayName = recSetName;
+                            variableListViewModel.RecsetCollection.Add(existingRecordSet);
+                        }
                     }
                     if (!string.IsNullOrEmpty(columnName))
                     {
-                        var item = DataListItemModelFactory.CreateDataListModel(columnName, "", existingRecordSet);
-                        item.DisplayName = variableName;
-                        item.IsUsed = isUsed;
-                        item.ColumnIODirection = ioDirection;
-                        existingRecordSet.Children.Add(item);
+                        var item = DataListItemModelFactory.CreateDataListModel(columnName, "", existingRecordSet) as IRecordSetFieldItemModel;
+                        if(item != null)
+                        {
+                            item.DisplayName = variableName;
+                            item.IsUsed = isUsed;
+                            item.ColumnIODirection = ioDirection;
+                            if(existingRecordSet != null)
+                            {
+                                existingRecordSet.Children.Add(item);
+                            }
+                        }
                     }
                 }
                 else
                 {
                     var displayName = DataListUtil.RemoveLanguageBrackets(variableName);
-                    var item = DataListItemModelFactory.CreateDataListModel(displayName);
-                    item.DisplayName = variableName;
-                    item.IsUsed = isUsed;
-                    item.ColumnIODirection = ioDirection;
-                    variableListViewModel.ScalarCollection.Add(item);
+                    var item = DataListItemModelFactory.CreateDataListModel(displayName) as IScalarItemModel;
+                    if(item != null)
+                    {
+                        item.DisplayName = variableName;
+                        item.IsUsed = isUsed;
+                        item.ColumnIODirection = ioDirection;
+                        variableListViewModel.ScalarCollection.Add(item);
+                    }
                 }
             }
             
@@ -135,7 +148,7 @@ namespace Warewolf.AcceptanceTesting.Variables
                 {
                     varName = variableName.Substring(variableName.IndexOf(".", StringComparison.Ordinal) + 1);
                     parentName = variableName.Substring(0, variableName.IndexOf("(", StringComparison.Ordinal));
-                    var variableListViewRecsetCollection = sourceControl.RecsetCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName && model.Parent.Name == parentName);
+                    var variableListViewRecsetCollection = sourceControl.RecsetCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.DisplayName == varName && model.Parent.DisplayName == parentName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewRecsetCollection));
                     sourceViewControl.ExecuteCommand(variableName);
                 }
@@ -156,9 +169,12 @@ namespace Warewolf.AcceptanceTesting.Variables
                 if (variableName.Contains("."))
                 {
                     varName = variableName.Substring(variableName.IndexOf(".", StringComparison.Ordinal) + 1);
-                    var variableListViewScalarCollection = sourceControl.ScalarCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName);
+                    var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == varName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
                     sourceViewControl.ExecuteCommand(variableName);
+                    //var variableListViewScalarCollection = sourceControl.ScalarCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName);
+                    //Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
+                    //sourceViewControl.ExecuteCommand(variableName);
                 }
                 else
                 {
