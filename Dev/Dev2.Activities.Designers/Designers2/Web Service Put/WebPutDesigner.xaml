@@ -32,6 +32,6 @@
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource Explorer-Webservice}"/>
+        <Binding Source="{StaticResource WebMethodsIcon}"/>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>
