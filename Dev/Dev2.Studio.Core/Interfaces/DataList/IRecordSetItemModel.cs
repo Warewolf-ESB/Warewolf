@@ -6,8 +6,12 @@ namespace Dev2.Studio.Core.Interfaces.DataList
     {
         ObservableCollection<IRecordSetFieldItemModel> Children { get; set; }
 
+        //string DisplayName { get; set; }
+
         string FilterText { get; set; }
 
         void Filter(string searchText);
+
+        string ValidateName(string name);
     }
 }
