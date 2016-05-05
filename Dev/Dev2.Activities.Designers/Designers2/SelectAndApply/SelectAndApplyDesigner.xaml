@@ -14,7 +14,7 @@
                        mc:Ignorable="d">
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource DrawingImageIcon}" />
+        <Binding Source="{StaticResource SelectApplyIcon}" />
     </sap:ActivityDesigner.Icon>
 
     <sap:ActivityDesigner.Resources>
