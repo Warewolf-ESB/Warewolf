@@ -583,7 +583,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12"
                                                                    Height="12"
-                                                                   Source="{StaticResource Explorer-DB-Create}" />
+                                                                   Source="{StaticResource MicrosoftSQLSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewWebSource"
@@ -645,7 +645,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12"
                                                                    Height="12"
-                                                                   Source="{StaticResource AddDropBoxBlackLogo}" />
+                                                                   Source="{StaticResource DropboxSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
@@ -909,7 +909,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12"
                                                                    Height="12"
-                                                                   Source="{StaticResource Explorer-DB-Create}" />
+                                                                   Source="{StaticResource MicrosoftSQLSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewWebSource"
@@ -969,7 +969,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12"
                                                                    Height="12"
-                                                                   Source="{StaticResource AddDropBoxBlackLogo}" />
+                                                                   Source="{StaticResource DropboxSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewSharepointSource"
