@@ -126,6 +126,10 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I have variables as", ((string)(null)), table1, "Given ");
 #line 33
  testRunner.Then("\"Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 34
+ testRunner.And("variables filter box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And("\"Filter Clear\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.And("\"Delete Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
@@ -300,6 +304,10 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I have variables as", ((string)(null)), table6, "Given ");
 #line 70
  testRunner.Then("\"Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 71
+ testRunner.And("variables filter box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+ testRunner.And("\"Filter Clear\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
  testRunner.And("\"Delete Variables\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
@@ -384,6 +392,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Output"});
 #line 90
  testRunner.And("the Recordset Names are", ((string)(null)), table12, "And ");
+#line 92
+ testRunner.When("I press the clear filter button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable Name",
@@ -970,9 +980,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure unused variables do not appear in Debug Input window")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EnsureUnusedVariablesDoNotAppearInDebugInputWindow()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure unused variables do not appear in Debug Input window", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure unused variables do not appear in Debug Input window", new string[] {
+                        "ignore"});
 #line 206
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -1044,14 +1056,20 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "YES"});
 #line 217
- testRunner.Then("the variables appear as", ((string)(null)), table30, "Then ");
+ testRunner.Then("the Variable Names are", ((string)(null)), table30, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         public virtual void EnsureShorcutKeysWork(string keys, string focus, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure shorcut keys work", exampleTags);
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure shorcut keys work", @__tags);
 #line 223
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -1081,6 +1099,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure shorcut keys work")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Enter")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Keys", "Enter")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Focus", "New blank line")]
@@ -1093,6 +1112,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure shorcut keys work")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "VariableList")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("VariableList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Tab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Keys", "Tab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Focus", "Input Checkbox")]

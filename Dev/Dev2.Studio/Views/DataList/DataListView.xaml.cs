@@ -18,7 +18,9 @@ using Dev2.Common.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics.Windows.DataPresenter.Events;
 using Microsoft.Practices.Prism.Mvvm;
 
 // ReSharper disable once CheckNamespace
@@ -43,7 +45,7 @@ namespace Dev2.Studio.Views.DataList
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
             DataContextChanged += OnDataContextChanged;
-            KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
+            //KeyboardNavigation.SetTabNavigation(ScalarExplorer, KeyboardNavigationMode.Cycle);
         }
 
 
@@ -68,7 +70,7 @@ namespace Dev2.Studio.Views.DataList
                 if(txtbox != null)
                 {
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    if(itemThatChanged != null && itemThatChanged.IsRecordset)
+                    if (itemThatChanged != null) // && itemThatChanged.IsRecordset
                     {
                         itemThatChanged.IsExpanded = true;
                     }
@@ -202,8 +204,9 @@ namespace Dev2.Studio.Views.DataList
                 case "Sort Variables":
                     return SortButton.Command.CanExecute(null);
                 case "Variables":
-                    return ScalarExplorer.IsEnabled;
+                   return Xtg.IsEnabled;
             }
+            
             return false;
         }
 
@@ -226,6 +229,32 @@ namespace Dev2.Studio.Views.DataList
             if (command.Equals("mr()", StringComparison.OrdinalIgnoreCase))
             {
                 DeleteButton.Command.Execute(null);
+            }
+        }
+
+        private void Xtg_OnAssigningFieldLayoutToItem(object sender, AssigningFieldLayoutToItemEventArgs e)
+        {
+            if(e.Item != null)
+            {
+                if (e.Item.GetType() == typeof(RecordSetItemModel))
+                {
+                    var fieldLayouts = Xtg.FieldLayouts;
+                    var fieldLayout = fieldLayouts[2];
+                    if (fieldLayout != null)
+                    {
+                        e.FieldLayout = fieldLayout;
+                    }
+                }
+               
+                if (e.Item.GetType() == typeof(RecordSetFieldItemModel))
+                {
+                    var fieldLayouts = Xtg.FieldLayouts;
+                    var fieldLayout = fieldLayouts[1];
+                    if (fieldLayout != null)
+                    {
+                        e.FieldLayout = fieldLayout;
+                    }
+                }
             }
         }
     }

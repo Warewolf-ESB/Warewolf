@@ -85,6 +85,7 @@ using ServiceStack.Common;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Resource = Dev2.Runtime.ServiceModel.Data.Resource;
+using Dev2.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels

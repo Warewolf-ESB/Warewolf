@@ -31,8 +31,8 @@ Scenario: Variables adding in variable list and removing unused
     | [[a]]       |                   |       |        |        |
     | [[lr().a]]  |                   |       |        |        |
 	Then "Variables" is "Enabled"
-	#And variables filter box is "Visible"
-	#And "Filter Clear" is "Disabled"
+	And variables filter box is "Visible"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 
 	And the Variable Names are
@@ -68,8 +68,8 @@ Scenario: Searching Variables in Variable list
     | [[a]]       |                   |       |        |        |
     | [[lr().a]]  |                   |       |        |        |
 	Then "Variables" is "Enabled"
-	#And variables filter box is "Visible"
-	#And "Filter Clear" is "Disabled"
+	And variables filter box is "Visible"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 
 	When I search for variable "[[lr().a]]"
@@ -89,7 +89,7 @@ Scenario: Searching Variables in Variable list
 	| Variable Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
 	And the Recordset Names are 
 	| Recordset Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	#When I press the clear filter button
+	When I press the clear filter button
 	And the Variable Names are
 	| Variable Name | Delete IsEnabled | Note Highlighted | Input | Output |
 	| Var           |                  |                  | YES   |        |
@@ -202,7 +202,7 @@ Scenario: Variables removed from design surface and list
 	| rec().a        |                  | YES              |       | YES    |
 
 
-
+@ignore  
 Scenario: Ensure unused variables do not appear in Debug Input window
 	Given I have variables as
     | Variable    | Note              | Input | Output | IsUsed |
@@ -214,13 +214,13 @@ Scenario: Ensure unused variables do not appear in Debug Input window
     | [[lr().a]]  |                   |       |        |        |
 	When I press "F5"
 	And the Debug Input window is opened
-	Then the variables appear as
+	Then the Variable Names are
 	 | Variable | Note | Input | Output | IsUsed |
 	 | [[mr()]] |      |       |        | YES    |
 	 | [[Var]]  |      | YES   |        | YES    |
 
-
-Scenario Outline: Ensure shorcut keys work
+@ignore  
+Scenario Outline: Ensure shorcut keys work 
 	Given I have variables as
     | Variable | Note | Input | Output | IsUsed |
     | [[var]]  |      |       | YES    | YES    |

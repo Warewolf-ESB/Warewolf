@@ -35,7 +35,6 @@ namespace Dev2.Studio.Core.Factories
         {
             IDataListItemModel dataListModel = CreateDataListModel(name);
             dataListModel.Description = description;
-            dataListModel.Parent = parent;
             dataListModel.IsExpanded = true;
             dataListModel.IsEditable = isEditable;
             return dataListModel;
@@ -43,16 +42,16 @@ namespace Dev2.Studio.Core.Factories
 
         public static IDataListItemModel CreateDataListModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
         {
-            IDataListItemModel dataListModel = new DataListItemModel(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisable, isSelected);
+            IDataListItemModel dataListModel = new RecordSetFieldItemModel(displayname,parent as IRecordSetItemModel, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
             return dataListModel;
         }
 
         public static IDataListItemModel CreateDataListModel(string displayname, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
         {
-            IDataListItemModel dataListModel = new DataListItemModel(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisable, isSelected);
-            if(parent != null && !String.IsNullOrEmpty(displayname))
+            IDataListItemModel dataListModel = new RecordSetFieldItemModel(displayname,parent as IRecordSetItemModel, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            if (parent != null && !String.IsNullOrEmpty(displayname))
             {
-                dataListModel.Name = parent.DisplayName + "()." + displayname;
+                dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
             }
             return dataListModel;
         }
@@ -62,6 +61,31 @@ namespace Dev2.Studio.Core.Factories
             DataListHeaderItemModel dataListHeaderModel = new DataListHeaderItemModel(displayname);
             return dataListHeaderModel;
         }
-    }
 
+        public static IRecordSetItemModel CreateRecordSetItemModel(string displayname, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IRecordSetFieldItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
+        {
+            IRecordSetItemModel dataListModel = new RecordSetItemModel(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisable, isSelected);
+            if(parent != null && !String.IsNullOrEmpty(displayname))
+            {
+                dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
+            }
+            return dataListModel;
+        }
+
+        public static IRecordSetFieldItemModel CreateRecordSetFieldItemModel(string displayname, string description = "", IRecordSetItemModel parent = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
+        {
+            IRecordSetFieldItemModel dataListModel = new RecordSetFieldItemModel(displayname, parent, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            if (parent != null && !String.IsNullOrEmpty(displayname))
+            {
+                dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
+            }
+            return dataListModel;
+        }
+        
+        public static IScalarItemModel CreateScalarItemModel(string displayname, string description = "", enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
+        {
+            IScalarItemModel dataListModel = new ScalarItemModel(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            return dataListModel;
+        }
+    }
 }
