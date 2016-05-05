@@ -108,6 +108,7 @@
         <ResourceDictionary Source="Images/warewolf_logo_black.xaml" />
 
         <ResourceDictionary Source="Images/SelectApply.xaml" />
+        <ResourceDictionary Source="Images/AssignObject.xaml" />
         <ResourceDictionary Source="Images/DatabaseLogo.xaml" />
         <ResourceDictionary Source="Images/PluginLogo.xaml" />
         <ResourceDictionary Source="Images/WebLogo.xaml" />
