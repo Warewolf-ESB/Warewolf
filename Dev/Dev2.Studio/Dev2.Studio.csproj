@@ -105,6 +105,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DataVisualization.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DataVisualization.v15.1.dll</HintPath>
@@ -116,6 +119,10 @@
     <Reference Include="InfragisticsWPF4.DragDrop.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Editors.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Math.Calculators.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -191,9 +198,6 @@
     <Reference Include="Microsoft.Windows.Design.Interaction">
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\Binaries\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -258,10 +262,6 @@
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WPFTextBoxAutoComplete">
       <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.0\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
-    </Reference>
-    <Reference Include="XamlSpy, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bc9b0c37bf06c6a9, processorArchitecture=MSIL">
-      <HintPath>..\packages\XamlSpyLibs.3.0.3\lib\net4\XamlSpy.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -900,6 +900,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoComplete\WpfControls.CS\WpfControls.CS.csproj">
+      <Project>{bb2abb74-ba58-4812-83aa-ec8171f42df4}</Project>
+      <Name>WpfControls.CS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
       <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
       <Name>Dev2.Activities.Designers</Name>
