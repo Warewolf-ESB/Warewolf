@@ -633,7 +633,7 @@ namespace Dev2.Studio.ViewModels.DataList
                         {
                             IRecordSetFieldItemModel child = recset.Children[childrenCount];
 
-                            if (!string.IsNullOrWhiteSpace(child.DisplayName))
+                            if (child != null && !string.IsNullOrWhiteSpace(child.DisplayName))
                             {
                                 int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
                                 if (indexOfDot > -1)
@@ -978,20 +978,22 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
 
             DataListHeaderItemModel variableNode = DataListItemModelFactory.CreateDataListHeaderItem("Variable");
+            variableNode.IsHeaderNode = true;
             if (ScalarCollection.Count == 0)
             {
                 IScalarItemModel dataListItemModel = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
                 ScalarCollection.Add(dataListItemModel);
             }
-            variableNode.Children = new ObservableCollection<IDataListItemModel>(ScalarCollection.Select(x => new DataListItemModel(x.DisplayName)).ToList());
+            variableNode.Children = new ObservableCollection<IDataListItemModel>(ScalarCollection.Select(x => new ScalarItemModel(x.DisplayName)).ToList());
             BaseCollection.Add(variableNode);
 
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
+            recordsetsNode.IsHeaderNode = true;
             if (RecsetCollection.Count == 0)
             {
                 AddRecordSet();
             }
-            recordsetsNode.Children = new ObservableCollection<IDataListItemModel>(RecsetCollection.Select(x => new DataListItemModel(x.DisplayName)).ToList());
+            recordsetsNode.Children = new ObservableCollection<IDataListItemModel>(RecsetCollection.Select(x => new RecordSetItemModel(x.DisplayName)).ToList());
             BaseCollection.Add(recordsetsNode);
         }
 
@@ -1088,7 +1090,10 @@ namespace Dev2.Studio.ViewModels.DataList
                     CreateColumns(subc, cols);
                 }
                 var recset = CreateRecordSet(c);
-                AddColumnsToRecordSet((IEnumerable<IRecordSetFieldItemModel>)cols, recset);
+
+                var castCols = cols.Select(dataListItemModel => dataListItemModel as IRecordSetFieldItemModel).ToList();
+
+                AddColumnsToRecordSet(castCols, recset);
             }
         }
 
@@ -1208,7 +1213,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     result.Append(IsEditable + "=\"");
                     result.Append(col.IsEditable);
                     result.Append("\" ");
-                    // Travis.Frisinger - Added Column direction
                     result.Append(GlobalConstants.DataListIoColDirection + "=\"");
                     result.Append(col.ColumnIODirection);
                     result.Append("\" ");
@@ -1229,18 +1233,18 @@ namespace Dev2.Studio.ViewModels.DataList
             return result.ToString();
         }
 
-        void AddItemToBuilder(StringBuilder result, IDataListItemModel recSet)
+        void AddItemToBuilder(StringBuilder result, IDataListItemModel item)
         {
             result.Append("<");
-            result.Append(recSet.DisplayName);
+            result.Append(item.DisplayName);
             result.Append(" " + Description + "=\"");
-            result.Append(recSet.Description);
+            result.Append(item.Description);
             result.Append("\" ");
             result.Append(IsEditable + "=\"");
-            result.Append(recSet.IsEditable);
+            result.Append(item.IsEditable);
             result.Append("\" ");
             result.Append(GlobalConstants.DataListIoColDirection + "=\"");
-            result.Append(recSet.ColumnIODirection);
+            result.Append(item.ColumnIODirection);
             result.Append("\" ");
         }
 

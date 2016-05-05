@@ -19,6 +19,7 @@ namespace Dev2.Studio.Core.Models.DataList
     {
         private string _displayName;
         private ObservableCollection<IDataListItemModel> _children;
+        private bool _isHeaderNode;
 
         public DataListHeaderItemModel(string displayName)
         {
@@ -45,6 +46,19 @@ namespace Dev2.Studio.Core.Models.DataList
             {
                 _children = value;
                 NotifyOfPropertyChange(() => Children);
+            }
+        }
+
+        public bool IsHeaderNode
+        {
+            get
+            {
+                return _isHeaderNode;
+            }
+            set
+            {
+                _isHeaderNode = value;
+                NotifyOfPropertyChange(() => IsHeaderNode);
             }
         }
 
