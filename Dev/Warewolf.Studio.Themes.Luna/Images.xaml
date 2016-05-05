@@ -22,6 +22,8 @@
         <ResourceDictionary Source="Images/ODBC.xaml" />
         <ResourceDictionary Source="Images/RabbitMq.xaml" />
         <ResourceDictionary Source="Images/WebMethods.xaml" />
+        <ResourceDictionary Source="Images/MicrosoftSQL.xaml" />
+        <ResourceDictionary Source="Images/Dropbox.xaml" />
 
 
         <ResourceDictionary Source="Images/ControlFlow-Descision.xaml" />
@@ -57,7 +59,6 @@
         <ResourceDictionary Source="Images/RecordSet-FindRecords.xaml" />
         <ResourceDictionary Source="Images/RecordSet-Length.xaml" />
         <ResourceDictionary Source="Images/RecordSet-SortRecords.xaml" />
-        <ResourceDictionary Source="Images/RecordSet-SQLBulkInsert.xaml" />
         <ResourceDictionary Source="Images/RecordSet-UniqueRecords.xaml" />
         <ResourceDictionary Source="Images/Resources-Connector.xaml" />
         <ResourceDictionary Source="Images/Resources-Service.xaml" />
@@ -124,8 +125,6 @@
         <ResourceDictionary Source="Images/AddWebLogo.xaml" />
         <ResourceDictionary Source="Images/SharepointLogo.xaml" />
         <ResourceDictionary Source="Images/AddSharepointLogo.xaml" />
-        <ResourceDictionary Source="Images/DropBoxLogo.xaml" />
-        <ResourceDictionary Source="Images/AddDropBoxLogo.xaml" />
         <ResourceDictionary Source="Images/DotNetLogo.xaml" />
         <ResourceDictionary Source="Images/AddDotNetLogo.xaml" />
         <ResourceDictionary Source="Images/FileLogo.xaml" />
