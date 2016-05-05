@@ -57,7 +57,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         // tobe removed
         //string LastIndexedName { get; set; }
 
-        //string Name { get; set; }
+        string Name { get; set; }
 
         //bool IsRecordset { get; }
 
