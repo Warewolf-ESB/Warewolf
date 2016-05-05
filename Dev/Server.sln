@@ -114,7 +114,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A71353
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{7C17EF48-FC59-4D8C-BFF8-2A73ECFC6884}"
 	ProjectSection(SolutionItems) = preProject
-		TestScripts\Hard Reset and Clean This Repo.bat = TestScripts\Hard Reset and Clean This Repo.bat
+		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{5884B867-F883-4FBC-9C9F-57033BE4A0CC}"
