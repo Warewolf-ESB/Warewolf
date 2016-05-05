@@ -74,7 +74,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Given(@"A file ""(.*)"" to split")]
         public void GivenAFileToSplit(string fileName)
         {
-            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataSplit.{0}",
+            string resourceName = string.Format("Warewolf.ToolsSpecs.Toolbox.Data.DataSplit.{0}",
                                                 fileName);
             var stringToSplit = ReadFile(resourceName);
             ScenarioContext.Current.Add("stringToSplit", stringToSplit.Replace("\n","\r\n"));
@@ -171,13 +171,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
              if (recordSets.IsWarewolfAtomListresult)
              {
                  // ReSharper disable PossibleNullReferenceException
-                 var recordSetValues = (recordSets as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
+                 var recordSetValues = (recordSets as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
                  // ReSharper restore PossibleNullReferenceException
-                 Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+                 Assert.AreEqual<int>(tableRows.Count, recordSetValues.Count);
 
                  for (int i = 0; i < tableRows.Count; i++)
                  {
-                     Assert.AreEqual(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString(recordSetValues[i]).Trim());
+                     Assert.AreEqual<string>(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString(recordSetValues[i]).Trim());
                  }
              }
 
@@ -203,7 +203,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var field = ScenarioContext.Current.Get<string>("recordField");
 
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out error).ToList();
+            List<string> recordSetValues = Enumerable.ToList<string>(RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out error));
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
