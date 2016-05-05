@@ -10,10 +10,6 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Data.Binary_Objects;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.ModelTests
@@ -22,7 +18,7 @@ namespace Dev2.Core.Tests.ModelTests
     [ExcludeFromCodeCoverage]
     public class DataListItemModelTest
     {
-
+/*
         #region Test Fields
 
         private IDataListItemModel _testDataListItemModel;
@@ -92,7 +88,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         private void TestDataListItemModelSet(string name, bool populateAllFields = false)
         {
-            if(populateAllFields)
+            if (populateAllFields)
             {
                 _testDataListItemModel = new DataListItemModel(name, enDev2ColumnArgumentDirection.None
                                                              , "Test Description"
@@ -117,5 +113,6 @@ namespace Dev2.Core.Tests.ModelTests
 
 
         #endregion Private Test Methods
+ * */
     }
 }
