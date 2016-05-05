@@ -201,9 +201,10 @@ namespace Dev2.Studio.Views.DataList
                     return DeleteButton.Command.CanExecute(null);
                 case "Sort Variables":
                     return SortButton.Command.CanExecute(null);
-                //case "Variables":
-                //    return ScalarExplorer.IsEnabled;
+                case "Variables":
+                   return Xtg.IsEnabled;
             }
+            
             return false;
         }
 
