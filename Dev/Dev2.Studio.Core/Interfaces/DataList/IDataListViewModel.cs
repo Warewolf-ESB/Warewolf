@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Data.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 
@@ -32,6 +33,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         bool HasErrors { get; }
         string DataListErrorMessage { get; }
         bool IsSorting { get; set; }
+        ISuggestionProvider Provider { get; set; }
 
         /// <summary>
         /// Removes the data list item.

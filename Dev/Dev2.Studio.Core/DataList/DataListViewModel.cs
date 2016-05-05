@@ -1542,6 +1542,8 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        public ISuggestionProvider Provider { get; set; }
+
         static bool BuildRecordSetErrorMessages(IRecordSetItemModel model, out string errorMessage)
         {
             errorMessage = "";
