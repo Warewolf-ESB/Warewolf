@@ -36,8 +36,6 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        #region Old Code
-
         //public enDev2ColumnArgumentDirection ColumnIODirection
         //{
         //    get
@@ -229,9 +227,6 @@ namespace Dev2.Studio.Core.Models.DataList
         //    }
         //}
 
-        #endregion
-
-
         public string FilterText
         {
             get
@@ -278,24 +273,70 @@ namespace Dev2.Studio.Core.Models.DataList
             Children = new ObservableCollection<IRecordSetFieldItemModel>(Children.Where(a => a.DisplayName.ToUpper().Contains(searchText.ToUpper())));
         }
 
-        
+        //public void RemoveError()
+        //{
+        //    HasError = false;
+        //    ErrorMessage = string.Empty;
+        //}
+
+        //public void SetError(string errorMessage)
+        //{
+        //    HasError = true;
+        //    ErrorMessage = errorMessage;
+        //}
+
+        //public string ValidateName(string name)
+        //{
+        //    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+        //    if (!string.IsNullOrEmpty(name))
+        //    {
+        //            name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
+                
+        //        if (!string.IsNullOrEmpty(name))
+        //        {
+        //            var intellisenseResult = parser.ValidateName(name, "Recordset");
+        //            if (intellisenseResult != null)
+        //            {
+        //                SetError(intellisenseResult.Message);
+        //            }
+        //            else
+        //            {
+        //                if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+        //                    !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+        //                {
+        //                    RemoveError();
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return name;
+        //}
+
+        #region Overrides of DataListItemModel
+
         public override string ValidateName(string name)
         {
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))
             {
                 name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
+                //else if(IsField)
+                //{
+                //    name = DataListUtil.ExtractFieldNameFromValue(name);
+                //}
 
-                if (!string.IsNullOrEmpty(name))
+                if(!string.IsNullOrEmpty(name))
                 {
                     var intellisenseResult = parser.ValidateName(name, "Recordset");
-                    if (intellisenseResult != null)
+                    if(intellisenseResult != null)
                     {
                         SetError(intellisenseResult.Message);
                     }
                     else
                     {
-                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
                             !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
                             !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
                             !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
@@ -307,5 +348,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
             return name;
         }
+
+        #endregion
     }
 }
