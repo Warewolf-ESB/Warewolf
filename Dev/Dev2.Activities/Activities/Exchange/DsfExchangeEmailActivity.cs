@@ -25,7 +25,7 @@ using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 
 namespace Dev2.Activities.Exchange
 {
-    [ToolDescriptorInfo("Exchange", "Email", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Exchange", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    //[ToolDescriptorInfo("Exchange", "Email", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Exchange", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfExchangeEmailActivity : DsfActivityAbstract<string>
     {
         public DsfExchangeEmailActivity()
