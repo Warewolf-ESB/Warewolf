@@ -53,7 +53,6 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         void RemoveError();
 
-        string ValidateName(string name);
 
         // tobe removed
         //string LastIndexedName { get; set; }
@@ -64,7 +63,10 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         //bool IsField { get; }
 
+
         // added to others
+        //string ValidateName(string name);
+
         //IDataListItemModel Parent { get; set; }
 
         //ObservableCollection<IDataListItemModel> Children { get; set; }

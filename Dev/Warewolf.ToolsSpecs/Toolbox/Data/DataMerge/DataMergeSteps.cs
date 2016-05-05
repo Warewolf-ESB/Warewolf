@@ -158,7 +158,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         [Then(@"the merged result is the same as file ""(.*)""")]
         public void ThenTheMergedResultIsTheSameAsFile(string fileName)
         {
-            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataMerge.{0}",
+            string resourceName = string.Format("Warewolf.ToolsSpecs.Toolbox.Data.DataMerge.{0}",
                                                 fileName);
             var readFile = ReadFile(resourceName);
             string value = readFile;
