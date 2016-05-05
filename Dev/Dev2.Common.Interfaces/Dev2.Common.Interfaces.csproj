@@ -41,7 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>

@@ -83,27 +83,39 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool Delete(IExplorerItemViewModel explorerItemViewModel)
         {
-            var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
-            var graphGenerator = new DependencyGraphGenerator();
-            if (explorerItemViewModel.ResourceType != ResourceType.Version && explorerItemViewModel.ResourceType != ResourceType.Folder)
+            if (explorerItemViewModel != null)
             {
-                var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
-                _popupController = CustomContainer.Get<IPopupController>();
-
-                if ( graph.Nodes.Count > 1)
+                var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
+                var graphGenerator = new DependencyGraphGenerator();
+                if (explorerItemViewModel.ResourceType != ResourceType.Version && explorerItemViewModel.ResourceType != ResourceType.Folder)
                 {
-                    _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName), 
-                                          StringResources.Delete_Error_Title, 
-                                          MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
-                    return false;
+                    var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
+                    _popupController = CustomContainer.Get<IPopupController>();
+
+                    if (graph.Nodes.Count > 1)
+                    {
+                        _popupController.Show(string.Format(StringResources.Delete_Error, explorerItemViewModel.ResourceName),
+                                              StringResources.Delete_Error_Title,
+                                              MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false);
+                        return false;
+                    }
+                }
+                if (explorerItemViewModel.ResourceType == ResourceType.Version)
+                {
+                    VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
+                }
+                else if (explorerItemViewModel.ResourceType == ResourceType.Folder)
+                {
+                    if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
+                    {
+                        UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
+                    }
+                }
+                else
+                {
+                    UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
                 }
             }
-            if (explorerItemViewModel.ResourceType == ResourceType.Version)
-                VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
-            else if (explorerItemViewModel.ResourceType == ResourceType.Folder)
-                UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
-            else
-                UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
             return true;
         }
 
