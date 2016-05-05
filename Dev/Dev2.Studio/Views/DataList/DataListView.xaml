@@ -97,7 +97,13 @@
                 </dataPresenter:XamTreeGrid.FieldSettings>
                 <dataPresenter:XamTreeGrid.FieldLayouts >
                     <dataPresenter:FieldLayout Key="{x:Type dataList3:DataListHeaderItemModel}">
-                        <dataPresenter:TextField Name="DisplayName" Label="Name" Width="*" />
+                        <dataPresenter:TemplateField Name="DisplayName" Label=" Display Name" Width="*">
+                            <dataPresenter:TemplateField.DisplayTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding .}" FontWeight="Bold" Margin="0,3,0,0"/>
+                                </DataTemplate>
+                            </dataPresenter:TemplateField.DisplayTemplate>
+                        </dataPresenter:TemplateField>
                         <dataPresenter:TextField BindingType="Unbound" Name="Input" Label="Input" Width="60"/>
                         <dataPresenter:TextField BindingType="Unbound" Name="Output" Label="Output" Width="60"/>
                         <dataPresenter:Field Name="Children"></dataPresenter:Field>
@@ -120,7 +126,7 @@
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
-                                                                    Margin="{StaticResource ControlBorderTop}" 
+                                                                    Margin="-8,3,0,0" 
                                                                     aprop:FocusAttachedProperty.IsFocused="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                         <customControls:VariableTextBox.Style>
@@ -142,7 +148,7 @@
                                         <i:Interaction.Behaviors>
                                             <behaviors:TextboxSelectAllOnFocusBehavior />
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListVariableInputHelp}"
-                                                                                                         DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
+                                                             DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=dataList:DataListView}}" />
                                         </i:Interaction.Behaviors>
                                     </customControls:VariableTextBox>
                                 </DataTemplate>
@@ -190,9 +196,6 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <!--<dataPresenter:TextField Name="DisplayName" Label="Name" Width="260" />-->
-                        <!--<dataPresenter:CheckBoxField Name="Input" Label="Input"/>-->
-                        <!--<dataPresenter:CheckBoxField Name="Output" Label="Output"></dataPresenter:CheckBoxField>-->
                     </dataPresenter:FieldLayout>                    
                 </dataPresenter:XamTreeGrid.FieldLayouts>
                 <dataPresenter:XamTreeGrid.ViewSettings>
