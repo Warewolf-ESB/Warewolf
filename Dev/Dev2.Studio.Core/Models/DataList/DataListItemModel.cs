@@ -16,7 +16,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models.DataList
 {
-    public class DataListItemModel : PropertyChangedBase, IDataListItemModel
+    public  class DataListItemModel : PropertyChangedBase, IDataListItemModel
     {
         #region Fields
 
@@ -384,7 +384,7 @@ namespace Dev2.Studio.Core.Models.DataList
         /// <returns>
         ///   <c>true</c> if [name is valid]; otherwise, <c>false</c>.
         /// </returns>
-        public string ValidateName(string name)
+        public virtual string ValidateName(string name)
         {
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))

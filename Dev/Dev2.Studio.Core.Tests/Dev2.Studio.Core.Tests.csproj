@@ -236,6 +236,8 @@
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
+    <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
+    <Compile Include="ModelTests\ScalarItemModelTests.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
     <Compile Include="Network\ServerProxyWithFallbackTests.Specs.cs" />
