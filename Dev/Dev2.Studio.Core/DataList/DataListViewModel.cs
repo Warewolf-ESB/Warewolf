@@ -452,6 +452,9 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 AddBlankRow(null);
             }
+
+            BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
+            BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
         }
 
         #endregion Add/Remove Missing Methods
@@ -1409,7 +1412,7 @@ namespace Dev2.Studio.ViewModels.DataList
                             foreach (var child in dataListItem.Children)
                             {
                                 // ReSharper restore LoopCanBeConvertedToQuery
-                                if (partsToVerify.Count(part => part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0)
+                                if (partsToVerify.Count(part => child.Parent!=null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0)
                                 {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
                                     if (child.IsEditable)
