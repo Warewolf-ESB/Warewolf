@@ -38,6 +38,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private string _displayName;
         private bool _isExpanded = true;
         private enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
+        private string _name;
         //string _filterText;
         //ObservableCollection<IDataListItemModel> _backupChildren    ;
 
@@ -120,8 +121,23 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _displayName = ValidateName(value);
-                //Name = value;
+                Name = value;
                 NotifyOfPropertyChange(() => DisplayName);
+            }
+        }
+
+        public virtual string ValidateName(string name) { return name;}
+        
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                NotifyOfPropertyChange(() => Name);
             }
         }
 
@@ -377,48 +393,7 @@ namespace Dev2.Studio.Core.Models.DataList
             ErrorMessage = errorMessage;
         }
 
-        /// <summary>
-        /// Determines whether [name is valid].
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>
-        ///   <c>true</c> if [name is valid]; otherwise, <c>false</c>.
-        /// </returns>
-        public string ValidateName(string name)
-        {
-            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-            if (!string.IsNullOrEmpty(name))
-            {
-                //if(IsRecordset)
-                //{
-                //    name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                //}
-                //else if(IsField)
-                //{
-                //    name = DataListUtil.ExtractFieldNameFromValue(name);
-                //}
-
-                //if(!string.IsNullOrEmpty(name))
-                //{
-                //    var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
-                //    if(intellisenseResult != null)
-                //    {
-                //        SetError(intellisenseResult.Message);
-                //    }
-                //    else
-                //    {
-                //        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                //        {
-                //            RemoveError();
-                //        }
-                //    }
-                //}
-            }
-            return name;
-        }
+        
 
         //private void SetChildInputValues(bool value)
         //{

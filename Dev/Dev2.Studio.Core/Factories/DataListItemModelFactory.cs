@@ -42,13 +42,13 @@ namespace Dev2.Studio.Core.Factories
 
         public static IDataListItemModel CreateDataListModel(string displayname, string description, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false)
         {
-            IDataListItemModel dataListModel = new DataListItemModel(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            IDataListItemModel dataListModel = new RecordSetFieldItemModel(displayname,parent as IRecordSetItemModel, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
             return dataListModel;
         }
 
         public static IDataListItemModel CreateDataListModel(string displayname, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IDataListItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisable = true, bool isSelected = false, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
         {
-            IDataListItemModel dataListModel = new DataListItemModel(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
+            IDataListItemModel dataListModel = new RecordSetFieldItemModel(displayname,parent as IRecordSetItemModel, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisable, isSelected);
             if (parent != null && !String.IsNullOrEmpty(displayname))
             {
                 dataListModel.DisplayName = parent.DisplayName + "()." + displayname;
