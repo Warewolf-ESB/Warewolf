@@ -137,7 +137,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     _scalarCollection.CollectionChanged += (o, args) =>
                     {
                         RemoveItemPropertyChangeEvent(args);
-                        AddItemPropertyChangeEvent(args);
+                        AddItemPropertyChangeEvent(args);                        
                     };
                 }
                 return _scalarCollection;
@@ -457,8 +457,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddBlankRow(null);
             }
 
-            BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
-            BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+           
         }
 
         #endregion Add/Remove Missing Methods
@@ -616,6 +615,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 Resource.DataList = result;
             }
+
+            BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
+            BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+
             return result;
         }
 
@@ -1347,14 +1350,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if (DataList != null)
             {
-                //foreach (var dataListItem in DataList.Where(a => {
-                //    var type = a.GetType();
-                //    if (type == typeof(IRecordSetItemModel))
-                //    {
-                //        return true;
-                //    }
-                //    return false;
-
                 foreach (var dataListItem in ScalarCollection)
                 {
                     if (String.IsNullOrEmpty(dataListItem.DisplayName))
