@@ -202,7 +202,7 @@ Scenario: Variables removed from design surface and list
 	| rec().a        |                  | YES              |       | YES    |
 
 
-
+@ignore  
 Scenario: Ensure unused variables do not appear in Debug Input window
 	Given I have variables as
     | Variable    | Note              | Input | Output | IsUsed |
@@ -214,13 +214,13 @@ Scenario: Ensure unused variables do not appear in Debug Input window
     | [[lr().a]]  |                   |       |        |        |
 	When I press "F5"
 	And the Debug Input window is opened
-	Then the variables appear as
+	Then the Variable Names are
 	 | Variable | Note | Input | Output | IsUsed |
 	 | [[mr()]] |      |       |        | YES    |
 	 | [[Var]]  |      | YES   |        | YES    |
 
-
-Scenario Outline: Ensure shorcut keys work
+@ignore  
+Scenario Outline: Ensure shorcut keys work 
 	Given I have variables as
     | Variable | Note | Input | Output | IsUsed |
     | [[var]]  |      |       | YES    | YES    |

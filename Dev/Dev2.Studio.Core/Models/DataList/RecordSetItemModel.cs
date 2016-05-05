@@ -278,7 +278,7 @@ namespace Dev2.Studio.Core.Models.DataList
             Children = new ObservableCollection<IRecordSetFieldItemModel>(Children.Where(a => a.DisplayName.ToUpper().Contains(searchText.ToUpper())));
         }
 
-
+        
         public override string ValidateName(string name)
         {
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();

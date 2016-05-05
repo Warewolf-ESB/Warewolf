@@ -111,14 +111,18 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     return false;
                 }
-                return RecsetCollection.Any(model =>
-                {
-                    if (RecordSetHasChildren(model))
-                    {
-                        return model.HasError || model.Children.Any(child => child.HasError);
-                    }
-                    return model.HasError;
-                });
+                var recSetsHasErrors = RecsetCollection.Any(model => model.HasError || (model.Children != null && model.Children.Any(itemModel => itemModel.HasError)));
+                var scalasHasErrors = ScalarCollection.Any(model => model.HasError);
+                /* return RecsetCollection.Any(model =>
+                 {
+                     if (RecordSetHasChildren(model))
+                     {
+                         return model.HasError || model.Children.Any(child => child.HasError);
+                     }
+                     return model.HasError;
+                 });*/
+                var hasErrors = recSetsHasErrors || scalasHasErrors;
+                return hasErrors;
             }
         }
 
@@ -236,7 +240,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                return _addRecordsetCommand ?? 
+                return _addRecordsetCommand ??
                        (_addRecordsetCommand = new DelegateCommand(method => AddRecordSet()));
             }
         }
@@ -411,7 +415,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     else if (tmpRecset != null)
                     {
                         IRecordSetFieldItemModel child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);
-                        if(child != null)
+                        if (child != null)
                         {
                             child.DisplayName = part.Recordset + "()." + part.Field;
                             tmpRecset.Children.Add(child);
@@ -799,7 +803,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 if (blankChildList.Count != 0) continue;
 
                 IRecordSetFieldItemModel newChild = DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty);
-                if(newChild != null)
+                if (newChild != null)
                 {
                     newChild.Parent = recset;
                     recset.Children.Add(newChild);
@@ -894,7 +898,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (recset != null)
             {
                 recset.IsExpanded = false;
-                if(childItem != null)
+                if (childItem != null)
                 {
                     childItem.Parent = recset;
                     recset.Children.Add(childItem);
@@ -1051,7 +1055,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (c.Attributes != null)
             {
                 IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(c.Name, ParseDescription(c.Attributes[Description]), ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
-                if(scalar != null)
+                if (scalar != null)
                 {
                     scalar.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
                     if (String.IsNullOrEmpty(_searchText))
@@ -1065,7 +1069,7 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(c.Name, ParseDescription(null), ParseColumnIODirection(null));
-                if(scalar != null)
+                if (scalar != null)
                 {
                     scalar.IsEditable = ParseIsEditable(null);
                     if (String.IsNullOrEmpty(_searchText))
@@ -1107,7 +1111,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (c.Attributes != null)
             {
                 recset = DataListItemModelFactory.CreateRecordSetItemModel(c.Name, ParseDescription(c.Attributes[Description]), null, null, false, "", true, true, false, ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]));
-                if(recset != null)
+                if (recset != null)
                 {
                     recset.IsEditable = ParseIsEditable(c.Attributes[IsEditable]);
                     RecsetCollection.Add(recset);
@@ -1116,7 +1120,7 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 recset = DataListItemModelFactory.CreateRecordSetItemModel(c.Name, ParseDescription(null));
-                if(recset != null)
+                if (recset != null)
                 {
                     recset.IsEditable = ParseIsEditable(null);
 
@@ -1548,11 +1552,10 @@ namespace Dev2.Studio.ViewModels.DataList
                         return true;
                     }
                 }
-                var childErrors = model.Children.Where(child => child.HasError);
-                {
+                var childErrors = model.Children.Where(child => child.HasError).ToList();
+                if (childErrors.Any())
                     errorMessage = string.Join(Environment.NewLine, childErrors.Select(BuildErrorMessage));
-                    return true;
-                }
+                return true;
             }
             return false;
         }
