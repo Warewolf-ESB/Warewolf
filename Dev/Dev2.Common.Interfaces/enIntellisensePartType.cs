@@ -13,7 +13,6 @@
 
 namespace Dev2.Common.Interfaces
 {
-
     public enum enIntellisensePartType
     {
         All,
