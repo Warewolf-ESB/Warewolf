@@ -8,9 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Caliburn.Micro;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Parsers;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces.DataList;
 
 // ReSharper disable CheckNamespace
@@ -70,6 +72,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         #region Properties
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public bool UpdatingChildren { get; private set; }
 
         public bool IsUsed
@@ -389,33 +392,39 @@ namespace Dev2.Studio.Core.Models.DataList
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))
             {
-                //if(IsRecordset)
-                //{
-                //    name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                //}
-                //else if(IsField)
-                //{
-                //    name = DataListUtil.ExtractFieldNameFromValue(name);
-                //}
-
-                //if(!string.IsNullOrEmpty(name))
-                //{
-                //    var intellisenseResult = parser.ValidateName(name, IsRecordset ? "Recordset" : "Variable");
-                //    if(intellisenseResult != null)
-                //    {
-                //        SetError(intellisenseResult.Message);
-                //    }
-                //    else
-                //    {
-                //        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                //            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                //        {
-                //            RemoveError();
-                //        }
-                //    }
-                //}
+                var isValueRecordset = DataListUtil.IsValueRecordset(name);
+                var isValueScalar = DataListUtil.IsValueScalar(name);
+                if (isValueRecordset)
+                {
+                    name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
+                }
+                else if (isValueScalar)
+                {
+                    name = DataListUtil.ExtractFieldNameFromValue(name);
+                }
+                string varType = "Recordset";
+                if (isValueScalar)
+                {
+                    varType = "Variable";
+                }
+                if (!string.IsNullOrEmpty(name))
+                {
+                    var intellisenseResult = parser.ValidateName(name, varType);
+                    if (intellisenseResult != null)
+                    {
+                        SetError(intellisenseResult.Message);
+                    }
+                    else
+                    {
+                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                        {
+                            RemoveError();
+                        }
+                    }
+                }
             }
             return name;
         }
