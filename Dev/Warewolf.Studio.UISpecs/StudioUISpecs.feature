@@ -446,11 +446,15 @@ Scenario: Drag toolbox Service Picker onto a new workflow
 	When I 'Click_Cancel_Service_Picker_Dialog'
 	Then I 'Assert_Service_Picker_Exists_OnDesignSurface'
 	
+#Dropbox tool removed
+@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Dropbox Download onto a new workflow
 	When I 'Drag_Toolbox_Dropbox_Download_Onto_DesignSurface'
 	Then I 'Assert_Dropbox_Download_Exists_OnDesignSurface'
 	
+#Dropbox tool removed
+@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Dropbox Upload onto a new workflow
 	When I 'Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface'

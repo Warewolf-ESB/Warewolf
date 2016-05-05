@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
 	ProjectSection(SolutionItems) = preProject
-		TestScripts\Hard Reset and Clean This Repo.bat = TestScripts\Hard Reset and Clean This Repo.bat
+		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.UISpecs", "Warewolf.Studio.UISpecs\Warewolf.Studio.UISpecs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
