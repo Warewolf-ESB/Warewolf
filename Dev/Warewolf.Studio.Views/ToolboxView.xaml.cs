@@ -27,7 +27,8 @@ namespace Warewolf.Studio.Views
             {
                 Mouse.SetCursor(_customCursor);
                 var dataContext = grid.DataContext as ToolDescriptorViewModel;
-                if (dataContext != null)
+                if (dataContext != null &&
+                    dataContext.ActivityType != null)
                 {
                     DragDrop.DoDragDrop((DependencyObject)e.Source, dataContext.ActivityType, DragDropEffects.Copy);
                 }

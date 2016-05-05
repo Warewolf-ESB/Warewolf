@@ -8,11 +8,20 @@
         <ResourceDictionary Source="Images/Explorer-DLL.xaml" />
         <ResourceDictionary Source="Images/Explorer-WebService.xaml" />
         <ResourceDictionary Source="Images/Explorer-Spacer.xaml" />
-        
+
         <ResourceDictionary Source="Images/Explorer-Close.xaml" />
         <ResourceDictionary Source="Images/Explorer-Open.xaml" />
         <ResourceDictionary Source="Images/Explorer-Run.xaml" />
         <ResourceDictionary Source="Images/Explorer-Permission.xaml" />
+
+        <ResourceDictionary Source="Images/DotNetDLL.xaml" />
+        <ResourceDictionary Source="Images/MySQL.xaml" />
+        <ResourceDictionary Source="Images/Postgre.xaml" />
+        <ResourceDictionary Source="Images/Oracle.xaml" />
+        <ResourceDictionary Source="Images/Exchange.xaml" />
+        <ResourceDictionary Source="Images/ODBC.xaml" />
+        <ResourceDictionary Source="Images/RabbitMq.xaml" />
+        <ResourceDictionary Source="Images/WebMethods.xaml" />
 
 
         <ResourceDictionary Source="Images/ControlFlow-Descision.xaml" />
