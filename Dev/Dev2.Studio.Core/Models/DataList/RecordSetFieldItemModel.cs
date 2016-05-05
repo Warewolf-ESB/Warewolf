@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public string ValidateName(string name)
+        public override string ValidateName(string name)
         {
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))
