@@ -804,7 +804,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
                         foreach (var field in workflowFields)
                         {
-                            WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts);
+                            var modelProperty = flowNode.Properties["Action"];
+                            var isJsonObjectSource = false;
+                            if (modelProperty != null)
+                            {
+                                var activity = modelProperty.ComputedValue;
+                                if(activity.GetType() == typeof(DsfMultiAssignObjectActivity))
+                                {
+                                    isJsonObjectSource = true;
+                                }
+                            }
+                            WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts,isJsonObjectSource);
                         }
                     }
                 }

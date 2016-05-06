@@ -289,7 +289,7 @@
                         </dataPresenter:TemplateField>
                         <dataPresenter:Field Name="Children"></dataPresenter:Field>
                     </dataPresenter:FieldLayout>
-                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:ScalarItemModel}" ParentFieldName="Children">
+                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:ScalarItemModel}">
                         <dataPresenter:TemplateField Name="DisplayName" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" Width="*" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
                                 <DataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">
