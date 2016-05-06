@@ -10,7 +10,6 @@
 
 using Caliburn.Micro;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Parsers;
 using Dev2.Studio.Core.Interfaces.DataList;
 
 // ReSharper disable CheckNamespace
@@ -33,8 +32,8 @@ namespace Dev2.Studio.Core.Models.DataList
         //private string _lastIndexedName;
         private bool _isUsed;
 
-        private bool _isHeader;
-        private bool _isCheckBoxVisible;
+        private bool _allowNotes;
+        private bool _isComplexObect;
         private string _displayName;
         private bool _isExpanded = true;
         private enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
@@ -359,31 +358,31 @@ namespace Dev2.Studio.Core.Models.DataList
         //    }
         //}
 
-        public bool IsHeader
+        public bool AllowNotes
         {
             get
             {
-                return _isHeader;
+                return _allowNotes;
             }
 
             set
             {
-                _isHeader = value;
-                NotifyOfPropertyChange(() => IsHeader);
+                _allowNotes = value;
+                NotifyOfPropertyChange(() => AllowNotes);
             }
         }
 
-        public bool IsCheckBoxVisible
+        public bool IsComplexObect
         {
             get
             {
-                return _isCheckBoxVisible;
+                return _isComplexObect;
             }
 
             set
             {
-                _isCheckBoxVisible = value;
-                NotifyOfPropertyChange(() => IsCheckBoxVisible);
+                _isComplexObect = value;
+                NotifyOfPropertyChange(() => IsComplexObect);
             }
         }
 
