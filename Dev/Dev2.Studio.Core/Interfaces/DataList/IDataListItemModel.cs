@@ -31,9 +31,9 @@ namespace Dev2.Studio.Core.Interfaces.DataList
 
         bool IsUsed { get; set; }
 
-        bool IsHeader { get; set; }
+        bool AllowNotes { get; set; }
 
-        bool IsCheckBoxVisible { get; set; }
+        bool IsComplexObect { get; set; }
 
         bool IsSelected { get; set; }
 
