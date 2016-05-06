@@ -144,6 +144,24 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        public ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection
+        {
+            get
+            {
+                if (_complexObjectCollection == null)
+                {
+                    _complexObjectCollection = new ObservableCollection<IComplexObjectItemModel>();
+
+                    _complexObjectCollection.CollectionChanged += (o, args) =>
+                    {
+                        RemoveItemPropertyChangeEvent(args);
+                        AddItemPropertyChangeEvent(args);
+                    };
+                }
+                return _complexObjectCollection;
+            }
+        }
+
         void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems != null)
@@ -201,6 +219,7 @@ namespace Dev2.Studio.ViewModels.DataList
         bool _toggleSortOrder = true;
         ObservableCollection<IScalarItemModel> _backupScalars;
         ObservableCollection<IRecordSetItemModel> _backupRecsets;
+        private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
 
         #endregion Properties
 
@@ -376,56 +395,63 @@ namespace Dev2.Studio.ViewModels.DataList
             IList<IRecordSetItemModel> tmpRecsetList = new List<IRecordSetItemModel>();
             foreach (var part in parts)
             {
-                if (part.IsScalar)
+                if (part.IsJson)
                 {
-                    if (ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
-                    {
-                        var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
-                        if (ScalarCollection.Count > ScalarCollection.Count - 1 && ScalarCollection.Count > 0)
-                        {
-                            ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
-                        }
-                        else
-                        {
-                            ScalarCollection.Insert(ScalarCollection.Count, scalar);
-                        }
-                    }
+                    AddComplexObject(part);
                 }
                 else
                 {
-                    IRecordSetItemModel recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.DisplayName == part.Recordset);
-
-                    IRecordSetItemModel tmpRecset = tmpRecsetList.FirstOrDefault(c => c.DisplayName == part.Recordset);
-
-                    if (recsetToAddTo != null)
+                    if (part.IsScalar)
                     {
-                        if (recsetToAddTo.Children.FirstOrDefault(c => c.DisplayName == part.Field) == null)
+                        if (ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
                         {
-                            IRecordSetFieldItemModel child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
-                            if (recsetToAddTo.Children.Count > 0)
+                            var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description, enDev2ColumnArgumentDirection.None);
+                            if (ScalarCollection.Count > ScalarCollection.Count - 1 && ScalarCollection.Count > 0)
                             {
-                                recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
+                                ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
                             }
                             else
                             {
-                                recsetToAddTo.Children.Add(child);
+                                ScalarCollection.Insert(ScalarCollection.Count, scalar);
                             }
-                        }
-                    }
-                    else if (tmpRecset != null)
-                    {
-                        IRecordSetFieldItemModel child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);
-                        if (child != null)
-                        {
-                            child.DisplayName = part.Recordset + "()." + part.Field;
-                            tmpRecset.Children.Add(child);
                         }
                     }
                     else
                     {
-                        IRecordSetItemModel recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
+                        IRecordSetItemModel recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.DisplayName == part.Recordset);
 
-                        tmpRecsetList.Add(recset);
+                        IRecordSetItemModel tmpRecset = tmpRecsetList.FirstOrDefault(c => c.DisplayName == part.Recordset);
+
+                        if (recsetToAddTo != null)
+                        {
+                            if (recsetToAddTo.Children.FirstOrDefault(c => c.DisplayName == part.Field) == null)
+                            {
+                                IRecordSetFieldItemModel child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
+                                if (recsetToAddTo.Children.Count > 0)
+                                {
+                                    recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
+                                }
+                                else
+                                {
+                                    recsetToAddTo.Children.Add(child);
+                                }
+                            }
+                        }
+                        else if (tmpRecset != null)
+                        {
+                            IRecordSetFieldItemModel child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, tmpRecset);
+                            if (child != null)
+                            {
+                                child.DisplayName = part.Recordset + "()." + part.Field;
+                                tmpRecset.Children.Add(child);
+                            }
+                        }
+                        else
+                        {
+                            IRecordSetItemModel recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
+
+                            tmpRecsetList.Add(recset);
+                        }
                     }
                 }
             }
@@ -446,8 +472,8 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-            WriteToResourceModel();
-            EventPublisher.Publish(new UpdateIntellisenseMessage());
+
+           
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
@@ -457,7 +483,32 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddBlankRow(null);
             }
 
-           
+            WriteToResourceModel();
+            EventPublisher.Publish(new UpdateIntellisenseMessage());
+        }
+
+        private void AddComplexObject(IDataListVerifyPart part)
+        {
+            if (part == null)
+                return;
+
+            IComplexObjectItemModel thisnode = new ComplexObjectItemModel("");
+            IComplexObjectItemModel currentnode;
+            var paths = part.DisplayValue.Split('.');
+            foreach (string path in paths)
+            {
+                currentnode = thisnode;
+                foreach (string subPath in path.Split('.'))
+                {
+                    if (currentnode != null && null == currentnode.Children.FirstOrDefault(model => model.DisplayName==subPath))
+                        currentnode.Children.Add(new ComplexObjectItemModel(subPath,enDev2ColumnArgumentDirection.None,"",currentnode));
+                    else if(currentnode != null)
+                    {
+                        currentnode = currentnode.Children.FirstOrDefault(model => model.DisplayName==subPath);
+                    }
+                }
+            }
+
         }
 
         #endregion Add/Remove Missing Methods
@@ -473,7 +524,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
-            }
+            }            
         }
         public void InitializeDataListViewModel()
         {
@@ -913,6 +964,22 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        private void AddComplexObject()
+        {
+            IComplexObjectItemModel complexObjectItemModel = DataListItemModelFactory.CreateComplexObjectItemModel(string.Empty);
+            IComplexObjectItemModel childItem = DataListItemModelFactory.CreateComplexObjectItemModel(string.Empty);
+            if (complexObjectItemModel != null)
+            {
+                complexObjectItemModel.IsExpanded = false;
+                if (childItem != null)
+                {
+                    childItem.Parent = complexObjectItemModel;
+                    complexObjectItemModel.Children.Add(childItem);
+                }
+                ComplexObjectCollection.Add(complexObjectItemModel);
+            }
+        }
+
         /// <summary>
         ///     Sorts the items.
         /// </summary>
@@ -994,8 +1061,8 @@ namespace Dev2.Studio.ViewModels.DataList
                 IScalarItemModel dataListItemModel = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
                 ScalarCollection.Add(dataListItemModel);
             }
-            variableNode.Children = new ObservableCollection<IDataListItemModel>(ScalarCollection.Select(x => new ScalarItemModel(x.DisplayName)).ToList());
             BaseCollection.Add(variableNode);
+            //variableNode.Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
 
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
             recordsetsNode.IsHeaderNode = true;
@@ -1003,8 +1070,18 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 AddRecordSet();
             }
-            recordsetsNode.Children = new ObservableCollection<IDataListItemModel>(RecsetCollection.Select(x => new RecordSetItemModel(x.DisplayName)).ToList());
             BaseCollection.Add(recordsetsNode);
+            //recordsetsNode.Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+
+            DataListHeaderItemModel complexObjectNode = DataListItemModelFactory.CreateDataListHeaderItem("Object");
+            complexObjectNode.IsHeaderNode = true;
+            if (ComplexObjectCollection.Count == 0)
+            {
+                AddComplexObject();
+            }
+            BaseCollection.Add(complexObjectNode);
+            //complexObjectNode.Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
+            WriteToResourceModel();
         }
 
         public void ClearCollections()
