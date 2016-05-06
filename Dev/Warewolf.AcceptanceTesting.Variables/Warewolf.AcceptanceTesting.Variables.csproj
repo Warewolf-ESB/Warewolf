@@ -39,7 +39,7 @@
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="FontAwesome.WPF">
       <HintPath>..\packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
@@ -106,6 +106,10 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>

@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Common.Interfaces;
 using Warewolf.Core;
+using Dev2.Studio.Core;
 
 namespace Dev2.Core.Tests.Helpers
 {

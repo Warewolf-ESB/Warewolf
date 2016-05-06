@@ -15,7 +15,7 @@ using Warewolf.Storage;
 
 namespace Dev2.Activities.SelectAndApply
 {
-    [ToolDescriptorInfo("Execution-ForEach", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>
     {
         public DsfSelectAndApplyActivity()
@@ -104,13 +104,34 @@ namespace Dev2.Activities.SelectAndApply
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            ErrorResultTO allErrors = new ErrorResultTO();
+            if (string.IsNullOrEmpty(DataSource))
+            {
+                allErrors.AddError("DataSource cannot be empty");
+            }
+            if (string.IsNullOrEmpty(Alias))
+            {
+                allErrors.AddError("Alias cannot be empty");
+            }
+            if (!DataSource.Contains("(*)"))
+            {
+                allErrors.AddError("DataSource must be a Recordset or JSON array variable.");
+            }
+            if (allErrors.HasErrors())
+            {
+                DisplayAndWriteError("DsfSelectAndApplyActivity", allErrors);
+                foreach (var fetchError in allErrors.FetchErrors())
+                {
+                    dataObject.Environment.AddError(fetchError);
+                }
+                return;
+            }
             lock (_selectApplyExecutionObject)
             {
                 _previousParentId = dataObject.ParentInstanceID;
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
 
-                ErrorResultTO allErrors = new ErrorResultTO();
                 InitializeDebug(dataObject);
                 dataObject.ForEachNestingLevel++;
                 try

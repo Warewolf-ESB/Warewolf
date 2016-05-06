@@ -7,15 +7,21 @@ using Warewolf.Core;
 
 namespace Dev2.Activities
 {
-    [ToolDescriptorInfo("Resources-Service", "PostgreSql Connector", ToolType.Native, "8999E59B-38A3-43BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Postgre", "PostgreSql Connector", ToolType.Native, "8999E59B-38A3-43BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfPostgreSqlActivity : DsfActivity
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
-   
+
         public DsfPostgreSqlActivity()
         {
+            Type = "PostgreSql Database Connector";
+            DisplayName = "PostgreSql Database Connector";
+        }
+        public DsfPostgreSqlActivity(string procedureName)
+        {
+            ProcedureName = procedureName;
             Type = "PostgreSql Database Connector";
             DisplayName = "PostgreSql Database Connector";
         }

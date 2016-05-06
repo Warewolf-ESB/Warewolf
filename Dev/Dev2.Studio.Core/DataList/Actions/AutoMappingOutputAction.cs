@@ -52,7 +52,7 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
             string value = string.Empty;
             if(item.Value == string.Empty)
             {
-                IDataListItemModel recset = DataListSingleton.ActiveDataList.RecsetCollection.FirstOrDefault(x => x.Name == item.RecordSetName);
+                IRecordSetItemModel recset = DataListSingleton.ActiveDataList.RecsetCollection.FirstOrDefault(x => x.DisplayName == item.RecordSetName);
                 if(recset != null)
                 {
                     var val = recset.Children.FirstOrDefault(x => x.DisplayName == item.DisplayName);
@@ -68,7 +68,7 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
                 }
                 else
                 {
-                    IDataListItemModel scalar = DataListSingleton.ActiveDataList.ScalarCollection.FirstOrDefault(x => x.Name == item.DisplayName);
+                    IDataListItemModel scalar = DataListSingleton.ActiveDataList.ScalarCollection.FirstOrDefault(x => x.DisplayName == item.DisplayName);
                     if(scalar != null)
                     {
                         item.Value = scalar.DisplayName;

@@ -13,7 +13,6 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;

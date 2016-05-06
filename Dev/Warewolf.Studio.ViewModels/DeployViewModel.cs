@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Dev2.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
 {

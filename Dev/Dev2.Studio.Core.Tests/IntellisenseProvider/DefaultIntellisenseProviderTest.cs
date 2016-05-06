@@ -1205,8 +1205,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             dataListViewModel.RecsetCollection.Clear();
             dataListViewModel.ScalarCollection.Clear();
 
-            var scalarDataListItemWithError = DataListItemModelFactory.CreateDataListModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both);
-            var scalarDataListItemWithNoError = DataListItemModelFactory.CreateDataListModel("var", "Random Variable", enDev2ColumnArgumentDirection.Both);
+            var scalarDataListItemWithError = DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both);
+            var scalarDataListItemWithNoError = DataListItemModelFactory.CreateScalarItemModel("var", "Random Variable", enDev2ColumnArgumentDirection.Both);
             scalarDataListItemWithError.HasError = true;
             scalarDataListItemWithError.ErrorMessage = "This is an Error";
             dataListViewModel.ScalarCollection.Add(scalarDataListItemWithError);

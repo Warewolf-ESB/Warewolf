@@ -21,6 +21,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Infragistics.Windows.DockManager;
+using Dev2.Studio.Core;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {

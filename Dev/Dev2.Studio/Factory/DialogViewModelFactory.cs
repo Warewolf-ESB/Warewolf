@@ -13,6 +13,7 @@ using System;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Administration;
+using Dev2.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Factory

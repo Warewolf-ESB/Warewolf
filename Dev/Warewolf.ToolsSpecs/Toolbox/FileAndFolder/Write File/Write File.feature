@@ -53,19 +53,6 @@ Scenario Outline: Write file at location Null
 		Examples: 
 		| Name                 | source   | sourceLocation | method    | content        | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 		| Local with Overwrite | [[path]] | NULL           | Overwrite | warewolf rules | ""       | ""       | [[result]] |        | AN           |                      |
-
-Scenario: Write file when contents has variables that cannot be evealuated
-	Given I have a source path '[[path]]' with value 'c:\Temp\filetowrite1.txt' 	
-	And source credentials as '' and ''	
-	And Method is 'Overwrite'
-	And the input contents from a file 'filewithvariables.txt'     
-	And use private public key for source is ''
-	And result as '[[res]]'
-	When the write file tool is executed	
-	Then the result variable '[[res]]' will be ''
-	And the execution has "AN" error
-
-
 	
 Scenario Outline: Write file validation
     Given I have a variable "[[a]]" with a value '<Val1>'

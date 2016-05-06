@@ -49,7 +49,6 @@
 
 
         <Grid Grid.Row="0" Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Height="40" Width="40" Background="{StaticResource AddSharepointLogo}"></Grid>
-        <Grid Grid.Row="1" Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Height="40" Width="40" Background="{StaticResource AddDropBoxLogo}"></Grid>
         <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Height="40" Width="40" Background="{StaticResource DotNetLogo}"></Grid>
         <Grid Grid.Row="3" Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Height="40" Width="40" Background="{StaticResource AddDotNetLogo}"></Grid>
         <Grid Grid.Row="4" Grid.Column="1" Margin="{StaticResource ControlBorderTop}" Height="40" Width="40" Background="{StaticResource FileLogo}"></Grid>

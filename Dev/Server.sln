@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -114,7 +114,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A71353
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{7C17EF48-FC59-4D8C-BFF8-2A73ECFC6884}"
 	ProjectSection(SolutionItems) = preProject
-		TestScripts\Hard Reset and Clean This Repo.bat = TestScripts\Hard Reset and Clean This Repo.bat
+		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{5884B867-F883-4FBC-9C9F-57033BE4A0CC}"
@@ -125,9 +125,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{5884B8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics.Test", "Dev2.Diagnostics.Test\Dev2.Diagnostics.Test.csproj", "{BF41B889-B0EE-436C-9511-5943C77582E1}"
 EndProject
-<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "Warewolf.Storage.Tests\Warewolf.Storage.Tests.csproj", "{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}"
-=======
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{4FA3DA53-7B62-4B79-AA5A-9E616B4B0936}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
@@ -149,7 +148,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8DC9BC61
 		TestScripts\Tests\Run-All-UI-Tests.ps1 = TestScripts\Tests\Run-All-UI-Tests.ps1
 		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
 	EndProjectSection
->>>>>>> development
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ToolsSpecs", "Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -335,6 +335,10 @@ Global
 		{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAD4D820-C619-4099-AA9C-DCACD23ADB89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
