@@ -93,7 +93,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table1.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -133,7 +133,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table3.AddRow(new string[] {
                         "[[A]] = @",
                         "String",
@@ -173,7 +173,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table5.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -213,7 +213,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table7.AddRow(new string[] {
                         "[[A]] = 011110",
                         "String",
@@ -253,7 +253,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table9.AddRow(new string[] {
                         "[[A]] = 011110",
                         "String",
@@ -293,7 +293,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table11.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -333,7 +333,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table13.AddRow(new string[] {
                         "[[A]] = 2010-01-10",
                         "String",
@@ -373,7 +373,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table15.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "String",
@@ -413,7 +413,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table17.AddRow(new string[] {
                         "[[A]] = testmail@freemail.net",
                         "String",
@@ -453,7 +453,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table19.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "String",
@@ -493,7 +493,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table21.AddRow(new string[] {
                         "[[A]] = 1E",
                         "String",
@@ -533,7 +533,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table23.AddRow(new string[] {
                         "[[A]] = KLM",
                         "String",
@@ -573,7 +573,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table25.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -613,7 +613,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table27.AddRow(new string[] {
                         "[[A]] = 3R",
                         "String",
@@ -653,7 +653,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table29.AddRow(new string[] {
                         "[[A]] = tshepo.ntlhokoa@dev2.co.za",
                         "String",
@@ -693,7 +693,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table31.AddRow(new string[] {
                         "[[A]] = 787877787",
                         "String",
@@ -733,7 +733,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table33.AddRow(new string[] {
                         "[[A]] = Hello Africa",
                         "String",
@@ -773,7 +773,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table35.AddRow(new string[] {
                         "[[A]] = 3000",
                         "String",
@@ -813,7 +813,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table37.AddRow(new string[] {
                         "[[A]] = <A></A>",
                         "String",
@@ -853,7 +853,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table39.AddRow(new string[] {
                         "[[A]] = @",
                         "String",
@@ -893,7 +893,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table41.AddRow(new string[] {
                         "[[A]] = @#$",
                         "String",
@@ -933,7 +933,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table43.AddRow(new string[] {
                         "[[A]] = Hello",
                         "String",
@@ -973,7 +973,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table45.AddRow(new string[] {
                         "[[A]] = 011110",
                         "String",
@@ -1013,7 +1013,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table47.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -1053,7 +1053,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table49.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -1093,7 +1093,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table51.AddRow(new string[] {
                         "[[A]] = 0111100",
                         "String",
@@ -1133,7 +1133,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table53.AddRow(new string[] {
                         "[[A]] = Gracious",
                         "String",
@@ -1173,7 +1173,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table55.AddRow(new string[] {
                         "[[A]] = 2010-01-10",
                         "String",
@@ -1213,7 +1213,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table57.AddRow(new string[] {
                         "[[A]] = Graciuos",
                         "String",
@@ -1253,7 +1253,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table59.AddRow(new string[] {
                         "[[A]] = testmail@freemail.com",
                         "String",
@@ -1293,7 +1293,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table61.AddRow(new string[] {
                         "[[A]] = 0111000",
                         "String",
@@ -1333,7 +1333,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table63.AddRow(new string[] {
                         "[[A]] = 1E",
                         "String",
@@ -1373,7 +1373,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table65.AddRow(new string[] {
                         "[[A]] = Red sox",
                         "String",
@@ -1413,7 +1413,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table67.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -1453,7 +1453,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table69.AddRow(new string[] {
                         "[[A]] = 6",
                         "String",
@@ -1493,7 +1493,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table71.AddRow(new string[] {
                         "[[A]] = tshepo.ntlhokoa@dev2.co.za",
                         "String",
@@ -1533,7 +1533,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table73.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -1573,7 +1573,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table75.AddRow(new string[] {
                         "[[A]] = Gracious",
                         "String",
@@ -1613,7 +1613,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table77.AddRow(new string[] {
                         "[[A]] = A A",
                         "String",
@@ -1653,7 +1653,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table79.AddRow(new string[] {
                         "[[A]] = <A></A>",
                         "String",
@@ -1697,7 +1697,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table81.AddRow(new string[] {
                         "[[A]] = 20",
                         "",
@@ -1753,7 +1753,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table83.AddRow(new string[] {
                         "[[A]] = 20",
                         "",
@@ -1809,7 +1809,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table85.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -1871,7 +1871,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table87.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -1931,7 +1931,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table89.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -1985,7 +1985,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table91.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -2031,7 +2031,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table93.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -2077,7 +2077,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table95.AddRow(new string[] {
                         "[[A]] = 40",
                         "",
@@ -2123,7 +2123,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table97.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -2169,7 +2169,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table99.AddRow(new string[] {
                         "[[A]] = 20",
                         "",
@@ -2215,7 +2215,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table101.AddRow(new string[] {
                         "[[A]] = 70",
                         "",
@@ -2261,7 +2261,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table103.AddRow(new string[] {
                         "[[A]] = 38",
                         "",
@@ -2307,7 +2307,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table105.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -2353,7 +2353,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table107.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -2399,7 +2399,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table109.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -2445,7 +2445,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table111.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -2491,7 +2491,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table113.AddRow(new string[] {
                         "[[A]] = 60",
                         "",
@@ -2537,7 +2537,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table115.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "",
@@ -2583,7 +2583,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table117.AddRow(new string[] {
                         "[[A]] = Hello Africa",
                         "",
@@ -2629,7 +2629,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table119.AddRow(new string[] {
                         "[[A]] = Hello Africa",
                         "",
@@ -2675,7 +2675,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table121.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "",
@@ -2721,7 +2721,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table123.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -2767,7 +2767,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table125.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -2813,7 +2813,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table127.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -2859,7 +2859,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table129.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -2905,7 +2905,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table131.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -2951,7 +2951,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table133.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -2997,7 +2997,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table135.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -3043,7 +3043,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table137.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
@@ -3086,7 +3086,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table139 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table139.AddRow(new string[] {
                         "",
                         "String",
@@ -3124,7 +3124,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table141 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table141.AddRow(new string[] {
                         "",
                         "String",
@@ -3162,7 +3162,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table143 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table143.AddRow(new string[] {
                         "",
                         "String",
@@ -3203,7 +3203,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table145 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table145.AddRow(new string[] {
                         "",
                         "String",
@@ -3243,7 +3243,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table147 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table147.AddRow(new string[] {
                         "[[A]] = 123 234",
                         "String",
@@ -3283,7 +3283,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table149 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table149.AddRow(new string[] {
                         "[[rec().a]] = 1",
                         "String",
@@ -3381,7 +3381,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
 #line 1215
  testRunner.Then("the debug inputs as", ((string)(null)), table153, "Then ");
 #line hidden
@@ -3419,7 +3419,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table155.AddRow(new string[] {
                         "[[[[A]]]] =",
                         "String",
@@ -3461,7 +3461,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table157.AddRow(new string[] {
                         "[[[[A]]]] = 1",
                         "String",
@@ -3493,7 +3493,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1255
  testRunner.And(string.Format("check if \"{0}\" \"IsBetween\" \"{1}\" and \"{2}\"", variable1, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1256
- testRunner.And(string.Format("Require All decisions to be True is \"{0}\"", requirement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Require all decisions to be true is \"{0}\"", requirement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1257
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1258
@@ -3571,7 +3571,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table159.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
@@ -3611,7 +3611,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1286
  testRunner.And(string.Format("check if \'{0}\' \'<matchtype>\' \'{1}\'", variable1, variable2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1287
- testRunner.And("Require All decisions to be True is \'<Requirement>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Require all decisions to be true is \'<Requirement>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1288
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1289
@@ -3700,7 +3700,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table161 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table161.AddRow(new string[] {
                         "[[A]] = 1",
                         "String",
@@ -3736,7 +3736,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table163.AddRow(new string[] {
                         "[[A]] = [[A]]",
                         "String",
@@ -3774,7 +3774,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table165.AddRow(new string[] {
                         "[[B]] = 10",
                         "String",
