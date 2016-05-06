@@ -3793,18 +3793,144 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is Blank positive")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void ValidateThatAVariableIsBlankPositive()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Blank positive", new string[] {
+                        "Ignore"});
+#line 1334
+this.ScenarioSetup(scenarioInfo);
+#line 1335
+ testRunner.Given("a decision variable \"[[B]]\" value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1336
+ testRunner.And("decide if \"[[B]]\" \"IsEqual\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1337
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1338
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table167 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require all decisions to be true"});
+            table167.AddRow(new string[] {
+                        "[[B]] =",
+                        "String",
+                        "YES"});
+#line 1339
+  testRunner.Then("the debug inputs as", ((string)(null)), table167, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table168 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table168.AddRow(new string[] {
+                        "YES"});
+#line 1342
+    testRunner.And("the debug output as", ((string)(null)), table168, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is Blank OR NULL positive 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void ValidateThatAVariableIsBlankORNULLPositive1()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Blank OR NULL positive 1", new string[] {
+                        "Ignore"});
+#line 1347
+this.ScenarioSetup(scenarioInfo);
+#line 1348
+ testRunner.Given("a decision variable \"[[B]]\" value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1349
+ testRunner.And("decide if \"[[B]]\" \"IsEqual\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1350
+ testRunner.And("decide if \"[[B]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1351
+ testRunner.And("the decision mode is \"OR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1352
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1353
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table169 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require all decisions to be true"});
+            table169.AddRow(new string[] {
+                        "[[B]] =",
+                        "String",
+                        "YES"});
+#line 1354
+  testRunner.Then("the debug inputs as", ((string)(null)), table169, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table170 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table170.AddRow(new string[] {
+                        "YES"});
+#line 1357
+    testRunner.And("the debug output as", ((string)(null)), table170, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is Blank OR NULL positive 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void ValidateThatAVariableIsBlankORNULLPositive2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Blank OR NULL positive 2", new string[] {
+                        "Ignore"});
+#line 1362
+this.ScenarioSetup(scenarioInfo);
+#line 1363
+ testRunner.Given("decide if \"[[B]]\" \"IsEqual\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1364
+ testRunner.And("decide if \"[[B]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1365
+ testRunner.And("the decision mode is \"OR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1366
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1367
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table171 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require all decisions to be true"});
+            table171.AddRow(new string[] {
+                        "[[B]] =",
+                        "String",
+                        "YES"});
+#line 1368
+  testRunner.Then("the debug inputs as", ((string)(null)), table171, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table172 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table172.AddRow(new string[] {
+                        "YES"});
+#line 1371
+    testRunner.And("the debug output as", ((string)(null)), table172, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Null throws an error")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
         public virtual void NullThrowsAnError()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Null throws an error", ((string[])(null)));
-#line 1333
+#line 1376
 this.ScenarioSetup(scenarioInfo);
-#line 1334
+#line 1377
  testRunner.Given("is \"[[A]]\" \"IsEqual\" \"123   234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1335
+#line 1378
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1337
+#line 1380
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
