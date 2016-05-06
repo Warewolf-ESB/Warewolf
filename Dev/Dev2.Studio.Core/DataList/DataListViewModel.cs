@@ -219,8 +219,28 @@ namespace Dev2.Studio.ViewModels.DataList
                 RemoveDataListItem(item as IDataListItemModel);
                 WriteToResourceModel();
             }, CanDelete);
+            AddNoteCommand = new RelayCommand(item =>
+            {
+                
+            },CanAddNotes);
+            ViewComplexObjectsCommand = new RelayCommand(item =>
+            {
+                
+            },CanViewComplexObjects);
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             ViewSortDelete = true;
+        }
+
+        bool CanViewComplexObjects(Object itemx)
+        {
+            var item = itemx as IDataListItemModel;
+            return item != null && !item.IsComplexObect;
+        }
+
+        bool CanAddNotes(Object itemx)
+        {
+            var item = itemx as IDataListItemModel;
+            return item != null && !item.AllowNotes;
         }
 
         bool CanDelete(Object itemx)
@@ -264,6 +284,10 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public RelayCommand DeleteCommand { get; set; }
+
+        public RelayCommand AddNoteCommand { get; set; }
+
+        public RelayCommand ViewComplexObjectsCommand { get; set; }
 
         #endregion Commands
 
@@ -903,9 +927,13 @@ namespace Dev2.Studio.ViewModels.DataList
             IRecordSetFieldItemModel childItem = DataListItemModelFactory.CreateRecordSetFieldItemModel(string.Empty);
             if (recset != null)
             {
+                recset.IsComplexObect = false;
+                recset.AllowNotes = false;
                 recset.IsExpanded = false;
                 if (childItem != null)
                 {
+                    childItem.IsComplexObect = false;
+                    childItem.AllowNotes = false;
                     childItem.Parent = recset;
                     recset.Children.Add(childItem);
                 }
@@ -988,17 +1016,17 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
 
             DataListHeaderItemModel variableNode = DataListItemModelFactory.CreateDataListHeaderItem("Variable");
-            variableNode.IsHeaderNode = true;
             if (ScalarCollection.Count == 0)
             {
                 IScalarItemModel dataListItemModel = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
+                dataListItemModel.IsComplexObect = false;
+                dataListItemModel.AllowNotes = false;
                 ScalarCollection.Add(dataListItemModel);
             }
             variableNode.Children = new ObservableCollection<IDataListItemModel>(ScalarCollection.Select(x => new ScalarItemModel(x.DisplayName)).ToList());
             BaseCollection.Add(variableNode);
 
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
-            recordsetsNode.IsHeaderNode = true;
             if (RecsetCollection.Count == 0)
             {
                 AddRecordSet();

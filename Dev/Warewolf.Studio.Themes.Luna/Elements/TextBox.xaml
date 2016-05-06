@@ -102,7 +102,7 @@
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="Height" Value="25" />
-        
+
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
@@ -113,7 +113,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Grid x:Name="RootElement" SnapsToDevicePixels="True">
-                        
+
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -204,7 +204,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Opacity="1">
-                            <Grid>                               
+                            <Grid>
                                 <Border x:Name="ReadOnlyVisualElement"
                                         Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
                                         Opacity="0" />
@@ -714,60 +714,40 @@
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="Border"
-                                                                       Storyboard.TargetProperty="BorderBrush">
+                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="Border"
-                                                                       Storyboard.TargetProperty="Background">
+                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="Border" Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBackgroundBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="PART_DeleteIconBorder"
-                                                                       Storyboard.TargetProperty="BorderBrush">
+                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PART_DeleteIconBorder" Storyboard.TargetProperty="BorderBrush">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="PART_DeleteIconBorder"
-                                                                       Storyboard.TargetProperty="Background">
+                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PART_DeleteIconBorder" Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBackgroundBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="DisabledVisualElement"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1" />
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="Opacity" To="1" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="ReadOnly">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="ReadOnlyVisualElement"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1" />
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="ReadOnlyVisualElement" Storyboard.TargetProperty="Opacity" To="1" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="FocusVisualElement"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1" />
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Opacity" To="1" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unfocused">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="FocusVisualElement"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="0" />
+                                        <DoubleAnimation Duration="0" Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Opacity" To="0" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -811,9 +791,7 @@
                                 Opacity="1"
                                 Grid.ColumnSpan="2">
                             <Grid>
-                                <Border x:Name="ReadOnlyVisualElement"
-                                        Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
-                                        Opacity="0" />
+                                <Border x:Name="ReadOnlyVisualElement" Background="{StaticResource TextBoxReadOnlyBackgroundBrush}" Opacity="0" />
                                 <ScrollViewer x:Name="PART_ContentHost"
                                               BorderThickness="0"
                                               IsTabStop="False"
@@ -874,23 +852,26 @@
                                 Margin="0,0,0,0" 
                                 Padding="3,1,0,0">
                             <Grid>
-                                <!-- DELETE BUTTON -->
-                                <!-- DO NOT REMOVE THIS, IT WILL BE USED WHEN WE ADD IN THE ADD NOTE -->
-                                <!-- Margin="-35,0,0,0" -->
-                                <fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" 
-                                                 x:Name="DeleteDisabled" 
-                                                 Visibility="Visible" 
-                                                 Icon="Trash" 
-                                                 Margin="-35,0,0,0"
-                                                 Width="14" 
-                                                 Height="14" 
-                                                 VerticalAlignment="Center"/>
-                                <!-- DO NOT REMOVE THIS, IT WILL BE USED WHEN WE ADD IN THE ADD NOTE -->
-                                <!--Margin="-25,0,0,0"-->
-                                <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DeleteCommand}"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <!--<ColumnDefinition Width="16"/>-->
+                                </Grid.ColumnDefinitions>
+
+                                <!-- OBJECTS BUTTON -->
+                                <Image x:Name="ViewObjectsDisabled"  
+                                       Visibility="Visible" 
+                                       Source="{StaticResource Scripting-CreateJSON-Disabled}"
+                                       Grid.Column="0"
+                                       Height="14" 
+                                       Width="14"
+                                       Margin="0,0,3,0"
+                                       VerticalAlignment="Center"/>
+                                <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ViewComplexObjectsCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}"
-                                        x:Name="DeleteButton"
-                                        Margin="-25,0,0,0"
+                                        x:Name="ViewObjectsButton"
+                                        Grid.Column="0"
+                                        Margin="-5,0,0,0"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
                                     <Button.Template>
@@ -899,11 +880,46 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
-                                                <fa:ImageAwesome x:Name="DeleteVar" Visibility="Visible"  Icon="Trash" Width="14" Height="14"  HorizontalAlignment="Left"/>
+                                                <Image x:Name="ViewObjects" Visibility="Visible" Source="{StaticResource Scripting-CreateJSON-Normal}" Height="14" Width="14" />
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="False">
-                                                    <Setter TargetName="DeleteVar"  Property="Foreground" Value="{StaticResource SearchBoxButtonForeground}"/>
+                                                    <Setter TargetName="ViewObjects" Property="Source" Value="{StaticResource Scripting-CreateJSON-Normal}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="ViewObjects" Property="Source" Value="{StaticResource Scripting-CreateJSON}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <!-- DELETE BUTTON -->
+                                <fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" 
+                                                 x:Name="DeleteDisabled" 
+                                                 Visibility="Visible" 
+                                                 Icon="Trash" 
+                                                 Grid.Column="1"
+                                                 Width="14" 
+                                                 Height="14" 
+                                                 Margin="0,0,3,0"
+                                                 VerticalAlignment="Center"/>
+                                <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DeleteCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}"
+                                        x:Name="DeleteButton"
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Visibility="Hidden">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <fa:ImageAwesome x:Name="DeleteVar" Visibility="Visible" Icon="Trash" Width="14" Height="14" HorizontalAlignment="Left"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="False">
+                                                    <Setter TargetName="DeleteVar" Property="Foreground" Value="{StaticResource SearchBoxButtonForeground}"/>
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter TargetName="DeleteVar" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
@@ -913,31 +929,33 @@
                                     </Button.Template>
                                 </Button>
                                 <!-- NOTES BUTTON -->
-                                <fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" 
+                                <!--<fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" 
                                                  x:Name="AddNoteDisabled" 
                                                  Visibility="Visible" 
                                                  Icon="FileText" 
-                                                 Margin="-5,-1,0,0"
+                                                 Grid.Column="2"
                                                  Width="14" 
                                                  Height="14" 
+                                                 Margin="0,0,3,0"
                                                  VerticalAlignment="Center"/>
                                 <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=AddNoteCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}"
                                         x:Name="AddNoteButton"
-                                        Margin="0,-1,-9,0"
+                                        Grid.Column="2"
+                                        Margin="0,-1,0,0"
                                         VerticalAlignment="Center"
                                         Visibility="Hidden">
                                     <Button.Template>
                                         <ControlTemplate TargetType="{x:Type Button}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*">
-                                                    </RowDefinition>
+                                                    <RowDefinition Height="*"/>
                                                 </Grid.RowDefinitions>
-                                                <fa:ImageAwesome x:Name="AddNote" Visibility="Visible"  Icon="FileText" Width="14" Height="14"  HorizontalAlignment="Left"/>
+                                                <fa:ImageAwesome x:Name="AddNote" Visibility="Visible" Icon="FileText" Width="14" Height="14" HorizontalAlignment="Left"/>
                                             </Grid>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="False">
-                                                    <Setter TargetName="AddNote"  Property="Foreground" Value="{StaticResource SearchBoxButtonForeground}"/>
+                                                    <Setter TargetName="AddNote" Property="Foreground" Value="{StaticResource SearchBoxButtonForeground}"/>
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter  TargetName="AddNote" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
@@ -945,40 +963,7 @@
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Button.Template>
-                                </Button>
-                                <!-- OBJECTS BUTTON -->
-                                <Image x:Name="ViewObjectsDisabled"  
-                                       Visibility="Visible" 
-                                       Source="{StaticResource Scripting-CreateJSON-Disabled}"
-                                       Margin="-64,0,0,0"
-                                       Height="14" 
-                                       Width="14"
-                                       VerticalAlignment="Center"/>
-                                <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=AddNoteCommand}"
-                                        x:Name="ViewObjectsButton"
-                                        Margin="-68,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Visibility="Hidden">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*">
-                                                    </RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Image x:Name="ViewObjects" Visibility="Visible" Source="{StaticResource Scripting-CreateJSON-Normal}"  Height="14" Width="14" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="False">
-                                                    <Setter TargetName="ViewObjects"  Property="Source" Value="{StaticResource Scripting-CreateJSON-Normal}"/>
-                                                </Trigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter  TargetName="ViewObjects" Property="Source" Value="{StaticResource Scripting-CreateJSON}"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
+                                </Button>-->
                             </Grid>
                         </Border>
                     </Grid>
@@ -987,13 +972,17 @@
                             <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}"/>
                             <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
                         </Trigger>
+                        <!--<Trigger Property="AllowNotes" Value="False">
+                            <Setter Property="Visibility" TargetName="AddNoteDisabled" Value="Hidden" />
+                            <Setter Property="Visibility" TargetName="AddNoteButton" Value="Visible" />
+                        </Trigger>-->
                         <Trigger Property="IsUsed" Value="False">
                             <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Hidden" />
-                            <Setter Property="Visibility" TargetName="AddNoteDisabled" Value="Hidden" />
-                            <Setter Property="Visibility" TargetName="ViewObjectsDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Visible" />
-                            <Setter Property="Visibility" TargetName="AddNoteButton" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsComplexObect" Value="False">
+                            <Setter Property="Visibility" TargetName="ViewObjectsDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="ViewObjectsButton" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
@@ -1009,6 +998,14 @@
                         <Trigger Property="IsFocused" Value="False">
                             <Setter Property="BorderBrush" TargetName="PART_DeleteIconBorder" Value="{StaticResource TextBoxBorderBrush}"/>
                         </Trigger>
+                        <!--<MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="True"/>
+                                <Condition Property="AllowNotes" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="AddNoteDisabled" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="AddNoteButton" Value="Hidden" />
+                        </MultiTrigger>-->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsFocused" Value="True"/>
@@ -1016,10 +1013,14 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Visibility" TargetName="LabelText" Value="Visible" />
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Visible" />
-                            <Setter Property="Visibility" TargetName="AddNoteDisabled" Value="Visible" />
-                            <Setter Property="Visibility" TargetName="ViewObjectsDisabled" Value="Visible" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Hidden" />
-                            <Setter Property="Visibility" TargetName="AddNoteButton" Value="Hidden" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="True"/>
+                                <Condition Property="IsComplexObect" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="ViewObjectsDisabled" Value="Visible" />
                             <Setter Property="Visibility" TargetName="ViewObjectsButton" Value="Hidden" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
@@ -1631,7 +1632,7 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Opacity="1">
-                            <Grid>                               
+                            <Grid>
                                 <Border x:Name="ReadOnlyVisualElement"
                                         Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
                                         Opacity="0" />
