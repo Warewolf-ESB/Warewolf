@@ -5960,7 +5960,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectAndApplyAliasHelpText.
+        ///   Looks up a localized string similar to Specify an alias for the selected data.&lt;br/&gt;
+        ///    This needs to conform to variable notation.&lt;br/&gt;
+        ///    .
         /// </summary>
         public static string SelectAndApplyAliasHelpText {
             get {
@@ -5969,7 +5971,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectAndApplyAliasToolTip.
+        ///   Looks up a localized string similar to Specify an alias for the selected data. 
+        ///This needs to conform to variable notation..
         /// </summary>
         public static string SelectAndApplyAliasToolTip {
             get {
@@ -5978,7 +5981,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectAndApplyDataSourceHelpText.
+        ///   Looks up a localized string similar to Only collections go in here.&lt;br/&gt;
+        ///        You can use the (*) or () notation for record sets or complex object arrays.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Collection(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Collection().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
         /// </summary>
         public static string SelectAndApplyDataSourceHelpText {
             get {
@@ -5987,7 +5998,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectAndApplyDataSourceToolTip.
+        ///   Looks up a localized string similar to Only collections go in here.
+        ///You can use the (*) or () notation for record sets or complex object arrays..
         /// </summary>
         public static string SelectAndApplyDataSourceToolTip {
             get {

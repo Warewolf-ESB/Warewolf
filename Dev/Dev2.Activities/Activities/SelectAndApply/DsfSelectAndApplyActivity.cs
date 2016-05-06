@@ -105,6 +105,8 @@ namespace Dev2.Activities.SelectAndApply
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             ErrorResultTO allErrors = new ErrorResultTO();
+            InitializeDebug(dataObject);
+
             if (string.IsNullOrEmpty(DataSource))
             {
                 allErrors.AddError("DataSource cannot be empty");
@@ -113,7 +115,7 @@ namespace Dev2.Activities.SelectAndApply
             {
                 allErrors.AddError("Alias cannot be empty");
             }
-            if (!DataSource.Contains("(*)"))
+            if (!DataSource.Contains("(*)") && !DataSource.Contains("()"))
             {
                 allErrors.AddError("DataSource must be a Recordset or JSON array variable.");
             }
@@ -132,7 +134,6 @@ namespace Dev2.Activities.SelectAndApply
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
 
-                InitializeDebug(dataObject);
                 dataObject.ForEachNestingLevel++;
                 try
                 {
@@ -204,8 +205,7 @@ namespace Dev2.Activities.SelectAndApply
                             AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", DataSource, "", "", "="));
                         }
 
-                        var dt = DateTime.Now;
-                        DispatchDebugState(dataObject, StateType.End, update, dt);
+                        DispatchDebugState(dataObject, StateType.End, update, DateTime.Now);
                     }
                     dataObject.ParentInstanceID = _previousParentId;
                     dataObject.IsDebugNested = false;
