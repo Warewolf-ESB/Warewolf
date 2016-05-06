@@ -56,7 +56,7 @@ namespace Dev2.Studio.Views.DataList
             IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
-                vm.AddRecordsetNamesIfMissing();
+                //vm.AddRecordsetNamesIfMissing();
             }
         }
 
@@ -77,7 +77,7 @@ namespace Dev2.Studio.Views.DataList
                     if(itemThatChanged != null)
                     {
                         vm.AddBlankRow(itemThatChanged);
-                        vm.ValidateNames(itemThatChanged);
+                        //vm.ValidateNames(itemThatChanged);
                     }
                 }
             }
@@ -98,7 +98,7 @@ namespace Dev2.Studio.Views.DataList
                 {
                     IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
-                    vm.AddRecordsetNamesIfMissing();
+                    //vm.AddRecordsetNamesIfMissing();
                     vm.ValidateNames(itemThatChanged);
                 }
             }
