@@ -237,20 +237,27 @@ namespace Dev2.Studio.Views.DataList
             if(e.Item != null)
             {
                 var type = e.Item.GetType();
-                if (type == typeof(RecordSetItemModel) || type==typeof(ComplexObjectItemModel))
+                var fieldLayouts = Xtg.FieldLayouts;
+                if (type == typeof(RecordSetItemModel))
                 {
-                    var fieldLayouts = Xtg.FieldLayouts;
+                    
                     var fieldLayout = fieldLayouts[2];
                     if (fieldLayout != null)
                     {
                         e.FieldLayout = fieldLayout;
                     }
                 }
-               
-                if (type == typeof(RecordSetFieldItemModel))
+                else if (type == typeof(RecordSetFieldItemModel))
                 {
-                    var fieldLayouts = Xtg.FieldLayouts;
                     var fieldLayout = fieldLayouts[1];
+                    if (fieldLayout != null)
+                    {
+                        e.FieldLayout = fieldLayout;
+                    }
+                }
+                else if (type == typeof(ComplexObjectItemModel))
+                {
+                    var fieldLayout = fieldLayouts[4];
                     if (fieldLayout != null)
                     {
                         e.FieldLayout = fieldLayout;

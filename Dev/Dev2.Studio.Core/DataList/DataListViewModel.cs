@@ -509,7 +509,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddBlankRow(null);
             }
 
-            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>()));
+            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(RefreshJsonObjects(_complexObjectCollection.ToList()));
             Provider.VariableList = new ObservableCollection<string>(items);
            
             WriteToResourceModel();
@@ -526,23 +526,30 @@ namespace Dev2.Studio.ViewModels.DataList
             for(int index = 0; index < paths.Length; index++)
             {
                 string path = paths[index];
+                var isArray = false;
+                if (path.Contains("()") || path.Contains("(*)"))
+                {
+                    isArray = true;
+                    path = path.Replace("(*)", "()");
+                }
                 if (itemModel == null)
                 {
-                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.Name == path);
+                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.DisplayName == path);
                 }
                 if(itemModel == null)
                 {
-                    itemModel = new ComplexObjectItemModel(path);
+                    
+                    itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
                     ComplexObjectCollection.Add(itemModel);
                 }
                 else
                 {
                     if (itemModel.DisplayName != path)
                     {
-                        var item = itemModel.Children.FirstOrDefault(model => model.Name == path);
+                        var item = itemModel.Children.FirstOrDefault(model => model.DisplayName == path);
                         if (item == null)
-                        {
-                            item = new ComplexObjectItemModel(path);
+                        {                            
+                            item = new ComplexObjectItemModel(path) { Parent = itemModel,IsArray = isArray};
                             itemModel.Children.Add(item);
                         }
                         itemModel = item;
@@ -566,9 +573,41 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 throw new Exception(errorString);
             }            
-            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>()));
+            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(RefreshJsonObjects(_complexObjectCollection.ToList()));
             Provider.VariableList = new ObservableCollection<string>(items);
         }
+
+        private IEnumerable<string> RefreshJsonObjects(List<IComplexObjectItemModel> toList)
+        {
+            List<string> accList = new List<string>();
+            foreach (var dataListItemModel in toList)
+            {
+                if (!string.IsNullOrEmpty(dataListItemModel.Name))
+                {
+                    var rec = "[[" + dataListItemModel.Name + "]]";
+                    accList.Add(rec);
+                    accList.AddRange(RefreshJsonObjects(dataListItemModel.Children.ToList()));
+                }
+//
+//                var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName);
+//                var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName, true);
+//
+//
+//                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
+//                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
+//                foreach (var listItemModel in dataListItemModel.Children)
+//                {
+//                    var rec = "[[" + listItemModel.Name + "]]";
+//                    if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
+//                    {
+//                        accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
+//                        accList.Add(rec);
+//                    }
+//                }
+            }
+            return accList;
+        }
+
         public void InitializeDataListViewModel()
         {
             if (Resource == null) return;
@@ -630,7 +669,10 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             foreach (var dataListItemModel in toList)
             {
-                accList.Add("[[" + dataListItemModel.DisplayName + "]]");
+                if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
+                {
+                    accList.Add("[[" + dataListItemModel.DisplayName + "]]");
+                }
             }
             return accList;
         }
@@ -640,26 +682,35 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             foreach (var dataListItemModel in toList)
             {
-                var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName);
-                var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName, true);
+                if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
+                {
+                    var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName);
+                    var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName, true);
 
-                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
-                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
+                    accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
+                    accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
+                }
                 foreach (var listItemModel in dataListItemModel.Children)
                 {
-                    var rec = "[[" + listItemModel.Name + "]]";
-                    if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
+                    if (!string.IsNullOrEmpty(listItemModel.Name))
                     {
-                        accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
-                        accList.Add(rec);
+                        var rec = "[[" + listItemModel.Name + "]]";
+                        if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
+                        {
+                            accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
+                            accList.Add(rec);
+                        }
                     }
                 }
                 foreach (var listItemModel in ScalarCollection)
                 {
-                    var rec = "[[" + listItemModel.DisplayName + "]]";
-                    if (ExecutionEnvironment.IsScalar(rec))
+                    if (!string.IsNullOrEmpty(listItemModel.DisplayName))
                     {
-                        accList.Add(rec);
+                        var rec = "[[" + listItemModel.DisplayName + "]]";
+                        if (ExecutionEnvironment.IsScalar(rec))
+                        {
+                            accList.Add(rec);
+                        }
                     }
                 }
 
