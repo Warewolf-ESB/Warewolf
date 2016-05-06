@@ -3895,16 +3895,28 @@ Data
     <value>ChooseAttachmentsHelp</value>
   </data>
   <data name="SelectAndApplyDataSourceToolTip" xml:space="preserve">
-    <value>SelectAndApplyDataSourceToolTip</value>
+    <value>Only collections go in here.
+You can use the (*) or () notation for record sets or complex object arrays.</value>
   </data>
   <data name="SelectAndApplyDataSourceHelpText" xml:space="preserve">
-    <value>SelectAndApplyDataSourceHelpText</value>
+    <value>Only collections go in here.&lt;br/&gt;
+        You can use the (*) or () notation for record sets or complex object arrays.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:
+        &lt;ol&gt;
+            &lt;li&gt;[[Collection(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Collection().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
   </data>
   <data name="SelectAndApplyAliasToolTip" xml:space="preserve">
-    <value>SelectAndApplyAliasToolTip</value>
+    <value>Specify an alias for the selected data. 
+This needs to conform to variable notation.</value>
   </data>
   <data name="SelectAndApplyAliasHelpText" xml:space="preserve">
-    <value>SelectAndApplyAliasHelpText</value>
+    <value>Specify an alias for the selected data.&lt;br/&gt;
+    This needs to conform to variable notation.&lt;br/&gt;
+    </value>
   </data>
   <data name="AssignObjectHelpVariable" xml:space="preserve">
     <value>Only json objects go in here.&lt;br /&gt;
