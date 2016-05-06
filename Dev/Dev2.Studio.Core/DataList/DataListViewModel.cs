@@ -509,7 +509,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddBlankRow(null);
             }
 
-            var items = RefreshTries(_scalarCollection.ToList(), "", new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), "", new List<string>()));
+            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>()));
             Provider.VariableList = new ObservableCollection<string>(items);
            
             WriteToResourceModel();
@@ -521,23 +521,35 @@ namespace Dev2.Studio.ViewModels.DataList
             if (part == null)
                 return;
 
-            IComplexObjectItemModel thisnode = new ComplexObjectItemModel("");
-            IComplexObjectItemModel currentnode;
             var paths = part.DisplayValue.Split('.');
-            foreach (string path in paths)
+            IComplexObjectItemModel itemModel=null;
+            for(int index = 0; index < paths.Length; index++)
             {
-                currentnode = thisnode;
-                foreach (string subPath in path.Split('.'))
+                string path = paths[index];
+                if (itemModel == null)
                 {
-                    if (currentnode != null && null == currentnode.Children.FirstOrDefault(model => model.DisplayName==subPath))
-                        currentnode.Children.Add(new ComplexObjectItemModel(subPath,enDev2ColumnArgumentDirection.None,"",currentnode));
-                    else if(currentnode != null)
+                    itemModel = ComplexObjectCollection.FirstOrDefault(model => model.Name == path);
+                }
+                if(itemModel == null)
+                {
+                    itemModel = new ComplexObjectItemModel(path);
+                    ComplexObjectCollection.Add(itemModel);
+                }
+                else
+                {
+                    if (itemModel.DisplayName != path)
                     {
-                        currentnode = currentnode.Children.FirstOrDefault(model => model.DisplayName==subPath);
+                        var item = itemModel.Children.FirstOrDefault(model => model.Name == path);
+                        if (item == null)
+                        {
+                            item = new ComplexObjectItemModel(path);
+                            itemModel.Children.Add(item);
+                        }
+                        itemModel = item;
                     }
+                    
                 }
             }
-
         }
 
         #endregion Add/Remove Missing Methods
@@ -554,7 +566,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 throw new Exception(errorString);
             }            
-            var items = RefreshTries(_scalarCollection.ToList(), "", new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), "", new List<string>()));
+            var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>()));
             Provider.VariableList = new ObservableCollection<string>(items);
         }
         public void InitializeDataListViewModel()
@@ -614,7 +626,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
 
-        private IList<string> RefreshTries(List<IScalarItemModel> toList, string parent, IList<string> accList)
+        private IList<string> RefreshTries(List<IScalarItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
             {
@@ -624,7 +636,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
 
-        private IList<string> RefreshRecordSets(List<IRecordSetItemModel> toList, string parent, IList<string> accList)
+        private IList<string> RefreshRecordSets(List<IRecordSetItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
             {
@@ -743,6 +755,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
             BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
+            BaseCollection[2].Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
             AddBlankRow(null);
             return result;
         }
