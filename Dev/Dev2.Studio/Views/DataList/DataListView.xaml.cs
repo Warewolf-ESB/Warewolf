@@ -118,35 +118,6 @@ namespace Dev2.Studio.Views.DataList
             WriteToResourceModel();
         }
 
-        private void Inputcbx_OnChecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            if(checkBox == null || !checkBox.IsEnabled)
-            {
-                return;
-            }
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if (vm != null && !vm.IsSorting)
-            {
-                WriteToResourceModel();
-            }
-        }
-
-        private void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkBox = sender as CheckBox;
-            if(checkBox == null || !checkBox.IsEnabled)
-            {
-                return;
-            }
-
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if (vm != null && !vm.IsSorting)
-            {
-                WriteToResourceModel();
-            }
-        }
-
         #endregion Events
 
         #region Private Methods
