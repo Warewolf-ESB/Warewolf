@@ -2,8 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Parsers;
-using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
@@ -392,39 +390,6 @@ namespace Dev2.Studio.Core.Models.DataList
         //}
 
         #region Overrides of DataListItemModel
-
-        public override string ValidateName(string name)
-        {
-            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-            if (!string.IsNullOrEmpty(name))
-            {
-                name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
-                //else if(IsField)
-                //{
-                //    name = DataListUtil.ExtractFieldNameFromValue(name);
-                //}
-
-                if(!string.IsNullOrEmpty(name))
-                {
-                    var intellisenseResult = parser.ValidateName(name, "Recordset");
-                    if(intellisenseResult != null)
-                    {
-                        SetError(intellisenseResult.Message);
-                    }
-                    else
-                    {
-                        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                           !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                           !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                           !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                        {
-                            RemoveError();
-                        }
-                    }
-                }
-            }
-            return name;
-        }
 
         #endregion
     }
