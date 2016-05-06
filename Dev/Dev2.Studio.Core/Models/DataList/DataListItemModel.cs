@@ -233,11 +233,10 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 SetColumnIODirectionFromInput(value);
-
             }
         }
 
-        public bool Output
+        public virtual bool Output
         {
             get
             {
@@ -246,10 +245,6 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 SetColumnIODirectionFromOutput(value);
-                //if(Children.Count > 0)
-                //{
-                //    SetChildOutputValues(value);
-                //}
             }
         }
 
@@ -486,7 +481,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        private void SetColumnIODirectionFromOutput(bool value)
+        protected void SetColumnIODirectionFromOutput(bool value)
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
