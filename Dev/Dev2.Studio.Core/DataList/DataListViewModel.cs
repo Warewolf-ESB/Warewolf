@@ -608,7 +608,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 _backupRecsets.Add(dataListItemModel);
             }
-
+            
             for (int index = 0; index < ScalarCollection.Count; index++)
             {
                 var item = ScalarCollection[index];
