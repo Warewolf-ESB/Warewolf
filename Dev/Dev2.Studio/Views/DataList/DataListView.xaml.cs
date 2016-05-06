@@ -236,7 +236,8 @@ namespace Dev2.Studio.Views.DataList
         {
             if(e.Item != null)
             {
-                if (e.Item.GetType() == typeof(RecordSetItemModel))
+                var type = e.Item.GetType();
+                if (type == typeof(RecordSetItemModel) || type==typeof(ComplexObjectItemModel))
                 {
                     var fieldLayouts = Xtg.FieldLayouts;
                     var fieldLayout = fieldLayouts[2];
@@ -246,7 +247,7 @@ namespace Dev2.Studio.Views.DataList
                     }
                 }
                
-                if (e.Item.GetType() == typeof(RecordSetFieldItemModel))
+                if (type == typeof(RecordSetFieldItemModel))
                 {
                     var fieldLayouts = Xtg.FieldLayouts;
                     var fieldLayout = fieldLayouts[1];
