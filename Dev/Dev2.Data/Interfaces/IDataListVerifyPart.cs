@@ -26,5 +26,6 @@ namespace Dev2.Data.Interfaces {
         string RecordsetIndex { get; }
 
         bool HasRecordsetIndex { get; }
+        bool IsJson { get; set; }
     }
 }

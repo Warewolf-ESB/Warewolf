@@ -16,6 +16,7 @@ namespace Dev2.DataList.Contract
 {
     public class DateTimeVerifyPart : IDataListVerifyPart
     {
+        private bool _isJson;
 
         public string DisplayValue { get; private set; }
 
@@ -35,6 +36,17 @@ namespace Dev2.DataList.Contract
             get { return RecordsetIndex != string.Empty; }
 
         }
+        public bool IsJson
+        {
+            get
+            {
+                return _isJson;
+            }
+            set
+            {
+                _isJson = value;
+            }
+        }
 
         public bool IsScalar
         {
@@ -50,6 +62,7 @@ namespace Dev2.DataList.Contract
             Field = "";
             RecordsetIndex = "";
             ColumnIODirection = enDev2ColumnArgumentDirection.None;
+            IsJson = false;
         }
 
 

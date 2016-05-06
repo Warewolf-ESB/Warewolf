@@ -54,7 +54,8 @@
                                           Style="{StaticResource SearchTextboxStyle}"
                                           ClearSearchCommand="{Binding Path=ClearSearchTextCommand}"
                                           LabelText="Filter"
-                                          HorizontalAlignment="Stretch" >
+                                          HorizontalAlignment="Stretch" 
+                                          Text="{Binding Path=SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}">
             </customControls:SearchTextBox>
             <Button Grid.Column="1"
                     x:Name="DeleteButton"
@@ -126,9 +127,11 @@
                                                                     IsTabStop="True" 
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
+                                                                    AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
+                                                                    ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
-                                                                    Margin="-8,3,0,0" 
+                                                                    Margin="{StaticResource ControlBorderTop}" 
                                                                     aprop:FocusAttachedProperty.IsFocused="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                         <customControls:VariableTextBox.Style>
@@ -215,9 +218,11 @@
                                                                     IsTabStop="True" 
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
+                                                                    AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
+                                                                    ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
-                                                                    Margin="-8,3,0,0" 
+                                                                    Margin="{StaticResource ControlBorderTop}" 
                                                                     aprop:FocusAttachedProperty.IsFocused="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                         <customControls:VariableTextBox.Style>
@@ -289,7 +294,7 @@
                         </dataPresenter:TemplateField>
                         <dataPresenter:Field Name="Children"></dataPresenter:Field>
                     </dataPresenter:FieldLayout>
-                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:ScalarItemModel}" ParentFieldName="Children">
+                    <dataPresenter:FieldLayout Key="{x:Type dataList3:RecordSetFieldItemModel}" ParentFieldLayoutKey="{x:Type dataList3:ScalarItemModel}">
                         <dataPresenter:TemplateField Name="DisplayName" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" Width="*" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
                                 <DataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">
@@ -305,9 +310,11 @@
                                                                     IsTabStop="True" 
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
+                                                                    AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
+                                                                    ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
-                                                                    Margin="0,3,0,0" 
+                                                                    Margin="{StaticResource ControlBorderTop}" 
                                                                     aprop:FocusAttachedProperty.IsFocused="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                         <customControls:VariableTextBox.Style>

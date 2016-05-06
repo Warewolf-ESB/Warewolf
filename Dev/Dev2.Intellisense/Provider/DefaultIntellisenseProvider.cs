@@ -92,7 +92,8 @@ namespace Dev2.Studio.InterfaceImplementors
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
             if (context == null) return new List<IntellisenseProviderResult>();
-            return DataListSingleton.ActiveDataList.Provider.GetSuggestions(context.InputText, context.CaretPosition, true, context.FilterType).Select(a => new IntellisenseProviderResult(this, a, String.Empty)).ToList();
+                return DataListSingleton.ActiveDataList.Provider.GetSuggestions(context.InputText, context.CaretPosition, true, context.FilterType).Select(a => new IntellisenseProviderResult(this, a, String.Empty)).ToList();
+            
         }
 
         #endregion

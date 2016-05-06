@@ -1127,38 +1127,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual("[[rs().Val]]", result);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DefaultIntellisenseProvider_GetIntellisenseResults")]
-        public void DefaultIntellisenseProvider_GetIntellisenseResults_ActiviDataListIsInErrorAndInPutTextMatchesVariable_ResultIsInError()
-        {
-            //------------Setup for test--------------------------
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 0,
-                InputText = "[[Country]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            CreateActiveDataListViewModel();
-
-            //------------Execute Test---------------------------
-            var defaultIntellisenseProvider = new DefaultIntellisenseProvider();    
-            var result = defaultIntellisenseProvider.GetIntellisenseResults(context);
-
-            //------------Assert Results-------------------------
-
-            Assert.AreEqual(7, result.Count);
-            Assert.IsTrue(result.Any(a => a.ToString() == "[[NUD2347]]"));
-            Assert.IsTrue(result.Any(a => a.ToString() == "[[number]]"));
-            Assert.IsTrue(result.Any(a => a.ToString() == "[[vehicleColor]]"));
-            Assert.IsTrue(result.Any(a => a.ToString() == "[[Fines(*)]]"));
-            Assert.IsTrue(result.Any(a => a.ToString() == "[[Fines()]]"));
-            Assert.IsTrue(result.Any(a => a.ToString() == "[[Registrations(*)]]"));
-            Assert.IsTrue(result.Any(a => a.ToString() == "[[Registrations()]]"));
-
-
-        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
