@@ -36,7 +36,7 @@ namespace Dev2.Studio.Core.Models.DataList
         private bool _isComplexObect;
         private string _displayName;
         private bool _isExpanded = true;
-        private enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
+        protected enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
         private string _name;
         //string _filterText;
         //ObservableCollection<IDataListItemModel> _backupChildren    ;
@@ -70,7 +70,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         #region Properties
 
-        public bool UpdatingChildren { get; private set; }
+        public bool UpdatingChildren { get; protected set; }
 
         public bool IsUsed
         {
@@ -223,7 +223,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public bool Input
+        public virtual bool Input
         {
             get
             {
@@ -233,10 +233,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 SetColumnIODirectionFromInput(value);
-                //if(Children.Count > 0)
-                //{
-                //    SetChildInputValues(value);
-                //}
+
             }
         }
 
@@ -453,7 +450,7 @@ namespace Dev2.Studio.Core.Models.DataList
         //    }
         //}
 
-        private void SetColumnIODirectionFromInput(bool value)
+        protected void SetColumnIODirectionFromInput(bool value)
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
