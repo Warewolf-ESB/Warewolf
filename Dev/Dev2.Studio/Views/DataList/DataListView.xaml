@@ -128,7 +128,6 @@
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                     AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
-                                                                    ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
                                                                     Margin="{StaticResource ControlBorderTop}" 
@@ -169,8 +168,6 @@
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
-                                              Checked="Inputcbx_OnChecked"
-                                              Unchecked="Inputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
@@ -190,8 +187,6 @@
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
-                                              Checked="Outputcbx_OnChecked"
-                                              Unchecked="Outputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
@@ -219,7 +214,6 @@
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                     AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
-                                                                    ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
                                                                     Margin="{StaticResource ControlBorderTop}" 
@@ -260,8 +254,6 @@
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
-                                              Checked="Inputcbx_OnChecked"
-                                              Unchecked="Inputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
@@ -281,8 +273,6 @@
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
-                                              Checked="Outputcbx_OnChecked"
-                                              Unchecked="Outputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
@@ -311,7 +301,6 @@
                                                                     ToolTip="{x:Static languages:Core.DataListVariableInputTooltip}"
                                                                     DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
                                                                     AddNoteCommand="{Binding DataContext.AddNoteCommand,ElementName=DataListViewControl}"
-                                                                    ViewComplexObjectsCommand="{Binding DataContext.ViewComplexObjectsCommand,ElementName=DataListViewControl}"
                                                                     Text="{Binding Path=DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                     IsUsed="{Binding Path=IsUsed}"
                                                                     Margin="{StaticResource ControlBorderTop}" 
@@ -352,8 +341,6 @@
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
-                                              Checked="Inputcbx_OnChecked"
-                                              Unchecked="Inputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
@@ -373,8 +360,6 @@
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
-                                              Checked="Outputcbx_OnChecked"
-                                              Unchecked="Outputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
@@ -409,7 +394,7 @@
                                                                     aprop:FocusAttachedProperty.IsFocused="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                     AutomationProperties.AutomationId="UI_NameTextBox_AutoID">
                                         <customControls:VariableTextBox.Style>
-                                            <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableTextboxStyle}">
+                                            <Style TargetType="customControls:VariableTextBox" BasedOn="{StaticResource VariableComplexObjectsTextboxStyle}">
                                                 <Style.Triggers>
                                                     <Trigger Property="Text" Value="">
                                                         <Setter Property="Background" Value="{StaticResource DataListItemName}" />
@@ -433,18 +418,16 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Input" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Input" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:ComplexObjectItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Input}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
-                                              Checked="Inputcbx_OnChecked"
-                                              Unchecked="Inputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsInputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListInputCheckBoxHelp}"
@@ -454,18 +437,16 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Output" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Output" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:ComplexObjectItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Output}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
-                                              Checked="Inputcbx_OnChecked"
-                                              Unchecked="Inputcbx_OnChecked"
                                               AutomationProperties.AutomationId="UI_IsOutputCheckbox_AutoID" >
                                         <i:Interaction.Behaviors>
                                             <core:HelpSetter Text="{x:Static languages:Core.DataListOutputCheckBoxHelp}"
