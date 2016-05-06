@@ -258,5 +258,10 @@ namespace Dev2.Studio.Views.DataList
                 }
             }
         }
+
+        private void Xtg_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Xtg.Records.ExpandAll(true);
+        }
     }
 }
