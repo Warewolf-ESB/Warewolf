@@ -503,7 +503,7 @@ namespace Dev2.Studio.ViewModels.DataList
             RemoveBlankScalars();
             RemoveBlankRecordsets();
             RemoveBlankRecordsetFields();
-
+            RemoveBlankComplexObjects();
             if (parts.Count > 0)
             {
                 AddBlankRow(null);
@@ -514,6 +514,17 @@ namespace Dev2.Studio.ViewModels.DataList
            
             WriteToResourceModel();
             EventPublisher.Publish(new UpdateIntellisenseMessage());
+        }
+
+        private void RemoveBlankComplexObjects()
+        {
+            var complexObjectItemModels = ComplexObjectCollection.Where(model => string.IsNullOrEmpty(model.DisplayName));
+            var objectItemModels = complexObjectItemModels as IList<IComplexObjectItemModel> ?? complexObjectItemModels.ToList();
+            for(int i = objectItemModels.Count; i >= 0; i--)
+            {
+                ComplexObjectCollection.Remove(objectItemModels[i]);
+            }
+            
         }
 
         private void AddComplexObject(IDataListVerifyPart part)
@@ -588,22 +599,6 @@ namespace Dev2.Studio.ViewModels.DataList
                     accList.Add(rec);
                     accList.AddRange(RefreshJsonObjects(dataListItemModel.Children.ToList()));
                 }
-//
-//                var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName);
-//                var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName, true);
-//
-//
-//                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
-//                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
-//                foreach (var listItemModel in dataListItemModel.Children)
-//                {
-//                    var rec = "[[" + listItemModel.Name + "]]";
-//                    if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
-//                    {
-//                        accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
-//                        accList.Add(rec);
-//                    }
-//                }
             }
             return accList;
         }
@@ -731,11 +726,16 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     AddRowToRecordsets();
                 }
+                else if(item is ComplexObjectItemModel)
+                {
+                    AddComplexObject();
+                }
             }
             else
             {
                 AddRowToScalars();
                 AddRowToRecordsets();
+                AddComplexObject();
             }
         }
 
