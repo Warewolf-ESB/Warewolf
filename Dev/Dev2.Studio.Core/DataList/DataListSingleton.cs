@@ -62,6 +62,7 @@ namespace Dev2.Studio.Core
 
         public static void SetDataList(IDataListViewModel activeDataList)
         {
+         
             _activeDataList = activeDataList;
         }
 

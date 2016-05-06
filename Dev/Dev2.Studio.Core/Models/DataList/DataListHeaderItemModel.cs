@@ -19,7 +19,6 @@ namespace Dev2.Studio.Core.Models.DataList
     {
         private string _displayName;
         private ObservableCollection<IDataListItemModel> _children;
-        private bool _isHeaderNode;
 
         public DataListHeaderItemModel(string displayName)
         {
@@ -49,28 +48,9 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public bool IsHeaderNode
+        public override string ToString()
         {
-            get
-            {
-                return _isHeaderNode;
-            }
-            set
-            {
-                _isHeaderNode = value;
-                NotifyOfPropertyChange(() => IsHeaderNode);
-            }
+            return DisplayName;
         }
-
-        /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
-        //public override string ToString()
-        //{
-        //    return DisplayName;
-        //}
     }
 }

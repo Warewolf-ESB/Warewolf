@@ -308,6 +308,14 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
+            else if (activityType == typeof(DsfMultiAssignObjectActivity))
+            {
+                DsfMultiAssignObjectActivity maAct = activity as DsfMultiAssignObjectActivity;
+                if (maAct != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.FieldsCollection));
+                }
+            }
 
             return results;
         }
