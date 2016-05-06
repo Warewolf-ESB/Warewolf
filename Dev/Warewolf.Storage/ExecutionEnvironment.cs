@@ -332,6 +332,12 @@ namespace Warewolf.Storage
                     return "[[" + rec.Item.Name + "(*)" + "]]";
                 }
             }
+
+            if (exp.IsJsonIdentifierExpression)
+            {
+                return expression.Replace("()", "(*)");
+            }
+
             return expression;
         }
 
@@ -497,6 +503,4 @@ namespace Warewolf.Storage
             }
         }
     }
-
-
 }

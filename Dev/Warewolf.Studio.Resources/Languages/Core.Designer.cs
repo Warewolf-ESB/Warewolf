@@ -5962,6 +5962,13 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Specify an alias for the selected data.&lt;br/&gt;
         ///    This needs to conform to variable notation.&lt;br/&gt;
+        ///    This will be the value that will be acted upon in the activity inserted below.&lt;br/&gt;
+        ///    To ensure that the original values are updated ensure that the result of the activity is set to this value.&lt;br/&gt;
+        ///    
+        ///    Allowed:
+        ///    &lt;ol&gt;
+        ///        &lt;li&gt;[[field]]&lt;/li&gt;
+        ///    &lt;/ol&gt;
         ///    .
         /// </summary>
         public static string SelectAndApplyAliasHelpText {
@@ -5983,13 +5990,15 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Only collections go in here.&lt;br/&gt;
         ///        You can use the (*) or () notation for record sets or complex object arrays.&lt;br/&gt;
+        ///        This is the collection of items that will be iterated over.&lt;br /&gt;
         ///        &lt;br /&gt;
-        ///
+        ///        For example to iterate over all ages in the person recordset this field will contain [[person(*).age]].&lt;br/&gt;
+        ///        
         ///        Allowed:
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Collection(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Collection().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///            &lt;li&gt;[[Collection.InnerCollection [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SelectAndApplyDataSourceHelpText {
             get {

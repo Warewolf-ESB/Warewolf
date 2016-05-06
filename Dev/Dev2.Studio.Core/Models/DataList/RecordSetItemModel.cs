@@ -119,9 +119,24 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
+        public override bool Output
+        {
+            get
+            {
+                return _columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Output;
+            }
+            set
+            {
+                SetColumnIODirectionFromOutput(value);
+                if (Children.Count > 0)
+                {
+                    SetChildOutputValues(value);
+                }
+            }
+        }
+
         private void SetChildInputValues(bool value)
         {
-            var updatedChildren = new OptomizedObservableCollection<IRecordSetFieldItemModel>();
             if(Children != null)
             {
                 foreach(var dataListItemModel in Children)
@@ -130,20 +145,26 @@ namespace Dev2.Studio.Core.Models.DataList
                     if (!string.IsNullOrEmpty(child.DisplayName))
                     {
                         child.Input = value;
-                        //updatedChildren.Add(child);
                     }
                 }
             }
-//
-//            if(Children != null)
-//            {
-//                Children.Clear();
-//                foreach(var dataListItemModel in updatedChildren)
-//                {
-//                    Children.Add(dataListItemModel);
-//                }
-//            }
         }
+
+        private void SetChildOutputValues(bool value)
+        {
+            if (Children != null)
+            {
+                foreach (var dataListItemModel in Children)
+                {
+                    var child = dataListItemModel;
+                    if (!string.IsNullOrEmpty(child.DisplayName))
+                    {
+                        child.Output = value;
+                    }
+                }
+            }
+        }
+
         //public bool IsBlank
         //{
         //    get
