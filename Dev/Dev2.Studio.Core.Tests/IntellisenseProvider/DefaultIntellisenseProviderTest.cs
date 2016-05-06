@@ -145,7 +145,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
 
 
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
@@ -211,7 +211,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
 
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
@@ -238,7 +238,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             //------------Assert Results-------------------------
 
 
-            Assert.AreEqual(7, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
 
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
@@ -306,11 +306,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
@@ -331,11 +330,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
@@ -394,11 +392,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
@@ -419,11 +416,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
@@ -477,11 +473,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
@@ -590,17 +585,13 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(7, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.AreEqual(6, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*"));
-
-
-
-
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
         }
 
         [TestMethod]
@@ -617,15 +608,17 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.AreEqual(9, getResults.Count);
+            
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
 
 
         }
@@ -643,16 +636,17 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
 
         }
 
@@ -701,16 +695,16 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
         [TestMethod]
@@ -727,15 +721,16 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
         [TestMethod]
@@ -751,15 +746,16 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
         //BUG 8736
@@ -775,15 +771,15 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
         //BUG 8755
@@ -798,8 +794,13 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(5, getResults.Count);
+            Assert.AreEqual(6, getResults.Count);
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
         }
 
         //BUG 8755
@@ -814,8 +815,11 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            Assert.AreEqual(2, getResults.Count);
+            
+            Assert.AreEqual(3, getResults.Count);
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
         }
 
         //BUG 8736
@@ -848,15 +852,16 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
         //BUG 8736
@@ -947,15 +952,17 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
         }
 
         //2013.06.11: Ashley Lewis for bug 8759 - intellisense for partial field
@@ -1015,7 +1022,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"), "Intellisense got recordset filtered results incorrectly");
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"), "Intellisense got recordset filtered results incorrectly");
+
 
         }
 
@@ -1032,7 +1042,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             };
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-            Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"), "Intellisense got recordset filtered results incorrectly");
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"), "Intellisense got recordset filtered results incorrectly");
+
+
         }
 
         #endregion
@@ -1114,29 +1127,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.AreEqual("[[rs().Val]]", result);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DefaultIntellisenseProvider_GetIntellisenseResults")]
-        public void DefaultIntellisenseProvider_GetIntellisenseResults_ActiviDataListIsInErrorAndInPutTextMatchesVariable_ResultIsInError()
-        {
-            //------------Setup for test--------------------------
-            var context = new IntellisenseProviderContext
-            {
-                CaretPosition = 0,
-                InputText = "[[Country]]",
-                DesiredResultSet = IntellisenseDesiredResultSet.Default
-            };
-
-            CreateActiveDataListViewModel();
-
-            //------------Execute Test---------------------------
-            var result = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
-
-            //------------Assert Results-------------------------
-
-            Assert.AreEqual(5, result.Count);
-
-        }
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -1211,15 +1201,17 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual(10, getResults.Count);
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City("));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
-            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.AreEqual(9, getResults.Count);
             Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*).Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City(*)]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().GeoLocation]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City().Name]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[City()]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Country]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[Scalar]]"));
+            Assert.IsTrue(getResults.Any(a => a.ToString() == "[[State]]"));
+
         }
 
         [TestMethod]
