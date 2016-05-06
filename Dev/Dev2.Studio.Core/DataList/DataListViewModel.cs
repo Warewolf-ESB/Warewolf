@@ -743,7 +743,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             BaseCollection[0].Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
             BaseCollection[1].Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
-
+            AddBlankRow(null);
             return result;
         }
 
@@ -1051,6 +1051,8 @@ namespace Dev2.Studio.ViewModels.DataList
                 complexObjectItemModel.IsExpanded = false;
                 if (childItem != null)
                 {
+                    childItem.IsComplexObect = true;
+                    childItem.AllowNotes = false;
                     childItem.Parent = complexObjectItemModel;
                     complexObjectItemModel.Children.Add(childItem);
                 }
@@ -1141,7 +1143,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 ScalarCollection.Add(dataListItemModel);
             }
             BaseCollection.Add(variableNode);
-            //variableNode.Children = new ObservableCollection<IDataListItemModel>(ScalarCollection);
 
             DataListHeaderItemModel recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
             if (RecsetCollection.Count == 0)
@@ -1149,16 +1150,13 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddRecordSet();
             }
             BaseCollection.Add(recordsetsNode);
-            //recordsetsNode.Children = new ObservableCollection<IDataListItemModel>(RecsetCollection);
 
             DataListHeaderItemModel complexObjectNode = DataListItemModelFactory.CreateDataListHeaderItem("Object");
-            complexObjectNode.IsHeaderNode = true;
             if (ComplexObjectCollection.Count == 0)
             {
                 AddComplexObject();
             }
             BaseCollection.Add(complexObjectNode);
-            //complexObjectNode.Children = new ObservableCollection<IDataListItemModel>(ComplexObjectCollection);
             WriteToResourceModel();
         }
 
