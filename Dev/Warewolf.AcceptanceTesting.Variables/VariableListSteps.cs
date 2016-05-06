@@ -1,50 +1,83 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.Views.DataList;
+using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.AcceptanceTesting.Core;
+using Dev2;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.AcceptanceTesting.Variables
 {
     [Binding]
-    public class VariableListSteps
+    public class VariableListSteps 
     {
+        
+        private static string _mainVm = "mainVm";
         [BeforeFeature("VariableList")]
         public static void SetupForFeature()
         {
-            Utils.SetupResourceDictionary();
+               Utils.SetupResourceDictionary();
+
             
-            var mockEventAggregator = new Mock<IEventAggregator>();
-            IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
-            var viewModel = new DataListViewModel(mockEventAggregator.Object);
-            viewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
-            manageVariableListViewControl.DataContext = viewModel;
-            Utils.ShowTheViewForTesting(manageVariableListViewControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageVariableListViewControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
-            FeatureContext.Current.Add("eventAggregator", mockEventAggregator);
+                 var mockEventAggregator = new Mock<IEventAggregator>();
+          
+
+               IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
+               var viewModel = new DataListViewModel(mockEventAggregator.Object);
+               viewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+               manageVariableListViewControl.DataContext = viewModel;
+
+               Utils.ShowTheViewForTesting(manageVariableListViewControl);
+               FeatureContext.Current.Add(Utils.ViewNameKey, manageVariableListViewControl);
+               FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
+               FeatureContext.Current.Add("eventAggregator", mockEventAggregator);
+
         }
+       
 
         [BeforeScenario("VariableList")]
         public void SetupForScenerio()
         {
+           
+            /*var mockEventAggregator = new Mock<IEventAggregator>();
+
+
+            IView manageVariableListViewControl = new DataListView(mockEventAggregator.Object);
+            var viewModel = new DataListViewModel(mockEventAggregator.Object);
+            viewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+            manageVariableListViewControl.DataContext = viewModel;
+            Utils.ShowTheViewForTesting(manageVariableListViewControl);*/
+
+
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<DataListView>(Utils.ViewNameKey));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey));
+            //ScenarioContext.Current.Add("eventAggregator", mockEventAggregator);
+
         }
 
         [Given(@"I have variables as")]
         public void GivenIHaveVariablesAs(Table table)
         {
+           
+           
             var variableListViewModel = Utils.GetViewModel<DataListViewModel>();
             var rows = table.Rows;
             foreach (var tableRow in rows)
@@ -72,33 +105,45 @@ namespace Warewolf.AcceptanceTesting.Variables
                     var recSetName = DataListUtil.ExtractRecordsetNameFromValue(variableName);
                     var columnName = DataListUtil.ExtractFieldNameOnlyFromValue(variableName);
 
-                    var existingRecordSet = variableListViewModel.RecsetCollection.FirstOrDefault(model => model.Name.Equals(recSetName, StringComparison.OrdinalIgnoreCase));
+                    var existingRecordSet = variableListViewModel.RecsetCollection.FirstOrDefault(model => model.DisplayName.Equals(recSetName, StringComparison.OrdinalIgnoreCase));
                     if (existingRecordSet == null)
                     {
-                        existingRecordSet = DataListItemModelFactory.CreateDataListModel(recSetName);
-                        existingRecordSet.Name = recSetName;
-                        variableListViewModel.RecsetCollection.Add(existingRecordSet);
+                        existingRecordSet = DataListItemModelFactory.CreateRecordSetItemModel(recSetName);
+                        if (existingRecordSet != null)
+                        {
+                            existingRecordSet.DisplayName = recSetName;
+                            variableListViewModel.RecsetCollection.Add(existingRecordSet);
+                        }
                     }
                     if (!string.IsNullOrEmpty(columnName))
                     {
-                        var item = DataListItemModelFactory.CreateDataListModel(columnName, "", existingRecordSet);
-                        item.Name = variableName;
-                        item.IsUsed = isUsed;
-                        item.ColumnIODirection = ioDirection;
-                        existingRecordSet.Children.Add(item);
+                        var item = DataListItemModelFactory.CreateRecordSetFieldItemModel(columnName, "", existingRecordSet);
+                        if (item != null)
+                        {
+                            item.DisplayName = variableName;
+                            item.IsUsed = isUsed;
+                            item.ColumnIODirection = ioDirection;
+                            if (existingRecordSet != null)
+                            {
+                                existingRecordSet.Children.Add(item);
+                            }
+                        }
                     }
                 }
                 else
                 {
                     var displayName = DataListUtil.RemoveLanguageBrackets(variableName);
-                    var item = DataListItemModelFactory.CreateDataListModel(displayName);
-                    item.Name = variableName;
-                    item.IsUsed = isUsed;
-                    item.ColumnIODirection = ioDirection;
-                    variableListViewModel.ScalarCollection.Add(item);
+                    var item = DataListItemModelFactory.CreateScalarItemModel(displayName);
+                    if (item != null)
+                    {
+                        item.DisplayName = variableName;
+                        item.IsUsed = isUsed;
+                        item.ColumnIODirection = ioDirection;
+                        variableListViewModel.ScalarCollection.Add(item);
+                    }
                 }
             }
-            
+
         }
 
         [Then(@"""(.*)"" is ""(.*)""")]
@@ -135,14 +180,14 @@ namespace Warewolf.AcceptanceTesting.Variables
                 {
                     varName = variableName.Substring(variableName.IndexOf(".", StringComparison.Ordinal) + 1);
                     parentName = variableName.Substring(0, variableName.IndexOf("(", StringComparison.Ordinal));
-                    var variableListViewRecsetCollection = sourceControl.RecsetCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName && model.Parent.Name == parentName);
+                    var variableListViewRecsetCollection = sourceControl.RecsetCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.DisplayName == varName && model.Parent.DisplayName == parentName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewRecsetCollection));
                     sourceViewControl.ExecuteCommand(variableName);
                 }
                 else
                 {
                     varName = variableName.Contains("()") ? variableName.Replace("()", "") : variableName;
-                    var variableListViewRecsetCollection = sourceControl.RecsetCollection.FirstOrDefault(model => model.LastIndexedName == varName);
+                    var variableListViewRecsetCollection = sourceControl.RecsetCollection.FirstOrDefault(model => model.DisplayName == varName);
                     if (variableListViewRecsetCollection != null && variableListViewRecsetCollection.IsUsed)
                     {
                         variableListViewRecsetCollection.IsUsed = false;
@@ -156,13 +201,16 @@ namespace Warewolf.AcceptanceTesting.Variables
                 if (variableName.Contains("."))
                 {
                     varName = variableName.Substring(variableName.IndexOf(".", StringComparison.Ordinal) + 1);
-                    var variableListViewScalarCollection = sourceControl.ScalarCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName);
+                    var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == varName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
                     sourceViewControl.ExecuteCommand(variableName);
+                    //var variableListViewScalarCollection = sourceControl.ScalarCollection.SelectMany(a => a.Children).FirstOrDefault(model => model.Name == varName);
+                    //Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
+                    //sourceViewControl.ExecuteCommand(variableName);
                 }
                 else
                 {
-                    var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.Name == variableName);
+                    var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == variableName);
                     Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
                     sourceViewControl.ExecuteCommand(variableName);
                 }
@@ -265,13 +313,13 @@ namespace Warewolf.AcceptanceTesting.Variables
                     {
                         continue;
                     }
-                    if (!recordSetViewModel.Name.Contains("()"))
+                    if (!recordSetViewModel.DisplayName.Contains("()"))
                     {
-                        recordSetName = recordSetViewModel.Name + "()";
+                        recordSetName = recordSetViewModel.DisplayName + "()";
                     }
                     else
                     {
-                        recordSetName = recordSetViewModel.Name;
+                        recordSetName = recordSetViewModel.DisplayName;
                     }
                     if (tableRow["Delete IsEnabled"].Equals("YES"))
                     {
@@ -291,7 +339,7 @@ namespace Warewolf.AcceptanceTesting.Variables
         public void GivenIRemoveVariable(string variableName)
         {
             var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
-            var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.Name == variableName);
+            var variableListViewScalarCollection = sourceControl.ScalarCollection.FirstOrDefault(model => model.DisplayName == variableName);
             Assert.IsTrue(sourceControl.DeleteCommand.CanExecute(variableListViewScalarCollection));
         }
 
@@ -305,6 +353,46 @@ namespace Warewolf.AcceptanceTesting.Variables
         public void GivenIChangeRecordsetNameFromTo(string recordSetFrom, string recordSetTo)
         {
             Assert.AreNotSame(recordSetFrom, recordSetTo);
+        }
+
+        [When(@"I press the clear filter button")]
+        public void WhenIPressTheClearFilterButton()
+        {
+            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            sourceControl.ClearSearchTextCommand.Execute(null);
+        }
+
+        [When(@"I press ""(.*)""")]
+        public void WhenIPress(string p0)
+        {
+           ScenarioContext.Current.Pending();
+        }
+
+        [When(@"the Debug Input window is opened")]
+        public void WhenTheDebugInputWindowIsOpened()
+        {
+            var sourceControl = ScenarioContext.Current.Get<DataListViewModel>(Utils.ViewModelNameKey);
+            //sourceControl.DebugInputWindowsIsVisible
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I save workflow as ""(.*)""")]
+        public void WhenISaveWorkflowAs(string p0)
+        {
+            var variableListViewModel = Utils.GetViewModel<DataListViewModel>();
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"create variable ""(.*)"" equals """"(.*)""""")]
+        public void WhenCreateVariableEquals(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"cursor focus is '(.*)'")]
+        public void ThenCursorFocusIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
         }
     }
 }

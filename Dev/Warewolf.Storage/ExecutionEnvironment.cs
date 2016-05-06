@@ -64,41 +64,9 @@ namespace Warewolf.Storage
             }
         }
 
-        public void AddToJsonObjects(string bob, JContainer jContainer)
+        public void AddToJsonObjects(string name, JContainer jContainer)
         {
-            JObject j = JObject.FromObject(new Person()
-            {
-                Name = "n",
-                Children = new List<Person>
-                {
-                    new Person()
-                    {
-                        Name = "p", Children = new List<Person>{       new Person()
-                    {
-                        Name = "r", Children = new List<Person>()
-                    },        new Person()
-                    {
-                        Name = "s", Children = new List<Person>()
-                    } }
-                    },
-                    new Person()
-                    {
-                        Name = "q", Children = new List<Person>(){       new Person()
-                    {
-                        Name = "r", Children = new List<Person>()
-                    },        new Person()
-                    {
-                        Name = "s", Children = new List<Person>()
-                    } }
-                    }
-                },
-                Spouse = new Person()
-                {
-                    Name = "o",
-                    Children = new List<Person>()
-                }
-            });
-            _env = AssignEvaluation.addToJsonObjects(_env, "bob", j);
+            _env = AssignEvaluation.addToJsonObjects(_env, name, jContainer);
         }
 
         public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)

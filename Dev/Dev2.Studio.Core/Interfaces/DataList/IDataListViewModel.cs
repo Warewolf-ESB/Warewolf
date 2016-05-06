@@ -25,14 +25,15 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         IResourceModel Resource { get; }
         RelayCommand FindUnusedAndMissingCommand { get; }
 
-        ObservableCollection<IDataListItemModel> ScalarCollection { get; }
+        ObservableCollection<IScalarItemModel> ScalarCollection { get; }
 
-        ObservableCollection<IDataListItemModel> RecsetCollection { get; }
-        ISuggestionProvider Provider { get; }
+        ObservableCollection<IRecordSetItemModel> RecsetCollection { get; }
+
         ObservableCollection<IDataListItemModel> DataList { get; }
         bool HasErrors { get; }
         string DataListErrorMessage { get; }
         bool IsSorting { get; set; }
+        ISuggestionProvider Provider { get; set; }
 
         /// <summary>
         /// Removes the data list item.

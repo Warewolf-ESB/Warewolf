@@ -19,6 +19,7 @@ using Dev2.Controller;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Workspaces;
+using Dev2.Studio.Core;
 
 namespace Dev2.Workspaces
 {

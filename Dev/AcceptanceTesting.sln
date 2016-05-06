@@ -83,7 +83,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{C6750CCC-03BB-42BF-8EB7-0D9ACB927923}"
 	ProjectSection(SolutionItems) = preProject
-		TestScripts\Hard Reset and Clean This Repo.bat = TestScripts\Hard Reset and Clean This Repo.bat
+		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Explorer.Specs", "Dev2.Explorer.Specs\Dev2.Explorer.Specs.csproj", "{3C6D24ED-71A4-4A97-A941-15C02754A0DE}"

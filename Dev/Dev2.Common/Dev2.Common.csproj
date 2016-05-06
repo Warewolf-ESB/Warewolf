@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="ChinhDo.Transactions">
       <HintPath>..\packages\TxFileManager.1.3\lib\net20\ChinhDo.Transactions.dll</HintPath>
@@ -155,6 +155,7 @@
     <Compile Include="Utils\StringTransform.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
+    <Compile Include="VersionConflictException.cs" />
     <Compile Include="WorkflowExecutionWatcher.cs" />
     <Compile Include="Wrappers\DirectoryEntriesWrapper.cs" />
     <Compile Include="Wrappers\DirectoryEntryFactory.cs" />

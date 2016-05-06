@@ -12,14 +12,7 @@ using Dev2.Studio.Core.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using System.Linq.Expressions;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Data.ServiceModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
-using Dev2.Activities.Designers2.DropBox2016.Download;
-using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
