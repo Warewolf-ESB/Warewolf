@@ -89,6 +89,7 @@
                                        x:Name="Xtg" 
                                        DataSource="{Binding Path=BaseCollection}" 
                                        Background="Transparent" 
+                                       Loaded="Xtg_OnLoaded"
                                        Margin="{StaticResource ElementBorderTop}" 
                                        customControls:DataPresenterHelpers.FilterText="{Binding ElementName=SearchTextBox, Path=Text}">
                 <dataPresenter:XamTreeGrid.FieldLayoutSettings>
@@ -158,13 +159,13 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Input" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Input" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:ScalarItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Input}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
@@ -179,13 +180,13 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Output" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Output" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:ScalarItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Output}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
@@ -249,13 +250,13 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Input" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Input" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:RecordSetItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Input}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
@@ -270,13 +271,13 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Output" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Output" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:RecordSetItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Output}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
@@ -341,13 +342,13 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Input" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Input" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Input}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListInputCheckBoxTooltip}"
@@ -362,13 +363,13 @@
                                 </DataTemplate>
                             </dataPresenter:TemplateField.DisplayTemplate>
                         </dataPresenter:TemplateField>
-                        <dataPresenter:TemplateField Name="Output" Width="60" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
+                        <dataPresenter:TemplateField Name="Output" Width="60" AlternateBinding="{Binding .}" BindingType="UseAlternateBinding" AllowResize="False" AllowEdit="False" AllowRecordFiltering="False">
                             <dataPresenter:TemplateField.DisplayTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">
                                     <CheckBox IsTabStop="True"
                                               HorizontalAlignment="Center"
                                               Margin="0,2,0,0"
-                                              IsChecked="{Binding .}"
+                                              IsChecked="{Binding Output}"
                                               VerticalAlignment="Center"
                                               Focusable="True"
                                               ToolTip="{x:Static languages:Core.DataListOutputCheckBoxTooltip}"
