@@ -1317,7 +1317,7 @@ Scenario: validate that a variable is Null Positive
     And the debug output as 
        |     |
        | YES |
-
+	   
 Scenario: validate that a variable is not Null positive
 	Given a decision variable "[[B]]" value "10"
 	And decide if "[[B]]" "IsNotNull" 
@@ -1329,6 +1329,49 @@ Scenario: validate that a variable is not Null positive
     And the debug output as 
        |     |
        | YES |
+
+@Ignore
+Scenario: validate that a variable is Blank positive
+	Given a decision variable "[[B]]" value ""
+	And decide if "[[B]]" "IsEqual" ""
+	When the decision tool is executed
+	Then the execution has "NO" error
+	 Then the debug inputs as  
+       |            | Statement | Require all decisions to be true |
+       | [[B]] =  | String    | YES                              |
+    And the debug output as 
+       |     |
+       | YES |
+
+@Ignore
+Scenario: validate that a variable is Blank OR NULL positive 1
+	Given a decision variable "[[B]]" value ""
+	And decide if "[[B]]" "IsEqual" ""
+	And decide if "[[B]]" "IsNull"
+	And the decision mode is "OR"
+	When the decision tool is executed
+	Then the execution has "NO" error
+	 Then the debug inputs as  
+       |            | Statement | Require all decisions to be true |
+       | [[B]] =  | String    | YES                              |
+    And the debug output as 
+       |     |
+       | YES |
+
+@Ignore
+Scenario: validate that a variable is Blank OR NULL positive 2
+	Given decide if "[[B]]" "IsEqual" ""
+	And decide if "[[B]]" "IsNull"
+	And the decision mode is "OR"
+	When the decision tool is executed
+	Then the execution has "NO" error
+	 Then the debug inputs as  
+       |            | Statement | Require all decisions to be true |
+       | [[B]] =  | String    | YES                              |
+    And the debug output as 
+       |     |
+       | YES |
+
 
 Scenario: Null throws an error
 	Given is "[[A]]" "IsEqual" "123   234"	
