@@ -102,19 +102,48 @@ namespace Dev2.Studio.Core.Models.DataList
         //    }
         //}
 
-        //public bool Input
-        //{
-        //    get
-        //    {
-        //        throw new NotImplementedException();
-        //    }
+        public override bool Input
+        {
+            get
+            {
+                return _columnIODir == enDev2ColumnArgumentDirection.Both
+                       || _columnIODir == enDev2ColumnArgumentDirection.Input;
+            }
+            set
+            {
+                SetColumnIODirectionFromInput(value);
+                if(Children.Count > 0)
+                {
+                    SetChildInputValues(value);
+                }
+            }
+        }
 
-        //    set
-        //    {
-        //        throw new NotImplementedException();
-        //    }
-        //}
-
+        private void SetChildInputValues(bool value)
+        {
+            var updatedChildren = new OptomizedObservableCollection<IRecordSetFieldItemModel>();
+            if(Children != null)
+            {
+                foreach(var dataListItemModel in Children)
+                {
+                    var child = dataListItemModel;
+                    if (!string.IsNullOrEmpty(child.DisplayName))
+                    {
+                        child.Input = value;
+                        //updatedChildren.Add(child);
+                    }
+                }
+            }
+//
+//            if(Children != null)
+//            {
+//                Children.Clear();
+//                foreach(var dataListItemModel in updatedChildren)
+//                {
+//                    Children.Add(dataListItemModel);
+//                }
+//            }
+        }
         //public bool IsBlank
         //{
         //    get
