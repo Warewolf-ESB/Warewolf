@@ -15,7 +15,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
-    [ToolDescriptorInfo("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropboxFileListActivity : DsfBaseActivity
     {
         public IDropboxFactory DropboxFactory { get; private set; }
