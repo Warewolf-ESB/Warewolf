@@ -40,7 +40,7 @@
                   VerticalAlignment="Stretch"
                   Background="Transparent" AllowDrop="True">
                 <Grid.RowDefinitions>
-                    <RowDefinition x:Name="ToolImageRow" Height="24" />
+                    <RowDefinition x:Name="ToolImageRow" Height="28" />
                     <RowDefinition x:Name="ToolNameRow" Height="30" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -48,8 +48,8 @@
                 </Grid.ColumnDefinitions>
                 <Label x:Name="ToolButtonImage" Grid.Row="0" Padding="1" Style="{StaticResource ToolboxLabelStyle}">
                     <Label.Content>
-                        <Image Width="Auto"
-                               Height="Auto"
+                        <Image Width="18"
+                               Height="18"
                                Margin="0,6,0,0"
                                VerticalAlignment="Center"
                                Source="{Binding Icon}"
@@ -64,7 +64,8 @@
                            TextAlignment="Center"
                            TextWrapping="WrapWithOverflow" 
                            Style="{StaticResource TextBlockNoPaddingStyle}"
-                           Padding="1,0,1,0"
+                           FontSize="{StaticResource FontSize-Toolbox}"
+                           Padding="2"
                            TextTrimming="None" 
                            Margin="0,3,0,-3"/>
 
