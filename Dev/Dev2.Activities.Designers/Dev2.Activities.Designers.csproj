@@ -125,7 +125,7 @@
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"/>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -423,6 +423,11 @@
     <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
     <Compile Include="Designers2\Core\Help\HelpSetter.cs" />
+    <Compile Include="Designers2\Core\Help\HelpTextResources.Designer.cs">
+      <DependentUpon>HelpTextResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
@@ -927,6 +932,7 @@
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
     <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\ActivityResources.resx">
