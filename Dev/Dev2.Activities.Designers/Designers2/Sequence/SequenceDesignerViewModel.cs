@@ -70,7 +70,7 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 if(test != null && !_addedFromDesignSurface)
                 {
-                    if(test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity) && test.ItemType.BaseType != typeof(DsfActivity))
+                    if(test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
                     {
                         dynamic mi = ModelItem;
                         ModelItemCollection activitiesCollection = mi.Activities;
