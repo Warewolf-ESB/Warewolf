@@ -55,7 +55,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             set
             {
-                _addMode = false;
+                _addMode = !value;
                 _overWriteMode = value;
             }
         }
@@ -68,7 +68,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             set
             {
-                _overWriteMode = false;
+                _overWriteMode = !value;
                 _addMode = value;
             }
         }
