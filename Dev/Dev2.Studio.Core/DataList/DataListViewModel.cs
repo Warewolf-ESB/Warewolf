@@ -520,9 +520,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             var complexObjectItemModels = ComplexObjectCollection.Where(model => string.IsNullOrEmpty(model.DisplayName));
             var objectItemModels = complexObjectItemModels as IList<IComplexObjectItemModel> ?? complexObjectItemModels.ToList();
-            for(int i = objectItemModels.Count; i >= 0; i--)
+            for(int i = objectItemModels.Count; i > 0; i--)
             {
-                ComplexObjectCollection.Remove(objectItemModels[i]);
+                ComplexObjectCollection.Remove(objectItemModels[i-1]);
             }
             
         }
@@ -1246,6 +1246,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             RecsetCollection.Clear();
             ScalarCollection.Clear();
+            ComplexObjectCollection.Clear();
             try
             {
                 var xDoc = new XmlDocument();
@@ -1257,13 +1258,29 @@ namespace Dev2.Studio.ViewModels.DataList
                     {
                         if (!DataListUtil.IsSystemTag(c.Name))
                         {
-                            if (c.HasChildNodes)
+                            var jsonAttribute = false;
+                            if(c.Attributes != null)
                             {
-                                AddRecordSets(c);
+                                var xmlAttribute = c.Attributes["IsJson"];
+                                if(xmlAttribute != null)
+                                {
+                                    bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+                                }
+                            }
+                            if (jsonAttribute)
+                            {
+
                             }
                             else
                             {
-                                AddScalars(c);
+                                if (c.HasChildNodes)
+                                {
+                                    AddRecordSets(c);
+                                }
+                                else
+                                {
+                                    AddScalars(c);
+                                }
                             }
                         }
                     }
@@ -1456,8 +1473,50 @@ namespace Dev2.Studio.ViewModels.DataList
                 AddItemToBuilder(result, scalar);
                 result.Append("/>");
             }
+            var complexObjectItemModels = ComplexObjectCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName));
+            foreach(var complexObjectItemModel in complexObjectItemModels)
+            {
+                AddComplexObjectsToBuilder(result, complexObjectItemModel);
+               
+            }
+            
             result.Append("</" + RootTag + ">");
             return result.ToString();
+        }
+
+        private void AddComplexObjectsToBuilder(StringBuilder result, IComplexObjectItemModel complexObjectItemModel)
+        {
+            result.Append("<");
+            var name = complexObjectItemModel.DisplayName;
+            if (complexObjectItemModel.IsArray)
+            {
+                name = name.Replace("()", "");
+            }
+            result.Append(name);
+            result.Append(" " + Description + "=\"");
+            result.Append(complexObjectItemModel.Description);
+            result.Append("\" ");
+            result.Append(IsEditable + "=\"");
+            result.Append(complexObjectItemModel.IsEditable);
+            result.Append("\" ");
+            result.Append("IsJson" + "=\"");
+            result.Append(true);
+            result.Append("\" ");
+            result.Append("IsArray" + "=\"");
+            result.Append(complexObjectItemModel.IsArray);
+            result.Append("\" ");
+            result.Append(GlobalConstants.DataListIoColDirection + "=\"");
+            result.Append(complexObjectItemModel.ColumnIODirection);
+            result.Append("\" ");
+            result.Append(">");
+            var complexObjectItemModels = complexObjectItemModel.Children.Where(model => !string.IsNullOrEmpty(model.DisplayName));
+            foreach (var itemModel in complexObjectItemModels)
+            {
+                AddComplexObjectsToBuilder(result, itemModel);                
+            }
+            result.Append("</");
+            result.Append(name);
+            result.Append(">");
         }
 
         void AddItemToBuilder(StringBuilder result, IDataListItemModel item)

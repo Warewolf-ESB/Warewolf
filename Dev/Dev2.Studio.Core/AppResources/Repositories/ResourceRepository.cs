@@ -362,22 +362,25 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), Enums.ResourceType.WorkflowService));
             var workspaceIdToUse = workspaceId.HasValue ? workspaceId.Value : con.WorkspaceID;
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
-            foreach (var serializableResource in toReloadResources)
+            if(toReloadResources != null)
             {
-                var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true);
-                var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
+                foreach (var serializableResource in toReloadResources)
+                {
+                    var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true);
+                    var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
-                if (resourceToUpdate != null)
-                {
-                    resourceToUpdate.Update(resource);
-                }
-                else
-                {
-                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
-                    ResourceModels.Add(resource);
-                    if (ItemAdded != null)
+                    if (resourceToUpdate != null)
                     {
-                        ItemAdded(resource, null);
+                        resourceToUpdate.Update(resource);
+                    }
+                    else
+                    {
+                        AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
+                        ResourceModels.Add(resource);
+                        if (ItemAdded != null)
+                        {
+                            ItemAdded(resource, null);
+                        }
                     }
                 }
             }
