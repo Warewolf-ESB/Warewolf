@@ -119,11 +119,6 @@
     <Compile Include="PathOperations\Dev2PutRawOperationTOTests.cs" />
     <Compile Include="ServerExplorerItemSerialisation.cs" />
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
-    <Compile Include="TestStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TestStrings.resx</DependentUpon>
-    </Compile>
     <Compile Include="TO\ErrorResultTOTests.cs" />
     <Compile Include="TO\CompileMessageTOTests.cs" />
     <Compile Include="WarewolfListIteratorTests.cs" />
@@ -163,12 +158,6 @@
       <Project>{E0F7C709-A61B-4829-A659-D7780052326A}</Project>
       <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TestStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TestStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

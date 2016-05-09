@@ -11,9 +11,10 @@
         xmlns:dock="clr-namespace:Dev2.Studio.Dock"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-        xmlns:help="clr-namespace:Dev2.Help"
+        
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:views1="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
         Background="{StaticResource WareWolfBackGroundBrush}"
         FontFamily="{StaticResource DefaultFontFamily}"
         ShowInTaskbar="True"
@@ -360,13 +361,13 @@
                                                                 <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="0,0,2,0" />
                                                                 <!--<Image Style="{StaticResource AuthNoneIconStyle}"
                                                                    Visibility="{Binding CanSave, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                                                                   ToolTip="{x:Static help:HelpTextResources.WorkflowDesignerSecurityToolTipNone}"
+                                                                   ToolTip="{x:Static languages:Core.WorkflowDesignerSecurityToolTipNone}"
                                                                    Margin="5,0,0,0"/>-->
                                                                 <fa:FontAwesome Icon="Ban" 
                                                                                 Foreground="DarkRed" 
                                                                                 Margin="0,3,0,0" FontStyle="Normal"
                                                                                 Visibility="{Binding CanSave, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                                                                                ToolTip="{x:Static help:HelpTextResources.WorkflowDesignerSecurityToolTipNone}"></fa:FontAwesome>
+                                                                                ToolTip="{x:Static languages:Core.WorkflowDesignerSecurityToolTipNone}"></fa:FontAwesome>
                                                             </StackPanel>
                                                         </DataTemplate>
                                                     </Setter.Value>

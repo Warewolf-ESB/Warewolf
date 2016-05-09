@@ -134,6 +134,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WarewolfLanguageParser, Version=0.0.5952.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -423,11 +427,6 @@
     <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
     <Compile Include="Designers2\Core\Help\HelpSetter.cs" />
-    <Compile Include="Designers2\Core\Help\HelpTextResources.Designer.cs">
-      <DependentUpon>HelpTextResources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
@@ -930,11 +929,6 @@
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
-    <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ActivityResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
@@ -1019,10 +1013,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
-      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
-      <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,6 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.ReadFile"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
@@ -46,7 +45,7 @@
                                 DefaultText="[[PathToRead]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipFilename}"
+                                ToolTip="{x:Static languages:Core.ReadFileToolTipFilename}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -74,7 +73,7 @@
                                  Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}"
-                                 ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipResult}">
+                                 ToolTip="{x:Static languages:Core.ReadFileToolTipResult}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.ReadFileHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"

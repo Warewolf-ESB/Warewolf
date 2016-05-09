@@ -5,7 +5,7 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
@@ -42,7 +42,7 @@
                                 Height="Auto"
                                 TextWrapping="Wrap"
                                 VerticalContentAlignment="Stretch"
-                                ToolTip="{x:Static help:HelpTextResources.CommentToolTipComment}"
+                                ToolTip="{x:Static languages:Core.CommentToolTipComment}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.CommentHelpComment}" DataContext="{Binding}" />

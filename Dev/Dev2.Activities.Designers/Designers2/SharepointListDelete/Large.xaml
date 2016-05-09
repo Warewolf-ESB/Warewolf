@@ -4,7 +4,6 @@
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
@@ -75,7 +74,7 @@
                       Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                      ToolTip="{x:Static help:HelpTextResources.SharepointToolTipServer}"
+                      ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
                 <i:Interaction.Behaviors>
@@ -102,7 +101,7 @@
                       Margin="{StaticResource ControlBorderTopRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedList, Mode=TwoWay}"
-                      ToolTip="{x:Static help:HelpTextResources.SharepointToolTipList}"
+                      ToolTip="{x:Static languages:Core.SharepointToolTipList}"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
                 <i:Interaction.Behaviors>
@@ -173,7 +172,7 @@
                                           ItemsSource="{Binding DataContext.ListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                           SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                           SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                          ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
+                                          ToolTip="{x:Static languages:Core.SharepointToolTipFieldToFilterOn}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.SharepointHelpFieldToMatchOn}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -203,7 +202,7 @@
                                           Margin="0,0,1,1"
                                           ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                           SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                          ToolTip="{x:Static help:HelpTextResources.FindToolTipLookForMatchType}">
+                                          ToolTip="{x:Static languages:Core.FindToolTipLookForMatchType}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -250,7 +249,7 @@
                                                             attachedProperties:FocusSetter.IsFocused="{Binding IsSearchCriteriaFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             Text="{Binding ValueToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                            ToolTip="{x:Static help:HelpTextResources.FindToolTipMatch}">
+                                                            ToolTip="{x:Static languages:Core.FindToolTipMatch}">
                                         <i:Interaction.Behaviors>
                                             <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -278,7 +277,7 @@
                       Grid.ColumnSpan="2"
                       Content="Require All Matches To Be True"
                       IsChecked="{Binding ModelItem.RequireAllCriteriaToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.FindToolTipRequireAllMatchesToBeTrue}"
+                      ToolTip="{x:Static languages:Core.FindToolTipRequireAllMatchesToBeTrue}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.FindHelpRequireAllMatchesToBeTrue}" DataContext="{Binding}" />
@@ -294,7 +293,7 @@
                                     Margin="{StaticResource ControlBorderTop}"
                                     Text="{Binding ModelItem.DeleteCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    ToolTip="{x:Static help:HelpTextResources.SharepointDelteToolTipResult}"
+                                    ToolTip="{x:Static languages:Core.SharepointDelteToolTipResult}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SharepointDeleteHelpResult}" DataContext="{Binding}" />
