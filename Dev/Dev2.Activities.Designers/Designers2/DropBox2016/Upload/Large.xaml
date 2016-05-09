@@ -1,45 +1,45 @@
 ﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.DropBox2016.Upload.Large"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Upload"
-                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
-                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:attachedProperties="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
-                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                xmlns:attachedProperties1="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Upload"
                                Width="340"
-                               MinWidth="340"
-                               MaxWidth="600"
                                Height="260"
+                               MinWidth="340"
                                MinHeight="260"
+                               MaxWidth="600"
                                MaxHeight="260"
-                               mc:Ignorable="d"
-                               d:DesignWidth="340"  
-                               d:DataContext="{d:DesignInstance upload:DropBoxUploadViewModel}">
+                               d:DataContext="{d:DesignInstance upload:DropBoxUploadViewModel}"
+                               d:DesignWidth="340"
+                               mc:Ignorable="d">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
-									 Content="Done"
-									 Margin="0,0,7,12"
-									 IsValidatedBefore="True"
-									 IsClosedAfter="True"
-									 Style="{StaticResource ActivityDesignerButtonStyle}" />
+                                     Margin="0,0,7,12"
+                                     Content="Done"
+                                     IsClosedAfter="True"
+                                     IsValidatedBefore="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
@@ -54,69 +54,84 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Source Implemantation-->
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Source" />
+        <!--  Source Implemantation  -->
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   Text="Source" />
 
-        <Grid Grid.Column="1" Grid.Row="0">
+        <Grid Grid.Row="0" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Button x:Name="SourceEditButton"
+                    Grid.Column="1"
+                    Margin="{StaticResource ControlBorderRight}"
+                    Command="{Binding Path=EditDropboxSourceCommand,
+                                      Mode=TwoWay}"
+                    Content="..."
+                    ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipEditSource}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropBoxToolTipEditSource}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button x:Name="SourceNewButton"
+                    Grid.Column="2"
+                    Width="Auto"
+                    Command="{Binding Path=NewSourceCommand,
+                                      Mode=TwoWay}"
+                    Content="{x:Static languages:Core.New}"
+                    Style="{StaticResource ButtonOrangeStyle}"
+                    ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipNewSource}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropBoxToolTipNewSource}" />
+                </i:Interaction.Behaviors>
+            </Button>
             <ComboBox x:Name="InitialComboBox"
-					  Grid.Row="0"
-					  Grid.Column="0"
-					  Margin="{StaticResource ControlBorderRight}"
-					  ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-					  SelectedItem="{Binding SelectedSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					  ItemsSource="{Binding Sources}"
-					  ToolTip="{x:Static help:HelpTextResources.DropboxSourceToolTip}"
-					  DisplayMemberPath="ResourceName">
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Margin="{StaticResource ControlBorderRight}"
+                      DisplayMemberPath="ResourceName"
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                      ItemsSource="{Binding Sources}"
+                      SelectedItem="{Binding SelectedSource,
+                                             Mode=TwoWay,
+                                             UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static help:HelpTextResources.DropboxSourceToolTip}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropboxSourceToolTip}" DataContext="{Binding}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropboxSourceToolTip}" />
                     <errors:ErrorsSetter Source="{Binding}"
-											SourcePropertyName="SelectedSource"
-											SourcePropertyValue="{Binding SelectedSource, UpdateSourceTrigger=PropertyChanged}"
-											Target="{Binding}" />
+                                         SourcePropertyName="SelectedSource"
+                                         SourcePropertyValue="{Binding SelectedSource,
+                                                                       UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
-               
+
             </ComboBox>
-            <Button x:Name="SourceEditButton" 
-                        Grid.Column="1"
-                        Margin="{StaticResource ControlBorderRight}"
-                        Content="..."
-                        ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipEditSource}"
-                        Command="{Binding Path=EditDropboxSourceCommand, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipEditSource}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-            <Button x:Name="SourceNewButton" 
-                        Grid.Column="2"
-                        Content="{x:Static languages:Core.New}" 
-                        Width="Auto"
-                        Style="{StaticResource ButtonOrangeStyle}" 
-                        ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipNewSource}"
-                        Command="{Binding Path=NewSourceCommand, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipNewSource}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
         </Grid>
-        <!-- Local File Implemantation-->
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Local File" Margin="0,1,0,0"/>
+        <!--  Local File Implemantation  -->
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="0,1,0,0"
+                   Text="Local File" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
-                                Grid.Column="1"
                                 Grid.Row="1"
-                                FilterType="All"
-                                DefaultText="[[PathToUpload]]"
-                                WrapInBrackets="False"
+                                Grid.Column="1"
                                 Margin="0,1,0,0"
-                                Text="{Binding Path=FromPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipFilename}"
+                                attachedProperties1:FocusSetter.IsFocused="{Binding IsInputPathFocused,
+                                                                                    Mode=TwoWay,
+                                                                                    UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID,
+                                                                            StringFormat=UI_{0}_FileNametxt_AutoID}"
+                                DefaultText="[[PathToUpload]]"
+                                FilterType="All"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                attachedProperties1:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileNametxt_AutoID}">
+                                Text="{Binding Path=FromPath,
+                                               Mode=TwoWay,
+                                               UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static help:HelpTextResources.ReadFileToolTipFilename}"
+                                WrapInBrackets="False">
             <ui:IntellisenseTextBox.IntellisenseProvider>
                 <interfaceImplementors:CompositeIntellisenseProvider>
                     <interfaceImplementors:DefaultIntellisenseProvider />
@@ -124,44 +139,56 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}" DataContext="{Binding}" />
+                <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="FromPath"
-                                     SourcePropertyValue="{Binding  FromPath, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyValue="{Binding FromPath,
+                                                                   UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Write Mode" />
-        <Grid Grid.Column="1" Grid.Row="2" Margin="0,-3,0,0">
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Text="Write Mode" />
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Margin="0,-3,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <RadioButton GroupName="WriteMode" 
-                         Grid.Column="0" 
-                         IsChecked="{Binding Path=OverWriteMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                         Name="CheckBoxOverwriteMode" 
-                         FlowDirection="LeftToRight" 
-                         Content="Overwrite">
+            <RadioButton Name="CheckBoxOverwriteMode"
+                         Grid.Column="0"
+                         Content="Overwrite"
+                         FlowDirection="LeftToRight"
+                         GroupName="WriteMode"
+                         IsChecked="{Binding Path=OverWriteMode,
+                                             UpdateSourceTrigger=PropertyChanged,
+                                             Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropboxOperationToolTip}" DataContext="{Binding}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropboxOperationToolTip}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
-            <RadioButton GroupName="WriteMode" 
-                         Grid.Column="1" 
-                         IsChecked="{Binding Path=AddMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                         Name="CheckBoxUpdateMode" 
-                         FlowDirection="LeftToRight" 
-                         Content="Add">
+            <RadioButton Name="CheckBoxUpdateMode"
+                         Grid.Column="1"
+                         Content="Add"
+                         FlowDirection="LeftToRight"
+                         GroupName="WriteMode"
+                         IsChecked="{Binding Path=AddMode,
+                                             UpdateSourceTrigger=PropertyChanged,
+                                             Mode=TwoWay}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropboxOperationToolTip}" DataContext="{Binding}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropboxOperationToolTip}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </Grid>
 
-        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,-8,0,0">
+        <Grid Grid.Row="3"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="0,-8,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -170,58 +197,72 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <!--DropBox File Location-->
-            <TextBlock x:Name="DropboxFileTextBlock" Grid.Column="0" Grid.Row="0" Text="Dropbox File" />
-            <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
-                                Grid.Column="1"
-                                Grid.Row="0"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                IsInCalculateMode="False"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                DefaultText="Dropbox location"
-                                FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxDownloadToolTipLocalDestination}"
-                                Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
-                                attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <!--  DropBox File Location  -->
+            <TextBlock x:Name="DropboxFileTextBlock"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Text="Dropbox File" />
+            <ui:IntellisenseTextBox Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="{StaticResource ControlBorderTop}"
+                                    attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID,
+                                                                                StringFormat=UI_{0}_fxtxt_AutoID}"
+                                    DefaultText="Dropbox location"
+                                    FilterType="All"
+                                    IsInCalculateMode="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Text="{Binding ToPath,
+                                                   Mode=TwoWay,
+                                                   UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="{x:Static help:HelpTextResources.DropBoxDownloadToolTipLocalDestination}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxDownloadToolTipLocalDestination}" DataContext="{Binding}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropBoxDownloadToolTipLocalDestination}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ToPath"
-                                     SourcePropertyValue="{Binding  ToPath, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
+                                         SourcePropertyName="ToPath"
+                                         SourcePropertyValue="{Binding ToPath,
+                                                                       UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
 
-            <!--Result Section-->
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Result" Margin="{StaticResource ControlBorderTop}"/>
-            <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                IsInCalculateMode="False"
-                                FilterType="All"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.DropboxResultHelpText}"
-                                DefaultText="[[Result]]"
-                                WrapInBrackets="True"
-                                Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
-                                attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
+            <!--  Result Section  -->
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="{StaticResource ControlBorderTop}"
+                       Text="Result" />
+            <ui:IntellisenseTextBox Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="{StaticResource ControlBorderTop}"
+                                    attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID,
+                                                                                StringFormat=UI_{0}_fxtxt_AutoID}"
+                                    DefaultText="[[Result]]"
+                                    FilterType="All"
+                                    IsInCalculateMode="False"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Text="{Binding Result,
+                                                   Mode=TwoWay,
+                                                   UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="{x:Static help:HelpTextResources.DropboxResultHelpText}"
+                                    WrapInBrackets="True">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropboxResultHelpText}" DataContext="{Binding}" />
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static help:HelpTextResources.DropboxResultHelpText}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="Result"
-                                     SourcePropertyValue="{Binding  Result, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
+                                         SourcePropertyName="Result"
+                                         SourcePropertyValue="{Binding Result,
+                                                                       UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-       
-        <errors:OnError Grid.Column="0"
-						Grid.Row="4"
-                        Margin="{StaticResource ControlBorderTop}"
-						Grid.ColumnSpan="2" />
+
+        <errors:OnError Grid.Row="4"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="{StaticResource ControlBorderTop}" />
 
     </Grid>
 </core:ActivityDesignerTemplate>

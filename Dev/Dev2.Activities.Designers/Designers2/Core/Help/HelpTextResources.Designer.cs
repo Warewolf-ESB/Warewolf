@@ -2099,7 +2099,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropBoxDeleteFileNameHelpText.
+        ///   Looks up a localized string similar to Specify the Dropbox file or folder you would like to delte. This is the path from the root of the Dropbox account..
         /// </summary>
         public static string DropBoxDeleteFileNameHelpText {
             get {
@@ -2108,7 +2108,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropBoxDeleteFileNameTooltip.
+        ///   Looks up a localized string similar to The file or folder you want to delete on Dropbox.
         /// </summary>
         public static string DropBoxDeleteFileNameTooltip {
             get {
@@ -2139,7 +2139,10 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropBoxFileListFileName.
+        ///   Looks up a localized string similar to Returns the contents of the Dropbox folder you specify here.
+        ///    This is the folder structure you want to list on Dropbox.
+        ///  You can specify the type of information returned by selecting either Files (returns only files), Folders (Returns only folders) or Files and Folders for everything.
+        ///.
         /// </summary>
         public static string DropBoxFileListFileName {
             get {
@@ -2148,7 +2151,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropBoxFileListFileNameToolTip.
+        ///   Looks up a localized string similar to The folder on Dropbox to list.
         /// </summary>
         public static string DropBoxFileListFileNameToolTip {
             get {
@@ -2166,7 +2169,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropboxReadFolderToolTip.
+        ///   Looks up a localized string similar to Returns either Files only, or Folders only, or both..
         /// </summary>
         public static string DropboxReadFolderToolTip {
             get {
@@ -2850,7 +2853,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -2881,7 +2884,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
@@ -4664,7 +4667,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {
             get {
@@ -4980,7 +4983,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Fiel [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Field]]   
+        ///[[ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SQLBulkInsertHelpInputData {
             get {
@@ -5306,7 +5310,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snap [rest of string was truncated]&quot;;.
+        ///Snapshot: [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionHelpIsolationLevel {
             get {
@@ -5373,7 +5377,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snap [rest of string was truncated]&quot;;.
+        ///Snapshot: [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionToolTipIsolationLevel {
             get {
@@ -5834,7 +5838,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WorkflowServiceHelpInput {
             get {
