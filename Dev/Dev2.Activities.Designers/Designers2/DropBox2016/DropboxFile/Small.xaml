@@ -45,7 +45,7 @@
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Source"/>
         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedSource.ResourceName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedSource.ResourceName}" />
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Dropbox File"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Dropbox Path"/>
         <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
                                 Grid.Column="1"
                                 Grid.Row="2"

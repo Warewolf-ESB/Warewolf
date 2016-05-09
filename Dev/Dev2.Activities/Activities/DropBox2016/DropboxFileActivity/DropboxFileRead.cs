@@ -1,40 +1,42 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using Dev2.Activities.DropBox2016.DownloadActivity;
+﻿using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dropbox.Api;
 using Dropbox.Api.Files;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     public class DropboxFileRead : IDropboxFileRead
     {
-        private readonly IFilenameValidator _validator;
         private readonly bool _recursive;
         private readonly string _path;
         private readonly bool _includeMediaInfo;
         private readonly bool _includeDeleted;
 
         public DropboxFileRead(bool recursive, string path, bool includeMediaInfo, bool includeDeleted)
-            :this(new DropboxFileNameValidator(path))
         {
-            _validator.Validate();
             _recursive = recursive;
             _path = path;
             _includeMediaInfo = includeMediaInfo;
             _includeDeleted = includeDeleted;
-            if (!path.StartsWith(@"/"))
+            if (!string.IsNullOrWhiteSpace(path) && !path.StartsWith(@"/"))
+            {
                 path = string.Concat(@"/", path);
+            }
+            else
+            {
+                path = path.Trim();
+            }
             _path = path;
             InitializeCertPinning();
         }
 
         public DropboxFileRead(IFilenameValidator validator)
         {
-            _validator = validator;
         }
 
         public IDropboxResult ExecuteTask(DropboxClient client)
@@ -54,8 +56,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                     if (exception.InnerException.Message.Contains("not_found"))
                     {
                         return new DropboxFailureResult(new DropboxFileNotFoundException());
-                    } 
-                    
+                    }
+
                     if (exception.InnerException.Message.Contains("malformed"))
                     {
                         return new DropboxFailureResult(new DropboxFileMalformdedException());
@@ -65,6 +67,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                 return new DropboxFailureResult(exception);
             }
         }
+
         [ExcludeFromCodeCoverage]
         private void InitializeCertPinning()
         {
