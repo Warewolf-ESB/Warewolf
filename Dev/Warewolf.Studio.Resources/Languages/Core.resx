@@ -3686,6 +3686,21 @@ The file must be available on the local file system.</value>
   <data name="DropboxResultHelpText" xml:space="preserve">
     <value>The result of the drop box operation will be assigned to this value</value>
   </data>
+    <data name="DropBoxDeleteFileNameTooltip" xml:space="preserve">
+    <value>DropBoxDeleteFileNameTooltip</value>
+  </data>
+  <data name="DropBoxDeleteFileNameHelpText" xml:space="preserve">
+    <value>DropBoxDeleteFileNameHelpText</value>
+  </data>
+  <data name="DropBoxFileListFileNameToolTip" xml:space="preserve">
+    <value>DropBoxFileListFileNameToolTip</value>
+  </data>
+  <data name="DropBoxFileListFileName" xml:space="preserve">
+    <value>DropBoxFileListFileName</value>
+  </data>
+  <data name="DropboxReadFolderToolTip" xml:space="preserve">
+    <value>DropboxReadFolderToolTip</value>
+  </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the formatted number.

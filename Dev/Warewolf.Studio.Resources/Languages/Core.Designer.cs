@@ -2289,6 +2289,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DropBoxDeleteFileNameHelpText.
+        /// </summary>
+        public static string DropBoxDeleteFileNameHelpText {
+            get {
+                return ResourceManager.GetString("DropBoxDeleteFileNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropBoxDeleteFileNameTooltip.
+        /// </summary>
+        public static string DropBoxDeleteFileNameTooltip {
+            get {
+                return ResourceManager.GetString("DropBoxDeleteFileNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///     This is the name of the file that will be downloaded from Dropbox.
         ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
@@ -2311,11 +2329,38 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DropBoxFileListFileName.
+        /// </summary>
+        public static string DropBoxFileListFileName {
+            get {
+                return ResourceManager.GetString("DropBoxFileListFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropBoxFileListFileNameToolTip.
+        /// </summary>
+        public static string DropBoxFileListFileNameToolTip {
+            get {
+                return ResourceManager.GetString("DropBoxFileListFileNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the operation that you wish to perform. Read from a file on Dropbox..
         /// </summary>
         public static string DropboxOperationToolTip {
             get {
                 return ResourceManager.GetString("DropboxOperationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropboxReadFolderToolTip.
+        /// </summary>
+        public static string DropboxReadFolderToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFolderToolTip", resourceCulture);
             }
         }
         

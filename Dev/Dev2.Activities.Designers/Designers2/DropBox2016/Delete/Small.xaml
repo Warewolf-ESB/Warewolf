@@ -12,6 +12,7 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:attachedProperties1="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:delete="clr-namespace:Dev2.Activities.Designers2.DropBox2016.Delete"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                MinWidth="250"
                                MaxWidth="250"
                                mc:Ignorable="d"
@@ -51,12 +52,12 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="[[Dropbox location]]"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxDeleteFileNameTooltip}"
+                                ToolTip="{x:Static languages:Core.DropBoxDeleteFileNameTooltip}"
                                 Text="{Binding DeletePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties1:WizardEngineAttachedProperties.DontOpenWizard="True">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxDeleteFileNameHelpText}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.DropBoxDeleteFileNameHelpText}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ToPath"
                                      SourcePropertyValue="{Binding DeletePath, UpdateSourceTrigger=PropertyChanged}"
