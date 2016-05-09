@@ -80,11 +80,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            if (string.IsNullOrEmpty(ToPath))
-            {
-                dataObject.Environment.AddError("Please confirm that the correct Dropbox file location has been entered");
-                return;
-            }
             base.ExecuteTool(dataObject, update);
         }
 
