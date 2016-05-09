@@ -1115,8 +1115,11 @@ namespace Dev2.Studio.ViewModels.DataList
                 complexObjectItemModel.IsExpanded = false;
                 if (childItem != null)
                 {
-                    childItem.IsComplexObect = true;
-                    childItem.AllowNotes = false;
+                    if (childItem.Parent == null)
+                    {
+                        childItem.IsComplexObect = true;
+                        childItem.AllowNotes = false;
+                    }
                     childItem.Parent = complexObjectItemModel;
                     complexObjectItemModel.Children.Add(childItem);
                 }
