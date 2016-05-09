@@ -921,7 +921,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12"
                                                                    Height="12"
-                                                                   Source="{StaticResource Explorer-WebService-Create}" />
+                                                                   Source="{StaticResource WebMethodsSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewPluginSource"

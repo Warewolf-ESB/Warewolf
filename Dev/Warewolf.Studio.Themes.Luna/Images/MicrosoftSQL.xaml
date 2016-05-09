@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	<DrawingBrush x:Key="MicrosoftSQLIcon" Stretch="Uniform">
+    <!-- This resource is the icon used on the Activity view -->
+    <!-- ReSharper disable once InconsistentNaming -->
+    <DrawingBrush x:Key="MicrosoftSQLIcon" Stretch="Uniform">
 		<DrawingBrush.Drawing>
 			<DrawingGroup>
 				<DrawingGroup.Children>
@@ -13,7 +15,8 @@
 			</DrawingGroup>
 		</DrawingBrush.Drawing>
 	</DrawingBrush>
-
+    <!-- This resource is used on the Explorer view through CustomMenuIcons -->
+    <!-- ReSharper disable once InconsistentNaming -->
     <DrawingImage x:Key="MicrosoftSQL" >
         <DrawingImage.Drawing>
             <DrawingGroup>
@@ -27,7 +30,8 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-
+    <!-- This resource is used on the Explorer view through CustomMenuIcons -->
+    <!-- ReSharper disable once InconsistentNaming -->
     <DrawingImage x:Key="MicrosoftSQLSource">
         <DrawingImage.Drawing>
             <DrawingGroup>
