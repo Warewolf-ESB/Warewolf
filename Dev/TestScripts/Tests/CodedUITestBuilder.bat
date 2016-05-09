@@ -20,7 +20,7 @@ GOTO exit
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%vs120comntools%..\IDE\CodedUITestBuilder.exe" /standalone) else (START "%vs120comntools%..\IDE\CodedUITestBuilder.exe" /D "%vs120comntools%..\IDE" "CodedUITestBuilder.exe" /standalone)
 GOTO exit
 
-:vs2013
+:vs2015
 IF EXIST %windir%\nircmd.exe (nircmd elevate "%vs140comntools%..\IDE\CodedUITestBuilder.exe" /standalone) else (START "%vs140comntools%..\IDE\CodedUITestBuilder.exe" /D "%vs140comntools%..\IDE" "CodedUITestBuilder.exe" /standalone)
 
 

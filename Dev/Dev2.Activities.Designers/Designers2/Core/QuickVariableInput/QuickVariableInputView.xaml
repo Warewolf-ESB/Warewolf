@@ -9,6 +9,7 @@
                                xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="370"
                                MinHeight="360"
                                MaxWidth="600"
@@ -16,6 +17,13 @@
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance core:ActivityCollectionDesignerViewModel}">
 
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton Content="AddMode" 
                                      DataContext="{Binding QuickVariableInputViewModel, Mode=TwoWay}"
@@ -29,8 +37,7 @@
     </core:ActivityDesignerTemplate.RightButtons>
 
     <core:ActivityDesignerTemplate.InputBindings>
-        <KeyBinding Command="{Binding QuickVariableInputViewModel.ClearCommand}"
-                    Key="Escape" />      
+        <KeyBinding Command="{Binding QuickVariableInputViewModel.ClearCommand}" Key="Escape" />
     </core:ActivityDesignerTemplate.InputBindings>
 
     <Grid x:Name="ParentContext" Margin="{StaticResource ElementBorder}">
@@ -41,8 +48,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*"
-                               MinHeight="61" />
+                <RowDefinition Height="*" MinHeight="61" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -55,13 +61,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="6" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"
-                       Text="Quick Variable Input"
-                       Style="{StaticResource Dev2HeadingTextBlockStyle}" />
-                <Rectangle Grid.Row="1"
-                           Fill="LightGray"
-                           Margin="1"
-                           Height="1" />
+                <TextBlock Grid.Row="0" Text="Quick Variable Input" Style="{StaticResource Dev2HeadingTextBlockStyle}" />
+                <Rectangle Grid.Row="1" Fill="LightGray" Margin="1" Height="1" />
             </Grid>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Variable List " Margin="{StaticResource ControlBorderTop}"/>
@@ -78,6 +79,7 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      VerticalScrollBarVisibility="Auto"
                      TextWrapping="Wrap"           
+                     ToolTip="{x:Static help:HelpTextResources.QuickVariableVariableListToolTip}"
                      AutomationProperties.AutomationId="QviVariableListBox"
                      attached:FocusSetter.IsFocused="{Binding IsVariableListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
@@ -98,6 +100,7 @@
                           ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
                           ItemsSource="{Binding SplitTypeList}"
                           SelectedValue="{Binding SplitType}"
+                          ToolTip="{x:Static help:HelpTextResources.QuickVariableSplitAndAtToolTip}"
                           AutomationProperties.AutomationId="QviSplitOnCombobox"
                           HorizontalAlignment="Stretch">
                     <i:Interaction.Behaviors>
@@ -109,6 +112,7 @@
                          Text="{Binding SplitToken, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{Binding IsSplitTokenEnabled}"
                          AutomationProperties.AutomationId="QviSplitOnCharacter"
+                         ToolTip="{x:Static help:HelpTextResources.QuickVariableSplitAndAtToolTip}"
                          attached:FocusSetter.IsFocused="{Binding IsSplitOnFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <i:Interaction.Behaviors>
                         <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSplitAndAtHelpText}"
@@ -123,6 +127,7 @@
                      Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding Prefix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
+                     ToolTip="{x:Static help:HelpTextResources.QuickVariablePrefixWithToolTip}"
                      attached:FocusSetter.IsFocused="{Binding IsPrefixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariablePrefixWithHelpText}"
@@ -136,6 +141,7 @@
                      Margin="{StaticResource ControlBorderTop}"
                      Text="{Binding Suffix, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"
+                     ToolTip="{x:Static help:HelpTextResources.QuickVariableSuffixWithToolTip}"
                      attached:FocusSetter.IsFocused="{Binding IsSuffixFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static help:HelpTextResources.QuickVariableSuffixWithHelpText}"
@@ -153,6 +159,7 @@
                              IsChecked="True"
                              Margin="{StaticResource ControlBorderRight}"
                              VerticalAlignment="Center"
+                             ToolTip="{x:Static help:HelpTextResources.QuickVariableAppendToolTip}"
                              AutomationProperties.AutomationId="AppendOption"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>
@@ -164,6 +171,7 @@
                              Content="Replace"
                              IsChecked="{Binding Overwrite}"
                              AutomationProperties.AutomationId="ReplaceOption"
+                             ToolTip="{x:Static help:HelpTextResources.QuickVariableReplaceToolTip}"
                              VerticalAlignment="Center"
                              GroupName="AppendGroup">
                     <i:Interaction.Behaviors>
@@ -175,7 +183,8 @@
 
             <!-- +5 left margin to align with Inputs -->
             <preview:PreviewView Grid.Row="6"
-                                 Grid.ColumnSpan="2"
+                                 Grid.ColumnSpan="2" 
+                                 Grid.Column="0"
                                  Margin="5,0,0,0"
                                  DataContext="{Binding PreviewViewModel}" />
         </Grid>

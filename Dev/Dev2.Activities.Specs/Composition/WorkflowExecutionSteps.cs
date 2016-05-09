@@ -21,7 +21,6 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -61,6 +60,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Warewolf.Tools.Specs.BaseTypes;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedParameter.Global
 
@@ -514,6 +515,12 @@ namespace Dev2.Activities.Specs.Composition
                         case "sqlserver database":
                             updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                             break;
+                        case "oracle database":
+                            updatedActivity = ActivityUtils.GetDsfOracleDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
+                        case "odbc database":
+                            updatedActivity = ActivityUtils.GetDsfODBCDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
                     }
                     CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
@@ -688,6 +695,12 @@ namespace Dev2.Activities.Specs.Composition
                     activity = new DsfDatabaseActivity();
                     break;
                 case "sqlserver database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "oracle database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "odbc database":
                     activity = new DsfDatabaseActivity();
                     break;
                 case "plugin":

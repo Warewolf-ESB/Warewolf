@@ -87,6 +87,12 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="PostgresSqlSource\NewPostgresDatabaseSourceSteps.cs" />
+    <Compile Include="PostgresSqlSource\PostgresSqlSource1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostgresSqlSource.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -95,6 +101,10 @@
       <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="PostgresSqlSource\PostgresSqlSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PostgresSqlSource1.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -130,6 +140,7 @@
       <Name>Warewolf.Studio.Views</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
