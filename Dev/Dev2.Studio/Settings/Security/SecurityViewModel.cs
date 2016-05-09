@@ -30,6 +30,7 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Security
@@ -411,12 +412,12 @@ namespace Dev2.Settings.Security
                 {
                     case HelpType.Server:
                         IsResourceHelpVisible = false;
-                        HelpText = Help.HelpTextResources.SettingsSecurityServerHelpWindowsGroup;
+                        HelpText = Core.SettingsSecurityServerHelpWindowsGroup;
                         break;
 
                     case HelpType.Resource:
                         IsServerHelpVisible = false;
-                        HelpText = Help.HelpTextResources.SettingsSecurityResourceHelpResource;
+                        HelpText = Core.SettingsSecurityResourceHelpResource;
                         break;
                 }
             }

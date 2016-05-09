@@ -24,7 +24,7 @@ namespace Dev2.Studio.ActivityDesigners
             InitializeComponent();
         }
 
-        //DONT TAKE OUT... This has been done so that the drill down doesnt happen.
+        //don't TAKE OUT... This has been done so that the drill down doesnt happen.
         void DsfScriptingJavaScriptDesigner_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;

@@ -6,7 +6,6 @@
              xmlns:switch="clr-namespace:Dev2.Activities.Designers2.Switch"
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
              xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-             xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -60,7 +59,7 @@
                                     Text="{Binding SwitchVariable,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsDisplayTextFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                    ToolTip="{x:Static help:HelpTextResources.FindToolTipResult}">
+                                    ToolTip="{x:Static languages:Core.FindToolTipResult}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"

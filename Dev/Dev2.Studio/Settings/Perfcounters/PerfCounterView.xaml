@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:help="clr-namespace:Dev2.Help"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:perfcounters="clr-namespace:Dev2.Settings.Perfcounters"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance perfcounters:PerfcounterViewModel}">
@@ -73,9 +73,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipAvgExecTime}">
+                                              ToolTip="{x:Static languages:Core.SettingsPerfCounterServerToolTipAvgExecTime}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpAvgExecTime}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterServerHelpAvgExecTime}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -96,9 +96,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=ConcurrentRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipConcurrentReq}">
+                                              ToolTip="{x:Static languages:Core.SettingsPerfCounterServerToolTipConcurrentReq}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpConcurrentReq}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterServerHelpConcurrentReq}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -119,9 +119,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=RequestPerSecond, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipReqPerSec}">
+                                              ToolTip="{x:Static languages:Core.SettingsPerfCounterServerToolTipReqPerSec}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpReqPerSec}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterServerHelpReqPerSec}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -143,9 +143,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=TotalErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerTooltipTotalErrors}">
+                                          ToolTip="{x:Static languages:Core.SettingsPerfCounterServerTooltipTotalErrors}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpTotalErrors}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterServerHelpTotalErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -167,9 +167,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=WorkFlowsNotFound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipWfNotFound}">
+                                          ToolTip="{x:Static languages:Core.SettingsPerfCounterServerToolTipWfNotFound}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpWfNotFound}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterServerHelpWfNotFound}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -190,9 +190,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=NotAuthorisedErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="true"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterServerToolTipNotAuthErrors}">
+                                          ToolTip="{x:Static languages:Core.SettingsPerfCounterServerToolTipNotAuthErrors}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterServerHelpNotAuthErrors}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterServerHelpNotAuthErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -264,14 +264,14 @@
                                     </TextBlock>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
-                                            ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipResource}">
+                                            ToolTip="{x:Static languages:Core.SettingsPerfCounterResourceToolTipResource}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
                                                 <Binding Path="CounterName" FallbackValue="New" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceBrowseHelpResource}"
+                                            <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterResourceBrowseHelpResource}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -294,9 +294,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=AverageExecutionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipAvgExecTime}">
+                                              ToolTip="{x:Static languages:Core.SettingsPerfCounterResourceToolTipAvgExecTime}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpAvgExecTime}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterResourceHelpAvgExecTime}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -322,9 +322,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=ConcurrentRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipConReq}">
+                                              ToolTip="{x:Static languages:Core.SettingsPerfCounterResourceToolTipConReq}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpConReq}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterResourceHelpConReq}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -350,9 +350,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=RequestPerSecond, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="True"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipReqPerSec}">
+                                              ToolTip="{x:Static languages:Core.SettingsPerfCounterResourceToolTipReqPerSec}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpReqPerSec}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterResourceHelpReqPerSec}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -378,9 +378,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=TotalErrors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="True"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterResourceToolTipTotErrors}">
+                                          ToolTip="{x:Static languages:Core.SettingsPerfCounterResourceToolTipTotErrors}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterResourceHelpTotErrors}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterResourceHelpTotErrors}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -404,10 +404,10 @@
                             <DataTemplate>
                                 <Button AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
                                         Command="{Binding Path=RemoveRow}"
-                                        ToolTip="{x:Static help:HelpTextResources.SettingsPerfCounterRemoveResourceTooltip}">
+                                        ToolTip="{x:Static languages:Core.SettingsPerfCounterRemoveResourceTooltip}">
                                     <Image Source="{StaticResource RemoveUnusedVariable-32}" Height="15" Width="15" />
                                     <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsPerfCounterRemoveResourceHelpText}"
+                                        <core:HelpSetter Text="{x:Static languages:Core.SettingsPerfCounterRemoveResourceHelpText}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                 </Button>
