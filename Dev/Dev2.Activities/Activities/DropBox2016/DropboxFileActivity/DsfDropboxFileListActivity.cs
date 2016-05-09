@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Activities.DropBox2016.Result;
+﻿using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Dropbox;
@@ -10,41 +7,50 @@ using Dev2.Data.ServiceModel;
 using Dev2.Factories;
 using Dev2.Util;
 using Dropbox.Api;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
-    //To Use this class to get all dropbox files and folders
-    [ToolDescriptorInfo("DropBoxLogo", "Dropbox Files", ToolType.Native, "8999E59A-38A3-43BB-A98F-5080D1C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "Dropbox Files", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropboxFileListActivity : DsfBaseActivity
     {
         public IDropboxFactory DropboxFactory { get; private set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public OauthSource SelectedSource { get; set; }
 
         public List<string> Files { get; set; }
         private DropboxClient _dropboxClient;
         public Exception Exception { get; set; }
+
         [FindMissing]
         public bool IncludeMediaInfo { get; set; }
+
         [FindMissing]
         public bool IsRecursive { get; set; }
+
         [FindMissing]
         public bool IncludeDeleted { get; set; }
+
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
+
         [FindMissing]
         public bool IsFilesSelected { get; set; }
+
         [FindMissing]
         public bool IsFoldersSelected { get; set; }
+
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
 
-
-
         public override string DisplayName { get; set; }
+
         private DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
         {
             DropboxFactory = dropboxFactory;
@@ -60,7 +66,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         public DsfDropboxFileListActivity()
             : this(new DropboxFactory())
         {
-
         }
 
         public DropboxClient GetDropboxClient()
@@ -81,13 +86,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                 return;
             }
             base.ExecuteTool(dataObject, update);
-            
         }
 
         public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
         {
             return singleExecutor;
         }
+
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var toPath = evaluatedValues["ToPath"];
@@ -113,7 +118,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.PathLower).ToList());
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.PathLower).ToList());
                 }
-                
+
                 return GlobalConstants.DropBoxSucces;
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
@@ -126,12 +131,11 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             throw new Exception(executionError);
         }
 
-
         protected override void AssignResult(IDSFDataObject dataObject, int update)
         {
             foreach (var file in Files)
             {
-                dataObject.Environment.Assign(Result,file,update);
+                dataObject.Environment.Assign(Result, file, update);
             }
         }
 
@@ -139,7 +143,5 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         {
             return enFindMissingType.StaticActivity;
         }
-
-       
     }
 }
