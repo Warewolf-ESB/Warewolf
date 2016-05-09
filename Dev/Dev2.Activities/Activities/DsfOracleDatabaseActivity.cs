@@ -7,7 +7,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities
 {
-    //[ToolDescriptorInfo("Oracle", "Oracle Connector", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA10", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    //[ToolDescriptorInfo("Database", "Oracle Connector", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA10", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfOracleDatabaseActivity : DsfActivity
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
