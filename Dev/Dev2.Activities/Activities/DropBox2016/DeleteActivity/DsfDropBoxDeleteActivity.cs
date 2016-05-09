@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -10,12 +6,16 @@ using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Dropbox.Api;
 using Dropbox.Api.Files;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
-    [ToolDescriptorInfo("DropBoxLogo", "Dropbox Delete", ToolType.Native, "8AC94835-0A28-4166-A53A-D7B07730C135", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "Dropbox Delete", ToolType.Native, "8AC94835-0A28-4166-A53A-D7B07730C135", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDeleteActivity : DsfBaseActivity
     {
         private DropboxClient _client;
@@ -30,6 +30,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         }
 
         public OauthSource SelectedSource { get; set; }
+
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string DeletePath { get; set; }
@@ -39,7 +40,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             if (_client != null)
             {
-
                 return _client;
             }
             var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
@@ -54,7 +54,8 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         public override string DisplayName { get; set; }
 
-        #endregion
+        #endregion Overrides of DsfActivity
+
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
@@ -81,7 +82,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             return enFindMissingType.StaticActivity;
         }
 
-        #endregion
+        #endregion Overrides of DsfNativeActivity<string>
 
         #region Overrides of DsfBaseActivity
 
@@ -95,6 +96,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             base.ExecuteTool(dataObject, update);
         }
 
-        #endregion
+        #endregion Overrides of DsfBaseActivity
     }
 }
