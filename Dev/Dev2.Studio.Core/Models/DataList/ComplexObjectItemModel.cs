@@ -48,6 +48,69 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
+        public override bool Input
+        {
+            get
+            {
+                return _columnIODir == enDev2ColumnArgumentDirection.Both
+                       || _columnIODir == enDev2ColumnArgumentDirection.Input;
+            }
+            set
+            {
+                SetColumnIODirectionFromInput(value);
+                if (Children.Count > 0)
+                {
+                    SetChildInputValues(value);
+                }
+            }
+        }
+
+        public override bool Output
+        {
+            get
+            {
+                return _columnIODir == enDev2ColumnArgumentDirection.Both || _columnIODir == enDev2ColumnArgumentDirection.Output;
+            }
+            set
+            {
+                SetColumnIODirectionFromOutput(value);
+                if (Children.Count > 0)
+                {
+                    SetChildOutputValues(value);
+                }
+            }
+        }
+
+        private void SetChildInputValues(bool value)
+        {
+            if (Children != null)
+            {
+                foreach (var dataListItemModel in Children)
+                {
+                    var child = dataListItemModel;
+                    if (!string.IsNullOrEmpty(child.DisplayName))
+                    {
+                        child.Input = value;
+                    }
+                }
+            }
+        }
+
+        private void SetChildOutputValues(bool value)
+        {
+            if (Children != null)
+            {
+                foreach (var dataListItemModel in Children)
+                {
+                    var child = dataListItemModel;
+                    if (!string.IsNullOrEmpty(child.DisplayName))
+                    {
+                        child.Output = value;
+                    }
+                }
+            }
+        }
+
         //public enDev2ColumnArgumentDirection ColumnIODirection
         //{
         //    get

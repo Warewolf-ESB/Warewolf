@@ -114,7 +114,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 SetColumnIODirectionFromInput(value);
                 if(Children.Count > 0)
                 {
-                    //SetChildInputValues(value);
+                    SetChildInputValues(value);
                 }
             }
         }
