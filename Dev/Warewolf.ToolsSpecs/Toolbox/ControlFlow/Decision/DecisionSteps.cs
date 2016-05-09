@@ -98,7 +98,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             variableList.Add(new Tuple<string, string>(variable, value));
         }
 
-        [Given(@"Require All decisions to be True is ""(.*)""")]
+        [Given(@"Require all decisions to be true is ""(.*)""")]
         public void GivenRequireAllDecisionsToBeTrueIs(string p0)
         {
             if (p0 == "true")

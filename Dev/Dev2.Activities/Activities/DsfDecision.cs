@@ -216,7 +216,7 @@ namespace Dev2.Activities
                 result.Add(itemToAdd);
 
                 itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require All decisions to be True"), itemToAdd);
+                AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require all decisions to be true"), itemToAdd);
                 result.Add(itemToAdd);
             }
             catch (JsonSerializationException)

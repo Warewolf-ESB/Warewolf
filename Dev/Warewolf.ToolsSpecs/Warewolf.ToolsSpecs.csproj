@@ -588,6 +588,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteDropbox.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature.cs">
       <DependentUpon>DownloadDropbox.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -598,6 +599,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DownloadDropbox.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\DownloadDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
       <DependentUpon>ReadDropbox.feature</DependentUpon>
       <AutoGen>True</AutoGen>
