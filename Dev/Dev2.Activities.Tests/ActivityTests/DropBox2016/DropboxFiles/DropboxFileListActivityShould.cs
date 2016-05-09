@@ -50,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             Assert.IsNotNull(dropboxFileListActivity);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            Assert.AreEqual("List Dropbox files", dropboxFileListActivity.DisplayName);
+            Assert.AreEqual("Dropbox List Files & Folders", dropboxFileListActivity.DisplayName);
         }
 
         [TestMethod]
