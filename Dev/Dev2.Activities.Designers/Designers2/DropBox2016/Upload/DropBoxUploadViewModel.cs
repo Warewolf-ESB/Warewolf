@@ -53,8 +53,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             AddTitleBarLargeToggle();
             IsDropboxSourceWizardSourceMessagePulished = false;
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
-            OverWriteMode = true;
-
         }
         public ICommand NewSourceCommand { get; set; }
         public OauthSource SelectedSource
