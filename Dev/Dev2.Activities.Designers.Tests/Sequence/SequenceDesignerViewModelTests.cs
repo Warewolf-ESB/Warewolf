@@ -256,7 +256,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
@@ -275,7 +275,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
@@ -294,7 +294,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
