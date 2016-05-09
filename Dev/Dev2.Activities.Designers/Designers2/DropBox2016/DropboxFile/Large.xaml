@@ -116,13 +116,13 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!--DropBox File Location-->
-            <TextBlock x:Name="DropboxFileTextBlock" Grid.Column="0" Grid.Row="0" Text="Dropbox Path" />
+            <TextBlock x:Name="DropboxFileTextBlock" Grid.Column="0" Grid.Row="0" Text="Dropbox File" />
             <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="0"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                DefaultText="[[Dropbox location]]"
+                                DefaultText="Dropbox File"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.DropBoxFileListFileNameToolTip}"
                                 Text="{Binding ToPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
