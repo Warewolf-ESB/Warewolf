@@ -3,13 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}"
-	ProjectSection(SolutionItems) = preProject
-		Warewolf.Studio.UISpecs\Properties\Build Server Studio.bat = Warewolf.Studio.UISpecs\Properties\Build Server Studio.bat
-		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.UISpecs", "Warewolf.Studio.UISpecs\Warewolf.Studio.UISpecs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
 EndProject
@@ -19,15 +16,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{86F22F
 		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{929C168C-42D4-4555-B18E-E22DAAA27610}"
-	ProjectSection(SolutionItems) = preProject
-		BakeInVersion.ps1 = BakeInVersion.ps1
-		ReadOutVersion.ps1 = ReadOutVersion.ps1
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CodedUI.SpecGenerator", "Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj", "{0D2942AB-2C34-43F9-BB49-8BABA58A660A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.UITestExtension", "Warewolf.Studio.UITestExtension\Warewolf.Studio.UITestExtension.csproj", "{4278D2F3-3E9F-4031-9983-DD88C77F6119}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BEB57930-B3B0-402B-B9F5-0A7B8E5B4173}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Server\Cleanup.bat = TestScripts\Server\Cleanup.bat
+		TestScripts\Server\Startup.bat = TestScripts\Server\Startup.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{E3E0D6CF-ED1E-481A-B7E7-98D5A0E7E0B7}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Server\Service\Cleanup.bat = TestScripts\Server\Service\Cleanup.bat
+		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5176818D-D7C0-454B-BC12-FD619C57811C}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
+		TestScripts\Tests\Compile All Tests.bat = TestScripts\Tests\Compile All Tests.bat
+		TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat = TestScripts\Tests\Regenerate All SpecFlow Feature Files.bat
+		TestScripts\Tests\Run-All-Acceptance-Tests.ps1 = TestScripts\Tests\Run-All-Acceptance-Tests.ps1
+		TestScripts\Tests\Run-All-UI-Tests.ps1 = TestScripts\Tests\Run-All-UI-Tests.ps1
+		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,9 +65,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
 		{86F22FF8-2B3F-491E-9B44-703381DBAAA5} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
-		{929C168C-42D4-4555-B18E-E22DAAA27610} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
+		{BEB57930-B3B0-402B-B9F5-0A7B8E5B4173} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
+		{E3E0D6CF-ED1E-481A-B7E7-98D5A0E7E0B7} = {BEB57930-B3B0-402B-B9F5-0A7B8E5B4173}
+		{5176818D-D7C0-454B-BC12-FD619C57811C} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Dev2.UI.Tests.vsmdi

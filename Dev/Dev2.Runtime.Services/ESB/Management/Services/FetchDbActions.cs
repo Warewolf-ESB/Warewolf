@@ -42,14 +42,36 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var dbSource = serializer.Deserialize<IDbSource>(values["source"]);
                 // ReSharper disable MaximumChainedReferences
-                ServiceModel.Services services = new ServiceModel.Services();
-                var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
-                var methods = services.FetchMethods(src).Select(a=>CreateDbAction(a,src)).OrderBy(a=>a.Name);
-                return serializer.SerializeToBuilder(new ExecuteMessage
+                ServiceModel.Services services = new ServiceModel.Services();              
+                
+var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
+               
+                if (dbSource.Type == enSourceType.ODBC) {
+                    DbSource db = new DbSource();
+                    db.DatabaseName = dbSource.DbName;
+                    db.ResourceID = dbSource.Id;
+                    db.ServerType = dbSource.Type;
+                    db.ResourceName = dbSource.Name;
+
+                    var methods = services.FetchMethods(src).Select(method => CreateDbAction(method, src)).OrderBy(a => a.Name);
+                    return serializer.SerializeToBuilder(new ExecuteMessage
+                    {
+                        HasError = false,
+                        Message = serializer.SerializeToBuilder(methods)
+                    });
+                }
+                else
                 {
-                    HasError = false,
-                    Message = serializer.SerializeToBuilder(methods)
-                });
+                    
+                   var methods = services.FetchMethods(src).Select(method => CreateDbAction(method,src)).OrderBy(a => a.Name);
+                    return serializer.SerializeToBuilder(new ExecuteMessage
+                    {
+                        HasError = false,
+                        Message = serializer.SerializeToBuilder(methods)
+                    });
+                }
+                 
+                
                 // ReSharper restore MaximumChainedReferences
             }
             catch (Exception e)

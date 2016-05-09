@@ -183,7 +183,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 36
  testRunner.And("a decision variable \"[[B]]\" operation \"=\" right  \"1a23\" position \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
- testRunner.And("\"Require All Decisions To Be True\" is \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Require all decisions to be true\" is \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
  testRunner.And("the Decision window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
@@ -197,7 +197,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 43
  testRunner.And("\"3a111\" is visible in Match field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
- testRunner.And("\"Require All Decisions To Be True\" has a value of \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Require all decisions to be true\" has a value of \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -219,7 +219,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 51
  testRunner.And("a decision variable \"[[B]]\" operation \"=\" right  \"1a23\" position \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
- testRunner.And("\"Require All Decisions To Be True\" is \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Require all decisions to be true\" is \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 53
  testRunner.When("I select the \"remove statement line\" button at position 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 54

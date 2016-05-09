@@ -1040,7 +1040,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreSame(_targetAsyncWorker.Item, value);
             Assert.AreEqual(expectedAuthenticationType, value.AuthenticationType);
-            Assert.AreEqual(expectedServerName, value.ServerName);
             Assert.AreEqual(expectedPassword, value.Password);
             Assert.AreEqual(expectedUserName, value.UserName);
             Assert.AreEqual(expectedType, value.Type);
@@ -1080,7 +1079,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreNotSame(_targetAsyncWorker.Item, value);
             Assert.AreEqual(expectedAuthenticationType, value.AuthenticationType);
-            Assert.AreEqual(expectedServerName, value.ServerName);
             Assert.AreEqual(expectedPassword, value.Password);
             Assert.AreEqual(expectedUserName, value.UserName);
             Assert.AreEqual(expectedType, value.Type);

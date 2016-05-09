@@ -604,9 +604,6 @@ You need Administrator permission.</value>
   <data name="DebugToolTip" xml:space="preserve">
     <value>Run and debug your workflow service</value>
   </data>
-  <data name="EnvironmentExplorerRefreshToolTip" xml:space="preserve">
-    <value>EnvironmentExplorerRefreshToolTip</value>
-  </data>
   <data name="ExplorerItemEditToolTip" xml:space="preserve">
     <value>You have view permission on this item. Click to open</value>
   </data>
@@ -635,7 +632,7 @@ You need Administrator permission.</value>
     <value>Adjust the debug output</value>
   </data>
   <data name="ExpandCollapseAllToolTip" xml:space="preserve">
-    <value>ExpandCollapseAllToolTip</value>
+    <value>Expand or collapse all execution nodes.</value>
   </data>
   <data name="DebugOutputSearchToolTip" xml:space="preserve">
     <value>Filter the debug output information</value>
@@ -646,11 +643,20 @@ You need Administrator permission.</value>
   <data name="ManageDbServiceSourcesTooltip" xml:space="preserve">
     <value>Select the database you want to use</value>
   </data>
+  <data name="ManageExchangeServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the connection you want to use</value>
+  </data>
   <data name="ManageDbServiceEditSourceTooltip" xml:space="preserve">
     <value>Edits the selected database source</value>
   </data>
+  <data name="ManageExchangeServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected connection source</value>
+  </data>
   <data name="ManageDbServiceNewSourceTooltip" xml:space="preserve">
     <value>Create a new connection to a database</value>
+  </data>
+  <data name="ManageExchangeServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a exchange server</value>
   </data>
   <data name="ManageDbServiceActionsTooltip" xml:space="preserve">
     <value>Select the procedure or function you want to perform on the database</value>
@@ -818,19 +824,19 @@ You need Administrator permission.</value>
     <value>Cancel this action</value>
   </data>
   <data name="SharepointSourceServerNameTooltip" xml:space="preserve">
-    <value>SharepointSourceServerNameTooltip</value>
+    <value>Sharepoint URL</value>
   </data>
   <data name="SharepointSourceUserNameTooltip" xml:space="preserve">
-    <value>SharepointSourceUserNameTooltip</value>
+    <value>The usename used to connect to Sharepoint</value>
   </data>
   <data name="SharepointSourcePasswordTooltip" xml:space="preserve">
-    <value>SharepointSourcePasswordTooltip</value>
+    <value>Password for the username used to connect to Sharepoint</value>
   </data>
   <data name="SharepointSourceTestTooltip" xml:space="preserve">
-    <value>SharepointSourceTestTooltip</value>
+    <value>Test the connection to the Sharepoint server</value>
   </data>
   <data name="SharepointSourceCancelTestTooltip" xml:space="preserve">
-    <value>SharepointSourceCancelTestTooltip</value>
+    <value>Cancel the test connection to the Sharepoint server</value>
   </data>
   <data name="DeploySelectDependenciesTooltip" xml:space="preserve">
     <value>Automatically select dependent resources. WARNING: Overwriting Sources on the destination is not recommended.</value>
@@ -896,7 +902,7 @@ You need Administrator permission.</value>
     <value>Test the connection to the server using these credentials</value>
   </data>
   <data name="ServerSourceDialogsCancelTestToolTip" xml:space="preserve">
-    <value>ServerSourceDialogsCancelTestToolTip</value>
+    <value>Cancel the connection attempt</value>
   </data>
   <data name="UserNameToolTip" xml:space="preserve">
     <value>Enter the user name you want to connect with</value>
@@ -1021,6 +1027,9 @@ Alternatively, the URL for your online Server, such as Azure SQL.</value>
   <data name="DatabaseServiceSourceTypesHelp" xml:space="preserve">
     <value>The available database connections. To create a new connection, click New.</value>
   </data>
+  <data name="ExchangeServiceSourceTypesHelp" xml:space="preserve">
+    <value>The available exchange connections. To create a new connection, click New.</value>
+  </data>
   <data name="DatabaseServiceEditSourceHelp" xml:space="preserve">
     <value>Change the connection string properties of the selected Database.&lt;br&gt;
 &lt;br/&gt;
@@ -1028,8 +1037,18 @@ Change the connection string from, say, a development database to a live databas
 &lt;br/&gt;
 &lt;a href="http://warewolf.io/knowledge-base/data-connectors" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
+  <data name="ExchangeServiceEditSourceHelp" xml:space="preserve">
+    <value>Change the connection string properties of the selected connection.&lt;br&gt;
+&lt;br/&gt;
+Change the connection string from, say, a development database to a live database.&lt;br/&gt;
+&lt;br/&gt;
+&lt;a href="http://warewolf.io/knowledge-base/data-connectors" target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
+  </data>
   <data name="DatabaseServiceNewSourceHelp" xml:space="preserve">
     <value>Create a connection to a new database server.</value>
+  </data>
+  <data name="ExchangeServiceNewSourceHelp" xml:space="preserve">
+    <value>Create a connection to a new exchange server.</value>
   </data>
   <data name="DatabaseServiceSelectActionHelp" xml:space="preserve">
     <value>The available database actions you can perform such as stored procedures or function calls.</value>
@@ -1045,8 +1064,6 @@ This data will not be stored and the execution will be rolled back if supported 
   <data name="DatabaseServiceTestHelp" xml:space="preserve">
     <value>Test the execution of this resource.</value>
   </data>
-    
-  
   <data name="ServiceTestActionTooltip" xml:space="preserve">
     <value>Test the procedure or function</value>
   </data>
@@ -1059,17 +1076,22 @@ This data will not be stored and the execution will be rolled back if supported 
     <value>Test the execution of this resource.</value>
   </data>
   <data name="ServiceTestDoneButtonHelp" xml:space="preserve">
-    <value>ServiceTestDoneButtonHelp</value>
+    <value>Accept the test response results. This will use the results from the test execution to determine the actions outputs.</value>
+  </data>
+  <data name="ServiceTestDoneButtonTooltip" xml:space="preserve">
+    <value>ServiceTestDoneButtonTooltip</value>
+  </data>
+  <data name="ServiceTestCancelButtonTooltip" xml:space="preserve">
+    <value>ServiceTestCancelButtonTooltip</value>
   </data>
   <data name="ServiceTestCancelButtonHelp" xml:space="preserve">
-    <value>ServiceTestCancelButtonHelp</value>
+    <value>Cancel the test response results. Cancelling will not use the results from the test execution to determine the actions outputs.</value>
   </data>
-
   <data name="SharepointServiceSourceServerHelp" xml:space="preserve">
-    <value>SharepointServiceSourceServerHelp</value>
+    <value>The full URL of the Sharepoint server</value>
   </data>
   <data name="SharepointServiceSourceTestHelp" xml:space="preserve">
-    <value>SharepointServiceSourceTestHelp</value>
+    <value>Test the connection to the Sharepoint server</value>
   </data>
   <data name="MenuNewServiceHelp" xml:space="preserve">
     <value>Create a new Warewolf Hosted Service. This flow based service is that start of all orchestration in Warewolf.&lt;br/&gt;
@@ -1227,11 +1249,17 @@ Change the connection string from, say, a development dll to a live dll.&lt;br/&
   <data name="EmailSourceNewHeaderLabel" xml:space="preserve">
     <value>New Email Source</value>
   </data>
+  <data name="ExchangeSourceNewHeaderLabel" xml:space="preserve">
+    <value>New Exchange Source</value>
+  </data>
   <data name="EmailSourceEditHeaderLabel" xml:space="preserve">
     <value>Edit </value>
   </data>
   <data name="HostNameLabel" xml:space="preserve">
     <value>Host</value>
+  </data>
+  <data name="AutoDiscoverLabel" xml:space="preserve">
+    <value>AutoDiscover Url</value>
   </data>
   <data name="EmailSourceEnableSslLabel" xml:space="preserve">
     <value>Enable SSL</value>
@@ -1309,31 +1337,31 @@ This account needs to be a valid email address/account for the Host server.</val
     <value>Test the settings you have entered by sending a test email.</value>
   </data>
   <data name="DbInputDefaultValueHelp" xml:space="preserve">
-    <value>DbInputDefaultValueHelp</value>
+    <value>Put your test data in here then click Test. If possible this execution will automatically roll back.</value>
   </data>
   <data name="DbInsertToolTipColumn" xml:space="preserve">
-    <value>DbInsertToolTipColumn</value>
+    <value>This data is used for testing and not at run time.</value>
   </data>
   <data name="WebInputDefaultValueHelp" xml:space="preserve">
-    <value>WebInputDefaultValueHelp</value>
+    <value>The test data you want to use to execute this action with.</value>
   </data>
   <data name="WebInsertToolTipColumn" xml:space="preserve">
-    <value>WebInsertToolTipColumn</value>
+    <value>Test data for the execution</value>
   </data>
   <data name="DotNetInputDefaultValueHelp" xml:space="preserve">
-    <value>DotNetInputDefaultValueHelp</value>
+    <value>The data or variable that will be passed into the action at run time.</value>
   </data>
   <data name="DotNetInsertToolTipColumn" xml:space="preserve">
-    <value>DotNetInsertToolTipColumn</value>
+    <value>Hard coded values or variables.</value>
   </data>
   <data name="InputDefaultValueHelp" xml:space="preserve">
-    <value>InputDefaultValueHelp</value>
+    <value>The variable or the value that you want passed into this action.</value>
   </data>
   <data name="InputEmptyIsNullDefaultValueHelp" xml:space="preserve">
-    <value>InputEmptyIsNullDefaultValueHelp</value>
+    <value>If the variable coming in has not value assigned to it, this will allow you to pass it in as NULL.</value>
   </data>
   <data name="InputGenerateOutputsDefaultHelp" xml:space="preserve">
-    <value>InputGenerateOutputsDefaultHelp</value>
+    <value>To get the response data of this action, put some test data in. The transaction will be rolled back if possible.</value>
   </data>
   <data name="MappingsRecordsetNameHelp" xml:space="preserve">
     <value>If you would like the default variables in a recordset, put the recordset name in here.</value>
@@ -1355,6 +1383,9 @@ This variable is not being used in the service and can safely be deleted.</value
   <data name="DataListSortButtonHelp" xml:space="preserve">
     <value>Sort the variable list alphabetically.</value>
   </data>
+  <data name="DataListVariableInputTooltip" xml:space="preserve">
+    <value>DataListVariableInputTooltip</value>
+  </data>
   <data name="DataListVariableInputHelp" xml:space="preserve">
     <value>Input the variable you want to use in your service.&lt;br/&gt;
 &lt;br/&gt;
@@ -1362,10 +1393,16 @@ If you use a variable on the design surface it will automatically appear here.&l
 &lt;br/&gt;
 &lt;a href="http://warewolf.io/knowledge-base/the-variable-list/"  target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
   </data>
+  <data name="DataListInputCheckBoxTooltip" xml:space="preserve">
+    <value>DataListInputCheckBoxTooltip</value>
+  </data>
   <data name="DataListInputCheckBoxHelp" xml:space="preserve">
     <value>Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;
 &lt;br/&gt;
 &lt;a href="http://warewolf.io/knowledge-base/the-variable-list/"  target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
+  </data>
+  <data name="DataListOutputCheckBoxTooltip" xml:space="preserve">
+    <value>DataListOutputCheckBoxTooltip</value>
   </data>
   <data name="DataListOutputCheckBoxHelp" xml:space="preserve">
     <value>Marks the variable as an output of the service. To return this variable from the workflow service, make this checkbox selected.&lt;br/&gt;
@@ -1399,16 +1436,17 @@ If there are no resources on the remote server, there will be no Public authenti
 Do not change this unless you know the ports on the remote machine have been altered.</value>
   </data>
   <data name="ServerTestConnectionHelp" xml:space="preserve">
-    <value>ServerTestConnectionHelp</value>
+    <value>Test the connection to the remote Warewolf Server.
+Make sure the relevant ports (3142, 3143 by default) are open on any firewalls between this server and the remote server.</value>
   </data>
   <data name="PasswordAuthenticationHelp" xml:space="preserve">
     <value>Enter the password for the account you want to use for authenticating.</value>
   </data>
   <data name="UserAuthenticationHelp" xml:space="preserve">
-    <value>UserAuthenticationHelp</value>
+    <value>Connect with a specific user account.</value>
   </data>
   <data name="UserNameAuthenticationHelp" xml:space="preserve">
-    <value>&lt;body&gt;&lt;p&gt;UserNameAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
+    <value>The full username of the account you want to use to connect to this resource.</value>
   </data>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>Uses the Windows Authentication protocols to authenticate the executing account. </value>
@@ -3394,14 +3432,11 @@ Data
             &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
         &lt;/ol&gt;</value>
   </data>
-  <data name="SharepointHelpServer" xml:space="preserve">
-    <value>Select a preconfigured SharePoint server source or "New SharePoint Server Source..." to add a new one.</value>
-  </data>
   <data name="SharepointEditServerHelp" xml:space="preserve">
-    <value>SharepointEditServerHelp</value>
+    <value>Edit the connection properties of the selected Sharepoint Server.</value>
   </data>
   <data name="SharepointRefreshListHelp" xml:space="preserve">
-    <value>SharepointRefreshListHelp</value>
+    <value>Refreshes the information from the server.</value>
   </data>
   <data name="SharepointToolTipToVariable" xml:space="preserve">
     <value>To read list item data into a variable, put the variable here.</value>
@@ -3452,10 +3487,10 @@ Data
         Select a preconfigured database source or "New Database Source..." to add a new one.</value>
   </data>
   <data name="SQLBulkInsertEditDatabaseHelp" xml:space="preserve">
-    <value>SQLBulkInsertEditDatabaseHelp</value>
+    <value>Edit the selected database connection properties</value>
   </data>
   <data name="SQLBulkInsertRefreshListHelp" xml:space="preserve">
-    <value>SQLBulkInsertRefreshListHelp</value>
+    <value>Refresh the information from the server</value>
   </data>
   <data name="SQLBulkInsertHelpFiretriggers" xml:space="preserve">
     <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.&lt;br/&gt;
@@ -3849,14 +3884,267 @@ Data
   <data name="NewServerLabel" xml:space="preserve">
     <value>New Remote Server...</value>
   </data>
-
   <data name="EditEmailSourceHelp" xml:space="preserve">
-    <value>EditEmailSourceHelp</value>
+    <value>Edit the email source that is selected.</value>
   </data>
   <data name="TestEmailAccountHelp" xml:space="preserve">
-    <value>TestEmailAccountHelp</value>
+    <value>Test the email account is working</value>
   </data>
   <data name="ChooseAttachmentsHelp" xml:space="preserve">
-    <value>ChooseAttachmentsHelp</value>
+    <value>File picker to help you locate the location of the items you want to attach</value>
+  </data>
+  <data name="EmailHelpBodyCheckbox" xml:space="preserve">
+    <value>If the email is HTML, select this checkbox. If it is plain text, uncheck the box.</value>
+  </data>
+  <data name="EmailTooltipBodyCheckbox" xml:space="preserve">
+    <value>Sets the body type to HTML (Checked) or plain text (Unchecked)</value>
+  </data>
+  <data name="LoggingViewServerEventLogOffTooltip" xml:space="preserve">
+    <value>No logging</value>
+  </data>
+  <data name="LoggingViewServerEventLogOffHelpText" xml:space="preserve">
+    <value>No Server logging is done to the Windows Event Log. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging.</value>
+  </data>
+  <data name="LoggingViewServerEventLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events</value>
+  </data>
+  <data name="LoggingViewServerEventLogFatalHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Only Server fatal events are logged.</value>
+  </data>
+  <data name="LoggingViewServerEventLogErrorTooltip" xml:space="preserve">
+    <value>Log Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogErrorHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Events up to error details:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events</value>
+  </data>
+  <data name="LoggingViewServerEventLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogWarnHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events</value>
+  </data>
+  <data name="LoggingViewServerEventLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogInfoHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Up to infromation detail:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events&lt;br /&gt;
+Server Pulse Data</value>
+  </data>
+  <data name="LoggingViewServerEventLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogDebugHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events&lt;br /&gt;
+Server Pulse Data&lt;br /&gt;
+Server System Activity</value>
+  </data>
+  <data name="LoggingViewServerEventLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogTraceHelpText" xml:space="preserve">
+    <value>Logs everything to the Windows Event Log:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events&lt;br /&gt;
+Server Pulse Data&lt;br /&gt;
+Server System Activity&lt;br /&gt;
+Server Detailed System information</value>
+  </data>
+  <data name="LoggingViewServerFileLogOffTooltip" xml:space="preserve">
+    <value>No logging.</value>
+  </data>
+  <data name="LoggingViewServerFileLogOffHelpText" xml:space="preserve">
+    <value>No Server logging is done to file. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging.</value>
+  </data>
+  <data name="LoggingViewServerFileLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogFatalHelpText" xml:space="preserve">
+    <value>Logs to file: Only Server fatal events are logged.</value>
+  </data>
+  <data name="LoggingViewServerFileLogErrorTooltip" xml:space="preserve">
+    <value>Log Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogErrorHelpText" xml:space="preserve">
+    <value>Logs to file: Events up to error details:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events</value>
+  </data>
+  <data name="LoggingViewServerFileLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogWarnHelpText" xml:space="preserve">
+    <value>Logs to file: Events up to warning severity:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events</value>
+  </data>
+  <data name="LoggingViewServerFileLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogInfoHelpText" xml:space="preserve">
+    <value>Logs to file: Up to infromation detail:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events&lt;br /&gt;
+Server Pulse Data</value>
+  </data>
+  <data name="LoggingViewServerFileLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogDebugHelpText" xml:space="preserve">
+    <value>Logs to file: Details up to System Activity:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events&lt;br /&gt;
+Server Pulse Data&lt;br /&gt;
+Server System Activity</value>
+  </data>
+  <data name="LoggingViewServerFileLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogTraceHelpText" xml:space="preserve">
+    <value>Logs everything to file:&lt;br /&gt;
+    Server Fatal Events&lt;br /&gt;
+  Server Error Events&lt;br /&gt;
+Server Warning Events&lt;br /&gt;
+Server Pulse Data&lt;br /&gt;
+Server System Activity&lt;br /&gt;
+Server Detailed System information</value>
+  </data>
+  <data name="LoggingViewStudioEventLogOffTooltip" xml:space="preserve">
+    <value>No logging</value>
+  </data>
+  <data name="LoggingViewStudioEventLogOffHelpText" xml:space="preserve">
+    <value>No Studio logging is done to Windows Event Logger. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events</value>
+  </data>
+  <data name="LoggingViewStudioEventLogFatalHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Only Studio fatal events are logged.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogErrorTooltip" xml:space="preserve">
+    <value>Log Studio Error and Studio Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogErrorHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Events up to error details:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events</value>
+  </data>
+  <data name="LoggingViewStudioEventLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogWarnHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Events up to warning severity:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events</value>
+  </data>
+  <data name="LoggingViewStudioEventLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogInfoHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Up to infromation detail:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events&lt;br /&gt;
+Studio Pulse Data</value>
+  </data>
+  <data name="LoggingViewStudioEventLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogDebugHelpText" xml:space="preserve">
+    <value>Logs to Windows Event Log: Details up to System Activity:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events&lt;br /&gt;
+Studio Pulse Data&lt;br /&gt;
+Studio System Activity</value>
+  </data>
+  <data name="LoggingViewStudioEventLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogTraceHelpText" xml:space="preserve">
+    <value>Logs everything to the Windows Event Log:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events&lt;br /&gt;
+Studio Pulse Data&lt;br /&gt;
+Studio System Activity&lt;br /&gt;
+Studio Detailed System information</value>
+  </data>
+  <data name="LoggingViewStudioFileLogOffTooltip" xml:space="preserve">
+    <value>No Studio logging.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogOffHelpText" xml:space="preserve">
+    <value>No Studio logging is done to file. Logging is highly efficient and will not have a noticeable impact on execution. It is recommended that you turn on logging.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogFatalTooltip" xml:space="preserve">
+    <value>Log Studio Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogFatalHelpText" xml:space="preserve">
+    <value>Logs to file: Only Studio fatal events are logged.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogErrorTooltip" xml:space="preserve">
+    <value>Log Studio Error and Studio Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogErrorHelpText" xml:space="preserve">
+    <value>Logs to file: Events up to error details:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events</value>
+  </data>
+  <data name="LoggingViewStudioFileLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogWarnHelpText" xml:space="preserve">
+    <value>Logs to file: Events up to warning severity:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events</value>
+  </data>
+  <data name="LoggingViewStudioFileLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogInfoHelpText" xml:space="preserve">
+    <value>Logs to file: Up to infromation detail:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events&lt;br /&gt;
+Studio Pulse Data</value>
+  </data>
+  <data name="LoggingViewStudioFileLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogDebugHelpText" xml:space="preserve">
+    <value>Logs to file: Details up to System Activity:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events&lt;br /&gt;
+Studio Pulse Data&lt;br /&gt;
+Studio System Activity</value>
+  </data>
+  <data name="LoggingViewStudioFileLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogTraceHelpText" xml:space="preserve">
+    <value>Logs everything to file:&lt;br /&gt;
+    Studio Fatal Events&lt;br /&gt;
+  Studio Error Events&lt;br /&gt;
+Studio Warning Events&lt;br /&gt;
+Studio Pulse Data&lt;br /&gt;
+Studio System Activity&lt;br /&gt;
+Studio Detailed System information</value>
   </data>
 </root>

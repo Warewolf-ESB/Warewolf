@@ -25,7 +25,8 @@ namespace Warewolf.Studio.Core
             Spacer = 99,
             Execute = 98,
             View = 97,
-            StartPage = 16384
+            StartPage = 16384,
+            ExchangeSource
 
 
         }
@@ -33,18 +34,19 @@ namespace Warewolf.Studio.Core
         private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
         {
             {MenuIcons.WorkflowService, "Explorer-WorkflowService"},
-            {MenuIcons.DbService, "Explorer-DB"},
-            {MenuIcons.PluginService, "Explorer-DLL"},
-            {MenuIcons.WebService, "Explorer-WebService"},
+            {MenuIcons.DbService, "MicrosoftSQLIcon"},
+            {MenuIcons.PluginService, "DotNetDllIcon"},
+            {MenuIcons.WebService, "WebMethodsIcon"},
             {MenuIcons.Folder, "Explorer-Spacer"},
             {MenuIcons.Spacer, "Explorer-Spacer"},
             {MenuIcons.View, "Explorer-Permission-Disbled"},
             {MenuIcons.Execute, "Explorer-Run-Disabled"},
 
-            {MenuIcons.WebSource, "Explorer-WebService-Create"},
-            {MenuIcons.PluginSource, "Explorer-DLL-Create"},
+            {MenuIcons.WebSource, "WebMethodsSource"},
+            {MenuIcons.PluginSource, "DotNetDllSource"},
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
-            {MenuIcons.DbSource, "Explorer-DB-Create"},
+            {MenuIcons.ExchangeSource, "EmailSourceImageLogo"},
+            {MenuIcons.DbSource, "MicrosoftSQLSource"},
             {MenuIcons.ServerSource, "System-Logo-Create"},
             {MenuIcons.Server, "System-Logo"},
             {MenuIcons.StartPage, "Fa-Home"}
@@ -151,6 +153,14 @@ namespace Warewolf.Studio.Core
             get
             {
                 return MenuIconsDictionary[MenuIcons.EmailSource];
+            }
+        }
+
+        public static string ExchangeSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.ExchangeSource];
             }
         }
 

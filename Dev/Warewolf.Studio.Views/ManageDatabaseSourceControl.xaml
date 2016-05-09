@@ -80,11 +80,13 @@
                 </i:Interaction.Behaviors>
             </ig:XamComboEditor>
             <TextBlock VerticalAlignment="Center"
+                       IsEnabled="{Binding Path=CanSelectServer}"
                        Grid.Row="1"
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
                        Text="{x:Static languages:Core.DatabaseSourceServerLabel}"/>
             <controls:AutoCompleteBox x:Name="ServerTextBox" 
+                                       IsEnabled="{Binding Path=CanSelectServer}"
                                       VerticalAlignment="Top"
                                       Grid.Row="1"
                                       Grid.Column="1" 
@@ -111,7 +113,8 @@
                         Grid.Row="2" 
                         Margin="0,-3,0,0"
                         Orientation="Horizontal" >
-                <RadioButton x:Name="WindowsRadioButton" 
+                <RadioButton x:Name="WindowsRadioButton"
+                             IsEnabled="{Binding Path=CanSelectWindows}"
                              ToolTip="{x:Static languages:Core.WindowsAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
@@ -123,6 +126,7 @@
                     </i:Interaction.Behaviors>
                 </RadioButton>
                 <RadioButton x:Name="UserRadioButton" 
+                             IsEnabled="{Binding Path=CanSelectUser}"
                              ToolTip="{x:Static languages:Core.UserAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 

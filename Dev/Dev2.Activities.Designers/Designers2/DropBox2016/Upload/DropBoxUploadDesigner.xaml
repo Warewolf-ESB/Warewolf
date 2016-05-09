@@ -13,7 +13,7 @@
                        Style="{DynamicResource ContentViewStyle}">
     
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource DropBoxLogoIcon}"/>
+        <Binding Source="{StaticResource DropboxIcon}"/>
     </sap:ActivityDesigner.Icon>
     <sap:ActivityDesigner.Resources>
         <ResourceDictionary>

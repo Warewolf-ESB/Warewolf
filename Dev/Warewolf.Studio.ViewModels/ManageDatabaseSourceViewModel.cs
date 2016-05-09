@@ -58,7 +58,47 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDisposed;
         string _path;
         string _emptyServerName;
+        private bool _canSelectWindows;
+        private bool _canSelectServer;
+        private bool _canSelectUser;
         public IComputerNameProvider Provider { get;  set; }
+
+        public bool CanSelectWindows
+        {
+            get
+            {
+                return _canSelectWindows;
+            }
+            set
+            {
+                _canSelectWindows = value;
+                OnPropertyChanged(()=>CanSelectWindows);
+            }
+        }
+        public bool CanSelectUser
+        {
+            get
+            {
+                return _canSelectUser;
+            }
+            set
+            {
+                _canSelectUser = value;
+                OnPropertyChanged(() => CanSelectUser);
+            }
+        }
+        public bool CanSelectServer
+        {
+            get
+            {
+                return _canSelectServer;
+            }
+            set
+            {
+                _canSelectServer = value;
+                OnPropertyChanged(() => CanSelectServer);
+            }
+        }
 
         private void PerformInitialise(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
         {
@@ -72,7 +112,14 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
             Testing = false;
-            Types = new List<NameValue> { new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() }, new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() } };
+            Types = new List<NameValue>
+            {
+                new NameValue { Name = "Microsoft SQL Server", Value = enSourceType.SqlDatabase.ToString() },
+                new NameValue { Name = "MySql Database", Value = enSourceType.MySqlDatabase.ToString() },
+                new NameValue { Name = "PostgreSql Database", Value = enSourceType.PostgreSql.ToString() },
+                new NameValue { Name = "Oracle Database", Value = enSourceType.Oracle.ToString() },
+                new NameValue { Name = "ODBC Database", Value = enSourceType.ODBC.ToString() }
+            };
             ServerType = Types[0];
             _testPassed = false;
             _testFailed = false;
@@ -475,6 +522,30 @@ namespace Warewolf.Studio.ViewModels
                 _serverType = value;
                 OnPropertyChanged(() => ServerType);
                 OnPropertyChanged(() => Header);
+                if (ServerType.Value == enSourceType.ODBC.ToString())
+                {
+                    CanSelectUser = false;
+                    CanSelectWindows = true;
+                    CanSelectServer = false;
+                    ServerName.Name = "Localhost";
+                    EmptyServerName = "Localhost";
+                    AuthenticationType = AuthenticationType.Windows;
+                }
+                else if (ServerType.Value == enSourceType.Oracle.ToString()) {
+                    CanSelectWindows = false;
+                    CanSelectServer = true;
+                    ServerName.Name = "";
+                    AuthenticationType = AuthenticationType.User;
+                    CanSelectUser = true;
+                }
+                else {
+                    CanSelectWindows = ServerType.Value != enSourceType.PostgreSql.ToString();
+                    CanSelectUser = ServerType.Value != enSourceType.PostgreSql.ToString();
+                    CanSelectServer = true;
+                    ServerName.Name = "";
+                }
+      
+
             }
         }
 

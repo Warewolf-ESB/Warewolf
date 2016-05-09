@@ -341,6 +341,7 @@
             </Button>
         </Grid>
     </ControlTemplate>
+   
     <ControlTemplate x:Key="NewOutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
         <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
             <Grid.ColumnDefinitions>
@@ -450,7 +451,6 @@
             </Grid>
         </Grid>
     </ControlTemplate>
-
 
     <ControlTemplate x:Key="NewGenerateOutputsDataTableTemplate" d:DataContext="{d:DesignInstance core1:ManageDatabaseServiceInputViewModel}">
         <Grid x:Name="OutputsGrid" >
@@ -821,7 +821,7 @@
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static languages:Core.WebInputDefaultValueHelp}" DataContext="{Binding}" />
+                                            <core:HelpSetter Text="{x:Static languages:Core.WebInputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Value"
                                                          SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
@@ -900,6 +900,7 @@
                             VerticalAlignment="Bottom"
                             Margin="{StaticResource ControlBorderRight}"
                             Command="{Binding OkCommand}"
+                            ToolTip="{x:Static languages:Core.ServiceTestDoneButtonTooltip}"
                             Width="46"
                             Content="Done">
                         <i:Interaction.Behaviors>
@@ -909,6 +910,7 @@
                     <Button HorizontalAlignment="Right" 
                             VerticalAlignment="Bottom"
                             Command="{Binding CloseCommand}"
+                            ToolTip="{x:Static languages:Core.ServiceTestCancelButtonTooltip}"
                             Width="46"
                             Content="Cancel">
                         <i:Interaction.Behaviors>

@@ -11,10 +11,14 @@
     <AssemblyName>Dev2.Common.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -37,7 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
       <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
@@ -45,6 +49,14 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices.Auth, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,6 +128,7 @@
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
     <Compile Include="Core\EmailServiceSourceDefinition.cs" />
+    <Compile Include="Core\ExchangeSourceDefinition.cs" />
     <Compile Include="Core\Globals.cs" />
     <Compile Include="Core\Graph\IDataBrowser.cs" />
     <Compile Include="Core\Graph\IDataSourceShape.cs" />
@@ -170,6 +183,7 @@
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
+    <Compile Include="Exchange\IExchangeService.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
     <Compile Include="FileListing.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
@@ -192,6 +206,9 @@
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
+    <Compile Include="IExchangeEmailSender.cs" />
+    <Compile Include="IExchangeServiceFactory.cs" />
+    <Compile Include="IExchangeServiceSource.cs" />
     <Compile Include="IExecutionToken.cs" />
     <Compile Include="IExplorerHelpDescriptorBuilder.cs" />
     <Compile Include="IExplorerItemNodeViewModel.cs" />
@@ -209,6 +226,7 @@
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageEmailSourceViewModel.cs" />
+    <Compile Include="IManageExchangeSourceViewModel.cs" />
     <Compile Include="IManageNewServerViewModel.cs" />
     <Compile Include="IManagePluginServiceInputViewModel.cs" />
     <Compile Include="IManagePluginSourceModel.cs" />
@@ -327,6 +345,9 @@
     <Compile Include="ToolBase\Database\IDatabaseServiceViewModel.cs" />
     <Compile Include="ToolBase\DotNet\IDotNetViewModel.cs" />
     <Compile Include="ToolBase\DotNet\INamespaceToolRegion.cs" />
+    <Compile Include="ToolBase\ExchangeEmail\IExchangeServiceModel.cs" />
+    <Compile Include="ToolBase\ExchangeEmail\IExchangeServiceViewModel.cs" />
+    <Compile Include="ToolBase\ExchangeEmail\IExchangeSource.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IErrorRegion.cs" />
