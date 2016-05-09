@@ -7,6 +7,7 @@
              xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:help2="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d"
              d:DesignWidth="250"
              d:DataContext="{d:DesignInstance local:PreviewViewModel}">
@@ -110,7 +111,7 @@
                                          HorizontalAlignment="Stretch"
                                          attachedProperties:FocusSetter.IsFocused="{Binding IsPreviewFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <i:Interaction.Behaviors>
-                                        <help2:HelpSetter Text="{x:Static help2:HelpTextResources.PreviewInputHelpText}"
+                                        <help2:HelpSetter Text="{x:Static languages:Core.PreviewInputHelpText}"
                                                           DataContext="{Binding DataContext, ElementName=UserControl}" />
                                     </i:Interaction.Behaviors>
                                 </TextBox>
