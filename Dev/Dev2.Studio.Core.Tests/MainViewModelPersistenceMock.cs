@@ -32,6 +32,7 @@ namespace Dev2.Core.Tests
             : base(new Mock<IEventAggregator>().Object, asyncWorker, environmentRepository, new VersionChecker(), createDesigners,
             studioResourceRepository: new Mock<IStudioResourceRepository>().Object)
         {
+          
         }
 
         public void TestClose()

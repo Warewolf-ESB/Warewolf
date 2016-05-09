@@ -18,8 +18,9 @@ namespace Dev2.Activities
 {
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
+        private string _result;
         public new abstract string DisplayName { get; set; }
-        
+
 
         #region Get Debug Inputs/Outputs
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
@@ -33,7 +34,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-          return _debugInputs;
+            return _debugInputs;
         }
 
         #endregion Get Inputs/Outputs
@@ -68,11 +69,11 @@ namespace Dev2.Activities
 
                 var colItr = new WarewolfListIterator();
                 var iteratorPropertyDictionary = new Dictionary<string, IWarewolfIterator>();
-                foreach(var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
+                foreach (var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
                 {
                     var attributes = (Inputs[])propertyInfo.GetCustomAttributes(typeof(Inputs), false);
                     var variableValue = propertyInfo.GetValue(this) as string;
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment, update));
                     }
@@ -80,33 +81,31 @@ namespace Dev2.Activities
                     colItr.AddVariableToIterateOn(dtItr);
                     iteratorPropertyDictionary.Add(propertyInfo.Name, dtItr);
                 }
-                while(colItr.HasMoreData())
+                while (colItr.HasMoreData())
                 {
                     var evaluatedValues = new Dictionary<string, string>();
-                    foreach(var dev2DataListEvaluateIterator in iteratorPropertyDictionary)
+                    foreach (var dev2DataListEvaluateIterator in iteratorPropertyDictionary)
                     {
                         var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
                         evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
                     }
-                    var result = PerformExecution(evaluatedValues);
-                    if(!string.IsNullOrEmpty(Result))
-                    {
-                        dataObject.Environment.Assign(Result, result, update);
-                    }
+                    _result = PerformExecution(evaluatedValues);
+                    AssignResult(dataObject, update);
                 }
 
                 allErrors.MergeErrors(errors);
 
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        AddDebugOutputItem(new DebugEvalResult(Result,"",dataObject.Environment, update));
+                        if (!string.IsNullOrEmpty(Result))
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                     }
                 }
                 allErrors.MergeErrors(errors);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error(string.Format("{0} Exception", DisplayName), ex);
                 allErrors.AddError(ex.Message);
@@ -115,21 +114,29 @@ namespace Dev2.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError(DisplayName, allErrors);
                     var errorList = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorList);
-                    if(DisplayName.ToUpper().Contains("Dropbox".ToUpper()))
+                    if (DisplayName.ToUpper().Contains("Dropbox".ToUpper()))
                         dataObject.Environment.Assign(Result, GlobalConstants.DropBoxFailure, update);
                     else
                         dataObject.Environment.Assign(Result, null, update);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+            }
+        }
+
+        protected virtual void AssignResult(IDSFDataObject dataObject, int update)
+        {
+            if (!string.IsNullOrEmpty(Result))
+            {
+                dataObject.Environment.Assign(Result, _result, update);
             }
         }
 
@@ -138,10 +145,10 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            foreach(var update in updates)
+            foreach (var update in updates)
             {
                 var propertyInfo = GetType().GetProperty(update.Item1);
-                if(propertyInfo != null)
+                if (propertyInfo != null)
                 {
                     propertyInfo.SetValue(this, update.Item2);
                 }
@@ -166,7 +173,7 @@ namespace Dev2.Activities
             foreach (var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
             {
                 var variableValue = propertyInfo.GetValue(this) as string;
-               result.AddRange(GetForEachItems(variableValue));
+                result.AddRange(GetForEachItems(variableValue));
 
             }
             return result;
@@ -176,7 +183,7 @@ namespace Dev2.Activities
         {
             return GetForEachItems(Result);
         }
-        
+
         #endregion
     }
 }

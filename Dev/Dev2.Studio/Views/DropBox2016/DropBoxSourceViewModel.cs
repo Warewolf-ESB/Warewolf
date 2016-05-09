@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
 using Caliburn.Micro;
-using Dev2.Common;
+using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Webs.Callbacks;
 using Dropbox.Api;
@@ -97,23 +97,5 @@ namespace Dev2.Views.DropBox2016
                 DropBoxHelper.CloseAndSave(this);
             }
         }
-    }
-
-    public interface IDropboxFactory
-    {
-        DropboxClient Create();
-    }
-
-    public class DropboxFactory : IDropboxFactory
-    {
-        #region Implementation of IDropboxFactory
-
-        public DropboxClient Create()
-        {
-            //return new DropboxClient(GlobalConstants.DropBoxApiKey);       
-            return new DropboxClient("31qf750f1vzffhu", new DropboxClientConfig(GlobalConstants.UserAgentString));
-        }
-
-        #endregion
     }
 }

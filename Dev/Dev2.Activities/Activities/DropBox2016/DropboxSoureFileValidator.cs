@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Activities.DropBox2016
 {
@@ -37,10 +38,6 @@ namespace Dev2.Activities.DropBox2016
             catch (SecurityException)
             {
                 throw new SecurityException("The caller does not have the required permissions");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 

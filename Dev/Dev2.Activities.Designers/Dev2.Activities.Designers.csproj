@@ -272,6 +272,16 @@
     <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml.cs">
+      <DependentUpon>DropBoxDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\DropBox2016\Download\DropBoxDownloadDesigner.xaml.cs">
       <DependentUpon>DropBoxDownloadDesigner.xaml</DependentUpon>
     </Compile>
@@ -280,6 +290,16 @@
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox2016\Download\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml.cs">
+      <DependentUpon>DropBoxFileListDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesignerViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\DropboxFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox2016\Upload\DropBoxUploadDesigner.xaml.cs">
@@ -1122,6 +1142,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Delete\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Delete\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\DropBox2016\Download\DropBoxDownloadDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1131,6 +1163,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\DropBox2016\Download\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\DropboxFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\DropboxFile\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

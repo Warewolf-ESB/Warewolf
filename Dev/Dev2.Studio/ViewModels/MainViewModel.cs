@@ -29,6 +29,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -40,6 +41,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Data.ServiceModel;
+using Dev2.Factories;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -77,6 +79,7 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Dev2.Views.Dialogs;
+using Dev2.Views.DropBox2016;
 using Dev2.Webs;
 using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
@@ -511,6 +514,7 @@ namespace Dev2.Studio.ViewModels
         {
             ActiveEnvironment = activeEnvironment;
             EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
+            SetActiveEnvironment(activeEnvironment.ID);
             ActiveEnvironment.AuthorizationServiceSet += (sender, args) => OnActiveEnvironmentChanged();
         }
 
@@ -1069,7 +1073,7 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(key);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-        
+
         public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var emailSourceViewModel = new ManageEmailSourceViewModel(new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource);
@@ -1229,7 +1233,7 @@ namespace Dev2.Studio.ViewModels
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IServerSource>(EventPublisher, new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()){SelectedGuid = key.ResourceID.Value}, PopupProvider, new ManageServerControl()));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IServerSource>(EventPublisher, new ManageNewServerViewModel(new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManageServerControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -1238,13 +1242,13 @@ namespace Dev2.Studio.ViewModels
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker){SelectedGuid = key.ResourceID.Value}, PopupProvider, new ManageDatabaseSourceControl()));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(EventPublisher, new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManageDatabaseSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         void AddNewWebSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
         {
-            var key =(WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IWebServiceSource>(EventPublisher, new ManageWebserviceSourceViewModel(new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManageWebserviceSourceControl()));
@@ -1334,27 +1338,27 @@ namespace Dev2.Studio.ViewModels
         }
 
         #region Dropbox 2016
-        Dev2.Views.DropBox2016.IDropboxFactory _dropbox2016Factory;
-        Func<Dev2.Views.DropBox2016.DropBoxViewWindow, Dev2.Views.DropBox2016.DropBoxSourceViewModel, bool?> _showDrop2016Action;
-        public Dev2.Views.DropBox2016.IDropboxFactory Dropbox2016Factory
+        IDropboxFactory _dropbox2016Factory;
+        Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDrop2016Action;
+        IDropboxFactory Dropbox2016Factory
         {
-            private get { return _dropbox2016Factory ?? new Dev2.Views.DropBox2016.DropboxFactory(); }
+             get { return _dropbox2016Factory ?? new DropboxFactory(); }
             set { _dropbox2016Factory = value; }
         }
 
         void SaveDropBox2016Source(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource, bool shouldAuthorise)
         {
 
-            Dev2.Views.DropBox2016.DropBoxViewWindow dropBoxViewWindow = new Dev2.Views.DropBox2016.DropBoxViewWindow();
-            Dev2.Views.DropBox2016.DropBoxHelper helper = new Dev2.Views.DropBox2016.DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
-            Dev2.Views.DropBox2016.DropBoxSourceViewModel vm = new Dev2.Views.DropBox2016.DropBoxSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
+            DropBoxViewWindow dropBoxViewWindow = new DropBoxViewWindow();
+            DropBoxHelper helper = new DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
+            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
             dropBoxViewWindow.DataContext = vm;
             var showDialog = ShowDropbox2016Action(dropBoxViewWindow, vm);
-            if(showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
+            if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
             {
                 ShowSaveDialog(vm.Resource, activeEnvironment, vm.Uid, vm.AccessToken, ActiveServer);
             }
-            else if(showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
+            else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
             {
 
                 // ReSharper disable once MaximumChainedReferences
@@ -1364,7 +1368,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public Func<Dev2.Views.DropBox2016.DropBoxViewWindow, Dev2.Views.DropBox2016.DropBoxSourceViewModel, bool?> ShowDropbox2016Action
+        public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> ShowDropbox2016Action
         {
             private get { return _showDrop2016Action ?? ((drop, vm) => drop.ShowDialog()); }
             set { _showDrop2016Action = value; }
@@ -1377,7 +1381,7 @@ namespace Dev2.Studio.ViewModels
             private get { return _showSaveDialog ?? SaveDialogHelper.ShowNewOAuthsourceSaveDialog; }
             set { _showSaveDialog = value; }
         }
-       
+
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
@@ -1685,6 +1689,7 @@ namespace Dev2.Studio.ViewModels
             {
                 item.DebugOutputViewModel.PropertyChanged += DebugOutputViewModelOnPropertyChanged;
             }
+            SetActiveEnvironment(item.Environment);
             if (ExplorerViewModel != null)
             {
                 //ExplorerViewModel.BringItemIntoView(item);

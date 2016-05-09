@@ -799,6 +799,21 @@ The file must be available on the local file system.</value>
      This is the name of the file that will be downloaded from DropBox.
      NOTE: The file path must use "/" to identify folders and not "\".</value>
   </data>
+  <data name="DropBoxDeleteFileNameTooltip" xml:space="preserve">
+    <value>DropBoxDeleteFileNameTooltip</value>
+  </data>
+  <data name="DropBoxDeleteFileNameHelpText" xml:space="preserve">
+    <value>DropBoxDeleteFileNameHelpText</value>
+  </data>
+  <data name="DropBoxFileListFileNameToolTip" xml:space="preserve">
+    <value>DropBoxFileListFileNameToolTip</value>
+  </data>
+  <data name="DropBoxFileListFileName" xml:space="preserve">
+    <value>DropBoxFileListFileName</value>
+  </data>
+  <data name="DropboxReadFolderToolTip" xml:space="preserve">
+    <value>DropboxReadFolderToolTip</value>
+  </data>
   <data name="DropboxSourceToolTip" xml:space="preserve">
     <value>Select the Dropbox source that the file operation will be performed on.</value>
   </data>
@@ -2434,6 +2449,18 @@ Allowed:
   <data name="FindToolTipRequireAllMatchesToBeTrue" xml:space="preserve">
     <value>Will only return rows that match all of the criteria if selected.</value>
   </data>
+  <data name="DecisionFalseArmTooltip" xml:space="preserve">
+    <value>The text on the flow arm for readability</value>
+  </data>
+  <data name="DecisionTrueArmTooltip" xml:space="preserve">
+    <value>The text on the flow arm for readability</value>
+  </data>
+  <data name="DecisionDisplayTextTooltip" xml:space="preserve">
+    <value>The text on the decision to help understand its purpose</value>
+  </data>
+
+
+
   <data name="FindToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the indexes of the successful matches.

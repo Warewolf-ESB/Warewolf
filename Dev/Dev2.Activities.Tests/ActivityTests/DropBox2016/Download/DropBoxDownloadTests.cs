@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         public void CreateNewDropboxUpload_GivenMissingToPath_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
-            var dropBoxDownLoad = new DropBoxDownLoad( "");
+            var dropBoxDownLoad = new DropBoxDownLoad("");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropBoxDownLoad);
             //---------------Execute Test ----------------------

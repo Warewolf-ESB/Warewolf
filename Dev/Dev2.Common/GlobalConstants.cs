@@ -558,8 +558,9 @@ WHERE   n.nspname = 'public'
                 return 0;
 #pragma warning restore 162
             }
-
         }
+
+        public static string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
         public static string DropBoxSucces = "Success";
