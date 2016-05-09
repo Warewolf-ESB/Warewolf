@@ -481,6 +481,7 @@ WHERE   n.nspname = 'public'
         public static int WorkflowWaitTime = 60;
         public static string DropBoxApiKey = "l6vuufdy2psuyif";
         public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
+        public static string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
         public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();

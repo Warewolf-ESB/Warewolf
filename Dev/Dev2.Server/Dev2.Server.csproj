@@ -370,9 +370,6 @@
   <ItemGroup>
     <Content Include="Main.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="WebServerResources.resx" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)Resources - Release" "$(TargetDir)"
