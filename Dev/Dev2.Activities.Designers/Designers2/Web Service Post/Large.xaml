@@ -14,7 +14,6 @@
                                xmlns:webServicePost="clr-namespace:Dev2.Activities.Designers2.Web_Service_Post"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                MinWidth="350"
                                Width="350"
                                MinHeight="533"
@@ -118,7 +117,7 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
+                                                    ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
@@ -153,7 +152,7 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
+                                                    ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>

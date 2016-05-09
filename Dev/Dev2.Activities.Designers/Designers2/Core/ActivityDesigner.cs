@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public ActivityDesignerTemplate ContentDesignerTemplate { get { return (ActivityDesignerTemplate)Content; } }
 
-        //DONT TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
+        //don't TAKE OUT... This has been done so that the drill down doesnt happen when you double click.
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
             ToggleView(e);

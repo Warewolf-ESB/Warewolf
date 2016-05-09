@@ -40,7 +40,7 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
             var formats = dataObject.GetFormats();
-            //If we didnt attach any data for the format - dont allow
+            //If we didnt attach any data for the format - don't allow
             if(!formats.Any())
             {
                 return false;

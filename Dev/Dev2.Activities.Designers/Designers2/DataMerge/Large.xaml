@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.DataMerge"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
@@ -95,7 +95,7 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
                                                     Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipInput}"
+                                                    ToolTip="{x:Static languages:Core.DataMergeToolTipInput}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
@@ -127,7 +127,7 @@
                                       Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipWithtype}">
+                                      ToolTip="{x:Static languages:Core.DataMergeToolTipWithtype}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding DataContext.MergeTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -165,7 +165,7 @@
                                                     WrapInBrackets="False"
                                                     IsEnabled="{Binding EnableAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipUsing}"
+                                                    ToolTip="{x:Static languages:Core.DataMergeToolTipUsing}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsAtFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
@@ -199,7 +199,7 @@
                                                     WrapInBrackets="False"
                                                     IsEnabled="{Binding EnablePadding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding Padding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipPadding}"
+                                                    ToolTip="{x:Static languages:Core.DataMergeToolTipPadding}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsPaddingFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
@@ -231,7 +231,7 @@
                                       Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.AlignmentTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=Alignment,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipAlignType}">
+                                      ToolTip="{x:Static languages:Core.DataMergeToolTipAlignType}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.DataMergeHelpAlignType}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
@@ -266,7 +266,7 @@
                                     WrapInBrackets="True"
                                     DefaultText="[[Result]]"
                                     Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipResult}"
+                                    ToolTip="{x:Static languages:Core.DataMergeToolTipResult}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>
