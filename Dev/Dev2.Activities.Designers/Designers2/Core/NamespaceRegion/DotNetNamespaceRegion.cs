@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
+using Warewolf.Studio.Core.Popup;
+using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 // ReSharper disable ExplicitCallerInfoArgument
@@ -111,11 +115,14 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
             catch (Exception e)
             {
-                Errors.Add(e.Message);
+                _errors.Add(e.Message);
+                Errors = _errors;
+
+
             }
             finally
             {
-                //OnSomethingChanged(this);
+                OnSomethingChanged(this);
             }
         }
 
@@ -124,6 +131,8 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             if (_source != null && _source.SelectedSource != null)
             {
                 Namespaces = _model.GetNameSpaces(_source.SelectedSource);
+
+
                 IsNamespaceEnabled = true;
                 IsEnabled = true;
             }
