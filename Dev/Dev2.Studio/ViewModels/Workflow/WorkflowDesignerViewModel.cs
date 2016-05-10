@@ -453,7 +453,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         // ReSharper restore ExcessiveIndentation
         // ReSharper restore MethodTooLong
         {
-            for (int i = 0; i < addedItems.Count(); i++)
+            for (int i = 0; i < addedItems.Count; i++)
             {
                 var mi = addedItems.ToList()[i];
 
@@ -653,7 +653,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
-            FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         protected void InitializeFlowDecision(ModelItem mi)
@@ -662,7 +663,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
-            FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         public void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
@@ -846,6 +848,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (activity != null)
                     {
                         workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(_expressionString))
+                        {
+                            workflowFields = GetDecisionElements(_expressionString, DataListSingleton.ActiveDataList);
+                        }
                     }
                 }
                 else
@@ -1572,7 +1581,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Adds the missing with no pop up and find unused data list items.
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
-        {           
+        {    
+               
         }
 
         /// <summary>
@@ -1825,6 +1835,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _firstWorkflowChange;
         IAsyncWorker _asyncWorker;
         private readonly IExternalProcessExecutor _executor;
+        private string _expressionString;
 
         /// <summary>
         /// Models the service model changed.
