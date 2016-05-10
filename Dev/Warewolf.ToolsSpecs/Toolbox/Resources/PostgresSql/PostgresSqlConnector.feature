@@ -7,7 +7,7 @@ Feature: PostgresSqlConnector
 Scenario: Creating PostgresSql Server Connector
 	Given I drag a PostgresSql Server database connector
 	When I select "DemoPostgres" as the source
-	When I select "getemployees" as the action
+	And I select "getemployees" as the action
 	Then Test Inputs appear
 	| Input     | Value | Empty is Null |
 	| fname		|       | false         |
