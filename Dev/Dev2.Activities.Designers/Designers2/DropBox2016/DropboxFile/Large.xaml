@@ -113,7 +113,7 @@
         <Grid Grid.Row="1"
               Grid.Column="0"
               Grid.ColumnSpan="2"
-              Margin="0,-1,0,0">
+              Margin="0,1,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -158,7 +158,8 @@
                        Text="Read" />
             <Grid Grid.Row="1"
                   Grid.Column="1"
-                  ToolTip="{x:Static languages:Core.DropboxReadFolderToolTip}">
+                  ToolTip="{x:Static languages:Core.DropboxReadFolderToolTip}"
+                  Margin="0,1,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
