@@ -131,21 +131,33 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="If it exists" Margin="0,-1,0,0" />
-        <CheckBox Grid.Column="1"
-                  Grid.Row="2"
-                  Content="Overwrite"
-                  Margin="-6,-1,0,0"
-                  IsChecked="{Binding Path=ModelItem.OverwriteFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static languages:Core.CreateToolTipForceOverWrite}">
-            <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static languages:Core.CreateHelpForceOverWrite}" DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.OverwriteFile"
-                                     SourcePropertyValue="{Binding  ModelItem.OverwriteFile, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-        </CheckBox>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Write Mode" />
+        <Grid Grid.Column="1" Grid.Row="2" Margin="0,-3,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <RadioButton GroupName="WriteMode" 
+                         Grid.Column="0" 
+                         IsChecked="{Binding Path=OverWriteMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                         Name="CheckBoxOverwriteMode" 
+                         FlowDirection="LeftToRight" 
+                         Content="Overwrite">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.DropboxOperationToolTip}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </RadioButton>
+            <RadioButton GroupName="WriteMode" 
+                         Grid.Column="1" 
+                         IsChecked="{Binding Path=AddMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                         Name="CheckBoxUpdateMode" 
+                         FlowDirection="LeftToRight" 
+                         Content="Add">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:Core.DropboxOperationToolTip}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </RadioButton>
+        </Grid>
         <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,-1,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
