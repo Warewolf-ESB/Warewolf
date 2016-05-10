@@ -28,8 +28,14 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             _validator.Validate();
             _writeMode = writeMode;
-            if (!dropboxPath.StartsWith(@"/"))
+            if (!string.IsNullOrWhiteSpace(dropboxPath) && !dropboxPath.StartsWith(@"/"))
+            {
                 dropboxPath = string.Concat(@"/", dropboxPath);
+            }
+            else
+            {
+                dropboxPath = dropboxPath.Trim();
+            }
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
             InitializeCertPinning();

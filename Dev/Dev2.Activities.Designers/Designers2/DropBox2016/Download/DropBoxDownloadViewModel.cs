@@ -30,7 +30,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         private string _toPath;
         private string _result;
         private string _fromPath;
-        private bool _overwriteFile;
+        private bool _overWriteMode;
+        private bool _addMode;
 
         [ExcludeFromCodeCoverage]
         public DropBoxDownloadViewModel(ModelItem modelItem)
@@ -120,17 +121,32 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
                 OnPropertyChanged();
             }
         }
-        public bool OverwriteFile
+
+        public bool OverWriteMode
         {
             get
             {
-                _overwriteFile = Convert.ToBoolean(GetModelPropertyName());
-                return _overwriteFile;
+                _overWriteMode = Convert.ToBoolean(GetModelPropertyName());
+                return _overWriteMode;
             }
             set
             {
-                _overwriteFile = value;
-                SetModelItemProperty(_overwriteFile);
+                _overWriteMode = value;
+                SetModelItemProperty(_overWriteMode);
+                OnPropertyChanged();
+            }
+        }
+        public bool AddMode
+        {
+            get
+            {
+                _addMode = Convert.ToBoolean(GetModelPropertyName());
+                return _addMode;
+            }
+            set
+            {
+                _addMode = value;
+                SetModelItemProperty(_addMode);
                 OnPropertyChanged();
             }
         }

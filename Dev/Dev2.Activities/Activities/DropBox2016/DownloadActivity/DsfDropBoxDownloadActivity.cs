@@ -20,14 +20,14 @@ using Warewolf.Core;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
-    [ToolDescriptorInfo("Dropbox", "Dropbox Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDownloadActivity : DsfBaseActivity
     {
         public DsfDropBoxDownloadActivity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = "Download from Dropbox";
-            OverwriteFile = false;
+            OverWriteMode = true;
             // ReSharper disable once VirtualMemberCallInContructor
             DropboxFile = new FileWrapper();
         }
@@ -37,6 +37,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         protected IDownloadResponse<FileMetadata> Response;
         protected Exception Exception;
         private ILocalPathManager _localPathManager;
+        private bool _addMode;
+        private bool _overWriteMode;
 
         public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
         {
@@ -68,7 +70,31 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         [FindMissing]
         public string ToPath { get; set; }
 
-        public bool OverwriteFile { get; set; }
+        public bool OverWriteMode
+        {
+            get
+            {
+                return _overWriteMode;
+            }
+            set
+            {
+                _addMode = !value;
+                _overWriteMode = value;
+            }
+        }
+
+        public bool AddMode
+        {
+            get
+            {
+                return _addMode;
+            }
+            set
+            {
+                _overWriteMode = !value;
+                _addMode = value;
+            }
+        }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Local File Path")]
@@ -134,7 +160,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                     LocalPathManager = new LocalPathManager(evaluatedValues["FromPath"]);
                     var validFolder = LocalPathManager.GetFullFileName();
                     var fileExist = LocalPathManager.FileExist();
-                    if (fileExist && !OverwriteFile)
+                    if (fileExist && !OverWriteMode)
                         throw new Exception("Destination File already exists and overwrite is set to false");
                     DropboxFile.WriteAllBytes(validFolder, bytes);
                 }

@@ -5,7 +5,6 @@
 # Incorrect Xml syntax entered
 # Incorrect Json syntax entered
 
-@ignore
 Scenario: Open Debug window to add inputs
 	Given I a new workflow
 	And I have variable "[[a]]" set as "Input"

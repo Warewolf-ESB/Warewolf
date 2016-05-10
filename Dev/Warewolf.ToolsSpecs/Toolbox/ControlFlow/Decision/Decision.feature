@@ -627,23 +627,23 @@ Scenario: decide if variable [[A]] Not XML (False)
 	|         |
 	| NO     |
 
-#Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
-#	Given a decision variable "[[A]]" value "30"	
-#	And a decision variable "[[B]]" value "20"
-#	And a decision variable "[[C]]" value "40"	
-#	And check if "[[A]]" "IsBetween" "[[B]]" and "[[C]]"
-#	When the decision tool is executed
-#	Then the decision result should be "True"
-#	Then the execution has "NO" error
-#	Then the debug inputs as  
-#	|            | Statement | Require all decisions to be true |
-#	| [[A]] = 30 |           |                                  |
-#	| [[B]] = 20 |           |                                  |
-#	| [[C]] = 40 |           |                                  |
-#	|            | String    | YES                              |
-#	And the debug output as 
-#	|         |
-#	| YES    |
+Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
+	Given a decision variable "[[A]]" value "30"	
+	And a decision variable "[[B]]" value "20"
+	And a decision variable "[[C]]" value "40"	
+	And check if "[[A]]" "IsBetween" "[[B]]" and "[[C]]"
+	When the decision tool is executed
+	Then the decision result should be "True"
+	Then the execution has "NO" error
+	Then the debug inputs as  
+	|            | Statement | Require all decisions to be true |
+	| [[A]] = 30 |           |                                  |
+	| [[B]] = 20 |           |                                  |
+	| [[C]] = 40 |           |                                  |
+	|            | String    | YES                              |
+	And the debug output as 
+	|         |
+	| YES    |
 
 Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (True)
 	Given a decision variable "[[A]]" value "20"	
@@ -1330,7 +1330,7 @@ Scenario: validate that a variable is not Null positive
        |     |
        | YES |
 
-@Ignore
+
 Scenario: validate that a variable is Blank positive
 	Given a decision variable "[[B]]" value ""
 	And decide if "[[B]]" "IsEqual" ""
@@ -1343,7 +1343,7 @@ Scenario: validate that a variable is Blank positive
        |     |
        | YES |
 
-@Ignore
+
 Scenario: validate that a variable is Blank OR NULL positive 1
 	Given a decision variable "[[B]]" value ""
 	And decide if "[[B]]" "IsEqual" ""
@@ -1358,7 +1358,7 @@ Scenario: validate that a variable is Blank OR NULL positive 1
        |     |
        | YES |
 
-@Ignore
+
 Scenario: validate that a variable is Blank OR NULL positive 2
 	Given decide if "[[B]]" "IsEqual" ""
 	And decide if "[[B]]" "IsNull"
@@ -1373,9 +1373,3 @@ Scenario: validate that a variable is Blank OR NULL positive 2
        | YES |
 
 
-Scenario: Null throws an error
-	Given is "[[A]]" "IsEqual" "123   234"	
-	When the decision tool is executed
-	##Then the decision result should be "False"
-	Then the execution has "An" error
-	
