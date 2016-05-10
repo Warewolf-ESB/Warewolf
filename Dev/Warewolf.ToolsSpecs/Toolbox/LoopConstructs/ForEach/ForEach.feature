@@ -412,7 +412,7 @@ Scenario: Execute a foreach over an activity with number of executions equals 8
 	|                 | Number |
 	| No. of Executes | 8      |
 
-Scenario Outline: Execute a foreach over a tool 
+Scenario Outline: Execute a foreach over a tool
 	Given There is a recordset in the datalist with this shape
 	| rs             | value |
 	| [[rs().field]] | 1     |
