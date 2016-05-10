@@ -74,7 +74,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
-    <Compile Include="SchedulerSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

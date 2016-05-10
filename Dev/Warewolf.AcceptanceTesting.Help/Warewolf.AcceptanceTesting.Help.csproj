@@ -113,11 +113,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Help.feature</DependentUpon>
     </Compile>
-    <Compile Include="HelpSteps.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="UnityBootstrapperForHelpTesting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

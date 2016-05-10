@@ -188,7 +188,7 @@ Scenario: Editing saved DB Source Remembers credentials
 	Then "Save" is "Enabled"
 
 @DbSource
-Scenario: Cancel Test
+Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRGENDEV"
    And "Save" is "Disabled"
