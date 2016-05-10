@@ -259,7 +259,6 @@ Examples:
 	| 4  | TITLE CASE |
 
 
-#Bug 12178
 Scenario Outline: Error messages when convert a Invalid variable
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
 	And I convert a variable '<Variable>' to '<To>'	
@@ -300,20 +299,6 @@ Examples:
 	| 26 | [[rec().a]]&[[a]]                         | UPPER | One variable only allowed in the output field                                                                                                                                                                                                           |
 	| 27 | a[[rec([[[[b]]]]).a]]@                    | UPPER | Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)                                                                                                                                                                                     |
 	| 28 | [[rec()                                   | UPPER | Recordset variable that needs a field name(s)                                                                                                                                                                                                           |
-
-
-
-#Scenario: Convert a invalid variable valid text
-#	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
-#	And I convert a variable "[rec().a]]=]]" to "UPPER"		
-#	When the case conversion tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| # | Convert       | To    |
-#	| 1 | [rec().a]]=]] | UPPER |
-#	And the debug output as  
-#	| # |               |
-#	| 1 | [rec().a]]=]] |
 
 
 	Scenario: Convert a Variable That Does Not Exist

@@ -918,16 +918,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ErrorMessagesWhenConvertAInvalidVariable(string no, string variable, string to, string error, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Error messages when convert a Invalid variable", exampleTags);
-#line 263
+#line 262
 this.ScenarioSetup(scenarioInfo);
-#line 264
+#line 263
  testRunner.Given("I have a case convert variable \"[[my().sentenct]]\" with a value of \"Warewolf Rock" +
                     "s\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 265
+#line 264
  testRunner.And(string.Format("I convert a variable \'{0}\' to \'{1}\'", variable, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 266
+#line 265
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 267
+#line 266
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
@@ -938,13 +938,13 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         string.Format("{0} =", variable),
                         string.Format("{0}", to)});
-#line 268
+#line 267
  testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 271
+#line 270
  testRunner.And("the debug output as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1326,13 +1326,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAVariableThatDoesNotExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable That Does Not Exist", ((string[])(null)));
-#line 319
+#line 304
  this.ScenarioSetup(scenarioInfo);
-#line 320
+#line 305
  testRunner.Given("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 321
+#line 306
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 322
+#line 307
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1344,15 +1344,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAVariableThatIsNULL()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable That is NULL", ((string[])(null)));
-#line 324
+#line 309
 this.ScenarioSetup(scenarioInfo);
-#line 325
+#line 310
  testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"Null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 326
+#line 311
  testRunner.And("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
+#line 312
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 328
+#line 313
  testRunner.Then("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1367,17 +1367,17 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence to uppercase using complex types", @__tags);
-#line 332
+#line 317
 this.ScenarioSetup(scenarioInfo);
-#line 333
+#line 318
  testRunner.Given(string.Format("I have a case convert variable \'{0}\' with a value of \'{1}\'", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 334
+#line 319
  testRunner.And(string.Format("I convert a variable \'{0}\' to \'{1}\'", variable, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 335
+#line 320
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 336
+#line 321
  testRunner.Then("the sentence will be \'<result>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 337
+#line 322
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1388,7 +1388,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         string.Format("{0} = {1}", variable, value),
                         string.Format("{0}", to)});
-#line 338
+#line 323
  testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1397,7 +1397,7 @@ this.ScenarioSetup(scenarioInfo);
             table42.AddRow(new string[] {
                         "1",
                         string.Format("{0} = <results>", variable)});
-#line 341
+#line 326
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();

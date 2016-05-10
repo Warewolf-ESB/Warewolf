@@ -14,7 +14,6 @@
 #6 Short cut Keys
 
 @TabControl
-@ignore
 Scenario: 1 Change Workflow And Close dialog Options
 	Given I have a New Workflow open
 	Then "New Workflow 1" tab is opened
