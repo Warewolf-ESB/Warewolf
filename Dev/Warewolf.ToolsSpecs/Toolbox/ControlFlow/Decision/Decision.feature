@@ -1312,8 +1312,8 @@ Scenario: validate that a variable is Null Positive
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Then the debug inputs as  
-       |       | Statement | Require all decisions to be true |
-       | [[A]] = [[A]]  | String    | YES                              |
+       |         | Statement | Require all decisions to be true |
+       | [[A]] = | String    | YES                              |
     And the debug output as 
        |     |
        | YES |
@@ -1352,8 +1352,8 @@ Scenario: validate that a variable is Blank OR NULL positive 1
 	When the decision tool is executed
 	Then the execution has "NO" error
 	 Then the debug inputs as  
-       |            | Statement | Require all decisions to be true |
-       | [[B]] =  | String    | YES                              |
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | NO                               |
     And the debug output as 
        |     |
        | YES |
@@ -1366,8 +1366,8 @@ Scenario: validate that a variable is Blank OR NULL positive 2
 	When the decision tool is executed
 	Then the execution has "NO" error
 	 Then the debug inputs as  
-       |            | Statement | Require all decisions to be true |
-       | [[B]] =  | String    | YES                              |
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | NO                               |
     And the debug output as 
        |     |
        | YES |
