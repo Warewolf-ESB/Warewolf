@@ -345,23 +345,6 @@ Scenario: Merge a variable inside the invalid varaible
 	|              |
 	| [[result]] = |
 
-Scenario: Merge a scalar to a scalar using merge type none 2
-	Given a merge variable "[[a]]" equal to "Warewolf " 
-	And a merge variable "[[b]]" equal to "Rocks"		
-	And a merge variable "[[c]]" equal to "10"		
-	And an Input "[[a]]" and merge type "None" and string at as "" and Padding "[[c]]" and Alignment "Left"	
-	And an Input "[[b]]" and merge type "None" and string at as "" and Padding "[[c]]" and Alignment "Left"
-	When the data merge tool is executed
-	Then the merged result is "Warewolf Rocks"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| # |                  | With | Using | Pad        | Align |
-	| 1 | [[a]] = Warewolf | None | ""    | [[c]] =10 | Left  |
-	| 2 | [[b]] = Rocks    | None | ""    | [[c]] =10 | Left  |
-	And the debug output as 
-	|                              |
-	| [[result]] = Warewolf Rocks  |
-
 Scenario Outline: Merge a variable that does not exist
 	Given an Input "[[a]]" and merge type "<Type>" and string at as "[[b]]" and Padding "[[c]]" and Alignment "Left"
 	When the data merge tool is executed
