@@ -292,7 +292,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="SaveDialogSteps.cs" />
-    <Compile Include="UnityBootstrapperForSaveDialogTesting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

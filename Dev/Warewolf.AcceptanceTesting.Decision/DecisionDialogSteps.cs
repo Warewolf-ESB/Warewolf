@@ -34,58 +34,14 @@ namespace Warewolf.AcceptanceTesting.Decision
             Utils.ShowTheViewForTesting(large);
         }
 
-        [Given(@"I have a workflow ""(.*)""")]
-        public void GivenIHaveAWorkflow(string p0)
-        {
-
-        }
-       
-
-
-        [Given(@"drop a ""(.*)"" tool onto the design surface")]
-        public void GivenDropAToolOntoTheDesignSurface(string p0)
-        {
-            
-        }
-        void ConfigureDecisionExpression(ModelItem mi)
-        {
-
-        }
-
         static ModelItem CreateModelItem(IEnumerable<DecisionTO> items, string displayName = "Find")
         {
-
             var dec = new DsfDecision();
             var modelItem = ModelItemUtils.CreateModelItem(dec);
-
-
-
             FeatureContext.Current["decision"] = dec;
             modelItem.SetProperty("DisplayName", displayName);
-
             return modelItem;
         }
-        [Given(@"the decision tool window is opened")]
-        public void GivenTheDecisionToolWindowIsOpened()
-        {
-
-          
-        }
-
-        [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
-        public void GivenADecisionVariableValue(string p0, string p1)
-        {
-            
-        }
-
-        //[Given(@"a decision variable ""(.*)"" operation ""(.*)"" right  ""(.*)""")]
-        //public void GivenADecisionVariableOperationRight(string left, string option, int right)
-        //{
-        //    var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
-        //    ((DecisionTO)vm.Tos[0]).MatchValue = p0;
-        //    ((DecisionTO)vm.Tos[0]).From = p1;
-        //    ((DecisionTO)vm.Tos[0]).To = p2;
-        //}
 
         [Given(@"a decision variable ""(.*)"" operation ""(.*)"" right  ""(.*)"" position ""(.*)""")]
         public void GivenADecisionVariableOperationRightPosition(string left, string match, string right, int pos)
@@ -101,27 +57,22 @@ namespace Warewolf.AcceptanceTesting.Decision
         public void WhenIChangeDecisionVariablePositionTo(int pos, string match)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
-
             ((DecisionTO)vm.Tos[pos]).MatchValue = match;
-
         }
-
 
         [Given(@"is ""(.*)"" ""(.*)"" ""(.*)""")]
         public void GivenIs(string left, string op, string right)
         {
            var tos = (List<DecisionTO>) ScenarioContext.Current["Tos"];
            tos.Add(new DecisionTO(left,op,right,tos.Count));
-        
         }
 
         [Given(@"""(.*)"" is selected")]
         public void GivenIsSelected(string name)
         {
             var view = FeatureContext.Current["view"] as Large;
-             view.DoneAction();
+            view.DoneAction();
         }
-
 
         [Given(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string p0, string p1)
@@ -143,71 +94,11 @@ namespace Warewolf.AcceptanceTesting.Decision
             return false;
         }
 
-        [Given(@"Match Type equals ""(.*)""")]
-        public void GivenMatchTypeEquals(string p0)
-        {
-         
-        }
-
-        [Given(@"I right click to view the context menu")]
-        public void GivenIRightClickToViewTheContextMenu()
-        {
-
-        }
-
-        [Given(@"I select ""(.*)""")]
-        public void GivenISelect(string p0)
-        {
-           
-        }
-
-        [Given(@"""(.*)"" ""(.*)"" ""(.*)"" is removed from the decision")]
-        public void GivenIsRemovedFromTheDecision(string p0, string p1, string p2)
-        {
-
-        }
-
-        [Given(@"the decision has ""(.*)"" error")]
-        public void GivenTheDecisionHasError(string p0)
-        {
-
-        }
-
-        [Given(@"the decision tool has ""(.*)"" Error")]
-        public void GivenTheDecisionToolHasError(string p0)
-        {
-
-        }
-
-        [Given(@"Error message ""(.*)""\[\[A]]}"" is visible")]
-        public void GivenErrorMessageAIsVisible(string p0)
-        {
-    
-        }
-
-        [Given(@"I select the ""(.*)"" menu")]
-        public void GivenISelectTheMenu(string p0)
-        {
-       
-        }
-
         [Given(@"Match Type has '(.*)' visible")]
         public void GivenMatchTypeHasVisible(string option)
         {
             var view = (Large)FeatureContext.Current["view"];
             view.VerifyOption(option);
-        }
-
-        [When(@"the decision tool is executed")]
-        public void WhenTheDecisionToolIsExecuted()
-        {
-  
-        }
-
-        [When(@"I change decision variable ""(.*)"" to ""(.*)""")]
-        public void WhenIChangeDecisionVariableTo(string p0, int p1)
-        {
-        
         }
 
         [When(@"""(.*)"" is selected")]
@@ -218,13 +109,6 @@ namespace Warewolf.AcceptanceTesting.Decision
                 var view = (Large)FeatureContext.Current["view"];
                 view.ClickDone();
             }
-        }
-
-        [Then(@"the Decision window is opened")]
-        [Given(@"the Decision window is opened")]
-        public void ThenTheDecisionWindowIsOpened()
-        {
-
         }
 
         [Then(@"'(.*)' fields are ""(.*)""")]
@@ -256,9 +140,7 @@ namespace Warewolf.AcceptanceTesting.Decision
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
             ((DecisionTO)vm.Tos[0]).SearchType = p0;
-
         }
-
 
         [Then(@"the inputs are '(.*)'")]
         public void ThenTheInputsAre(string p0)
@@ -289,84 +171,36 @@ namespace Warewolf.AcceptanceTesting.Decision
             }
         }
 
-
-
-        [Then(@"""(.*)"" is visible")]
-        public void ThenIsVisible(string p0)
-        {
-            
-        }
-
-        [Then(@"a decision variable '(.*)' value '(.*)'")]
-        public void ThenADecisionVariableValue(string variable, string value2)
-        {
-          
-        }
-
-        [Then(@"the decision variables '(.*)' value '(.*)' and variable match '(.*)' value '(.*)' and variable match'(.*)' value '(.*)'")]
-        public void ThenTheDecisionVariablesValueAndVariableMatchValueAndVariableMatchValue(string match, string p1, string p2, string p3, string p4, string p5)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-
-        [Then(@"check if '(.*)' ""(.*)"" '(.*)'")]
-        public void ThenCheckIf(string p0, string p1, string p2)
-        {
-        
-        }
-
-
-
-        [Then(@"the Decision tool window is closed")]
-        public void ThenTheDecisionToolWindowIsClosed()
-        {
-            //not required but reads nicely
-    
-        }
-
         [Then(@"""(.*)"" is visible in tool")]
         public void ThenIsVisibleInTool(string var)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
-             var view = (Large)FeatureContext.Current["view"];
+            var view = (Large)FeatureContext.Current["view"];
             string disp = view.GetDisplayName();
             Assert.IsTrue(disp.Contains(var));
-
-        }
-
-        [Then(@"I open the Decision tool window")]
-        public void ThenIOpenTheDecisionToolWindow()
-        {
-        
         }
 
         [Then(@"decision variable ""(.*)"" is not visible")]
         public void ThenDecisionVariableIsNotVisible(string var)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
-    
             Assert.IsFalse(vm.Tos.Any(a => ((DecisionTO)a).SearchCriteria.Contains(var)));
         }
+
         [When(@"I select the ""(.*)"" button at position (.*)")]
         public void WhenISelectTheButtonAtPosition(string p0, int p1)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
             Assert.IsTrue(((DecisionTO)vm.Tos[p1]).CanDelete(((DecisionTO)vm.Tos[p1])));
             vm.DeleteRow((DecisionTO)vm.Tos[p1]);
-            
-
         }
 
         [Then(@"""(.*)"" is removed from the decision")]
         public void ThenIsRemovedFromTheDecision(string var)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
-
             Assert.IsFalse(vm.Tos.Any(a=> ((DecisionTO)a).SearchCriteria.Contains(var)));
         }
-
-
 
         [Then(@"""(.*)"" is visible in Match field")]
         public void ThenIsVisibleInMatchField(string var)
@@ -374,12 +208,6 @@ namespace Warewolf.AcceptanceTesting.Decision
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
             vm.GetExpressionText();
             Assert.IsTrue(vm.ExpressionText.Contains(var));
-        }
-
-        [Then(@"""(.*)"" is ""(.*)""")]
-        public void ThenIs(string p0, string p1)
-        {
-
         }
     }
 }

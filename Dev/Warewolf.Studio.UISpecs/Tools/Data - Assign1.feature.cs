@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer.Tools
+namespace Warewolf.Studio.UISpecs.Tools
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Date - Assign")))
             {
-                Warewolf.AcceptanceTesting.Explorer.Tools.Date_AssignFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.Date_AssignFeature.FeatureSetup(null);
             }
         }
         
@@ -84,23 +84,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.Given("I have Assign small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table11.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "1",
                         "",
                         "=",
                         ""});
-            table11.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "2",
                         "",
                         "=",
                         ""});
 #line 11
- testRunner.And("Assign Small view grid as", ((string)(null)), table11, "And ");
+ testRunner.And("Assign Small view grid as", ((string)(null)), table1, "And ");
 #line 15
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
@@ -108,23 +108,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 17
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table12.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "1",
                         "",
                         "=",
                         ""});
-            table12.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "2",
                         "",
                         "=",
                         ""});
 #line 18
- testRunner.And("Assign Larege view grid as", ((string)(null)), table12, "And ");
+ testRunner.And("Assign Larege view grid as", ((string)(null)), table2, "And ");
 #line 22
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
@@ -148,28 +148,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.Given("I have Assign small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table13.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test"});
-            table13.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "Record"});
-            table13.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 29
- testRunner.When("I pass variables in Small view grid as", ((string)(null)), table13, "When ");
+ testRunner.When("I pass variables in Small view grid as", ((string)(null)), table3, "When ");
 #line 34
  testRunner.Then("Scroll bar is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
@@ -177,28 +177,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 36
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table14.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test"});
-            table14.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "Record"});
-            table14.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 37
- testRunner.And("Assign Larege view grid as", ((string)(null)), table14, "And ");
+ testRunner.And("Assign Larege view grid as", ((string)(null)), table4, "And ");
 #line 42
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
@@ -244,23 +244,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 55
  testRunner.Given("I have Assign small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table15.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test  warewolf at dev2 for Business"});
-            table15.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "2",
                         "",
                         "=",
                         ""});
 #line 56
- testRunner.When("I pass variables in Small view grid as", ((string)(null)), table15, "When ");
+ testRunner.When("I pass variables in Small view grid as", ((string)(null)), table5, "When ");
 #line 60
  testRunner.Then("scroll bar is appeard at \"Row1\" NewValue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 61
@@ -282,25 +282,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 66
  testRunner.Given("I have Assign Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table16.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test  warewolf at dev2 by using Acceptance test is a wonderfull experience.  So h" +
                             "ere I am actually tesrting whether scroll bar is appearing for this long text or" +
                             " not"});
-            table16.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "2",
                         "",
                         "=",
                         ""});
 #line 67
- testRunner.When("I pass variables in Large view grid as", ((string)(null)), table16, "When ");
+ testRunner.When("I pass variables in Large view grid as", ((string)(null)), table6, "When ");
 #line 71
  testRunner.Then("scroll bar is appeard at \"Row1\" NewValue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 72
@@ -322,23 +322,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 78
  testRunner.Given("I have Assign small view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table17.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "It’s"});
-            table17.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "2",
                         "",
                         "=",
                         ""});
 #line 79
-    testRunner.When("I pass variables in Small view grid as", ((string)(null)), table17, "When ");
+    testRunner.When("I pass variables in Small view grid as", ((string)(null)), table7, "When ");
 #line 83
  testRunner.Then("\"Invalid text\" popup is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -358,23 +358,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 88
  testRunner.Given("I have Assign Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table18.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test\twarewolf\tat dev2"});
-            table18.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "2",
                         "",
                         "=",
                         ""});
 #line 89
- testRunner.When("I pass variables in Large view grid as", ((string)(null)), table18, "When ");
+ testRunner.When("I pass variables in Large view grid as", ((string)(null)), table8, "When ");
 #line 93
  testRunner.Then("\"Tabs Pasted\" popup is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -398,28 +398,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 99
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table19.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "1",
                         "[[a$]]",
                         "=",
                         "Test"});
-            table19.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "Record"});
-            table19.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 100
- testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table19, "And ");
+ testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table9, "And ");
 #line 105
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
@@ -431,28 +431,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 109
  testRunner.And("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table20.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test"});
-            table20.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "Record"});
-            table20.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 110
- testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table20, "When ");
+ testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table10, "When ");
 #line 115
  testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
@@ -480,28 +480,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 123
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table21.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test"});
-            table21.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "2",
                         "[[rec()..a]]",
                         "=",
                         "Record"});
-            table21.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 124
- testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table21, "And ");
+ testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table11, "And ");
 #line 129
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
@@ -513,28 +513,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 133
  testRunner.And("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table22.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test"});
-            table22.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "Record"});
-            table22.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 134
- testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table22, "When ");
+ testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table12, "When ");
 #line 139
  testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
@@ -562,28 +562,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 147
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table23.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "1",
                         "[[a$]]",
                         "=",
                         "Test[[b*]]"});
-            table23.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "Record"});
-            table23.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 148
- testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table23, "And ");
+ testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table13, "And ");
 #line 153
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
@@ -595,28 +595,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 157
  testRunner.And("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table24.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "Test[[b]]"});
-            table24.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "Record"});
-            table24.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 158
- testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table24, "When ");
+ testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table14, "When ");
 #line 163
  testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 164
@@ -644,33 +644,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 171
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table25.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "1",
                         "[[a$]]",
                         "=",
                         "1"});
-            table25.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "2"});
-            table25.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "3",
                         "[[total]]",
                         "=",
                         "=[[a]]+[[rec().a.]]"});
-            table25.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "4",
                         "",
                         "=",
                         ""});
 #line 172
- testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table25, "And ");
+ testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table15, "And ");
 #line 178
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
@@ -682,33 +682,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 182
  testRunner.And("Validation message is thrown \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table26.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "1",
                         "[[a$]]",
                         "=",
                         "1"});
-            table26.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "2"});
-            table26.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "3",
                         "[[total]]",
                         "=",
                         "=[[a]]+[[rec().a]]"});
-            table26.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "4",
                         "",
                         "=",
                         ""});
 #line 183
- testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table26, "When ");
+ testRunner.When("I Edit variables in Assign Larege view grid as", ((string)(null)), table16, "When ");
 #line 189
  testRunner.And("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
@@ -736,70 +736,70 @@ this.ScenarioSetup(scenarioInfo);
 #line 198
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table27.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "1"});
-            table27.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "2"});
-            table27.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "3",
                         "[[total]]",
                         "=",
                         "87"});
-            table27.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "4",
                         "",
                         "=",
                         ""});
 #line 199
- testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table27, "And ");
+ testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table17, "And ");
 #line 205
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 206
  testRunner.When("I Insert Row at \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table28.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "1"});
-            table28.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "2"});
-            table28.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
-            table28.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "4",
                         "[[total]]",
                         "=",
                         "87"});
-            table28.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "5",
                         "",
                         "=",
                         ""});
 #line 207
- testRunner.Then("Assign Larege view grid as", ((string)(null)), table28, "Then ");
+ testRunner.Then("Assign Larege view grid as", ((string)(null)), table18, "Then ");
 #line 214
  testRunner.And("\"Row 3\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -823,60 +823,60 @@ this.ScenarioSetup(scenarioInfo);
 #line 220
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table29.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "1"});
-            table29.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "2",
                         "[[rec().a]]",
                         "=",
                         "2"});
-            table29.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "3",
                         "[[total]]",
                         "=",
                         "87"});
-            table29.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "4",
                         "",
                         "=",
                         ""});
 #line 221
- testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table29, "And ");
+ testRunner.And("I pass variables in Assign Larege view grid as", ((string)(null)), table19, "And ");
 #line 227
  testRunner.And("Scroll bar is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 228
  testRunner.When("I Delete \"Row 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table30.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         "1"});
-            table30.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "2",
                         "[[total]]",
                         "=",
                         "87"});
-            table30.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "3",
                         "",
                         "=",
                         ""});
 #line 229
- testRunner.Then("Assign Larege view grid as", ((string)(null)), table30, "Then ");
+ testRunner.Then("Assign Larege view grid as", ((string)(null)), table20, "Then ");
 #line 234
  testRunner.And("\"\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -936,10 +936,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 254
  testRunner.And("Replace is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
 #line 255
- testRunner.And("Preview as", ((string)(null)), table31, "And ");
+ testRunner.And("Preview as", ((string)(null)), table21, "And ");
 #line 257
  testRunner.And("Preview button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
@@ -967,16 +967,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 266
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[a]]"});
-            table32.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "[[b]]"});
-            table32.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "[[c]]"});
-            table32.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "[[d]]"});
 #line 267
- testRunner.And("I enter variables", ((string)(null)), table32, "And ");
+ testRunner.And("I enter variables", ((string)(null)), table22, "And ");
 #line 272
  testRunner.And("Split List On selected as \"NewLine\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 273
@@ -992,16 +992,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 278
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[a]]"});
-            table33.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "2 [[b]]"});
-            table33.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "3 [[c]]"});
-            table33.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "4 [[d]]"});
 #line 279
- testRunner.Then("preview as", ((string)(null)), table33, "Then ");
+ testRunner.Then("preview as", ((string)(null)), table23, "Then ");
 #line 284
  testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 285
@@ -1009,33 +1009,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 286
  testRunner.Then("Assign small view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table34.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         ""});
-            table34.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "2",
                         "[[b]]",
                         "=",
                         ""});
-            table34.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "3",
                         "[[c]]",
                         "=",
                         ""});
-            table34.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "4",
                         "[[d]]",
                         "=",
                         ""});
 #line 287
- testRunner.And("Small view grid as", ((string)(null)), table34, "And ");
+ testRunner.And("Small view grid as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1059,10 +1059,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 300
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[a]],[[b]],[[c]],[[d]]"});
 #line 301
- testRunner.And("I enter variables", ((string)(null)), table35, "And ");
+ testRunner.And("I enter variables", ((string)(null)), table25, "And ");
 #line 303
  testRunner.And("Split List On selected as \"Chars\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 304
@@ -1078,16 +1078,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 309
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[a]]"});
-            table36.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "2 [[b]]"});
-            table36.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "3 [[c]]"});
-            table36.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "4 [[d]]"});
 #line 310
- testRunner.Then("preview as", ((string)(null)), table36, "Then ");
+ testRunner.Then("preview as", ((string)(null)), table26, "Then ");
 #line 315
  testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 316
@@ -1095,33 +1095,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 317
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table37.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         ""});
-            table37.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "2",
                         "[[b]]",
                         "=",
                         ""});
-            table37.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "3",
                         "[[c]]",
                         "=",
                         ""});
-            table37.AddRow(new string[] {
+            table27.AddRow(new string[] {
                         "4",
                         "[[d]]",
                         "=",
                         ""});
 #line 318
- testRunner.And("Small view grid as", ((string)(null)), table37, "And ");
+ testRunner.And("Small view grid as", ((string)(null)), table27, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1145,10 +1145,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 332
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[a]]\t[[b]]\t[[c]]\t[[d]]"});
 #line 333
- testRunner.And("I enter variables", ((string)(null)), table38, "And ");
+ testRunner.And("I enter variables", ((string)(null)), table28, "And ");
 #line 335
  testRunner.And("Split List On selected as \"Tab\" with \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 336
@@ -1164,16 +1164,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 341
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[a]]"});
-            table39.AddRow(new string[] {
+            table29.AddRow(new string[] {
                         "2 [[b]]"});
-            table39.AddRow(new string[] {
+            table29.AddRow(new string[] {
                         "3 [[c]]"});
-            table39.AddRow(new string[] {
+            table29.AddRow(new string[] {
                         "4 [[d]]"});
 #line 342
- testRunner.Then("preview as", ((string)(null)), table39, "Then ");
+ testRunner.Then("preview as", ((string)(null)), table29, "Then ");
 #line 347
  testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 348
@@ -1181,33 +1181,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 349
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table40.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         ""});
-            table40.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "2",
                         "[[b]]",
                         "=",
                         ""});
-            table40.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "3",
                         "[[c]]",
                         "=",
                         ""});
-            table40.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "4",
                         "[[d]]",
                         "=",
                         ""});
 #line 350
- testRunner.And("Small view grid as", ((string)(null)), table40, "And ");
+ testRunner.And("Small view grid as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1231,10 +1231,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 362
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "abcdefgh"});
 #line 363
- testRunner.And("I enter variables", ((string)(null)), table41, "And ");
+ testRunner.And("I enter variables", ((string)(null)), table31, "And ");
 #line 365
  testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 366
@@ -1250,24 +1250,24 @@ this.ScenarioSetup(scenarioInfo);
 #line 371
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[a]]"});
-            table42.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "2 [[b]]"});
-            table42.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "3 [[c]]"});
-            table42.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "4 [[d]]"});
-            table42.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "5 [[e]]"});
-            table42.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "6 [[f]]"});
-            table42.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "7 [[g]]"});
-            table42.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "8 [[h]]"});
 #line 372
- testRunner.Then("preview as", ((string)(null)), table42, "Then ");
+ testRunner.Then("preview as", ((string)(null)), table32, "Then ");
 #line 381
  testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 382
@@ -1275,53 +1275,53 @@ this.ScenarioSetup(scenarioInfo);
 #line 383
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         ""});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "2",
                         "[[b]]",
                         "=",
                         ""});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "3",
                         "[[c]]",
                         "=",
                         ""});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "4",
                         "[[d]]",
                         "=",
                         ""});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "5",
                         "[[e]]",
                         "=",
                         ""});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "6",
                         "[[f]]",
                         "=",
                         ""});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "7",
                         "[[g]]",
                         "=",
                         ""});
-            table43.AddRow(new string[] {
+            table33.AddRow(new string[] {
                         "8",
                         "[[h]]",
                         "=",
                         ""});
 #line 384
- testRunner.And("Small view grid as", ((string)(null)), table43, "And ");
+ testRunner.And("Small view grid as", ((string)(null)), table33, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1346,10 +1346,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 400
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         "aaaa"});
 #line 401
- testRunner.And("I enter variables", ((string)(null)), table44, "And ");
+ testRunner.And("I enter variables", ((string)(null)), table34, "And ");
 #line 403
  testRunner.And("Split List On selected as \"Index\" with \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 404
@@ -1365,16 +1365,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 409
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[aa]]"});
-            table45.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "2 [[aa]]"});
-            table45.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "3 [[aa]]"});
-            table45.AddRow(new string[] {
+            table35.AddRow(new string[] {
                         "4 [[aa]]"});
 #line 410
- testRunner.Then("preview as", ((string)(null)), table45, "Then ");
+ testRunner.Then("preview as", ((string)(null)), table35, "Then ");
 #line 415
  testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 416
@@ -1382,33 +1382,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 417
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table46.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "1",
                         "[[aa]]",
                         "=",
                         ""});
-            table46.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "2",
                         "[[aa]]",
                         "=",
                         ""});
-            table46.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "3",
                         "[[aa]]",
                         "=",
                         ""});
-            table46.AddRow(new string[] {
+            table36.AddRow(new string[] {
                         "4",
                         "[[aa]]",
                         "=",
                         ""});
 #line 418
- testRunner.And("Small view grid as", ((string)(null)), table46, "And ");
+ testRunner.And("Small view grid as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1456,28 +1456,28 @@ this.ScenarioSetup(scenarioInfo);
 #line 431
     testRunner.Given("I have Assign Large view on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table47.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "1",
                         "[[a]]",
                         "=",
                         ""});
-            table47.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "2",
                         "[[b]]",
                         "=",
                         ""});
-            table47.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "3",
                         "[[c]]",
                         "=",
                         ""});
 #line 432
- testRunner.And("Large view grid as", ((string)(null)), table47, "And ");
+ testRunner.And("Large view grid as", ((string)(null)), table37, "And ");
 #line 437
  testRunner.When("I select \"QVI\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 438
@@ -1485,10 +1485,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 439
  testRunner.And("Variable list text box is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rec().a]],[[rec().b]]"});
 #line 440
- testRunner.And("I enter variables", ((string)(null)), table48, "And ");
+ testRunner.And("I enter variables", ((string)(null)), table38, "And ");
 #line 442
  testRunner.And("Split List On selected as \"Char\" with \",\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 443
@@ -1504,12 +1504,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 448
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "1 [[rec().a]]"});
-            table49.AddRow(new string[] {
+            table39.AddRow(new string[] {
                         "2 [[rec().b]]"});
 #line 449
- testRunner.Then("preview as", ((string)(null)), table49, "Then ");
+ testRunner.Then("preview as", ((string)(null)), table39, "Then ");
 #line 452
  testRunner.And("Add button is \"Enabbled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 453
@@ -1517,23 +1517,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 454
  testRunner.Then("Assign Large view is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "=",
                         "New Value"});
-            table50.AddRow(new string[] {
+            table40.AddRow(new string[] {
                         "1",
                         "[[rec().a]]",
                         "=",
                         ""});
-            table50.AddRow(new string[] {
+            table40.AddRow(new string[] {
                         "2",
                         "[[rec().b]]",
                         "=",
                         ""});
 #line 455
- testRunner.And("Small view grid as", ((string)(null)), table50, "And ");
+ testRunner.And("Small view grid as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

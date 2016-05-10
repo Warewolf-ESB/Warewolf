@@ -72,7 +72,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="SettingsTabSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
