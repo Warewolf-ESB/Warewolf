@@ -27,7 +27,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = "Download from Dropbox";
-            OverWriteMode = true;
+            OverwriteFile = false;
             // ReSharper disable once VirtualMemberCallInContructor
             DropboxFile = new FileWrapper();
         }
@@ -37,8 +37,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         protected IDownloadResponse<FileMetadata> Response;
         protected Exception Exception;
         private ILocalPathManager _localPathManager;
-        private bool _addMode;
-        private bool _overWriteMode;
 
         public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
         {
@@ -70,31 +68,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         [FindMissing]
         public string ToPath { get; set; }
 
-        public bool OverWriteMode
-        {
-            get
-            {
-                return _overWriteMode;
-            }
-            set
-            {
-                _addMode = !value;
-                _overWriteMode = value;
-            }
-        }
-
-        public bool AddMode
-        {
-            get
-            {
-                return _addMode;
-            }
-            set
-            {
-                _overWriteMode = !value;
-                _addMode = value;
-            }
-        }
+        public bool OverwriteFile { get; set; }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Local File Path")]
@@ -160,7 +134,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                     LocalPathManager = new LocalPathManager(evaluatedValues["FromPath"]);
                     var validFolder = LocalPathManager.GetFullFileName();
                     var fileExist = LocalPathManager.FileExist();
-                    if (fileExist && !OverWriteMode)
+                    if (fileExist && !OverwriteFile)
                         throw new Exception("Destination File already exists and overwrite is set to false");
                     DropboxFile.WriteAllBytes(validFolder, bytes);
                 }

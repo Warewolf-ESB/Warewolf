@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
@@ -35,7 +36,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         /// <returns></returns>
         public NamespaceList GetNamespaces(PluginSource pluginSource)
         {
-            return PluginServiceExecutionFactory.GetNamespaces(pluginSource);
+            try
+            {
+                return PluginServiceExecutionFactory.GetNamespaces(pluginSource);
+            }
+                // ReSharper disable once RedundantCatchClause
+            catch (BadImageFormatException)
+            {
+                throw;
+            }
         }
 
         /// <summary>
