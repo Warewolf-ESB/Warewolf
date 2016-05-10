@@ -236,7 +236,7 @@ Scenario: Changing database type after testing connection
    Then Database dropdown is "Visible"
    Then I select "Dev2TestingDB" as Database
    And "Save" is "Enabled"   
-   When I change type option from  "Microsoft SQL Server" to "MySql Database"
+   When I change type option from "Microsoft SQL Server" to "MySql Database"
    Then "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    Then Authentication Type is selected as "User"
