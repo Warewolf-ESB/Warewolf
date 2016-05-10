@@ -117,7 +117,8 @@ namespace Dev2.Activities
 
                 });
                 var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
-                
+                if (dataObject.IsDebugMode())
+                    _debugOutputs = GetDebugOutputs(resultval.ToString());
                 if (resultval)
                 {
                     if (TrueArm != null)
