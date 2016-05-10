@@ -31,17 +31,15 @@ using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
 using Dev2.TO;
-using Dev2.Validation;
-//using System.Text;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Decision
 {
     public class DecisionDesignerViewModel : ActivityCollectionDesignerObservableViewModel<DecisionTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
 
         static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAll();
@@ -57,8 +55,7 @@ namespace Dev2.Activities.Designers2.Decision
             InitializeItems(Tos);
             DeleteCommand = new DelegateCommand(x =>
             {
-                if(x != Collection.Last())
-                Collection.Remove((IDev2TOFn)x);
+               DeleteRow(x as DecisionTO);
             });
             if(String.IsNullOrEmpty(DisplayName))
             {
@@ -94,7 +91,6 @@ namespace Dev2.Activities.Designers2.Decision
         }
        public ICommand DeleteCommand
         {
-            // ReSharper disable once UnusedAutoPropertyAccessor.Local
             get;
             set;
 
@@ -108,9 +104,6 @@ namespace Dev2.Activities.Designers2.Decision
 
             if(expression != null && expression.Value != null)
             {
-                //we got a model, push it in to the Model region ;)
-                // but first, strip and extract the model data ;)
-
                 var eval = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(expression.Value.ToString());
 
                 if(!string.IsNullOrEmpty(eval))
@@ -147,7 +140,6 @@ namespace Dev2.Activities.Designers2.Decision
 
         public void GetExpressionText()
         {
-            //IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var stack = SetupTos(Collection);
 
             stack.DisplayText = DisplayText;
@@ -155,6 +147,7 @@ namespace Dev2.Activities.Designers2.Decision
             stack.TrueArmText = TrueArmText;
             stack.Mode = RequireAllDecisionsToBeTrue ? Dev2DecisionMode.AND : Dev2DecisionMode.OR;
             ExpressionText = DataListUtil.ConvertModelToJson(stack).ToString();
+            
         }
 
         public override string CollectionName { get { return "ResultsCollection"; } }
@@ -325,9 +318,7 @@ namespace Dev2.Activities.Designers2.Decision
             yield break;
         }
 
-        
-
-        public IRuleSet GetRuleSet(string propertyName)
+        private IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
 
@@ -335,17 +326,14 @@ namespace Dev2.Activities.Designers2.Decision
             {
                 case "DisplayText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => DisplayText));
-                    ruleSet.Add(new IsValidExpressionRule(() => DisplayText, GetDatalistString(), "1"));
                     break;
 
                 case "TrueArmText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => TrueArmText));
-                    ruleSet.Add(new IsValidExpressionRule(() => TrueArmText, GetDatalistString(), "1"));
                     break;
 
                 case "FalseArmText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FalseArmText));
-                    ruleSet.Add(new IsValidExpressionRule(() => FalseArmText, GetDatalistString(), "1"));
                     break;
             }
             return ruleSet;
@@ -353,6 +341,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         #region Implementation of IHandle<ConfigureDecisionExpressionMessage>
 
+        // ReSharper disable once UnusedParameter.Global
         public void Handle(ConfigureDecisionExpressionMessage message)
         {
             ShowLarge = true;

@@ -9,14 +9,22 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Decision;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Data.Decisions.Operations;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Messages;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Decision
 {
@@ -149,19 +157,13 @@ namespace Dev2.Activities.Designers.Tests.Decision
             //------------Setup for test--------------------------
             var decisionTO = new DecisionTO("xxxx","xxxx", searchType, 1);
 
-            var items = new List<DecisionTO>
-            {
-                decisionTO
-            };
-
-            var viewModel = new DecisionDesignerViewModel(CreateModelItem(items));
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem());
 
             //------------Precondition---------------------------           
            
 
             //------------Execute Test---------------------------
             viewModel.SearchTypeUpdatedCommand.Execute(indexObject);
-            //viewModel.SearchTypeUpdatedCommand.Execute(0);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(isSearchCriteriaEnabled, decisionTO.IsSearchCriteriaVisible);
@@ -187,7 +189,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 new DecisionTO("yyyy","yyyy", "Contains", 2)
             };
 
-            var viewModel = new DecisionDesignerViewModel(CreateModelItem(items));
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem());
 
       
 
@@ -208,14 +210,8 @@ namespace Dev2.Activities.Designers.Tests.Decision
         public void DecisionDesignerViewModel_Constructor_PropertiesInitialized()
         {
             //------------Setup for test--------------------------
-            var items = new List<DecisionTO>
-            {
-                new DecisionTO("xxxx","xxxx", "=", 1),
-                new DecisionTO("yyyy","yyyy", "Contains", 2)
-            };
-
-            //------------Execute Test---------------------------
-            var viewModel = new DecisionDesignerViewModel(CreateModelItem(items));
+           //------------Execute Test---------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem());
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
@@ -224,137 +220,190 @@ namespace Dev2.Activities.Designers.Tests.Decision
             Assert.AreEqual(0, viewModel.TitleBarToggles.Count);
         }
 
-        //[TestMethod]
-        //[Owner("Pieter Terblanche")]
-        //[TestCategory("DecisionDesignerViewModel_ValidateThis")]
-        //public void DecisionDesignerViewModel_ValidateThis_FieldsToSearchIsNotEmptyAndResultNotEmpty_DoesNotHaveErrors()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var items = new List<DecisionTO> { new DecisionTO("", "", "", 0) };
-        //    var mi = CreateModelItem(items);
-        //    mi.SetProperty("FieldsToSearch", "[[rec().set]]");
-        //    mi.SetProperty("Result", "[[a]]");
-        //    var viewModel = new DecisionDesignerViewModel(mi);
-        //    SetDataListString(viewModel);
-        //    //------------Execute Test---------------------------
-        //    viewModel.Validate();
-
-        //    //------------Assert Results-------------------------
-        //    Assert.IsNull(viewModel.Errors);
-        //}
-
-        //[TestMethod]
-        //[Owner("Pieter Terblanche")]
-        //[TestCategory("DecisionDesignerViewModel_ValidateThis")]
-        //public void DecisionDesignerViewModel_ValidateThis_FieldsToSearchAndResultIsEmptyOrWhiteSpace_DoesHaveErrors()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var items = new List<DecisionTO> { new DecisionTO("","", "", 0) };
-        //    var mi = CreateModelItem(items);
-        //    mi.SetProperty("FieldsToSearch", " ");
-        //    mi.SetProperty("Result", " ");
-        //    var viewModel = new DecisionDesignerViewModel(mi);
-        //    SetDataListString(viewModel);
-        //    //------------Execute Test---------------------------
-        //    viewModel.Validate();
-
-        //    //------------Assert Results-------------------------
-        //    Assert.AreEqual(2, viewModel.Errors.Count);
-        //    StringAssert.Contains(viewModel.Errors[0].Message, "'In Field(s)' cannot be empty or only white space");
-        //    StringAssert.Contains(viewModel.Errors[1].Message, "'Result' cannot be empty or only white space");
-        //}
-
-
-        
-        //[TestMethod]
-        //[Owner("Pieter Terblanche")]
-        //[TestCategory("DecisionDesignerViewModel_ValidateCollectionItem")]
-        //public void DecisionDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfTO()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var mi = ModelItemUtils.CreateModelItem(new DsfDecision());
-        //    mi.SetProperty("DisplayName", "Find");
-        //    mi.SetProperty("DisplayText", "[[a]]");
-        //    mi.SetProperty("TrueArmText", "[[a]]");
-        //    mi.SetProperty("FalseArmText", "[[a]]");
-
-        //    var dto1 = new FindRecordsTO("", "Starts With", 0);
-        //    var dto2 = new FindRecordsTO("", "Ends With", 1);
-        //    var dto3 = new FindRecordsTO("", "Doesn't Start With", 2);
-        //    var dto4 = new FindRecordsTO("", "Doesn't End With", 3);
-        //    var dto5 = new FindRecordsTO("", "Is Between", 4);
-        //    var dto6 = new FindRecordsTO("", "Is Not Between", 5);
-
-        //    // ReSharper disable PossibleNullReferenceException
-        //    var miCollection = mi.Properties["ResultsCollection"].Collection;
-        //    var dtoModelItem1 = miCollection.AddMode(dto1);
-        //    var dtoModelItem2 = miCollection.AddMode(dto2);
-        //    var dtoModelItem3 = miCollection.AddMode(dto3);
-        //    var dtoModelItem4 = miCollection.AddMode(dto4);
-        //    var dtoModelItem5 = miCollection.AddMode(dto5);
-        //    var dtoModelItem6 = miCollection.AddMode(dto6);
-        //    // ReSharper restore PossibleNullReferenceException
-
-        //    var viewModel = new DecisionDesignerViewModel(mi);
-        //    SetDataListString(viewModel);
-        //    //------------Execute Test---------------------------
-        //    viewModel.Validate();
-
-        //    //------------Assert Results-------------------------
-        //    Assert.AreEqual(10, viewModel.Errors.Count);
-
-        //    StringAssert.Contains(viewModel.Errors[0].Message, "'Match' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem1, viewModel.Errors[0].Do, "IsSearchCriteriaFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[1].Message, "'Match' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem2, viewModel.Errors[1].Do, "IsSearchCriteriaFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[2].Message, "'Match' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem3, viewModel.Errors[2].Do, "IsSearchCriteriaFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[3].Message, "'Match' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem4, viewModel.Errors[3].Do, "IsSearchCriteriaFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[4].Message, "'Match' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem5, viewModel.Errors[4].Do, "IsSearchCriteriaFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[5].Message, "'From' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem5, viewModel.Errors[5].Do, "IsFromFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[6].Message, "'To' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem5, viewModel.Errors[6].Do, "IsToFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[7].Message, "'Match' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem6, viewModel.Errors[7].Do, "IsSearchCriteriaFocused");
-
-        //    StringAssert.Contains(viewModel.Errors[9].Message, "'To' cannot be empty");
-        //    Verify_IsFocused(dtoModelItem6, viewModel.Errors[9].Do, "IsToFocused");
-        //}
-
-        static void SetDataListString(DecisionDesignerViewModel viewModel)
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_Validate")]
+        public void DecisionDesignerViewModel_Validate_All()
         {
-            viewModel.GetDatalistString = () =>
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem())
             {
-                const string trueString = "True";
-                const string noneString = "None";
-                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
-                return datalist;
+                DisplayText = "",
+                TrueArmText = "",
+                FalseArmText = ""
             };
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual(3,viewModel.Errors.Count);
+            Assert.AreEqual("'DisplayText' cannot be empty or only white space",viewModel.Errors[0].Message);
+            Assert.AreEqual("'TrueArmText' cannot be empty or only white space", viewModel.Errors[1].Message);
+            Assert.AreEqual("'FalseArmText' cannot be empty or only white space", viewModel.Errors[2].Message);
         }
 
-        void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_Validate")]
+        public void DecisionDesignerViewModel_Validate_DisplayText()
         {
-            Assert.IsFalse(modelItem.GetProperty<bool>(isFocusedPropertyName));
-            doError.Invoke();
-            Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem())
+            {
+                DisplayText = "",
+                TrueArmText = "some text",
+                FalseArmText = "some text"
+            };
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual(1,viewModel.Errors.Count);
+            Assert.AreEqual("'DisplayText' cannot be empty or only white space",viewModel.Errors[0].Message);
+            viewModel.Errors[0].Do();
+            Assert.IsTrue(viewModel.IsDisplayTextFocused);
         }
 
-        static ModelItem CreateModelItem(IEnumerable<DecisionTO> items, string displayName = "Find")
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_Validate")]
+        public void DecisionDesignerViewModel_Validate_TrueArm()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem())
+            {
+                DisplayText = "some text",
+                TrueArmText = "",
+                FalseArmText = "some text"
+            };
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual("'TrueArmText' cannot be empty or only white space", viewModel.Errors[0].Message);
+            viewModel.Errors[0].Do();
+            Assert.IsTrue(viewModel.IsTrueArmFocused);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_Validate")]
+        public void DecisionDesignerViewModel_Validate_FalseText()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem())
+            {
+                DisplayText = "text",
+                TrueArmText = "some text",
+                FalseArmText = ""
+            };
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.Errors);
+            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual("'FalseArmText' cannot be empty or only white space", viewModel.Errors[0].Message);
+            viewModel.Errors[0].Do();
+            Assert.IsTrue(viewModel.IsFalseArmFocused);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_Handle")]
+        public void DecisionDesignerViewModel_HandleConfigureMessage_SetShowLarge()
+        {
+            //------------Setup for test--------------------------            
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem());           
+            //------------Execute Test---------------------------
+            viewModel.Handle(new ConfigureDecisionExpressionMessage());
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.ShowLarge);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_Handle")]
+        public void DecisionDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------            
+            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem());
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()),Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_GetExpressionText")]
+        public void DecisionDesignerViewModel_GetExpressionText_ShouldSetExpressionText()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem())
+            {
+                DisplayText = "",
+                TrueArmText = "",
+                FalseArmText = ""
+            };
+            var dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[val]]",
+                EvaluationFn = enDecisionType.IsEqual,
+                Col2 = "5"
+            };
+            viewModel.Collection.Add(new DecisionTO(dev2Decision,1));
+            //------------Execute Test---------------------------
+            viewModel.GetExpressionText();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ExpressionText);
+            StringAssert.Contains(viewModel.ExpressionText, "{\"TheStack\":[{\"Col1\":\"[[val]]\",\"Col2\":\"5\",\"Col3\":\"\",\"Cols1\":null,\"Cols2\":null,\"Cols3\":null,\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"}],\"TotalDecisions\":1,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\",\"TrueArmText\":\"\",\"FalseArmText\":\"\",\"DisplayText\":\"\"}");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DecisionDesignerViewModel_GetExpressionText")]
+        public void DecisionDesignerViewModel_RemoveRow_ShouldRemove()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem())
+            {
+                DisplayText = "",
+                TrueArmText = "",
+                FalseArmText = ""
+            };
+            var dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[val]]",
+                EvaluationFn = enDecisionType.IsEqual,
+                Col2 = "5"
+            };
+            var item = new DecisionTO(dev2Decision,1);
+            viewModel.Collection.Insert(0,item);
+            //------------Assert Preconsidtions------------------
+            Assert.AreEqual(3,viewModel.Collection.Count);
+            //------------Execute Test---------------------------
+            viewModel.DeleteCommand.Execute(item);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, viewModel.Collection.Count);
+        }
+        
+        static ModelItem CreateModelItem(string displayName = "Find")
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDecision());
             modelItem.SetProperty("DisplayName", displayName);
 
             return modelItem;
         }
+
     }
 }
