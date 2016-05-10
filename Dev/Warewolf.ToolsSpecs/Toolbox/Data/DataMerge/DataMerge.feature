@@ -376,23 +376,6 @@ Examples:
 	| 4  | New Line |
 	| 5  | Tab      | 
 
-Scenario: Merge a scalar to a scalar using merge type none 2
-	Given a merge variable "[[a]]" equal to "Warewolf " 
-	And a merge variable "[[b]]" equal to "Rocks"		
-	And an Input "[[a]]" and merge type "None" and string at as "" and Padding "" and Alignment "Left"	
-	And an Input "[[b]]" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
-	When the data merge tool is executed
-	Then the merged result is "WarewolfRocks"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| # |                  | With | Using | Pad | Align |
-	| 1 | [[a]] = Warewolf | None | ""    |     | Left  |
-	| 2 | [[b]] = Rocks    | None | ""    |     | Left  |
-	And the debug output as 
-	|                              |
-	| [[result]] = Warewolf Rocks  |
-
-
 # This is a bug that needs to be resolved
 Scenario: Merge a recordset table and free text using Tab 2
 	Given a merge recordset
