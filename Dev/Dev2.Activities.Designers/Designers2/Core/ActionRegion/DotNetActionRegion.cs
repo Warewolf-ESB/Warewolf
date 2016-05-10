@@ -112,12 +112,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             try
             {
-                Errors.Clear();
+              //  Errors.Clear();
 
                 // ReSharper disable once ExplicitCallerInfoArgument
                 UpdateBasedOnNamespace();
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
+            }
+            catch (BadImageFormatException e)
+            {
+                Errors.Add(e.Message);
+                throw;
             }
             catch(Exception e)
             {

@@ -15,8 +15,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
@@ -115,20 +117,28 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public List<string> ListNamespaces(string assemblyLocation, string assemblyName)
         {
-            Assembly loadedAssembly;
-            List<string> namespaces = new List<string>();
-            if(TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+            try
             {
-                // ensure we flush out the rubbish that GAC brings ;)
-                namespaces = loadedAssembly.GetTypes()
-                                         .Select(t => t.FullName)
-                                         .Distinct()
-                                         .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
-                                                  && q.IndexOf("+", StringComparison.Ordinal) < 0
-                                                  && q.IndexOf("<", StringComparison.Ordinal) < 0
-                                                  && !q.StartsWith("_")).ToList();
+                Assembly loadedAssembly;
+                List<string> namespaces = new List<string>();
+                if(TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                {
+                    // ensure we flush out the rubbish that GAC brings ;)
+                    namespaces = loadedAssembly.GetTypes()
+                        .Select(t => t.FullName)
+                        .Distinct()
+                        .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
+                                    && q.IndexOf("+", StringComparison.Ordinal) < 0
+                                    && q.IndexOf("<", StringComparison.Ordinal) < 0
+                                    && !q.StartsWith("_")).ToList();
+                }
+                return namespaces;
             }
-            return namespaces;
+            catch (BadImageFormatException e)
+            {
+                Dev2Logger.Error(e);
+                throw;
+            }
         }
 
         /// <summary>
@@ -252,7 +262,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return result;
         }
 
-
         /// <summary>
         /// Reads the namespaces.
         /// </summary>
@@ -261,17 +270,25 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         private IEnumerable<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName)
         {
-            var result = new List<NamespaceItem>();
-            var list = ListNamespaces(assemblyLocation, assemblyName);
-            list.ForEach(fullName =>
-                result.Add(new NamespaceItem
-                {
-                    AssemblyLocation = assemblyLocation,
-                    AssemblyName = assemblyName,
-                    FullName = fullName
-                }));
+            try
+            {
+                var result = new List<NamespaceItem>();
+                var list = ListNamespaces(assemblyLocation, assemblyName);
+                list.ForEach(fullName =>
+                    result.Add(new NamespaceItem
+                    {
+                        AssemblyLocation = assemblyLocation,
+                        AssemblyName = assemblyName,
+                        FullName = fullName
+                    }));
 
-            return result;
+                return result;
+            }
+                // ReSharper disable once RedundantCatchClause
+            catch (BadImageFormatException )
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -332,6 +349,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
+                catch (System.BadImageFormatException e)//WOLF-1640
+                {
+                    Dev2Logger.Error(e);
+                    throw;
+
+                }
                 catch(Exception e)
                 {
                     Dev2Logger.Error(e.Message);
@@ -341,12 +364,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 try
                 {
-                    if(assemblyLocation != null)
+                    if (assemblyLocation != null)
                     {
                         loadedAssembly = Assembly.LoadFrom(assemblyLocation);
                         LoadDepencencies(loadedAssembly, assemblyLocation);
                     }
                     return true;
+                }
+                catch (System.BadImageFormatException e)//WOLF-1640
+                {
+                    Dev2Logger.Error(e);
+                    throw;
                 }
                 catch
                 {
@@ -374,6 +402,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
+                }
+                catch (System.BadImageFormatException e)//WOLF-1640
+                {
+                    Dev2Logger.Error(e);
+                    throw;
                 }
                 catch(Exception e)
                 {

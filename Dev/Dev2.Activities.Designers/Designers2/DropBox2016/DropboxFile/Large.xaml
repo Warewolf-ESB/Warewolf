@@ -47,6 +47,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--  Source Implemantation  -->
@@ -120,14 +122,12 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!--  DropBox File Location  -->
             <TextBlock x:Name="DropboxFileTextBlock"
                        Grid.Row="0"
                        Grid.Column="0"
+                       Margin="0,1,0,0"
                        Text="Dropbox Path" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
@@ -139,6 +139,7 @@
                                     IsInCalculateMode="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Margin="0,1,0,0"
                                     Text="{Binding ToPath,
                                                    Mode=TwoWay,
                                                    UpdateSourceTrigger=PropertyChanged}"
@@ -152,61 +153,88 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
-            <TextBlock Grid.Row="1"
+        </Grid>
+
+        <TextBlock Grid.Row="2"
                        Grid.Column="0"
                        Margin="{StaticResource ActivityBorderTop}"
                        Text="Read" />
-            <Grid Grid.Row="1"
+        <Grid Grid.Row="2"
                   Grid.Column="1"
-                  ToolTip="{x:Static languages:Core.DropboxReadFolderToolTip}"
-                  Margin="0,1,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <RadioButton Grid.Row="0"
+                  Margin="0,-3,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <RadioButton Grid.Row="0"
                              Grid.Column="0"
                              GroupName="ReturnData"
+                             ToolTip="{x:Static languages:Core.DropboxReadFilesToolTip}"
+                             Content="Files"
                              IsChecked="{Binding IsFilesSelected}">
-                    Files
-                </RadioButton>
-                <RadioButton Grid.Row="0"
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFiles}" />
+                </i:Interaction.Behaviors>
+            </RadioButton>
+            <RadioButton Grid.Row="0"
                              Grid.Column="1"
                              GroupName="ReturnData"
+                             ToolTip="{x:Static languages:Core.DropboxReadFoldersToolTip}"
+                             Content="Folders"
                              IsChecked="{Binding IsFoldersSelected}">
-                    Folders
-                </RadioButton>
-                <RadioButton Grid.Row="0"
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFolders}" />
+                </i:Interaction.Behaviors>
+            </RadioButton>
+            <RadioButton Grid.Row="0"
                              Grid.Column="2"
                              GroupName="ReturnData"
+                             ToolTip="{x:Static languages:Core.DropboxReadFilesFoldersToolTip}"
+                             Content="Files &amp; Folders"
                              IsChecked="{Binding IsFilesAndFoldersSelected}">
-                    Files &amp; Folders
-                </RadioButton>
-            </Grid>
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFilesFolders}" />
+                </i:Interaction.Behaviors>
+            </RadioButton>
+        </Grid>
 
-            <TextBlock Grid.Row="2"
+        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,-8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=DropboxFileTextBlock, Path=ActualWidth}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
                        Grid.Column="0"
-                       Margin="{StaticResource ActivityBorderTop}"
                        Text="Recursive" />
-            <CheckBox Grid.Row="2"
+            <CheckBox Grid.Row="0"
                       Grid.Column="1"
+                      Content="Load Sub folders"
+                      ToolTip="{x:Static languages:Core.DropBoxFileListRecursiveToolTip}"
+                      Margin="-6,0,0,0"
                       IsChecked="{Binding IsRecursive}">
-                Load Sub folders
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListRecursive}" />
+                </i:Interaction.Behaviors>
             </CheckBox>
+
             <!--  Result Section  -->
-            <TextBlock Grid.Row="3"
+            <TextBlock Grid.Row="1"
                        Grid.Column="0"
                        Height="23"
                        Margin="{StaticResource ControlBorderTop}"
                        VerticalAlignment="Bottom"
                        Text="Result" />
-            <ui:IntellisenseTextBox Grid.Row="3"
+            <ui:IntellisenseTextBox Grid.Row="1"
                                     Grid.Column="1"
-                                    Margin="{StaticResource ControlBorderTop}"
                                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID,
                                                                                 StringFormat=UI_{0}_fxtxt_AutoID}"
@@ -230,7 +258,8 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        <errors:OnError Grid.Row="2"
+
+        <errors:OnError Grid.Row="4"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         Margin="{StaticResource ControlBorderTop}" />

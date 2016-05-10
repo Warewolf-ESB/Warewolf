@@ -10,6 +10,8 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.Practices.Prism.Commands;
+
 // ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.Source
@@ -248,13 +250,28 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                SetSelectedSource(value);
-                SourceChangedAction();
-                OnSomethingChanged(this);
-                var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-                if (delegateCommand != null)
+                try
                 {
-                    delegateCommand.RaiseCanExecuteChanged();
+                    SetSelectedSource(value);
+                    SourceChangedAction();
+                    OnSomethingChanged(this);
+                    var delegateCommand = EditSourceCommand as DelegateCommand;
+                    if (delegateCommand != null)
+                    {
+                        delegateCommand.RaiseCanExecuteChanged();
+                    }
+                }
+                catch (AggregateException e)
+                {
+                    Console.WriteLine(e);
+                }
+                catch (SystemException e)
+                {
+                    Console.WriteLine(e);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             }
         }
