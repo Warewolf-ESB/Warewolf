@@ -18,8 +18,14 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             : this(new DropboxSoureFileValidator(path))
         {
             _validator.Validate();
-            if(!path.StartsWith(@"/"))
+            if (!string.IsNullOrWhiteSpace(path) && !path.StartsWith(@"/"))
+            {
                 path = string.Concat(@"/", path);
+            }
+            else
+            {
+                path = path.Trim();
+            }
             _path = path;
         }
 
