@@ -330,7 +330,6 @@ Scenario: Debug from Explorer using play icon
 
 
 #Wolf-1025
-@ignore
 Scenario: Moving Nested folders
 	Given the explorer is visible
 	Then I should see the path "Localhost\Dice Roll Example\Tests"
@@ -339,7 +338,6 @@ Scenario: Moving Nested folders
 
  #codedui
 #wolf-1155
-@ignore
 Scenario: Conflicting file names
 	Given the explorer is visible
 	Then I should see the path "Localhost\Examples"
