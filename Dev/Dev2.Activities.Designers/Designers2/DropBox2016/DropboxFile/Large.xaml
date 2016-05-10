@@ -47,8 +47,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--  Source Implemantation  -->
@@ -62,7 +60,11 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Button x:Name="SourceEditButton"
+                    Grid.Row="0"
                     Grid.Column="1"
                     Margin="{StaticResource ControlBorderRight}"
                     Command="{Binding Path=EditDropboxSourceCommand,
@@ -74,6 +76,7 @@
                 </i:Interaction.Behaviors>
             </Button>
             <Button x:Name="SourceNewButton"
+                    Grid.Row="0"
                     Grid.Column="2"
                     Width="Auto"
                     Command="{Binding Path=NewSourceCommand,
@@ -104,11 +107,10 @@
                                                                        UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
-
             </ComboBox>
         </Grid>
         <!--  Local File Implemantation  -->
-        <Grid Grid.Row="3"
+        <Grid Grid.Row="1"
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Margin="0,-1,0,0">
@@ -121,21 +123,18 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <!--  DropBox File Location  -->
             <TextBlock x:Name="DropboxFileTextBlock"
                        Grid.Row="0"
                        Grid.Column="0"
-                       Text="Dropbox Folder" />
+                       Text="Dropbox Path" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
                                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID,
                                                                                 StringFormat=UI_{0}_fxtxt_AutoID}"
-                                    DefaultText="Dropbox Folder"
+                                    DefaultText="[[Dropbox location]]"
                                     FilterType="All"
                                     IsInCalculateMode="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -153,15 +152,15 @@
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
-            <TextBlock Grid.Row="2"
+            <TextBlock Grid.Row="1"
                        Grid.Column="0"
                        Margin="{StaticResource ActivityBorderTop}"
                        Text="Read" />
-            <Grid Grid.Row="2"
+            <Grid Grid.Row="1"
                   Grid.Column="1"
                   ToolTip="{x:Static languages:Core.DropboxReadFolderToolTip}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
@@ -188,23 +187,23 @@
                 </RadioButton>
             </Grid>
 
-            <TextBlock Grid.Row="5"
+            <TextBlock Grid.Row="2"
                        Grid.Column="0"
                        Margin="{StaticResource ActivityBorderTop}"
                        Text="Recursive" />
-            <CheckBox Grid.Row="5"
+            <CheckBox Grid.Row="2"
                       Grid.Column="1"
                       IsChecked="{Binding IsRecursive}">
                 Load Sub folders
             </CheckBox>
             <!--  Result Section  -->
-            <TextBlock Grid.Row="6"
+            <TextBlock Grid.Row="3"
                        Grid.Column="0"
                        Height="23"
                        Margin="{StaticResource ControlBorderTop}"
                        VerticalAlignment="Bottom"
                        Text="Result" />
-            <ui:IntellisenseTextBox Grid.Row="6"
+            <ui:IntellisenseTextBox Grid.Row="3"
                                     Grid.Column="1"
                                     Margin="{StaticResource ControlBorderTop}"
                                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
@@ -230,10 +229,9 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        <errors:OnError Grid.Row="7"
+        <errors:OnError Grid.Row="2"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         Margin="{StaticResource ControlBorderTop}" />
-
     </Grid>
 </core:ActivityDesignerTemplate>
