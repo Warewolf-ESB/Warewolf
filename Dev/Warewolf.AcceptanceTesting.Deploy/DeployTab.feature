@@ -219,7 +219,6 @@ Scenario: Renaming resource after deploying and re-deploy
 	 Then Override is "1"
 
 #wolf-117
-@ignore
 Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -263,16 +262,6 @@ Scenario: Deploy Based on permission Deploy From
 	 And I select "Examples\bob" from Source Server
      When selected Destination Server is "Remote"
 	 And destination is connected
-
-#Wolf-1274
-@ignore
-Scenario: Deploying restricted workflows
-	Given I have deploy tab opened
-	When I select "Hello World" from Source Server
-	And "Hello World" has permission to "View" only
-	When selected Destination Server is "Sandbox-dev2"
-	Then "Deploy" is "Disabled"
-	And the validation message is "Cannot Deploy Hello World as it does not have contribute permissions." 
 
 ###REQUIREMENTS Check to see what needs to be included
 
