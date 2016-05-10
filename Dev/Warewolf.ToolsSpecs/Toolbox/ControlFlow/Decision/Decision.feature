@@ -1333,12 +1333,12 @@ Scenario: validate that a variable is not Null positive
 
 Scenario: validate that a variable is Blank positive
 	Given a decision variable "[[B]]" value ""
-	And decide if "[[B]]" "IsEqual" ""
+	And is "[[B]]" "IsEqual" ""	
 	When the decision tool is executed
 	Then the execution has "NO" error
 	 Then the debug inputs as  
-       |            | Statement | Require all decisions to be true |
-       | [[B]] =  | String    | YES                              |
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | YES                              |
     And the debug output as 
        |     |
        | YES |
@@ -1346,8 +1346,8 @@ Scenario: validate that a variable is Blank positive
 
 Scenario: validate that a variable is Blank OR NULL positive 1
 	Given a decision variable "[[B]]" value ""
-	And decide if "[[B]]" "IsEqual" ""
 	And decide if "[[B]]" "IsNull"
+	And is "[[B]]" "IsEqual" ""	
 	And the decision mode is "OR"
 	When the decision tool is executed
 	Then the execution has "NO" error
@@ -1360,7 +1360,7 @@ Scenario: validate that a variable is Blank OR NULL positive 1
 
 
 Scenario: validate that a variable is Blank OR NULL positive 2
-	Given decide if "[[B]]" "IsEqual" ""
+	Given is "[[B]]" "IsEqual" ""	
 	And decide if "[[B]]" "IsNull"
 	And the decision mode is "OR"
 	When the decision tool is executed
