@@ -2350,6 +2350,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DropBoxFileListRecursive.
+        /// </summary>
+        public static string DropBoxFileListRecursive {
+            get {
+                return ResourceManager.GetString("DropBoxFileListRecursive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropBoxFileListRecursiveToolTip.
+        /// </summary>
+        public static string DropBoxFileListRecursiveToolTip {
+            get {
+                return ResourceManager.GetString("DropBoxFileListRecursiveToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the operation that you wish to perform. Read from a file on Dropbox..
         /// </summary>
         public static string DropboxOperationToolTip {
@@ -2359,11 +2377,56 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of content you want to list.
+        ///   Looks up a localized string similar to DropboxReadFiles.
         /// </summary>
-        public static string DropboxReadFolderToolTip {
+        public static string DropboxReadFiles {
             get {
-                return ResourceManager.GetString("DropboxReadFolderToolTip", resourceCulture);
+                return ResourceManager.GetString("DropboxReadFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropboxReadFilesFolders.
+        /// </summary>
+        public static string DropboxReadFilesFolders {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropboxReadFilesFoldersToolTip.
+        /// </summary>
+        public static string DropboxReadFilesFoldersToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesFoldersToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropboxReadFilesToolTip.
+        /// </summary>
+        public static string DropboxReadFilesToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropboxReadFolders.
+        /// </summary>
+        public static string DropboxReadFolders {
+            get {
+                return ResourceManager.GetString("DropboxReadFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DropboxReadFoldersToolTip.
+        /// </summary>
+        public static string DropboxReadFoldersToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFoldersToolTip", resourceCulture);
             }
         }
         

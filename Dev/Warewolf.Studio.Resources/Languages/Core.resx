@@ -3702,8 +3702,29 @@ The file must be available on the local file system.</value>
   You can specify the type of information returned by selecting either Files (returns only files), Folders (Returns only folders) or Files and Folders for everything.
 </value>
   </data>
-  <data name="DropboxReadFolderToolTip" xml:space="preserve">
-    <value>Select the type of content you want to list</value>
+  <data name="DropboxReadFilesToolTip" xml:space="preserve">
+    <value>DropboxReadFilesToolTip</value>
+  </data>
+  <data name="DropboxReadFiles" xml:space="preserve">
+    <value>DropboxReadFiles</value>
+  </data>
+  <data name="DropboxReadFoldersToolTip" xml:space="preserve">
+    <value>DropboxReadFoldersToolTip</value>
+  </data>
+  <data name="DropboxReadFolders" xml:space="preserve">
+    <value>DropboxReadFolders</value>
+  </data>
+  <data name="DropboxReadFilesFoldersToolTip" xml:space="preserve">
+    <value>DropboxReadFilesFoldersToolTip</value>
+  </data>
+  <data name="DropboxReadFilesFolders" xml:space="preserve">
+    <value>DropboxReadFilesFolders</value>
+  </data>
+  <data name="DropBoxFileListRecursiveToolTip" xml:space="preserve">
+    <value>DropBoxFileListRecursiveToolTip</value>
+  </data>
+  <data name="DropBoxFileListRecursive" xml:space="preserve">
+    <value>DropBoxFileListRecursive</value>
   </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
