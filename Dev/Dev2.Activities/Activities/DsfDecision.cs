@@ -61,12 +61,11 @@ namespace Dev2.Activities
             return null;
         }
 
-        private  Dev2Decision ParseDecision(IExecutionEnvironment env , Dev2Decision decision)
+        private  Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
         {
-            bool errorifnull = !decision.EvaluationFn.ToString().ToLower().Contains("null") ;
-            var col1 = env.EvalAsList(decision.Col1, 0, errorifnull);
-            var col2 = env.EvalAsList(decision.Col2, 0, errorifnull);
-            var col3 = env.EvalAsList(decision.Col3??"", 0, errorifnull);
+            var col1 = env.EvalAsList(decision.Col1, 0, errorIfNull);
+            var col2 = env.EvalAsList(decision.Col2, 0, errorIfNull);
+            var col3 = env.EvalAsList(decision.Col3??"", 0, errorIfNull);
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
@@ -86,7 +85,9 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before,0,null,true);
                 }
 
-                var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a));
+                var errorIfNull = !Conditions.TheStack.Any(decision => decision.EvaluationFn == enDecisionType.IsNull || decision.EvaluationFn == enDecisionType.IsNotNull);
+
+                var stack = Conditions.TheStack.Select(a => ParseDecision(dataObject.Environment, a,errorIfNull));
 
 
                 var factory = Dev2DecisionFactory.Instance();
@@ -116,9 +117,7 @@ namespace Dev2.Activities
 
                 });
                 var resultval = And ? res.Aggregate(true, (a, b) => a && b) : res.Any(a => a);
-                if (dataObject.IsDebugMode())
-                    _debugOutputs = GetDebugOutputs(resultval.ToString());
-
+                
                 if (resultval)
                 {
                     if (TrueArm != null)
@@ -309,7 +308,7 @@ namespace Dev2.Activities
                     catch(NullValueInVariableException)
                     {
                         
-                         expressiomToStringValue = expression;
+                         expressiomToStringValue = "";
                     }
                     // EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
                     userModel = userModel.Replace(expression, expressiomToStringValue);

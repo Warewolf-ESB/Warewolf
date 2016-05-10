@@ -3794,7 +3794,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Statement",
                         "Require all decisions to be true"});
             table165.AddRow(new string[] {
-                        "[[A]] = [[A]]",
+                        "[[A]] =",
                         "String",
                         "YES"});
 #line 1314
@@ -3914,7 +3914,7 @@ this.ScenarioSetup(scenarioInfo);
             table171.AddRow(new string[] {
                         "[[B]] =",
                         "String",
-                        "YES"});
+                        "NO"});
 #line 1354
   testRunner.Then("the debug inputs as", ((string)(null)), table171, "Then ");
 #line hidden
@@ -3954,7 +3954,7 @@ this.ScenarioSetup(scenarioInfo);
             table173.AddRow(new string[] {
                         "[[B]] =",
                         "String",
-                        "YES"});
+                        "NO"});
 #line 1368
   testRunner.Then("the debug inputs as", ((string)(null)), table173, "Then ");
 #line hidden
