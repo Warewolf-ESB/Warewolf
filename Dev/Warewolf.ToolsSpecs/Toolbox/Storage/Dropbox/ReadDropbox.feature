@@ -24,7 +24,6 @@ Scenario: Editing Dropbox Tool
 	When I Readlist click "Edit"
 	Then the "Drop" Readlist Dropbox Source window is opened
 
-@ignore
 Scenario: Change Dropbox Source
 	Given I open New Workflow
 	And I drag Readlist Dropbox Tool onto the design surface

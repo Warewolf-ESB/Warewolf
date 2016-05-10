@@ -34,7 +34,6 @@ Examples:
 | [[rec(1).a]] | 3   | [[rec(1).a]] = 3 |
 | [[rec(*).a]] | 3   | [[rec(*).a]] = 3 |
 
-#error on [[rec(*).a]] - unable to varify tool not working
 
 @ignore
 #Complex Types WOLF-1042
