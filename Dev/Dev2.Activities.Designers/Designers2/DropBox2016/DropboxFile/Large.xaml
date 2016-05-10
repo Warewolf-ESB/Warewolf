@@ -7,7 +7,6 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:dropboxFile="clr-namespace:Dev2.Activities.Designers2.DropBox2016.DropboxFile"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -65,6 +64,26 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <ComboBox x:Name="InitialComboBox"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      Margin="{StaticResource ControlBorderRight}"
+                      DisplayMemberPath="ResourceName"
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                      ItemsSource="{Binding Sources}"
+                      SelectedItem="{Binding SelectedSource,
+                                             Mode=TwoWay,
+                                             UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static languages:Core.DropboxSourceToolTip}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxSourceToolTip}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="SelectedSource"
+                                         SourcePropertyValue="{Binding SelectedSource,
+                                                                       UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
             <Button x:Name="SourceEditButton"
                     Grid.Row="0"
                     Grid.Column="1"
@@ -90,26 +109,6 @@
                     <core1:HelpSetter DataContext="{Binding}" Text="" />
                 </i:Interaction.Behaviors>
             </Button>
-            <ComboBox x:Name="InitialComboBox"
-                      Grid.Row="0"
-                      Grid.Column="0"
-                      Margin="{StaticResource ControlBorderRight}"
-                      DisplayMemberPath="ResourceName"
-                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                      ItemsSource="{Binding Sources}"
-                      SelectedItem="{Binding SelectedSource,
-                                             Mode=TwoWay,
-                                             UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Core.DropboxSourceToolTip}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxSourceToolTip}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="SelectedSource"
-                                         SourcePropertyValue="{Binding SelectedSource,
-                                                                       UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
         </Grid>
         <!--  Local File Implemantation  -->
         <Grid Grid.Row="1"
@@ -131,6 +130,7 @@
                        Text="Dropbox Path" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
+                                    Margin="0,1,0,0"
                                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID,
                                                                                 StringFormat=UI_{0}_fxtxt_AutoID}"
@@ -139,7 +139,6 @@
                                     IsInCalculateMode="False"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    Margin="0,1,0,0"
                                     Text="{Binding ToPath,
                                                    Mode=TwoWay,
                                                    UpdateSourceTrigger=PropertyChanged}"
@@ -156,12 +155,11 @@
         </Grid>
 
         <TextBlock Grid.Row="2"
-                       Grid.Column="0"
-                       Margin="{StaticResource ActivityBorderTop}"
-                       Text="Read" />
+                   Grid.Column="0"
+                   Text="Read" />
         <Grid Grid.Row="2"
-                  Grid.Column="1"
-                  Margin="0,-3,0,0">
+              Grid.Column="1"
+              Margin="0,-3,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -172,38 +170,41 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <RadioButton Grid.Row="0"
-                             Grid.Column="0"
-                             GroupName="ReturnData"
-                             ToolTip="{x:Static languages:Core.DropboxReadFilesToolTip}"
-                             Content="Files"
-                             IsChecked="{Binding IsFilesSelected}">
+                         Grid.Column="0"
+                         Content="Files"
+                         GroupName="ReturnData"
+                         IsChecked="{Binding IsFilesSelected}"
+                         ToolTip="{x:Static languages:Core.DropboxReadFilesToolTip}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFiles}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
             <RadioButton Grid.Row="0"
-                             Grid.Column="1"
-                             GroupName="ReturnData"
-                             ToolTip="{x:Static languages:Core.DropboxReadFoldersToolTip}"
-                             Content="Folders"
-                             IsChecked="{Binding IsFoldersSelected}">
+                         Grid.Column="1"
+                         Content="Folders"
+                         GroupName="ReturnData"
+                         IsChecked="{Binding IsFoldersSelected}"
+                         ToolTip="{x:Static languages:Core.DropboxReadFoldersToolTip}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFolders}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
             <RadioButton Grid.Row="0"
-                             Grid.Column="2"
-                             GroupName="ReturnData"
-                             ToolTip="{x:Static languages:Core.DropboxReadFilesFoldersToolTip}"
-                             Content="Files &amp; Folders"
-                             IsChecked="{Binding IsFilesAndFoldersSelected}">
+                         Grid.Column="2"
+                         Content="Files &amp; Folders"
+                         GroupName="ReturnData"
+                         IsChecked="{Binding IsFilesAndFoldersSelected}"
+                         ToolTip="{x:Static languages:Core.DropboxReadFilesFoldersToolTip}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropboxReadFilesFolders}" />
                 </i:Interaction.Behaviors>
             </RadioButton>
         </Grid>
 
-        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,-8,0,0">
+        <Grid Grid.Row="3"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="0,-8,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding ElementName=DropboxFileTextBlock, Path=ActualWidth}" />
                 <ColumnDefinition Width="*" />
@@ -217,10 +218,10 @@
                        Text="Recursive" />
             <CheckBox Grid.Row="0"
                       Grid.Column="1"
-                      Content="Load Sub folders"
-                      ToolTip="{x:Static languages:Core.DropBoxFileListRecursiveToolTip}"
                       Margin="-6,0,0,0"
-                      IsChecked="{Binding IsRecursive}">
+                      Content="Load Sub folders"
+                      IsChecked="{Binding IsRecursive}"
+                      ToolTip="{x:Static languages:Core.DropBoxFileListRecursiveToolTip}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter DataContext="{Binding}" Text="{x:Static languages:Core.DropBoxFileListRecursive}" />
                 </i:Interaction.Behaviors>
