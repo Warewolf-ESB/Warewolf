@@ -3,7 +3,7 @@
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:mc ="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                               xmlns:d ="http://schemas.microsoft.com/expression/blend/2008"                       
+                               xmlns:d ="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
@@ -17,13 +17,11 @@
                                MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
-                               d:DataContext="{d:DesignInstance dropboxFile:DropBoxFileListDesignerViewModel}"                            
-                               
-                               >
+                               d:DataContext="{d:DesignInstance dropboxFile:DropBoxFileListDesignerViewModel}">
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
@@ -36,20 +34,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Source"/>
         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding SelectedSource.ResourceName}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedSource.ResourceName}" />
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Dropbox Path"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Dropbox Path" />
         <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
                                 Grid.Column="1"
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -67,24 +60,5 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Read" Margin="{StaticResource ActivityBorderTop}"/>
-        <Grid Grid.Column="1"                    
-                    Grid.Row="3"
-                    ToolTip="{x:Static languages:Core.DropboxReadFolderToolTip}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <RadioButton Grid.Column="0" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files</RadioButton>
-            <RadioButton Grid.Column="1" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Folders</RadioButton>
-            <RadioButton Grid.Column="2" Grid.Row="0" GroupName="ReturnData" IsChecked="{Binding IsFilesAndFoldersSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files &amp; Folders</RadioButton>
-        </Grid>
-
-        <TextBlock Grid.Column="0" Grid.Row="6" Text="Recursive" Margin="{StaticResource ActivityBorderTop}"/>
-        <CheckBox Grid.Column="1" Grid.Row="6" IsChecked="{Binding IsRecursive}">Load Sub folders</CheckBox>
     </Grid>
 </core:ActivityDesignerTemplate>

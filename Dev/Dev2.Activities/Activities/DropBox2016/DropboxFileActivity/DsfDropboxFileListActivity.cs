@@ -80,6 +80,10 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
+            if (string.IsNullOrWhiteSpace(ToPath))
+            {
+                ToPath = string.Empty;
+            }
             base.ExecuteTool(dataObject, update);
         }
 
