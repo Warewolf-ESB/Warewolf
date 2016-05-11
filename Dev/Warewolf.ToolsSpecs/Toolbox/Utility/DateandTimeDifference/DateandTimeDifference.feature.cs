@@ -1613,30 +1613,24 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void CalculateTheNumberOfMonthsUsingComplexTypes(string input1, string val1, string input2, string val2, string inputformat, string val3, string res, string error, string result, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of months using complex types", @__tags);
-#line 504
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of months using complex types", exampleTags);
+#line 502
 this.ScenarioSetup(scenarioInfo);
-#line 505
+#line 503
  testRunner.Given(string.Format("I have a first date \'{0}\' equals \'{1}\'", input1, val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 506
+#line 504
  testRunner.And(string.Format("I have a second date \'{0}\' equals \'{1}\'", input2, val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 507
+#line 505
  testRunner.And(string.Format("the date format as \'{0}\' equals \'{1}\'", inputformat, val3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 508
+#line 506
  testRunner.And("I selected output in \"months\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 509
+#line 507
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 510
+#line 508
  testRunner.Then("the difference should be \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 511
+#line 509
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 512
+#line 510
  testRunner.And(string.Format("the result variable \'{0}\' will be \'{1}\'", res, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1645,7 +1639,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate the number of months using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTimeDifference")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec().row(*).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input1", "[[rec().row(*).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "30/07/2015")]
@@ -1664,7 +1657,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate the number of months using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTimeDifference")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(1).row([[int]]).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input1", "[[rec(1).row([[int]]).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "31/07/2015")]
@@ -1683,7 +1675,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate the number of months using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTimeDifference")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "now() = !!DateWithMS!!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input1", "now() = !!DateWithMS!!")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "2014/01/06 08:00:01.00")]
@@ -1705,21 +1696,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfYearsByUsingNullVariableAsFirstDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Years by using Null variable as first date", ((string[])(null)));
-#line 521
+#line 519
 this.ScenarioSetup(scenarioInfo);
-#line 522
+#line 520
  testRunner.Given("I have date time difference variable \"[[a]]\" with value \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 523
+#line 521
  testRunner.And("I have a first date \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 524
+#line 522
  testRunner.And("I have a second date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 525
+#line 523
  testRunner.And("the date format as \"dd MM yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 526
+#line 524
  testRunner.And("I selected output in \"Years\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 527
+#line 525
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 528
+#line 526
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1731,19 +1722,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfYearsByUsingNonExistentVariableAsFirstDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Years by using non existent variable as first date", ((string[])(null)));
-#line 532
+#line 530
 this.ScenarioSetup(scenarioInfo);
-#line 533
+#line 531
  testRunner.Given("I have a first date \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 534
+#line 532
  testRunner.And("I have a second date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 535
+#line 533
  testRunner.And("the date format as \"dd MM yyyy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 536
+#line 534
  testRunner.And("I selected output in \"Years\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 537
+#line 535
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 538
+#line 536
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

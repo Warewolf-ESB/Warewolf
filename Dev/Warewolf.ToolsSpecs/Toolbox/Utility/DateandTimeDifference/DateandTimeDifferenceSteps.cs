@@ -81,10 +81,22 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             ScenarioContext.Current.Add("input1", input1);
         }
 
+        [Given(@"I have a first date '(.*)' equals '(.*)'")]
+        public void GivenIHaveAFirstDateEquals(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
         [Given(@"I have a second date ""(.*)""")]
         public void GivenIHaveASecondDate(string input2)
         {
             ScenarioContext.Current.Add("input2", input2);
+        }
+
+        [Given(@"I have a second date '(.*)' equals '(.*)'")]
+        public void GivenIHaveASecondDateEquals(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
         [Given(@"I selected output in ""(.*)""")]
@@ -112,6 +124,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         public void GivenTheDateFormatAs(string inputFormat)
         {
             ScenarioContext.Current.Add("inputFormat", inputFormat);
+        }
+
+        [Given(@"the date format as '(.*)' equals '(.*)'")]
+        public void GivenTheDateFormatAsEquals(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
         [Given(@"I have a DateAndTimeDifference variable ""(.*)"" equal to (.*)")]

@@ -66,7 +66,7 @@ Scenario: Opening Saved workflow with MySQL Connector tool
 	| value       | [[new_procedure().value]] |
 	And "Recordset Name" equals "new_procedure"
 
-Scenario: Change Source on Existing tool
+Scenario: Change MySQL Source on Existing tool
 	Given I open MySql_workflow
 	Then "MySql_workflow" tab is opened
 	And "Source" is "Enabled"
@@ -113,8 +113,7 @@ Scenario: Change Source on Existing tool
 	| Output | Output Alias | Recordset Name      |
 	And "Save" is "Disabled"
 
-
-Scenario: Changing Actions
+Scenario: Changing MySQL Actions
 	Given I open MySql_workflow
 	Then "MySql_workflow" tab is opened
 	And "Source" is "Enabled"
@@ -155,10 +154,8 @@ Scenario: Changing Actions
 	| ID          | [[new_procedure().id]]    |
 	| value       | [[new_procedure().value]] | 
 	And "Recordset Name" equals "new_procedure"
-	
 
-
-Scenario: Change Recordset Name
+Scenario: Change MySQL Recordset Name
 	Given I open MySql_workflow
 	Then "MySql_workflow" tab is opened
 	And "Source" is "Enabled"

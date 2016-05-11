@@ -499,7 +499,6 @@ Scenario: Variables that do not exist
 	|            |                                            |
 	| [[result]] | The expression [[a]] has no value assigned |
 
-#Complex Types WOLF-1042
 Scenario Outline: Calculate the number of months using complex types
 	Given I have a first date '<input1>' equals '<Val1>' 
 	And I have a second date '<input2>' equals '<Val2>' 
