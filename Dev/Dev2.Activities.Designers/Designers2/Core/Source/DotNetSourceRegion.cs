@@ -22,6 +22,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         private IPluginSource _selectedSource;
         private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
+        // ReSharper disable once UnusedMember.Local
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
@@ -39,8 +40,8 @@ namespace Dev2.Activities.Designers2.Core.Source
             ToolRegionName = "DotNetSourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
-            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
-            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
+            NewSourceCommand = new DelegateCommand(model.CreateNewSource);
+            EditSourceCommand = new DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.ToObservableCollection();
             IsEnabled = true;
@@ -193,7 +194,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         {
             get
             {
-                return _sourceChangedAction??(()=>{});
+                return _sourceChangedAction ?? (() => { });
             }
             set
             {
@@ -250,29 +251,16 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                try
+
+                SetSelectedSource(value);
+                SourceChangedAction();
+                OnSomethingChanged(this);
+                var delegateCommand = EditSourceCommand as DelegateCommand;
+                if (delegateCommand != null)
                 {
-                    SetSelectedSource(value);
-                    SourceChangedAction();
-                    OnSomethingChanged(this);
-                    var delegateCommand = EditSourceCommand as DelegateCommand;
-                    if (delegateCommand != null)
-                    {
-                        delegateCommand.RaiseCanExecuteChanged();
-                    }
+                    delegateCommand.RaiseCanExecuteChanged();
                 }
-                catch (AggregateException e)
-                {
-                    Console.WriteLine(e);
-                }
-                catch (SystemException e)
-                {
-                    Console.WriteLine(e);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+
             }
         }
 
