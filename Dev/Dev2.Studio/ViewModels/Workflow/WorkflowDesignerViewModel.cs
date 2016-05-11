@@ -845,17 +845,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (property != null)
                 {
                     var activity = property.ComputedValue;
-                    if (activity != null)
+                    if (!string.IsNullOrEmpty(_expressionString))
                     {
-                        workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
+                        workflowFields = GetDecisionElements(_expressionString, DataListSingleton.ActiveDataList);
                     }
                     else
                     {
-                        if (!string.IsNullOrEmpty(_expressionString))
+                        if (activity != null)
                         {
-                            workflowFields = GetDecisionElements(_expressionString, DataListSingleton.ActiveDataList);
+                            workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
                         }
-                    }
+                    }                    
                 }
                 else
                 {
@@ -1709,13 +1709,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     // Handle Switch Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowSwitch<string>))
                     {
-                        FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                     }
 
                     //// Handle Decision Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowDecision))
                     {
-                        FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                     }
                 }
 
