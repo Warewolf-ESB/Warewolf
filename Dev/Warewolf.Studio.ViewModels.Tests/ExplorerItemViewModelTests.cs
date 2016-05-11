@@ -298,7 +298,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Delete(It.IsAny<IExplorerItemViewModel>()), Times.Never);
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
             //assert
-            //DeleteVersion();
         }
 
         [TestMethod]
@@ -311,7 +310,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = ResourceType.DbService;
             _target.ResourceId = Guid.NewGuid();
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
@@ -337,7 +335,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = ResourceType.ServerSource;
             _target.ResourceId = Guid.NewGuid();
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
@@ -363,7 +360,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EnvironmentModel = environmentModelMock.Object;
             _target.ResourceType = ResourceType.Server;
             _target.ResourceId = Guid.NewGuid();
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
@@ -414,6 +410,23 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.OpenVersion(_target.Parent.ResourceId, _target.VersionInfo));
+        }
+
+        [TestMethod]
+        public void TestOpenVersionCommandResourceTypeVersionOnDoubleClick()
+        {
+            //arrange
+            _target.ResourceType = ResourceType.Version;
+            var versionInfoMock = new Mock<IVersionInfo>();
+            _target.VersionInfo = versionInfoMock.Object;
+            _explorerTreeItemMock.Setup(it => it.ResourceId).Returns(Guid.NewGuid());
+
+            //act
+            _target.OpenCommand.Execute(null);
+            Assert.IsTrue(_target.OpenVersionCommand.CanExecute(null));
+
+            //assert
+            _shellViewModelMock.Verify(it => it.OpenVersion(_target.ResourceId, _target.VersionInfo));
         }
 
         [TestMethod]
