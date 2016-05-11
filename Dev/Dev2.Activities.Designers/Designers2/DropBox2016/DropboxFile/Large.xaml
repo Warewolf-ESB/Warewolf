@@ -113,8 +113,7 @@
         <!--  Local File Implemantation  -->
         <Grid Grid.Row="1"
               Grid.Column="0"
-              Grid.ColumnSpan="2"
-              Margin="0,1,0,0">
+              Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -156,6 +155,7 @@
 
         <TextBlock Grid.Row="2"
                    Grid.Column="0"
+                   Margin="0,-4,0,0"
                    Text="Read" />
         <Grid Grid.Row="2"
               Grid.Column="1"
@@ -215,6 +215,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
+                       Margin="0,1,0,0"
                        Text="Recursive" />
             <CheckBox Grid.Row="0"
                       Grid.Column="1"
@@ -231,11 +232,12 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
                        Height="23"
-                       Margin="{StaticResource ControlBorderTop}"
+                       Margin="0,-1,0,0"
                        VerticalAlignment="Bottom"
                        Text="Result" />
             <ui:IntellisenseTextBox Grid.Row="1"
                                     Grid.Column="1"
+                                    Margin="0,-1,0,0"
                                     attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID,
                                                                                 StringFormat=UI_{0}_fxtxt_AutoID}"
