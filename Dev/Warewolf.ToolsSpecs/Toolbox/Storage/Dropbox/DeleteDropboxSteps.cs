@@ -81,7 +81,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [When(@"I click Dropbox Delete Edit")]
         public void WhenIClickDropboxDeleteEdit()
         {
-            GetViewModel().EditDropboxSourceCommand.Execute(null);
+            GetViewModel().EditDropboxSourceCommand.CanExecute(null);
         }
 
         [Given(@"Delete Dropbox File is Enabled")]
