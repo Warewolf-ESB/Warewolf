@@ -2350,7 +2350,9 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropBoxFileListRecursive.
+        ///   Looks up a localized string similar to When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 
+        ///    
+        ///    NOTE: Dropbox has a max return count of 2000..
         /// </summary>
         public static string DropBoxFileListRecursive {
             get {
@@ -2359,7 +2361,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropBoxFileListRecursiveToolTip.
+        ///   Looks up a localized string similar to Get the sub folders information as well..
         /// </summary>
         public static string DropBoxFileListRecursiveToolTip {
             get {
@@ -2377,7 +2379,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropboxReadFiles.
+        ///   Looks up a localized string similar to Returns the files that are in the given folder, or all the files in the folder and all the files in the sub folders if Recursive is selected..
         /// </summary>
         public static string DropboxReadFiles {
             get {
@@ -2386,7 +2388,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropboxReadFilesFolders.
+        ///   Looks up a localized string similar to Returns a list of everything in the Dropbox folder provided or everything including sub folders if Recursive is selected..
         /// </summary>
         public static string DropboxReadFilesFolders {
             get {
@@ -2395,7 +2397,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropboxReadFilesFoldersToolTip.
+        ///   Looks up a localized string similar to Get the files and folders.
         /// </summary>
         public static string DropboxReadFilesFoldersToolTip {
             get {
@@ -2404,7 +2406,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropboxReadFilesToolTip.
+        ///   Looks up a localized string similar to Just get the files.
         /// </summary>
         public static string DropboxReadFilesToolTip {
             get {
@@ -2413,7 +2415,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropboxReadFolders.
+        ///   Looks up a localized string similar to Returns the folders that are in the given Dropbox folder, or all the folders in the folder and all the folders in the sub folders if Recursive is selected..
         /// </summary>
         public static string DropboxReadFolders {
             get {
@@ -2422,7 +2424,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DropboxReadFoldersToolTip.
+        ///   Looks up a localized string similar to Just get the folders.
         /// </summary>
         public static string DropboxReadFoldersToolTip {
             get {
