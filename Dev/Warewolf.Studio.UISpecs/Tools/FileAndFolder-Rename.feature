@@ -6,13 +6,11 @@ Feature: FileAndFolder-Rename
 
 @Rename
 # Coded UI
-@ignore
 Scenario: Rename tool Small View
        Given I have Rename Small View on design surface
        Then Rename small view has
        | File or Folder | New Name | Result |
        |                |          |        |
-@ignore
 Scenario: Rename tool Large View
        Given I have Rename Large View on design surface
        Then Rename Large View has
@@ -25,13 +23,11 @@ Scenario: Rename tool Large View
        And End this workflow is "Unselected"
        And Done button is "Visible"
 
-@ignore
 Scenario: Rename tool Small View water marks
        Given I have Rename Small View on design surface
        Then Rename small view watermarks are
        | File or Folder   | New Name             | Result      |
        | [[PathToRename]] | [[FileOrFolderName]] | [[Success]] |
-@ignore
 Scenario: Rename tool Large View Water marks
        Given I have Rename Large View on design surface
        Then Rename Large View watermarks are
@@ -43,7 +39,6 @@ Scenario: Rename tool Large View Water marks
        | [[Errors().Message         | http://lcl:3142/service/err |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-@ignore
 Scenario: Rename Large View is validating when clicking on done with blank fields
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -73,7 +68,6 @@ Scenario: Rename tool Large View to small view persisting data correctly
        | File or Folder | New Name   | Result     |
        | C:\ Test       | C:\ Rename | [[Rename]] |
 
-@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Rename Large View on design surface
        When Rename Large View has
@@ -97,7 +91,6 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | New Name   | Result     |
        | C:\[[a]]       | C:\ Rename | [[Rename]] |
 
-@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Rename Large View on design surface
        And Rename Large View has
@@ -117,7 +110,6 @@ Scenario: Close large view is closing large view without validating
        | File or Folder | New Name   | Result     |
        | C:\[[a]        | C:\ Rename | [[Rename]] |
 
-@ignore
 Scenario Outline: Rename Large View is validating incorrect source path
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -141,7 +133,6 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
-@ignore
 Scenario Outline: Rename Large View is validating incorrect New Name path
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -166,7 +157,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Rename Large View is validating incorrect variable in File Username field
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -192,7 +182,6 @@ Examples:
 
 
 
-@ignore
 Scenario Outline: Rename Large View is validating incorrect variable in New Name username field
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -217,7 +206,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Rename Large View is validating incorrect variable in Result field
        Given I have Rename Large View on design surface
        And "File or Folder" is focused
@@ -237,7 +225,6 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
-@ignore
 Scenario Outline: Rename On error fields incorrect variables are validating
        Given I have Rename Large View on design surface
        And Rename Large View with water marks has

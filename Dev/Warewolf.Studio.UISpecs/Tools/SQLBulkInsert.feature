@@ -5,7 +5,6 @@
 
 @SQLBulkInsert
 # Coded UI Tests
-@ignore
 Scenario: Sql Bulk Insert small view
 	Given I have Sql Bulk Insert small view
 	And Db selected is "Select a Database..."  
@@ -15,7 +14,6 @@ Scenario: Sql Bulk Insert small view
 	And data grid is "Disabled"
 	And result is ""
 
-@ignore
 Scenario: Sql Bulk Insert Large view
 	Given I have Sql Bulk Insert Large view
 	And Db selected is "Select a Database..."  
@@ -40,7 +38,6 @@ Scenario: Sql Bulk Insert Large view
 
 
 
-@ignore
 Scenario: Sql Bulk Insert Large view water marks
 	Given I have Sql Bulk Insert Large view
 	And Db selected is "Select a Database..."  
@@ -64,14 +61,12 @@ Scenario: Sql Bulk Insert Large view water marks
     And Done button is "Visible"
 
 
-@ignore
 Scenario: Select New Database source is opening new db source tab
 	Given I have Sql Bulk Insert Large view
 	When Db selected is "New Database Source"  
 	Then "New Database Service" tab is opened
 	And focus is "Select a source"
 
-@ignore
 Scenario: Selecting a saved DB as DB in large view 
 	Given I have Sql Bulk Insert Large view
 	And Db selected is "testingDBSrc"  
@@ -109,7 +104,6 @@ Scenario: Selecting a saved DB as DB in large view
 
 
 
-@ignore
 Scenario Outline: Large view done button is validating incorrect variables in result
 	Given I have Sql Bulk Insert Large view
 	And Db selected is "testingDBSrc"  
@@ -144,7 +138,6 @@ Examples:
     | 7  |                  | True  |
     
 
-@ignore
 Scenario Outline: Large view is validating incorrect variables in Input fields
 	Given I have Sql Bulk Insert Large view
 	And Db selected is "testingDBSrc"  
@@ -176,7 +169,6 @@ Examples:
 
 
 
-@ignore
 Scenario: Collapse largeview is closing large view
 	Given I have Sql Bulk Insert Large view
 	And Db selected is "testingDBSrc"  
@@ -198,7 +190,6 @@ Scenario: Collapse largeview is closing large view
 	Then Validation message is not thrown
 	Then Sql Bulk Insert Small View is "Visible"
 
-@ignore
 Scenario: Opening Sql Bulk Insert Quick Variable Input
 	Given I have Sql Bulk Insert Small View on design surface
 	When I select "QVI"

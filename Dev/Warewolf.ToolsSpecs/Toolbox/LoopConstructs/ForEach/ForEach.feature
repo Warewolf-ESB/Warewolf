@@ -456,7 +456,6 @@ Examples:
 	
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Execute a foreach over a tool using complex types
 	Given There is a recordset in the datalist with this shape
 	| rs                     | value |

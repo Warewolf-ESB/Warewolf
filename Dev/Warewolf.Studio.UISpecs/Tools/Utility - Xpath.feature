@@ -5,7 +5,6 @@
 
 @Xpath
 # Coded UI Tests
-@ignore
 Scenario: Xpath small view and Large view
 	Given I have Xpath small view on design surface
 	And I have XML is ""
@@ -22,7 +21,6 @@ Scenario: Xpath small view and Large view
 	And Scroll bar is "Disabled"
 	And Done button is "Visible"
 
-@ignore
 Scenario: Xpath Large view is validating empty fields
 	Given I have Xpath Large view on design surface
 	Then I have XML is ""
@@ -35,7 +33,6 @@ Scenario: Xpath Large view is validating empty fields
 	When I click on Done
 	Then Validation message is thrown
 
-@ignore
 Scenario: Xpath water marks small view and Large view
 	Given I have Xpath small view on design surface
 	And I have XML watermarks is "[[Xml]]"
@@ -52,7 +49,6 @@ Scenario: Xpath water marks small view and Large view
 	| 2 |                 | Xpath |
 	And Scroll bar is "Disabled"
 	And Done button is "Visible"
-@ignore
 Scenario Outline: Xpath Large view is validating Incorrect Variables
 	Given I have Xpath Large view on design surface
 	Then I enter XML is ""
@@ -78,7 +74,6 @@ Examples:
     | 10 | <root><number id="1">One</number><number[[a]] | False |
     | 11 |                                               | True  |
 
-@ignore
 Scenario Outline: Xpath Large view is validating Incorrect Output variables
 	Given I have Xpath Large view on design surface
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
@@ -101,7 +96,6 @@ Examples:
     | 7  | [[rec().a@]]     | True  |
     | 8  | [[a]]]]          | True  |
 
-@ignore
 Scenario: Inserting Rows in large view
 	Given I have Xpath Large view on design surface
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
@@ -126,7 +120,6 @@ Scenario: Inserting Rows in large view
 	| 6 | [[rec(2).id]] |                               |
 	| 7 | [[rec(2).id]] |                               |
 	| 8 |               |                               |
-@ignore
 Scenario: Deleting Rows in large view
 	Given I have Xpath Large view on design surface
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"

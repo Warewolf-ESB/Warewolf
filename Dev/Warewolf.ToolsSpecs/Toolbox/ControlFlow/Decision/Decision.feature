@@ -1278,7 +1278,6 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	|       |
 	| NO |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Ensuring all complex type inputs work as expected
 	Given a decision variable '<variable1>' value '<Var1>'	
@@ -1330,7 +1329,6 @@ Scenario: validate that a variable is not Null positive
        |     |
        | YES |
 
-@Ignore
 Scenario: validate that a variable is Blank positive
 	Given a decision variable "[[B]]" value ""
 	And decide if "[[B]]" "IsEqual" ""
@@ -1343,7 +1341,6 @@ Scenario: validate that a variable is Blank positive
        |     |
        | YES |
 
-@Ignore
 Scenario: validate that a variable is Blank OR NULL positive 1
 	Given a decision variable "[[B]]" value ""
 	And decide if "[[B]]" "IsEqual" ""
@@ -1358,7 +1355,6 @@ Scenario: validate that a variable is Blank OR NULL positive 1
        |     |
        | YES |
 
-@Ignore
 Scenario: validate that a variable is Blank OR NULL positive 2
 	Given decide if "[[B]]" "IsEqual" ""
 	And decide if "[[B]]" "IsNull"

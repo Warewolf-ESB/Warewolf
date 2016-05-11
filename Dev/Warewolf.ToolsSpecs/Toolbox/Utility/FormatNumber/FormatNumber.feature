@@ -215,7 +215,6 @@ Scenario: Format number rounding with unknown scalar decimals value to show
 	|                   |
 	| [[result]] = 789 |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Format number using complex types 
 	Given I have a number '<Number>'

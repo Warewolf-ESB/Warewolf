@@ -377,7 +377,6 @@ Scenario: Edit DB Source
 	Then the "DemoDB" tab is opened
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Saving results in complex types
 	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]"

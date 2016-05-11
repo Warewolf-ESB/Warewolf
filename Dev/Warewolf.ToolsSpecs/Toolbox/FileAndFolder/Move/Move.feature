@@ -76,7 +76,6 @@ Scenario Outline: Move file at location Null
 #	   | 5  | Local to FTPS  | [[sourcePath]] | v:\movefile2.txt                                             | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved0.txt | integrationtester | I73573r0     | True     | [[result]] | Failure | AN           |                      |                           |
 #	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                          | ""       | ""       | [[destPath]] | sftp://localhost/moved0.txt                      | dev2              | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
 	 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Move file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>' 

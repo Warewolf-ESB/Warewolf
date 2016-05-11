@@ -314,7 +314,6 @@ Scenario: Tool does not return
 	|                                      |
 	| [[result]] = Index is not an integer |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Find all occurances using complex types
 	Given I have a Find Index variable '<variable>' equal to '<value>'

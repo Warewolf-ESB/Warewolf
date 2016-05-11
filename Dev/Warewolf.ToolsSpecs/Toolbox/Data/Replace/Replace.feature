@@ -152,7 +152,6 @@ Examples:
 | [[text]]      | 12      | [[var]]                 | 1      | [[sentence]] = Dear Mr 12, We welcome you as a customer   |
 
 #Complex types WOLF-1042
-@ignore
 Scenario Outline: Replace values using complex types
 	Given I have a replace variable "<var>" equal to "<value>"
 	And I have a sentence "<var>"

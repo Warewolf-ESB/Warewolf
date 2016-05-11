@@ -101,7 +101,6 @@ Scenario: Editing scheduled task is prompting to save
 
 
 
-@ignore
 #Wolf -619
 Scenario: Viewing number of records in history
 	Given I have Scheduler tab opened

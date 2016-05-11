@@ -48,7 +48,7 @@ Scenario: Opening Saved workflow with ODBC Server tool
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Recordset Name equal "dbo_Pr_CitiesGetCountries"
 
-Scenario: Change Source on Existing tool
+Scenario: Change ODBC Source on Existing tool
 	Given I open workflow with ODBC connector
 	And Source iz Enable
 	And Source iz "localODBCTest"
@@ -71,8 +71,7 @@ Scenario: Change Source on Existing tool
 	And Validate iz Enable
 
 #Spec to be modified once test results section is included in tool window
-@ignore
- Scenario: Editing DB Service and Test Execution is unsuccesful
+ Scenario: Editing ODBC Service and Test Execution is unsuccesful
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
    Then "1 Data Source" is "Enabled"
@@ -96,7 +95,7 @@ Scenario: Change Source on Existing tool
 	And "Save" is "Disabled"
 
 
-Scenario: Changing Actions
+Scenario: Changing ODBC Actions
 	Given I open workflow with ODBC connector
 	And Source iz Enable
 	And Source iz "localODBCTest"
@@ -120,7 +119,7 @@ Scenario: Changing Actions
 	And Validate iz Enable	
 
 
-Scenario: Change Recordset Name
+Scenario: Change ODBC Recordset Name
 	Given I open workflow with ODBC connector
 	And Source iz Enable
 	And Source iz "localODBCTest"

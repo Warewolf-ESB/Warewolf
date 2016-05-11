@@ -5,7 +5,6 @@
 
 @FindRecordIndex
 # Coded UI Test
-@ignore
 Scenario: Find Record Index small view
 	Given I have Find Record Index Small view on design surface
 	And Infield is ""
@@ -43,7 +42,6 @@ Scenario: Find Record Index Large view
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 
-@ignore
 Scenario: Find Record Index small view water marks
 	Given I have Find Record Index Small view on design surface
 	And Infield water mark is "[[Recordset().Field]]"
@@ -100,7 +98,6 @@ Scenario: FRI small view to large view data persisting correctly
     And Done button is "Visible"
 
 
-@ignore
 Scenario: In small view Rows are creating one after one and scroll bar is enabling
 	Given I have Find Record Index Small view on design surface
 	And Infield is "[[rec().a]]"
@@ -129,7 +126,6 @@ Scenario: In small view Rows are creating one after one and scroll bar is enabli
 	And Done button is "Visible"
 
 
-@ignore
 Scenario: Fields are creating one after one in large view
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -160,7 +156,6 @@ Scenario: Fields are creating one after one in large view
 	| 7 | Choose... | Disabled |
 	 And Scroll bar is "Enaabled"
 
-@ignore
 Scenario Outline: LargeView Selecting Match Type from dropbox
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -211,7 +206,6 @@ Examples:
     | 34 | Not Test           |
     | 35 | Not XML            |
 	
-@ignore
 Scenario Outline: Small View Selecting Match Type from dropbox
 	Given I have Find Record Index Small view on design surface
 	And Infield is "[[rec().a]]"
@@ -264,7 +258,6 @@ Examples:
 
 
 	
-@ignore
 Scenario: FRI is validating when I click on done with empty fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is ""
@@ -284,7 +277,6 @@ Scenario: FRI is validating when I click on done with empty fields
 	Then Validation message is thrown
 
 
-@ignore
 Scenario Outline: FRI large view is validating Invalid variables in InField
 	Given I have Find Record Index Large view on design surface
 	And Infield is '<Infields>'
@@ -323,7 +315,6 @@ Examples:
      | 16 | [[rec([[a]]).a]]       | False | Visible     |
      | 17 | [[a@]]                 | True  | Not Visible |
 
-@ignore
 Scenario Outline: FRI large view is validating Invalid variables in Match Fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -362,7 +353,6 @@ Examples:
      | 16 | [[rec([[a]]).a]]       | False | Visible     |
      | 17 | [[a@]]                 | True  | Not Visible |
 
-@ignore
 Scenario: FRI large view deleting row
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -391,7 +381,6 @@ Scenario: FRI large view deleting row
 	| 3 | Choose... | Disabled |
 
 
-@ignore
 Scenario Outline: FRI large view is validating Invalid variables in Result Fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -428,7 +417,6 @@ Examples:
 
 
 
-@ignore
 Scenario: FRI is not validating when I close large view with incorrect fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a@]]"

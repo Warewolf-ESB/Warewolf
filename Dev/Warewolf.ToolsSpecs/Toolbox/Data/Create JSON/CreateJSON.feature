@@ -395,7 +395,6 @@ Scenario: Recordset with * multiple fields and  scalar values different length f
 	| [[json]] = { rec :[ c , b , g ], bob : the builder } |
 
 
-@ignore
 #COmplex Types WOLF-1042
 Scenario Outline: Simple object with single field
 	Given I have a variable "<object>" with value "<value>"

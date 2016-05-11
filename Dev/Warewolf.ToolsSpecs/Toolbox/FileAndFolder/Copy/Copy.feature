@@ -79,7 +79,6 @@ Scenario Outline: Copy file at location Null
 
                        																										 
 	
-@ignore
 #Complex types WOLF-1042
 Scenario Outline: Copy file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>' 

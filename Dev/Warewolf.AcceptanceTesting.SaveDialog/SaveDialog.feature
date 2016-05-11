@@ -1,5 +1,4 @@
 ﻿@SaveDialog
-@ignore
 Feature: SaveDialog
 	In order to save resources
 	As a Warewolf user

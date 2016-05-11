@@ -165,7 +165,6 @@ Scenario Outline: Unzip file validation
 		| 80 | [[sourcePath]]                 | ""            | ""          | c:\copyfile81.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP89            | integrationtester | I73573r0     | True     | [[rec"()".a]]          | ""              | ""      | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)             | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                   |
 		| 81 | [[sourcePath]]                 | ""            | ""          | c:\copyfile82.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP90            | integrationtester | I73573r0     | True     | [[rec([[[[b]]]]).a]]   | ""              | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
 																													
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Unzip file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>'

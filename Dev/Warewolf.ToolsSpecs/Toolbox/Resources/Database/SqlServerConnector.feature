@@ -20,7 +20,7 @@ Scenario: Opening Saved workflow with SQL Server tool
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
-Scenario: Change Source on Existing tool
+Scenario: Change SQL Server Source on Existing tool
 	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
@@ -43,8 +43,7 @@ Scenario: Change Source on Existing tool
 	And Validate is Enabled 
 
 #Spec to be modified once test results section is included in tool window
-@ignore
- Scenario: Editing DB Service and Test Execution is unsuccesful
+ Scenario: Editing SQL Server Service and Test Execution is unsuccesful
    Given I open workflow with database connector
    And "InsertDummyUser" tab is opened
    Then "1 Data Source" is "Enabled"
@@ -68,7 +67,7 @@ Scenario: Change Source on Existing tool
 	And "Save" is "Disabled"
 
 
-Scenario: Changing Actions
+Scenario: Changing SQL Server Actions
 	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
@@ -91,7 +90,7 @@ Scenario: Changing Actions
 	| ProductId |               | false         |	
 	And Validate is Enabled	
 
-Scenario: Change Recordset Name
+Scenario: Change SQL Server Recordset Name
 	Given I open workflow with database connector
 	And Source is Enabled
 	And Source is "testingDBSrc"
@@ -115,8 +114,7 @@ Scenario: Change Recordset Name
 
 
 #----------
-@ignore
-Scenario: No Action to be loaded Error
+Scenario: No SQL Server Action to be loaded Error
 	Given I have a workflow "NoStoredProceedureToLoad"
 	And "NoStoredProceedureToLoad" contains "Testing/SQL/NoSqlStoredProceedure" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
@@ -126,8 +124,7 @@ Scenario: No Action to be loaded Error
 	  |                                                                  |
 	  | Error: The selected database does not contain actions to perform |
 
-@ignore
-Scenario: Passing Null Input values
+Scenario: Passing Null Input values to SQL Server
 	Given I have a workflow "PassingNullInputValue"
 	And "PassingNullInputValue" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
@@ -138,7 +135,6 @@ Scenario: Passing Null Input values
 	  |                                       |
 	  | Error: Scalar value { value } is NULL |
 
-@ignore
 Scenario: Mapped To Recordsets incorrect
 	Given I have a workflow "BadSqlParameterName"
 	And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
@@ -155,7 +151,6 @@ Scenario: Mapped To Recordsets incorrect
 	  | Error: Sql Error: parse error |
 
 
-@ignore
 #Needs Work
 Scenario: Parameter not found in the collection
 	Given I have a workflow "BadMySqlParameterName"
@@ -169,7 +164,6 @@ Scenario: Parameter not found in the collection
 	  | Parameter 'p_startswith' not found in the collection |
 
 
-@ignore
 Scenario: Recordset has invalid character
 	Given I have a workflow "MappingHasIncorrectCharacter"
 	And "MappingHasIncorrectCharacter" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
@@ -184,7 +178,6 @@ Scenario: Recordset has invalid character
 
 
 #Wolf-1262
-@ignore
 Scenario: SqlServer backward Compatiblity
 	Given I have a workflow "DataMigration"
 	And "DataMigration" contains "DataCon" from server "localhost" with mapping as

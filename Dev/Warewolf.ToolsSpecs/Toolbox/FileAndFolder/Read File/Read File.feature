@@ -140,7 +140,6 @@ Scenario Outline: Read File at location using incorrect directory
 	| 2  | UNC        | [[variable]] | ""             | ""                           | ""       | [[result]] |        | AN           |
 	| 3  | UNC Secure | 45454        | 45454          | dev2.local\IntegrationTester | I73573r0 | [[result]] |        | AN           |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Read File at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>'

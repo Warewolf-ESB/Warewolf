@@ -2448,7 +2448,6 @@ Scenario Outline:Find index using valid inputs
 	| [[rec().set]]                 | Super      | Contains    | [[var]]                      | ""      | 2     | [[a]]                        | 1,2    |
 
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline:Find index using valid inputs complex types
 	Given I have the following in field '<inField>' equals '<values>'

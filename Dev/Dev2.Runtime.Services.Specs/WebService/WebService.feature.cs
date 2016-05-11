@@ -94,19 +94,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute webservice which returns a primitive array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Webservice_ExecutingJsonWithPrimitiveArrays_10641")]
         public virtual void ExecuteWebserviceWhichReturnsAPrimitiveArray()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute webservice which returns a primitive array", new string[] {
-                        "ignore",
                         "Webservice_ExecutingJsonWithPrimitiveArrays_10641"});
-#line 15
+#line 14
 this.ScenarioSetup(scenarioInfo);
-#line 16
+#line 15
  testRunner.Given("I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sens" +
                     "or=true&amp;address=address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 17
+#line 16
  testRunner.When("the service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -129,7 +127,7 @@ this.ScenarioSetup(scenarioInfo);
                         "-3.7056689197085",
                         "40.4459880197085",
                         "-3.7083668802915"});
-#line 18
+#line 17
  testRunner.Then("I have the following data", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -138,13 +136,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ApplyJsonPathToPayload(string responseFile, string path, string mapping, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Apply JsonPath to payload", exampleTags);
-#line 23
+#line 22
 this.ScenarioSetup(scenarioInfo);
-#line 24
+#line 23
  testRunner.Given(string.Format("I have a webservice with \'{0}\' as a response", responseFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 25
+#line 24
  testRunner.When(string.Format("I apply \'{0}\' to the response", path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 26
+#line 25
  testRunner.Then(string.Format("the mapping should be \'{0}\'", mapping), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

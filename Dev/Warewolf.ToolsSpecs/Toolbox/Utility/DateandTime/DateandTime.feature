@@ -267,7 +267,6 @@ Scenario: Date and Time output format without inputs must return correct format
 	And the execution has "NO" error
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Ensure Date and Time Input and outputs accepts complex types
        Given I have a date '<Date>'  with '<DateVal>'
        And the input format as '<Input>' with '<value>'

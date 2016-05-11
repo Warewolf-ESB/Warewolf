@@ -5,12 +5,10 @@
 
 @CMD 
 # Coded UI Tests
-@ignore
 Scenario: Execute Command Line small view
 	Given I have CMD Line tool on design surface
 	And I have CMD as ""
 	When Result as ""
-@ignore
 Scenario: Execute Command Line Large view
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
@@ -22,7 +20,6 @@ Scenario: Execute Command Line Large view
 	|                            |                       |
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
-@ignore
 Scenario: Execute Command Line water marks Large view
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
@@ -34,7 +31,6 @@ Scenario: Execute Command Line water marks Large view
 	| [[Errors().Message]]       | http://lcl:3142/services/err |
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
-@ignore
 Scenario: Execute Command Line is not thrown error for poper commands
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
@@ -46,7 +42,6 @@ Scenario: Execute Command Line is not thrown error for poper commands
 	When I click on "Done"
 	Then Validation message is not thrown
 
-@ignore
 Scenario Outline: Execute Command Line Large view validates for incorrect variables
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
@@ -67,7 +62,6 @@ Scenario Outline: Execute Command Line Large view validates for incorrect variab
 	| 6  | [[rec([[a]]).a]] | False      |
 	| 7  | Pause[[a]]       | False      |
 
-@ignore
 Scenario Outline: Execute Command Line Large view validates for incorrect variables in result
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
@@ -88,7 +82,6 @@ Scenario Outline: Execute Command Line Large view validates for incorrect variab
 	| 6  | [[rec(*).a]]     | False      |
 	| 7  | [[rec().a@]]     | True       |
 
-@ignore
 Scenario: Execute Command Line Large view persisting data to small view
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
@@ -103,7 +96,6 @@ Scenario: Execute Command Line Large view persisting data to small view
 	And I have CMD as "pause [[a]]"
 	And Result as "[[Result]]"
 
-@ignore
 Scenario Outline: CMD line Priority is not changing when close and open largeview
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
@@ -127,7 +119,6 @@ Examples:
     | 6  | Real Time    |
 
 
-@ignore
 Scenario: CMD tool large view validates if fields are empty
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view

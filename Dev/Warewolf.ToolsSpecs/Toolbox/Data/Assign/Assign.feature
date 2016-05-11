@@ -739,7 +739,6 @@ Scenario: Assigning variables with space after closing brace
 	Then the execution has "AN" error
 	And the execution has "Variable - Invalid expression: opening and closing brackets don't match" error
 
-@ignore
 Scenario: Removing variable and value from assign 
 	Given I assign the value "10" to a variable "[[x]]"
 	And I assign the value "20" to a variable "[[var]]" 
@@ -749,7 +748,6 @@ Scenario: Removing variable and value from assign
 
 
 #Complex types WOLF-1042
-@ignore
 Scenario Outline:  Assigning value to a complex type
 	Given I assign the value "<value>" to a variable "<object>"	
 	When the assign tool is executed
@@ -774,7 +772,6 @@ Scenario: Assign a Variable That is Null to another variable
 	Then the execution has "No" error
 
 
-@ignore
 Scenario Outline:  Assigning value to a complex type that is incorrectly formatted
 	Given I assign the value "<value>" to a variable "<object>"	
 	When the assign tool is executed

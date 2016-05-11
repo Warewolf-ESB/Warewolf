@@ -28,7 +28,6 @@ Scenario: Assigning values to Display
 	Then "1" is the display text 
 
 # workitem for validation for popups in backlog.
-@ignore
 Scenario: Assigning variable to switch arms
 	Given I open a "New Workflow"
 	And drop a "Switch" tool onto the design surface

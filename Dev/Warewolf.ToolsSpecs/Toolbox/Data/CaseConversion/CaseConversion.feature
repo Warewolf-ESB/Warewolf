@@ -327,7 +327,6 @@ Scenario: Convert a Variable That is NULL
 	When the case conversion tool is executed
 	Then the execution has "No" error
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Convert a sentence to uppercase using complex types
 	Given I have a case convert variable '<variable>' with a value of '<value>'
