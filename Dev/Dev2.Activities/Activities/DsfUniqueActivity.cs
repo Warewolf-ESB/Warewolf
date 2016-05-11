@@ -112,7 +112,10 @@ namespace Dev2.Activities
                 {
                     throw new Exception("invalid selected fields");
                 }
-
+                if(toresultfields.Any(ExecutionEnvironment.IsScalar))
+                {
+                    throw new Exception("'Result' cannot be a scalar. Please use a recordset instead.");
+                }
                 dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields, update);
             }
             catch(Exception e)
