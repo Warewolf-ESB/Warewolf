@@ -58,6 +58,8 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         [Then(@"the execution has ""(.*)"" error")]
         [Then(@"the execution has '(.*)' error")]
+        [When(@"the execution has ""(.*)"" error")]
+        [When(@"the execution has '(.*)' error")]
         public void ThenTheExecutionHasError(string anError)
         {
             bool expectedError = anError.Equals("AN",StringComparison.OrdinalIgnoreCase);
@@ -91,6 +93,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
         }
 
         [Then(@"the debug output as")]
+        [When(@"the debug output as")]
         public void ThenTheDebugOutputAs(Table table)
         {
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");

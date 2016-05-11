@@ -701,35 +701,12 @@ Scenario: Assign a variable to another variable
     | 3 | [[var]] = x |
 
 
-#Wolf - 485
-#Scenario: Assign values to recordsets
-#	Given I assign the value 1 to a variable "[[AB().a]]"	
-#	And I assign the value a to a variable "[[CD().a]]"
-#	And I assign the value b to a variable "[[CD().a]]"
-#	And I assign the value 2 to a variable "[[AB().a]]"	
-#	When the assign tool is executed
-#	Then the value of "[[AB(2).a]]" equals 2
-#	And the execution has "NO" error
-#	And the debug inputs as
-#	| # | Variable      | New Value |
-#	| 1 | [[AB().a]]  = | 1         |
-#	| 2 | [[CD().a]]  = | a         |
-#	| 3 | [[CD().a]]  = | b         |
-#	| 4 | [[AB().a]]  = | 2         |
-#	And the debug output as
-#    | # |                 |
-#    | 1 | [[AB(1).a]] = 1 |
-#    | 2 | [[CD(1).a]] = a |
-#    | 3 | [[CD(2).a]] = b |
-#    | 4 | [[AB(2).a]] = 2 |
-
-
-
 Scenario: Assign a Variable That Does Not Exist
 	Given I assign the value "[[var]]" to a variable "[[a]]"
 	When the assign tool is executed
 	Then the execution has "AN" error
 	And the execution has "Scalar value { var } is NULL" error
+
 
 Scenario: Assigning variables with space after closing brace
 	Given I assign the value "10" to a variable "[[x]]"
@@ -739,11 +716,12 @@ Scenario: Assigning variables with space after closing brace
 	Then the execution has "AN" error
 	And the execution has "Variable - Invalid expression: opening and closing brackets don't match" error
 
+
 Scenario: Removing variable and value from assign 
 	Given I assign the value "10" to a variable "[[x]]"
 	And I assign the value "20" to a variable "[[var]]" 
 	And I assign the value "30" to a variable "[[variable]]"
-	When I remove "[[var]]" equals "20"
+	When I remove "[[var]]"
 	Then the assign tool row index is update
 
 
@@ -784,11 +762,6 @@ Scenario Outline:  Assigning value to a complex type that is incorrectly formatt
 	| [[granparent.parent().NumberOfChildren]]                      | 4     | [[granparent.parent().NumberOfChildren]] = Error |
 	| [[granparent().parent(1).NumberOfChildren()]]                 | 6     | [[granparent().parent(1).NumberOfChildren()]] = Error  |
 	| [[granparent(Test).parent(*).NumberOfChildren]]               | 10    | [[granparent(Test).parent(1).NumberOfChildren]] = Error |
-	
-
-	#| [[granparent().parent([[int]]).NumberOfChildren]]| 4     | [[granparent().parent(2).NumberOfChildren]] = 4  |
-	#| [[granparent(*).parent(1).NumberOfChildren]]                  | 7     | [[granparent(*).parent(1).NumberOfChildren]] = 7 |
-	#| [[granparent(*).parent(*).NumberOfChildren]]                  | 14    | [[granparent().parent(1).NumberOfChildren]] = 14 |
 
 
 
