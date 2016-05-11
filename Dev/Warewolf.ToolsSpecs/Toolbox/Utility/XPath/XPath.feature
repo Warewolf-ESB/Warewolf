@@ -2,7 +2,7 @@
 	In order to run a query against xml
 	As a Warewolf user
 	I want a tool that I can use to execute xpath queries
-
+	
 Scenario: Use XPath to get data off XML - Id = 1
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
 	And I have a variable "[[firstNum]]" output with xpath "//root/number[@id='1']/text()"
