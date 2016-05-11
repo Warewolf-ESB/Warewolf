@@ -34,7 +34,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             else
             {
-                dropboxPath = dropboxPath.Trim();
+                if(dropboxPath != null)
+                {
+                    dropboxPath = dropboxPath.Trim();
+                }
             }
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
