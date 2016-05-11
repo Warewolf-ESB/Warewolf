@@ -24,7 +24,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             else
             {
-                path = path.Trim();
+                if(path != null)
+                {
+                    path = path.Trim();
+                }
             }
             _path = path;
         }
