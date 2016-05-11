@@ -5,13 +5,11 @@
 
 @ReadFolder
 # Coded UI Test
-@ignore
 Scenario: Read Folder tool Small View
        Given I have Read Folder Small View on design surface
        Then Read Folder small view has
        | Directory | Result |
        |           |        |
-@ignore
 Scenario: Read Folder tool Large View
        Given I have Read Folder Large View on design surface
        Then Read Folder Large View has
@@ -24,13 +22,11 @@ Scenario: Read Folder tool Large View
        | Put error in this variable | Call this web service |
        |                            |                       |      
        And Done button is "Visible"
-@ignore
 Scenario: Read Folder tool Small View water marks
        Given I have Read Folder Small View on design surface
        Then Read Folder small view watermarks are
        | Directory        | Result     |
        | [[FolderToRead]] | [[Result]] |
-@ignore
 Scenario: Read Folder tool Large View Water marks
        Given I have Read Folder Large View on design surface
        Then Read Folder Large View watermarks are
@@ -43,7 +39,6 @@ Scenario: Read Folder tool Large View Water marks
        | Put error in this variable | Call this web service        |
        | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
-@ignore
 Scenario: Removing Data in the field brings back water marks
        Given I have Read Folder Large View on design surface
        And Read Folder Large View has
@@ -63,7 +58,6 @@ Scenario: Removing Data in the field brings back water marks
        | Put error in this variable | Call this web service        |
        | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
-@ignore
 Scenario Outline: Read selected is not changing when I open and close large view
        Given I have Read Folder Large View on design surface
        And Read Folder Large View has
@@ -88,7 +82,6 @@ Examples:
        | 2  | Folders         |
        | 3  | Files & Folders |
 
-@ignore
 Scenario: Read Folder Large View is validating when clicking on done with blank fields
        Given I have Read Folder Large View on design surface
        And "Directory" is focused
@@ -102,7 +95,6 @@ Scenario: Read Folder Large View is validating when clicking on done with blank 
        Then Validation message is thrown
        And Read Folder Small View is "Not Visible"
 
-@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Read Folder Large View on design surface
        When Read Folder Large View has
@@ -127,7 +119,6 @@ Scenario: After correcting incorrect variable done button is closing large view
        | Directory | Result     |
        | C:\[[a]]  | [[Result]] |
 
-@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Read Folder Large View on design surface
        And Read Folder Large View has
@@ -148,7 +139,6 @@ Scenario: Close large view is closing large view without validating
         | Directory  | Result     |
         | C:\[[a2@]] | [[Result]] |
 
-@ignore
 Scenario Outline: Read Folder Large View is validating incorrect path
        Given I have Read Folder Large View on design surface
        And "Directory" is focused
@@ -176,7 +166,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Read Folder Large View is validating incorrect variable in  username field
        Given I have Read Folder Large View on design surface
        And "Directory" is focused
@@ -204,7 +193,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Read Folder Large View is validating incorrect variable in Result field
        Given I have Read Folder Large View on design surface
        And "Directory" is focused
@@ -227,7 +215,6 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
-@ignore
 Scenario Outline: Read Folder On error fields incorrect variables are validating
        Given I have Read Folder Large View on design surface
        And Read Folder Large View with water marks has

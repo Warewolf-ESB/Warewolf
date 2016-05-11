@@ -94,7 +94,6 @@ Scenario: Drag toolbox Get Web Request Tool onto a new workflow creates Get Web 
 	When I 'Open_WebRequest_LargeView'
 	Then I 'Assert_GetWeb_RequestTool_Large_View_Exists_OnDesignSurface'
 	
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Post Web Request Tool onto a new workflow creates Post Web Request tool with large view on the design surface
 	When I 'Drag_PostWeb_RequestTool_Onto_DesignSurface'
@@ -210,7 +209,6 @@ Scenario: Drag toolbox Rename_Folder onto a new workflow
 	When I 'Open_Rename_Tool_Large_View'
 	Then I 'Assert_Rename_Large_View_Exists_OnDesignSurface'
 	
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Unzip onto a new workflow
 	When I 'Drag_Toolbox_Unzip_Onto_DesignSurface'
@@ -311,7 +309,6 @@ Scenario: Drag toolbox Sort_Record onto a new workflow
 	When I 'Drag_Toolbox_Sort_Record_Onto_DesignSurface'
 	Then I 'Assert_Sort_Records_Exists_OnDesignSurface'
 	
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox SQL_Bulk_Insert onto a new workflow
 	When I 'Drag_Toolbox_SQL_Bulk_Insert_Onto_DesignSurface'
@@ -337,7 +334,6 @@ Scenario: Drag toolbox System_Information onto a new workflow
 	When I 'Open_System_Information_Tool_Qvi_Large_View'
 	Then I 'Assert_System_Info_Qvi_Large_View_Exists_OnDesignSurface'
 	
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Unique_Records onto a new workflow
 	When I 'Drag_Toolbox_Unique_Records_Onto_DesignSurface'
@@ -434,7 +430,6 @@ Scenario: Drag toolbox Email onto a new workflow
 	When I 'Open_Email_Tool_Large_View'
 	Then I 'Assert_Email_Large_View_Exists_OnDesignSurface'
 	
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Service Picker onto a new workflow
 	When I 'Drag_Toolbox_Service_Picker_Onto_DesignSurface'
@@ -447,14 +442,12 @@ Scenario: Drag toolbox Service Picker onto a new workflow
 	Then I 'Assert_Service_Picker_Exists_OnDesignSurface'
 	
 #Dropbox tool removed
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Dropbox Download onto a new workflow
 	When I 'Drag_Toolbox_Dropbox_Download_Onto_DesignSurface'
 	Then I 'Assert_Dropbox_Download_Exists_OnDesignSurface'
 	
 #Dropbox tool removed
-@ignore
 @NeedsBlankWorkflow
 Scenario: Drag toolbox Dropbox Upload onto a new workflow
 	When I 'Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface'

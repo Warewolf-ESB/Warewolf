@@ -5,7 +5,6 @@
 
 @Decision 
 #Coded UI Tests
-@ignore
 Scenario: Opening Decision Large View
 	Given I have Decision tool on the design surface
 	When I double click on "Decision"
@@ -22,7 +21,6 @@ Scenario: Opening Decision Large View
 	And Require All decision to be True selected as "Yes"
 	And Done button is "Visible"
 
-@ignore
 Scenario: Adding Statements in Decision Tool
 	Given I have Decision tool on the design surface
 	When I double click on "Decision"
@@ -44,7 +42,6 @@ Scenario: Adding Statements in Decision Tool
 	And Require All decision to be True selected as "Yes"
 	And Done button is "Visible"
 
-@ignore
 Scenario: Adding Statements more then five appears scroll bar
 	Given Decision large view is opened 
 	When I click on "Add Statement" 
@@ -68,7 +65,6 @@ Scenario: Adding Statements more then five appears scroll bar
 	And Require All decision to be True selected as "Yes"
 	And Done button is "Visible"
 
-@ignore
 Scenario: Deleting Statements in Decision Tool
 	Given Decision large view is opened 
 	Then Statements are
@@ -81,7 +77,6 @@ Scenario: Deleting Statements in Decision Tool
 	| ""       | Choose... |          | NO     |
 
 
-@ignore
 Scenario: Selecting Statement in combobox1
 	Given Decision large view is opened 
 	And  "statement1 of "TextBox1" is "Visible"

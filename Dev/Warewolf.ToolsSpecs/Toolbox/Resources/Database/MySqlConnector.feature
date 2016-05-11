@@ -90,7 +90,6 @@ Scenario: Change Source on Existing tool
 	And "Validate" is "Disabled"
 
 #Spec to be modified once test results section is included in tool window
-@ignore
  Scenario: Editing MySql Connector and Test Execution is unsuccesful
    Given I open "MySql_workflow" service
    And "MySql_workflow" tab is opened

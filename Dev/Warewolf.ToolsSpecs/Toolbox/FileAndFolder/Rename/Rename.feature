@@ -190,7 +190,6 @@ Scenario Outline: Rename file at location with invalid directories
 	| 5  | Local to FTP   | [[variable]] | E:\tr.txt      | ""       | ""       | [[v]]        | ""                                                 | ""                | ""           | True     | [[result]] |        | 
 	| 6  | Local to FTPS  | [[path]]     | E:\test.txt    | ""       | ""       | 5453         | 5453                                               | integrationtester | I73573r0     | True     | [[result]] |        | 
 		
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Rename file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>' 

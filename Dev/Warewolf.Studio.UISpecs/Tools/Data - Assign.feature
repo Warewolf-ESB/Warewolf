@@ -5,7 +5,6 @@
 
 @Assign
 # Coded UI Tests
-@ignore
 Scenario: Opening Assign Lare View
 	Given I have Assign small view on design surface
 	And Assign Small view grid as
@@ -43,7 +42,6 @@ Scenario: Passing Variables in small view
 	And Done button is "Visible"
 	And Quick Variable Input button is "Visible"
 
-@ignore
 Scenario: Focus is at row1 when I drag assign
 	Given I have Assign small view on design surface
 	And "Row 1" is focused
@@ -61,7 +59,6 @@ Scenario: Assigning long string to a variable in Assign small view
 	And Scroll bar is "Disabled"
 
 
-@ignore
 Scenario: Assigning long string to a variable in Assign Large view
 	Given I have Assign Large view on design surface
 	When I pass variables in Large view grid as
@@ -73,7 +70,6 @@ Scenario: Assigning long string to a variable in Assign Large view
 
 
 ##Enter it's in MSWord and copy and paste here and expect validation
-@ignore
 Scenario: Pasting words which is not a latin character is thrown a validation
 	Given I have Assign small view on design surface
     When I pass variables in Small view grid as
@@ -83,7 +79,6 @@ Scenario: Pasting words which is not a latin character is thrown a validation
 	Then "Invalid text" popup is visible
 
 #Copy and Paste text which contains tab space in it and expect validation
-@ignore
 Scenario: Pasting a sentence with tabs is thorwn a validation
 	Given I have Assign Large view on design surface
 	When I pass variables in Large view grid as
@@ -92,7 +87,6 @@ Scenario: Pasting a sentence with tabs is thorwn a validation
 	| 2 |          | = |                       |
 	Then "Tabs Pasted" popup is visible
 
-@ignore
 Scenario: Done Button Is validating Invalid Scalar Variables
 	Given I have Assign small view on design surface
 	When I open Assign large view
@@ -116,7 +110,6 @@ Scenario: Done Button Is validating Invalid Scalar Variables
 	Then Assign small view is "Visible"
 	And Validation message is thrown "False"
 
-@ignore
 Scenario: Done Button Is validating Invalid Recordset Variables
 	Given I have Assign small view on design surface
 	When I open Assign large view
@@ -140,7 +133,6 @@ Scenario: Done Button Is validating Invalid Recordset Variables
 	Then Assign small view is "Visible"
 	And Validation message is thrown "False"
 
-@ignore
 Scenario: Done Button Is validating Invalid Variables In New Value
 	Given I have Assign small view on design surface
 	When I open Assign large view
@@ -164,7 +156,6 @@ Scenario: Done Button Is validating Invalid Variables In New Value
 	Then Assign small view is "Visible"
 	And Validation message is thrown "False"
 
-@ignore
 Scenario: Done Button Is validating Invalid Variables In expression
 	Given I have Assign small view on design surface
 	When I open Assign large view
@@ -191,7 +182,6 @@ Scenario: Done Button Is validating Invalid Variables In expression
 	And Validation message is thrown "False"
 
 
-@ignore
 Scenario: Inserting Rows in large view
 	Given I have Assign small view on design surface
 	When I open Assign large view
@@ -213,7 +203,6 @@ Scenario: Inserting Rows in large view
 	| 5 |             | = |           |
 	And "Row 3" is focused
 
-@ignore
 Scenario: Deleting Rows in large view
 	Given I have Assign small view on design surface
 	When I open Assign large view
@@ -233,7 +222,6 @@ Scenario: Deleting Rows in large view
 	| 3 |             | = |           |
 	And "" is focused
 
-@ignore
 Scenario: Collapse largeview is closing large view
 	Given I have Assign small view on design surface
 	When I open Assign large view
@@ -241,7 +229,6 @@ Scenario: Collapse largeview is closing large view
 	When I collapse large view
 	Then Assign small view is "Visible"
 
-@ignore
 Scenario: Opening Assign Quick Variable Input
 	Given I have Assign small view on design surface
 	When I select "QVI"
@@ -258,7 +245,6 @@ Scenario: Opening Assign Quick Variable Input
 	And Add button is "Dsiabled"
 
 
-@ignore
 Scenario: Adding Variables by using QVI
     Given I have Assign small view on design surface
 	When I select "QVI"
@@ -292,7 +278,6 @@ Scenario: Adding Variables by using QVI
 	| 4 | [[d]]    | = |           |
 
 
-@ignore
 Scenario: Adding Variables by using QVI and split on chars
     Given I have Assign Large view on design surface
 	When I select "QVI"
@@ -324,7 +309,6 @@ Scenario: Adding Variables by using QVI and split on chars
 
 ##This split by using 'Tab' is not working because I can't use tab while entering variable list but I can paste 
 ## So option must work as expected.
-@ignore
 Scenario: Adding Variables by using QVI and split on Tab
     Given I have Assign Large view on design surface
 	When I select "QVI"
@@ -354,7 +338,6 @@ Scenario: Adding Variables by using QVI and split on Tab
 	| 3 | [[c]]    | = |           |
 	| 4 | [[d]]    | = |           |
 	
-@ignore
 Scenario: Adding Variables by using QVI and split on Index
     Given I have Assign Large view on design surface
 	When I select "QVI"
@@ -392,7 +375,6 @@ Scenario: Adding Variables by using QVI and split on Index
 	| 7 | [[g]]    | = |           |
 	| 8 | [[h]]    | = |           |
 
-@ignore
 Scenario Outline:  QVI Prefix and Suffix
     Given I have Assign Large view on design surface
 	When I select "QVI"
@@ -426,7 +408,6 @@ Scenario Outline:  QVI Prefix and Suffix
 	| 1  | a      | ""     | Selected | Unselected |
 	| 2  | ""     | a      | Selected | Unselected |
 
-@ignore
 Scenario:  QVI Replace is Replacing Variables
     Given I have Assign Large view on design surface
 	And Large view grid as

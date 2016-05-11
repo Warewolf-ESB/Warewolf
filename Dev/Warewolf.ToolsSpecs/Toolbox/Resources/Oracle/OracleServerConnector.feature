@@ -1,5 +1,4 @@
-﻿@ignore
-Feature: OracleServerConnector
+﻿Feature: OracleServerConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup
@@ -77,7 +76,6 @@ Scenario: Change Source on Existing tool
 	And Validate is Enable
 
 #Spec to be modified once test results section is included in tool window
-@ignore
  Scenario: Editing DB Service and Test Execution is unsuccesful
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened

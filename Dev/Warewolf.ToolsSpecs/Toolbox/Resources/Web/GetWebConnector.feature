@@ -133,7 +133,6 @@ Scenario: Changing Sources
 
 
 #wolf-1034 re-opened worked as a connector not as a tool
-@ignore
 Scenario: Web Connector Tool returns text
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -159,8 +158,7 @@ Scenario: Web Connector Tool returns text
 
  
 
- @ignore
-Scenario: Web Connector Tool cancel generate outputs for 
+ Scenario: Web Connector Tool cancel generate outputs for 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
 	Then Source is Enabled

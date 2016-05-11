@@ -227,8 +227,7 @@ Scenario: Delete two specific recordset data.
 	| [[result]] = Failure  |
 
 
-	@ignore
-	# Audit Wolf-1419
+		# Audit Wolf-1419
 Scenario Outline: Ensure delete variables of different types produce desired results
 	Given I have a delete variable "<variable>" equal to "<value>"
 	And I delete a record "<variable>"
@@ -249,7 +248,6 @@ Scenario Outline: Ensure delete variables of different types produce desired res
 	| [[result]] = Failure |
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Delete a complex types 
 	Given I have the following recordset
 	| rs             | val |

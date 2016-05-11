@@ -217,7 +217,6 @@ Scenario: Executing Unique record tool with empty In Return and Result Field
 	|  |  |
 
 #This Test Scenario should be passed after the bug 11994 is fixed
-@ignore
 Scenario: Find unique records and assigning result in two variables
 	Given I have the following duplicated recordset
 	| rs       | val |
@@ -297,7 +296,6 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| [[rec([[int]].set),[[int]] = 4 | [[rs([[int]]).row]],[[int]] = 2 |
 
 #Complex Types WOLF-1042
-@ignore
 Scenario: Find unique records in a complex type
 	Given I have the following duplicated recordset
 	| rs             | val |

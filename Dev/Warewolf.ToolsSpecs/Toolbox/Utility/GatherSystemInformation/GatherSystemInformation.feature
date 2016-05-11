@@ -211,7 +211,6 @@ Scenario: Assign Disk Available into a recordset
 	| 1 | [[my(1).disks]] =  String |
 
 # This Test should be passed after the bug 12236 is fixed 
-@ignore
 Scenario Outline:Executing with Incorrect Recordsets 
 	Given I have a variable "<input>" and I selected "DiskAvailable"	
 	When the gather system infomartion tool is executed
@@ -223,7 +222,6 @@ Scenario Outline:Executing with Incorrect Recordsets
 	| [[]]                                       | [[]] is not a valid variable              |
 	| [[rec&^]][[rec&^]] is not a valid variable |                                           |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Assign a DateTime into a complex types
 	Given I have a variable '<object>' and I selected '<Type>'	

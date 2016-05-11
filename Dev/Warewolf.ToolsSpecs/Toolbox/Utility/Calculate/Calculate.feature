@@ -383,7 +383,6 @@ Scenario: Calculate using variables with a no existent value
 
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Calculate using complex types () input in an agregate function like SUM
 	Given I have a calculate variable "[[var().int().value]]" equal to 
 	| var().int().value | value |

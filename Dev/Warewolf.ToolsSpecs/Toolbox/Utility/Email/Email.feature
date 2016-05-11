@@ -264,7 +264,6 @@ Scenario Outline: Sending an email
 	| warewolf@dev2.co.za                                   | info@dev2.co.za                             | New Email Test                    | Test123                  | [[rs([[int]]).a]] =   warewolf@dev2.co.za | [[rs([[int]]).a]] =   info@dev2.co.za | This is a test               | 121                                        | AN    | [[result]] = Attachment is not the valid format :121                                    |
 	| [[email(*).res]] = warewolf@dev2.co.za;new@dev2.co.za | [[email().rs]] = warewolf@dev2.c o.za        | New Email Test                    | [[rs().b]] = test123     | [[rec(1).set]] = warewolf@dev2.co.za      | [[e]]                                 | [[rs(*).a]] =                | [[at([[int]]).set]] = E:\tr.txt, [[int]]=2 | An    | [[result]] = From address is not in the valid format:warewolf@dev2.co.za;new@dev2.co.za |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Sending an email using complex types
 	Given the from account is '<from>' equals '<FromVal>'

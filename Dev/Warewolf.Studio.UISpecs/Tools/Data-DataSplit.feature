@@ -5,7 +5,6 @@
 
 @DataSplit
 # Coded UI TESTS
-@ignore
 Scenario: DataSplit Small View
 	Given I have DataSplit Small View on design surface
 	And String To Split "" is visible
@@ -15,7 +14,6 @@ Scenario: DataSplit Small View
 	| 2 |        | Index |       |
 	And Scroll bar is "Enabled"
 
-@ignore
 Scenario: DataSplit Large View
 	Given I have DataSplit Large View on design surface
 	And String To Split "" is visible
@@ -33,14 +31,12 @@ Scenario: DataSplit Large View
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 
-@ignore
 Scenario: DataSplit Small View and large view focus is at row1
 	Given I have DataSplit Small View on design surface
 	And "Row 1" is focused
 	When I have LargeView on design surface
 	Then "Row1" is focused
 
-@ignore
 Scenario: Passing Variables in Datasplit Small View and inserting row
 	Given I have DataSplit Small View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -60,7 +56,6 @@ Scenario: Passing Variables in Datasplit Small View and inserting row
 	| 4 |         | Index |       |
 	And Scroll bar is "Enabled"
 
-@ignore
 Scenario: Deleting rows in Datasplit Small View
 	Given I have DataSplit Small View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -78,7 +73,6 @@ Scenario: Deleting rows in Datasplit Small View
 	| 2 |         | Index |       |
 	And Scroll bar is "Disabled"
 
-@ignore
 Scenario: Passing Variables in Datasplit Large View and inserting row
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -98,7 +92,6 @@ Scenario: Passing Variables in Datasplit Large View and inserting row
 	| 4 |         | Index |       | Unselected |        |
 	And Scroll bar is "Enabled"
 
-@ignore
 Scenario: Deleting rows in Datasplit Large View
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -139,7 +132,6 @@ Scenario: Deleting rows in Datasplit is adjusting number sequence correctly
 	And Scroll bar is "Enabled"
 
 
-@ignore
 Scenario Outline: DataSplit Large View is validating incorrect string variable 
 	Given I have DataSplit Large View on design surface
 	And String To Split '<Var>' is visible
@@ -168,7 +160,6 @@ Examples:
 
 
 
-@ignore
 Scenario Outline: Data Split Large View using and Escape is enabled and disabled
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -196,7 +187,6 @@ Examples:
      | 5  | Tab      | Enabled  |
 	 | 6  | Space    | Disabled |	
 	
-@ignore
 Scenario: Data Split Large View is validating invalid variables on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -216,7 +206,6 @@ Scenario: Data Split Large View is validating invalid variables on done
 	Then Validation message is not thrown
 	And DataSplit Small View is "Visible"
 
-@ignore
 Scenario: Data Split Large View is validating invalid recordsets on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -237,7 +226,6 @@ Scenario: Data Split Large View is validating invalid recordsets on done
 	Then Validation message is not thrown
 	And DataSplit Small View is "Visible"
 
-@ignore
 Scenario Outline: Data Split Large View is validating invalid variables
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -259,7 +247,6 @@ Examples:
     | 6  | [[a]][[rec().a]] | True       |
     | 7  | [[rec([[a]]).a]] | True       |
 
-@ignore
 Scenario Outline: Invalid variables in using is validating on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -283,7 +270,6 @@ Examples:
     | 7  | [[rec([[a]]).a]] | False      |
     | 8  | 12               | False      |
 
-@ignore
 Scenario Outline: Invalid variables in Escape is validating on done
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -310,7 +296,6 @@ Examples:
     | 10 | ,                | False      |
 
 
-@ignore
 Scenario: Collapse largeview is closing large view
 	Given I have DataSplit Small View on design surface
 	And I enter String to Split as "Test Warewolf" 
@@ -325,7 +310,6 @@ Scenario: Collapse largeview is closing large view
 	And Validation message is not thrown
 	Then DataSplit Small View is "Visible"
 
-@ignore
 Scenario: Opening DataSplit Quick Variable Input
 	Given I have DataSplit Small View on design surface
 	When I select "QVI"
@@ -341,7 +325,6 @@ Scenario: Opening DataSplit Quick Variable Input
 	And Preview button is "Disabled"
 	And Add button is "Dsiabled"
 
-@ignore
 Scenario: Adding DataSplit Variables by using QVI
     Given I have DataSplit Small View on design surface
 	When I select "QVI"
@@ -375,7 +358,6 @@ Scenario: Adding DataSplit Variables by using QVI
 	| 4 | [[d]] | Index |       |
 	And Scroll bar is "Enabled"
 
-@ignore
 Scenario: Adding DataSplit Variables by using QVI and split on chars
     Given I have DataSplit Large view on design surface
 	When I select "QVI"
@@ -412,7 +394,6 @@ Scenario: Adding DataSplit Variables by using QVI and split on chars
 
 ##This split by using 'Tab' is not working because I can't use tab while entering variable list but I can paste 
 ## So option must work as expected.
-@ignore
 Scenario: Adding DataSplit Variables by using QVI and split on Tab
     Given I have DataSplit Large view on design surface
 	When I select "QVI"
@@ -444,7 +425,6 @@ Scenario: Adding DataSplit Variables by using QVI and split on Tab
 	| 5 |         |       |       |            |        |
 	And Scroll bar is "Enabled"
 
-@ignore
 Scenario: Adding Variables in DataSplit QVI and split on chars
     Given I have DataSplit Large view on design surface
 	When I select "QVI"
@@ -483,7 +463,6 @@ Scenario: Adding Variables in DataSplit QVI and split on chars
 	| 9 |         |       |       |            |        |
 	And Scroll bar is "Enabled"
 
-@ignore
 Scenario Outline: DataSplit QVI Prefix and Suffix
     Given I have DataSplit Large view on design surface
 	When I select "QVI"
@@ -520,7 +499,6 @@ Scenario Outline: DataSplit QVI Prefix and Suffix
 	| 2  | ""     | a      | Selected | Unselected |
 	And Scroll bar is "Enabled"
 
-@ignore
 Scenario:  DataSplit QVI Replace is Replacing Variables
     Given I have DataSplit Large view on design surface
 	And Large view grid has

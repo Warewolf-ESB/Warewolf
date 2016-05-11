@@ -24,7 +24,6 @@ Scenario: Editing Dropbox Tool
 	When I click "Edit"
 	Then the Dropbox Source window is opened
 
-@ignore
 Scenario: Change Dropbox Source
 	Given I open New Workflow
 	And I drag Read Dropbox Tool onto the design surface

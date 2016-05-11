@@ -4420,7 +4420,6 @@ Scenario: Plugin connector backward Compatiblity
 	When "PluginMigration" is executed
 	Then the workflow execution has "NO" error
 
-@ignore
 Scenario: workflow without StackOverflow exception check
          Given I have a workflow "Testing - LoopTest"
          And "Testing - LoopTest" contains "LoopTest" from server "localhost" with mapping as
@@ -4534,7 +4533,6 @@ Scenario: Workflow with AsyncLogging and ForEach
 
 #show dependacies possibly meant to be coded ui. Leave here until we figure out how to do it in Coded UI
 #Wolf-1415
-@ignore
 Scenario: View Dependancies on a workflow with no dependancies
 	Given I have a workflow "Hello World"
 	When I select "Show all dependancies" 
@@ -4548,8 +4546,7 @@ Scenario: View Dependancies on a workflow with no dependancies
 
 #show dependacies possibly meant to be coded ui
 #Wolf-1415
-	@ignore
-Scenario: View workflow with multiple dependancies
+	Scenario: View workflow with multiple dependancies
 	Given I have a workflow "11365_WebService"	
 	And I select "Show All Dependancies"
 	Then the "Dependancies - 11365_WebService" tab is opened
@@ -4563,8 +4560,7 @@ Scenario: View workflow with multiple dependancies
 
 #show dependacies possibly meant to be coded ui
 #Wolf-1415
-	@ignore
-Scenario: View workflow based on nested levels
+	Scenario: View workflow based on nested levels
 	Given I have a workflow "11365_WebService"	
 	And I select "Show All Dependancies"
 	Then the "Dependancies - 11365_WebService" tab is opened
@@ -4581,8 +4577,7 @@ Scenario: View workflow based on nested levels
 
 #show dependacies possibly meant to be coded ui
 #Wolf-1415
-	@ignore
-Scenario: Viewing Depenancies
+	Scenario: Viewing Depenancies
 	Given I have a workflow "11365_WebService"	
 	And I select "Show All Dependancies"
 	Then the "Dependancies - 11365_WebService" tab is opened
@@ -4593,8 +4588,7 @@ Scenario: Viewing Depenancies
 
 #studio persist possibly meant to be coded ui
 #Wolf-1415
-	@ignore
-Scenario: Studio persistence 
+	Scenario: Studio persistence 
 	Given I  have the Warewolf studio opened
 	And an option to "Lock/Unlock" the side menu is visible
 	And I "Lock" the side menu
@@ -4604,8 +4598,7 @@ Scenario: Studio persistence
 	And the Tool Box window is in the right panel in the studio 
 
 #Wolf-1415
-	@ignore
-Scenario: Rename workflow 
+	Scenario: Rename workflow 
 	Given I have a workflow "11365_WebService"	
 	When I right-click on "11365_WebService" to view the context menu
 	Then I click "Rename"
@@ -4614,8 +4607,7 @@ Scenario: Rename workflow
 	Then "WebService_11365" tab is opened 
 
 #Wolf-1415
-	@ignore
-Scenario: Create a nested folder 
+	Scenario: Create a nested folder 
 	Given I have a folder "My Category"	
 	When I right-click on "My Category" to view the context menu
 	Then I click "New Folder"
@@ -4624,16 +4616,14 @@ Scenario: Create a nested folder
 	Then "My Sub Category" is visible in path "localhost\My Category\My Sub Category" 
 
 #Wolf-1415
-	@ignore
-Scenario: Move workflow 
+	Scenario: Move workflow 
 	Given I have a workflow "Hello World"
 	And "Hello World" is visible on "Localhost"
 	And I move "Hello World" to folder "My Category"
 	Then "Hello World" is visible as "My Category\Hello World"
 
 #Wolf-1415
-	@ignore
-Scenario: Delete workflow 
+	Scenario: Delete workflow 
 	Given I have a workflow "Test"
 	And "Test" is visible on "Localhost"
 	When I right-click on "Test" to view the context menu

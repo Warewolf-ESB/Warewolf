@@ -302,7 +302,6 @@ Scenario: Generate a Number between double min and double max with no decimals
 	|                     |
 	| [[result]] = Double |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Generate numbers using complex types
 	Given I have a type as '<Type>'

@@ -120,7 +120,6 @@ Scenario: Changing Sources
 	And Delete Mappings is Disabled
 
 
-@ignore
 #wolf-1034
 Scenario: Web Connector Tool returns text
 	Given I open New Workflow

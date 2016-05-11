@@ -264,7 +264,6 @@ Scenario Outline: Sort recordset
 
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Sort recordset using complex types
 	Given I have the following recordset to sort
 	| rs           | value     |

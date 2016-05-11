@@ -135,7 +135,6 @@ Scenario Outline: Delete file at location with incorrect directories
 	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] |        | AN           | 
 	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] |        | AN           | 
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Delete file at location using complex types
 	Given I have a source path '<source>' with value '<sourceLocation>'

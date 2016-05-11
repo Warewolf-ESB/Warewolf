@@ -5,7 +5,6 @@
 
 @Email
 # Coded UI Tests
-@ignore
 Scenario: Email tool small view
 	Given I have email tool small view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -15,7 +14,6 @@ Scenario: Email tool small view
 	And body is "" 
 	And result is ""
 
-@ignore
 Scenario: Email tool small view water marks 
 	Given I have email tool small view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -24,7 +22,6 @@ Scenario: Email tool small view water marks
 	And body Watermark is "Email Content" 
 	And result Watermark is "[[EmailSuccess]]"
 
-@ignore
 Scenario: Email tool Large view
 	Given I have email tool large view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -48,7 +45,6 @@ Scenario: Email tool Large view
     And Done button is "Visible"
 
 
-@ignore
 Scenario: Email tool water marks Large view
 	Given I have email tool large view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -73,7 +69,6 @@ Scenario: Email tool water marks Large view
 
 
 
-@ignore
 Scenario: Email tool small view to large view persiting data
 	Given I have email tool small view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -101,7 +96,6 @@ Scenario: Email tool small view to large view persiting data
 	 And Done button is "Visible"
 
 
-@ignore
 Scenario: Email tool Done is validating when no source selected
 	Given I have email tool large view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -123,7 +117,6 @@ Scenario: Email tool Done is validating when no source selected
 	Then Validation message is thrown
 
 
-@ignore
 Scenario: Email tool New email source opens New Email Source tab
 	Given I have email tool large view in design surface
 	When Mail source selected as "New Email Source..."
@@ -133,7 +126,6 @@ Scenario: Email tool New email source opens New Email Source tab
 	Then Mail source selected as "Test Email"
 
 
-@ignore
 Scenario: From address field is updating when I select source
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -167,7 +159,6 @@ Scenario: Validation is thrown on done button if To address is incorrect
 	When I click on "Done"
 	Then Validation message is thrown
 		
-@ignore
 Scenario: Validation is thrown for incorrect email in CC field 
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -187,7 +178,6 @@ Scenario: Validation is thrown for incorrect email in CC field
 	And I click on "Done"	
 	Then Validation message is not thrown
 
-@ignore
 Scenario: Validation is thrown for incorrect email in Bcc field 
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -224,7 +214,6 @@ Scenario: Attachemets fiels is showing attaced file paths by seperating them wit
 	When I click on "Done"
 	Then Validation message is not thrown
 	
-@ignore
 Scenario Outline: Throwing validation error for incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -255,7 +244,6 @@ Examples:
    | 15 | [[a]].com        | False      |
    | 16 | test@[[a]].com   | False      |
    | 17 |                  | True       |
-@ignore
 Scenario Outline: Throwing validation error for Bcc incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -320,7 +308,6 @@ Examples:
    | 17 |                  | False      |
 
 
-@ignore
 Scenario Outline: Throwing validation error for Subject incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -354,7 +341,6 @@ Examples:
 
 
 
-@ignore
 Scenario Outline: Throwing validation error for Result incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"

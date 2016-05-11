@@ -5,13 +5,11 @@
 
 @Read
 # Code UI TEST
-@ignore
 Scenario: Read tool Small View
        Given I have Read Small View on design surface
        Then Read small view has
        | File Name | Result |
        |           |        |
-@ignore
 Scenario: Read tool Large View
        Given I have Read Large View on design surface
        Then Read Large View has
@@ -22,13 +20,11 @@ Scenario: Read tool Large View
        | Put error in this variable | Call this web service |
        |                            |                       |      
        And Done button is "Visible"
-@ignore
 Scenario: Read tool Small View water marks
        Given I have Read Small View on design surface
        Then Read small view watermarks are
        | File Name      | Result      |
        | [[PathToRead]] | [[Success]] |
-@ignore
 Scenario: Read tool Large View Water marks
        Given I have Read Large View on design surface
        Then Read Large View watermarks are
@@ -39,7 +35,6 @@ Scenario: Read tool Large View Water marks
        | Put error in this variable | Call this web service        |
        | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
-@ignore
 Scenario: Removing Data in the field brings back water marks
        Given I have Read Large View on design surface
        And Read Large View has
@@ -57,7 +52,6 @@ Scenario: Removing Data in the field brings back water marks
        | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
 
-@ignore
 Scenario: Read Large View is validating when clicking on done with blank fields
        Given I have Read Large View on design surface
        And "File Name" is focused
@@ -68,7 +62,6 @@ Scenario: Read Large View is validating when clicking on done with blank fields
        When I click "Done"
        Then Validation message is thrown
        And Read Small View is "Not Visible"
-@ignore
 Scenario: Read tool Large View to small view persisting data correctly
        Given I have Read Large View on design surface
        And Read Large View has
@@ -85,7 +78,6 @@ Scenario: Read tool Large View to small view persisting data correctly
        | File Name | Result          |
        | C:\Test   | [[FolderReadd]] |
 
-@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Read Large View on design surface
        When Read Large View has
@@ -108,7 +100,6 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File Name | Result          |
        | C:\[[a]]  | [[FolderReadd]] |
 
-@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Read Large View on design surface
        And Read Large View has
@@ -127,7 +118,6 @@ Scenario: Close large view is closing large view without validating
         | File Name  | Result          |
         | C:\[[a2@]] | [[FolderReadd]] |
 
-@ignore
 Scenario Outline: Read Large View is validating incorrect path
        Given I have Read Large View on design surface
        And "File Name" is focused
@@ -151,7 +141,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Read Large View is validating incorrect variable in  username field
        Given I have Read Large View on design surface
        And "File Name" is focused
@@ -175,7 +164,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Read Large View is validating incorrect variable in Result field
        Given I have Read Large View on design surface
        And "File Name" is focused
@@ -194,7 +182,6 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
-@ignore
 Scenario Outline: Read On error fields incorrect variables are validating
        Given I have Read Large View on design surface
        And Read Large View with water marks has

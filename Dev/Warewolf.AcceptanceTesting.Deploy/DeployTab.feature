@@ -219,7 +219,6 @@ Scenario: Renaming resource after deploying and re-deploy
 	 Then Override is "1"
 
 #wolf-117
-@ignore
 Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -265,7 +264,6 @@ Scenario: Deploy Based on permission Deploy From
 	 And destination is connected
 
 #Wolf-1274
-@ignore
 Scenario: Deploying restricted workflows
 	Given I have deploy tab opened
 	When I select "Hello World" from Source Server

@@ -292,7 +292,6 @@ Scenario: Disconnected from remote server
 	And "Localhost" is visible
 
 
-@ignore
 Scenario: Debug from Explorer using play icon
 	Given the explorer is visible
 	Then I should see the path "Localhost\Dice Roll Example\Dice Roll" 
@@ -304,7 +303,6 @@ Scenario: Debug from Explorer using play icon
 
 
 #Wolf-1025
-@ignore
 Scenario: Moving Nested folders
 	Given the explorer is visible
 	Then I should see the path "Localhost\Dice Roll Example\Tests"
@@ -313,7 +311,6 @@ Scenario: Moving Nested folders
 
  #codedui
 #wolf-1155
-@ignore
 Scenario: Conflicting file names
 	Given the explorer is visible
 	Then I should see the path "Localhost\Examples"
@@ -343,7 +340,6 @@ Scenario: Server execute permissions on a remote server
 
 
  #codedui
-@ignore
 Scenario: Resource view permissions on a remote server
 	Given the explorer is visible
 	When I connect to "Remote Connection Integration" server
@@ -358,7 +354,6 @@ Scenario: Resource view permissions on a remote server
 	And the Debug output window is populated
 
 #WOLF-1393 Possibly done using Coded UI
-@ignore
 Scenario: Deleting Resource with the same name in different location on localhost Server
    Given the explorer is visible
    When I open "localhost" server
@@ -390,8 +385,7 @@ Scenario: Deleting Resource with the same name in different location on localhos
 	
 
 # Below spec should be done as a UI test as it requires element that cannot be tested 
-#@ignore
-#Scenario: Resource view permissions on a remote server prohibit resource from being dragged in workflow
+##Scenario: Resource view permissions on a remote server prohibit resource from being dragged in workflow
 #	Given the explorer is visible
 #	When I connect to "Remote Connection Integration" server
 #	And I open "Remote Connection Integration" server
