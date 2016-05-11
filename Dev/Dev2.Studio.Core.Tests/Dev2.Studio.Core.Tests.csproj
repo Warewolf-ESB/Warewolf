@@ -488,6 +488,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
