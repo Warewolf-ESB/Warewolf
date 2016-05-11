@@ -10,12 +10,15 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin
 {
@@ -23,12 +26,14 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     /// Summary description for PluginRuntimeHandlerTest
     /// </summary>
     [TestClass]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PluginRuntimeHandlerTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
+        // ReSharper disable once UnusedMember.Global
         public TestContext TestContext { get; set; }
 
         #region FetchNamespaceListObject
@@ -56,14 +61,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         public void PluginRuntimeHandler_FetchNamespaceListObject_WhenNullDll_ExpectException()
         {
             //------------Setup for test--------------------------
-            var source = CreatePluginSource();
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                var result = isolated.Value.FetchNamespaceListObject(null);
+                isolated.Value.FetchNamespaceListObject(null);
                 //------------Assert Results-------------------------
             }
-            
+
         }
 
         [TestMethod]
@@ -93,6 +97,24 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 isolated.Value.FetchNamespaceListObject(source);
             }
 
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(BadImageFormatException))]
+        public void FetchNamespaceListObject_GivenThrowsBadFormatExceptionError_ShouldRethrowBadFormatException()
+        {
+            //---------------Set up test pack-------------------
+            var source = CreatePluginSource();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var mockAssemblyLoader = new Mock<IAssemblyLoader>();
+            Assembly assembly;
+            mockAssemblyLoader.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out assembly))
+                .Throws(new BadImageFormatException());
+            var pluginRuntimeHandler = new PluginRuntimeHandler(mockAssemblyLoader.Object);
+            //---------------Test Result -----------------------
+            pluginRuntimeHandler.FetchNamespaceListObject(source);
         }
 
         #endregion
@@ -152,15 +174,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         public void PluginRuntimeHandler_ValidatePlugin_WhenInvalidGacDll_ExpectErrorMessage()
         {
             //------------Setup for test--------------------------
-            var pluginRuntimeHandler = new PluginRuntimeHandler();
-
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 var result = isolated.Value.ValidatePlugin("GAC:mscorlib_foo, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
                 StringAssert.Contains(result, "Could not load file or assembly 'mscorlib_foo");
             }
-            
+
         }
 
         [TestMethod]
@@ -173,7 +193,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                var result = isolated.Value.ValidatePlugin(null);
+                isolated.Value.ValidatePlugin(null);
             }
         }
 
@@ -206,7 +226,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                var result = isolated.Value.ListNamespaces(null, "Foo");
+               isolated.Value.ListNamespaces(null, "Foo");
             }
         }
 
@@ -221,9 +241,9 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             {
                 var result = isolated.Value.ListNamespaces("z:\foo\asm.dll", "Foo");
                 Assert.IsFalse(result.Any());
-            }            
+            }
         }
-
+      
         #endregion
 
         #region Run
@@ -251,9 +271,9 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 {
                     Assert.Fail("Failed Conversion for Assert");
                 }
-            }   
+            }
 
-            
+
         }
 
         [TestMethod]
@@ -267,8 +287,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = null, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-                var result = isolated.Value.Run(args);            
-            }   
+                isolated.Value.Run(args);
+            }
         }
 
         [TestMethod]
@@ -283,7 +303,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = "foo.bar", Method = svc.Method.Name, Parameters = svc.Method.Parameters };
-                var result = isolated.Value.Run(args);
+                isolated.Value.Run(args);
             }
         }
 
@@ -300,7 +320,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
-                var result = isolated.Value.Run(args);
+                 isolated.Value.Run(args);
             }
         }
 
@@ -317,7 +337,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
                 PluginInvokeArgs args = new PluginInvokeArgs { AssemblyLocation = source.AssemblyLocation, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = null };
-                var result = isolated.Value.Run(args);
+                isolated.Value.Run(args);
             }
         }
 
@@ -331,13 +351,13 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var assembly = type.Assembly;
 
             string loc = null;
-            if(!nullLocation)
+            if (!nullLocation)
             {
                 loc = assembly.Location;
             }
 
             Guid resourceID = Guid.Empty;
-            if(!invalidResourceID)
+            if (!invalidResourceID)
             {
                 resourceID = Guid.NewGuid();
             }
@@ -352,7 +372,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             };
         }
 
-        public static PluginService CreatePluginService()
+        private static PluginService CreatePluginService()
         {
             return CreatePluginService(new ServiceMethod
             {
@@ -360,7 +380,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             });
         }
 
-        public static PluginService CreatePluginService(ServiceMethod method)
+        private static PluginService CreatePluginService(ServiceMethod method)
         {
             var type = typeof(DummyClassForPluginTest);
 
@@ -384,7 +404,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     public sealed class Isolated<T> : IDisposable where T : MarshalByRefObject
     {
         private AppDomain _domain;
-        private T _value;
+        private readonly T _value;
 
         public Isolated()
         {
