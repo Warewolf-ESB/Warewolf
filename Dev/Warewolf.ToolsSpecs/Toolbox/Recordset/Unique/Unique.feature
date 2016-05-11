@@ -216,7 +216,7 @@ Scenario: Executing Unique record tool with empty In Return and Result Field
 	And the debug output as 
 	|  |  |
 
-Scenario: Find unique records and assigning result in two variables
+Scenario: Find unique records and assigning result to scalar must error
 	Given I have the following duplicated recordset
 	| rs       | val |
 	| rs().row | 10  |
@@ -224,22 +224,13 @@ Scenario: Find unique records and assigning result in two variables
 	| rs().row | 20  |
 	| rs().row | 30  |
 	And I want to find unique in field "[[rs().row]]" with the return field "[[rs().row]]"
-	And The result variable is "[[a]],[[b]]"
+	And The result variable is "[[a]]"
 	When the unique tool is executed	
-	Then the unique result will be
-	| rec          | unique |
-	| rec().row | 10     |
-	| rec().row | 20     |
-	| rec().row | 30     |
-	And the execution has "NO" error
+	Then the execution has "AN" error
 	And the debug inputs as  
 	| #           |                    | Return Fields  |
 	| In Field(s) | [[rs(4).row]] = 30 | [[rs().row]] = |	
-	And the debug output as 
-	| # |                  |
-	| 1 | [[a]] = 10,20,30 |
-	| 2 | [[b]] = 10,20,30 |
-
+	
 Scenario Outline: Invalid expressions
 Given I have the following duplicated recordset
 	| rs       | val |
