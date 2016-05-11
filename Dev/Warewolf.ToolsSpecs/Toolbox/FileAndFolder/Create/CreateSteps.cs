@@ -28,6 +28,36 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
             ScenarioContext.Current.Add("result", result);
         }
 
+        [Given(@"I have a source path ""(.*)"" with value ""(.*)""")]
+        public void GivenIHaveASourcePathWithValue(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"overwrite is ""(.*)""")]
+        public void GivenOverwriteIs(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"destination credentials as """"""""(.*)""""""""")]
+        public void GivenDestinationCredentialsAs(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"result as ""(.*)""")]
+        public void GivenResultAs(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"the result variable ""(.*)"" will be ""(.*)""")]
+        public void ThenTheResultVariableWillBe(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
         #region Overrides of RecordSetBases
 
         protected override void BuildDataList()

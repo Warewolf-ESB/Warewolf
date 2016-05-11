@@ -5,8 +5,6 @@
 
 
 Scenario: Open new Dropbox Tool
-	Given I open New Workflow
-	And I drag Download Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
 	And Local File is Enabled
@@ -15,8 +13,6 @@ Scenario: Open new Dropbox Tool
 	Then the New Dropbox Source window is opened
 	
 Scenario: Editing Dropbox Tool
-	Given I open New Workflow
-	And I drag Download Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
 	And Local File is Enabled
@@ -27,8 +23,6 @@ Scenario: Editing Dropbox Tool
 	Then the "Drop" Dropbox Source window is opened
 
 Scenario: Change Dropbox Source
-	Given I open New Workflow
-	And I drag Download Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
 	When I Select "Drop" as the source

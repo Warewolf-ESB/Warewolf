@@ -688,7 +688,7 @@ Scenario: Convert a Variable That Does Not Exist
 	Then the execution has "AN" error
  
 Scenario Outline: Convert an empty recordset * 
-	Given I convert a variable "<Variable>" with a value of "<value>"
+	Given I have a convert variable "<Variable>" with a value of "<value>"
 	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 
 	When the case conversion tool is executed
 	Then the execution has "AN" error

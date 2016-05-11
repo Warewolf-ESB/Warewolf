@@ -6,13 +6,13 @@ Feature: Create
 
 
 Scenario Outline: Create file at location
-	Given I have a destination path '<destination>' with value '<destinationLocation>'
-	And overwrite is '<selected>'
-	And destination credentials as '<username>' and '<password>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'
+	Given I have a destination path "<destination>" with value "<destinationLocation>"
+	And overwrite is "<selected>"
+	And destination credentials as "<username>" and "<password>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
 	When the create file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | File or Folder                        | Overwrite  | Username   | Password | Destination Private Key File |
@@ -32,41 +32,41 @@ Scenario Outline: Create file at location
 
 
 Scenario Outline: Create file at location Nulls
-	Given I have a destination path '<destination>' with value '<destinationLocation>'
-	And overwrite is '<selected>'
-	And destination credentials as '<username>' and '<password>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'
+	Given I have a destination path "<destination>" with value "<destinationLocation>"
+	And overwrite is "<selected>"
+	And destination credentials as "<username>" and "<password>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
 	When the create file tool is executed
 	Then the execution has "<errorOccured>" error
 
 	Examples: 
 		| No | Name       | destination | destinationLocation                                           | selected | username                      | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | NULL                                                          | True     |                               |          | [[result]] | Failure | AN           |                           |
-#		| 2  | Local      | [[path]]    | v:\myfile.txt                                                 | True     |                               |          | [[result]] | Failure | AN           |                           |
-#		| 3  | SFTP       | [[path]]    | sftp://localhost/test1.txt                                    | True     | ""                            | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\                 |
-#		| 4  | UNC        | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test.txt       | True     | ""                            | ""       | [[result]] | Failure | AN           |                           |
-#		| 5  | UNC Secure | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\test.tx | True     | dev2.local\IntegrationTesteru | I73573r0 | [[result]] | Failure | AN           |                           |
-#		| 6  | FTP        | [[path]]    | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt                | True     | ""                            | ""       | [[result]] | Failure | AN           |                           |
-#		| 7  | FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test/txt                | True     | IntegrationTester             | I73573r0 | [[result]] | Failure | AN           |                           |
+		| 2  | Local      | [[path]]    | v:\myfile.txt                                                 | True     |                               |          | [[result]] | Failure | AN           |                           |
+		| 3  | SFTP       | [[path]]    | sftp://localhost/test1.txt                                    | True     | ""                            | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\                 |
+		| 4  | UNC        | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test.txt       | True     | ""                            | ""       | [[result]] | Failure | AN           |                           |
+		| 5  | UNC Secure | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\test.tx | True     | dev2.local\IntegrationTesteru | I73573r0 | [[result]] | Failure | AN           |                           |
+		| 6  | FTP        | [[path]]    | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt                | True     | ""                            | ""       | [[result]] | Failure | AN           |                           |
+		| 7  | FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test/txt                | True     | IntegrationTester             | I73573r0 | [[result]] | Failure | AN           |                           |
 
 Scenario Outline: Check Validation Messages
-    Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+    Given I have a variable "[[a]]" with a value "<Val1>"
+	Given I have a variable "[[b]]" with a value "<Val2>"
+	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path '<destination>' with value '<destinationLocation>' 
-	And overwrite is '<selected>'
-	And destination credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a source path "<destination>" with value "<destinationLocation>" 
+	And overwrite is "<selected>"
+	And destination credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When validating the tool
-	Then validation is '<ValidationResult>'
-	And validation message is '<DesignValidation>'
+	Then validation is "<ValidationResult>"
+	And validation message is "<DesignValidation>"
     When the create file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	And execution error message will be '<DesignValidation>'
+	And execution error message will be "<DesignValidation>"
 	And the debug inputs as
          | File or Folder                        | Overwrite  | Username   | Password |
          | <destination> = <destinationLocation> | <selected> | <username> | String   |
@@ -102,11 +102,11 @@ Scenario Outline: Check Validation Messages
 		| 25 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | [[a]]\[[b]]           | String   | [[result]]             | ""      | AN           | False            | ""                                                                                                                                                                                                                             | 1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]                                                                                                                                                                       |
 		| 26 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | [[rec([[index]]).a]]  | String   | [[result]]             | ""      | AN           | False            | ""                                                                                                                                                                                                                             | 1.No Value assigned for [[index]]                                                                                                                                                                                                   |
 		| 27 | Local Files | [[sourcePath]].txt             |           |             | c:\myfile.txt       | True     | [[rec([[index&]]).a]] | String   | [[result]]             | ""      | AN           | True             | Username - Recordset name [[indexx&]] contains invalid character(s)                                                                                                                                                            | Username - Recordset name [[indexx&]] contains invalid character(s)                                                                                                                                                                 |
-		| 28 | Local Files | [[sourcePath]].txt             |           |             | c:\myfile.txt       | True     | [[a]]*]]              | String   | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don't match                                                                                                                                                        | 1.Username - Invalid expression: opening and closing brackets don't match                                                                                                                                                           |
+		| 28 | Local Files | [[sourcePath]].txt             |           |             | c:\myfile.txt       | True     | [[a]]*]]              | String   | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match                                                                                                                                                        | 1.Username - Invalid expression: opening and closing brackets don"t match                                                                                                                                                           |
 		| 29 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[result]][[a]]        | ""      | AN           | True             | The result field only allows a single result                                                                                                                                                                                   | 1.The result field only allows a single result                                                                                                                                                                                      |
-		| 30 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[a]]*]]               | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                          | 1.Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                             |
+		| 30 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[a]]*]]               | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                          | 1.Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                             |
 		| 31 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[var@]]               | ""      | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                                  | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                                     |
-		| 32 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[var]]00]]            | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                          | 1.Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                             |
+		| 32 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[var]]00]]            | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                          | 1.Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                             |
 		| 33 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[(1var)]]             | ""      | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                                  | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                                     |
 		| 34 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[var[[a]]]]           | ""      | AN           | True             | Result - Invalid Region [[var[[a]]]]                                                                                                                                                                                           | 1.Result - Invalid Region [[var[[a]]]]                                                                                                                                                                                              |
 		| 35 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[var.a]]              | ""      | AN           | True             | Result - Variable name [[var.a]]contains invalid character(s)                                                                                                                                                                  | 1.Result - Variable name [[var.a]] contains invalid character(s)                                                                                                                                                                    |
@@ -116,21 +116,21 @@ Scenario Outline: Check Validation Messages
 		| 39 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[rec(@).a]]           | ""      | AN           | True             | Result - Recordset index [[@]] contains invalid character(s)                                                                                                                                                                   | 1.Result - Recordset index [[@]] contains invalid character(s)                                                                                                                                                                      |
 		| 40 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[rec"()".a]]          | ""      | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                              | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                 |
 		| 41 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | ""                    | ""       | [[rec([[[[b]]]]).a]]   | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                                                                                                                   | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                                                                                                                      |
-		| 42 | Local Files | [[a]                           |           |             |                     | True     | ""                    | ""       | [[result]]             | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don't match                                                                                                                                                  | 1.File or Folder - Invalid expression: opening and closing brackets don't match                                                                                                                                                     |
+		| 42 | Local Files | [[a]                           |           |             |                     | True     | ""                    | ""       | [[result]]             | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don"t match                                                                                                                                                  | 1.File or Folder - Invalid expression: opening and closing brackets don"t match                                                                                                                                                     |
 		| 43 | Local Files | [[rec]                         |           |             |                     | True     | ""                    | ""       | [[result]]             | ""      | AN           | True             | File or Folder - [[rec]] does not exist in your variable list                                                                                                                                                                  | 1.File or Folder - [[rec]] does not exist in your variable list                                                                                                                                                                     |
 		| 44 | Local Files | [[sourcePath]]                 |           |             | c:\myfile.txt       | True     | Test                  | ""       | [[result]]             | ""      | AN           | True             | Password cannot be empty or only white space                                                                                                                                                                                   | 1.Password cannot be empty or only white space                                                                                                                                                                                      |
 		| 45 | Local Files | A                              |           |             | ""                  | True     | Test                  | ""       | [[result]]             | ""      | AN           | True             | Please supply valid File Name                                                                                                                                                                                                  | 1.Please supply valid File Name                                                                                                                                                                                                     |
 		| 46 | Local Files | [[var@]]                       |           |             |                     | True     | [[var@]]              | ""       | [[var@]]               | ""      | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s)                                                                                                  | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s)                                                                                                    |
-		| 47 | Local Files | C#$%#$]]                       |           |             |                     | True     | C#$%#$]]              | ""       | C#$%#$]]               | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don't match  Username - Invalid expression: opening and closing brackets don't match   Result - Invalid expression: opening and closing brackets don't match | 1.File or Folder - Invalid expression: opening and closing brackets don't match 2.Username - Invalid expression: opening and closing brackets don't match   3.Result - Invalid expression: opening and closing brackets don't match |                                                      
+		| 47 | Local Files | C#$%#$]]                       |           |             |                     | True     | C#$%#$]]              | ""       | C#$%#$]]               | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don"t match  Username - Invalid expression: opening and closing brackets don"t match   Result - Invalid expression: opening and closing brackets don"t match | 1.File or Folder - Invalid expression: opening and closing brackets don"t match 2.Username - Invalid expression: opening and closing brackets don"t match   3.Result - Invalid expression: opening and closing brackets don"t match |                                                      
 
 
 Scenario Outline: Create file at location with invalid directories
-	Given I have a destination path '<destination>' with value '<destinationLocation>'
-	And overwrite is '<selected>'
-	And destination credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a destination path "<destination>" with value "<destinationLocation>"
+	And overwrite is "<selected>"
+	And destination credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When the create file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | File or Folder                        | Overwrite  | Username   | Password |
@@ -148,12 +148,12 @@ Scenario Outline: Create file at location with invalid directories
 #Complex Type WOLF-1042
 @ignore		
 Scenario Outline: Create file at location using complex types
-	Given I have a destination path '<destination>' with value '<destinationLocation>'
-	And overwrite is '<selected>'
-	And destination credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a destination path "<destination>" with value "<destinationLocation>"
+	And overwrite is "<selected>"
+	And destination credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When the create file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | File or Folder                        | Overwrite  | Username   | Password |

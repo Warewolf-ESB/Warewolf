@@ -284,11 +284,6 @@
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
     <Compile Include="Toolbox\Resources\Database\DatabaseConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\Database\MySqlConnector.feature.cs">
-      <DependentUpon>MySqlConnector.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Toolbox\Resources\Database\SqlServerConnector.feature.cs">
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -300,34 +295,16 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Resources\ODBC\ODBCServerConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector.feature.cs">
-      <DependentUpon>OracleServerConnector.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature.cs">
-      <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteWebConnectorTool.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectoToolSteps.cs" />
-    <Compile Include="Toolbox\Resources\Web\GetWebConnector.feature.cs">
-      <DependentUpon>GetWebConnector.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Web\GetWebServiceToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\PostWebConnectorTool.feature.cs">
-      <DependentUpon>PostWebConnectorTool.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>PostWebConnectorTool.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Resources\Web\PostWebConnectorToolSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\PutWebConnectorTool.feature.cs">
@@ -570,10 +547,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\Database\MySqlConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>MySqlConnector.feature.cs</LastGenOutput>
-    </None>
     <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
@@ -582,21 +555,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\Oracle\OracleServerConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostgresSqlConnector.feature.cs</LastGenOutput>
-    </None>
     <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Web\GetWebConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GetWebConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\PostWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

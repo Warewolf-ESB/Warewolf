@@ -26,11 +26,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
         private DbAction _getCountriesAction;
-
-        [Given(@"I open New Workflow")]
-        public void GivenIOpenNewWorkflow()
-        {
-        }
         
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()

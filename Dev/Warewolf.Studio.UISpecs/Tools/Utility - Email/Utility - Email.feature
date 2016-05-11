@@ -4,7 +4,6 @@
 	I want a tool that performs this action
 
 @Email
-# Coded UI Tests
 Scenario: Email tool small view
 	Given I have email tool small view in design surface
 	And Mail source selected as "Select an Email Source..."
@@ -244,6 +243,7 @@ Examples:
    | 15 | [[a]].com        | False      |
    | 16 | test@[[a]].com   | False      |
    | 17 |                  | True       |
+
 Scenario Outline: Throwing validation error for Bcc incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -307,7 +307,6 @@ Examples:
    | 16 | test@[[a]].com   | False      |
    | 17 |                  | False      |
 
-
 Scenario Outline: Throwing validation error for Subject incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -340,7 +339,6 @@ Examples:
    | 17 |                  | False      |
 
 
-
 Scenario Outline: Throwing validation error for Result incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
@@ -360,8 +358,7 @@ Examples:
    | 4  | [[rec([[a]]).a]] | True       |
    | 5  | [[[[a]]]]        | True       |
    | 6  | [[rec(*).a]]     | False      |
-   | 7  | [[rec().a@]]     | True       |
-   
+   | 7  | [[rec().a@]]     | True       |   
    
    
 @ignore   
@@ -375,10 +372,44 @@ Scenario: Validation is not thrown when I close large view
 	And I enter result is "[[Result#2#]]"
 	When I clode large view
 	Then Validation message is not thrown  
-    And "Email" Small view is opened
-   
+    And "Email" Small view is opened	
 
+Scenario: Create new Email source from tool
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	And "To" input is ""
+	And "Subject" input is ""
+	And "Body" input is ""
+	When I select "New Email Source"
+	Then the new Email Source Tab is opened
 
+Scenario: Edit Email source from tool
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	And "To" input is ""
+	And "Subject" input is ""
+	And "Body" input is ""
+	When I select "Email Source"
+	Then "Edit" is Enabled
+	And I Click "Edit"
+	Then the "Email Source" Tab is opened
 
-
-   
+Scenario: Change Email source
+	Given I have a new Workflow
+	And I drag Email Tool onto the design surface
+	Then "Mail Source" is Enabled
+	And "Edit" is Disabled
+	When I select "Email Source"
+	Then "Edit" is Enabled
+	And "To" input is "warewolfworks@gmail.com"
+	And "Subject" input is "Sample Text"
+	And "Body" input is "Text should not clear"
+	When "Mail Source" is changed from "Email Source" to "NewEmailSource"
+	Then the "Email Source" Tab is opened
+	And "To" input is "warewolfworks@gmail.com"
+	And "Subject" input is "Sample Text"
+	And "Body" input is "Text should not clear"

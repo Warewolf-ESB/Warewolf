@@ -201,7 +201,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
         [When(@"Recordset Name iz changed to ""(.*)""")]
@@ -227,16 +227,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowNum++;
             }
         }
-
-      
-
-        [Given(@"I open ""(.*)"" service")]
-        public void GivenIOpenService(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-       
 
         [When(@"I Selected ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
@@ -264,9 +254,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-    
-
-
         [When(@"I click Testz")]
         public void WhenIClickTest()
         {
@@ -280,20 +267,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
 
-      
-
-        [When(@"""(.*)"" is selected as the data source")]
-        public void WhenIsSelectedAsTheDataSource(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"testing the action fails")]
-        public void WhenTestingTheActionFails()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         [When(@"I click Validat")]
         public void WhenIClickValidate()
         {
@@ -304,7 +277,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"the Test Connector and Calculate Outputs window is open")]
         public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
         {
-            //GetInputViewModel().SetupProperty(model => model.Inputs,null);   
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");  
         }
 
         [Then(@"Test Inputs appear az")]
@@ -420,16 +393,22 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
         }
 
-       
+        [When(@"""(.*)"" is selected as the data source")]
+        public void WhenIsSelectedAsTheDataSource(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
 
-      
+        [When(@"testing the action fails")]
+        public void WhenTestingTheActionFails()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
 
-     
-
-       
-
-
-      
-  
+        [Given(@"I open ""(.*)"" service")]
+        public void GivenIOpenService(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
     }
 }

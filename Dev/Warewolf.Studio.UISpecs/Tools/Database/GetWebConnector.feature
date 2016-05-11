@@ -18,9 +18,6 @@ Scenario: Open new Web Tool
 	| Output | Output Alias |
 	And Recordset is ""
 	And there are "no" validation errors of "" 
-	
-
-
 
 Scenario: Create Web Service 
 	Given I open New Workflow
@@ -49,8 +46,7 @@ Scenario: Create Web Service
 	| Output      | Output Alias |
 	| CountryID   | CountryID    |
 	| Description | Description  |
-	And "Done" is "Enabled"
-	
+	And "Done" is "Enabled"	
 
  Scenario: Editing Web Service Source
 	Given I open New Workflow
@@ -63,8 +59,6 @@ Scenario: Create Web Service
 	And Edit is Enabled
 	When I click Edit
 	Then the Dev2CountriesWebService Source tab is opened
-	
-
 
 Scenario: Adding parameters in request headers is updating variables 
 	Given I open New Workflow
@@ -96,11 +90,6 @@ Scenario: Adding parameters in request headers is updating variables
 	| Description | Description  |
 	And "Done" is "Enabled"
 
- 	
-
-
-
-
 Scenario: Changing Sources 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
@@ -130,8 +119,6 @@ Scenario: Changing Sources
 	And Generate Outputs is Enabled
 	And Mappings is Disabled
 
-
-
 #wolf-1034 re-opened worked as a connector not as a tool
 Scenario: Web Connector Tool returns text
 	Given I open New Workflow
@@ -154,9 +141,7 @@ Scenario: Web Connector Tool returns text
 	And Mapping is Enabled
 	And output mappings are
 	| Output   | Output Alias |
-	| Response | Response     |
-
- 
+	| Response | Response     | 
 
  Scenario: Web Connector Tool cancel generate outputs for 
 	Given I open New Workflow
@@ -176,8 +161,7 @@ Scenario: Web Connector Tool returns text
 	| {"rec" : [{"a":"1","b":"a"}]} |
 	When I click Cancel
 	Then the response is loaded
-	And Mapping is Disabled
-	
+	And Mapping is Disabled	
 
  #Wolf-1412
 Scenario: Web Connector Tool re-generate outputs for 
@@ -212,8 +196,6 @@ Scenario: Web Connector Tool re-generate outputs for
 	| Mapped From | Mapped To   |
 	| a           | [[rec().a]] |
 	| b           | [[rec().b]] |
-
-
 
 Scenario: Web Connector Tool remember previous values
 	Given I open New Workflow
