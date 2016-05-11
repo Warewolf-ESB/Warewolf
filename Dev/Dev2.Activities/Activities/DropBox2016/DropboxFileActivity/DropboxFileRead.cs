@@ -29,7 +29,10 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
             else
             {
-                path = path.Trim();
+                if(path != null)
+                {
+                    path = path.Trim();
+                }
             }
             _path = path;
             InitializeCertPinning();
