@@ -169,9 +169,16 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsExpanded = !IsExpanded;
                 }
-                shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                shellViewModel.SetActiveServer(Server);
-                shellViewModel.OpenResource(ResourceId, Server);
+                if (ResourceType == ResourceType.Version)
+                {
+                    OpenVersion(this);
+                }
+                else
+                {
+                    shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
+                    shellViewModel.SetActiveServer(Server);
+                    shellViewModel.OpenResource(ResourceId, Server);
+                }
             });
             DebugCommand = new DelegateCommand(() =>
             {
@@ -210,8 +217,7 @@ namespace Warewolf.Studio.ViewModels
             });
             OpenVersionCommand = new DelegateCommand(() =>
             {
-                if (ResourceType == ResourceType.Version)
-                    ShellViewModel.OpenVersion(parent.ResourceId, VersionInfo);
+                OpenVersion(parent);
             });
             VersionHeader = "Show Version History";
             //Builder = builder;
@@ -247,6 +253,14 @@ namespace Warewolf.Studio.ViewModels
                 };
             _candrop = true;
             _canDrag = true;
+        }
+
+        private void OpenVersion(IExplorerTreeItem parent)
+        {
+            if(ResourceType == ResourceType.Version)
+            {
+                ShellViewModel.OpenVersion(parent.ResourceId, VersionInfo);
+            }
         }
 
         public string ActivityName
