@@ -119,11 +119,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
-            catch (BadImageFormatException e)
-            {
-                Errors.Add(e.Message);
-                throw;
-            }
             catch(Exception e)
             {
                 Errors.Add(e.Message);
