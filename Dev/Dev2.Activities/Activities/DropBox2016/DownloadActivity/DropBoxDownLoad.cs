@@ -1,11 +1,11 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dropbox.Api;
 using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
@@ -24,7 +24,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             else
             {
-                if(path != null)
+                if (!string.IsNullOrEmpty(path))
                 {
                     path = path.Trim();
                 }
@@ -44,7 +44,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             try
             {
-
                 var downloadArg = new DownloadArg(_path);
                 IDownloadResponse<FileMetadata> uploadAsync = client.Files.DownloadAsync(downloadArg).Result;
                 return new DropboxDownloadSuccessResult(uploadAsync);
@@ -66,6 +65,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
         }
 
-        #endregion
+        #endregion Implementation of IDropboxSingleExecutor<IDropboxResult>
     }
 }
