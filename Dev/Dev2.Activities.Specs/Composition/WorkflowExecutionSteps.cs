@@ -1012,8 +1012,7 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.Inputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
-
-
+        
         [Then(@"the '(.*)' in WorkFlow '(.*)' has  ""(.*)"" nested children")]
         public void ThenTheInWorkFlowHasNestedChildren(string toolName, string workflowName, int count)
         {
@@ -1029,8 +1028,6 @@ namespace Dev2.Activities.Specs.Composition
             Assert.AreEqual(count, children);
         }
 
-
-
         [Then(@"each nested debug item for '(.*)' in WorkFlow '(.*)' contains ""(.*)"" child                              \|")]
         public void ThenEachNestedDebugItemForInWorkFlowContainsChild(string toolName, string workFlowName, int childCount)
         {
@@ -1045,8 +1042,6 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
-
-
         [Then(@"each ""(.*)"" contains debug outputs for ""(.*)"" as")]
         public void ThenEachContainsDebugOutputsForAs(string toolName, string nestedToolName, Table table)
         {
@@ -1059,8 +1054,7 @@ namespace Dev2.Activities.Specs.Composition
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
             id.ForEach(x => Assert.AreEqual(1, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == nestedToolName)));
         }
-
-
+        
         T Get<T>(string keyName)
         {
             return ScenarioContext.Current.Get<T>(keyName);
@@ -1193,7 +1187,6 @@ namespace Dev2.Activities.Specs.Composition
             var resourceXml = XmlFetch.Fetch(dbSrcName);
             if(resourceXml != null)
             {
-
                 // extract keepIdentity value ;)
                 bool keepIdentityBool;
                 bool.TryParse(keepIdentity, out keepIdentityBool);
@@ -1228,14 +1221,12 @@ namespace Dev2.Activities.Specs.Composition
                     var mapping = new DataColumnMapping { IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn { ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType } };
                     mappings.Add(mapping);
                     pos++;
-
                 }
 
                 dsfSqlBulkInsert.InputMappings = mappings;
 
                 CommonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
                 CommonSteps.AddVariableToVariableList(result);
-
             }
             else
             {
@@ -1243,14 +1234,12 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-
         [Given(@"""(.*)"" contains an Sort ""(.*)"" as")]
         public void GivenContainsAnSortAs(string parentName, string activityName, Table table)
         {
             var dsfSort = new DsfSortRecordsActivity { DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1] };
             CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
         }
-
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
         // ReSharper disable InconsistentNaming
@@ -1279,9 +1268,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             CommonSteps.AddActivityToActivityList(parentName, activityName, forEach);
             ScenarioContext.Current.Add(activityName, forEach);
-
         }
-
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
         // ReSharper disable InconsistentNaming
@@ -1459,6 +1446,8 @@ namespace Dev2.Activities.Specs.Composition
             }
 
         }
+
+        [Given(@"""(.*)"" contains an Assign ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
         public void ThenContainsAnAssignAs(string parentName, string assignName, Table table)
         {
@@ -1485,12 +1474,6 @@ namespace Dev2.Activities.Specs.Composition
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
             CommonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
-        }
-
-        [When(@"I rollback version ""(.*)""")]
-        public void WhenIRollbackVersion(int version)
-        {
-
         }
 
         [When(@"I rollback ""(.*)"" to version ""(.*)""")]
@@ -1601,7 +1584,29 @@ namespace Dev2.Activities.Specs.Composition
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
         }
 
+        [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
+        public void GivenContainsCountRecordOnInto(string parentName, string activityName, string recordsetName, string resultVariable)
+        {
+            var dsfCountRecord = new DsfCountRecordsetActivity { DisplayName = activityName, RecordsetName = recordsetName, CurrentResult = resultVariable};
+            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfCountRecord);
+        }
 
+        [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
+        public void GivenContainsCaseConvertAs(string parentName, string activityName, Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
 
+        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
+        public void GivenContainsBaseConvertAs(string parentName, string activityName, Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I rollback version ""(.*)""")]
+        public void WhenIRollbackVersion(int version)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
     }
 }

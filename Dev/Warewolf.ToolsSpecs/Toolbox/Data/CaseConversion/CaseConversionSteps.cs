@@ -46,6 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             ScenarioContext.Current.Add("activity", caseConvert);
         }
 
+        [Given(@"I have a case convert variable '(.*)' with a value of '(.*)'")]
         [Given(@"I have a case convert variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveACaseConvertVariableWithAValueOf(string variable, string value)
         {
@@ -66,7 +67,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         {
             GivenIHaveACaseConvertVariableWithAValueOf(variable, value);
         }
-
 
         [Given(@"I convert a variable ""(.*)"" to ""(.*)""")]
         [Given(@"I convert a variable '(.*)' to '(.*)'")]

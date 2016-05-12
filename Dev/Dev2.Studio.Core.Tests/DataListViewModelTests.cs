@@ -1774,7 +1774,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsUsed);
         }
-         [Ignore]
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1791,7 +1791,6 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(dataListViewModel.ScalarCollection[0].IsVisable);
         }
 
-        [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1808,7 +1807,6 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsVisable);
         }
 
-         [Ignore]
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1828,7 +1826,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].IsVisable);
         }
-         [Ignore]
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1848,7 +1846,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListViewModel.RecsetCollection[0].IsVisable);
         }
-         [Ignore]
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]
@@ -1869,7 +1867,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsVisable);
         }
-         [Ignore]
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_SearchText")]

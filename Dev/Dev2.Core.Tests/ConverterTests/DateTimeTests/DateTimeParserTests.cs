@@ -542,7 +542,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         [TestCategory("DateTimeParserUnitTest")]
         [Description("Test for complex DateTimeParser input datetime with trailing spaces")]
         [Owner("Ashley Lewis")]
-        [Ignore]
         public void TryParseDateTime_ComplexArgsWithTrailingSpaces_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
             string result;
