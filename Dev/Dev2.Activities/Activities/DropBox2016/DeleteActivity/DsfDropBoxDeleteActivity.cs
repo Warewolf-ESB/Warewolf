@@ -5,13 +5,15 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Dropbox.Api;
-using Dropbox.Api.Files;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
@@ -19,7 +21,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
     public class DsfDropBoxDeleteActivity : DsfBaseActivity
     {
         private DropboxClient _client;
-        protected FileMetadata FileMetadata;
         protected Exception Exception;
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
@@ -63,7 +64,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             var dropboxSuccessResult = dropboxExecutionResult as DropboxDeleteSuccessResult;
             if (dropboxSuccessResult != null)
             {
-                FileMetadata = dropboxSuccessResult.GerFileMetadata();
+                dropboxSuccessResult.GerFileMetadata();
                 return GlobalConstants.DropBoxSucces;
             }
             var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;

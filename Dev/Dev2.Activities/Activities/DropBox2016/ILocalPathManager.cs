@@ -30,7 +30,7 @@ namespace Dev2.Activities.DropBox2016
             return directoryInfo.FullName;
         }
 
-        public bool DirectoryExists()
+        private bool DirectoryExists()
         {
             return IsValid() && Directory.Exists(GetDirectoryName());
         }
