@@ -132,7 +132,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[DiceRoll]] = Int32"});
 #line 19
-   testRunner.And("the history debug output for \'ScheduleWithHistory\' for row \"1\" is", ((string)(null)), table890, "And ");
+   testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table890, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -245,7 +245,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[DiceRoll]] = Int32"});
 #line 48
-   testRunner.And("the history debug output for \'ScheduleWithHistory\' for row \"1\" is", ((string)(null)), table893, "And ");
+   testRunner.And("the history debug output for \"ScheduleWithHistory\" for row \"1\" is", ((string)(null)), table893, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -357,7 +357,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[DiceRoll]] = Int32"});
 #line 76
-   testRunner.And("the history debug output for \'LocalUserSchedule\' for row \"1\" is", ((string)(null)), table896, "And ");
+   testRunner.And("the history debug output for \"LocalUserSchedule\" for row \"1\" is", ((string)(null)), table896, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

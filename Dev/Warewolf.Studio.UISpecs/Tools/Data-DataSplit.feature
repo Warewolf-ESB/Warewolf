@@ -134,7 +134,7 @@ Scenario: Deleting rows in Datasplit is adjusting number sequence correctly
 
 Scenario Outline: DataSplit Large View is validating incorrect string variable 
 	Given I have DataSplit Large View on design surface
-	And String To Split '<Var>' is visible
+	And String To Split "<Var>" is visible
 	And Process Direction is "Selected" as "Forward" 
 	And Process Direction is "UnSelected" as "Backward" 
 	And Skip blank rows "Unselected"
@@ -144,7 +144,7 @@ Scenario Outline: DataSplit Large View is validating incorrect string variable
 	| 2 |        | Index |       |         |        |
 	And Scroll bar is "Disabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 	Then DataSplit Small View is "NotVisible"
 Examples: 
 	| No | Var              | Validation |
@@ -163,7 +163,7 @@ Examples:
 Scenario Outline: Data Split Large View using and Escape is enabled and disabled
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I select "Row 1"  with as '<With>' then using is '<Using>' and Escape is '<Escape>'
+	When I select "Row 1"  with as "<With>" then using is "<Using>" and Escape is "<Escape>"
 Examples: 
     | No | With     | Using    | Escape   |
     | 1  | End      | Disabled | Disabled |
@@ -177,7 +177,7 @@ Examples:
 Scenario Outline: Data Split Small View using is enabled and disabled
 	Given I have DataSplit Large View on design surface
 	And I enter String to Split as "Test Warewolf" 
-	When I select "Row 1"  with as '<With>' then using is '<Using>' 
+	When I select "Row 1"  with as "<With>" then using is "<Using>" 
 Examples: 
      | No | With     | Using    |
      | 1  | End      | Disabled |
@@ -231,12 +231,12 @@ Scenario Outline: Data Split Large View is validating invalid variables
 	And I enter String to Split as "Test Warewolf" 
 	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape |
-	| 1 | '<Var>' | Index | 1     | Unselected |        |
+	| 1 | "<Var>" | Index | 1     | Unselected |        |
 	| 2 |         | Index |       | Unselected |        |
 	And result is as ""			       
 	And Scroll bar is "Disabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Var              | Validation |
     | 1  | [[rec(@).a]]     | True       |
@@ -252,13 +252,13 @@ Scenario Outline: Invalid variables in using is validating on done
 	And I enter String to Split as "Test Warewolf" 
 	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using   | Include    | Escape |
-	| 1 | [[a]]   | Index | '<Var>' | Unselected |        |
+	| 1 | [[a]]   | Index | "<Var>" | Unselected |        |
 	| 2 | [[b]]   | Index | 2       | Unselected |        |
 	| 3 |         |       |         |            |        |
 	And result is as ""			       
 	And Scroll bar is "Disabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Var              | Validation |
     | 1  | [[rec(@).a]]     | True       |
@@ -275,13 +275,13 @@ Scenario Outline: Invalid variables in Escape is validating on done
 	And I enter String to Split as "Test Warewolf" 
 	When I Enter DataSplit Large View grid has
 	| # | Results | With  | Using | Include    | Escape  |
-	| 1 | [[a]]   | Chars | 2     | Unselected | '<Var>' |
+	| 1 | [[a]]   | Chars | 2     | Unselected | "<Var>" |
 	| 2 | [[b]]   | Index | 2     | Unselected |         |
 	| 3 |         |       |       |            |         |
 	And result is as ""			       
 	And Scroll bar is "Disabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Var              | Validation |
     | 1  | [[rec(@).a]]     | True       |
@@ -392,7 +392,7 @@ Scenario: Adding DataSplit Variables by using QVI and split on chars
 
 
 
-##This split by using 'Tab' is not working because I can't use tab while entering variable list but I can paste 
+##This split by using "Tab" is not working because I can"t use tab while entering variable list but I can paste 
 ## So option must work as expected.
 Scenario: Adding DataSplit Variables by using QVI and split on Tab
     Given I have DataSplit Large view on design surface
@@ -471,10 +471,10 @@ Scenario Outline: DataSplit QVI Prefix and Suffix
 	And I enter variables 
 	| aaaa |
 	And Split List On selected as "Index" with "1"
-	And Prefix as '<Prefix>'
-	And Suffix as '<Suffix>'
-	And Append is '<Append>'
-	And Replace is '<Replace>'
+	And Prefix as "<Prefix>"
+	And Suffix as "<Suffix>"
+	And Append is "<Append>"
+	And Replace is "<Replace>"
 	And Preview button is "Enabled"	
 	When I click on "Preview"
 	Then preview as
@@ -515,8 +515,8 @@ Scenario:  DataSplit QVI Replace is Replacing Variables
 	And Split List On selected as "Char" with ","
 	And Prefix as ""
 	And Suffix as ""
-	And Append is 'Unselected'
-	And Replace is 'Selected'
+	And Append is "Unselected"
+	And Replace is "Selected"
 	And Preview button is "Enabled"	
 	When I click on "Preview"
 	Then preview as

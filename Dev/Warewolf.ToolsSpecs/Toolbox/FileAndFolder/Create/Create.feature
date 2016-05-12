@@ -30,7 +30,6 @@ Scenario Outline: Create file at location
 		| 6  | SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
 		| 7  | SFTP       | [[path]]    | sftp://localhost/test1.txt                                     | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
-
 Scenario Outline: Create file at location Nulls
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
 	And overwrite is "<selected>"
@@ -39,7 +38,6 @@ Scenario Outline: Create file at location Nulls
 	And result as "<resultVar>"
 	When the create file tool is executed
 	Then the execution has "<errorOccured>" error
-
 	Examples: 
 		| No | Name       | destination | destinationLocation                                           | selected | username                      | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | NULL                                                          | True     |                               |          | [[result]] | Failure | AN           |                           |
@@ -123,7 +121,6 @@ Scenario Outline: Check Validation Messages
 		| 46 | Local Files | [[var@]]                       |           |             |                     | True     | [[var@]]              | ""       | [[var@]]               | ""      | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s)                                                                                                  | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s)                                                                                                    |
 		| 47 | Local Files | C#$%#$]]                       |           |             |                     | True     | C#$%#$]]              | ""       | C#$%#$]]               | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don"t match  Username - Invalid expression: opening and closing brackets don"t match   Result - Invalid expression: opening and closing brackets don"t match | 1.File or Folder - Invalid expression: opening and closing brackets don"t match 2.Username - Invalid expression: opening and closing brackets don"t match   3.Result - Invalid expression: opening and closing brackets don"t match |                                                      
 
-
 Scenario Outline: Create file at location with invalid directories
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
 	And overwrite is "<selected>"
@@ -144,9 +141,7 @@ Scenario Outline: Create file at location with invalid directories
 		| 2  | Local | [[var]]      |                     | False    | dev2     | Q/ulw&]  | [[result]] |        | AN           |
 		| 3  | Local | 8751         | 8751                | False    | dev2     | Q/ulw&]  | [[result]] |        | AN           |
 
-
 #Complex Type WOLF-1042
-@ignore		
 Scenario Outline: Create file at location using complex types
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
 	And overwrite is "<selected>"

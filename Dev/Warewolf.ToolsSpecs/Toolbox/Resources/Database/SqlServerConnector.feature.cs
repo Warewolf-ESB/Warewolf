@@ -184,30 +184,28 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing SQL Server Service and Test Execution is unsuccesful")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void EditingSQLServerServiceAndTestExecutionIsUnsuccesful()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing SQL Server Service and Test Execution is unsuccesful", new string[] {
-                        "ignore"});
-#line 47
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing SQL Server Service and Test Execution is unsuccesful", ((string[])(null)));
+#line 46
  this.ScenarioSetup(scenarioInfo);
-#line 48
+#line 47
    testRunner.Given("I open workflow with database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
+#line 48
    testRunner.And("\"InsertDummyUser\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 49
    testRunner.Then("\"1 Data Source\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 51
+#line 50
    testRunner.And("Data Source is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 51
    testRunner.When("\"DemoDB\" is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 53
+#line 52
    testRunner.Then("\"2 Select Action\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 54
+#line 53
    testRunner.And("\"dbo.InsertDummyUser\" is selected as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
+#line 54
    testRunner.Then("\"3 Test Connector and Calculate Outputs\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 56
+#line 55
    testRunner.And("Inspect Data Connector hyper link is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -222,15 +220,15 @@ this.ScenarioSetup(scenarioInfo);
                         "wolf",
                         "Dev",
                         "10/1/1990"});
-#line 57
+#line 56
    testRunner.And("inputs are", ((string)(null)), table5, "And ");
-#line 60
+#line 59
    testRunner.And("\"Validate\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 60
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 61
    testRunner.When("testing the action fails", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 63
+#line 62
    testRunner.Then("\"4 Defaults and Mapping\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -238,16 +236,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Default Value",
                         "Required Field",
                         "Empty is Null"});
-#line 64
+#line 63
    testRunner.And("input mappings are", ((string)(null)), table6, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias",
                         "Recordset Name"});
-#line 66
+#line 65
  testRunner.And("output mappings are", ((string)(null)), table7, "And ");
-#line 68
+#line 67
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -259,19 +257,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangingSQLServerActions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing SQL Server Actions", ((string[])(null)));
-#line 71
+#line 70
 this.ScenarioSetup(scenarioInfo);
-#line 72
+#line 71
  testRunner.Given("I open workflow with database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 73
+#line 72
  testRunner.And("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 73
  testRunner.And("Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 74
  testRunner.And("Action is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 75
  testRunner.And("Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 77
+#line 76
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -282,9 +280,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 78
+#line 77
  testRunner.And("Inputs appear as", ((string)(null)), table8, "And ");
-#line 81
+#line 80
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -296,13 +294,13 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 82
+#line 81
  testRunner.Then("Outputs appear as", ((string)(null)), table9, "Then ");
-#line 86
+#line 85
  testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 86
  testRunner.When("Action is changed from to \"dbo.ImportOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 87
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -313,9 +311,9 @@ this.ScenarioSetup(scenarioInfo);
                         "ProductId",
                         "",
                         "false"});
-#line 89
+#line 88
  testRunner.And("Inputs appear as", ((string)(null)), table10, "And ");
-#line 92
+#line 91
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -327,19 +325,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangeSQLServerRecordsetName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change SQL Server Recordset Name", ((string[])(null)));
-#line 94
+#line 93
 this.ScenarioSetup(scenarioInfo);
-#line 95
+#line 94
  testRunner.Given("I open workflow with database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 96
+#line 95
  testRunner.And("Source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 96
  testRunner.And("Source is \"testingDBSrc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 97
  testRunner.And("Action is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 98
  testRunner.And("Action is \"dbo.Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 99
  testRunner.And("Inputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -350,9 +348,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Prefix",
                         "[[Prefix]]",
                         "false"});
-#line 101
+#line 100
  testRunner.And("Inputs appear as", ((string)(null)), table11, "And ");
-#line 104
+#line 103
  testRunner.And("Validate is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -364,11 +362,11 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "Description",
                         "[[dbo_Pr_CitiesGetCountries().Description]]"});
-#line 105
+#line 104
  testRunner.Then("Outputs appear as", ((string)(null)), table12, "Then ");
-#line 109
+#line 108
  testRunner.And("Recordset Name equals \"dbo_Pr_CitiesGetCountries\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 109
  testRunner.When("Recordset Name is changed to \"Pr_Cities\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -380,7 +378,7 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "Description",
                         "[[Pr_Cities().Description]]"});
-#line 111
+#line 110
  testRunner.Then("Outputs appear as", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -389,34 +387,32 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("No SQL Server Action to be loaded Error")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void NoSQLServerActionToBeLoadedError()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No SQL Server Action to be loaded Error", new string[] {
-                        "ignore"});
-#line 119
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No SQL Server Action to be loaded Error", ((string[])(null)));
+#line 117
 this.ScenarioSetup(scenarioInfo);
-#line 120
+#line 118
  testRunner.Given("I have a workflow \"NoStoredProceedureToLoad\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Data or [[Variable]]",
                         "Parameter",
                         "Empty is Null"});
-#line 121
+#line 119
  testRunner.And("\"NoStoredProceedureToLoad\" contains \"Testing/SQL/NoSqlStoredProceedure\" from serv" +
                     "er \"localhost\" with mapping as", ((string)(null)), table14, "And ");
-#line 123
+#line 121
  testRunner.When("\"NoStoredProceedureToLoad\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 124
+#line 122
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table15.AddRow(new string[] {
                         "Error: The selected database does not contain actions to perform"});
-#line 125
- testRunner.And("the \'Testing/SQL/NoSqlStoredProceedure\' in Workflow \'NoStoredProceedureToLoad\' de" +
+#line 123
+ testRunner.And("the \"Testing/SQL/NoSqlStoredProceedure\" in Workflow \"NoStoredProceedureToLoad\" de" +
                     "bug outputs as", ((string)(null)), table15, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -425,14 +421,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Passing Null Input values to SQL Server")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void PassingNullInputValuesToSQLServer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Null Input values to SQL Server", new string[] {
-                        "ignore"});
-#line 130
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passing Null Input values to SQL Server", ((string[])(null)));
+#line 127
 this.ScenarioSetup(scenarioInfo);
-#line 131
+#line 128
  testRunner.Given("I have a workflow \"PassingNullInputValue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -443,20 +437,20 @@ this.ScenarioSetup(scenarioInfo);
                         "[[value]]",
                         "a",
                         "True"});
-#line 132
+#line 129
  testRunner.And("\"PassingNullInputValue\" contains \"Acceptance Testing Resources/GreenPoint\" from s" +
                     "erver \"localhost\" with mapping as", ((string)(null)), table16, "And ");
-#line 135
+#line 132
  testRunner.When("\"PassingNullInputValue\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 136
+#line 133
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table17.AddRow(new string[] {
                         "Error: Scalar value { value } is NULL"});
-#line 137
- testRunner.And("the \'Acceptance Testing Resources/GreenPoint\' in Workflow \'PassingNullInputValue\'" +
+#line 134
+ testRunner.And("the \"Acceptance Testing Resources/GreenPoint\" in Workflow \"PassingNullInputValue\"" +
                     " debug outputs as", ((string)(null)), table17, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -465,14 +459,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Mapped To Recordsets incorrect")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void MappedToRecordsetsIncorrect()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mapped To Recordsets incorrect", new string[] {
-                        "ignore"});
-#line 142
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Mapped To Recordsets incorrect", ((string[])(null)));
+#line 138
 this.ScenarioSetup(scenarioInfo);
-#line 143
+#line 139
  testRunner.Given("I have a workflow \"BadSqlParameterName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -483,7 +475,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "a",
                         "True"});
-#line 144
+#line 140
  testRunner.And("\"BadSqlParameterName\" contains \"Acceptance Testing Resources/GreenPoint\" from ser" +
                     "ver \"localhost\" with mapping as", ((string)(null)), table18, "And ");
 #line hidden
@@ -496,20 +488,20 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "some column Name",
                         "[[dbo_leon bob proc().some column Name]]"});
-#line 147
+#line 143
  testRunner.And("And \"BadSqlParameterName\" contains \"Acceptance Testing Resources/GreenPoint\" from" +
                     " server \"localhost\" with Mapping To as", ((string)(null)), table19, "And ");
-#line 151
+#line 147
  testRunner.When("\"BadSqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 152
+#line 148
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table20.AddRow(new string[] {
                         "Error: Sql Error: parse error"});
-#line 153
- testRunner.And("the \'Acceptance Testing Resources/GreenPoint\' in Workflow \'BadSqlParameterName\' d" +
+#line 149
+ testRunner.And("the \"Acceptance Testing Resources/GreenPoint\" in Workflow \"BadSqlParameterName\" d" +
                     "ebug outputs as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -518,14 +510,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Parameter not found in the collection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ParameterNotFoundInTheCollection()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parameter not found in the collection", new string[] {
-                        "ignore"});
-#line 160
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Parameter not found in the collection", ((string[])(null)));
+#line 155
 this.ScenarioSetup(scenarioInfo);
-#line 161
+#line 156
  testRunner.Given("I have a workflow \"BadMySqlParameterName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -536,20 +526,20 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "`p_startswith`",
                         "false"});
-#line 162
+#line 157
  testRunner.And("\"BadMySqlParameterName\" contains \"Testing/MySql/MySqlParameters\" from server \"loc" +
                     "alhost\" with mapping as", ((string)(null)), table21, "And ");
-#line 165
+#line 160
  testRunner.When("\"BadMySqlParameterName\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 166
+#line 161
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table22.AddRow(new string[] {
-                        "Parameter \'p_startswith\' not found in the collection"});
-#line 167
- testRunner.And("the \'Testing/MySql/MySqlParameters\' in Workflow \'BadMySqlParameterName\' debug out" +
+                        "Parameter \"p_startswith\" not found in the collection"});
+#line 162
+ testRunner.And("the \"Testing/MySql/MySqlParameters\" in Workflow \"BadMySqlParameterName\" debug out" +
                     "puts as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -558,14 +548,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Recordset has invalid character")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void RecordsetHasInvalidCharacter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset has invalid character", new string[] {
-                        "ignore"});
-#line 173
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recordset has invalid character", ((string[])(null)));
+#line 167
 this.ScenarioSetup(scenarioInfo);
-#line 174
+#line 168
  testRunner.Given("I have a workflow \"MappingHasIncorrectCharacter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -576,21 +564,21 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "charValue",
                         "True"});
-#line 175
+#line 169
  testRunner.And("\"MappingHasIncorrectCharacter\" contains \"Acceptance Testing Resources/GreenPoint\"" +
                     " from server \"localhost\" with mapping as", ((string)(null)), table23, "And ");
-#line 178
+#line 172
  testRunner.When("\"MappingHasIncorrectCharacter\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 179
+#line 173
  testRunner.Then("the workflow execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table24.AddRow(new string[] {
                         "[[dbo_ConvertTo,Int().result]] : Recordset name has invalid format"});
-#line 180
- testRunner.And("the \'Acceptance Testing Resources/GreenPoint\' in Workflow \'MappingHasIncorrectCha" +
-                    "racter\' debug outputs as", ((string)(null)), table24, "And ");
+#line 174
+ testRunner.And("the \"Acceptance Testing Resources/GreenPoint\" in Workflow \"MappingHasIncorrectCha" +
+                    "racter\" debug outputs as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -598,14 +586,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("SqlServer backward Compatiblity")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlServerConnector")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void SqlServerBackwardCompatiblity()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SqlServer backward Compatiblity", new string[] {
-                        "ignore"});
-#line 188
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SqlServer backward Compatiblity", ((string[])(null)));
+#line 181
 this.ScenarioSetup(scenarioInfo);
-#line 189
+#line 182
  testRunner.Given("I have a workflow \"DataMigration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -623,11 +609,11 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "[[dbo_GetCountries().Description]]",
                         "dbo_GetCountries().Description"});
-#line 190
+#line 183
  testRunner.And("\"DataMigration\" contains \"DataCon\" from server \"localhost\" with mapping as", ((string)(null)), table25, "And ");
-#line 194
+#line 187
  testRunner.When("\"DataMigration\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 195
+#line 188
  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

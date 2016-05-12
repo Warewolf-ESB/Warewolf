@@ -385,7 +385,7 @@ Scenario Outline: Saving results in complex types
 	| [[Country(*).CountryID().value]]   | CountryID   | int         |
 	| [[Country(*).Description().value]] | Description | varchar(50) |
 	And "skip blank rows" is checked by default
-	And The result variable '<result>' equals '<value>'
+	And The result variable "<result>" equals "<value>"
 	When the tool is executed
 	And the execution has "NO" error 
 	Examples: 

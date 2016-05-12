@@ -211,7 +211,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read Folder\ReadFolderSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Rename\Rename.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Rename\Rename2.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Rename.feature</DependentUpon>
@@ -362,11 +362,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature.cs">
       <DependentUpon>DownloadDropbox.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Storage\Dropbox\DownloadDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
       <DependentUpon>ReadDropbox.feature</DependentUpon>
       <AutoGen>True</AutoGen>

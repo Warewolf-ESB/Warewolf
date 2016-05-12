@@ -63,7 +63,7 @@ Scenario Outline: Read selected is not changing when I open and close large view
        And Read Folder Large View has
        | Directory   | Username | Password | Result     |
        | C:\Test.txt |          |          | [[Result]] |
-	   And read selected '<File>'
+	   And read selected "<File>"
        | Put error in this variable | Call this web service |
        |                            |                       |      
 	   When I click "Done"
@@ -73,7 +73,7 @@ Scenario Outline: Read selected is not changing when I open and close large view
 	   Then Read Folder Large View has
        | Directory   | Username | Password | Result     |
        | C:\Test.txt |          |          | [[Result]] |
-	   And read selected '<File>'
+	   And read selected "<File>"
        | Put error in this variable | Call this web service |
        |                            |                       |      
 Examples: 
@@ -150,7 +150,7 @@ Scenario Outline: Read Folder Large View is validating incorrect path
 	   And read UnSelected "File & Folders"      
        And On Error box consists
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -177,7 +177,7 @@ Scenario Outline: Read Folder Large View is validating incorrect variable in  us
 	   And read UnSelected "File & Folders"      
        And On Error box consists    
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -204,7 +204,7 @@ Scenario Outline: Read Folder Large View is validating incorrect variable in Res
 	   And read UnSelected "File & Folders"      
        And On Error box consists
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -227,11 +227,11 @@ Scenario Outline: Read Folder On error fields incorrect variables are validating
        And On Error box consists
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

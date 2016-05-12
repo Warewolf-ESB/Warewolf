@@ -114,7 +114,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         }
 
 
-        [Given(@"I have the url '(.*)' with timeoutSeconds '(.*)'")]
+        [Given(@"I have the url ""(.*)"" with timeoutSeconds ""(.*)""")]
         public void GivenIHaveTheUrlWithTimeoutSeconds(string url, string timeoutSeconds)
         {
             ScenarioContext.Current.Add("url", url);

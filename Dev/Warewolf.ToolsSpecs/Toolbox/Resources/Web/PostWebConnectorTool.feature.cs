@@ -138,7 +138,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
  testRunner.And("Post Header appears as", ((string)(null)), table3, "And ");
 #line 32
- testRunner.And("Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Post Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
  testRunner.And("Post Url is Visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
@@ -150,7 +150,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
  testRunner.When("I click Post Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
- testRunner.Then("the Post Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Post the Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 39
  testRunner.And("Post Variables are Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40

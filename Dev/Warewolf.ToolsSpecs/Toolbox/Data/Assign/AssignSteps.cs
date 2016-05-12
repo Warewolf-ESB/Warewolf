@@ -46,7 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         }
 
         [Given(@"I assign the value (.*) to a variable ""(.*)""")]
-        [Given(@"I assign the value (.*) to a variable '(.*)'")]
+        [Given(@"I assign the value (.*) to a variable ""(.*)""")]
         public void GivenIAssignTheValueToAVariable(string value, string variable)
         {
             value = value.Replace('"', ' ').Trim();

@@ -13,11 +13,12 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Activities.Designers2.DropBox2016.Download;
+using Dev2.Activities.DropBox2016.DownloadActivity;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
     [Binding]
-    //[Owner("Nkosinathi Sangweni")]
     public class UploadDropboxSteps : RecordSetBases
     {
         [Given(@"I drag Upload Dropbox Tool onto the design surface")]
@@ -49,14 +50,17 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             ScenarioContext.Current.Add("uploadViewModel", uploadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
         }
+
         private static DropBoxUploadViewModel GetViewModel()
         {
             return ScenarioContext.Current.Get<DropBoxUploadViewModel>("uploadViewModel");
         }
+
         private static Mock<IEnvironmentModel> GeEnvrionmentModel()
         {
             return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
+
         [Given(@"New is Enabled")]
         [When(@"New is Enabled")]
         [Then(@"New is Enabled")]
@@ -65,6 +69,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var canExecute = GetViewModel().NewSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
+
         [When(@"the Dropbox tool is executed")]
         public void WhenTheDropboxToolIsExecuted()
         {
@@ -97,7 +102,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             GetViewModel().EditDropboxSourceCommand.Execute(null);
         }
-
 
         [Given(@"Dropbox File is Enabled")]
         public void GivenDropboxFileIsEnabled()
@@ -132,6 +136,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             GetViewModel().FromPath = localPath;
         }
+
         [Then(@"I set Dropbox File equals ""(.*)""")]
         public void ThenISetDropboxFileEquals(string dropboxPath)
         {
@@ -163,6 +168,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             if(sourceName == "Drop")
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
         }
+
         [Then(@"Edit is Enabled")]
         public void ThenEditIsEnabled()
         {
@@ -176,6 +182,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             Assert.IsTrue(string.IsNullOrEmpty(emptyString));
         }
 
+        [When(@"Dropbox File equals ""(.*)""")]
         [Then(@"Dropbox File equals ""(.*)""")]
         public void ThenDropboxFileEquals(string emptyString)
         {

@@ -50,7 +50,7 @@ Scenario: Execute a foreach over a tool using a recordset with 4 rows
 #	And the underlying dropped activity is a(n) "Tool"
 #	When the foreach tool is executed	
 #	Then the foreach executes 0 times
-#	And the execution has '<error>' error
+#	And the execution has "<error>" error
 #	Examples: 
 #	| type        | input        | error                                                                       |
 #	| InRecordset | [[rs()]]+1   | Only recordset names can be used with * in Recordset. Invalid: [[rs()]]+1   |

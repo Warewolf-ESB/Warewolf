@@ -269,14 +269,14 @@ Scenario: Calculate with negative recordset index for Format
 Scenario: Calculate the number of weeks between two given dates format has quoted strings
 	Given I have a first date "2013-11-29 date" 
 	And I have a second date "2014-11-01 date" 
-	And the date format as "yyyy-mm-dd 'date'"
+	And the date format as "yyyy-mm-dd "date""
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be "8088"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Input 1         | Input 2         | Input Format      | Output In |
-	| 2013-11-29 date | 2014-11-01 date | yyyy-mm-dd 'date' | Hours     |
+	| 2013-11-29 date | 2014-11-01 date | yyyy-mm-dd "date" | Hours     |
 	And the debug output as 
 	|                   |
 	| [[result]] = 8088 |
@@ -481,7 +481,7 @@ Scenario Outline: Calculate the number of months between two given dates using v
 	When the datetime difference tool is executed
 	Then the difference should be "7"
 	And the execution has "NO" error
-	And the result variable '<res>' will be '<result>'
+	And the result variable "<res>" will be "<result>"
 Examples: 
 	| input1       | Val1       | input2      | Val2       | inputformat | Val3       | res           | result |
 	| [[rec().a]]  | 30/07/2015 | [[rs(*).a]] | 01/01/2016 | [[rj(1).a]] | dd/mm/yyyy | [[rg(1).set]] | 7      |
@@ -500,14 +500,14 @@ Scenario: Variables that do not exist
 	| [[result]] | The expression [[a]] has no value assigned |
 
 Scenario Outline: Calculate the number of months using complex types
-	Given I have a first date '<input1>' equals '<Val1>' 
-	And I have a second date '<input2>' equals '<Val2>' 
-	And the date format as '<inputformat>' equals '<Val3>'
+	Given I have a first date "<input1>" equals "<Val1>" 
+	And I have a second date "<input2>" equals "<Val2>" 
+	And the date format as "<inputformat>" equals "<Val3>"
 	And I selected output in "months" 	
 	When the datetime difference tool is executed
 	Then the difference should be "7"
 	And the execution has "<error>" error
-	And the result variable '<res>' will be '<result>'
+	And the result variable "<res>" will be "<result>"
 Examples: 
 	| input1                      | Val1                   | input2                 | Val2       | inputformat          | Val3       | res                              | error | result            |
 	| [[rec().row(*).set]]        | 30/07/2015             | [[rs(*).date().value]] | 01/01/2016 | [[rj(1).date().val]] | dd/mm/yyyy | [[rg([[int]]).set]], [[int]] = 1 | No    | [[rg(1).set]] = 7 |

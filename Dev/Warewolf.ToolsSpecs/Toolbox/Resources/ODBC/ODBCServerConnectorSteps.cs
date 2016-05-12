@@ -49,8 +49,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             {
                 Name = "GreenPoint",
                 Type = enSourceType.ODBC
-
-
             };
 
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
@@ -63,6 +61,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
+
         [Given(@"I open workflow with ODBC connector")]
         public void GivenIOpenWolf()
         {
@@ -124,13 +123,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
      
-
-        [Given(@"Source iz Enable")]
+        [Given(@"Source is Enable")]
         public void GivenSourceIsEnabled()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.SourceVisible);
         }
+
         private static ODBCDatabaseDesignerViewModel GetViewModel()
         {
             return ScenarioContext.Current.Get<ODBCDatabaseDesignerViewModel>("viewModel");
@@ -145,18 +144,17 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
-
       
-        [Given(@"Action iz Disable")]
+        [Given(@"Action is Disable")]
         public void GivenActionIsDisabled()
         {
             var viewModel = GetViewModel();
             Assert.IsFalse(viewModel.ActionVisible);
         }
 
-        [Given(@"Inputs iz Disable")]
-        [When(@"Inputs iz Disable")]
-        [Then(@"Inputs iz Disable")]
+        [Given(@"Inputs is Disable")]
+        [When(@"Inputs is Disable")]
+        [Then(@"Inputs is Disable")]
         public void GivenInputsIsDisabled()
         {
             var viewModel = GetViewModel();
@@ -164,16 +162,17 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasNoInputs);
         }
 
-        [Given(@"Outputs iz Disable")]
-        [When(@"Outputs iz Disable")]
-        [Then(@"Outputs iz Disable")]
+        [Given(@"Outputs is Disable")]
+        [When(@"Outputs is Disable")]
+        [Then(@"Outputs is Disable")]
         public void GivenOutputsIsDisabled()
         {
             var viewModel = GetViewModel();
             var hasNoOutputs = viewModel.Outputs == null || viewModel.Outputs.Count == 0 || !viewModel.OutputsVisible;
             Assert.IsTrue(hasNoOutputs);
         }
-        [When(@"Action iz changed to ""(.*)""")]
+
+        [When(@"Action is changed to ""(.*)""")]
         public void WhenActionIsChangedFromTo(string procName)
         {
             if (procName == "dbo.ImportOrder")
@@ -182,32 +181,34 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 GetViewModel().SelectedProcedure = _importOrderAction;
             }
         }
-        [When(@"Recordset Name iz changed from to ""(.*)""")]
+
+        [When(@"Recordset Name is changed from to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
             GetViewModel().RecordsetName = recSetName;
         }
-        [Given(@"Action iz ""(.*)""")]
+
+        [Given(@"Action is ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
            
             var selectedProcedure = GetViewModel().MyCommand;
             Assert.IsNotNull(selectedProcedure);
             Assert.AreEqual<string>(actionName, selectedProcedure);
-
         }
-        [Given(@"Action iz Enable")]
-        [Then(@"Action iz Enable")]
-        [When(@"Action iz Enable")]
+
+        [Given(@"Action is Enable")]
+        [Then(@"Action is Enable")]
+        [When(@"Action is Enable")]
         public void ThenActionIsEnabled()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.ActionVisible);
         }
       
-        [Given(@"Inputs iz Enable")]
-        [When(@"Inputs iz Enable")]
-        [Then(@"Inputs iz Enable")]
+        [Given(@"Inputs is Enable")]
+        [When(@"Inputs is Enable")]
+        [Then(@"Inputs is Enable")]
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
@@ -215,25 +216,25 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasInputs);
         }
 
-
-
-        [Then(@"Mapping iz Enable")]
-        [Given(@"Mapping iz Enable")]
+        [Then(@"Mapping is Enable")]
+        [Given(@"Mapping is Enable")]
         public void GivenMappingIsEnabled()
         {
             ScenarioContext.Current.Pending();
         }
-        [Given(@"Validate iz Enable")]
-        [When(@"Validate iz Enable")]
-        [Then(@"Validate iz Enable")]
+
+        [Given(@"Validate is Enable")]
+        [When(@"Validate is Enable")]
+        [Then(@"Validate is Enable")]
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
         }
-        [When(@"Inputs appears az")]
-        [Then(@"Inputs appears az")]
-        [Given(@"Inputs appears az")]
+
+        [When(@"Inputs appears as")]
+        [Then(@"Inputs appears as")]
+        [Given(@"Inputs appears as")]
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel();
@@ -254,12 +255,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-
-
-
-
-
-        [When(@"I Selected ""(.*)"" az Source")]
+        [When(@"I Selected ""(.*)"" as Source")]
         public void WhenISelectAsSource(string sourceName)
         {
             if (sourceName == "GreenPoint")
@@ -272,7 +268,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Given(@"Source iz ""(.*)""")]
+        [Given(@"Source is ""(.*)""")]
         public void GivenSourceIs(string name)
         {
             if (name == "localODBCTest")
@@ -299,11 +295,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-
-
-
-      
-        [When(@"I click Tezt")]
+        [When(@"I click Test")]
         public void WhenIClickTest()
         {
             var viewModel = GetViewModel();
@@ -317,9 +309,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
 
-
-
-        [When(@"""(.*)"" is selected az the data source")]
+        [When(@"""(.*)"" is selected as the data source")]
         public void WhenIsSelectedAsTheDataSource(string p0)
         {
             ScenarioContext.Current.Pending();
@@ -331,13 +321,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Pending();
         }
 
-        [When(@"I click Validatt")]
+        [When(@"I click Validate")]
         public void WhenIClickValidate()
         {
             GetViewModel().TestInputCommand.Execute(null);
         }
 
-        [Then(@"Test Inputs appears az")]
+        [Then(@"Test Inputs appears as")]
         public void ThenTestInputsAppearAs(Table table)
         {
             int rowNum = 0;
@@ -352,8 +342,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-
-        [Then(@"Test Connector and Calculate Outputz outputs appear az")]
+        [Then(@"Test Connector and Calculate Outputs outputs appear as")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
             var rowIdx = 0;
@@ -369,7 +358,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Outputs appears az")]
+        [Then(@"Outputs appears as")]
         public void ThenOutputsAppearAs(Table table)
         {
             var outputMappings = GetViewModel().Outputs;
@@ -392,8 +381,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual<string>(recsetName, GetViewModel().RecordsetName);
         }
 
-
-        [When(@"Source iz changed to ""(.*)""")]
+        [When(@"Source is changed to ""(.*)""")]
         public void WhenSourceIsChangedFromTo(string sourceName)
         {
             if (sourceName == "GreenPoint")
@@ -402,14 +390,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-
-
-
-
-
-
-
-
-
+        [Then(@"Inputs appears as")]
+        public void ThenInputsAppearsAs(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 }

@@ -178,7 +178,7 @@ Scenario Outline: Ensure the Complex type length inputs work as expected
 	And get length on record "<variable>"	
 	When the length tool is executed
 	Then the length result should be "<val>"
-	And the result variable '<result>' will be "<value>"
+	And the result variable "<result>" will be "<value>"
 	And the execution has "<Error>" error
 	And the debug inputs as "<message>"
 Examples: 

@@ -608,14 +608,8 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void EnsureTheComplexTypeLengthInputsWorkAsExpected(string variable, string val, string error, string message, string result, string value, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the Complex type length inputs work as expected", @__tags);
-#line 169
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the Complex type length inputs work as expected", exampleTags);
+#line 168
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -642,19 +636,19 @@ this.ScenarioSetup(scenarioInfo);
             table20.AddRow(new string[] {
                         "rs().row().set",
                         "7"});
-#line 170
+#line 169
  testRunner.Given("I get  the length from a object that looks like with this shape", ((string)(null)), table20, "Given ");
-#line 179
+#line 178
  testRunner.And(string.Format("get length on record \"{0}\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 179
  testRunner.When("the length tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 181
+#line 180
  testRunner.Then(string.Format("the length result should be \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 181
+ testRunner.And(string.Format("the result variable \"{0}\" will be \"{1}\"", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 182
- testRunner.And(string.Format("the result variable \'{0}\' will be \"{1}\"", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
  testRunner.And("the execution has \"<Error>\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 183
  testRunner.And(string.Format("the debug inputs as \"{0}\"", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -663,7 +657,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the Complex type length inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Length")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rs(1).row().set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rs(1).row().set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "1")]
@@ -679,7 +672,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the Complex type length inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Length")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rs(*).row([[int]]).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rs(*).row([[int]]).set]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "4")]
@@ -698,7 +690,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LengthOfAnNullRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Length of an null recordset", ((string[])(null)));
-#line 198
+#line 197
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -707,15 +699,15 @@ this.ScenarioSetup(scenarioInfo);
             table21.AddRow(new string[] {
                         "[[rs().row]]",
                         "NULL"});
-#line 199
+#line 198
  testRunner.Given("I get  the length from a recordset that looks like with this shape", ((string)(null)), table21, "Given ");
-#line 202
+#line 201
  testRunner.And("get length on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
+#line 202
  testRunner.When("the length tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 204
+#line 203
  testRunner.Then("the length result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 205
+#line 204
  testRunner.And("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -727,13 +719,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LengthOfAnUnassignedRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Length of an unassigned recordset", ((string[])(null)));
-#line 207
+#line 206
 this.ScenarioSetup(scenarioInfo);
-#line 208
+#line 207
  testRunner.Given("get length on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 209
+#line 208
  testRunner.When("the length tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 210
+#line 209
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

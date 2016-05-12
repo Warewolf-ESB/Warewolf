@@ -124,9 +124,9 @@ Scenario Outline: Large view done button is validating incorrect variables in re
 	And Fire Triggers is "UnSelected"
 	And Keep Identity is "UnSelected"
 	And Use Internal Transaction is "UnSelected"
-	And result is '<Result>'
+	And result is "<Result>"
 	When I click on Done
-	Then Validation message is thrown '<Vali>'
+	Then Validation message is thrown "<Vali>"
 Examples: 
     | No | Result           | Vali  |
     | 1  | [[a]]            | False |
@@ -155,7 +155,7 @@ Scenario Outline: Large view is validating incorrect variables in Input fields
 	And Skip blank rows is "Selected"
 	And result is "[[a]]
 	When I click on Done
-	Then Validation message is thrown '<Vali>'
+	Then Validation message is thrown "<Vali>"
 Examples: 
     | No | Variable         | Vali  |
     | 1  | [[a]]            | False |

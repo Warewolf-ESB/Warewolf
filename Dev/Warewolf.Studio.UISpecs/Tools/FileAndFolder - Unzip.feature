@@ -112,10 +112,10 @@ Scenario Outline: Unzip Large View is validating incorrect source path
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name  | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | '<SPath>' |                 |                 | D:\         |               |               | [[Unzip]] |                 |
+       | "<SPath>" |                 |                 | D:\         |               |               | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -135,10 +135,10 @@ Scenario Outline: Unzip Large View is validating incorrect Destination path
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | C:/Test.txt |                 |                 | '<DPath>'   |               |               | [[Unzip]] |                 |
+       | C:/Test.txt |                 |                 | "<DPath>"   |               |               | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | DPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -159,10 +159,10 @@ Scenario Outline: Unzip Large View is validating incorrect variable in source us
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | C:/Test.txt | '<Variable>'    | sas             | D:/         |               |               | [[Unzip]] |                 |
+       | C:/Test.txt | "<Variable>"    | sas             | D:/         |               |               | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -184,10 +184,10 @@ Scenario Outline: Unzip Large View is validating incorrect variable in Destinati
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | C:/Test.txt |                 |                 | D:/         | '<Username>'  | abc           | [[Unzip]] |                 |
+       | C:/Test.txt |                 |                 | D:/         | "<Username>"  | abc           | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -208,10 +208,10 @@ Scenario Outline: Unzip Large View is validating incorrect variable in Result fi
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result     |Archive Password |
-       | C:/Test.txt |                 |                 | D:/         |               |               | '<Result>' |                 |
+       | C:/Test.txt |                 |                 | D:/         |               |               | "<Result>" |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -230,11 +230,11 @@ Scenario Outline: Unzip On error fields incorrect variables are validating
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        And End this workflow is "Unselected"
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

@@ -7,9 +7,9 @@ Feature: Settings Permissions
 @Security
 Scenario Outline: Server Permissions 
         Given I have a server "localhost"
-        And it has '<Group>' with '<Given rights>' 
-        When connected as user part of '<User Group>'
-        Then resources should have '<Rights>'
+        And it has "<Group>" with "<Given rights>" 
+        When connected as user part of "<User Group>"
+        Then resources should have "<Rights>"
 Examples:
         | No | Group  | Given rights                                      | User Group | Resources | Rights                                            |
         | 1  | Public | Deploy To                                         | Users      | All       | Deploy To                                         |
@@ -32,11 +32,11 @@ Examples:
 @Security
 Scenario Outline: Setting Selected Resource Permissions for users 
         Given I have a server "localhost"
-        And it has '<Group>' with '<Given rights>' 
-        And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
-        When connected as user part of '<User Group>'
-        Then '<Resource>' should have '<Permissions>'
-		And resources should not have '<Rights>' 
+        And it has "<Group>" with "<Given rights>" 
+        And Resource "<Resource Name>" has rights "<Resource Rights>" for "<User Group>"
+        When connected as user part of "<User Group>"
+        Then "<Resource>" should have "<Permissions>"
+		And resources should not have "<Rights>" 
 Examples: 
         | No | Group                   | Given rights              | Resource Name                                 | Resource Rights           | User Group | Resources | Rights | Resource                                      | Permissions               |
         | 1  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
@@ -59,11 +59,11 @@ Examples:
 #@Security
 Scenario Outline: Setting Selected Resource Permissions for users overlapping groups
         Given I have a server "localhost"
-        And it has '<Group>' with '<Given rights>' 
-        And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
-        When connected as user part of '<User Group>'
-        Then '<Resource>' should have '<Permissions>'
-		And resources should have '<Rights>' 
+        And it has "<Group>" with "<Given rights>" 
+        And Resource "<Resource Name>" has rights "<Resource Rights>" for "<User Group>"
+        When connected as user part of "<User Group>"
+        Then "<Resource>" should have "<Permissions>"
+		And resources should have "<Rights>" 
 Examples: 
         | No | Group  | Given rights                                                     | Resource Name                                 | Resource Rights           | User Group | Resources | Rights                                                           | Resource                                      | Permissions               |
         | 1  | Public | View                                                             | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | View                                                             | Acceptance Testing Resources\DECISION TESTING | View                      |
@@ -96,11 +96,11 @@ Examples:
 @Security		
 Scenario Outline: Setting Selected Resource Permissions for users conflicting permissions
         Given I have a server "localhost"
-        And it has '<Group>' with '<Given rights>' 
-        And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
-        When connected as user part of '<User Group>'
-        Then '<Resource>' should have '<Permissions>'
-		And resources should have '<Rights>' 
+        And it has "<Group>" with "<Given rights>" 
+        And Resource "<Resource Name>" has rights "<Resource Rights>" for "<User Group>"
+        When connected as user part of "<User Group>"
+        Then "<Resource>" should have "<Permissions>"
+		And resources should have "<Rights>" 
 Examples: 
         | No | Group | Given rights                                                     | Resource Name                                 | Resource Rights           | User Group | Resources | Rights                                                           | Resource                                    | Permissions               |
         | 1  | Users | Deploy To                                                        | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | Deploy To                                                        | Acceptance Testing Resources\DECISION TESTING | View                      |

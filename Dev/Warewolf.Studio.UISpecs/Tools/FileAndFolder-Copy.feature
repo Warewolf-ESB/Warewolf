@@ -115,10 +115,10 @@ Scenario Outline: Copy Large View is validating incorrect source path
        And "File or Folder" is focused
        And Copy Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | '<SPath>'      |                 |                 | D:\         |               |               | [[Copy]] |
+       | "<SPath>"      |                 |                 | D:\         |               |               | [[Copy]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -138,10 +138,10 @@ Scenario Outline: Copy Large View is validating incorrect Destination path
        And "File or Folder" is focused
        And Copy Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    |                 |                 | '<DPath>'   |               |               | [[Copy]] |
+       | C:/Test.txt    |                 |                 | "<DPath>"   |               |               | [[Copy]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | DPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -162,10 +162,10 @@ Scenario Outline: Copy Large View is validating incorrect variable in source use
        And "File or Folder" is focused
        And Copy Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    | '<Variable>'    | sas             | D:/         |               |               | [[Copy]] |
+       | C:/Test.txt    | "<Variable>"    | sas             | D:/         |               |               | [[Copy]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -187,10 +187,10 @@ Scenario Outline: Copy Large View is validating incorrect variable in Destinatio
        And "File or Folder" is focused
        And Copy Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result   |
-       | C:/Test.txt    |                 |                 | D:/         | '<Username>'  | abc           | [[Copy]] |
+       | C:/Test.txt    |                 |                 | D:/         | "<Username>"  | abc           | [[Copy]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -211,10 +211,10 @@ Scenario Outline: Copy Large View is validating incorrect variable in Result fie
        And "File or Folder" is focused
        And Copy Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password | Result       |
-       | C:/Test.txt    |                 |                 | D:/         |               |               | '<Result>'   |
+       | C:/Test.txt    |                 |                 | D:/         |               |               | "<Result>"   |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -233,11 +233,11 @@ Scenario Outline: Copy On error fields incorrect variables are validating
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        And End this workflow is "Unselected"
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

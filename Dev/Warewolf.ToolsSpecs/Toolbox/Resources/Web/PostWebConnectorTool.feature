@@ -14,7 +14,7 @@ Scenario: Open new Web Tool
 	And  Post Header appears as
 	| Header | Value |
 	And Post Edit is Enabled
-	And  Post Body is Enabled 
+	And Post Body is Enabled 
 	And Post Url is Visible
 	And Post Query is Enabled
 	And Post Generate Outputs is Enabled
@@ -29,13 +29,13 @@ Scenario: Create Web Service with different methods
 	Then Post Header is Enabled
 	And  Post Header appears as
 	| Header | Value |
-	And Body is Enabled 
+	And Post Body is Enabled
 	And Post Url is Visible
 	And Post Edit is Enabled
 	And Post Query is Enabled
 	And Post Generate Outputs is Enabled
 	When I click Post Generate Outputs
-	Then the Post Generate Outputs window is shown
+	Then Post the Generate Outputs window is shown
 	And Post Variables are Enabled
 	When Post Test Inputs is Successful
 	Then Post the response is loaded

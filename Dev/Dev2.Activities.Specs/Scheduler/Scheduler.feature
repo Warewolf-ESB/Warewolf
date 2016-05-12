@@ -16,7 +16,7 @@ Scenario: Schedule with history
 	  Then the schedule status is "Success"
 	  Then the Schedule task has "No" error
 	  And "ScheduleWithHistory" has "2" row of history	   
-	  And the history debug output for 'ScheduleWithHistory' for row "1" is 
+	  And the history debug output for "ScheduleWithHistory" for row "1" is 
 	  | # |                   |
 	  | 1 | [[DiceRoll]] = Int32 |
 
@@ -45,7 +45,7 @@ Scenario: Setting schedule task "At log on"
 	  When the "Diceroll1" is executed "1" times
 	  Then the schedule status is "Success"
 	  And "Diceroll1" has "2" row of history	   
-	  And the history debug output for 'ScheduleWithHistory' for row "1" is 
+	  And the history debug output for "ScheduleWithHistory" for row "1" is 
 		| # |                    |
 		| 1 | [[DiceRoll]] = Int32 |
 
@@ -73,7 +73,7 @@ Scenario: Schedule with LocalUser
 	  Then the schedule status is "Success"
 	  Then the Schedule task has "No" error
 	  And "LocalUserSchedule" has "2" row of history	   
-	  And the history debug output for 'LocalUserSchedule' for row "1" is 
+	  And the history debug output for "LocalUserSchedule" for row "1" is 
 	  | # |                   |
 	  | 1 | [[DiceRoll]] = Int32 |
 

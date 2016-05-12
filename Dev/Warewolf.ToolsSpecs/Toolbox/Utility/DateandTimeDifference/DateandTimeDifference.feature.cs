@@ -898,7 +898,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 271
  testRunner.And("I have a second date \"2014-11-01 date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 272
- testRunner.And("the date format as \"yyyy-mm-dd \'date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the date format as \"yyyy-mm-dd \"date\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 273
  testRunner.And("I selected output in \"Hours\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 274
@@ -916,7 +916,7 @@ this.ScenarioSetup(scenarioInfo);
             table37.AddRow(new string[] {
                         "2013-11-29 date",
                         "2014-11-01 date",
-                        "yyyy-mm-dd \'date\'",
+                        "yyyy-mm-dd \"date\"",
                         "Hours"});
 #line 277
  testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
@@ -1535,7 +1535,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 483
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 484
- testRunner.And(string.Format("the result variable \'{0}\' will be \'{1}\'", res, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the result variable \"{0}\" will be \"{1}\"", res, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1617,11 +1617,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 502
 this.ScenarioSetup(scenarioInfo);
 #line 503
- testRunner.Given(string.Format("I have a first date \'{0}\' equals \'{1}\'", input1, val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a first date \"{0}\" equals \"{1}\"", input1, val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 504
- testRunner.And(string.Format("I have a second date \'{0}\' equals \'{1}\'", input2, val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a second date \"{0}\" equals \"{1}\"", input2, val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 505
- testRunner.And(string.Format("the date format as \'{0}\' equals \'{1}\'", inputformat, val3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the date format as \"{0}\" equals \"{1}\"", inputformat, val3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 506
  testRunner.And("I selected output in \"months\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 507
@@ -1631,7 +1631,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 509
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 510
- testRunner.And(string.Format("the result variable \'{0}\' will be \'{1}\'", res, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the result variable \"{0}\" will be \"{1}\"", res, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

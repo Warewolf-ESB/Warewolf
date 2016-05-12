@@ -294,8 +294,8 @@ Scenario: Deploying restricted workflows
 #Ensure user is able to filter resources in Destination side.
 #Ensure Filter clear option on both server and destination side is clearing filter box.
 #Ensure when user mouse right click on any resource in source side then Select All Dependencies option is available in context menu.
-#Ensure when user selects 'Select All Dependencies' on right click context menu on a selected resource then dependecies are selected.
-#Ensure when user selects 'Select all dependencies' by using mouse right click on a unselected resource then dependencies and resource will be selected.
+#Ensure when user selects "Select All Dependencies" on right click context menu on a selected resource then dependecies are selected.
+#Ensure when user selects "Select all dependencies" by using mouse right click on a unselected resource then dependencies and resource will be selected.
 #Ensure While deploying a service without dependencies then popup message should appear 
 #Ensure when user is deploying conflicting resources then conflict message is thrown. 
 #Ensure user is able to see Deploy summary in deploy tab

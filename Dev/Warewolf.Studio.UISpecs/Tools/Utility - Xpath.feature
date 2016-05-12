@@ -54,12 +54,12 @@ Scenario Outline: Xpath Large view is validating Incorrect Variables
 	Then I enter XML is ""
 	And Xpath snall view grid has
 	| # | Result | Xpath                         |
-	| 1 | [[a]]  | //root/number[@id='1']/text() |
+	| 1 | [[a]]  | //root/number[@id="1"]/text() |
 	| 2 |        |                               |
 	And Scroll bar is "Disabled"
 	And Done button is "Visible"
 	When I click on Done
-	Then Validation message is thrown '<VaL>'
+	Then Validation message is thrown "<VaL>"
 Examples: 
     | No | XML                                           | VaL   |
     | 1  | <root><number id="1">One</number><number      | False |
@@ -79,12 +79,12 @@ Scenario Outline: Xpath Large view is validating Incorrect Output variables
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And Xpath snall view grid has
 	| # | Result   | Xpath                         |
-	| 1 | <Output> | //root/number[@id='1']/text() |
+	| 1 | <Output> | //root/number[@id="1"]/text() |
 	| 2 |          |                               |
 	And Scroll bar is "Disabled"
 	And Done button is "Visible"
 	When I click on Done
-	Then Validation message is thrown '<VaL>'
+	Then Validation message is thrown "<VaL>"
 Examples: 
     | No | Output           | VaL   |
     | 1  | result           | False |
@@ -101,10 +101,10 @@ Scenario: Inserting Rows in large view
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And Xpath Large view grid has
 	| # | Result        | Xpath                         |
-	| 1 | [[rec(1).id]] | //root/number[@id='1']/text() |
+	| 1 | [[rec(1).id]] | //root/number[@id="1"]/text() |
 	| 2 | [[rec(2).id]] |                               |
 	| 3 | [[rec(2).id]] |                               |
-	| 4 | [[rec(1).id]] | //root/number[@id='1']/text() |
+	| 4 | [[rec(1).id]] | //root/number[@id="1"]/text() |
 	| 5 | [[rec(2).id]] |                               |
 	| 6 | [[rec(2).id]] |                               |
 	| 7 |               |                               |
@@ -112,11 +112,11 @@ Scenario: Inserting Rows in large view
 	And Done button is "Visible"
 	When I Insert Row at "2"
 	| # | Result        | Xpath                         |
-	| 1 | [[rec(1).id]] | //root/number[@id='1']/text() |
+	| 1 | [[rec(1).id]] | //root/number[@id="1"]/text() |
 	| 2 | [[Insert      |                               |
 	| 3 | [[rec(2).id]] |                               |
 	| 4 | [[rec(2).id]] |                               |
-	| 5 | [[rec(1).id]] | //root/number[@id='1']/text() |
+	| 5 | [[rec(1).id]] | //root/number[@id="1"]/text() |
 	| 6 | [[rec(2).id]] |                               |
 	| 7 | [[rec(2).id]] |                               |
 	| 8 |               |                               |
@@ -125,10 +125,10 @@ Scenario: Deleting Rows in large view
 	Then I enter XML is "<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>"
 	And Xpath Laarge view grid has
 	| # | Result        | Xpath                         |
-	| 1 | [[rec(1).id]] | //root/number[@id='1']/text() |
+	| 1 | [[rec(1).id]] | //root/number[@id="1"]/text() |
 	| 2 | [[rec(2).id]] |                               |
 	| 3 | [[rec(3).id]] |                               |
-	| 4 | [[rec(4).id]] | //root/number[@id='1']/text() |
+	| 4 | [[rec(4).id]] | //root/number[@id="1"]/text() |
 	| 5 | [[rec(5).id]] |                               |
 	| 6 | [[rec(6).id]] |                               |
 	| 7 |               |                               |
@@ -137,9 +137,9 @@ Scenario: Deleting Rows in large view
 	When I Delete Row at "2"
 	And Xpath Laarge view grid has
 	| # | Result        | Xpath                         |
-	| 1 | [[rec(1).id]] | //root/number[@id='1']/text() |
+	| 1 | [[rec(1).id]] | //root/number[@id="1"]/text() |
 	| 2 | [[rec(3).id]] |                               |
-	| 3 | [[rec(4).id]] | //root/number[@id='1']/text() |
+	| 3 | [[rec(4).id]] | //root/number[@id="1"]/text() |
 	| 4 | [[rec(5).id]] |                               |
 	| 5 | [[rec(6).id]] |                               |
 	| 6 |               |                               |

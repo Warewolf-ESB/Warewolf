@@ -120,7 +120,7 @@ Scenario: No SQL Server Action to be loaded Error
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedureToLoad" is executed
 	Then the workflow execution has "An" error
-	And the 'Testing/SQL/NoSqlStoredProceedure' in Workflow 'NoStoredProceedureToLoad' debug outputs as
+	And the "Testing/SQL/NoSqlStoredProceedure" in Workflow "NoStoredProceedureToLoad" debug outputs as
 	  |                                                                  |
 	  | Error: The selected database does not contain actions to perform |
 
@@ -131,7 +131,7 @@ Scenario: Passing Null Input values to SQL Server
 	     | [[value]]                  | a         | True          |
 	When "PassingNullInputValue" is executed
 	Then the workflow execution has "An" error
-	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'PassingNullInputValue' debug outputs as
+	And the "Acceptance Testing Resources/GreenPoint" in Workflow "PassingNullInputValue" debug outputs as
 	  |                                       |
 	  | Error: Scalar value { value } is NULL |
 
@@ -146,7 +146,7 @@ Scenario: Mapped To Recordsets incorrect
 	| some column Name | [[dbo_leon bob proc().some column Name]] |
 	When "BadSqlParameterName" is executed
 	Then the workflow execution has "An" error
-	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'BadSqlParameterName' debug outputs as
+	And the "Acceptance Testing Resources/GreenPoint" in Workflow "BadSqlParameterName" debug outputs as
 	  |                               |
 	  | Error: Sql Error: parse error |
 
@@ -159,9 +159,9 @@ Scenario: Parameter not found in the collection
 	     |                            | `p_startswith` | false         |
 	When "BadMySqlParameterName" is executed
 	Then the workflow execution has "An" error
-	And the 'Testing/MySql/MySqlParameters' in Workflow 'BadMySqlParameterName' debug outputs as
+	And the "Testing/MySql/MySqlParameters" in Workflow "BadMySqlParameterName" debug outputs as
 	  |                                                      |
-	  | Parameter 'p_startswith' not found in the collection |
+	  | Parameter "p_startswith" not found in the collection |
 
 
 Scenario: Recordset has invalid character
@@ -171,7 +171,7 @@ Scenario: Recordset has invalid character
 	     | 1                          | charValue | True          |
 	When "MappingHasIncorrectCharacter" is executed
 	Then the workflow execution has "An" error
-	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'MappingHasIncorrectCharacter' debug outputs as
+	And the "Acceptance Testing Resources/GreenPoint" in Workflow "MappingHasIncorrectCharacter" debug outputs as
 	  |                                                                    |
 	  | [[dbo_ConvertTo,Int().result]] : Recordset name has invalid format |
 	  

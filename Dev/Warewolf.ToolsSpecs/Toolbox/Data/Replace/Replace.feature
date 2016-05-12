@@ -141,7 +141,7 @@ Scenario Outline:  Ensuring recordsets work as a Result
 	And replace result is "<resultVar>"
 	When the replace tool is executed
 	Then the execution has "NO" error
-	And the result variable '<resultVar>' will be '<result>'
+	And the result variable "<resultVar>" will be "<result>"
 Examples: 
 | value         | replace | resultVar               | result | output                                                    |
 | [[text]]      | West    | [[rec().string]]        | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
