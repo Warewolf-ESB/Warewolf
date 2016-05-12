@@ -1,11 +1,10 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.DropBox2016.DropboxFileActivity;
+﻿using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
@@ -21,7 +20,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                  .Returns(successResult);
             return mock;
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -51,8 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentException))]
-        public void CreateNewDropboxUpload_GivenMissingToPath_ShouldBeInValid()
+        public void CreateNewDropboxUpload_GivenEmptyPath_ShouldBeValid()
         {
             //---------------Set up test pack-------------------
             var dropboxFileRead = new DropboxFileRead(true, "", false, false);
@@ -64,10 +61,10 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateNewdropboxFileRead_GivenMissingToPath_ShouldBeValid()
+        public void CreateNewdropboxFileRead_GivenPath_ShouldBeValid()
         {
             //---------------Set up test pack-------------------
-            var dropboxFileRead =  new DropboxFileRead(true, "a.file", false, false);
+            var dropboxFileRead = new DropboxFileRead(true, "a.file", false, false);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
