@@ -295,6 +295,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Resources\ODBC\ODBCServerConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleServerConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -560,6 +566,10 @@
     <None Include="Toolbox\Resources\ODBC\ODBCConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Oracle\OracleServerConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
