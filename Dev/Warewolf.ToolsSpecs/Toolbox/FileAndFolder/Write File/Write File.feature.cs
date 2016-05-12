@@ -76,21 +76,21 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.WriteFile
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.And(string.Format("Method is \'{0}\'", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Method is \"{0}\"", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And(string.Format("input contents as \'{0}\'", content), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("input contents as \"{0}\"", content), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And(string.Format("use private public key for source is \'{0}\'", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
     testRunner.When("the write file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -484,17 +484,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 44
 this.ScenarioSetup(scenarioInfo);
 #line 45
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
- testRunner.And(string.Format("Method is \'{0}\'", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Method is \"{0}\"", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
- testRunner.And(string.Format("input contents as \'{0}\'", content), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("input contents as \"{0}\"", content), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
- testRunner.And(string.Format("use private public key for source is \'{0}\'", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
     testRunner.When("the write file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
@@ -547,39 +547,39 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
 this.ScenarioSetup(scenarioInfo);
 #line 58
-    testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \'{0}\'", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 59
- testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \'{0}\'", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 60
- testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \'{0}\'", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 61
- testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \'{0}\'", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 62
  testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 63
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
- testRunner.And(string.Format("Method is \'{0}\'", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Method is \"{0}\"", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
- testRunner.And(string.Format("input contents as \'{0}\'", content), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("input contents as \"{0}\"", content), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
  testRunner.When("validating the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 69
- testRunner.Then(string.Format("validation is \'{0}\'", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 70
- testRunner.And(string.Format("validation message is \'{0}\'", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
     testRunner.When("the write file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 72
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 73
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
- testRunner.And(string.Format("execution error message will be \'{0}\'", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("execution error message will be \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
@@ -1323,11 +1323,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\"t match")]
         public virtual void WriteFileValidation_Variant27()
         {
-            this.WriteFileValidation("28", "Local with Overwrite", "[[sourcePath]].txt", "\"\"", "\"\"", "c:\\filetoread.txt", "Append Bottom", "warewolf rules", "[[a]]*]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\'t match", "1.Username - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.WriteFileValidation("28", "Local with Overwrite", "[[sourcePath]].txt", "\"\"", "\"\"", "c:\\filetoread.txt", "Append Bottom", "warewolf rules", "[[a]]*]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1375,11 +1375,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
         public virtual void WriteFileValidation_Variant29()
         {
-            this.WriteFileValidation("30", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "c:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[a]]*]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\'t match", "1.Result - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.WriteFileValidation("30", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "c:\\filetoread.txt", "Append Bottom", "warewolf rules", "\"\"", "\"\"", "[[a]]*]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1427,11 +1427,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
         public virtual void WriteFileValidation_Variant31()
         {
-            this.WriteFileValidation("32", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "c:\\filetoread.txt", "method", "content", "\"\"", "\"\"", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\'t match", "1.Result - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.WriteFileValidation("32", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "c:\\filetoread.txt", "method", "content", "\"\"", "\"\"", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1687,11 +1687,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Invalid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Invalid expression: opening and closing brackets don\"t match")]
         public virtual void WriteFileValidation_Variant41()
         {
-            this.WriteFileValidation("42", "Local with Overwrite", "[[a]", "\"\"", "\"\"", "", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - Invalid expression: opening and closing brackets don\'t match", "1.File Name - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.WriteFileValidation("42", "Local with Overwrite", "[[a]", "\"\"", "\"\"", "", "Append Top", "warewolf rules", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "File Name - Invalid expression: opening and closing brackets don\"t match", "1.File Name - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1847,19 +1847,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Invalid expression: opening and closing brackets don\'t match  Usernam" +
-            "e - Invalid expression: opening and closing brackets don\'t match   Result - Inva" +
-            "lid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Invalid expression: opening and closing brackets don\'t match 2.User" +
-            "name - Invalid expression: opening and closing brackets don\'t match   3.Result -" +
-            " Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "File Name - Invalid expression: opening and closing brackets don\"t match  Usernam" +
+            "e - Invalid expression: opening and closing brackets don\"t match   Result - Inva" +
+            "lid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.File Name - Invalid expression: opening and closing brackets don\"t match 2.User" +
+            "name - Invalid expression: opening and closing brackets don\"t match   3.Result -" +
+            " Invalid expression: opening and closing brackets don\"t match")]
         public virtual void WriteFileValidation_Variant47()
         {
-            this.WriteFileValidation("47", "Local with Overwrite", "C#$%#$]]", "\"\"", "\"\"", "", "Append Bottom", "warewolf rules", "C#$%#$]]", "\"\"", "C#$%#$]]", "\"\"", "AN", "True", "File Name - Invalid expression: opening and closing brackets don\'t match  Usernam" +
-                    "e - Invalid expression: opening and closing brackets don\'t match   Result - Inva" +
-                    "lid expression: opening and closing brackets don\'t match", "1.File Name - Invalid expression: opening and closing brackets don\'t match 2.User" +
-                    "name - Invalid expression: opening and closing brackets don\'t match   3.Result -" +
-                    " Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.WriteFileValidation("47", "Local with Overwrite", "C#$%#$]]", "\"\"", "\"\"", "", "Append Bottom", "warewolf rules", "C#$%#$]]", "\"\"", "C#$%#$]]", "\"\"", "AN", "True", "File Name - Invalid expression: opening and closing brackets don\"t match  Usernam" +
+                    "e - Invalid expression: opening and closing brackets don\"t match   Result - Inva" +
+                    "lid expression: opening and closing brackets don\"t match", "1.File Name - Invalid expression: opening and closing brackets don\"t match 2.User" +
+                    "name - Invalid expression: opening and closing brackets don\"t match   3.Result -" +
+                    " Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2046,30 +2046,24 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void WriteFileAtLocationUsingComplexTypes(string name, string source, string sourceLocation, string method, string content, string values, string username, string password, string resultVar, string result, string errorOccured, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "Ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file at location using complex types", @__tags);
-#line 141
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file at location using complex types", exampleTags);
+#line 140
 this.ScenarioSetup(scenarioInfo);
+#line 141
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 142
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 143
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Method is \"{0}\"", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 144
- testRunner.And(string.Format("Method is \'{0}\'", method), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("input contents as \"{0}\" with value \"{1}\"", content, values), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 145
- testRunner.And(string.Format("input contents as \'{0}\' with value \'{1}\'", content, values), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 146
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
     testRunner.When("the write file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 147
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 148
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2084,14 +2078,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", username),
                         "String",
                         string.Format("{0}", content)});
-#line 150
+#line 149
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table6.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 153
+#line 152
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2101,7 +2095,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Write file at location using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Write File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local with Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[file().resources().path]]")]
@@ -2123,7 +2116,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Write file at location using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Write File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local with Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[file(1).resources([[int]]).path]]")]
@@ -2145,7 +2137,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Write file at location using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Write File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local with Overwrite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[file().resources(*).path]]")]

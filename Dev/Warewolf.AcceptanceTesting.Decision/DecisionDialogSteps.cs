@@ -94,7 +94,7 @@ namespace Warewolf.AcceptanceTesting.Decision
             return false;
         }
 
-        [Given(@"Match Type has '(.*)' visible")]
+        [Given(@"Match Type has ""(.*)"" visible")]
         public void GivenMatchTypeHasVisible(string option)
         {
             var view = (Large)FeatureContext.Current["view"];
@@ -111,7 +111,7 @@ namespace Warewolf.AcceptanceTesting.Decision
             }
         }
 
-        [Then(@"'(.*)' fields are ""(.*)""")]
+        [Then(@"""(.*)"" fields are ""(.*)""")]
         public void ThenFieldsAre(string name, string state)
         {
             var view = (Large) FeatureContext.Current["view"];
@@ -126,7 +126,7 @@ namespace Warewolf.AcceptanceTesting.Decision
         }
 
        
-        [Then(@"the decision match variables '(.*)'and match '(.*)' and to match'(.*)'")]
+        [Then(@"the decision match variables ""(.*)""and match ""(.*)"" and to match""(.*)""")]
         public void ThenTheDecisionMatchVariablesAndMatchAndToMatch(string p0, string p1, string p2)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
@@ -135,14 +135,14 @@ namespace Warewolf.AcceptanceTesting.Decision
             ((DecisionTO)vm.Tos[0]).To = p2;
         }
 
-        [Then(@"MatchType  is '(.*)'")]
+        [Then(@"MatchType  is ""(.*)""")]
         public void ThenMatchTypeIs(string p0)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];
             ((DecisionTO)vm.Tos[0]).SearchType = p0;
         }
 
-        [Then(@"the inputs are '(.*)'")]
+        [Then(@"the inputs are ""(.*)""")]
         public void ThenTheInputsAre(string p0)
         {
             var vm = (DecisionDesignerViewModel)FeatureContext.Current["viewModel"];

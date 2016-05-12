@@ -241,16 +241,16 @@ Scenario: Send Email with an attachment
 	Then the webs file chooser dialog opens 
 
 Scenario Outline: Sending an email 
-	Given the from account is '<from>'
-	And to address is '<To>'
-	And the subject is '<subject>'
-	And Password is '<password>' 
-	And the Bcc is '<Bcc>'
-	And the Cc is '<Cc>'
-	And body is '<body>'
-	And the attachment is '<attachments>'
-	And the execution has '<error>' error
-	And Result is '<result>'
+	Given the from account is "<from>"
+	And to address is "<To>"
+	And the subject is "<subject>"
+	And Password is "<password>" 
+	And the Bcc is "<Bcc>"
+	And the Cc is "<Cc>"
+	And body is "<body>"
+	And the attachment is "<attachments>"
+	And the execution has "<error>" error
+	And Result is "<result>"
 	Examples: 
 	| from                                                  | To                                          | subject                           | password                 | Bcc                                       | Cc                                    | body                         | attachments                                | error | result                                                                                  |
 	| 22                                                    | [[va]] =""                                  | [[rec([[int]]).a]] = Numeric Test | 3                        | 100                                       | 50                                    | [[rs().a]] = hello           | [[a]] = ""                                 | An    | [[result]] = From address is not in the valid format:22                                 |
@@ -266,16 +266,16 @@ Scenario Outline: Sending an email
 
 #Complex Types WOLF-1042
 Scenario Outline: Sending an email using complex types
-	Given the from account is '<from>' equals '<FromVal>'
-	And to address is '<To>' equals '<ToVal>'
-	And the subject is '<subject>'
-	And Password is '<password>' 
-	And the Bcc is '<Bcc>'
-	And the Cc is '<Cc>'
-	And body is '<body>'
-	And the attachment is '<attachments>'
-	And the execution has '<error>' error
-	And Result is '<result>'
+	Given the from account is "<from>" equals "<FromVal>"
+	And to address is "<To>" equals "<ToVal>"
+	And the subject is "<subject>"
+	And Password is "<password>" 
+	And the Bcc is "<Bcc>"
+	And the Cc is "<Cc>"
+	And body is "<body>"
+	And the attachment is "<attachments>"
+	And the execution has "<error>" error
+	And Result is "<result>"
 	Examples: 
 	| from                             | FromVal             | To                      | ToVal           | subject      | password | Bcc             | Cc              | body        | attachments | error | result                                             |
 	| [[client().set().value]]         | warewolf@dev2.co.za | [[rs(1).set().value()]] | ""              | Numeric Test | 3        | 100             | 50              | hello world |             | An    | [[result]] = To address is not in the valid format |

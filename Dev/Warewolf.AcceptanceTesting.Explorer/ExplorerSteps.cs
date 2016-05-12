@@ -121,8 +121,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             explorerViewModel.ConnectControlViewModel.Connect(server);
             ScenarioContext.Current.Add("mockRemoteExplorerRepository", explorerRepository);
             var environmentViewModel = explorerView.OpenEnvironmentNode(serverName);
-          
-          
         }
 
         [Then(@"the option to ""(.*)"" is ""(.*)""")]
@@ -133,7 +131,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsTrue(environmentViewModel.AsList().Where(a=>a.ResourceType!=ResourceType.Folder).All(a=>a.CanView &&!a.CanEdit && !a.CanExecute) );
         }
 
-        [Then(@"the option to ""(.*)"" is ""(.*)"" on server '(.*)'")]
+        [Then(@"the option to ""(.*)"" is ""(.*)"" on server ""(.*)""")]
         public void ThenTheOptionToIsOnServer(string permission, string state, string servername)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
@@ -159,7 +157,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
                 if (permission.ToLower().Contains("debug"))
                     Assert.IsTrue(!resources.Any(a => a.CanExecute));
             }
-
         }
 
         [Given(@"I open ""(.*)"" server")]
@@ -181,7 +178,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsTrue(environmentViewModel.IsExpanded);
         }
 
-
         [When(@"I select ""(.*)""")]
         public void WhenISelect(string serverName)
         {
@@ -191,7 +187,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsTrue(environmentViewModel.IsExpanded);
         }
 
-
         [Given(@"I open ""(.*)""")]
         [When(@"I open ""(.*)""")]
         public void WhenIOpen(string folderName)
@@ -200,17 +195,15 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var environmentViewModel = explorerView.OpenFolderNode(folderName);
             Assert.IsNotNull(environmentViewModel);
         }
-
        
-        [Given(@"I open '(.*)' in ""(.*)""")]
-        [When(@"I open '(.*)' in ""(.*)""")]
+        [Given(@"I open ""(.*)"" in ""(.*)""")]
+        [When(@"I open ""(.*)"" in ""(.*)""")]
         public void WhenIOpenIn(string resourceName,string folderName)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenItem(resourceName,folderName);
             Assert.IsNotNull(environmentViewModel);            
-        }       
-
+        }
 
         [When(@"""(.*)"" tab is opened")]
         [Then(@"""(.*)"" tab is opened")]
@@ -302,9 +295,9 @@ namespace Warewolf.AcceptanceTesting.Explorer
            var vm =FeatureContext.Current.Get<IExplorerViewModel>(Utils.ViewModelNameKey);
            var env =p0.Substring(0,p0.IndexOf("\\", StringComparison.Ordinal));
            var environment = vm.Environments.FirstOrDefault(a => a.DisplayName == env);
-            // ReSharper disable PossibleNullReferenceException
+           // ReSharper disable PossibleNullReferenceException
            Assert.IsTrue( environment.AsList().Any(a=>a.ResourcePath==  p0.Substring(p0.IndexOf("\\", StringComparison.Ordinal)+1)));
-            // ReSharper restore PossibleNullReferenceException
+           // ReSharper restore PossibleNullReferenceException
         }
 
         [Then(@"I should not see the path ""(.*)""")]
@@ -323,7 +316,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
                     found = true;
             
             }
-           Assert.IsTrue(found);
+            Assert.IsTrue(found);
         }
 
         [Then(@"I setup (.*) resources in ""(.*)""")]
@@ -479,18 +472,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             ScenarioContext.Current.Add("versions", count);
         }
 
-        [Then(@"I Setup  ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
-        public void ThenISetupResourcesOfTypeIn(int count, string path, string type)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I delete ""(.*)"" in ""(.*)"" server")]
-        public void WhenIDeleteInServer(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
         [When(@"I delete ""(.*)""")]
         public void WhenIDelete(string path)
         {
@@ -531,16 +512,17 @@ namespace Warewolf.AcceptanceTesting.Explorer
             else
             {
                 ScenarioContext.Current["popupResult"] = result;
-
             }
         }
 
         [When(@"I create ""(.*)""")]
+        [Then(@"I create ""(.*)""")]
         public void WhenICreate(string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             explorerView.AddNewFolderFromPath(path);
         }
+
         [When(@"I add ""(.*)"" in ""(.*)""")]
         public void WhenIAddIn(string folder , string server)
         {
@@ -555,7 +537,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             explorerView.Move(originalPath, destinationPath);
         }
-
 
         [Given(@"I create the ""(.*)"" of type ""(.*)""")]
         [When(@"I create the ""(.*)"" of type ""(.*)""")]
@@ -590,6 +571,23 @@ namespace Warewolf.AcceptanceTesting.Explorer
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, explorerViewModel);
         }
 
+        [Then(@"I Setup  ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
+        public void ThenISetupResourcesOfTypeIn(int count, string path, string type)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I delete ""(.*)"" in ""(.*)"" server")]
+        public void WhenIDeleteInServer(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"Conflict error message occurs")]
+        public void ThenConflictErrorMessageOccurs()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
     }
 }
 // ReSharper restore UnusedMember.Global

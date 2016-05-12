@@ -144,10 +144,10 @@ Scenario Outline: Zip Large View is validating incorrect source path
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | '<SPath>'      |                 |                 | D:\         |               |               |                 | Normal (Default) |        |
+       | "<SPath>"      |                 |                 | D:\         |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -168,10 +168,10 @@ Scenario Outline: Zip Large View is validating incorrect Destination path
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | C:/Test.txt    |                 |                 | '<DPath>'   |               |               |                 | Normal (Default) |        |
+       | C:/Test.txt    |                 |                 | "<DPath>"   |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | DPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -193,10 +193,10 @@ Scenario Outline: Zip Large View is validating incorrect variable in source user
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | C:/Test.txt    | '<Variable>'    | sas             | D:/         |               |               |                 | Normal (Default) |        |
+       | C:/Test.txt    | "<Variable>"    | sas             | D:/         |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -219,10 +219,10 @@ Scenario Outline: Zip Large View is validating incorrect variable in Destination
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | C:/Test.txt    |                 |                 | D:/         | '<Username>'  | abc           |                 | Normal (Default) |        |
+       | C:/Test.txt    |                 |                 | D:/         | "<Username>"  | abc           |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -247,7 +247,7 @@ Scenario Outline: Zip Large View is validating incorrect variable in Result fiel
        | C:/Test.txt    |                 |                 | D:/         |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -267,11 +267,11 @@ Scenario Outline: Zip On error fields incorrect variables are validating
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        And End this workflow is "Unselected"
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

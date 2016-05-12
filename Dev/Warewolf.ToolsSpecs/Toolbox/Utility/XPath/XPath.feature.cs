@@ -78,10 +78,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Utility.XPath
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
- testRunner.And("I have a variable \"[[firstNum]]\" output with xpath \"//root/number[@id=\'1\']/text()" +
+ testRunner.And("I have a variable \"[[firstNum]]\" output with xpath \"//root/number[@id=\"1\"]/text()" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -98,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
-                        "[[firstNum]] = //root/number[@id=\'1\']/text()"});
+                        "[[firstNum]] = //root/number[@id=\"1\"]/text()"});
 #line 12
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
@@ -123,10 +123,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
 this.ScenarioSetup(scenarioInfo);
 #line 20
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.And("I have a variable \"[[firstNum]]\" output with xpath \"//root/number[@id=\'2\']/text()" +
+ testRunner.And("I have a variable \"[[firstNum]]\" output with xpath \"//root/number[@id=\"2\"]/text()" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -143,7 +143,7 @@ this.ScenarioSetup(scenarioInfo);
                         "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
                             "/number></root>",
                         "1",
-                        "[[firstNum]] = //root/number[@id=\'2\']/text()"});
+                        "[[firstNum]] = //root/number[@id=\"2\"]/text()"});
 #line 25
  testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
@@ -168,8 +168,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
 this.ScenarioSetup(scenarioInfo);
 #line 33
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
  testRunner.And("I have a variable \"[[rec(*).id]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
@@ -253,8 +253,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
 this.ScenarioSetup(scenarioInfo);
 #line 62
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 63
  testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/num/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
@@ -297,8 +297,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 74
 this.ScenarioSetup(scenarioInfo);
 #line 75
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\" in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 76
  testRunner.And("I assign the variable \"[[myxml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
@@ -343,8 +343,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 88
 this.ScenarioSetup(scenarioInfo);
 #line 89
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\' in a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\" in a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 90
  testRunner.And("I assign the variable \"[[rec().set]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
@@ -411,7 +411,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 110
 this.ScenarioSetup(scenarioInfo);
 #line 111
- testRunner.Given("I have this xml \'<start></end>\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<start></end>\" in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 112
  testRunner.And("I assign the variable \"[[myxml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
@@ -455,8 +455,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 124
 this.ScenarioSetup(scenarioInfo);
 #line 125
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 126
  testRunner.And("I have a variable \"\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
@@ -488,8 +488,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 133
 this.ScenarioSetup(scenarioInfo);
 #line 134
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 135
  testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
@@ -532,7 +532,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 146
 this.ScenarioSetup(scenarioInfo);
 #line 147
- testRunner.Given("I have this xml \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 148
  testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
@@ -574,8 +574,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 159
 this.ScenarioSetup(scenarioInfo);
 #line 160
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 161
  testRunner.And("I have a variable \"[[ids]]\" output with xpath \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 162
@@ -618,7 +618,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 172
 this.ScenarioSetup(scenarioInfo);
 #line 173
- testRunner.Given("I have this xml \'\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"\" in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 174
  testRunner.And("I assign the variable \"[[myxml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 175
@@ -662,12 +662,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 187
 this.ScenarioSetup(scenarioInfo);
 #line 188
- testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
-                    "ber id=\"3\">Three</number></root>\' in a variable \"[[xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this xml \"<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
+                    "ber id=\"3\">Three</number></root>\" in a variable \"[[xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 189
  testRunner.And("I assign the variable \"[[xml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
- testRunner.And("I have a variable \"[[rec(-1).ids]]\" output with xpath \"//root/number[@id=\'2\']/tex" +
+ testRunner.And("I have a variable \"[[rec(-1).ids]]\" output with xpath \"//root/number[@id=\"2\"]/tex" +
                     "t()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 191
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -682,7 +682,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[xml]] = <root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=" +
                             "\"3\">Three</number></root>",
                         "1",
-                        "[[rec(-1).ids]] = //root/number[@id=\'2\']/text()"});
+                        "[[rec(-1).ids]] = //root/number[@id=\"2\"]/text()"});
 #line 193
  testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
 #line hidden
@@ -707,9 +707,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 200
 this.ScenarioSetup(scenarioInfo);
 #line 201
- testRunner.Given("I have this xml \'<?xml version=\"1.0\" encoding=\"utf-8\"?><!-- Generated by Warewolf" +
+ testRunner.Given("I have this xml \"<?xml version=\"1.0\" encoding=\"utf-8\"?><!-- Generated by Warewolf" +
                     " --><root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">T" +
-                    "hree</number></root>\' in a variable \"[[xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "hree</number></root>\" in a variable \"[[xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 202
  testRunner.And("I assign the variable \"[[xml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 203
@@ -773,7 +773,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 223
  testRunner.And("I assign the variable \"[[var]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 224
- testRunner.And("I have a variable \"[[rec(1).ids]]\" output with xpath \"//root/number[@id=\'2\']/text" +
+ testRunner.And("I have a variable \"[[rec(1).ids]]\" output with xpath \"//root/number[@id=\"2\"]/text" +
                     "()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 225
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -794,7 +794,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 229
  testRunner.Given("I assign the variable \"[[var]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 230
- testRunner.And("I have a variable \"[[rec(1).ids]]\" output with xpath \"//root/number[@id=\'2\']/text" +
+ testRunner.And("I have a variable \"[[rec(1).ids]]\" output with xpath \"//root/number[@id=\"2\"]/text" +
                     "()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 231
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -810,17 +810,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 234
 this.ScenarioSetup(scenarioInfo);
 #line 235
- testRunner.Given(string.Format("I have this xml \'{0}\'", xmlvalue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have this xml \"{0}\"", xmlvalue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 236
- testRunner.And(string.Format("The result variable is \'{0}\'", xml), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("The result variable is \"{0}\"", xml), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 237
- testRunner.And(string.Format("The path variable is \'{0}\' equals \'{1}\'", xpath, path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("The path variable is \"{0}\" equals \"{1}\"", xpath, path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 239
- testRunner.Then(string.Format("the variable \'{0}\' should have a value \'{1}\'", recordset, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the variable \"{0}\" should have a value \"{1}\"", recordset, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 240
- testRunner.And(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "XML",
@@ -856,13 +856,13 @@ this.ScenarioSetup(scenarioInfo);
             "/number></root>")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Recordset", "[[firstNum]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Xpath", "[[path().set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\'1\']/text()")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\"1\"]/text()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "One")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
         public virtual void UseXPathToGetDataOffXMLUsingRecordsets_Variant0()
         {
             this.UseXPathToGetDataOffXMLUsingRecordsets("[[rec().a]]", "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
-                    "/number></root>", "[[firstNum]]", "[[path().set]]", "//root/number[@id=\'1\']/text()", "One", "No", ((string[])(null)));
+                    "/number></root>", "[[firstNum]]", "[[path().set]]", "//root/number[@id=\"1\"]/text()", "One", "No", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -874,13 +874,13 @@ this.ScenarioSetup(scenarioInfo);
             "/number></root>")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Recordset", "[[firstNum]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Xpath", "[[path(1).set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\'1\']/text()")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\"1\"]/text()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "One")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
         public virtual void UseXPathToGetDataOffXMLUsingRecordsets_Variant1()
         {
             this.UseXPathToGetDataOffXMLUsingRecordsets("[[rec(1).a]]", "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
-                    "/number></root>", "[[firstNum]]", "[[path(1).set]]", "//root/number[@id=\'1\']/text()", "One", "No", ((string[])(null)));
+                    "/number></root>", "[[firstNum]]", "[[path(1).set]]", "//root/number[@id=\"1\"]/text()", "One", "No", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -892,13 +892,13 @@ this.ScenarioSetup(scenarioInfo);
             "/number></root>")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Recordset", "[[F([[int]]).number]],[[int]] =1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Xpath", "[[path(*).set]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\'1\']/text()")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\"1\"]/text()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "One")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
         public virtual void UseXPathToGetDataOffXMLUsingRecordsets_Variant2()
         {
             this.UseXPathToGetDataOffXMLUsingRecordsets("[[rec(*).a]]", "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
-                    "/number></root>", "[[F([[int]]).number]],[[int]] =1", "[[path(*).set]]", "//root/number[@id=\'1\']/text()", "One", "No", ((string[])(null)));
+                    "/number></root>", "[[F([[int]]).number]],[[int]] =1", "[[path(*).set]]", "//root/number[@id=\"1\"]/text()", "One", "No", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -910,13 +910,13 @@ this.ScenarioSetup(scenarioInfo);
             "/number></root>")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Recordset", "[[firstNum]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Xpath", "[[path([[int]]).set]],[[int]]=1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\'1\']/text()")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\"1\"]/text()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "One")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "No")]
         public virtual void UseXPathToGetDataOffXMLUsingRecordsets_Variant3()
         {
             this.UseXPathToGetDataOffXMLUsingRecordsets("[[rec([[int]]).a]], [[int]] =1", "<root><number id=\"1\">One</number><number id=\"2\">Two</number><number id=\"3\">Three<" +
-                    "/number></root>", "[[firstNum]]", "[[path([[int]]).set]],[[int]]=1", "//root/number[@id=\'1\']/text()", "One", "No", ((string[])(null)));
+                    "/number></root>", "[[firstNum]]", "[[path([[int]]).set]],[[int]]=1", "//root/number[@id=\"1\"]/text()", "One", "No", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -927,12 +927,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Xmlvalue", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Recordset", "[[F().number]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Xpath", "[[var]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\'1\']/text()")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "//root/number[@id=\"1\"]/text()")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "<InnerError>Value cannt be null. Parameter name:xmlData</InnerError>")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "An")]
         public virtual void UseXPathToGetDataOffXMLUsingRecordsets_Variant4()
         {
-            this.UseXPathToGetDataOffXMLUsingRecordsets("[[var]]", "", "[[F().number]]", "[[var]]", "//root/number[@id=\'1\']/text()", "<InnerError>Value cannt be null. Parameter name:xmlData</InnerError>", "An", ((string[])(null)));
+            this.UseXPathToGetDataOffXMLUsingRecordsets("[[var]]", "", "[[F().number]]", "[[var]]", "//root/number[@id=\"1\"]/text()", "<InnerError>Value cannt be null. Parameter name:xmlData</InnerError>", "An", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]

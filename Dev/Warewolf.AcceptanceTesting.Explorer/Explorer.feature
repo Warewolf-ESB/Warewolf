@@ -104,7 +104,7 @@ Scenario: Renaming Folder And Workflow Service
 	When I rename "localhost\Folder New\Resource 1" to "WorkFlow1"	
 	Then I should see the path "localhost\Folder New\WorkFlow1"
 	When I rename "localhost\Folder New\Resource 2" to "WorkFlow1"	
-	Then Conflict error message is occurs
+	Then Conflict error message occurs
 
 @Explorer
 Scenario: Searching resources by using filter
@@ -189,7 +189,7 @@ Scenario: Opening and Editing workflow from Explorer localhost
 	Given the explorer is visible
 	And I open "localhost" server
 	And I create the "localhost\Hello World" of type "WorkflowService" 
-	When I open 'Hello World' in "localhost"
+	When I open "Hello World" in "localhost"
 	And "Hello World" tab is opened
 
 @Explorer
@@ -198,7 +198,7 @@ Scenario: Opening and Editing workflow from Explorer Remote
 	And I connect to "Remote Connection Integration" server
 	And I open "Remote Connection Integration" server
 	And I create the "Remote Connection Integration\Hello World" of type "WorkflowService" 
-	When I open 'Hello World' in "Remote Connection Integration"
+	When I open "Hello World" in "Remote Connection Integration"
 	And "Hello World" tab is opened 
 	
 
@@ -218,7 +218,7 @@ Scenario: Renaming Folder And Workflow Service on a remote server
 	When I rename "Remote Connection Integration\Folder New\Resource 1" to "WorkFlow1"	
 	Then I should see the path "Remote Connection Integration\Folder New\WorkFlow1"
 	When I rename "Remote Connection Integration\Folder New\Resource 2" to "WorkFlow1"	
-	Then Conflict error message is occurs
+	Then Conflict error message occurs
 
 
 # coded ui in addition to this.
@@ -266,8 +266,6 @@ Scenario: Opening Versions in Explorer
  When I Delete Version "localhost\Folder 1\Resource 1\v.1"
  Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
 
-
-@ignore 
 Scenario: Opening Dependencies Of All Services In Explorer
    Given the explorer is visible
 	When I open "Show Dependencies" of "WF1" in "Folder1"
@@ -279,8 +277,6 @@ Scenario: Opening Dependencies Of All Services In Explorer
 	When I open "Show Dependencies" of "PluginServ1" in "Folder1"
 	Then "PluginServ1 Dependents" is opened
 
-
-@ignore 
 Scenario: Disconnected from remote server
 	Given the explorer is visible
 	When I connect to "Remote Connection Integration" server
@@ -290,8 +286,7 @@ Scenario: Disconnected from remote server
 	When I select "Disconnect"
 	Then "Remote Connection Integration" is "Disconnected"
 	And "Localhost" is visible
-
-
+	
 Scenario: Debug from Explorer using play icon
 	Given the explorer is visible
 	Then I should see the path "Localhost\Dice Roll Example\Dice Roll" 
@@ -300,8 +295,7 @@ Scenario: Debug from Explorer using play icon
 	And "Dice Roll" tab is opened
 	And there are "No" errors
 	And the Debug output window is populated
-
-
+	
 #Wolf-1025
 Scenario: Moving Nested folders
 	Given the explorer is visible
@@ -315,30 +309,23 @@ Scenario: Conflicting file names
 	Given the explorer is visible
 	Then I should see the path "Localhost\Examples"
 	Then I should see the path "Localhost\Category"
-	And I create "New Folder" in "Localhost\Category" named "Examples"
+	And I create "Localhost\Category\Examples"
 	Then I should see the path "Localhost\Category\Examples"
 	And I move "Localhost\Examples" to "Localhost\Category"
 	Then "Localhost\Examples" is merged with "Localhost\Category\Examples"
-
-
-
+	
 Scenario: Server view permissions on a remote server
 	Given the explorer is visible
 	When I open the server "Remote Connection Integration" server and the permissions are "View"
-	Then the option to "View" is "Enabled" on server 'Remote Connection Integration'
-	And the option to "Debug" is "Disabled" on server 'Remote Connection Integration' 
-
-
-
-
+	Then the option to "View" is "Enabled" on server "Remote Connection Integration"
+	And the option to "Debug" is "Disabled" on server "Remote Connection Integration" 
+	
 Scenario: Server execute permissions on a remote server
 	Given the explorer is visible
 	When I open the server "Remote Connection Integration" server and the permissions are "View,Execute"
-	Then the option to "View" is "Enabled" on server 'Remote Connection Integration'
-	And the option to "Debug" is "Enabled" on server 'Remote Connection Integration'
-
-
-
+	Then the option to "View" is "Enabled" on server "Remote Connection Integration"
+	And the option to "Debug" is "Enabled" on server "Remote Connection Integration"
+	
  #codedui
 Scenario: Resource view permissions on a remote server
 	Given the explorer is visible

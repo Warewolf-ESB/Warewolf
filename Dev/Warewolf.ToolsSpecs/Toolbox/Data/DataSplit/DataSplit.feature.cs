@@ -586,16 +586,16 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 144
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"5\" and Include " +
-                    "\"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 145
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Tab\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 146
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Chars\" at \"ars,\" and Inclu" +
-                    "de \"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "de \"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"1\" and Include " +
-                    "\"unselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"unselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"End\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -726,16 +726,16 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"IndexTab\tChars,space end\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 177
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"5\" and Include " +
-                    "\"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 178
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Tab\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Chars\" at \"ars,\" and Inclu" +
-                    "de \"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "de \"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"1\" and Include " +
-                    "\"unselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"unselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 181
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"End\" at \"\" and Include \"un" +
                     "selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -864,13 +864,13 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 209
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
-                    "ed\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "ed\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 210
  testRunner.And("assign to variable \"[[rec().name]]\" split type \"Chars\" at \",\" and Include \"unsele" +
-                    "cted\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "cted\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 211
  testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"unselected\" and Esca" +
-                    "pe \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "pe \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 212
  testRunner.And("assign to variable \"[[rec().phone]]\" split type \"New Line\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1046,13 +1046,13 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A file \"CSVExample.txt\" to split", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 257
  testRunner.And("assign to variable \"[[rec().id]]\" split type \"Chars\" at \",\" and Include \"unselect" +
-                    "ed\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "ed\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 258
  testRunner.And("assign to variable \"[[rec().name]]\" split type \"Chars\" at \",\" and Include \"unsele" +
-                    "cted\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "cted\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 259
  testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"unselected\" and Esca" +
-                    "pe \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "pe \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 260
  testRunner.And("assign to variable \"[[rec().phone]]\" split type \"New Line\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1230,16 +1230,16 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 306
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
-                    "Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 307
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Tab\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 308
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Chars\" at \"ars,\" and Includ" +
-                    "e \"selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "e \"selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 309
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" at \"\" and Include \"u" +
-                    "nselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "nselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 310
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"End\" at \"\" and Include \"uns" +
                     "elected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -1347,7 +1347,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \",\" and Include \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 328
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" at \"\" and Include \"u" +
-                    "nselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "nselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 329
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 330
@@ -1409,7 +1409,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"123\\,45,1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 341
  testRunner.And("assign to variable \"[[var]]\" split type \"Chars\" at \",\" and Include \"Unselected\" a" +
-                    "nd Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "nd Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 342
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -1471,7 +1471,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 358
  testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Index\" at \"1\" and Include " +
-                    "\"Unselected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\"Unselected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 359
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 360
@@ -1571,7 +1571,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 380
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"[[my(-1).index]]" +
-                    "\" and Include \"Selected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "\" and Include \"Selected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 381
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 382
@@ -1595,7 +1595,7 @@ this.ScenarioSetup(scenarioInfo);
                     "\"UnSelected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 387
   testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Space\" at \"\" and Include \"" +
-                    "unselected\" and Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "unselected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 388
   testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 389
@@ -1648,7 +1648,7 @@ this.ScenarioSetup(scenarioInfo);
      testRunner.Given("A string to split with value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 403
      testRunner.And("assign to variable \"[[var]]\" split type \"Index\" at \"7\" and Include \"Selected\" and" +
-                    " Escape \'\\\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    " Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 404
      testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -1738,7 +1738,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"[[my(-1).var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 427
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
-                    "Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 428
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 429
@@ -1788,7 +1788,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 438
  testRunner.And("assign to variable \"[[vowels(-1).letters]]\" split type \"Index\" at \"5\" and Include" +
-                    " \"Selected\" and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    " \"Selected\" and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 439
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 440
@@ -1834,8 +1834,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 448
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 449
- testRunner.And("assign to variable \'<variables>\' split type \"Index\" at \"4\" and Include \"Selected\"" +
-                    " and Escape \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"<variables>\" split type \"Index\" at \"4\" and Include \"Selected\"" +
+                    " and Escape \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 450
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 451
@@ -1884,8 +1884,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 463
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 464
- testRunner.And(string.Format("assign to variable \'[[rec().a]]\' split type \"Index\" at \'{0}\' and Include \'Selecte" +
-                        "d\' and Escape \'\'", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("assign to variable \"[[rec().a]]\" split type \"Index\" at \"{0}\" and Include \"Selecte" +
+                        "d\" and Escape \"\"", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 465
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 466
@@ -1953,8 +1953,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 478
  testRunner.Given("A string to split with value \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 479
- testRunner.And(string.Format("assign to variable \'{0}\' split type \"Index\" at \'5\' and Include \'Selected\' and Esc" +
-                        "ape \'\'", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("assign to variable \"{0}\" split type \"Index\" at \"5\" and Include \"Selected\" and Esc" +
+                        "ape \"\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 480
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 481
@@ -2008,10 +2008,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\'()\'.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         public virtual void DebugOutputValidationErrors_Variant1()
         {
-            this.DebugOutputValidationErrors("2", "[[rec\'()\'.a]]", ((string[])(null)));
+            this.DebugOutputValidationErrors("2", "[[rec\"()\".a]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2833,10 +2833,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 76")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "82")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\'()\'.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         public virtual void DebugOutputValidationErrors_Variant76()
         {
-            this.DebugOutputValidationErrors("82", "[[rec\'()\'.a]]", ((string[])(null)));
+            this.DebugOutputValidationErrors("82", "[[rec\"()\".a]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2913,8 +2913,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 574
  testRunner.Given(string.Format("A string to split with value \"{0}\"", @string), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 575
- testRunner.And(string.Format("assign to variable \'{0}\' split type \"{1}\" at \'{2}\' and Include \'Selected\' and Esc" +
-                        "ape \'\'", variable, type, @using), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("assign to variable \"{0}\" split type \"{1}\" at \"{2}\" and Include \"Selected\" and Esc" +
+                        "ape \"\"", variable, type, @using), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 576
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 577
@@ -3008,8 +3008,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 590
  testRunner.Given("A string to split with value \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 591
- testRunner.And(string.Format("assign to variable \'{0}\' split type \"Index\" at \'5\' and Include \'Selected\' and Esc" +
-                        "ape \'\'", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("assign to variable \"{0}\" split type \"Index\" at \"5\" and Include \"Selected\" and Esc" +
+                        "ape \"\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 592
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 593

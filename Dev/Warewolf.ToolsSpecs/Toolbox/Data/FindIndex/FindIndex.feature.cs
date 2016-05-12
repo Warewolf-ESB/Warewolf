@@ -1114,28 +1114,22 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void FindAllOccurancesUsingComplexTypes(string variable, string value, string result, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find all occurances using complex types", @__tags);
-#line 319
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find all occurances using complex types", exampleTags);
+#line 318
 this.ScenarioSetup(scenarioInfo);
+#line 319
+ testRunner.Given(string.Format("I have a Find Index variable \"{0}\" equal to \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 320
- testRunner.Given(string.Format("I have a Find Index variable \'{0}\' equal to \'{1}\'", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 321
  testRunner.And("I selected Index \"All Occurrence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 321
  testRunner.And("I search for characters \"t\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
+#line 322
  testRunner.And("I selected direction as \"Left to Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
+#line 323
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 324
+ testRunner.Then(string.Format("the find index result is \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 325
- testRunner.Then(string.Format("the find index result is \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 326
  testRunner.And("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1144,7 +1138,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find all occurances using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Find Index")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec().set().comment]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec().set().comment]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "I have reserved my right to comment at this point in time")]
@@ -1157,7 +1150,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find all occurances using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Find Index")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(1).set(*).comment]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec(1).set(*).comment]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "Great Day")]
@@ -1170,7 +1162,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find all occurances using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Find Index")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec([[var]]).set([[int]]).comment]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable", "[[rec([[var]]).set([[int]]).comment]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "I have reserved my right to comment at this point in time")]
@@ -1186,19 +1177,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindFirstOccurrenceOfACharacterNonExistentImput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find first Occurrence of a character non existent imput", ((string[])(null)));
-#line 334
+#line 333
 this.ScenarioSetup(scenarioInfo);
-#line 335
+#line 334
  testRunner.Given("the sentence \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 336
+#line 335
  testRunner.And("I selected Index \"First Occurrence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 336
  testRunner.And("I search for characters \"a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
+#line 337
  testRunner.And("I selected direction as \"Left to Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 339
+#line 338
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 340
+#line 339
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1210,21 +1201,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindFirstOccurrenceOfOfACharacterNonExistentCharacter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find first Occurrence of  of a character non existent character", ((string[])(null)));
-#line 342
+#line 341
 this.ScenarioSetup(scenarioInfo);
-#line 343
+#line 342
  testRunner.Given("I have a findindex variable \"[[a]]\" equal to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 344
+#line 343
  testRunner.And("the sentence \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 345
+#line 344
  testRunner.And("I selected Index \"First Occurrence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 346
+#line 345
  testRunner.And("I search for characters \"[[x]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 347
+#line 346
  testRunner.And("I selected direction as \"Left to Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 348
+#line 347
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 349
+#line 348
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

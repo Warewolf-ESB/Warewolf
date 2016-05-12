@@ -254,13 +254,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 70
 this.ScenarioSetup(scenarioInfo);
 #line 71
- testRunner.Given("I have this command script to execute \'<variable>\' with \'<val>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have this command script to execute \"<variable>\" with \"<val>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 72
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 73
- testRunner.Then(string.Format("the \'{0}\' of the command tool will be \'{1}\'", resultVariable, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the \"{0}\" of the command tool will be \"{1}\"", resultVariable, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 74
- testRunner.And(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -344,12 +344,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val", "444")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVariable", "[[rj([[int]]).a]],[[int]] =3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "\'444\' is not recognized as an internal or external command,operable program or ba" +
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Result", "\"444\" is not recognized as an internal or external command,operable program or ba" +
             "tch file")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "An")]
         public virtual void ExecuteACommandThatRequiresRecordsets_Variant4()
         {
-            this.ExecuteACommandThatRequiresRecordsets("[[var]]", "444", "[[rj([[int]]).a]],[[int]] =3", "\'444\' is not recognized as an internal or external command,operable program or ba" +
+            this.ExecuteACommandThatRequiresRecordsets("[[var]]", "444", "[[rj([[int]]).a]],[[int]] =3", "\"444\" is not recognized as an internal or external command,operable program or ba" +
                     "tch file", "An", ((string[])(null)));
         }
         
@@ -369,23 +369,17 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void ExecuteACommandThatRequiresComplexTypes(string @object, string val, string resultVariable, string result, string error, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a command that requires complex types", @__tags);
-#line 93
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a command that requires complex types", exampleTags);
+#line 92
 this.ScenarioSetup(scenarioInfo);
+#line 93
+ testRunner.Given(string.Format("I have this command script to execute \"{0}\" with \"<val>\"", @object), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 94
- testRunner.Given(string.Format("I have this command script to execute \'{0}\' with \'<val>\'", @object), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 95
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 95
+ testRunner.Then(string.Format("the \"{0}\" of the command tool will be \"{1}\"", resultVariable, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 96
- testRunner.Then(string.Format("the \'{0}\' of the command tool will be \'{1}\'", resultVariable, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 97
- testRunner.And(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "object",
@@ -393,14 +387,14 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         string.Format("{0}", @object),
                         "<val>"});
-#line 98
+#line 97
  testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table15.AddRow(new string[] {
                         string.Format("{0} = <result>", resultVariable)});
-#line 101
+#line 100
  testRunner.And("the debug output as", ((string)(null)), table15, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -409,7 +403,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a command that requires complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Command")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec().set(1).value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:object", "[[rec().set(1).value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val", "Echo a message")]
@@ -427,15 +420,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteANULLCmd()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a NULL cmd", ((string[])(null)));
-#line 107
+#line 106
 this.ScenarioSetup(scenarioInfo);
-#line 108
+#line 107
  testRunner.Given("I have a command variable \"[[command]]\" equal to \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 109
+#line 108
  testRunner.And("I have this command script to execute \"dir c:\\[[command]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 109
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 111
+#line 110
  testRunner.Then("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -447,15 +440,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteANonExistentVariableCmd()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a non existent variable cmd", ((string[])(null)));
-#line 114
+#line 113
 this.ScenarioSetup(scenarioInfo);
-#line 115
+#line 114
  testRunner.Given("I have this command script to execute \"dir c:\\[[command]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 116
+#line 115
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 117
+#line 116
  testRunner.Then("the result of the command tool will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 118
+#line 117
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

@@ -248,8 +248,8 @@ Given I have the following duplicated recordset
 	| rs().row | 20  |
 	| rs().row | 20  |
 	| rs().row | 30  |
-	And I want to find unique in field '<InField>' with the return field '<Return>'
-	And The result variable is '<Result>' equals '<value>'
+	And I want to find unique in field "<InField>" with the return field "<Return>"
+	And The result variable is "<Result>" equals "<value>"
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
@@ -276,7 +276,7 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| rs().row | 20  | [[rec().set]] | Test      |
 	| rs().row | 20  | [[rec().set]] | Warehouse |
 	| rs().row | 30  | [[rec().set]] | Tuesday   |
-	And I want to find unique in field '<InField>' with the return field '<Return>'
+	And I want to find unique in field "<InField>" with the return field "<Return>"
 	And The result variable is "[[a]]"
 	When the unique tool is executed	
 	Then the unique result will be

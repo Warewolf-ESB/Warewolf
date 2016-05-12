@@ -70,89 +70,81 @@ namespace Warewolf.ToolsSpecs.Toolbox.Storage.Dropbox
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new Dropbox Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open new Read Dropbox Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ReadDropbox")]
-        public virtual void OpenNewDropboxTool()
+        public virtual void OpenNewReadDropboxTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new Dropbox Tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open new Read Dropbox Tool", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I drag Read Dropbox Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
- testRunner.And("I drag Read list Dropbox Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
     testRunner.And("Read New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
+#line 10
  testRunner.And("Read Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 11
  testRunner.And("Read Dropbox File is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 12
  testRunner.When("I Click Read New", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 14
+#line 13
  testRunner.Then("the New Dropbox Source window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Dropbox Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing Read Dropbox Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ReadDropbox")]
-        public virtual void EditingDropboxTool()
+        public virtual void EditingReadDropboxTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Dropbox Tool", ((string[])(null)));
-#line 16
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing Read Dropbox Tool", ((string[])(null)));
+#line 15
 this.ScenarioSetup(scenarioInfo);
+#line 16
+ testRunner.And("I drag Read Dropbox Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 18
- testRunner.And("I drag Read list Dropbox Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
     testRunner.And("Read New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
+#line 18
  testRunner.And("Read Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 19
  testRunner.And("Read Dropbox File is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 20
  testRunner.When("I Select \"Drop\" as the Read source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 23
+#line 21
  testRunner.Then("Read Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 24
+#line 22
  testRunner.When("I click \"Edit\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 25
- testRunner.Then("the Dropbox Source window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+ testRunner.Then("the \"Drop\" Dropbox Source window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Dropbox Source")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Read Dropbox Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ReadDropbox")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void ChangeDropboxSource()
+        public virtual void ChangeReadDropboxSource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Dropbox Source", new string[] {
-                        "ignore"});
-#line 28
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Read Dropbox Source", ((string[])(null)));
+#line 25
 this.ScenarioSetup(scenarioInfo);
-#line 29
- testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 26
  testRunner.And("I drag Read Dropbox Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 27
     testRunner.And("Read New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 28
  testRunner.And("Read Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 29
  testRunner.When("I Select \"Drop\" as the Read source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 34
+#line 30
  testRunner.Then("Read Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 35
+#line 31
  testRunner.And("I set Read Dropbox File equals \"Home.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 32
  testRunner.When("I change Read source from \"Drop\" to \"BackupSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 37
- testRunner.And("Read Dropbox File equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+ testRunner.And("Dropbox File equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

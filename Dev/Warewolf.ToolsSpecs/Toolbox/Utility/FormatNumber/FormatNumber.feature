@@ -217,11 +217,11 @@ Scenario: Format number rounding with unknown scalar decimals value to show
 
 #Complex Types WOLF-1042
 Scenario Outline: Format number using complex types 
-	Given I have a number '<Number>'
-	And I selected rounding '<Rounding>' to '<RoundingValue>' 
-	And I want to show '<Decimals>' decimals with value '<DecimalVal>'
+	Given I have a number "<Number>"
+	And I selected rounding "<Rounding>" to "<RoundingValue>" 
+	And I want to show "<Decimals>" decimals with value "<DecimalVal>"
 	When the format number is executed
-	Then the result '<result>' will be returned
+	Then the result "<result>" will be returned
 	And the execution has "<Error>" error
 	And the debug inputs as  
 	| Number   | Rounding   | RoundingValue   | Decimals to show |

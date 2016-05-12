@@ -207,8 +207,8 @@ Scenario Outline: Ensure shorcut keys work
 	Given I have variables as
     | Variable | Note | Input | Output | IsUsed |
     | [[var]]  |      |       | YES    | YES    |
-	And I press '<Keys>'
-	Then cursor focus is '<Focus>'
+	And I press "<Keys>"
+	Then cursor focus is "<Focus>"
 Examples:
 	| Keys  | Focus          |
 	| Enter | New blank line |

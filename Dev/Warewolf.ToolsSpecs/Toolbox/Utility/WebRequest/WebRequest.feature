@@ -122,7 +122,7 @@ Scenario: Enter a URL that is a negative index recordset
 	| [[result]] = |
 
 Scenario Outline: Enter a number or variable that does not exist as URL
-	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
+	Given I have the url "<url>" with timeoutSeconds "<timeoutSeconds>"
 	And I have the Header "<Header>"
 	When the web request tool is executed	
 	Then the result should contain the string ""
@@ -163,7 +163,7 @@ Scenario: Enter a URL that is a non existent variable
 	| [[var]] = |        |
 	
 Scenario Outline: Enter a URL to download html with timeout specified too short 
-	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
+	Given I have the url "<url>" with timeoutSeconds "<timeoutSeconds>"
 	When the web request tool is executed 
 	Then the execution has "AN" error
 	And the debug inputs as  

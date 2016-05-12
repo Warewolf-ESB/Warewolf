@@ -746,25 +746,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 243
 this.ScenarioSetup(scenarioInfo);
 #line 244
- testRunner.Given(string.Format("the from account is \'{0}\'", from), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the from account is \"{0}\"", from), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 245
- testRunner.And(string.Format("to address is \'{0}\'", to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("to address is \"{0}\"", to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 246
- testRunner.And(string.Format("the subject is \'{0}\'", subject), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the subject is \"{0}\"", subject), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 247
- testRunner.And(string.Format("Password is \'{0}\'", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Password is \"{0}\"", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 248
- testRunner.And(string.Format("the Bcc is \'{0}\'", bcc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the Bcc is \"{0}\"", bcc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 249
- testRunner.And(string.Format("the Cc is \'{0}\'", cc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the Cc is \"{0}\"", cc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 250
- testRunner.And(string.Format("body is \'{0}\'", body), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("body is \"{0}\"", body), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 251
- testRunner.And(string.Format("the attachment is \'{0}\'", attachments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the attachment is \"{0}\"", attachments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 252
- testRunner.And(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 253
- testRunner.And(string.Format("Result is \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Result is \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -967,25 +967,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 268
 this.ScenarioSetup(scenarioInfo);
 #line 269
- testRunner.Given(string.Format("the from account is \'{0}\' equals \'{1}\'", from, fromVal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the from account is \"{0}\" equals \"{1}\"", from, fromVal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 270
- testRunner.And(string.Format("to address is \'{0}\' equals \'{1}\'", to, toVal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("to address is \"{0}\" equals \"{1}\"", to, toVal), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 271
- testRunner.And(string.Format("the subject is \'{0}\'", subject), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the subject is \"{0}\"", subject), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 272
- testRunner.And(string.Format("Password is \'{0}\'", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Password is \"{0}\"", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 273
- testRunner.And(string.Format("the Bcc is \'{0}\'", bcc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the Bcc is \"{0}\"", bcc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 274
- testRunner.And(string.Format("the Cc is \'{0}\'", cc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the Cc is \"{0}\"", cc), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 275
- testRunner.And(string.Format("body is \'{0}\'", body), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("body is \"{0}\"", body), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 276
- testRunner.And(string.Format("the attachment is \'{0}\'", attachments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the attachment is \"{0}\"", attachments), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 277
- testRunner.And(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 278
- testRunner.And(string.Format("Result is \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Result is \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -139,11 +139,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
 this.ScenarioSetup(scenarioInfo);
 #line 23
- testRunner.Given(string.Format("I have a webservice with \'{0}\' as a response", responseFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a webservice with \"{0}\" as a response", responseFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 24
- testRunner.When(string.Format("I apply \'{0}\' to the response", path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I apply \"{0}\" to the response", path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
- testRunner.Then(string.Format("the mapping should be \'{0}\'", mapping), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the mapping should be \"{0}\"", mapping), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

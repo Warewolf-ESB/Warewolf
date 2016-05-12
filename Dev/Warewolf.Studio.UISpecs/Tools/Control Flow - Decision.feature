@@ -165,13 +165,13 @@ Scenario: Selecting Statement in combobox3
 	Given Decision large view is opened 
 	And  "statement1" of "TextBox1" is "Visible"
 	And  "statement1" of "TextBox2" is "NotVisible"	
-	#Select Doesn't Start With
-	When I select "statement1" of combobox as "Doesn't Start With"
+	#Select Doesn"t Start With
+	When I select "statement1" of combobox as "Doesn"t Start With"
 	Then "statement1" of "TextBox1" is "Visible"
 	And  "statement1" of "TextBox2" is "Visible"
-	#Select Doesn't Contain
+	#Select Doesn"t Contain
 	And I "Add Statement"
-	When I select "statement2" of combobox as "Doesn't Contain"
+	When I select "statement2" of combobox as "Doesn"t Contain"
 	Then "statement2" of "TextBox1" is "Visible"
 	And  "statement2" of "TextBox2" is "Visible"
 	#Select Is Alphanumeric
@@ -201,8 +201,8 @@ Scenario: Selecting Statement in combobox3
 	And  "statement7 of "TextBox2" is "NotVisible"
 	Then Evaluates a statement to True or False
 	| TextBox1 | ComboBox           | TextBox2 | Delete |
-	| ""       | Doesn't Start With | ""       | Yes    |
-	| ""       | Doesn't Contain    | ""       | Yes    |
+	| ""       | Doesn"t Start With | ""       | Yes    |
+	| ""       | Doesn"t Contain    | ""       | Yes    |
 	| ""       | Is Alphanumeric    |          | Yes    |
 	| ""       | Is Base64          |          | Yes    |
 	| ""       | Is Between         | ""       | Yes    |

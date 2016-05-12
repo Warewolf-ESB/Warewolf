@@ -731,7 +731,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 216
  testRunner.Then("the value of the variable \"[[my(2).roles]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 217
- testRunner.And(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -775,11 +775,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 224
 this.ScenarioSetup(scenarioInfo);
 #line 225
- testRunner.Given(string.Format("I have a variable \'{0}\' and I selected \'{1}\'", @object, type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"{0}\" and I selected \"{1}\"", @object, type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 226
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 227
- testRunner.Then(string.Format("the value of the variable \'{0}\' is a valid \"DateTime\"", @object), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the value of the variable \"{0}\" is a valid \"DateTime\"", @object), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 228
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

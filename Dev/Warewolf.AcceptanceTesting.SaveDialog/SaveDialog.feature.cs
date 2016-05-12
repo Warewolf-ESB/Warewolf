@@ -147,7 +147,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 44
  testRunner.Then("save button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 45
- testRunner.And("validation message is \"An item with name \'Folder 2 Child 1\' already exists in thi" +
+ testRunner.And("validation message is \"An item with name \"Folder 2 Child 1\" already exists in thi" +
                     "s folder.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -173,7 +173,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.Then("save button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 53
- testRunner.And("validation message is \"\'Name\' contains invalid characters.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("validation message is \"\"Name\" contains invalid characters.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -196,7 +196,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 60
  testRunner.When("I attempt to save a workflow as \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 61
- testRunner.Then("an error message appear with the value \"An item with name \'Hello World\' already e" +
+ testRunner.Then("an error message appear with the value \"An item with name \"Hello World\" already e" +
                     "xists in this folder.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

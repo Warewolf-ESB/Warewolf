@@ -5,7 +5,6 @@
 
 
 Scenario: Open new Dropbox Tool
-	Given I open New Workflow
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
@@ -16,7 +15,6 @@ Scenario: Open new Dropbox Tool
 
 @ignore	
 Scenario: Editing Dropbox Tool
-	Given I open New Workflow
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
@@ -28,7 +26,6 @@ Scenario: Editing Dropbox Tool
 	Then the "Drop" Dropbox Source window is opened
 
 Scenario: Change Dropbox Source
-	Given I open New Workflow
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled

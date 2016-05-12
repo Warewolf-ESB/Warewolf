@@ -98,7 +98,7 @@ Scenario: Deleting rows in Large View
 
 Scenario Outline: Data Merge Large View using and padding is enabled and disabled
 	Given I have DataMerge Large View on design surface
-	When I select "Row 1"  with as '<With>' then using is '<Using>' and padding is '<Padding>'
+	When I select "Row 1"  with as "<With>" then using is "<Using>" and padding is "<Padding>"
 Examples: 
     | No | With     | Using    | Padding  |
     | 1  | None     | Disabled | Disabled |
@@ -110,7 +110,7 @@ Examples:
 @ignore	
 Scenario Outline: Data Merge Small View using is enabled and disabled
 	Given I have DataMerge Large View on design surface
-	When I select "Row 1"  with as '<With>' then using is '<Using>' 
+	When I select "Row 1"  with as "<With>" then using is "<Using>" 
 Examples: 
     | No | With     | Using    |
     | 1  | None     | Disabled |
@@ -163,12 +163,12 @@ Scenario Outline: Data Merge Large View is validating invalid variables
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using | Padding | Align |
-	| 1 | '<Var>' | Index |       |         | Left  |
+	| 1 | "<Var>" | Index |       |         | Left  |
 	| 2 |         | Index |       |         | Left  |
 	And result is as ""			       
 	And Scroll bar is "Enabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Var              | Validation |
     | 1  | [[rec(@).a]]     | True       |
@@ -183,12 +183,12 @@ Scenario Outline: Invalid variables in using is validating on done
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using   | Padding | Align |
-	| 1 | abcdef' | Index | '<Var>' |         | Left  |
+	| 1 | abcdef" | Index | "<Var>" |         | Left  |
 	| 2 |         | Index |         |         | Left  |
 	And result is as ""			       
 	And Scroll bar is "Enabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Var              | Validation |
     | 1  | [[rec(@).a]]     | True       |
@@ -204,12 +204,12 @@ Scenario Outline: Invalid variables in Padding is validating on done
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using | Padding | Align |
-	| 1 | abcdef' | Index | 1     | '<Var>' | Left  |
+	| 1 | abcdef" | Index | 1     | "<Var>" | Left  |
 	| 2 |         | Index |       |         | Left  |
 	And result is as ""			       
 	And Scroll bar is "Enabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Var              | Validation |
     | 1  | [[rec(@).a]]     | True       |
@@ -227,12 +227,12 @@ Scenario Outline: Invalid variables in Result is validating on done
 	Given I have DataMerge Large View on design surface
 	When I Enter DataMerge Large View grid has
 	| # | Data    | With  | Using | Padding | Align |
-	| 1 | abcdef' | Index | 1     | ,       | Left  |
+	| 1 | abcdef" | Index | 1     | ,       | Left  |
 	| 2 |         | Index |       |         | Left  |
-	And result is as '<Var>'			       
+	And result is as "<Var>"			       
 	And Scroll bar is "Enabled"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Var              | Validation |
     | 1  | [[rec(@).a]]     | True       |
@@ -339,7 +339,7 @@ Scenario: Adding DataMerge Variables by using QVI and split on chars
 	| 5 |       | Index |       |         | Left  |
 	And Scroll bar is "Enabled"
 
-##This split by using 'Tab' is not working because I can't use tab while entering variable list but I can paste 
+##This split by using "Tab" is not working because I can"t use tab while entering variable list but I can paste 
 ## So option must work as expected.
 Scenario: Adding DataMerge Variables by using QVI and split on Tab
     Given I have DataMerge Large view on design surface
@@ -418,10 +418,10 @@ Scenario Outline: DataMerge QVI Prefix and Suffix
 	And I enter variables 
 	| aaaa |
 	And Split List On selected as "Index" with "1"
-	And Prefix as '<Prefix>'
-	And Suffix as '<Suffix>'
-	And Append is '<Append>'
-	And Replace is '<Replace>'
+	And Prefix as "<Prefix>"
+	And Suffix as "<Suffix>"
+	And Append is "<Append>"
+	And Replace is "<Replace>"
 	And Preview button is "Enabled"	
 	When I click on "Preview"
 	Then preview as
@@ -460,8 +460,8 @@ Scenario:  DataMerge QVI Replace is Replacing Variables
 	And Split List On selected as "Char" with ","
 	And Prefix as ""
 	And Suffix as ""
-	And Append is 'Unselected'
-	And Replace is 'Selected'
+	And Append is "Unselected"
+	And Replace is "Selected"
 	And Preview button is "Enabled"	
 	When I click on "Preview"
 	Then preview as

@@ -217,13 +217,13 @@ Scenario Outline: Throwing validation error for incorrect variables
 	Given I have email tool large view in design surface
 	When Mail source selected as "Test Email"
 	Then Mail source edit button is "Enabled"
-	And I enter To address is '<To Address>'
+	And I enter To address is "<To Address>"
 	And Bcc address is ""
 	And I enter Subject is "Test"
 	And I enter Body is "Test Warewolf"
 	And I enter result is "[[Result]]"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
    | No | To Address       | Validation |
    | 1  | [[rec().a]]      | False      |
@@ -249,12 +249,12 @@ Scenario Outline: Throwing validation error for Bcc incorrect variables
 	When Mail source selected as "Test Email"
 	Then Mail source edit button is "Enabled"
 	And I enter To address is "test@gmail.com
-	And I enter Bcc address is '<Bcc Address>'
+	And I enter Bcc address is "<Bcc Address>"
 	And I enter Subject is "Test"
 	And I enter Body is "Test Warewolf"
 	And I enter result is "[[Result]]"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
    | No | Bcc Address      | Validation |
    | 1  | [[rec().a]]      | False      |
@@ -281,12 +281,12 @@ Scenario Outline: Throwing validation error for Cc incorrect variables
 	When Mail source selected as "Test Email"
 	Then Mail source edit button is "Enabled"
 	And I enter To address is "test@gmail.com
-	And I enter Cc address is '<Cc Address>'
+	And I enter Cc address is "<Cc Address>"
 	And I enter Subject is "Test"
 	And I enter Body is "Test Warewolf"
 	And I enter result is "[[Result]]"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
    | No | Cc Address       | Validation |
    | 1  | [[rec().a]]      | False      |
@@ -312,12 +312,12 @@ Scenario Outline: Throwing validation error for Subject incorrect variables
 	When Mail source selected as "Test Email"
 	Then Mail source edit button is "Enabled"
 	And I enter To address is "test@gmail.com
-	And I enter Subject is '<Subject>'
+	And I enter Subject is "<Subject>"
 	And I enter Subject is "Test"
 	And I enter Body is "Test Warewolf"
 	And I enter result is "[[Result]]"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
    | No | Subject          | Validation |
    | 1  | [[rec().a]]      | False      |
@@ -347,9 +347,9 @@ Scenario Outline: Throwing validation error for Result incorrect variables
 	And I enter Subject is "Test"
 	And I enter Subject is "Test"
 	And I enter Body is "Test Warewolf"
-	And I enter result is '<Result>'
+	And I enter result is "<Result>"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
    | No | Result           | Validation |
    | 1  | result           | False      |

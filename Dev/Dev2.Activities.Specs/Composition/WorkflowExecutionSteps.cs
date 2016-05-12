@@ -234,37 +234,31 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"I have reset local perfromance Counters")]
         public void GivenIHaveResetLocalPerfromanceCounters()
         {
-           
+            try
+            {
                 try
                 {
-                    try
-                    {
-                        PerformanceCounterCategory.Delete("Warewolf");
-                    }
+                    PerformanceCounterCategory.Delete("Warewolf");
+                }
                     // ReSharper disable once EmptyGeneralCatchClause
-                    catch { }
-
-                    WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
-                                                            {   new WarewolfCurrentExecutionsPerformanceCounter(),
-                                                                new WarewolfNumberOfErrors(),   
-                                                                new WarewolfRequestsPerSecondPerformanceCounter(),
-                                                                new WarewolfAverageExecutionTimePerformanceCounter(),
-                                                                new WarewolfNumberOfAuthErrors(),
-                                                                new WarewolfServicesNotFoundCounter()
-                                                            }, new List<IResourcePerformanceCounter>());
-
-                    CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
-                }
-                catch 
-                {
-                    // ignored
-                    Assert.Fail("failed to delete existing counters");
-                }
+                catch { }
+                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+                {   new WarewolfCurrentExecutionsPerformanceCounter(),
+                    new WarewolfNumberOfErrors(),   
+                    new WarewolfRequestsPerSecondPerformanceCounter(),
+                    new WarewolfAverageExecutionTimePerformanceCounter(),
+                    new WarewolfNumberOfAuthErrors(),
+                    new WarewolfServicesNotFoundCounter()
+                }, new List<IResourcePerformanceCounter>());
+                CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
             }
-            // ReSharper disable once EmptyGeneralCatchClause
-        
-               
-        
+            catch 
+            {
+                // ignored
+                Assert.Fail("failed to delete existing counters");
+            }
+        }
+        // ReSharper disable once EmptyGeneralCatchClause
 
         [Then(@"the perfcounter raw values are")]
         public void ThenThePerfcounterRawValuesAre(Table table)
@@ -295,8 +289,6 @@ namespace Dev2.Activities.Specs.Composition
                 }                
             }
         }
-
-
 
         static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int timeout)
         {
@@ -348,7 +340,7 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
-        [Then(@"the '(.*)' in step (.*) for '(.*)' debug inputs as")]
+        [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" debug inputs as")]
         public void ThenTheInStepForDebugInputsAs(string toolName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -376,7 +368,7 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(item => item.ResultsList).ToList());
         }
 
-        [Then(@"the '(.*)' in ""(.*)"" in step (.*) for '(.*)' debug inputs as")]
+        [Then(@"the ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug inputs as")]
         public void ThenTheInInStepForDebugInputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -409,7 +401,7 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
-        [Then(@"the '(.*)' in ""(.*)"" in step (.*) for '(.*)' debug outputs as")]
+        [Then(@"the ""(.*)"" in ""(.*)"" in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInInStepForDebugOutputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -448,7 +440,7 @@ namespace Dev2.Activities.Specs.Composition
             return debugToUse;
         }
 
-        [Then(@"the '(.*)' in step (.*) for '(.*)' debug outputs as")]
+        [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInStepForDebugOutputsAs(string toolName, int stepNumber, string forEachName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -771,7 +763,7 @@ namespace Dev2.Activities.Specs.Composition
             CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
         }
 
-        [Given(@"""(.*)"" in '(.*)' contains Data Merge ""(.*)"" into ""(.*)"" as")]
+        [Given(@"""(.*)"" in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenInContainsDataMergeIntoAs(string sequenceName, string forEachName, string activityName, string resultVariable, Table table)
         {
             DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
@@ -804,7 +796,7 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        [Given(@"""(.*)"" in '(.*)' contains Gather System Info ""(.*)"" as")]
+        [Given(@"""(.*)"" in ""(.*)"" contains Gather System Info ""(.*)"" as")]
         public void GivenInContainsGatherSystemInfoAs(string sequenceName, string forEachName, string activityName, Table table)
         {
             var activity = new DsfGatherSystemInformationActivity { DisplayName = activityName };
@@ -899,7 +891,6 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
         {
-
             BuildDataList();
 
             var activityList = CommonSteps.GetActivityList();
@@ -943,7 +934,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-        [Then(@"the '(.*)' in WorkFlow '(.*)' debug inputs as")]
+        [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -992,7 +983,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(end.Duration.Ticks > 0);
         }
 
-        [Then(@"the nested '(.*)' in WorkFlow '(.*)' debug inputs as")]
+        [Then(@"the nested ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheNestedInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -1013,7 +1004,7 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
         
-        [Then(@"the '(.*)' in WorkFlow '(.*)' has  ""(.*)"" nested children")]
+        [Then(@"the ""(.*)"" in WorkFlow ""(.*)"" has  ""(.*)"" nested children")]
         public void ThenTheInWorkFlowHasNestedChildren(string toolName, string workflowName, int count)
         {
             Dictionary<string, Activity> activityList;
@@ -1028,7 +1019,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.AreEqual(count, children);
         }
 
-        [Then(@"each nested debug item for '(.*)' in WorkFlow '(.*)' contains ""(.*)"" child                              \|")]
+        [Then(@"each nested debug item for ""(.*)"" in WorkFlow ""(.*)"" contains ""(.*)"" child                              \|")]
         public void ThenEachNestedDebugItemForInWorkFlowContainsChild(string toolName, string workFlowName, int childCount)
         {
             Dictionary<string, Activity> activityList;
@@ -1121,7 +1112,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(diffInMem < maxDiff, "Warewolf Server memory usage: " + diffInMem.ToString(CultureInfo.InvariantCulture));
         }
 
-        [Then(@"the '(.*)' in Workflow '(.*)' has a debug Server Name of """"(.*)""""")]
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" has a debug Server Name of """"(.*)""""")]
         public void ThenTheInWorkflowHasADebugServerNameOf(string toolName, string workflowName, string remoteName)
         {
             Dictionary<string, Activity> activityList;
@@ -1145,7 +1136,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-        [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
         public void ThenTheInWorkflowDebugOutputsAs(string toolName, string workflowName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -1323,7 +1314,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-        [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into '(.*)'")]
+        [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenContainsLengthOnInto(string parentName, string activityName, string recordSet, string result)
         {
             DsfRecordsetLengthActivity len = new DsfRecordsetLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
@@ -1489,11 +1480,9 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("resourceRepo", out repository);
             IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
             rep.RollbackTo(id, version);
-
         }
 
-
-        [Then(@"the '(.*)' in Workflow '(.*)' debug outputs does not exist\|")]
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs does not exist\|")]
         public void ThenTheInWorkflowDebugOutputsDoesNotExist(string workflowName, string version)
         {
 

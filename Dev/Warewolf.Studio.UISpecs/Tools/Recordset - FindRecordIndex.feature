@@ -180,9 +180,9 @@ Examples:
     | 7  | Starts With        |
     | 8  | Ends With          |
     | 9  | Contains           |
-    | 10 | Doesn't Start With |
-    | 11 | Doesn't End With   |
-    | 12 | Doesn't Contain    |
+    | 10 | Doesn"t Start With |
+    | 11 | Doesn"t End With   |
+    | 12 | Doesn"t Contain    |
     | 13 | Is Alphanumeric    |
     | 14 | Is Base64          |
     | 15 | Is Between         |
@@ -230,9 +230,9 @@ Examples:
     | 7  | Starts With        | 123      |
     | 8  | Ends With          | 123      |
     | 9  | Contains           | 123      |
-    | 10 | Doesn't Start With | 123      |
-    | 11 | Doesn't End With   | 123      |
-    | 12 | Doesn't Contain    | 123      |
+    | 10 | Doesn"t Start With | 123      |
+    | 11 | Doesn"t End With   | 123      |
+    | 12 | Doesn"t Contain    | 123      |
     | 13 | Is Alphanumeric    | Disabled |
     | 14 | Is Base64          | Disabled |
     | 15 | Is Between         |          |
@@ -279,7 +279,7 @@ Scenario: FRI is validating when I click on done with empty fields
 
 Scenario Outline: FRI large view is validating Invalid variables in InField
 	Given I have Find Record Index Large view on design surface
-	And Infield is '<Infields>'
+	And Infield is "<Infields>"
 	And Find Record Index large view as
 	| # | Match Type | Match    |
 	| 1 | =          | 124      |
@@ -293,8 +293,8 @@ Scenario Outline: FRI large view is validating Invalid variables in InField
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Val>'
-	And FRI small view is '<SmallView>'
+	Then Validation message is thrown "<Val>"
+	And FRI small view is "<SmallView>"
 Examples: 
      | No | InFields               | Val   | SmallView   |
      | 1  | ABC                    | True  | Not Visible |
@@ -331,8 +331,8 @@ Scenario Outline: FRI large view is validating Invalid variables in Match Fields
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Val>'
-	And FRI small view is '<SmallView>'
+	Then Validation message is thrown "<Val>"
+	And FRI small view is "<SmallView>"
 Examples: 
      | No | Match                  | Val   | SmallView   |
      | 1  | ABC                    | False | Visible     |
@@ -390,11 +390,11 @@ Scenario Outline: FRI large view is validating Invalid variables in Result Field
 	| 2 | Choose...  | Disabled |
 	And Require All Matches To Be True is "Selected"
 	And Require All Fields To Match is "Unseleted"
-	And result is '<Result>'
+	And result is "<Result>"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Val>'
-	And FRI small view is '<SmallView>'
+	Then Validation message is thrown "<Val>"
+	And FRI small view is "<SmallView>"
 Examples: 
      | No | Result                 | Val   | SmallView   |
      | 1  | ABC                    | False | Visible     |

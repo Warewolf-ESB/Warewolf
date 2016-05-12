@@ -75,23 +75,23 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the following variable list \"{0}\"", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the filter type is \"{0}\"", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \"{0}\"", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the cursor is at index \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the provider used is \"{0}\"", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the drop down list as \"{0}\"", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I select the following option \"{0}\"", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result text should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 17
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the caret position will be \"{0}\"", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -471,23 +471,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 55
 this.ScenarioSetup(scenarioInfo);
 #line 56
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the following variable list \"{0}\"", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 57
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the filter type is \"{0}\"", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \"{0}\"", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the cursor is at index \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the provider used is \"{0}\"", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the drop down list as \"{0}\"", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I select the following option \"{0}\"", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 63
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result text should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 64
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the caret position will be \"{0}\"", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -669,25 +669,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 77
 this.ScenarioSetup(scenarioInfo);
 #line 78
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the following variable list \"{0}\"", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 79
- testRunner.And(string.Format("the file path structure is \'{0}\'", pathStructure), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the file path structure is \"{0}\"", pathStructure), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 80
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the filter type is \"{0}\"", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \"{0}\"", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the cursor is at index \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the provider used is \"{0}\"", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the drop down list as \"{0}\"", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 85
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I select the following option \"{0}\"", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 86
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result text should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 87
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the caret position will be \"{0}\"", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -918,23 +918,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 102
 this.ScenarioSetup(scenarioInfo);
 #line 103
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the following variable list \"{0}\"", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 104
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the filter type is \"{0}\"", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \"{0}\"", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the cursor is at index \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 107
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the provider used is \"{0}\"", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the drop down list as \"{0}\"", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I select the following option \"{0}\"", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 110
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result text should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 111
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the caret position will be \"{0}\"", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1097,17 +1097,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 123
 this.ScenarioSetup(scenarioInfo);
 #line 124
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the following variable list \"{0}\"", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 125
- testRunner.And("the filter type is \'RecordsetsOnly\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the filter type is \"RecordsetsOnly\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \"{0}\"", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
- testRunner.And("the cursor is at index \'11\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the cursor is at index \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
- testRunner.And("the provider used is \'Default\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the provider used is \"Default\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
- testRunner.Then(string.Format("the result has \'{0}\' errors", expectError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result has \"{0}\" errors", expectError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1144,23 +1144,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 145
 this.ScenarioSetup(scenarioInfo);
 #line 146
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the following variable list \"{0}\"", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 147
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the filter type is \"{0}\"", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \"{0}\"", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the cursor is at index \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 150
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the provider used is \"{0}\"", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 151
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the drop down list as \"{0}\"", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 152
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I select the following option \"{0}\"", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 153
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result text should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 154
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the caret position will be \"{0}\"", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1521,23 +1521,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 177
 this.ScenarioSetup(scenarioInfo);
 #line 178
- testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the following variable list \"{0}\"", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 179
- testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the filter type is \"{0}\"", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 180
- testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the current text in the textbox is \"{0}\"", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 181
- testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the cursor is at index \"{0}\"", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 182
- testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the provider used is \"{0}\"", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 183
- testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the drop down list as \"{0}\"", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 184
- testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I select the following option \"{0}\"", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 185
- testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result text should be \"{0}\"", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 186
- testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the caret position will be \"{0}\"", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

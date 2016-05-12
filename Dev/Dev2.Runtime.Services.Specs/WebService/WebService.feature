@@ -20,9 +20,9 @@ Scenario: Execute webservice which returns a primitive array
 
 
 Scenario Outline: Apply JsonPath to payload
-	Given I have a webservice with '<response file>' as a response
-	When I apply '<path>' to the response
-	Then the mapping should be '<mapping>'
+	Given I have a webservice with "<response file>" as a response
+	When I apply "<path>" to the response
+	Then the mapping should be "<mapping>"
 	Examples: 
 		| response file              | path                | mapping                              |
 		| simple json.txt            | $.store.book[*]     | UnnamedArrayData().category          |

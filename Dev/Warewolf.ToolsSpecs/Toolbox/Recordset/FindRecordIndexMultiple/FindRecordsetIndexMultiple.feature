@@ -305,14 +305,14 @@ Scenario: Find an index of data in a recordset with Not Regex
 	|                 |
 	| [[result]] = 4 |
 
-Scenario: Find an index of data in a recordset with Doesn't Start With
+Scenario: Find an index of data in a recordset with Doesn"t Start With
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value |
 	| rs().field | what  |	
 	| rs().field | why   |
 	| rs().field | yay   |	
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn't Start With" and criteria is "w"
+	And search the recordset with type "Doesn"t Start With" and criteria is "w"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
 	And the execution has "NO" error
@@ -320,12 +320,12 @@ Scenario: Find an index of data in a recordset with Doesn't Start With
 	| #           |                        | # |                    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
 	| In Field(s) | [[rs(1).field]] = what |   |                    |   |  |     |                             |                                |
 	|             | [[rs(2).field]] = why  |   |                    |   |  |     |                             |                                |
-	|             | [[rs(3).field]] = yay  | 1 | Doesn't Start With | w |  |     | NO                          | NO                             |
+	|             | [[rs(3).field]] = yay  | 1 | Doesn"t Start With | w |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
 	| [[result]] = 3 |
 
-Scenario: Find an index of data in a recordset with Doesn't End With
+Scenario: Find an index of data in a recordset with Doesn"t End With
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value  |
 	| rs().field | arev   |
@@ -333,7 +333,7 @@ Scenario: Find an index of data in a recordset with Doesn't End With
 	| rs().field | modev  |
 	| rs().field | yay    |	
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn't End With" and criteria is "v"
+	And search the recordset with type "Doesn"t End With" and criteria is "v"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
 	And the execution has "NO" error
@@ -342,7 +342,7 @@ Scenario: Find an index of data in a recordset with Doesn't End With
 	| In Field(s) | [[rs(1).field]] = arev  |   |                  |   |  |     |                             |                                |
 	|             | [[rs(2).field]] = v     |   |                  |   |  |     |                             |                                |
 	|             | [[rs(3).field]] = modev |   |                  |   |  |     |                             |                                |
-	|             | [[rs(4).field]] = yay   | 1 | Doesn't End With | v |  |     | NO                          | NO                             |
+	|             | [[rs(4).field]] = yay   | 1 | Doesn"t End With | v |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
 	| [[result]] = 4 |
@@ -1061,7 +1061,7 @@ Scenario: Find an index of data in a recordset search type is Contains result do
 	|                  |
 	| [[result]] = -1 |
 
-Scenario: Find an index of data in a recordset search type is Doesn't Contain
+Scenario: Find an index of data in a recordset search type is Doesn"t Contain
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value    |
 	| rs().field | Warewolf |
@@ -1071,7 +1071,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain
 	| rs().field | user     |
 	| rs().field | Warewolf |
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn't Contain" and criteria is "Warewolf"
+	And search the recordset with type "Doesn"t Contain" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
@@ -1082,12 +1082,12 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain
 	|             | [[rs(3).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(4).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(5).field]] = user     |   |                 |          |  |     |                             |                                |
-	|             | [[rs(6).field]] = Warewolf | 1 | Doesn't Contain | Warewolf |  |     | NO                          | NO                             |      
+	|             | [[rs(6).field]] = Warewolf | 1 | Doesn"t Contain | Warewolf |  |     | NO                          | NO                             |      
 	And the debug output as
 	|                 |
 	| [[result]] = 5 |
 
-Scenario: Find an index of data in a recordset search type is Doesn't Contain multiple results
+Scenario: Find an index of data in a recordset search type is Doesn"t Contain multiple results
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value    |
 	| rs().field | You      |
@@ -1097,7 +1097,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain mu
 	| rs().field | user     |
 	| rs().field | Warewolf |
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn't Contain" and criteria is "Warewolf"
+	And search the recordset with type "Doesn"t Contain" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,5
 	And the execution has "NO" error
@@ -1108,12 +1108,12 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain mu
 	|             | [[rs(3).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(4).field]] = Warewolf |   |                 |          |  |     |                             |                                |
 	|             | [[rs(5).field]] = user     |   |                 |          |  |     |                             |                                |
-	|             | [[rs(6).field]] = Warewolf | 1 | Doesn't Contain | Warewolf |  |     | NO                          | NO                             |
+	|             | [[rs(6).field]] = Warewolf | 1 | Doesn"t Contain | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
 	|                   |
 	| [[result]] = 1,5 |
 
-Scenario: Find an index of data in a recordset search type is Doesn't Contain result doesnt exist
+Scenario: Find an index of data in a recordset search type is Doesn"t Contain result doesnt exist
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value |
 	| rs().field | Mars  |
@@ -1123,7 +1123,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain re
 	| rs().field | Mars  |
 	| rs().field | Mars  |
 	And field to search is "[[rs().field]]"
-	And search the recordset with type "Doesn't Contain" and criteria is "Mars"
+	And search the recordset with type "Doesn"t Contain" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
@@ -1134,7 +1134,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain re
 	|             | [[rs(3).field]] = Mars |   |                 |      |  |     |                             |                                |
 	|             | [[rs(4).field]] = Mars |   |                 |      |  |     |                             |                                |
 	|             | [[rs(5).field]] = Mars |   |                 |      |  |     |                             |                                |
-	|             | [[rs(6).field]] = Mars | 1 | Doesn't Contain | Mars |  |     | NO                          | NO                             |     
+	|             | [[rs(6).field]] = Mars | 1 | Doesn"t Contain | Mars |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                  |
 	| [[result]] = -1 |
@@ -2412,10 +2412,10 @@ Scenario: Find an index
 	| [[result]] = 3 |
 
 Scenario Outline:Find index using invalid inputs
-	Given I have the following in field '<inField>' equals '<value>'
-	And the fields to search is '<Match>'
-	And search the recordset with type '<Match>' and criteria is "<Criteria>"
-	And The result variable is "<result>" equals '<varVal>'
+	Given I have the following in field "<inField>" equals "<value>"
+	And the fields to search is "<Match>"
+	And search the recordset with type "<Match>" and criteria is "<Criteria>"
+	And The result variable is "<result>" equals "<varVal>"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be "-1"
 	And the execution has "An" error
@@ -2430,12 +2430,12 @@ Scenario Outline:Find index using invalid inputs
 
 
 Scenario Outline:Find index using valid inputs
-	Given I have the following in field '<inField>' equals '<value>'
-	And the fields to search is '<Match>'
-	And search the recordset with type '<Match>' and criteria is '<Criteria>' equals '<Critval>'
-	And The result variable is "<result>" equals '<varVal>'
+	Given I have the following in field "<inField>" equals "<value>"
+	And the fields to search is "<Match>"
+	And search the recordset with type "<Match>" and criteria is "<Criteria>" equals "<Critval>"
+	And The result variable is "<result>" equals "<varVal>"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be '<Index>'
+	Then the find records index multiple result should be "<Index>"
 	And the execution has "No" error
 	Examples: 
 	| inField                       | values     | Match       | Criteria                     | Critval | Index | result                       | varVal |
@@ -2450,12 +2450,12 @@ Scenario Outline:Find index using valid inputs
 
 #Complex Types WOLF-1042
 Scenario Outline:Find index using valid inputs complex types
-	Given I have the following in field '<inField>' equals '<values>'
-	And the fields to search is '<Match>'
-	And search the recordset with type '<Match>' and criteria is '<Criteria>' equals '<Critval>'
-	And The result variable is "<result>" equals '<varVal>'
+	Given I have the following in field "<inField>" equals "<values>"
+	And the fields to search is "<Match>"
+	And search the recordset with type "<Match>" and criteria is "<Criteria>" equals "<Critval>"
+	And The result variable is "<result>" equals "<varVal>"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be '<Index>'
+	Then the find records index multiple result should be "<Index>"
 	And the execution has "No" error
 	Examples: 
 	| inField              | values | Match       | Criteria                   | Critval | Index | result           | varVal |

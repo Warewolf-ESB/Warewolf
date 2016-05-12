@@ -348,7 +348,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 106
  testRunner.When("I rename \"localhost\\Folder New\\Resource 2\" to \"WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 107
- testRunner.Then("Conflict error message is occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Conflict error message occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -576,7 +576,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 191
  testRunner.And("I create the \"localhost\\Hello World\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 192
- testRunner.When("I open \'Hello World\' in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I open \"Hello World\" in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 193
  testRunner.And("\"Hello World\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -604,7 +604,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I create the \"Remote Connection Integration\\Hello World\" of type \"WorkflowService" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 201
- testRunner.When("I open \'Hello World\' in \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I open \"Hello World\" in \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 202
  testRunner.And("\"Hello World\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -653,7 +653,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 220
  testRunner.When("I rename \"Remote Connection Integration\\Folder New\\Resource 2\" to \"WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 221
- testRunner.Then("Conflict error message is occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Conflict error message occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -791,30 +791,28 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Dependencies Of All Services In Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void OpeningDependenciesOfAllServicesInExplorer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Dependencies Of All Services In Explorer", new string[] {
-                        "ignore"});
-#line 271
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Dependencies Of All Services In Explorer", ((string[])(null)));
+#line 269
 this.ScenarioSetup(scenarioInfo);
-#line 272
+#line 270
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 273
+#line 271
  testRunner.When("I open \"Show Dependencies\" of \"WF1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 274
+#line 272
  testRunner.Then("\"WF1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 275
+#line 273
  testRunner.When("I open \"Show Dependencies\" of \"WebServ1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 276
+#line 274
  testRunner.Then("\"WebServ1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 277
+#line 275
  testRunner.When("I open \"Show Dependencies\" of \"DB Service1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 278
+#line 276
  testRunner.Then("\"DB Service1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 279
+#line 277
  testRunner.When("I open \"Show Dependencies\" of \"PluginServ1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 280
+#line 278
  testRunner.Then("\"PluginServ1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -824,28 +822,26 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Disconnected from remote server")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void DisconnectedFromRemoteServer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnected from remote server", new string[] {
-                        "ignore"});
-#line 284
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnected from remote server", ((string[])(null)));
+#line 280
 this.ScenarioSetup(scenarioInfo);
-#line 285
+#line 281
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 286
+#line 282
  testRunner.When("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 287
+#line 283
  testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
+#line 284
  testRunner.Then("I should see \"10\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 289
+#line 285
  testRunner.Then("I should see the path \"Remote Connection Integration\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 290
+#line 286
  testRunner.When("I select \"Disconnect\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 291
+#line 287
  testRunner.Then("\"Remote Connection Integration\" is \"Disconnected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 292
+#line 288
  testRunner.And("\"Localhost\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -858,21 +854,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DebugFromExplorerUsingPlayIcon()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug from Explorer using play icon", ((string[])(null)));
-#line 295
+#line 290
 this.ScenarioSetup(scenarioInfo);
-#line 296
+#line 291
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 297
+#line 292
  testRunner.Then("I should see the path \"Localhost\\Dice Roll Example\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 298
+#line 293
  testRunner.And("I select \"Debug\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 299
+#line 294
  testRunner.Then("\"Dice Roll\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 300
+#line 295
  testRunner.And("\"Dice Roll\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 301
+#line 296
  testRunner.And("there are \"No\" errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 302
+#line 297
  testRunner.And("the Debug output window is populated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -885,15 +881,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MovingNestedFolders()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moving Nested folders", ((string[])(null)));
-#line 306
+#line 300
 this.ScenarioSetup(scenarioInfo);
-#line 307
+#line 301
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 308
+#line 302
  testRunner.Then("I should see the path \"Localhost\\Dice Roll Example\\Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 309
+#line 303
  testRunner.And("I move \"Localhost\\Dice Roll Example\\Tests\" to \"Localhost\\Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 310
+#line 304
  testRunner.Then("\"Localhost\\Tests\" is visible in the Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -906,21 +902,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConflictingFileNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting file names", ((string[])(null)));
-#line 314
+#line 308
 this.ScenarioSetup(scenarioInfo);
-#line 315
+#line 309
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 316
+#line 310
  testRunner.Then("I should see the path \"Localhost\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 317
+#line 311
  testRunner.Then("I should see the path \"Localhost\\Category\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 318
- testRunner.And("I create \"New Folder\" in \"Localhost\\Category\" named \"Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 319
+#line 312
+ testRunner.And("I create \"Localhost\\Category\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 313
  testRunner.Then("I should see the path \"Localhost\\Category\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 320
+#line 314
  testRunner.And("I move \"Localhost\\Examples\" to \"Localhost\\Category\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
+#line 315
  testRunner.Then("\"Localhost\\Examples\" is merged with \"Localhost\\Category\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -933,17 +929,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ServerViewPermissionsOnARemoteServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Server view permissions on a remote server", ((string[])(null)));
-#line 325
+#line 317
 this.ScenarioSetup(scenarioInfo);
-#line 326
+#line 318
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 327
+#line 319
  testRunner.When("I open the server \"Remote Connection Integration\" server and the permissions are " +
                     "\"View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 328
- testRunner.Then("the option to \"View\" is \"Enabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 329
- testRunner.And("the option to \"Debug\" is \"Disabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 320
+ testRunner.Then("the option to \"View\" is \"Enabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 321
+ testRunner.And("the option to \"Debug\" is \"Disabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -955,17 +951,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ServerExecutePermissionsOnARemoteServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Server execute permissions on a remote server", ((string[])(null)));
-#line 334
+#line 323
 this.ScenarioSetup(scenarioInfo);
-#line 335
+#line 324
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 336
+#line 325
  testRunner.When("I open the server \"Remote Connection Integration\" server and the permissions are " +
                     "\"View,Execute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 337
- testRunner.Then("the option to \"View\" is \"Enabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 338
- testRunner.And("the option to \"Debug\" is \"Enabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 326
+ testRunner.Then("the option to \"View\" is \"Enabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 327
+ testRunner.And("the option to \"Debug\" is \"Enabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -977,30 +973,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ResourceViewPermissionsOnARemoteServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resource view permissions on a remote server", ((string[])(null)));
-#line 343
+#line 330
 this.ScenarioSetup(scenarioInfo);
-#line 344
+#line 331
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 345
+#line 332
  testRunner.When("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 346
+#line 333
  testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 347
+#line 334
  testRunner.And("\"Remote Connection Integration\" permissions are \"View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 348
+#line 335
  testRunner.Then("I should see the path \"Remote Connection Integration\\Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 349
+#line 336
  testRunner.And("\"Remote Connection Integration\\Hello World\" permissions are \"View,Execute,Contrib" +
                     "ute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 350
+#line 337
  testRunner.Then("the option to \"View\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 351
+#line 338
  testRunner.And("the option to \"Debug\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 352
+#line 339
  testRunner.When("I click \"Debug\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 353
+#line 340
  testRunner.Then("\"Remote Connection Integration\\Hello World\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 354
+#line 341
  testRunner.And("the Debug output window is populated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1013,25 +1009,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingResourceWithTheSameNameInDifferentLocationOnLocalhostServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Resource with the same name in different location on localhost Server", ((string[])(null)));
-#line 357
+#line 344
 this.ScenarioSetup(scenarioInfo);
-#line 358
+#line 345
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 359
+#line 346
    testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 360
+#line 347
    testRunner.And("I create the \"localhost\\Folder 1\\PLuginS\" of type \"PluginService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 361
+#line 348
    testRunner.And("I create the \"localhost\\PLuginS\" of type \"PluginService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 362
+#line 349
    testRunner.Then("I should see the path \"localhost\\Folder 1\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 363
+#line 350
    testRunner.And("I should see the path \"localhost\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 364
+#line 351
    testRunner.When("I delete \"localhost\\Folder 1\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 365
+#line 352
    testRunner.And("I click \"Refresh\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 366
+#line 353
    testRunner.Then("I should not see the path \"localhost\\Folder 1\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

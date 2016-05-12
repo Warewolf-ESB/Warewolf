@@ -45,13 +45,13 @@ Scenario: Execute Command Line is not thrown error for poper commands
 Scenario Outline: Execute Command Line Large view validates for incorrect variables
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
-	And I enter CMD is '<Var>'
+	And I enter CMD is "<Var>"
 	Then I have Priority selected "Normal"
 	And I enter Result is "[[Result]]"
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 	Examples: 
 	| No | Var              | Validation |
 	| 1  | [[a]]            | False      |
@@ -67,11 +67,11 @@ Scenario Outline: Execute Command Line Large view validates for incorrect variab
 	When I open CMD Line large view
 	And I enter CMD is "[[a]]"
 	Then I have Priority selected "Normal"
-	And I enter Result is '<Result>'
+	And I enter Result is "<Result>"
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 	Examples: 
 	| No | Result           | Validation |
 	| 1  | result           | False      |
@@ -100,7 +100,7 @@ Scenario Outline: CMD line Priority is not changing when close and open largevie
 	Given I have CMD Line tool on design surface
 	When I open CMD Line large view
 	And I enter CMD is "pause [[a]]"
-	Then I have Priority selected '<Priority>'
+	Then I have Priority selected "<Priority>"
 	And I enter Result is "[[Result]]"
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
@@ -108,7 +108,7 @@ Scenario Outline: CMD line Priority is not changing when close and open largevie
 	Then Validation message is not thrown 
 	Then CMD Line small view is "Visible"
 	When I open CMD Line large view
-	Then I have Priority selected '<Priority>'
+	Then I have Priority selected "<Priority>"
 Examples: 
     | No | Priority     |
     | 1  | Normal       |

@@ -64,13 +64,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
-        [Given(@"Source iss ""(.*)""")]
+
+        [Given(@"Source is ""(.*)""")]
         public void GivenSourceIs(string sourceName)
         {
             var selectedSource = GetViewModel().SourceRegion.SelectedSource;
             Assert.IsNotNull(selectedSource);
             Assert.AreEqual<string>(sourceName, selectedSource.Name);
         }
+
         [Given(@"Source is Enable")]
         public void GivenSourceIsEnabled()
         {
@@ -91,18 +93,21 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
-        [Given(@"Action iss ""(.*)""")]
+
+        [Given(@"Action is ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
             var selectedProcedure = GetViewModel().ActionRegion.SelectedAction;
             Assert.IsNotNull(selectedProcedure);
             Assert.AreEqual<string>(actionName, selectedProcedure.Name);
         }
+
         [Given(@"Action is dbo\.Pr_CitiesGetCountries")]
         public void GivenActionIsDbo_Pr_CitiesGetCountries()
         {
             ScenarioContext.Current.Pending();
         }
+
         [Given(@"Action is Disable")]
         public void GivenActionIsDisabled()
         {
@@ -119,7 +124,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var hasNoInputs = viewModel.Inputs == null || viewModel.Inputs.Count == 0 || !viewModel.IsEnabled;
             Assert.IsTrue(hasNoInputs);
         }
-
         
         [Given(@"Outputs is Disable")]
         [When(@"Outputs is Disable")]
@@ -139,7 +143,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             Assert.IsFalse(viewModel.TestInputCommand.CanExecute());
         }
-        [When(@"Source iz changed from to ""(.*)""")]
+
+        [When(@"Source is changed from to ""(.*)""")]
         public void WhenSourceIsChangedFromTo(string sourceName)
         {
             if (sourceName == "GreenPoint")
@@ -148,6 +153,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 viewModel.SelectedSource = _greenPointSource;
             }
         }
+
         [Given(@"Action is Enable")]
         [Then(@"Action is Enable")]
         [When(@"Action is Enable")]
@@ -156,7 +162,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel().ActionRegion;
             Assert.IsTrue(viewModel.IsActionEnabled);
         }
-      
 
         [Given(@"Inputs is Enable")]
         [When(@"Inputs is Enable")]
@@ -181,7 +186,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenValidateIsEnabled()
         {
             ScenarioContext.Current.Pending();
-        }
+        }        
+        
         [Then(@"Mapping is Enable")]
         [Given(@"Mapping is Enable")]
         public void GivenMappingIsEnabled()
@@ -189,7 +195,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Pending();
         }
 
-        [When(@"Action iz changed from to ""(.*)""")]
+        [When(@"Action is changed from to ""(.*)""")]
         public void WhenActionIsChangedFromTo(string procName)
         {
             if (procName == "dbo.ImportOrder")
@@ -204,14 +210,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
-        [When(@"Recordset Name iz changed to ""(.*)""")]
+        [When(@"Recordset Name is changed to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
             GetViewModel().OutputsRegion.RecordsetName = recSetName;
         }
-        [When(@"Inputs appear az")]
-        [Then(@"Inputs appear az")]
-        [Given(@"Inputs appear az")]
+
+        [When(@"Inputs appear as")]
+        [Then(@"Inputs appear as")]
+        [Given(@"Inputs appear as")]
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel().InputArea;
@@ -241,7 +248,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [When(@"I selected ""(.*)"" az the action")]
+        [When(@"I selected ""(.*)"" as the action")]
         public void WhenISelectAsTheAction(string actionName)
         {
             if (actionName == "HR.TESTPROC9")
@@ -254,7 +261,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [When(@"I click Testz")]
+        [When(@"I click Tests")]
         public void WhenIClickTest()
         {
             var testCommand = GetViewModel().ManageServiceInputViewModel.TestAction;
@@ -273,14 +280,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
            var result = GetViewModel().TestInputCommand.Execute();
         }
 
-
         [Then(@"the Test Connector and Calculate Outputs window is open")]
         public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
         {
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");  
         }
 
-        [Then(@"Test Inputs appear az")]
+        [Then(@"Test Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
             int rowNum = 0;
@@ -295,8 +301,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-
-        [Then(@"Test Connector and Calculate Outputs outputs appear az")]
+        [Then(@"Test Connector and Calculate Outputs outputs appear as")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
             var rowIdx = 0;
@@ -311,6 +316,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 rowIdx++;
             }
         }
+
         [Given(@"I open workflow with Oracle connector")]
         public void GivenIOpenWolf()
         {
@@ -370,7 +376,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
-        [Then(@"Outputs appear az")]
+
+        [Then(@"Outputs appear as")]
         public void ThenOutputsAppearAs(Table table)
         {
             var outputMappings = GetViewModel().OutputsRegion.Outputs;
@@ -387,7 +394,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Recordset Name equalz ""(.*)""")]
+        [Then(@"Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
             Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
@@ -401,12 +408,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         [When(@"testing the action fails")]
         public void WhenTestingTheActionFails()
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"I open ""(.*)"" service")]
-        public void GivenIOpenService(string p0)
         {
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }

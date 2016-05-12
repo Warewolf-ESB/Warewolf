@@ -69,7 +69,7 @@ Scenario: Assigning long string to a variable in Assign Large view
 	And Scroll bar is "Disabled"
 
 
-##Enter it's in MSWord and copy and paste here and expect validation
+##Enter it"s in MSWord and copy and paste here and expect validation
 Scenario: Pasting words which is not a latin character is thrown a validation
 	Given I have Assign small view on design surface
     When I pass variables in Small view grid as
@@ -307,7 +307,7 @@ Scenario: Adding Variables by using QVI and split on chars
 	| 3 | [[c]]    | = |           |
 	| 4 | [[d]]    | = |           |
 
-##This split by using 'Tab' is not working because I can't use tab while entering variable list but I can paste 
+##This split by using "Tab" is not working because I can"t use tab while entering variable list but I can paste 
 ## So option must work as expected.
 Scenario: Adding Variables by using QVI and split on Tab
     Given I have Assign Large view on design surface
@@ -383,10 +383,10 @@ Scenario Outline:  QVI Prefix and Suffix
 	And I enter variables 
 	| aaaa |
 	And Split List On selected as "Index" with "1"
-	And Prefix as '<Prefix>'
-	And Suffix as '<Suffix>'
-	And Append is '<Append>'
-	And Replace is '<Replace>'
+	And Prefix as "<Prefix>"
+	And Suffix as "<Suffix>"
+	And Append is "<Append>"
+	And Replace is "<Replace>"
 	And Preview button is "Enabled"	
 	When I click on "Preview"
 	Then preview as
@@ -423,8 +423,8 @@ Scenario:  QVI Replace is Replacing Variables
 	And Split List On selected as "Char" with ","
 	And Prefix as ""
 	And Suffix as ""
-	And Append is 'Unselected'
-	And Replace is 'Selected'
+	And Append is "Unselected"
+	And Replace is "Selected"
 	And Preview button is "Enabled"	
 	When I click on "Preview"
 	Then preview as

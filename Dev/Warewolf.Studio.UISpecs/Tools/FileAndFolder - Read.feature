@@ -125,7 +125,7 @@ Scenario Outline: Read Large View is validating incorrect path
        | File Name | Username | Password | Result          |
        | <SPath>   |          |          | [[FolderReadd]] |
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -148,7 +148,7 @@ Scenario Outline: Read Large View is validating incorrect variable in  username 
         | File Name   | Username   | Password | Result          |
         | D:\Test.txt | <Variable> |          | [[FolderReadd]] |    
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -171,7 +171,7 @@ Scenario Outline: Read Large View is validating incorrect variable in Result fie
        | File Name   | Username | Password | Result   |
        | D:\Test.txt |          |          | <Result> | 
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -190,11 +190,11 @@ Scenario Outline: Read On error fields incorrect variables are validating
        | D:\Test.txt    |          |          | [[Result]] |
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

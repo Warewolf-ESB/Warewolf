@@ -914,28 +914,22 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void GenerateNumbersUsingComplexTypes(string type, string from, string to, string length, string res, string error, string message, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate numbers using complex types", @__tags);
-#line 307
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate numbers using complex types", exampleTags);
+#line 306
 this.ScenarioSetup(scenarioInfo);
+#line 307
+ testRunner.Given(string.Format("I have a type as \"{0}\"", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 308
- testRunner.Given(string.Format("I have a type as \'{0}\'", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And(string.Format("I have a range from \"{0}\" to \"{1}\"", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 309
- testRunner.And(string.Format("I have a range from \'{0}\' to \'{1}\'", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 310
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 311
+#line 310
  testRunner.Then(string.Format("the result from the random tool should be of type \"System.Int32\" with a length of" +
-                        " \'{0}\'", length), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 312
+                        " \"{0}\"", length), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 311
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 313
- testRunner.And(string.Format("the execution has \'{0}\' error", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 312
+ testRunner.And(string.Format("the execution has \"{0}\" error", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -943,7 +937,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Generate numbers using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Random")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "Numbers")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "[[rec(1).count(3).val]] = 9")]
@@ -960,7 +953,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Generate numbers using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Random")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "Numbers")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "[[rec(1).count(*).val]] = 0")]
@@ -980,17 +972,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GenerateANumberUsingANullVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate a Number using a null variable", ((string[])(null)));
-#line 319
+#line 318
 this.ScenarioSetup(scenarioInfo);
-#line 320
+#line 319
  testRunner.Given("I have a formatnumber variable \"[[int]]\" equal to NULL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 321
+#line 320
  testRunner.And("I have a type as \"Numbers\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 321
  testRunner.And("I have a range from \"[[int]]\" to \"170000000000000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 323
+#line 322
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 324
+#line 323
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1002,17 +994,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GenerateANumberUsingANullVariableTo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate a Number using a null variable to", ((string[])(null)));
-#line 327
+#line 326
 this.ScenarioSetup(scenarioInfo);
-#line 328
+#line 327
  testRunner.Given("I have a formatnumber variable \"[[int]]\" equal to NULL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 329
+#line 328
  testRunner.And("I have a type as \"Numbers\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 330
+#line 329
  testRunner.And("I have a range from \"170000000000000\" to \"[[int]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 331
+#line 330
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 332
+#line 331
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1024,15 +1016,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GenerateANumberUsingANonExistentVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generate a Number using a non existent variable", ((string[])(null)));
-#line 335
+#line 334
 this.ScenarioSetup(scenarioInfo);
-#line 336
+#line 335
  testRunner.Given("I have a type as \"Numbers\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 337
+#line 336
  testRunner.And("I have a range from \"[[int]]\" to \"170000000000000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
+#line 337
  testRunner.When("the random tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 339
+#line 338
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

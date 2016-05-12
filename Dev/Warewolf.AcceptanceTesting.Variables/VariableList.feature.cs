@@ -1070,9 +1070,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 207
  testRunner.Given("I have variables as", ((string)(null)), table31, "Given ");
 #line 210
- testRunner.And(string.Format("I press \'{0}\'", keys), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I press \"{0}\"", keys), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 211
- testRunner.Then(string.Format("cursor focus is \'{0}\'", focus), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("cursor focus is \"{0}\"", focus), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

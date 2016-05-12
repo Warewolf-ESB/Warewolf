@@ -417,7 +417,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 124
 this.ScenarioSetup(scenarioInfo);
 #line 125
- testRunner.Given(string.Format("I have the url \'{0}\' with timeoutSeconds \'{1}\'", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the url \"{0}\" with timeoutSeconds \"{1}\"", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 126
  testRunner.And(string.Format("I have the Header \"{0}\"", header), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
@@ -601,7 +601,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 165
 this.ScenarioSetup(scenarioInfo);
 #line 166
- testRunner.Given(string.Format("I have the url \'{0}\' with timeoutSeconds \'{1}\'", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the url \"{0}\" with timeoutSeconds \"{1}\"", url, timeoutSeconds), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 167
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 168

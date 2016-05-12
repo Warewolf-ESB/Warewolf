@@ -57,9 +57,9 @@ namespace Warewolf.Tools.Specs.BaseTypes
         public const string ValidationMessage = "validationMessage";
 
         [Then(@"the execution has ""(.*)"" error")]
-        [Then(@"the execution has '(.*)' error")]
+        [Then(@"the execution has ""(.*)"" error")]
         [When(@"the execution has ""(.*)"" error")]
-        [When(@"the execution has '(.*)' error")]
+        [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
         {
             bool expectedError = anError.Equals("AN",StringComparison.OrdinalIgnoreCase);
@@ -118,7 +118,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             CollectionsAssert(expectedDebugItems, outputDebugItems);
         }
 
-        [Given(@"I have a source path '(.*)' with value '(.*)'")]
+        [Given(@"I have a source path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveASourcePathWithValue(string pathVariable, string location)
         {
             List<Tuple<string, string>> variableList;
@@ -136,7 +136,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             ScenarioContext.Current.Add(ActualSourceHolder, location);
         }
 
-        [Given(@"use private public key for source is '(.*)'")]
+        [Given(@"use private public key for source is ""(.*)""")]
         public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey)
         {
             ScenarioContext.Current.Add(SourcePrivatePublicKeyFile, sourceKey);
@@ -203,7 +203,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         }
 
-        [Given(@"source credentials as '(.*)' and '(.*)'")]
+        [Given(@"source credentials as ""(.*)"" and ""(.*)""")]
         public void GivenSourceCredentialsAs(string userName, string password)
         {
             ScenarioContext.Current.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
@@ -212,7 +212,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             CreateSourceFileWithSomeDummyData();
         }
 
-        [Given(@"source credentials as '(.*)' and '(.*)' for zip tests")]
+        [Given(@"source credentials as ""(.*)"" and ""(.*)"" for zip tests")]
         public void GivenSourceCredentialsAsAndForZipTests(string userName, string password)
         {
             ScenarioContext.Current.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
@@ -221,7 +221,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             CreateSourceFileWithSomeDummyData(1000);
         }
 
-        [Given(@"I have a destination path '(.*)' with value '(.*)'")]
+        [Given(@"I have a destination path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADestinationPathWithValue(string pathVariable, string location)
         {
             List<Tuple<string, string>> variableList;
@@ -239,7 +239,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             ScenarioContext.Current.Add(ActualDestinationHolder, location);
         }
 
-        [Given(@"overwrite is '(.*)'")]
+        [Given(@"overwrite is ""(.*)""")]
         public void GivenOverwriteIs(string overwrite)
         {
             bool isOverwrite;
@@ -247,14 +247,14 @@ namespace Warewolf.Tools.Specs.BaseTypes
             ScenarioContext.Current.Add(OverwriteHolder, isOverwrite);
         }
 
-        [Given(@"destination credentials as '(.*)' and '(.*)'")]
+        [Given(@"destination credentials as ""(.*)"" and ""(.*)""")]
         public void GivenDestinationCredentialsAs(string userName, string password)
         {
             ScenarioContext.Current.Add(DestinationUsernameHolder, userName.Replace('"', ' ').Trim());
             ScenarioContext.Current.Add(DestinationPasswordHolder, password.Replace('"', ' ').Trim());
         }
 
-        [Given(@"use private public key for destination is '(.*)'")]
+        [Given(@"use private public key for destination is ""(.*)""")]
         public void GivenUsePrivatePublicKeyForDestinationIs(string destinationKey)
         {
             ScenarioContext.Current.Add(DestinationPrivateKeyFile, destinationKey);
@@ -271,7 +271,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
         }
 
-        [Then(@"validation is '(.*)'")]
+        [Then(@"validation is ""(.*)""")]
         public void ThenValidationIs(string expectedValidationResult)
         {
             IList<IActionableErrorInfo> validationErrors;
@@ -290,7 +290,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
         }
 
-        [Then(@"validation message is '(.*)'")]
+        [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string validationMessage)
         {
             IList<IActionableErrorInfo> validationErrors;
@@ -310,7 +310,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
         }
 
-        [Given(@"result as '(.*)'")]
+        [Given(@"result as ""(.*)""")]
         public void GivenResultAs(string resultVar)
         {
             List<Tuple<string, string>> variableList;
@@ -352,8 +352,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             StringAssert.Contains(webCallResult, errorValue);
         }
 
-
-        [Then(@"the result variable '(.*)' will be '(.*)'")]
+        [Then(@"the result variable ""(.*)"" will be ""(.*)""")]
         public void ThenTheResultVariableWillBe(string variable, string value)
         {
             string error;
@@ -418,7 +417,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             }
         }
 
-        [Then(@"the output is approximately '(.*)' the size of the original input")]
+        [Then(@"the output is approximately ""(.*)"" the size of the original input")]
         public void ThenTheOutputIsApproximatelyTheSizeOfTheOriginalInput(string compressionTimes)
         {
             var source = ScenarioContext.Current.Get<IDSFDataObject>("result");

@@ -84,11 +84,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
-        testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("it has \"{0}\" with \"{1}\"", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
-        testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 12
-        testRunner.Then(string.Format("resources should have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.Then(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -379,15 +379,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
-        testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("it has \"{0}\" with \"{1}\"", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
-        testRunner.And(string.Format("Resource \'{0}\' has rights \'{1}\' for \'{2}\'", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
-        testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
-        testRunner.Then(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 39
-  testRunner.And(string.Format("resources should not have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("resources should not have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -736,15 +736,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 62
-        testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("it has \"{0}\" with \"{1}\"", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
-        testRunner.And(string.Format("Resource \'{0}\' has rights \'{1}\' for \'{2}\'", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
-        testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 65
-        testRunner.Then(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 66
-  testRunner.And(string.Format("resources should have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1283,15 +1283,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 98
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 99
-        testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("it has \"{0}\" with \"{1}\"", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
-        testRunner.And(string.Format("Resource \'{0}\' has rights \'{1}\' for \'{2}\'", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("Resource \"{0}\" has rights \"{1}\" for \"{2}\"", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
-        testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When(string.Format("connected as user part of \"{0}\"", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 102
-        testRunner.Then(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.Then(string.Format("\"{0}\" should have \"{1}\"", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 103
-  testRunner.And(string.Format("resources should have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("resources should have \"{0}\"", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
