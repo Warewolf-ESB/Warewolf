@@ -476,12 +476,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().[[[[a]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
         public virtual void InsertForAllFilterTypeAndDefaultProvider_20()
         {
-            this.InsertForAllFilterTypeAndDefaultProvider("20", "<a/><rec><a/><b/></rec>", "All", "[[rec().[[]]", "10", "[[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[a]]", "[[rec().[[[[a]]]]", "Default", "15", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDefaultProvider("20", "<a/><rec><a/><b/></rec>", "All", "[[rec().[[]]", "10", "[[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[a]]", "[[rec().[[a]]", "Default", "13", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -493,14 +493,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec().a[[]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "11")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[a]],[[rec]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().a[[a]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().a[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
         public virtual void InsertForAllFilterTypeAndDefaultProvider_21()
         {
-            this.InsertForAllFilterTypeAndDefaultProvider("21", "<a/><rec><a/><b/></rec>", "All", "[[rec().a[[]]", "11", "[[a]],[[rec]]", "[[a]]", "[[rec().a[[a]]]]", "Default", "14", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDefaultProvider("21", "<a/><rec><a/><b/></rec>", "All", "[[rec().a[[]]", "11", "[[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[a]]", "[[rec().a[[a]]", "Default", "14", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -514,12 +514,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[b]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec()[[a]]a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec()[[ba]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
         public virtual void InsertForAllFilterTypeAndDefaultProvider_22()
         {
-            this.InsertForAllFilterTypeAndDefaultProvider("22", "<a/><b/><rec><a/><b/></rec>", "All", "[[rec()[[a]]", "9", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[b]]", "[[rec()[[a]]a]]", "Default", "12", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDefaultProvider("22", "<a/><b/><rec><a/><b/></rec>", "All", "[[rec()[[a]]", "9", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[b]]", "[[rec()[[ba]]", "Default", "12", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -533,12 +533,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().a]]+[[rec().[[a]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().a]]+[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "15")]
         public virtual void InsertForAllFilterTypeAndDefaultProvider_23()
         {
-            this.InsertForAllFilterTypeAndDefaultProvider("23", "<a/><b/><rec><a/><b/></rec>", "All", "[[rec().a]]+[[rec().]]", "20", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[a]]", "[[rec().a]]+[[rec().[[a]]]]", "Default", "25", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDefaultProvider("23", "<a/><b/><rec><a/><b/></rec>", "All", "[[rec().a]]+[[rec().]]", "20", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[a]]", "[[rec().a]]+[[a]]", "Default", "15", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -552,12 +552,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "sin(45.[[a]])")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "sin([[a]])]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "9")]
         public virtual void InsertForAllFilterTypeAndDefaultProvider_24()
         {
-            this.InsertForAllFilterTypeAndDefaultProvider("24", "<a/><b/><rec><a/><b/></rec>", "All", "sin(45.)]]", "7", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[a]]", "sin(45.[[a]])", "Default", "12", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDefaultProvider("24", "<a/><b/><rec><a/><b/></rec>", "All", "sin(45.)]]", "7", "[[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]", "[[a]]", "sin([[a]])]]", "Default", "9", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -569,38 +569,38 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[xc(,[[xc().a]],[[xc(*).a]],[[x(,[[x().a]],[[x(*).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[x(")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[xc().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[([[x().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
         public virtual void InsertForAllFilterTypeAndDefaultProvider_25()
         {
-            this.InsertForAllFilterTypeAndDefaultProvider("25", "<rec><a/><b/></rec><xs><a/><b/></xs>", "All", "[[().a]]", "3", "[[xc(,[[xc().a]],[[xc(*).a]],[[x(,[[x().a]],[[x(*).a]]", "[[x(", "[[xc().a]]", "Default", "5", ((string[])(null)));
+            this.InsertForAllFilterTypeAndDefaultProvider("25", "<rec><a/><b/></rec><xs><a/><b/></xs>", "All", "[[().a]]", "3", "", "[[x(", "[[([[x().a]]", "Default", "7", ((string[])(null)));
         }
         
         public virtual void InsertForAllFilterTypeAndDateTimeProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and DateTime Provider", exampleTags);
-#line 55
+#line 47
 this.ScenarioSetup(scenarioInfo);
-#line 56
+#line 48
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 57
+#line 49
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 50
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 51
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 52
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 53
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 54
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 63
+#line 55
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 64
+#line 56
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -780,27 +780,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertForAllFilterTypeAndFileProvider(string testName, string pathStructure, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and File Provider", exampleTags);
-#line 77
+#line 69
 this.ScenarioSetup(scenarioInfo);
-#line 78
+#line 70
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 79
+#line 71
  testRunner.And(string.Format("the file path structure is \'{0}\'", pathStructure), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 72
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 73
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 74
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 75
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 76
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 77
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 86
+#line 78
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 87
+#line 79
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1029,25 +1029,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertForAllFilterTypeAndCalculateProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and Calculate Provider", exampleTags);
-#line 102
+#line 94
 this.ScenarioSetup(scenarioInfo);
-#line 103
+#line 95
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
+#line 96
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 97
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 98
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 99
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 100
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 101
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 110
+#line 102
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 111
+#line 103
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1208,19 +1208,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RecsetOnlyHasNoErrorsForValidVariableIndexes(string testName, string varlist, string expectError, string input, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Recset only has no errors for valid variable indexes", exampleTags);
-#line 123
+#line 115
 this.ScenarioSetup(scenarioInfo);
-#line 124
+#line 116
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 125
+#line 117
  testRunner.And("the filter type is \'RecordsetsOnly\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 118
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 119
  testRunner.And("the cursor is at index \'11\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 120
  testRunner.And("the provider used is \'Default\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
+#line 121
  testRunner.Then(string.Format("the result has \'{0}\' errors", expectError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1297,11 +1297,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<x/><sum><b/></sum><mus><b/></mus>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[123().1234]]")]
         public virtual void RecsetOnlyHasNoErrorsForValidVariableIndexes_6()
         {
-            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("6", "<x/><sum><b/></sum><mus><b/></mus>", "true", "[[123().1234]]", ((string[])(null)));
+            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("6", "<x/><sum><b/></sum><mus><b/></mus>", "false", "[[123().1234]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1310,11 +1310,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<x/><sum><b/></sum><mus><b/></mus>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[123(a).1234]]")]
         public virtual void RecsetOnlyHasNoErrorsForValidVariableIndexes_7()
         {
-            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("7", "<x/><sum><b/></sum><mus><b/></mus>", "true", "[[123(a).1234]]", ((string[])(null)));
+            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("7", "<x/><sum><b/></sum><mus><b/></mus>", "false", "[[123(a).1234]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1362,35 +1362,35 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "<x/><sum><b/></sum><mus><b/></mus>")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:expectError", "false")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec([[*]])]].set]]")]
         public virtual void RecsetOnlyHasNoErrorsForValidVariableIndexes_11()
         {
-            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("11", "<x/><sum><b/></sum><mus><b/></mus>", "true", "[[rec([[*]])]].set]]", ((string[])(null)));
+            this.RecsetOnlyHasNoErrorsForValidVariableIndexes("11", "<x/><sum><b/></sum><mus><b/></mus>", "false", "[[rec([[*]])]].set]]", ((string[])(null)));
         }
         
         public virtual void InsertForRecordsetsOnlyFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetsOnly FilterType and Default Provider", exampleTags);
-#line 146
+#line 138
 this.ScenarioSetup(scenarioInfo);
-#line 147
+#line 139
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 148
+#line 140
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 141
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 142
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 143
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 144
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 145
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 154
+#line 146
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 155
+#line 147
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1749,25 +1749,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetFields FilterType and Default Provider", exampleTags);
-#line 178
+#line 170
 this.ScenarioSetup(scenarioInfo);
-#line 179
+#line 171
  testRunner.Given(string.Format("I have the following variable list \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 180
+#line 172
  testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 173
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 174
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 175
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 184
+#line 176
  testRunner.And(string.Format("the drop down list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 177
  testRunner.When(string.Format("I select the following option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 186
+#line 178
  testRunner.Then(string.Format("the result text should be \'{0}\'", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 187
+#line 179
  testRunner.And(string.Format("the caret position will be \'{0}\'", caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
