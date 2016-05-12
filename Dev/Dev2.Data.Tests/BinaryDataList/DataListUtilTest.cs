@@ -86,7 +86,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             const char c = (char)65279;
             string startingData = c + "<A></A>";
-            Assert.IsFalse(startingData.StartsWith("<",StringComparison.OrdinalIgnoreCase));
+            Assert.IsFalse(startingData.StartsWith("<", StringComparison.OrdinalIgnoreCase));
             //------------Execute Test---------------------------
             string result = DataListUtil.AdjustForEncodingIssues(startingData);
             //------------Assert Results-------------------------
@@ -149,7 +149,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
 
 
-        
+
         [TestMethod]
         [Owner("Travis")]
         [Description("Ensure star is replaced with an index")]
@@ -245,7 +245,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             tokenizer.Setup(t => t.NextToken()).Returns(() =>
             {
                 var result = string.Format("[[Var{0}]]", tokenNumber);
-                if(++iterCount % DuplicateCount == 0)
+                if (++iterCount % DuplicateCount == 0)
                 {
                     tokenNumber++;
                 }
@@ -261,11 +261,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(TokenCount * DuplicateCount, target.Count);
             var groups = target.GroupBy(g => g.Key).ToList();
             Assert.AreEqual(3, groups.Count);
-            foreach(var grp in groups)
+            foreach (var grp in groups)
             {
                 var enumerator = grp.GetEnumerator();
                 var duplicateCount = 0;
-                while(enumerator.MoveNext())
+                while (enumerator.MoveNext())
                 {
                     duplicateCount++;
                 }
@@ -308,7 +308,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             // Expect only vars from second tokenizer
             var keys = target.Select(p => p.Key);
             var i = 3;
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 var expected = string.Format("[[Var{0}]]", i++);
                 Assert.AreEqual(expected, key);
@@ -339,7 +339,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             // Expect only vars from second tokenizer
             var keys = target.Select(p => p.Key);
             var i = 0;
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 var expected = string.Format("[[Var{0}]]", i++);
                 Assert.AreEqual(expected, key);
@@ -369,7 +369,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var keys = target.Select(p => p.Key);
             var i = 0;
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 var expected = string.Format("[[prefixVar{0}]]", i++);
                 Assert.AreEqual(expected, key);
@@ -399,7 +399,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var keys = target.Select(p => p.Key);
             var i = 0;
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 var expected = string.Format("[[prefixVar{0}suffix]]", i++);
                 Assert.AreEqual(expected, key);
@@ -432,9 +432,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);
 
-            for(var i = 0; i < TokenCount; i++)
+            for (var i = 0; i < TokenCount; i++)
             {
-                if(i == 1 || i == 4)
+                if (i == 1 || i == 4)
                 {
                     Assert.AreEqual(string.Empty, target[i].Key);
                 }
@@ -472,7 +472,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Assert.AreEqual(ExpectedCount, target.Count);
 
-            for(var i = 0; i < ExpectedCount; i++)
+            for (var i = 0; i < ExpectedCount; i++)
             {
                 Assert.AreEqual(string.Format("[[rs(*).f{0}a]]", i + 1), target[i].Key);
             }
@@ -579,6 +579,36 @@ namespace Dev2.Data.Tests.BinaryDataList
             var isOpeningBrace = DataListUtil.IsRecordsetOpeningBrace("([[var");
             //------------Assert Results-------------------------
             Assert.IsTrue(isOpeningBrace);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ExtractFieldNameOnlyFromValue_GivenHasClosingBrace_ShouldExctractFieldName()
+        {
+            //---------------Set up test pack-------------------
+            const string recSetFiedWithNoClosingBrace = "[[rec().Name]]";
+            const string expectedFielName = "Name";
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var result = DataListUtil.ExtractFieldNameOnlyFromValue(recSetFiedWithNoClosingBrace);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(expectedFielName, result);
+        } 
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ExtractFieldNameOnlyFromValue_GivenHasNoClosingBrace_ShouldExctractFieldName()
+        {
+            //---------------Set up test pack-------------------
+            const string recSetFiedWithNoClosingBrace = "rec().Name";
+            const string expectedFielName = "Name";
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var result = DataListUtil.ExtractFieldNameOnlyFromValue(recSetFiedWithNoClosingBrace);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(expectedFielName, result);
         }
 
     }
