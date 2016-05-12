@@ -186,7 +186,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Create\CreateSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Delete\Delete.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Delete\Delete1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Delete.feature</DependentUpon>
@@ -295,6 +295,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Resources\ODBC\ODBCServerConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -554,6 +560,10 @@
     <None Include="Toolbox\Resources\ODBC\ODBCConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PostgresSqlConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
