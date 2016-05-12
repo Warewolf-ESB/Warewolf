@@ -133,12 +133,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OracleConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Database\OracleServerConnector1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OracleServerConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Tools\Database\OracleServerConnectorSteps.cs" />
     <Compile Include="Tools\FileAndFolder - Create.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -276,10 +270,6 @@
     <None Include="Tools\Database\MySqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MySqlConnector1.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Tools\Database\OracleServerConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OracleServerConnector1.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\FileAndFolder - Create.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

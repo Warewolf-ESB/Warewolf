@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.Studio.UISpecs.Tools.Database
+namespace Warewolf.ToolsSpecs.Toolbox.Resources.Oracle
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.Studio.UISpecs.Tools.Database
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "OracleServerConnector")))
             {
-                Warewolf.Studio.UISpecs.Tools.Database.OracleServerConnectorFeature.FeatureSetup(null);
+                Warewolf.ToolsSpecs.Toolbox.Resources.Oracle.OracleServerConnectorFeature.FeatureSetup(null);
             }
         }
         
