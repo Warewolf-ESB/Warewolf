@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
@@ -240,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var selected = Source.SelectedItems.Where(a => a.ResourceType != ResourceType.Folder);
+                    var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
                     var notfolders = selected.Select(a => a.ResourceId).ToList();
                     _shell.DeployResources(Source.Environments.First().Server.EnvironmentID, Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID, notfolders);
                     DeploySuccessfull = true;
@@ -260,7 +259,7 @@ namespace Warewolf.Studio.ViewModels
 
         bool CheckResourceNameConflict()
         {
-            var selected = Source.SelectedItems.Where(a => a.ResourceType != ResourceType.Folder);
+            var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
 
             var conf = from b in _destination.SelectedEnvironment.AsList()
                        join explorerTreeItem in selected on b.ResourcePath equals explorerTreeItem.ResourcePath

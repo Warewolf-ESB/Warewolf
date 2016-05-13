@@ -13,8 +13,8 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -22,7 +22,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class Connection : Resource
+    public class Connection : Resource, IResourceSource
     {
         public const int DefaultWebServerPort = 3142;
 
@@ -49,14 +49,14 @@ namespace Dev2.Data.ServiceModel
 
         public Connection()
         {
-            ResourceType = ResourceType.Server;
+            ResourceType = "Server";
             VersionInfo = new VersionInfo();
         }
 
         public Connection(XElement xml)
             : base(xml)
          {
-            ResourceType = ResourceType.Server;
+            ResourceType = "Server";
 
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString):conString;
@@ -140,6 +140,49 @@ namespace Dev2.Data.ServiceModel
                 );
 
             return result;
+        }
+
+        public override bool IsSource
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsReservedService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsServer
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
         }
 
         #endregion

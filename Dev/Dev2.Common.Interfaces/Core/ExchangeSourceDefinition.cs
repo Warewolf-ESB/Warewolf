@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 // ReSharper disable NonReadonlyMemberInGetHashCode
 // ReSharper disable MergeConditionalExpression
@@ -15,7 +14,7 @@ namespace Dev2.Common.Interfaces.Core
         public string UserName { get; set; }
         public string Password { get; set; }
         public enSourceType Type { get; set; }
-        public ResourceType ResourceType { get; set; }
+        public string ResourceType { get; set; }
         public bool EnableSsl { get; set; }
         public int Port { get; set; }
         public int Timeout { get; set; }

@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
@@ -66,7 +65,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shell.NewResource(ResourceType.WebSource.ToString(), "");
+            _shell.NewResource("WebSource", "");
         }
 
         public void EditSource(IWebServiceSource selectedSource)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -151,22 +150,25 @@ namespace Warewolf.Studio.ViewModels
             _items = items;
             if (items != null)
             {
-                Connectors = items.Count(a => a.ResourceType >= ResourceType.DbService && a.ResourceType <= ResourceType.WebService);
-                Services = items.Count(a => a.ResourceType == ResourceType.WorkflowService);
+                //Connectors = items.Count(a => a.ResourceType >= "DbService" && a.ResourceType <= "WebService");
+                // FIX?
+                Connectors = items.Count(a => a.ResourceType.Contains("Service") && a.ResourceType != "WorkflowService" && a.ResourceType != "ReservedService");
+
+                Services = items.Count(a => a.ResourceType == "WorkflowService");
                 Sources = items.Count(a => IsSource(a.ResourceType));
-                Unknown = items.Count(a => a.ResourceType == ResourceType.Unknown);
+                Unknown = items.Count(a => a.ResourceType == "Unknown");
                 if (_destination.SelectedEnvironment != null)
                 {
                     var conf = from b in _destination.SelectedEnvironment.AsList()
                                join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId
-                               where b.ResourceType != ResourceType.Folder && explorerTreeItem.ResourceType != ResourceType.Folder
+                               where b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder"
                                select new Conflict { SourceName = explorerTreeItem.ResourceName, DestinationName = b.ResourceName };
 
                     _conflicts = conf.ToList();
                     _new = items.Except(_destination.SelectedEnvironment.AsList());
                     var ren = from b in _destination.SelectedEnvironment.AsList()
                               join explorerTreeItem in items on b.ResourcePath equals explorerTreeItem.ResourcePath
-                              where b.ResourceType != ResourceType.Folder && explorerTreeItem.ResourceType != ResourceType.Folder
+                              where b.ResourceType != "Folder" && explorerTreeItem.ResourceType != "Folder"
                               select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
                     var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
                     if (errors.Any())
@@ -222,14 +224,16 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _new.Where(a => a.ResourceType != ResourceType.Folder).ToList();
+                return _new.Where(a => a.ResourceType != "Folder").ToList();
             }
         }
         public Action CalculateAction { get; set; }
 
-        bool IsSource(ResourceType res)
+        bool IsSource(string res)
         {
-            return (res >= ResourceType.DbSource && res <= ResourceType.ServerSource) || (res == ResourceType.DropboxSource);
+            //return (res >= "DbSource" && res <= "ServerSource") || (res == "DropboxSource");
+            // FIX?
+            return res.Contains("Source");
         }
         #endregion
     }

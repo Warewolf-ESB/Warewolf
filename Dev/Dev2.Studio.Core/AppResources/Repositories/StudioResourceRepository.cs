@@ -20,7 +20,6 @@ using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -241,7 +240,7 @@ namespace Dev2.AppResources.Repositories
             IExplorerItemModel parentItem = item.Parent;
             if(parentItem != null)
             {
-                var found = parentItem.Children.FirstOrDefault(a => a.ResourcePath == item.ResourcePath && a.ResourceType == ResourceType.Folder);
+                var found = parentItem.Children.FirstOrDefault(a => a.ResourcePath == item.ResourcePath && a.ResourceType == "Folder");
                 if (found != null) item = found;
                 if( parentItem.Children.Remove(item))
                 {
@@ -269,11 +268,11 @@ namespace Dev2.AppResources.Repositories
 
         public void UpdateRootAndFoldersPermissions(Permissions modifiedPermissions, Guid environmentGuid, bool updateRoot = true)
         {
-            var server = FindItem(a => a.EnvironmentId == environmentGuid && a.ResourceType == ResourceType.Server);
+            var server = FindItem(a => a.EnvironmentId == environmentGuid && a.ResourceType == "Server");
             if(server != null)
             {
                 // ReSharper disable MaximumChainedReferences
-                server.Descendants().Where(a => a.ResourceType == ResourceType.Folder).ToList().ForEach(a =>
+                server.Descendants().Where(a => a.ResourceType == "Folder").ToList().ForEach(a =>
                     // ReSharper restore MaximumChainedReferences
                     {
 
@@ -298,14 +297,14 @@ namespace Dev2.AppResources.Repositories
 
         public void AddServerNode(IExplorerItemModel explorerItem)
         {
-            var otherServers = ExplorerItemModels.Where(i => i.ResourceType == ResourceType.Server).ToList();
+            var otherServers = ExplorerItemModels.Where(i => i.ResourceType == "Server").ToList();
             otherServers.ForEach(i =>
             {
                 i.IsExplorerExpanded = false;
                 i.IsExplorerSelected = false;
             });
 
-            var exists = ExplorerItemModels.FirstOrDefault(i => i.EnvironmentId == explorerItem.EnvironmentId && i.ResourceType == ResourceType.Server);
+            var exists = ExplorerItemModels.FirstOrDefault(i => i.EnvironmentId == explorerItem.EnvironmentId && i.ResourceType == "Server");
             if(exists == null)
             {
                 explorerItem.IsExplorerSelected = true;
@@ -392,7 +391,7 @@ namespace Dev2.AppResources.Repositories
             if((model.ResourcePath==""?"": Path.GetDirectoryName(model.ResourcePath)) != newPath )
             switch (model.ResourceType)
             {
-                case ResourceType.Folder:
+                case "Folder":
                     MoveFolder(model, newPath+ (newPath==""?"":"\\")+model.DisplayName);
                     UpdateCategory(model, newPath + (newPath == "" ? "" : "\\") + model.DisplayName);
                     break;
@@ -409,7 +408,7 @@ namespace Dev2.AppResources.Repositories
             
             foreach(var child in model.Children)
             {
-                if (child.ResourceType == ResourceType.Folder)
+                if (child.ResourceType == "Folder")
                     UpdateCategory(child, newPath + "\\" + child.DisplayName);
                 else
                 child.UpdateCategoryIfOpened(newPath + (newPath == "" ? "" : "\\") + child.DisplayName);  
@@ -427,11 +426,11 @@ namespace Dev2.AppResources.Repositories
             }
             switch(model.ResourceType)
             {
-                case ResourceType.Folder :
+                case "Folder" :
                     break;
-                case ResourceType.Server :
+                case "Server" :
                     break;
-                case ResourceType.Version:
+                case "Version":
                     return;
                 default :
                         model.Children = new ObservableCollection<IExplorerItemModel>();
@@ -454,9 +453,7 @@ namespace Dev2.AppResources.Repositories
         public void AddResouceItem(IContextualResourceModel resourceModel)
         {
             var explorerItemModel = new ServerExplorerItem { ResourcePath = resourceModel.Category, DisplayName = resourceModel.DisplayName, ResourceId = resourceModel.ID, Permissions = resourceModel.UserPermissions,ServerId = resourceModel.Environment.ID};
-            ResourceType resourceType;
-            Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
-            explorerItemModel.ResourceType = resourceType;
+            explorerItemModel.ResourceType = resourceModel.ServerResourceType;
             ItemAddedMessageHandler(explorerItemModel);
         }
 
@@ -514,21 +511,21 @@ namespace Dev2.AppResources.Repositories
             // ReSharper restore ImplicitlyCapturedClosure
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var resourceRepository = environmentModel.ResourceRepository;
-            if(item.ResourceType != ResourceType.Folder)
+            if(item.ResourceType != "Folder")
             {
-                if(item.ResourceType == ResourceType.ServerSource)
+                if(item.ResourceType == "ServerSource")
                 {
                    resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
                 }
-                else if(item.ResourceType >= ResourceType.DbSource)
+                else if (!item.IsResourceVersion && item.ResourceType != "WorkflowService" && item.ResourceType != "Unknown")
                 {
                     resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, GlobalConstants.ServerWorkspaceID);
                 }
-                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
+                else if (item.IsService && !item.IsReservedService)
                 {
                     resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, GlobalConstants.ServerWorkspaceID);
                 }
-                else if(item.ResourceType == ResourceType.WorkflowService)
+                else if(item.ResourceType == "WorkflowService")
                 {
                     resourceRepository.LoadResourceFromWorkspaceAsync(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, GlobalConstants.ServerWorkspaceID);
                 }
@@ -636,7 +633,7 @@ namespace Dev2.AppResources.Repositories
             }
             var innerFilter = filter;
             if (includeFolders)
-                innerFilter = a => filter(a) || a.ResourceType == ResourceType.Folder;
+                innerFilter = a => filter(a) || a.ResourceType == "Folder";
             root.Children = root.Children.Where(innerFilter).ToObservableCollection();
             foreach (var a in root.Children)
             {
@@ -679,14 +676,14 @@ namespace Dev2.AppResources.Repositories
         {
             if(explorerItemModel != null)
             {
-                var otherServers = ExplorerItemModels.Where(i => i.ResourceType == ResourceType.Server).ToList();
+                var otherServers = ExplorerItemModels.Where(i => i.ResourceType == "Server").ToList();
                 otherServers.ForEach(i =>
                 {
                     i.IsExplorerExpanded = false;
                     i.IsExplorerSelected = false;
                 });
 
-                explorerItemModel.IsExplorerSelected = explorerItemModel.IsExplorerExpanded = explorerItemModel.ResourceType == ResourceType.Server;
+                explorerItemModel.IsExplorerSelected = explorerItemModel.IsExplorerExpanded = explorerItemModel.ResourceType == "Server";
 
                 explorerItemModel.EnvironmentId = environmentId;
                 explorerItemModel.IsConnected = true;
@@ -777,7 +774,7 @@ namespace Dev2.AppResources.Repositories
             // ReSharper disable ImplicitlyCapturedClosure
             // ReSharper disable RedundantAssignment
             IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
-            if((item.ResourceType == ResourceType.Server && environmentId != Guid.Empty) || (environmentId == Guid.Empty && displayname.ToLower() == Environment.MachineName.ToLower()))
+            if((item.ResourceType == "Server" && environmentId != Guid.Empty) || (environmentId == Guid.Empty && displayname.ToLower() == Environment.MachineName.ToLower()))
             {
                 environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
                 if(environmentModel != null && environmentModel.Connection != null)
@@ -794,7 +791,13 @@ namespace Dev2.AppResources.Repositories
                 ResourceId = item.ResourceId,
                 Permissions = item.Permissions,
                 ResourcePath = item.ResourcePath,
-                VersionInfo = item.VersionInfo
+                VersionInfo = item.VersionInfo,
+                IsFolder = item.IsFolder,
+                IsServer = item.IsServer,
+                IsService = item.IsService,
+                IsSource = item.IsSource,
+                IsResourceVersion = item.IsResourceVersion,
+                IsReservedService = item.IsReservedService
             };
             // ReSharper restore ImplicitlyCapturedClosure
         }
@@ -917,7 +920,7 @@ namespace Dev2.AppResources.Repositories
                     new ExplorerItemModel
                     {
                         DisplayName = "There is no version history to display",
-                        ResourceType = ResourceType.Message,
+                        ResourceType = "Message",
                         Permissions = Permissions.View
                     }};
                 }

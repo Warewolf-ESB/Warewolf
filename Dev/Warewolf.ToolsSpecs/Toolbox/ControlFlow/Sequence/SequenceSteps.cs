@@ -95,8 +95,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
-
-
         [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
         public void GivenCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
         {
@@ -107,8 +105,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             CommonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
 
         }
-
-
 
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)

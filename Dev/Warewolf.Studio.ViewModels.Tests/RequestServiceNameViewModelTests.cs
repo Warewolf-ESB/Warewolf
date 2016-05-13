@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -78,7 +77,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.Name = "TestResource";
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.Folder);
+            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns("Folder");
             mockExplorerTreeItem.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("MyFolder");
             requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerTreeItem.Object;
@@ -103,12 +102,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             requestServiceNameViewModel.ShowSaveDialog();
             requestServiceNameViewModel.Name = "TestResource";
             var mockExplorerParentTreeItem = new Mock<IExplorerTreeItem>();
-            mockExplorerParentTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.Folder);
+            mockExplorerParentTreeItem.Setup(item => item.ResourceType).Returns("Folder");
             mockExplorerParentTreeItem.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             mockExplorerParentTreeItem.Setup(item => item.ResourceName).Returns("MyParentFolder");
 
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.Folder);
+            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns("Folder");
             mockExplorerTreeItem.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("MyFolder");
             mockExplorerTreeItem.Setup(item => item.Parent).Returns(mockExplorerParentTreeItem.Object);
@@ -139,12 +138,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.Folder);
+            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns("Folder");
             
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("MyFolder");
 
             var childDuplicateExplorerTreeItem = new Mock<IExplorerItemViewModel>();
-            childDuplicateExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.DbService);
+            childDuplicateExplorerTreeItem.Setup(item => item.ResourceType).Returns("DbService");
             childDuplicateExplorerTreeItem.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             childDuplicateExplorerTreeItem.Setup(item => item.ResourceName).Returns("TestResource");
             childDuplicateExplorerTreeItem.Setup(model => model.Parent).Returns(mockExplorerTreeItem.Object);
@@ -171,10 +170,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.Folder);
+            mockExplorerTreeItem.Setup(item => item.ResourceType).Returns("Folder");
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("MyFolder");
             var childDuplicateExplorerTreeItem = new Mock<IExplorerItemViewModel>();
-            childDuplicateExplorerTreeItem.Setup(item => item.ResourceType).Returns(ResourceType.DbService);
+            childDuplicateExplorerTreeItem.Setup(item => item.ResourceType).Returns("DbService");
             childDuplicateExplorerTreeItem.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             childDuplicateExplorerTreeItem.Setup(item => item.ResourceName).Returns("TestResource");
             childDuplicateExplorerTreeItem.Setup(model => model.Parent).Returns(mockExplorerTreeItem.Object);

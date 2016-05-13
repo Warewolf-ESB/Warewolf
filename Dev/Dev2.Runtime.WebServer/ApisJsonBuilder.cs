@@ -42,14 +42,14 @@ namespace Dev2.Runtime.WebServer
             if(string.IsNullOrEmpty(path))
             {
                 apiJson.Url = EnvironmentVariables.PublicWebServerUri + "apis.json";
-                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourceType==ResourceType.WorkflowService).ToList();
+                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourceType=="WorkflowService").ToList();
             }
             else
             {
                 var webPath = path.Replace("\\", "/");
                 var searchPath = path.Replace("/", "\\");
                 apiJson.Url = EnvironmentVariables.PublicWebServerUri + webPath + "/apis.json";
-                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourcePath.Contains(searchPath) && resource.ResourceType == ResourceType.WorkflowService).ToList();
+                resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.ResourcePath.Contains(searchPath) && resource.ResourceType == "WorkflowService").ToList();
             }
             foreach(var resource in resourceList)
             {

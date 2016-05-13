@@ -26,7 +26,6 @@ using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -87,12 +86,11 @@ namespace Dev2.Models
         readonly IConnectControlSingleton _connectControlSingleton;
         bool _isOverwrite;
 
-        private readonly Dictionary<ResourceType, Type> _activityNames;
+        private readonly Dictionary<string, Type> _activityNames;
         IVersionInfo _versionInfo;
         string _toggleVersionHistoryHeader;
 
         #endregion
-
 
         public ExplorerItemModel()
             : this(ConnectControlSingleton.Instance, StudioResourceRepository.Instance)
@@ -109,16 +107,16 @@ namespace Dev2.Models
             Children.CollectionChanged -= ChildrenCollectionChanged;
             Children.CollectionChanged += ChildrenCollectionChanged;
             _asyncWorker = new AsyncWorker();
-            _activityNames = new Dictionary<ResourceType, Type>
+            _activityNames = new Dictionary<string, Type>
                 {
                     {
-                        ResourceType.DbService, typeof(DsfDatabaseActivity) 
+                        "DbService", typeof(DsfDatabaseActivity) 
                     },
                     {
-                        ResourceType.PluginService, typeof(DsfPluginActivity) 
+                        "PluginService", typeof(DsfPluginActivity) 
                     },
                     {
-                        ResourceType.WebService, typeof(DsfWebserviceActivity) 
+                        "WebService", typeof(DsfWebserviceActivity) 
                     }
                 };
             _connectControlSingleton = connectControlSingleton;
@@ -128,7 +126,7 @@ namespace Dev2.Models
 
         private void ConnectedStatusChanged(object sender, ConnectionStatusChangedEventArg e)
         {
-            if(EnvironmentId == e.EnvironmentId && ResourceType == ResourceType.Server)
+            if(EnvironmentId == e.EnvironmentId && ResourceType == "Server")
             {
                 IsRefreshing = _serverRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
                 RefreshCommand.RaiseCanExecuteChanged();
@@ -154,7 +152,7 @@ namespace Dev2.Models
         {
             get
             {
-                if((ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server) && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
+                if((IsFolder || IsServer) && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
                 {
                     return true;
                 }
@@ -176,7 +174,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server)
+                if (IsServer)
                 {
                     return Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.DeployFrom);
                 }
@@ -188,7 +186,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server && EnvironmentId == new Guid())
+                if (IsServer && EnvironmentId == new Guid())
                 {
                     return true;
                 }
@@ -204,14 +202,11 @@ namespace Dev2.Models
             }
         }
 
-
         public string ActivityName
         {
             get
             {
-
                 return (_activityNames.ContainsKey(ResourceType) ? _activityNames[ResourceType] : typeof(DsfActivity)).AssemblyQualifiedName;
-
             }
         }
         public void RemoveChild(IExplorerItemModel child)
@@ -227,9 +222,7 @@ namespace Dev2.Models
             set
             {
                 bool renamed = true;
-                if(!String.IsNullOrEmpty(_displayName)
-                    && ResourceType != ResourceType.Server
-                    && Children.All(model => model.DisplayName != value))
+                if(!String.IsNullOrEmpty(_displayName) && !IsServer && Children.All(model => model.DisplayName != value))
                 {
                     renamed= Rename(value);
                 }
@@ -257,7 +250,7 @@ namespace Dev2.Models
         }
 
         public Guid ResourceId { get; set; }
-        public ResourceType ResourceType { get; set; }
+        public string ResourceType { get; set; }
 
         public ObservableCollection<IExplorerItemModel> Children
         {
@@ -277,7 +270,7 @@ namespace Dev2.Models
             get
             {
                 // ReSharper disable once MaximumChainedReferences
-                return _children.Where(c => c.ResourceType != ResourceType.Version && c.ResourceType != ResourceType.Message).ToList();
+                return _children.Where(c => c.ResourceType != "Version" && c.ResourceType != "Message").ToList();
             }
         }
 
@@ -288,7 +281,6 @@ namespace Dev2.Models
             {
                 if(value != _permissions)
                 {
-
                     if(_permissions != value)
                     {
                         _permissions = value;
@@ -310,7 +302,6 @@ namespace Dev2.Models
                         // ReSharper restore ExplicitCallerInfoArgument
                     }
                 }
-
             }
         }
 
@@ -414,7 +405,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType != ResourceType.Server)
+                if (!IsServer)
                 {
                     return true;
                 }
@@ -426,7 +417,6 @@ namespace Dev2.Models
                 OnPropertyChanged();
                // ConnectCommand.RaiseCanExecuteChanged();
                // DisconnectCommand.RaiseCanExecuteChanged();
-                
             }
         }
         public bool IsRenaming
@@ -459,10 +449,8 @@ namespace Dev2.Models
         }
         public bool IsServerVersionVisible
         {
-            get { return ResourceType == ResourceType.Server; }
+            get { return IsServer; }
         }
-
-
 
         public IVersionInfo VersionInfo
         {
@@ -488,7 +476,7 @@ namespace Dev2.Models
         {
             get
             {
-                if((ResourceType == ResourceType.Server || ResourceType == ResourceType.Folder) && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
+                if((IsServer || IsFolder) && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
                 {
                     return true;
                 }
@@ -499,9 +487,9 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType >= ResourceType.WorkflowService && ResourceType <= ResourceType.WebService && (Permissions.HasFlag(Permissions.Execute) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
+                if (IsService && (Permissions.HasFlag(Permissions.Execute) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
                 {
-                    return true;
+                    return ResourceType != "ReservedService";
                 }
                 return false;
             }
@@ -510,8 +498,7 @@ namespace Dev2.Models
         {
             get
             {
-
-                if(ResourceType <= ResourceType.Folder && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
+                if ((IsSource || IsService || IsFolder) && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
                 {
                     return true;
                 }
@@ -522,7 +509,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server)
+                if (IsServer)
                 {
                     return true;
                 }
@@ -533,7 +520,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.Folder && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
+                if ((IsSource || IsService || IsFolder) && (Permissions.HasFlag(Permissions.Contribute) || Permissions.HasFlag(Permissions.Administrator)))
                 {
                     return true;
                 }
@@ -544,7 +531,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Version && !CanExecute)
+                if(ResourceType == "Version" && !CanExecute)
                 {
                     return true;
                 }
@@ -555,12 +542,10 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.ServerSource && (Permissions.HasFlag(Permissions.View) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
+                if ((IsSource || IsService) && (Permissions.HasFlag(Permissions.View) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
                 {
-
                     return true;
                 }
-
                 return false;
             }
         }
@@ -568,10 +553,9 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.EmailSource && (Permissions.HasFlag(Permissions.Execute) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
+                if ((IsSource || IsService) && (Permissions.HasFlag(Permissions.Execute) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
                 {
-
-                    return true;
+                    return ResourceType != "ServerSource";
                 }
 
                 return false;
@@ -581,7 +565,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server && Permissions >= Permissions.View)
+                if (IsServer && Permissions >= Permissions.View)
                 {
                     return true;
                 }
@@ -592,7 +576,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.Folder && Permissions >= Permissions.DeployFrom)
+                if((IsSource || IsService || IsFolder) && Permissions >= Permissions.DeployFrom)
                 {
 
                     return true;
@@ -605,9 +589,9 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.EmailSource && Permissions >= Permissions.View && ResourceType != ResourceType.Version)
+                if ((IsSource || IsService || ResourceType == "Unknown") && Permissions >= Permissions.View && ResourceType != "Version")
                 {
-                    return true;
+                    return ResourceType != "ServerSource";
                 }
                 return false;
             }
@@ -616,7 +600,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.WorkflowService && Permissions >= Permissions.View)
+                if (IsService && Permissions >= Permissions.View)
                 {
                     return true;
                 }
@@ -639,7 +623,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server && Permissions >= Permissions.View)
+                if (IsServer && Permissions >= Permissions.View)
                 {
                     return true;
                 }
@@ -650,7 +634,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server)
+                if (IsFolder || IsServer)
                 {
                     return "Deploy All " + DisplayName;
                 }
@@ -663,9 +647,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server ||
-                    ResourceType == ResourceType.Version ||
-                    ResourceType == ResourceType.Message)
+                if (IsServer || ResourceType == "Version" || ResourceType == "Message")
                 {
                     return _isAuthorized;
                 }
@@ -1040,7 +1022,8 @@ namespace Dev2.Models
             ExplorerItemModel explorerItemModel = new ExplorerItemModel(_connectControlSingleton, _studioResourceRepository)
                 {
                     DisplayName = name,
-                    ResourceType = ResourceType.Folder,
+                    ResourceType = "Folder",
+                    IsFolder = true,
                     Parent = this,
                     EnvironmentId = EnvironmentId,
                     Permissions = Permissions,
@@ -1054,7 +1037,6 @@ namespace Dev2.Models
             {
                 firstOrDefault.IsRenaming = true;
             }
-
         }
 
         string GetUniqueName()
@@ -1085,7 +1067,7 @@ namespace Dev2.Models
 
         void Refresh()
         {
-            if(ResourceType == ResourceType.Server)
+            if (IsServer)
             {
                 _connectControlSingleton.Refresh(EnvironmentId);
             }
@@ -1096,10 +1078,10 @@ namespace Dev2.Models
             int total = 0;
             foreach(var explorerItemModel in Children)
             {
-                if(explorerItemModel.ResourceType != ResourceType.Version &&
-                   explorerItemModel.ResourceType != ResourceType.Message)
+                if(explorerItemModel.ResourceType != "Version" &&
+                   explorerItemModel.ResourceType != "Message")
                 {
-                    if(explorerItemModel.ResourceType == ResourceType.Folder)
+                    if(explorerItemModel.IsFolder)
                     {
                         total += explorerItemModel.ChildrenCount;
                     }
@@ -1178,11 +1160,11 @@ namespace Dev2.Models
                 var contextualResourceModels = new Collection<IContextualResourceModel>();
                 foreach(var childModel in this.Descendants())
                 {
-                    if(childModel.ResourceType != ResourceType.Folder)
+                    if(!childModel.IsFolder)
                     {
                         var child = childModel;
                         var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == child.ResourceId);
-                        if(resourceModel == null && childModel.ResourceType == ResourceType.WebSource)
+                        if(resourceModel == null && childModel.ResourceType == "WebSource")
                         {
                             environmentModel.ResourceRepository.ReloadResource(child.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                             resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == child.ResourceId);
@@ -1205,8 +1187,8 @@ namespace Dev2.Models
                     {
                         for(int i = folderList.Count - 1; i >= 0; i--)
                         {
-                            var folder = _studioResourceRepository.FindItem(a => a.ResourcePath == folderList[i].ResourcePath && a.ResourceType == ResourceType.Folder);
-                            if (folder != null && (folder.Children.Count == 0 || folder.Children.All(c => c.ResourceType == ResourceType.Folder)))
+                            var folder = _studioResourceRepository.FindItem(a => a.ResourcePath == folderList[i].ResourcePath && a.IsFolder);
+                            if (folder != null && (folder.Children.Count == 0 || folder.Children.All(c => c.IsFolder)))
                             {
                                 _studioResourceRepository.DeleteFolder(folderList[i]);
                             }
@@ -1219,7 +1201,7 @@ namespace Dev2.Models
                     {
                         for(int i = folderList.Count - 1; i >= 0; i--)
                         {
-                            if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
+                            if(folderList[i].IsFolder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.IsFolder)))
                             {
                                 _studioResourceRepository.DeleteFolder(folderList[i]);
                             }
@@ -1290,14 +1272,12 @@ namespace Dev2.Models
 
         public void UpdateCategoryIfOpened(string category)
         {
-           
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
             if (environmentModel != null)
             {
                 var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId) as IContextualResourceModel;
 
-
-                if (resource != null && ResourceType <= ResourceType.ServerSource)
+                if (resource != null && (IsSource || IsService))
                 {
                     IMainViewModel mainViewModel = CustomContainer.Get<IMainViewModel>();
                     mainViewModel.UpdateWorkflowLink(resource,category,resource.Category);
@@ -1305,10 +1285,8 @@ namespace Dev2.Models
                     if (xaml != null)
                     {
                         resource.WorkflowXaml = xaml.Replace("Category=\"" + resource.Category, "Category=\"" + category);
-
                     }
                     resource.Category = category;
-                    
                 }
             }
         }
@@ -1327,6 +1305,36 @@ namespace Dev2.Models
                 return null;
             }
         }
+        public bool IsSource
+        {
+            get;
+            set;
+        }
+        public bool IsService
+        {
+            get;
+            set;
+        }
+        public bool IsFolder
+        {
+            get;
+            set;
+        }
+        public bool IsReservedService
+        {
+            get;
+            set;
+        }
+        public bool IsServer
+        {
+            get;
+            set;
+        }
+        public bool IsResourceVersion
+        {
+            get;
+            set;
+        }
 
         private string GetRenamePath(string existingPath, string newName)
         {
@@ -1338,9 +1346,9 @@ namespace Dev2.Models
         private bool Rename(string newName)
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
-            if(ResourceType == ResourceType.Folder)
+            if(IsFolder)
             {
-                var itemExists = null != _studioResourceRepository.FindItem(a => a.ResourceType == ResourceType.Folder && a.ResourcePath == GetRenamePath(ResourcePath, newName));
+                var itemExists = null != _studioResourceRepository.FindItem(a => a.IsFolder && a.ResourcePath == GetRenamePath(ResourcePath, newName));
                 if ((Children.Count == 0) && itemExists)
                 {
                     EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "You are not allowed to Rename an empty folder to an existing folder name", MessageBoxImage.Warning));
@@ -1360,7 +1368,7 @@ namespace Dev2.Models
                         {
                             EventPublishers.Aggregator.Publish(new RemoveResourceAndCloseTabMessage(resourceModel, true));
                         }
-                        if(ResourceType == ResourceType.Folder)
+                        if(IsFolder)
                         {
                             _studioResourceRepository.RenameFolder(this, newName);
                         }
@@ -1394,7 +1402,7 @@ namespace Dev2.Models
                     resource.ResourceName = newName;
                     resource.Category = resource.Category.Replace(oldName, newName);
                 }
-                if(resource != null && ResourceType <= ResourceType.ServerSource)
+                if (resource != null && (IsSource || IsService))
                 {
                     var xaml = resource.WorkflowXaml;
                     if(xaml != null)
@@ -1437,7 +1445,7 @@ namespace Dev2.Models
                 return;
             }
 
-            if(ResourceType == ResourceType.Version)
+            if(ResourceType == "Version")
             {
                 var resourceDefinition = _studioResourceRepository.GetVersion(VersionInfo, EnvironmentId);
                 if(resourceDefinition != null)
@@ -1497,8 +1505,6 @@ namespace Dev2.Models
             }
         }
 
-
-
         /// <summary>
         /// Deploys this instance.
         /// </summary>
@@ -1530,7 +1536,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server)
+                if(IsServer)
                 {
                     return Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.DeployTo);
                 }
@@ -1585,7 +1591,7 @@ namespace Dev2.Models
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsChecked");
             // ReSharper restore ExplicitCallerInfoArgument           
-            CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType, (ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server || ResourcePath==null || !ResourcePath.Contains("\\"))&&calcStats );
+            CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType, (ResourceType == "Folder" || ResourceType == "Server" || ResourcePath==null || !ResourcePath.Contains("\\"))&&calcStats );
             if(OnCheckedStateChangedAction != null)
             {
                 OnCheckedStateChangedAction.Invoke(checkStateChangedArgs);
@@ -1659,13 +1665,13 @@ namespace Dev2.Models
         public bool PreviousState { get; set; }
         public bool NewState { get; set; }
         public Guid ResourceId { get; set; }
-        public ResourceType ResourceType { get; set; }
+        public string ResourceType { get; set; }
         public bool UpdateStats { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
         // ReSharper disable TooManyDependencies
-        public CheckStateChangedArgs(bool previousState, bool newState, Guid resourceId, ResourceType resourceType , bool updateStats)
+        public CheckStateChangedArgs(bool previousState, bool newState, Guid resourceId, string resourceType , bool updateStats)
             // ReSharper restore TooManyDependencies
         {
             PreviousState = previousState;
