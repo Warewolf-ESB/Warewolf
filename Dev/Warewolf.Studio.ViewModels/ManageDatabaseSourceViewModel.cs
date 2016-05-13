@@ -281,16 +281,16 @@ namespace Warewolf.Studio.ViewModels
         public override void FromModel(IDbSource source)
         {
             ResourceName = source.Name;
-            AuthenticationType = source.AuthenticationType;
-            UserName = source.UserName;
+            ServerType = Types.FirstOrDefault(value => value.Value == source.Type.ToString());
             ServerName = ComputerNames.FirstOrDefault(name => string.Equals(source.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
             if (ServerName != null)
             {
                 EmptyServerName = ServerName.Name ?? source.ServerName;
             }
+            AuthenticationType = source.AuthenticationType;
+            UserName = source.UserName;
             Password = source.Password;
             Path = source.Path;
-            ServerType = Types.FirstOrDefault(value => value.Value == source.Type.ToString());
             TestConnection();
             DatabaseName = source.DbName;
         }
