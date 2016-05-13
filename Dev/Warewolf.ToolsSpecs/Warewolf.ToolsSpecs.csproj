@@ -331,11 +331,6 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Zip\ZipSteps.cs" />
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach.feature.cs">
-      <DependentUpon>ForEach.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>
