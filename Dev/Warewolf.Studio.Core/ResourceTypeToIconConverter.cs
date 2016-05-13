@@ -68,7 +68,8 @@ namespace Warewolf.Studio.Core
                     case "ServerSource":
                         return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
                     case "Server":
-                        return _dict[CustomMenuIcons.Server] as DrawingImage;
+                    case "Dev2Server":
+                        return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
                     case "StartPage":
                         var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Home, _brush);
                         return imageSource;
