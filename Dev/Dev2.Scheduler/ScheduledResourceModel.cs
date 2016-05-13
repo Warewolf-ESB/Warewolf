@@ -35,8 +35,10 @@ namespace Dev2.Scheduler
         private IFileHelper _fileHelper;
         private IDirectoryHelper _folderHelper;
         private readonly IDictionary<int, string> _taskStates;
+#pragma warning disable 169
         private int _argCount;
-        private Func<IScheduledResource, string> _pathResolve;
+#pragma warning restore 169
+        private readonly Func<IScheduledResource, string> _pathResolve;
         private const string Sebatchlogonright = "SeBatchLogonRight";
         private const char NameSeperator = ':';
         private const char ArgWrapper = '"';
@@ -219,9 +221,9 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
                 try
                 {
 
-                    var Id = split[5];
+                    var id = split[5];
                     Guid resourceId; 
-                    Guid.TryParse(Id, out resourceId);
+                    Guid.TryParse(id, out resourceId);
 
                     var res = new ScheduledResource(arg.Definition.Data,
                                                  arg.Definition.Settings.Enabled
