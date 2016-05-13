@@ -1327,7 +1327,7 @@ namespace Dev2.Studio.ViewModels
                     var resourceVersion = new ResourceModel(ActiveEnvironment, EventPublishers.Aggregator)
                     {
                         ResourceType = resourceModel.ResourceType,
-                        ResourceName = string.Format("{0} (v.{1})", versionInfo.User, versionInfo.VersionNumber),
+                        ResourceName = string.Format("{0} (v.{1})", resource.ResourceName, versionInfo.VersionNumber),
                         WorkflowXaml = new StringBuilder(xamlString),
                         UserPermissions = Permissions.View,
                         DataList = dataListString,

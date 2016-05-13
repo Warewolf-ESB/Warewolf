@@ -19,6 +19,11 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+// ReSharper disable ConvertPropertyToExpressionBody
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.DropBox2016.Delete
 {
@@ -31,6 +36,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         private string _result;
 
         [ExcludeFromCodeCoverage]
+        // ReSharper disable once UnusedMember.Global
         public DropBoxDeleteViewModel(ModelItem modelItem)
             : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {

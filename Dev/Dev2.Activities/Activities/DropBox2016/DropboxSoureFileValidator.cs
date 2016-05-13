@@ -25,7 +25,7 @@ namespace Dev2.Activities.DropBox2016
             }
             catch (ArgumentException)
             {
-                throw new ArgumentException("Cannot locate local file/s to be uploaded.Please confirm that the correct file location has been entered");
+                throw new ArgumentException("Cannot locate the file/s specified. Please confirm that the correct file location has been entered.");
             }
             catch (NotSupportedException)
             {

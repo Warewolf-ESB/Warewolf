@@ -181,10 +181,8 @@ Scenario: Output values in recordset with star notation
 	| In Field     | Index           | Characters | Direction     |
 	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
 	And the debug output as
-	|                   |
-	| [[rs(1).a]] = 4  |
-	| [[rs(2).a]] = 8  |
-	| [[rs(3).a]] = 12 | 
+	|                      |
+	| [[rs(1).a]] = 4,8,12 |
 
 Scenario: Output values in recordset with numeric notation
     Given the sentence "abc3cde3fgh3"
@@ -347,3 +345,47 @@ Scenario: Find first Occurrence of  of a character non existent character
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the execution has "AN" error
+
+Scenario: Find all Occurrences of a numeric character in a string using recordset star notation
+	Given a find index recordset
+	| rs       | val |
+	| rs().row | 122 |
+	| rs().row | 322 |
+	| rs().row | 512 |	
+	And the sentence "[[rs(*).row]]"
+	And I selected Index "All Occurrences"
+	And I search for characters "2"
+	And I selected direction as "Left to Right"
+	When the data find index tool is executed
+	Then the find index result is "3"
+	And the execution has "NO" error
+	And the debug inputs as
+	| In Field            | Index           | Characters | Direction     |
+	| [[rs(1).row]] = 122 |                 |            |               |
+	| [[rs(2).row]] = 322 |                 |            |               |
+	| [[rs(3).row]] = 512 | All Occurrences | 2          | Left to Right |
+	And the debug output as
+	|                |
+	| [[result]] = 3 |
+
+Scenario: Find all Occurrences of a numeric character in a string using recordset star notation in and out
+	Given a find index recordset
+	| rs       | val |
+	| rs().row | 122 |
+	| rs().row | 322 |
+	| rs().row | 512 |	
+	And the sentence "[[rs(*).row]]"
+	And I selected Index "All Occurrences"
+	And I search for characters "2"
+	And I selected direction as "Left to Right"
+	And result variable as "[[rec(*).a]]"
+	When the data find index tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as
+	| In Field            | Index           | Characters | Direction     |
+	| [[rs(1).row]] = 122 |                 |            |               |
+	| [[rs(2).row]] = 322 |                 |            |               |
+	| [[rs(3).row]] = 512 | All Occurrences | 2          | Left to Right |
+	And the debug output as
+	|                  |
+	| [[rec(1).a]] = 3 |

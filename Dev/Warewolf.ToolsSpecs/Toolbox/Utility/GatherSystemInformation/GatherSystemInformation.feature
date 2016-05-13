@@ -210,8 +210,7 @@ Scenario: Assign Disk Available into a recordset
 	| # |                           |
 	| 1 | [[my(1).disks]] =  String |
 
-# This Test should be passed after the bug 12236 is fixed 
-@ignore
+#This Test should be passed after the bug 12236 is fixed 
 Scenario Outline:Executing with Incorrect Recordsets 
 	Given I have a variable "<input>" and I selected "DiskAvailable"	
 	When the gather system infomartion tool is executed

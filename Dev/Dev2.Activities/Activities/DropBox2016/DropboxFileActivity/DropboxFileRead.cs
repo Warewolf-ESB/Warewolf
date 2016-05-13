@@ -29,14 +29,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
             else
             {
-                path = path.Trim();
+                if (!string.IsNullOrEmpty(path))
+                {
+                    path = path.Trim();
+                }
             }
             _path = path;
             InitializeCertPinning();
-        }
-
-        public DropboxFileRead(IFilenameValidator validator)
-        {
         }
 
         public IDropboxResult ExecuteTask(DropboxClient client)

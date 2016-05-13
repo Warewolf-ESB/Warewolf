@@ -3702,8 +3702,31 @@ The file must be available on the local file system.</value>
   You can specify the type of information returned by selecting either Files (returns only files), Folders (Returns only folders) or Files and Folders for everything.
 </value>
   </data>
-  <data name="DropboxReadFolderToolTip" xml:space="preserve">
-    <value>Select the type of content you want to list</value>
+  <data name="DropboxReadFilesToolTip" xml:space="preserve">
+    <value>Just get the files</value>
+  </data>
+  <data name="DropboxReadFiles" xml:space="preserve">
+    <value>Returns the files that are in the given folder, or all the files in the folder and all the files in the sub folders if Recursive is selected.</value>
+  </data>
+  <data name="DropboxReadFoldersToolTip" xml:space="preserve">
+    <value>Just get the folders</value>
+  </data>
+  <data name="DropboxReadFolders" xml:space="preserve">
+    <value>Returns the folders that are in the given Dropbox folder, or all the folders in the folder and all the folders in the sub folders if Recursive is selected.</value>
+  </data>
+  <data name="DropboxReadFilesFoldersToolTip" xml:space="preserve">
+    <value>Get the files and folders</value>
+  </data>
+  <data name="DropboxReadFilesFolders" xml:space="preserve">
+    <value>Returns a list of everything in the Dropbox folder provided or everything including sub folders if Recursive is selected.</value>
+  </data>
+  <data name="DropBoxFileListRecursiveToolTip" xml:space="preserve">
+    <value>Get the sub folders information as well.</value>
+  </data>
+  <data name="DropBoxFileListRecursive" xml:space="preserve">
+    <value>When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 
+    
+    NOTE: Dropbox has a max return count of 2000.</value>
   </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Only variables go in here.

@@ -316,6 +316,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ODBCDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\OracleDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\AssemblyLoader.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\IRuntime.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.cs" />
