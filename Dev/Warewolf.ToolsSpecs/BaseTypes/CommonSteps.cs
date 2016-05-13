@@ -35,6 +35,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 
 namespace Warewolf.Tools.Specs.BaseTypes
 {
@@ -865,6 +866,14 @@ namespace Warewolf.Tools.Specs.BaseTypes
                     inputDebugItems[i].Variable = inputDebugItems[i].Variable.Replace('"', ' ').Trim();
                 }
             }
+        }
+
+        [Given(@"""(.*)"" tab is opened")]
+        [Then(@"""(.*)"" tab is opened")]
+        public void ThenTabIsOpened(string headerText)
+        {
+            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            Assert.AreEqual(headerText, viewModel.Header);
         }
     }
 }

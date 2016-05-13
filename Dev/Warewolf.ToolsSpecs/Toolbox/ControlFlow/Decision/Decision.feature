@@ -1282,7 +1282,7 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 Scenario Outline: Ensuring all complex type inputs work as expected
 	Given a decision variable "<variable1>" value "<Var1>"	
 	And a decision variable "<variable2>" value "<Var2>"
-	And check if "<variable1>" "<matchtype>" "<variable2>"
+	And is "<variable1>" "<matchtype>" "<variable2>"
 	And Require all decisions to be true is "<Requirement>"
 	When the decision tool is executed
 	Then the execution has "NO" error
@@ -1372,6 +1372,6 @@ Scenario: validate that a variable is Blank OR NULL positive 2
 Scenario: Null throws an error
 	Given is "[[A]]" "IsEqual" "123   234"	
 	When the decision tool is executed
-	##Then the decision result should be "False"
+	Then the decision result should be "False"
 	Then the execution has "An" error
 	
