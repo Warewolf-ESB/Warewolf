@@ -175,11 +175,6 @@
     </Compile>
     <Compile Include="Toolbox\Data\Create JSON\CreateJsonSteps.cs" />
     <Compile Include="Toolbox\Data\DataMerge\DataMerge.feature.cs">
-      <DependentUpon>DataMerge.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Data\DataMerge\DataMerge1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataMerge.feature</DependentUpon>
@@ -296,15 +291,10 @@
       <DependentUpon>Read Folder.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read Folder\ReadFolderSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Rename\Rename.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Rename.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\Rename2.feature.cs">
-      <DependentUpon>Rename.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Rename.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
@@ -352,77 +342,42 @@
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
-      <DependentUpon>Count.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\Count\Count1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Count.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Count\CountSteps.cs" />
     <Compile Include="Toolbox\Recordset\Delete\Delete.feature.cs">
-      <DependentUpon>Delete.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\Delete\Delete1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Delete.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature.cs">
-      <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultipleSteps.cs" />
     <Compile Include="Toolbox\Recordset\Length\Length.feature.cs">
-      <DependentUpon>Length.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\Length\Length1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Length.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Length\LengthSteps.cs" />
     <Compile Include="Toolbox\Recordset\Sort\Sort.feature.cs">
-      <DependentUpon>Sort.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\Sort\Sort1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Sort.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Sort\SortSteps.cs" />
     <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature.cs">
-      <DependentUpon>SqlBulkInsert.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlBulkInsert.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsertSteps.cs" />
     <Compile Include="Toolbox\Recordset\Unique\Unique.feature.cs">
-      <DependentUpon>Unique.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Recordset\Unique\Unique1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Unique.feature</DependentUpon>
@@ -574,143 +529,78 @@
       <DependentUpon>SharepointUpdate.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature.cs">
-      <DependentUpon>DeleteDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\DeleteDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature.cs">
-      <DependentUpon>DownloadDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DownloadDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\DownloadDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
-      <DependentUpon>ReadDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReadDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\UploadDropbox.feature.cs">
-      <DependentUpon>UploadDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\UploadDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UploadDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\UploadDropboxSteps.cs" />
     <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
-      <DependentUpon>Calculate.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\Calculate\Calculate1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Calculate.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\Calculate\CalculateSteps.cs" />
     <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference.feature.cs">
-      <DependentUpon>DateandTimeDifference.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DateandTimeDifference.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifferenceSteps.cs" />
     <Compile Include="Toolbox\Utility\DateandTime\DateandTime.feature.cs">
-      <DependentUpon>DateandTime.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\DateandTime\DateandTime1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DateandTime.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\DateandTime\DateandTimeSteps.cs" />
     <Compile Include="Toolbox\Utility\Email\Email.feature.cs">
-      <DependentUpon>Email.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\Email\Email1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Email.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\Email\EmailSteps.cs" />
     <Compile Include="Toolbox\Utility\FormatNumber\FormatNumber.feature.cs">
-      <DependentUpon>FormatNumber.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\FormatNumber\FormatNumber1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FormatNumber.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\FormatNumber\FormatNumberSteps.cs" />
     <Compile Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformation.feature.cs">
-      <DependentUpon>GatherSystemInformation.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformation1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GatherSystemInformation.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformationSteps.cs" />
     <Compile Include="Toolbox\Utility\Random\Random.feature.cs">
-      <DependentUpon>Random.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\Random\Random1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Random.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\Random\RandomSteps.cs" />
     <Compile Include="Toolbox\Utility\WebRequest\WebRequest.feature.cs">
-      <DependentUpon>WebRequest.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\WebRequest\WebRequest1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WebRequest.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\WebRequest\WebRequestSteps.cs" />
     <Compile Include="Toolbox\Utility\XPath\XPath.feature.cs">
-      <DependentUpon>XPath.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Utility\XPath\XPath1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>XPath.feature</DependentUpon>
