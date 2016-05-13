@@ -21,7 +21,7 @@ Scenario: Editing Dropbox Tool
 	And Readlist Dropbox File is Enabled
 	When I Select "Drop" as the Readlist source
 	Then Readlist Edit is Enabled
-	When I Readlist click "Edit"
+	When I Readlist click Edit
 	Then the "Drop" Readlist Dropbox Source window is opened
 
 Scenario: Change Dropbox Source
