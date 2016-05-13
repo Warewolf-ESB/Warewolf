@@ -539,44 +539,24 @@
       <DependentUpon>SharepointUpdate.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature.cs">
-      <DependentUpon>DeleteDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeleteDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\DeleteDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox.feature.cs">
-      <DependentUpon>DownloadDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\DownloadDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DownloadDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\DownloadDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox.feature.cs">
-      <DependentUpon>ReadDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\ReadDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReadDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\ReadDropboxSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\UploadDropbox.feature.cs">
-      <DependentUpon>UploadDropbox.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Storage\Dropbox\UploadDropbox1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UploadDropbox.feature</DependentUpon>
