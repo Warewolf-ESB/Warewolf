@@ -2736,8 +2736,9 @@ namespace BusinessDesignStudio.Unit.Tests
                 Errors = errors,
                 IsValid = isValid,
                 ResourceID = id,
+                IsService = true,
                 ResourceName = "TestWorkflowService",
-                ResourceType = theType.ToString()
+                ResourceType = theType
             }).ToList();
 
             var serviceObj = JsonConvert.SerializeObject(theResources);

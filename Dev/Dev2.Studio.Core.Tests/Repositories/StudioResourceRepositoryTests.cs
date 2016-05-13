@@ -2375,12 +2375,14 @@ namespace Dev2.Core.Tests.Repositories
             var parent = new ServerExplorerItem
             {
                 ResourceType = "WorkflowService",
+                IsService = true,
                 DisplayName = "SuperWF",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
                 ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
             };
 
+            AppSettings.LocalHost = "http://localhost:3142/";
             var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
             {
                 GetVersionProxy = id => mockVersionRepository.Object,
@@ -2406,12 +2408,13 @@ namespace Dev2.Core.Tests.Repositories
             var parent = new ServerExplorerItem
             {
                 ResourceType = "WorkflowService",
+                IsService = true,
                 DisplayName = "SuperWF",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
                 ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
             };
-
+            AppSettings.LocalHost = "http://localhost:3142/";
             var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
             {
                 GetVersionProxy = id => mockVersionRepository.Object,
@@ -2563,6 +2566,7 @@ namespace Dev2.Core.Tests.Repositories
             var workflow1 = new ServerExplorerItem
                 {
                     ResourceType = "WorkflowService",
+                    IsService = true,
                     DisplayName = "workflow1",
                     ResourceId = string.IsNullOrEmpty(workFlowId) ? Guid.NewGuid() : Guid.Parse(workFlowId),
                     Permissions = Permissions.Administrator
@@ -2571,15 +2575,15 @@ namespace Dev2.Core.Tests.Repositories
             var dbService1 = new ServerExplorerItem { ResourceType = "DbService", DisplayName = "dbService1", ResourceId = string.IsNullOrEmpty(dbServiceId) ? Guid.NewGuid() : Guid.Parse(dbServiceId), Permissions = Permissions.Contribute };
             var webService1 = new ServerExplorerItem { ResourceType = "WebService", DisplayName = "webService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
             var pluginService1 = new ServerExplorerItem { ResourceType = "PluginService", DisplayName = "pluginService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
-            var dbSource1 = new ServerExplorerItem { ResourceType = "DbSource", DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var webSource1 = new ServerExplorerItem { ResourceType = "WebSource", DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var pluginSource1 = new ServerExplorerItem { ResourceType = "PluginSource", DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var emailSource1 = new ServerExplorerItem { ResourceType = "EmailSource", DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var serverSource1 = new ServerExplorerItem { ResourceType = "ServerSource", DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder1 = new ServerExplorerItem { ResourceType = "Folder", DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder2 = new ServerExplorerItem { ResourceType = "Folder", DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var subfolder1 = new ServerExplorerItem { ResourceType = "Folder", DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var localhost = new ServerExplorerItem { ResourceType = "Server", DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var dbSource1 = new ServerExplorerItem { IsSource = true, ResourceType = "DbSource", DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var webSource1 = new ServerExplorerItem { IsSource = true, ResourceType = "WebSource", DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var pluginSource1 = new ServerExplorerItem { IsSource = true, ResourceType = "PluginSource", DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var emailSource1 = new ServerExplorerItem { IsSource = true, ResourceType = "EmailSource", DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var serverSource1 = new ServerExplorerItem { IsSource = true, ResourceType = "ServerSource", DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder1 = new ServerExplorerItem { IsFolder = true, ResourceType = "Folder", DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder2 = new ServerExplorerItem { IsFolder = true, ResourceType = "Folder", DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var subfolder1 = new ServerExplorerItem { IsFolder = true, ResourceType = "Folder", DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var localhost = new ServerExplorerItem { IsServer = true, ResourceType = "Server", DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
 
             dbService1.Parent = webService1.Parent = pluginService1.Parent = subfolder1.Parent = folder1;
             dbSource1.Parent = webSource1.Parent = pluginSource1.Parent = emailSource1.Parent = serverSource1.Parent = folder2;
