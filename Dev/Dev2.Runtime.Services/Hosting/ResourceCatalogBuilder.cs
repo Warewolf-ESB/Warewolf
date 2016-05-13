@@ -115,6 +115,7 @@ namespace Dev2.Runtime.Hosting
                     .SelectMany(s => s.GetTypes())
                     .Where(p => resourceBaseType.IsAssignableFrom(p));
                 var connectionTypeName = typeof(Connection).Name;
+                var dbType = typeof(DbSource).Name;
                 var allTypes = types as IList<Type> ?? types.ToList();
                 streams.ForEach(currentItem =>
                 {
@@ -134,14 +135,26 @@ namespace Dev2.Runtime.Hosting
                     var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
-                        var typeName = xml.AttributeSafe("Type");
-
                         //TODO: Remove this after V1 is released. All will be updated.
+                        #region old typing to be removed after V1
+                        var typeName = xml.AttributeSafe("Type");
+                        if (typeName == "Unknown")
+                        {
+                            var servertype = xml.AttributeSafe("ResourceType");
+                            if (servertype != null && servertype == dbType)
+                            {
+                                xml.SetAttributeValue("Type", dbType);
+                                typeName = dbType;
+                            }
+                        }
+                        
                         if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
                         {
                             xml.SetAttributeValue("Type",connectionTypeName);
                             typeName = connectionTypeName;
                         }
+                        #endregion
+
                         Type type = null;
                         if (allTypes.Count != 0)
                         {
