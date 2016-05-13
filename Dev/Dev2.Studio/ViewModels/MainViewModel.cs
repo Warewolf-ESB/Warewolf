@@ -556,7 +556,7 @@ namespace Dev2.Studio.ViewModels
         {
             var vm = new DependencyVisualiserViewModel(new DependencyVisualiserView(), server, dependsOnMe)
             {
-                ResourceType = Common.Interfaces.Data.ResourceType.DependencyViewer,
+                ResourceType = "DependencyViewer",
                 ResourceModel = model
             };
 
@@ -722,6 +722,9 @@ namespace Dev2.Studio.ViewModels
 
             switch (resourceModel.ServerResourceType)
             {
+                case "SqlDatabase":
+                    EditDbSource(resourceModel);
+                    break;
                 case "DbSource":
                     EditDbSource(resourceModel);
                     break;

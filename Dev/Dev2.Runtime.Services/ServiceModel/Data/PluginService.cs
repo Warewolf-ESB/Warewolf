@@ -15,7 +15,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 
@@ -34,7 +33,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public PluginService()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.PluginService;
+            ResourceType = "PluginService";
             Source = new PluginSource();
             Recordsets = new RecordsetList();
             Method = new ServiceMethod();
@@ -43,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public PluginService(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.PluginService;
+            ResourceType = "PluginService";
             var action = xml.Descendants("Action").FirstOrDefault(); ;
             if(action == null)
             {

@@ -15,14 +15,14 @@ using System.Net;
 using System.Net.Mail;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces;
 using Warewolf.Security.Encryption;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    public class EmailSource : Resource
+    public class EmailSource : Resource, IResourceSource
     {
         public static int DefaultTimeout = 100000; // (100 seconds)
         public static int DefaultPort = 25;
@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public EmailSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.EmailSource;
+            ResourceType = "EmailSource";
             Timeout = DefaultTimeout;
             Port = DefaultPort;
         }
@@ -76,7 +76,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public EmailSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.EmailSource;
+            ResourceType = "EmailSource";
             Timeout = DefaultTimeout;
             Port = DefaultPort;
 
@@ -140,11 +140,54 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
-                new XAttribute("Type", ResourceType),
+                new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
 
             return result;
+        }
+
+        public override bool IsSource
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsReservedService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsServer
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
         }
 
         #endregion

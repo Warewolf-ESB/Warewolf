@@ -20,7 +20,6 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
@@ -174,7 +173,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ManageDatabaseSourceViewModel(IAsyncWorker asyncWorker):base(ResourceType.DbSource)
+        public ManageDatabaseSourceViewModel(IAsyncWorker asyncWorker):base("DbSource")
         {
             AsyncWorker = asyncWorker;
         }
@@ -207,6 +206,28 @@ namespace Warewolf.Studio.ViewModels
                 Type = _dbSource.Type
             };
             
+            switch(_dbSource.Type)
+            {
+                case enSourceType.SqlDatabase:
+                    Image = "SqlDatabase";
+                    break;
+                case enSourceType.MySqlDatabase:
+                    Image = "MySqlDatabase";
+                    break;
+                case enSourceType.PostgreSql:
+                    Image = "PostgreSql";
+                    break;
+                case enSourceType.Oracle:
+                    Image = "Oracle";
+                    break;
+                case enSourceType.ODBC:
+                    Image = "ODBC";
+                    break;
+                default:
+                    Image = "DbSource";
+                    break;
+            }
+
             GetLoadComputerNamesTask(() =>
             {
                 FromModel(_dbSource);

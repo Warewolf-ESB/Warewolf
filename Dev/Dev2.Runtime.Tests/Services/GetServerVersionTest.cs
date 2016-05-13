@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
@@ -58,7 +57,7 @@ namespace Dev2.Tests.Runtime.Services
                 //------------Setup for test--------------------------
                 var getVersions = new GetVersions();
                 var resourceId = Guid.NewGuid();
-                ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "", "", "");
+                ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "", "", "");
                 var repo = new Mock<IServerVersionRepository>();
                 var ws = new Mock<IWorkspace>();
                 repo.Setup(a => a.GetVersions(resourceId)).Returns(new List<IExplorerItem> {item});

@@ -1782,7 +1782,7 @@ namespace Dev2
             for (int index = resources.Count - 1; index >= 0; index--)
             {
                 var resource = resources[index];
-                if (resource.ResourceType == ResourceType.DbService || resource.ResourceType == ResourceType.PluginService || resource.ResourceType == ResourceType.WebService)
+                if (resource.ResourceType == "DbService" || resource.ResourceType == "PluginService" || resource.ResourceType == "WebService")
                 {
 #if !DEBUG
                     ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceType.ToString());

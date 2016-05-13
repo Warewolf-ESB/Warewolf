@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
             var mockRes = new Mock<IResource>();
             var servVer = new Mock<IServerVersionRepository>();
             servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>())).Returns(new StringBuilder(resourceOne));
-            mockRes.Setup(a => a.ResourceType).Returns(ResourceType.DbSource);
+            mockRes.Setup(a => a.ResourceType).Returns("DbSource");
 
             var cat = new Mock<IResourceCatalog>();
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockRes.Object);
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             var mockRes = new Mock<IResource>();
             var servVer = new Mock<IServerVersionRepository>();
             servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>())).Returns(new StringBuilder(resourceOne));
-            mockRes.Setup(a => a.ResourceType).Returns(ResourceType.WorkflowService);
+            mockRes.Setup(a => a.ResourceType).Returns("WorkflowService");
 
             var cat = new Mock<IResourceCatalog>();
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockRes.Object);

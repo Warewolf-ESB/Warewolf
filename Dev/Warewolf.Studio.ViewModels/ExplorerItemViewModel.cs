@@ -33,7 +33,6 @@ using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
-// ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -121,7 +120,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canDelete;
         bool _areVersionsVisible;
         string _versionHeader;
-        ResourceType _resourceType;
+        string _resourceType;
         bool _userShouldEditValueNow;
         string _versionNumber;
         ObservableCollection<IExplorerItemViewModel> _children;
@@ -132,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSelected;
         bool _canShowVersions;
         readonly IShellViewModel _shellViewModel;
-        readonly Dictionary<ResourceType, Type> _activityNames;
+        readonly Dictionary<string, Type> _activityNames;
         bool _canShowDependencies;
         bool _allowResourceCheck;
         bool _candrop;
@@ -162,24 +161,17 @@ namespace Warewolf.Studio.ViewModels
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() =>
             {
-                if(ResourceType == ResourceType.DbService || ResourceType == ResourceType.PluginService || ResourceType == ResourceType.WebService)
+                if(ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService")
                 {
                     return;
                 }
-                if (ResourceType == ResourceType.Folder)
+                if (IsFolder)
                 {
                     IsExpanded = !IsExpanded;
                 }
-                if (ResourceType == ResourceType.Version)
-                {
-                    OpenVersion(this);
-                }
-                else
-                {
-                    shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                    shellViewModel.SetActiveServer(Server);
-                    shellViewModel.OpenResource(ResourceId, Server);
-                }
+                shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
+                shellViewModel.SetActiveServer(Server);
+                shellViewModel.OpenResource(ResourceId, Server);
             });
             DebugCommand = new DelegateCommand(() =>
             {
@@ -188,7 +180,7 @@ namespace Warewolf.Studio.ViewModels
             });
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
             Server = server;
-            NewCommand = new DelegateCommand<ResourceType?>(type =>
+            NewCommand = new DelegateCommand<string>(type =>
             {
                 shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
                 shellViewModel.SetActiveServer(Server);
@@ -210,7 +202,7 @@ namespace Warewolf.Studio.ViewModels
             ShowVersionHistory = new DelegateCommand(() => AreVersionsVisible = !AreVersionsVisible);
             DeleteCommand = new DelegateCommand(() =>
             {
-                if (ResourceType == ResourceType.Version)
+                if (IsResourceVersion)
                 {
                     DeleteVersion();
                 }
@@ -218,7 +210,8 @@ namespace Warewolf.Studio.ViewModels
             });
             OpenVersionCommand = new DelegateCommand(() =>
             {
-                OpenVersion(parent);
+                if (IsResourceVersion)
+                    ShellViewModel.OpenVersion(parent.ResourceId, VersionInfo);
             });
             VersionHeader = "Show Version History";
             //Builder = builder;
@@ -226,51 +219,40 @@ namespace Warewolf.Studio.ViewModels
             IsVersion = false;
             Expand = new DelegateCommand<int?>(clickCount =>
             {
-                if (clickCount != null && clickCount == 2 && ResourceType == ResourceType.Folder)
+                if (clickCount != null && clickCount == 2 && IsFolder)
                 {
                     IsExpanded = !IsExpanded;
                 }
-                if (clickCount != null && clickCount == 2 && ResourceType == ResourceType.WorkflowService && IsExpanded)
+                if (clickCount != null && clickCount == 2 && ResourceType == "WorkflowService" && IsExpanded)
                 {
                     IsExpanded = false;
                 }
-
             });
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
             CanShowServerVersion = false;
 
-            _activityNames = new Dictionary<ResourceType, Type>
+            _activityNames = new Dictionary<string, Type>
                 {
                     {
-                        ResourceType.DbService, typeof(DsfDatabaseActivity) 
+                        "DbService", typeof(DsfDatabaseActivity) 
                     },
                     {
-                        ResourceType.PluginService, typeof(DsfPluginActivity) 
+                        "PluginService", typeof(DsfPluginActivity) 
                     },
                     {
-                        ResourceType.WebService, typeof(DsfWebserviceActivity) 
+                        "WebService", typeof(DsfWebserviceActivity) 
                     }
                 };
             _candrop = true;
             _canDrag = true;
         }
 
-        private void OpenVersion(IExplorerTreeItem parent)
-        {
-            if(ResourceType == ResourceType.Version)
-            {
-                ShellViewModel.OpenVersion(parent.ResourceId, VersionInfo);
-            }
-        }
-
         public string ActivityName
         {
             get
             {
-
                 return (_activityNames.ContainsKey(ResourceType) ? _activityNames[ResourceType] : typeof(DsfActivity)).AssemblyQualifiedName;
-
             }
         }
 
@@ -283,7 +265,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Parent.RemoveChild(Parent.Children.First(a=>a.ResourceName==ResourceName));
                 }
-
             }
         }
 
@@ -309,10 +290,9 @@ namespace Warewolf.Studio.ViewModels
             int total = 0;
             foreach (var explorerItemModel in Children)
             {
-                if (explorerItemModel.ResourceType != ResourceType.Version &&
-                   explorerItemModel.ResourceType != ResourceType.Message)
+                if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
                 {
-                    if (explorerItemModel.ResourceType == ResourceType.Folder)
+                    if (explorerItemModel.IsFolder)
                     {
                         total += explorerItemModel.ChildrenCount;
                     }
@@ -358,9 +338,41 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool IsSource
+        {
+            get;
+            set;
+        }
+        public bool IsService
+        {
+            get;
+            set;
+        }
+        public bool IsFolder
+        {
+            get;
+            set;
+        }
+        public bool IsReservedService
+        {
+            get;
+            set;
+        }
+        public bool IsServer
+        {
+            get;
+            set;
+        }
+        public bool IsResourceVersion
+        {
+            get;
+            set;
+        }
+
+
         public void CreateNewFolder()
         {
-            if (ResourceType == ResourceType.Folder)
+            if (IsFolder)
             {
                 IsExpanded = true;
                 var id = Guid.NewGuid();
@@ -370,7 +382,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourceName = name,
                     ResourceId = id,
-                    ResourceType = ResourceType.Folder,
+                    ResourceType = "Folder",
                     AllowResourceCheck = AllowResourceCheck,
                     IsResourceChecked = IsResourceChecked,
                     CanCreateFolder = CanCreateFolder,
@@ -390,12 +402,12 @@ namespace Warewolf.Studio.ViewModels
                     CanCreateWorkflowService = CanCreateWorkflowService,
                     ShowContextMenu = ShowContextMenu,
                     IsSelected = true,
-                    IsRenaming = true
+                    IsRenaming = true,
+                    IsFolder = true
                 };
                 //child.SetFromServer(Server.Permissions.FirstOrDefault(a => a.IsServer));
                 AddChild(child);
             }
-
         }
 
         public void Apply(Action<IExplorerItemViewModel> action)
@@ -428,13 +440,13 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Filter(filter);
             }
-            if ( _children.Count > 0 && _children.Any(model => model.IsVisible && model.ResourceType != ResourceType.Version))
+            if (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion))
             {
                 IsVisible = true;
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName) && ResourceType != ResourceType.Version)
+                if (!String.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
                 {
                     IsVisible = filter(this);
                 }
@@ -473,7 +485,6 @@ namespace Warewolf.Studio.ViewModels
 
         public void Delete()
         {
-            
             var environmentModel = EnvironmentModel;
             
             if (environmentModel != null && _popupController.Show(PopupMessages.GetDeleteConfirmation(ResourceName)) == MessageBoxResult.Yes)
@@ -485,13 +496,10 @@ namespace Warewolf.Studio.ViewModels
                     {
                         Parent.RemoveChild(this);
                     }
-
-                    if (ResourceType == ResourceType.ServerSource || ResourceType == ResourceType.Server)
+                    if (ResourceType == "ServerSource" || IsServer)
                     {
                         Server.UpdateRepository.FireServerSaved();
                     }
-                  
-
                 }
                 else
                 {
@@ -524,13 +532,13 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-            if (ResourceType == ResourceType.Folder)
+            if (IsFolder)
             {
                 CanEdit = false;
                 CanExecute = false;
                 return;
             }
-            if (ResourceType != ResourceType.WorkflowService)
+            if (!IsService)
             {
                 CanEdit = true;
                 CanExecute = false;
@@ -543,9 +551,11 @@ namespace Warewolf.Studio.ViewModels
 
         void SetFromServer(IWindowsGroupPermission serverPermission, bool isDeploy = false)
         {
-            CanEdit = serverPermission.Contribute && !isDeploy && ResourceType != ResourceType.DbService && ResourceType != ResourceType.PluginService && ResourceType != ResourceType.WebService;
-            CanExecute = serverPermission.Execute && ResourceType == ResourceType.WorkflowService && !isDeploy && ResourceType != ResourceType.DbService && ResourceType != ResourceType.PluginService && ResourceType != ResourceType.WebService;
-            CanView = serverPermission.View && !isDeploy && ResourceType != ResourceType.DbService && ResourceType != ResourceType.PluginService && ResourceType != ResourceType.WebService;
+            bool containsOldService = ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService";
+
+            CanEdit = serverPermission.Contribute && !isDeploy && !containsOldService;
+            CanExecute = serverPermission.Execute && IsService && !isDeploy && !containsOldService;
+            CanView = serverPermission.View && !isDeploy && !containsOldService;
             CanRename = serverPermission.Contribute || serverPermission.Administrator;
             CanDelete = serverPermission.Contribute || serverPermission.Administrator;
             CanCreateFolder = serverPermission.Contribute || serverPermission.Administrator;
@@ -565,9 +575,11 @@ namespace Warewolf.Studio.ViewModels
 
         void SetFromPermission(IWindowsGroupPermission resourcePermission, bool isDeploy = false)
         {
-            CanEdit = resourcePermission.Contribute && !isDeploy && ResourceType != ResourceType.DbService && ResourceType != ResourceType.PluginService && ResourceType != ResourceType.WebService;
-            CanExecute = resourcePermission.Execute && ResourceType == ResourceType.WorkflowService && !isDeploy && ResourceType != ResourceType.DbService && ResourceType != ResourceType.PluginService && ResourceType != ResourceType.WebService;
-            CanView = resourcePermission.View && !isDeploy && ResourceType != ResourceType.DbService && ResourceType != ResourceType.PluginService && ResourceType != ResourceType.WebService;
+            bool containsOldService = ResourceType == "DbService" || ResourceType == "PluginService" || ResourceType == "WebService";
+
+            CanEdit = resourcePermission.Contribute && !isDeploy && !containsOldService;
+            CanExecute = resourcePermission.Execute && IsService && !isDeploy && !containsOldService;
+            CanView = resourcePermission.View && !isDeploy && !containsOldService;
             CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
             CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
             CanDeploy = resourcePermission.DeployFrom || resourcePermission.Administrator;
@@ -680,7 +692,7 @@ namespace Warewolf.Studio.ViewModels
 
         private bool IsDuplicateName(string requestedServiceName)
         {
-            var hasDuplicate = Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType == ResourceType.Folder);
+            var hasDuplicate = Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType == "Folder");
             return hasDuplicate;
         }
         string NewName(string value)
@@ -705,7 +717,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool Checked { get; set; }
         public Guid ResourceId { get; set; }
-        public ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
@@ -714,10 +726,10 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceType = value;
-                IsVersion = _resourceType == ResourceType.Version;
+                IsVersion = _resourceType == "Version";
                 OnPropertyChanged(() => CanView);
                 OnPropertyChanged(() => CanShowVersions);
-                if (Server.Permissions != null && ResourceType!= ResourceType.Version)
+                if (Server.Permissions != null && ResourceType != "Version")
                 {
                     SetPermissions(Server.Permissions);
                 }
@@ -800,19 +812,19 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if(ResourceType == ResourceType.Folder)
+                if(IsFolder)
                 {
                     if(ChildrenCount >= 1)
                     {
                         Children.Apply(a => a.IsResourceChecked = value ?? false);
                         _isResource = value ?? false;
-                        if(Parent.ResourceType == ResourceType.Folder)
+                        if(Parent.IsFolder)
                             Parent.IsFolderChecked = value;
                     }
                 }
                 else
                 {
-                    _isResource = value.HasValue && ResourceType != ResourceType.Folder && value.Value;
+                    _isResource = value.HasValue && !IsFolder && value.Value;
                 }
                 if(SelectAction != null)
                 {
@@ -830,7 +842,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once ValueParameterNotUsed
             set
             {
-                if (ResourceType == ResourceType.Folder)
+                if (IsFolder)
                 {
                     if (Children.Any() && Children.All(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value))
                     {
@@ -846,8 +858,8 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if( !_isResource.HasValue ||_isResource.Value)
                     {
-                        if(Parent.ResourceType==ResourceType.Folder)
-                        Parent.IsFolderChecked = _isResource;
+                        if(Parent.IsFolder)
+                            Parent.IsFolderChecked = _isResource;
                     }
                 }
                 OnPropertyChanged(() => IsResourceChecked);
@@ -908,7 +920,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return (ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server) && _canCreateFolder;
+                return (IsFolder || IsServer) && _canCreateFolder;
             }
             set
             {
@@ -958,7 +970,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView && ResourceType < ResourceType.Folder && ResourceType != ResourceType.Version;
+                return _canView && (IsSource || IsService) && !IsResourceVersion;
             }
             set
             {
@@ -974,7 +986,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canShowDependencies && ResourceType != ResourceType.Folder;
+                return _canShowDependencies && !IsFolder;
             }
             set
             {
@@ -988,7 +1000,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return ResourceType == ResourceType.WorkflowService && _canShowVersions;
+                return IsService && _canShowVersions;
             }
             set
             {
@@ -1000,7 +1012,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return ResourceType == ResourceType.Version;
+                return IsResourceVersion;
             }
         }
 
@@ -1044,7 +1056,7 @@ namespace Warewolf.Studio.ViewModels
                         AllowResourceCheck = false,
                         IsResourceChecked = false,
                         CanDelete = CanDelete,
-                        ResourceType = ResourceType.Version
+                        ResourceType = "Version"
                     }
                     ));
                     OnPropertyChanged(() => Children);
@@ -1121,7 +1133,7 @@ namespace Warewolf.Studio.ViewModels
 
         public async Task<bool> Move(IExplorerTreeItem destination)
         {
-            if (destination.Children.Any(a => a.ResourceName == ResourceName) && ResourceType != ResourceType.Folder)
+            if (destination.Children.Any(a => a.ResourceName == ResourceName) && !IsFolder)
             {
                 var a = new PopupMessage
                 {
@@ -1175,7 +1187,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return ResourceType == ResourceType.Folder && _candrop;
+                return IsFolder && _candrop;
             }
             set
             {
@@ -1187,7 +1199,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canDrag && ResourceType < ResourceType.Server && ResourceType != ResourceType.Version;
+                return _canDrag && (IsSource || IsFolder || IsService) && !IsResourceVersion;
             }
             set
             {
@@ -1223,25 +1235,25 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Filter(filter);
             }
-            if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && model.ResourceType != ResourceType.Version)))
+            if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion)))
             {
                 IsVisible = true;
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName) && ResourceType != ResourceType.Version)
+                if (!String.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
                 {
                     IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
             }
             if (!String.IsNullOrEmpty(filter))
             {
-                if (ResourceType == ResourceType.Folder)
+                if (IsFolder)
                     IsExpanded = true;
             }
             else
             {
-                if (ResourceType == ResourceType.Folder)
+                if (IsFolder)
                     IsExpanded = false;
             }
             OnPropertyChanged(() => Children);
@@ -1280,8 +1292,6 @@ namespace Warewolf.Studio.ViewModels
                 _environmentModel = value;
             }
         }
-
-
 
         public void Dispose()
         {

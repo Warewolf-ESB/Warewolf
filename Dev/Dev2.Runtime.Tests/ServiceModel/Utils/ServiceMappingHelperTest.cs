@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Utils;
 using Dev2.Tests.Runtime.XML;
@@ -172,7 +171,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "CountriesService",
-                ResourceType = ResourceType.DbService,
+                ResourceType = "DbService",
                 ResourcePath = "Test",
                 Method = new ServiceMethod
                 {
@@ -191,7 +190,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
 
                     ResourceID = Guid.NewGuid(),
                     ResourceName = "CitiesDB",
-                    ResourceType = ResourceType.DbSource,
+                    ResourceType = "DbSource",
                     ResourcePath = "Test",
                     Server = "RSAKLFSVRGENDEV",
                     DatabaseName = "Cities",

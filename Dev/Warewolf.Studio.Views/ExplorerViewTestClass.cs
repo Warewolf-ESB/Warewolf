@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Infragistics.Controls.Menus;
@@ -64,7 +63,7 @@ namespace Warewolf.Studio.Views
                     var explorerItem = node.Data as IExplorerTreeItem;
                     if (explorerItem != null)
                     {
-                        if (explorerItem.ResourceType == ResourceType.Folder)
+                        if (explorerItem.ResourceType == "Folder")
                         {
                             return true;
                         }
@@ -134,7 +133,7 @@ namespace Warewolf.Studio.Views
                 var explorerItem = node.Data as IExplorerTreeItem;
                 if (explorerItem != null)
                 {
-                    if (explorerItem.ResourceName != null && explorerItem.ResourceName.ToLowerInvariant().Contains(searchName.ToLowerInvariant()) && (explorerItem.ResourceType == ResourceType.Folder || explorerItem.ResourceType==ResourceType.ServerSource))
+                    if (explorerItem.ResourceName != null && explorerItem.ResourceName.ToLowerInvariant().Contains(searchName.ToLowerInvariant()) && (explorerItem.ResourceType == "Folder" || explorerItem.ResourceType == "ServerSource"))
                     {
                         return true;
                     }
@@ -316,7 +315,7 @@ namespace Warewolf.Studio.Views
 
         public void AddChildren(int resourceNumber, string path, string type, string name = "Resource ")
         {
-            var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), type);
+            var resourceType = (string)Enum.Parse(typeof(string), type);
             if (path.Contains("\\"))
             {
                 var node = VerifyItemExists(path);
@@ -348,7 +347,7 @@ namespace Warewolf.Studio.Views
         public int GetFoldersResourcesVisible(string path)
         {
             var node = VerifyItemExists(path);
-            return node.Nodes.Select(child => child.Data as IExplorerTreeItem).Count(childitem => childitem != null && childitem.ResourceType == ResourceType.WorkflowService);
+            return node.Nodes.Select(child => child.Data as IExplorerTreeItem).Count(childitem => childitem != null && childitem.ResourceType == "WorkflowService");
         }
 
         public void ShowVersionHistory(string path)
@@ -371,7 +370,7 @@ namespace Warewolf.Studio.Views
             {
                 if (item != null)
                 {
-                    items.Add(new ExplorerItemViewModel(item.Server, item, a => { },null,null) { ResourceName = Name + i, ResourceType = ResourceType.Version });
+                    items.Add(new ExplorerItemViewModel(item.Server, item, a => { }, null, null) { ResourceName = Name + i, ResourceType = "Version" });
                 }
             }
             return items;

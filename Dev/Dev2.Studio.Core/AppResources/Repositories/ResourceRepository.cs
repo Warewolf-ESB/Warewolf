@@ -25,7 +25,6 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
@@ -37,6 +36,7 @@ using Dev2.Explorer;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -343,13 +343,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         string append = sAppend;
                         if (GetStudioResourceRepository().FindItem(a => a.ResourcePath == append && a.EnvironmentId == _environmentModel.ID) == null)
                         {
-                            item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend, "", "") { ServerId = _environmentModel.ID };
+                            item = new ServerExplorerItem(s, Guid.NewGuid(), "Folder", new List<IExplorerItem>(), Permissions.Administrator, sAppend, "", "") { ServerId = _environmentModel.ID };
                             GetStudioResourceRepository().ItemAddedMessageHandler(item);
                         }
                     }
-                    ResourceType type;
-                    Enum.TryParse(resource.ServerResourceType, out type);
-                    GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, type, new List<IExplorerItem>(), resource.UserPermissions, resource.Category,"","") { ServerId = _environmentModel.ID, Parent = item });
+                    GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, resource.ServerResourceType, new List<IExplorerItem>(), resource.UserPermissions, resource.Category, "", "") { ServerId = _environmentModel.ID, Parent = item });
                 }
             }
         }
@@ -432,7 +430,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (toReloadResources != null && toReloadResources.Count == 1)
             {
                 var serializableResource = toReloadResources[0];
-                var resourceType = GetResourceType(serializableResource.ResourceType);
+                var resourceType = GetResourceType(serializableResource);
                 var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true,true,true);
                 var contextualResourceModel = new ResourceModel(_environmentModel);
                 contextualResourceModel.Update(resource);
@@ -451,7 +449,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (toReloadResources != null && toReloadResources.Count == 1)
             {
                 var serializableResource = toReloadResources[0];
-                var resourceType = GetResourceType(serializableResource.ResourceType);
+                var resourceType = GetResourceType(serializableResource);
                 var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true,true,true);
                 var contextualResourceModel = new ResourceModel(_environmentModel);
                 contextualResourceModel.Update(resource);
@@ -461,32 +459,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return null;
         }
 
-        Enums.ResourceType GetResourceType(ResourceType resourceType)
+        ResourceType GetResourceType(SerializableResource resourceType)
         {
-            switch(resourceType)
+            if (resourceType.IsSource)
             {
-                case ResourceType.Unknown:
-                case ResourceType.WorkflowService:
-                    return Enums.ResourceType.WorkflowService;
-                case ResourceType.DbService:
-                case ResourceType.PluginService:
-                case ResourceType.WebService:
-                    return Enums.ResourceType.Service;
-                case ResourceType.DbSource:
-                case ResourceType.DropboxSource:
-                case ResourceType.EmailSource:
-                case ResourceType.ExchangeSource:
-                case ResourceType.OauthSource:
-                case ResourceType.PluginSource:                
-                case ResourceType.SharepointServerSource:
-                case ResourceType.WebSource:
-                    return Enums.ResourceType.Source;
-                case ResourceType.ServerSource:
-                case ResourceType.Server:
-                    return Enums.ResourceType.Server;
-                default:
-                    throw new ArgumentOutOfRangeException("resourceType", resourceType, null);
+                return ResourceType.Source;
             }
+            if (resourceType.IsService)
+            {
+                return ResourceType.WorkflowService;
+            }
+            if (resourceType.IsServer)
+            {
+                return ResourceType.Server;
+            }
+            throw new ArgumentOutOfRangeException("resourceType", resourceType, null);
         }
 
         public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchPayload = false, bool prepairForDeployment = false)
@@ -763,13 +750,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 if(!String.IsNullOrEmpty(instanceObj.ResourceName) && !instanceObj.ResourceName.Contains("Unsaved"))
                 {
-                    var resType = ResourceType.WorkflowService;
+                    var resType = "WorkflowService";
                     if(instanceObj.ServerResourceType != null)
                     {
-                        resType = (ResourceType)Enum.Parse(typeof(ResourceType), instanceObj.ServerResourceType);
-                        if(resType == ResourceType.Unknown)
+                        resType = instanceObj.ServerResourceType;
+                        if(resType == "Unknown")
                         {
-                            resType = ResourceType.WorkflowService;
+                            resType = "WorkflowService";
                         }
                     }
 
@@ -790,31 +777,31 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        string GetIconPath(ResourceType type)
+        string GetIconPath(string type)
         {
             var iconPath = string.Empty;
 
             switch(type)
             {
-                case ResourceType.DbService:
-                case ResourceType.DbSource:
+                case "DbService":
+                case "DbSource":
                     iconPath = StringResources.Pack_Uri_DatabaseService_Image;
                     break;
-                case ResourceType.EmailSource:
+                case "EmailSource":
                     iconPath = StringResources.Pack_Uri_EmailSource_Image;
                     break;
-                case ResourceType.PluginService:
-                case ResourceType.PluginSource:
+                case "PluginService":
+                case "PluginSource":
                     iconPath = StringResources.Pack_Uri_PluginService_Image;
                     break;
-                case ResourceType.WebService:
-                case ResourceType.WebSource:
+                case "WebService":
+                case "WebSource":
                     iconPath = StringResources.Pack_Uri_WebService_Image;
                     break;
-                case ResourceType.WorkflowService:
+                case "WorkflowService":
                     iconPath = StringResources.Pack_Uri_WorkflowService_Image;
                     break;
-                case ResourceType.Server:
+                case "Server":
                     iconPath = StringResources.Pack_Uri_Server_Image;
                     break;
             }
@@ -888,14 +875,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 {
                     var resourceType = item.ResourceType;
 
-                    if(resourceType == ResourceType.ReservedService)
+                    if(resourceType == "ReservedService")
                     {
                         _reservedServices.Add(item.ResourceName.ToUpper());
                         continue;
                     }
 
-                    var enumsResourceTypeString = ResourceTypeConverter.ToTypeString(resourceType);
-                    var enumsResourceType = enumsResourceTypeString == ResourceTypeConverter.TypeWildcard ? Enums.ResourceType.Unknown : (Enums.ResourceType)Enum.Parse(typeof(Enums.ResourceType), enumsResourceTypeString);
+                    var enumsResourceType = resourceType == "TypeWildcard" ? Enums.ResourceType.Unknown : (Enums.ResourceType)Enum.Parse(typeof(Enums.ResourceType), resourceType);
 
                     IResourceModel resource = HydrateResourceModel(enumsResourceType, item, serverId);
                     if(resource != null)
@@ -933,7 +919,26 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                 resource.Inputs = data.Inputs;
                 resource.Outputs = data.Outputs;
-                resource.ResourceType = resourceType;
+                if (data.IsSource)
+                {
+                    resource.ResourceType = ResourceType.Source;
+                }
+                else if (data.IsService)
+                {
+                    resource.ResourceType = ResourceType.WorkflowService;
+                }
+                else if (data.IsReservedService)
+                {
+                    resource.ResourceType = ResourceType.Service;
+                }
+                else if (data.IsServer)
+                {
+                    resource.ResourceType = ResourceType.Server;
+                }
+                else
+                {
+                    resource.ResourceType = ResourceType.Unknown;
+                }
                 resource.ID = id;
                 resource.ServerID = serverId;
                 resource.IsValid = data.IsValid;
@@ -941,12 +946,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.ResourceName = data.ResourceName;
                 resource.DisplayName = data.ResourceName;
                 resource.VersionInfo = data.VersionInfo;
+
                 resource.IconPath = GetIconPath(data.ResourceType);
                 resource.Category = data.ResourceCategory;
                 resource.UserPermissions = data.Permissions;
                 resource.Tags = string.Empty;
                 resource.Comment = string.Empty;
-                resource.ServerResourceType = data.ResourceType.ToString();
+                resource.ServerResourceType = data.ResourceType;
                 resource.UnitTestTargetWorkflowService = string.Empty;
                 resource.HelpLink = string.Empty;
                 resource.IsNewWorkflow = isNewWorkflow;
@@ -999,18 +1005,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public async void LoadResourceFromWorkspaceAsync(Guid resourceId, ResourceType resourceType, Guid? serverWorkspaceID)
+        public async void LoadResourceFromWorkspaceAsync(Guid resourceId, string resourceType, Guid? serverWorkspaceID)
         {
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            var name = Enum.GetName(typeof(ResourceType), resourceType);
+            var name = Enum.GetName(typeof(string), resourceType);
             comsController.AddPayloadArgument("ResourceType", name);
             var workspaceIdToUse = serverWorkspaceID.HasValue ? serverWorkspaceID.Value : con.WorkspaceID;
             var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(con, workspaceIdToUse);
             foreach(var serializableResource in toReloadResources)
             {
-                var resource = HydrateResourceModel((Enums.ResourceType)resourceType, serializableResource, _environmentModel.Connection.ServerID, true);
+                var resource = HydrateResourceModel(ResourceType.Unknown, serializableResource, _environmentModel.Connection.ServerID, true);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if(resourceToUpdate != null)
@@ -1481,7 +1487,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
                 else
                 {
-                    var allResources = x.Descendants().Where(z => z.ResourceType != ResourceType.Server).All(a => a.Permissions == Permissions.None);
+                    var allResources = x.Descendants().Where(z => z.ResourceType != "Server").All(a => a.Permissions == Permissions.None);
                     var allPermissions = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => !permission.IsBuiltInAdministrators).All(permission => permission.Permissions == Permissions.None);
                     if(allResources && serverPermissions == Permissions.None && allPermissions)
                     {

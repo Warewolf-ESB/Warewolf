@@ -239,7 +239,6 @@
     <None Include="App.config" />
     <None Include="Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
     </None>
     <None Include="Language Parser\Language Parser.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -18,7 +18,6 @@ using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -305,7 +304,7 @@ namespace Dev2.Core.Tests.Repositories
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
-            var explorerItemModels = repository.DialogFilter(model => model.DisplayName.Contains("dbService") || model.ResourceType == ResourceType.Folder);
+            var explorerItemModels = repository.DialogFilter(model => model.DisplayName.Contains("dbService") || model.ResourceType == "Folder");
             //------------Assert Results-------------------------
             Assert.IsNotNull(explorerItemModels);
             Assert.AreEqual(explorerItemModels[0].DisplayName, repository.ExplorerItemModels[0].DisplayName);
@@ -1046,7 +1045,7 @@ namespace Dev2.Core.Tests.Repositories
                                  {
                                      DisplayName = "LOCALHOST",
                                      Permissions = Permissions.Administrator,
-                                     ResourceType = ResourceType.Server
+                                     ResourceType = "Server"
                                  }, environmentId, _invoke)
                 {
                     GetVersionProxy = id => mockVersionRepository.Object,
@@ -1087,7 +1086,7 @@ namespace Dev2.Core.Tests.Repositories
                                  {
                                      DisplayName = "LOCALHOST",
                                      Permissions = Permissions.Administrator,
-                                     ResourceType = ResourceType.Server
+                                     ResourceType = "Server"
                                  }, environmentId, _invoke)
             {
                 GetVersionProxy = id => mockVersionRepository.Object,
@@ -1120,7 +1119,7 @@ namespace Dev2.Core.Tests.Repositories
                                  {
                                      DisplayName = "LOCALHOST",
                                      Permissions = Permissions.Administrator,
-                                     ResourceType = ResourceType.Server
+                                     ResourceType = "Server"
                                  }, environmentId, _invoke)
             {
                 GetVersionProxy = id => mockVersionRepository.Object,
@@ -1379,7 +1378,7 @@ namespace Dev2.Core.Tests.Repositories
             //------------Execute Test---------------------------
 
             var explorerItemModel = repository.ExplorerItemModels[0].Children[0];
-            explorerItemModel.ResourceType = ResourceType.Version;
+            explorerItemModel.ResourceType = "Version";
             explorerItemModel.Children[0].ResourcePath = "\\folder1\\bob\\dave";
             explorerItemModel.ResourcePath = "\\folder1\\bob";
             repository.MoveItem(explorerItemModel, "New Name");
@@ -1861,7 +1860,7 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "SUB FOLDER",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
@@ -1902,7 +1901,7 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
                 DisplayName = "Azure server",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
@@ -2003,8 +2002,8 @@ namespace Dev2.Core.Tests.Repositories
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
-            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
-            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = "Server", EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = "Folder", ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
             serverItemModel.Children.Add(workflowsFolder);
 
             var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
@@ -2013,7 +2012,7 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = "Server" };
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
@@ -2035,8 +2034,8 @@ namespace Dev2.Core.Tests.Repositories
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
-            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
-            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = "Server", EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = "Folder", ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
             serverItemModel.Children.Add(workflowsFolder);
 
             var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
@@ -2045,7 +2044,7 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = "Server" };
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
@@ -2069,8 +2068,8 @@ namespace Dev2.Core.Tests.Repositories
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
-            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
-            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = "Server", EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = "Folder", ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
             serverItemModel.Children.Add(workflowsFolder);
 
             var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
@@ -2079,7 +2078,7 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, new SynchronousAsyncWorker(), new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = "Server" };
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
@@ -2139,14 +2138,14 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             mockVersionRepository.Setup(m => m.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem>
                 {
-                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View , VersionInfo = v1.Object},
-                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v2.Object }
+                    new ServerExplorerItem { ResourceType = "WebService", DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View , VersionInfo = v1.Object},
+                    new ServerExplorerItem { ResourceType = "WebService", DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v2.Object }
                 });
 
             var superWFId = Guid.NewGuid();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = superWFId,
                 Permissions = Permissions.Contribute,
@@ -2181,7 +2180,7 @@ namespace Dev2.Core.Tests.Repositories
             var superWFId = Guid.NewGuid();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = superWFId,
                 Permissions = Permissions.Contribute,
@@ -2216,15 +2215,15 @@ namespace Dev2.Core.Tests.Repositories
             var superWFId = Guid.NewGuid();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = superWFId,
                 Permissions = Permissions.Contribute,
                 ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER",
                 Children = new List<IExplorerItem>
                     {
-                        new ServerExplorerItem{ ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View },
-                        new ServerExplorerItem{ ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View }
+                        new ServerExplorerItem{ ResourceType = "WebService", DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View },
+                        new ServerExplorerItem{ ResourceType = "WebService", DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View }
                     }
             };
 
@@ -2254,7 +2253,7 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
@@ -2290,11 +2289,11 @@ namespace Dev2.Core.Tests.Repositories
                     VersionHistory = new List<IExplorerItem> {
                             new ServerExplorerItem
                                 {
-                                    ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v1.Object
+                                    ResourceType = "WebService", DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v1.Object
                                 },
                             new ServerExplorerItem
                                 {
-                                    ResourceType = ResourceType.WebService, DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v2.Object
+                                    ResourceType = "WebService", DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v2.Object
                                 }
                         }
                 })
@@ -2303,7 +2302,7 @@ namespace Dev2.Core.Tests.Repositories
             var superWFId = Guid.NewGuid();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "Super Workflow",
                 ResourceId = superWFId,
                 Permissions = Permissions.Contribute,
@@ -2348,7 +2347,7 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
@@ -2375,7 +2374,7 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
@@ -2406,7 +2405,7 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
@@ -2442,15 +2441,15 @@ namespace Dev2.Core.Tests.Repositories
             mockVersionRepository.Setup(m => m.DeleteVersion(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(new List<IExplorerItem>
                 {
-                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v1.Object },
-                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View , VersionInfo = v2.Object }
+                    new ServerExplorerItem { ResourceType = "WebService", DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v1.Object },
+                    new ServerExplorerItem { ResourceType = "WebService", DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View , VersionInfo = v2.Object }
                 })
                 .Verifiable();
 
             var superWFId = Guid.NewGuid();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = superWFId,
                 Permissions = Permissions.Contribute,
@@ -2495,7 +2494,7 @@ namespace Dev2.Core.Tests.Repositories
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = Guid.NewGuid(),
                 Permissions = Permissions.Contribute,
@@ -2524,7 +2523,7 @@ namespace Dev2.Core.Tests.Repositories
             var superWFId = Guid.NewGuid();
             var parent = new ServerExplorerItem
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "SuperWF",
                 ResourceId = superWFId,
                 Permissions = Permissions.Contribute,
@@ -2563,24 +2562,24 @@ namespace Dev2.Core.Tests.Repositories
         {
             var workflow1 = new ServerExplorerItem
                 {
-                    ResourceType = ResourceType.WorkflowService,
+                    ResourceType = "WorkflowService",
                     DisplayName = "workflow1",
                     ResourceId = string.IsNullOrEmpty(workFlowId) ? Guid.NewGuid() : Guid.Parse(workFlowId),
                     Permissions = Permissions.Administrator
                 };
 
-            var dbService1 = new ServerExplorerItem { ResourceType = ResourceType.DbService, DisplayName = "dbService1", ResourceId = string.IsNullOrEmpty(dbServiceId) ? Guid.NewGuid() : Guid.Parse(dbServiceId), Permissions = Permissions.Contribute };
-            var webService1 = new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "webService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
-            var pluginService1 = new ServerExplorerItem { ResourceType = ResourceType.PluginService, DisplayName = "pluginService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
-            var dbSource1 = new ServerExplorerItem { ResourceType = ResourceType.DbSource, DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var webSource1 = new ServerExplorerItem { ResourceType = ResourceType.WebSource, DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var pluginSource1 = new ServerExplorerItem { ResourceType = ResourceType.PluginSource, DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var emailSource1 = new ServerExplorerItem { ResourceType = ResourceType.EmailSource, DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var serverSource1 = new ServerExplorerItem { ResourceType = ResourceType.ServerSource, DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder1 = new ServerExplorerItem { ResourceType = ResourceType.Folder, DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder2 = new ServerExplorerItem { ResourceType = ResourceType.Folder, DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var subfolder1 = new ServerExplorerItem { ResourceType = ResourceType.Folder, DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var localhost = new ServerExplorerItem { ResourceType = ResourceType.Server, DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var dbService1 = new ServerExplorerItem { ResourceType = "DbService", DisplayName = "dbService1", ResourceId = string.IsNullOrEmpty(dbServiceId) ? Guid.NewGuid() : Guid.Parse(dbServiceId), Permissions = Permissions.Contribute };
+            var webService1 = new ServerExplorerItem { ResourceType = "WebService", DisplayName = "webService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
+            var pluginService1 = new ServerExplorerItem { ResourceType = "PluginService", DisplayName = "pluginService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
+            var dbSource1 = new ServerExplorerItem { ResourceType = "DbSource", DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var webSource1 = new ServerExplorerItem { ResourceType = "WebSource", DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var pluginSource1 = new ServerExplorerItem { ResourceType = "PluginSource", DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var emailSource1 = new ServerExplorerItem { ResourceType = "EmailSource", DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var serverSource1 = new ServerExplorerItem { ResourceType = "ServerSource", DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder1 = new ServerExplorerItem { ResourceType = "Folder", DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder2 = new ServerExplorerItem { ResourceType = "Folder", DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var subfolder1 = new ServerExplorerItem { ResourceType = "Folder", DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var localhost = new ServerExplorerItem { ResourceType = "Server", DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
 
             dbService1.Parent = webService1.Parent = pluginService1.Parent = subfolder1.Parent = folder1;
             dbSource1.Parent = webSource1.Parent = pluginSource1.Parent = emailSource1.Parent = serverSource1.Parent = folder2;
