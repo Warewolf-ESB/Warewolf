@@ -749,6 +749,7 @@ namespace Dev2.Studio.ViewModels
                     ShowEditResourceWizard(resourceModel);
                     break;
                 case "Server":
+                case "Dev2Server":
                 case "ServerSource":
                     var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
                     string address = null;

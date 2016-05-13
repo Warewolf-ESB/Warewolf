@@ -22,6 +22,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -113,6 +114,7 @@ namespace Dev2.Runtime.Hosting
                 var types = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(s => s.GetTypes())
                     .Where(p => resourceBaseType.IsAssignableFrom(p));
+                var connectionTypeName = typeof(Connection).Name;
                 var allTypes = types as IList<Type> ?? types.ToList();
                 streams.ForEach(currentItem =>
                 {
@@ -133,8 +135,15 @@ namespace Dev2.Runtime.Hosting
                     if (isValid)
                     {
                         var typeName = xml.AttributeSafe("Type");
+
+                        //TODO: Remove this after V1 is released. All will be updated.
+                        if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
+                        {
+                            xml.SetAttributeValue("Type",connectionTypeName);
+                            typeName = connectionTypeName;
+                        }
                         Type type = null;
-                        if (allTypes.Count() != 0)
+                        if (allTypes.Count != 0)
                         {
                             type=allTypes.FirstOrDefault(type1 => type1.Name == typeName);
                         }
