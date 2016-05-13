@@ -104,6 +104,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = "WorkflowService" };
+            data.IsService = true;
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             var differentEnvironment = new Mock<IEnvironmentModel>();
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
@@ -155,6 +156,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var environmentMock = new Mock<IEnvironmentModel>();
             var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = "WorkflowService", EnvironmentId = environmentMock.Object.ID };
+            data.IsService = true;
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             dataContext.Setup(model => model.EnvironmentModel).Returns(environmentMock.Object);
 
@@ -258,7 +260,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var data = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Permissions = Permissions.Execute, ResourceType = "WorkflowService" };
-
+            data.IsService = true;
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             var differentEnvironment = new Mock<IEnvironmentModel>();
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
