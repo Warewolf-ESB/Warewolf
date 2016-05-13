@@ -270,11 +270,6 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
-      <DependentUpon>Read File.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
@@ -320,11 +315,6 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Write File\WriteFileSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Zip\Zip.feature.cs">
-      <DependentUpon>Zip.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Zip\Zip1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zip.feature</DependentUpon>
