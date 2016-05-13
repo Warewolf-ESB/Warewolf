@@ -22,7 +22,7 @@ using TechTalk.SpecFlow;
 namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 {
     [Binding]
-    public sealed class DeleteWebConnectoToolSteps
+    public sealed class DeleteWebConnectorToolSteps
     {
         private WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
         private WebServiceSourceDefinition _webHelooWebSource;
@@ -57,7 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
 
             _googleWebSource = new WebServiceSourceDefinition
             {
-                Name = "Google Address Lookup",
+                Name = "Google Address Lookup"
             };
             var sources = new ObservableCollection<IWebServiceSource> { _dev2CountriesWebServiceWebSource };
             mockServiceModel.Setup(model => model.RetrieveSources()).Returns(sources);
@@ -84,7 +84,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
         [When(@"Delete Test Inputs is Successful")]
         public void WhenTestInputsIsSuccessful()
         {
-
             GetViewModel().ManageServiceInputViewModel.TestCommand.Execute(null);
         }
 
@@ -185,8 +184,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             var webServiceDeleteViewModel = GetViewModel();
             Assert.IsTrue(webServiceDeleteViewModel.ManageServiceInputViewModel.OutputArea.IsEnabled);
         }
-
-
+        
         [Then(@"Delete Mapping is Enabled")]
         public void ThenDeleteMappingIsEnabled()
         {
@@ -276,7 +274,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             var webServiceDeleteViewModel = GetViewModel();
             Assert.IsFalse(webServiceDeleteViewModel.OutputsRegion.IsEnabled);
         }
-
 
         [Given(@"I click Delete Done")]
         [When(@"I click Delete Done")]
