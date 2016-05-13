@@ -1462,7 +1462,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceParsePropertiesWithNullStringExpectedThrowsArgumentNullException()
         {
-            Resource.ParseProperties(null, null);
+            ResourceBase.ParseProperties(null, null);
         }
 
         // PBI 5656 - 2013.05.20 - TWR - Created
@@ -1470,7 +1470,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceParsePropertiesWithNullPropertiesExpectedThrowsArgumentNullException()
         {
-            Resource.ParseProperties("", null);
+            ResourceBase.ParseProperties("", null);
         }
 
         // PBI 5656 - 2013.05.20 - TWR - Created
@@ -1483,7 +1483,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 { "Address", null },
                 { "UserName", null }
             };
-            Resource.ParseProperties(TestStr, properties);
+            ResourceBase.ParseProperties(TestStr, properties);
             Assert.IsNotNull(properties["Address"]);
             Assert.IsNull(properties["UserName"]);
         }
@@ -1504,7 +1504,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 { "UserName", null }
             };
 
-            Resource.ParseProperties(testStr, properties);
+            ResourceBase.ParseProperties(testStr, properties);
 
             Assert.AreEqual(Address, properties["Address"]);
             Assert.AreEqual(AuthenticationType, properties["AuthenticationType"]);
