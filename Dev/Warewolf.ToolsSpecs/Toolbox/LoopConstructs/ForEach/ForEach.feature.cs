@@ -2008,7 +2008,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                         "index"});
             table55.AddRow(new string[] {
-                        "*"});
+                        "0"});
 #line 526
  testRunner.Then("The mapping uses the following indexes", ((string)(null)), table55, "Then ");
 #line 529
@@ -2045,7 +2045,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                         "index"});
             table57.AddRow(new string[] {
-                        "*"});
+                        "0"});
 #line 539
  testRunner.Then("The mapping uses the following indexes", ((string)(null)), table57, "Then ");
 #line 542
@@ -2078,21 +2078,14 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I Map the output recordset \"[[test(*).data]]\" to \"[[res(*).data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 551
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 552
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
-                        "index"});
-            table59.AddRow(new string[] {
-                        "*"});
-#line 552
- testRunner.Then("The mapping uses the following indexes", ((string)(null)), table59, "Then ");
-#line 555
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Number"});
-#line 556
- testRunner.And("the debug inputs as", ((string)(null)), table60, "And ");
+#line 553
+ testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2103,54 +2096,54 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteAForeachUsingInRecordsetWithIncorrectRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach using In Recordset with incorrect recordset", ((string[])(null)));
-#line 559
+#line 556
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "[[rs().field]]",
                         "1"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "[[rs().field]]",
                         "2"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "[[rs().field]]",
                         "3"});
-            table61.AddRow(new string[] {
+            table60.AddRow(new string[] {
                         "[[rs().field]]",
                         "6"});
-#line 560
- testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table61, "Given ");
-#line 566
+#line 557
+ testRunner.Given("There is a recordset in the datalist with this shape", ((string)(null)), table60, "Given ");
+#line 563
  testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[rs()]%^&]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 567
+#line 564
  testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 568
+#line 565
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 569
+#line 566
  testRunner.Then("the foreach executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 570
+#line 567
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Recordset"});
-            table62.AddRow(new string[] {
+            table61.AddRow(new string[] {
                         "* in Recordset",
                         "[[rs(1).field]] = 1"});
-            table62.AddRow(new string[] {
+            table61.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 2"});
-            table62.AddRow(new string[] {
+            table61.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 3"});
-            table62.AddRow(new string[] {
+            table61.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 6"});
-#line 571
- testRunner.And("the debug inputs as", ((string)(null)), table62, "And ");
+#line 568
+ testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

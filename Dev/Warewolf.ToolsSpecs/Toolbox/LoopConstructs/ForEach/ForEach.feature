@@ -525,7 +525,7 @@ Scenario: Execute a foreach over an activity with number of executions equals +1
 	When the foreach tool is executed
 	Then The mapping uses the following indexes
 	| index |
-	| *     |	
+	| 0     |	
 	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |    
@@ -538,7 +538,7 @@ Scenario: Execute a foreach with number of executions equals @#$1 invalid
 	When the foreach tool is executed
 	Then The mapping uses the following indexes
 	| index |
-	| *     |	
+	| 0     |	
 	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |
@@ -549,10 +549,7 @@ Scenario: Execute a foreach with number of executions as recordset with star
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
 	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
 	When the foreach tool is executed
-	Then The mapping uses the following indexes
-	| index |
-	| *     |	
-	And the execution has "AN" error
+	Then the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |   
 
