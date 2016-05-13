@@ -13,7 +13,6 @@ Scenario: Open new Dropbox Tool
 	When I Click New
 	Then the New Dropbox Source window is opened
 
-@ignore	
 Scenario: Editing Dropbox Tool
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled

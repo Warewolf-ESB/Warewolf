@@ -336,12 +336,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointReadSteps.cs" />
     <Compile Include="Toolbox\Sharepoint\SharepointToolSteps.cs" />
     <Compile Include="Toolbox\Sharepoint\SharepointUpdate.feature.cs">
       <DependentUpon>SharepointUpdate.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointUpdateSteps.cs" />
     <Compile Include="Toolbox\Storage\Dropbox\DeleteDropbox.feature.cs">
       <DependentUpon>DeleteDropbox.feature</DependentUpon>
       <AutoGen>True</AutoGen>

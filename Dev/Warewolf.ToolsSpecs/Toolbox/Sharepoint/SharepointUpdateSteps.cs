@@ -7,22 +7,22 @@ using TechTalk.SpecFlow;
 namespace Warewolf.ToolsSpecs.Toolbox.Sharepoint
 {
     [Binding]
-    public sealed class SharepointCreateSteps
+    public sealed class SharepointUpdateSteps
     {
-        [Given(@"I drag Sharepoint Create Tool onto the design surface")]
-        public void GivenIDragSharepointCreateToolOntoTheDesignSurface()
+        [Given(@"I drag Sharepoint Update Tool onto the design surface")]
+        public void GivenIDragSharepointUpdateToolOntoTheDesignSurface()
         {
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
-        [Then(@"the Sharepoint Create Tool is refreshed")]
-        public void ThenTheSharepointCreateToolIsRefreshed()
+        [When(@"Sharepoint Update variables are")]
+        public void WhenSharepointUpdateVariablesAre()
         {
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
-        [When(@"Sharepoint Create Input variables are")]
-        public void WhenSharepointCreateInputVariablesAre()
+        [When(@"Sharepoint Update Input variables are")]
+        public void WhenSharepointUpdateInputVariablesAre()
         {
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
