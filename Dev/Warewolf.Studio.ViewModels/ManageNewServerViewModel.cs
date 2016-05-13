@@ -614,7 +614,7 @@ namespace Warewolf.Studio.ViewModels
                 if (_protocol != value)
                 {
                     _protocol = value;
-                    OnPropertyChanged(Protocol);
+                    
                     Reset();
                     if (Protocol == "https" && SelectedPort == "3142")
                     {
@@ -624,6 +624,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         SelectedPort = "3142";
                     }
+                    OnPropertyChanged(Protocol);
                 }
             }
         }

@@ -49,14 +49,14 @@ namespace Dev2.Data.ServiceModel
 
         public Connection()
         {
-            ResourceType = "Server";
+            ResourceType = enSourceType.Dev2Server.ToString();
             VersionInfo = new VersionInfo();
         }
 
         public Connection(XElement xml)
             : base(xml)
          {
-            ResourceType = "Server";
+             ResourceType = enSourceType.Dev2Server.ToString();
 
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString):conString;
@@ -135,7 +135,7 @@ namespace Dev2.Data.ServiceModel
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
-                new XAttribute("Type", enSourceType.Dev2Server),
+                new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", enSourceType.Dev2Server)
                 );
 
