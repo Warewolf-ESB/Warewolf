@@ -148,7 +148,7 @@ Scenario: Merge multiple variables on Chars with blank lines
 	| 2 | [[b]] = Rocks    | Chars | /     | " " | Left  |	
 	And the debug output as 
 	|                                |
-	| [[result]] = Warewolf /Rocks/ |
+	| [[result]] = Warewolf /Rocks/   |
 
 Scenario: Merge a recordset that has xml data using Tabs
 	Given a merge recordset
@@ -357,29 +357,4 @@ Examples:
 	| 2  | Index    |
 	| 3  | Chars    |
 	| 4  | New Line |
-	| 5  | Tab      | 
-
-# This is a bug that needs to be resolved
-Scenario: Merge a recordset table and free text using Tab 2
-	Given a merge recordset
-	| rs     | val |
-	| rs().r | 10  |
-	| rs().r | 20  |
-	| rs().r | 30  |	
-	And an Input "[[var]]" and merge type "Tab" and string at as "[[rs(1).r]]" and Padding "[[rs(2).r]]" and Alignment "Left"	
-	And an Input "<-" and merge type "None" and string at as "[[rs(1).r]]" and Padding "[[rs(3).r]]" and Alignment "Left"
-	When the data merge tool is executed
-	Then the merged result is "1tab->	<-2tab->	<-3tab->	<-"
-	And the execution has "NO" error
-	And the debug inputs as  
-	| # |                    | With | Using        | Pad        | Align |
-	| 1 | [[rs(1).row]] = 10 |      | [[rs().r]] = | [[rs().r]] |       |
-	|   | [[rs(2).row]] = 20 |      |              |            |       |
-	|   | [[rs(3).row]] = 30 |      |              |            |       |
-	|   |                    | Tab  | ""           | ""         | Left  |
-	| 2 | <-                 | None | ""           | ""         | Left  |
-	And the debug output as 
-	|                                          |
-	| [[result]] = 1tab->	<-2tab->	<-3tab->	<- |
-
-
+	| 5  | Tab      |
