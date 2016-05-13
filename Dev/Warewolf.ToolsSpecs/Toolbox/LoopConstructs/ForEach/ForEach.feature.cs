@@ -578,13 +578,13 @@ this.ScenarioSetup(scenarioInfo);
                         "Recordset"});
             table16.AddRow(new string[] {
                         "* in Recordset",
-                        "[[rs(1).field]] = 1"});
+                        "[[rs(1)]] ="});
             table16.AddRow(new string[] {
                         "",
-                        "[[rs(2).field]] = 2"});
+                        "[[rs(2)]] ="});
             table16.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = 3"});
+                        "[[rs(3)]] ="});
 #line 165
  testRunner.And("the debug inputs as", ((string)(null)), table16, "And ");
 #line hidden
@@ -648,16 +648,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Recordset"});
             table19.AddRow(new string[] {
                         "* in Recordset",
-                        "[[rs(1).field]] = 1"});
+                        "[[rs(1)]] ="});
             table19.AddRow(new string[] {
                         "",
-                        "[[rs(2).field]] = 2"});
+                        "[[rs(2)]] ="});
             table19.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = 3"});
+                        "[[rs(3)]] ="});
             table19.AddRow(new string[] {
                         "",
-                        "[[rs(4).field]] = 6"});
+                        "[[rs(4)]] ="});
 #line 190
  testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
