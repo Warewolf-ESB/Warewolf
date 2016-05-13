@@ -163,10 +163,10 @@ Scenario: Execute a foreach over an activity using a recordset with 3 rows
 	| 3     |	
 	And the execution has "NO" error
 	And the debug inputs as
-   |                | Recordset           |
-   | * in Recordset | [[rs(1).field]] = 1 |
-   |                | [[rs(2).field]] = 2 |
-   |                | [[rs(3).field]] = 3 |
+   |                | Recordset   |
+   | * in Recordset | [[rs(1)]] = |
+   |                | [[rs(2)]] = |
+   |                | [[rs(3)]] = |
 
 Scenario: Execute a foreach over an activity using a recordset with 4 rows
 	Given There is a recordset in the datalist with this shape
@@ -188,11 +188,11 @@ Scenario: Execute a foreach over an activity using a recordset with 4 rows
 	| 4     |
 	And the execution has "NO" error
 	And the debug inputs as
-    |                | Recordset           |
-    | * in Recordset | [[rs(1).field]] = 1 |
-    |                | [[rs(2).field]] = 2 |
-    |                | [[rs(3).field]] = 3 |
-    |                | [[rs(4).field]] = 6 |
+    |                | Recordset    |
+    | * in Recordset | [[rs(1)]] =  |
+    |                | [[rs(2)]] =  |
+    |                | [[rs(3)]] =  |
+    |                | [[rs(4)]] =  |
 	
 Scenario: Execute a foreach over an activity for range 0 to 0
 	And I have selected the foreach type as "InRange" from 0 to 0
@@ -525,7 +525,7 @@ Scenario: Execute a foreach over an activity with number of executions equals +1
 	When the foreach tool is executed
 	Then The mapping uses the following indexes
 	| index |
-	| *     |	
+	| 0     |	
 	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |    
@@ -538,7 +538,7 @@ Scenario: Execute a foreach with number of executions equals @#$1 invalid
 	When the foreach tool is executed
 	Then The mapping uses the following indexes
 	| index |
-	| *     |	
+	| 0     |	
 	And the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |
@@ -549,10 +549,7 @@ Scenario: Execute a foreach with number of executions as recordset with star
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
 	And I Map the output recordset "[[test(*).data]]" to "[[res(*).data]]" 	
 	When the foreach tool is executed
-	Then The mapping uses the following indexes
-	| index |
-	| *     |	
-	And the execution has "AN" error
+	Then the execution has "AN" error
 	And the debug inputs as
 	|                 | Number |   
 

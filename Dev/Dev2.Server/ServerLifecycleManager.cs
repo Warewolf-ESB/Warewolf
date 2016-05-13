@@ -1357,11 +1357,7 @@ namespace Dev2
 
                 foreach(KeyValuePair<string, string> argument in arguments)
                 {
-                    if(argument.Key.Equals("endpointAddress", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        continue;
-                    }
-
+                    
                     if(argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
                     {
                         webServerPort = argument.Value;
