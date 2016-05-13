@@ -13,7 +13,7 @@ namespace Warewolf.Studio.UISpecs
     [Binding]
     public sealed class Variable_List_Action_Steps
     {
-        [When(@"I click ""'(.*)"" in the variable list")]
+        [When(@"I click ""(.*)"" in the variable list")]
         public void WhenIClickTheItemInTheVariableList(string variableName)
         {
             UITestControl getVariableListRow = GetTreeItemByName(variableName);
@@ -21,7 +21,7 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(textbox, new Point(50, 12));
         }
 
-        [When(@"I click delete ""'(.*)"" in the variable list")]
+        [When(@"I click delete ""(.*)"" in the variable list")]
         public void WhenIClickDeleteTheItemInTheVariableList(string variableName)
         {
             UITestControl getVariableListRow = GetTreeItemByName(variableName);
@@ -29,7 +29,7 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(deleteButton, new Point(12, 12));
         }
 
-        [When(@"I toggle ""'(.*)"" Input checkbox in the variable list")]
+        [When(@"I toggle ""(.*)"" Input checkbox in the variable list")]
         public void WhenIToggleInputCheckboxTheItemInTheVariableList(string variableName)
         {
             UITestControl getVariableListRow = GetTreeItemByName(variableName);
@@ -37,7 +37,7 @@ namespace Warewolf.Studio.UISpecs
             Mouse.Click(inputCheckbox, new Point(12, 12));
         }
 
-        [When(@"I toggle ""'(.*)"" Output checkbox in the variable list")]
+        [When(@"I toggle ""(.*)"" Output checkbox in the variable list")]
         public void WhenIToggleOutputCheckboxTheItemInTheVariableList(string variableName)
         {
             UITestControl getVariableListRow = GetTreeItemByName(variableName);

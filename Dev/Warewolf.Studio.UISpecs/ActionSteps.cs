@@ -17,9 +17,9 @@ namespace Warewolf.Studio.UISpecs
     [Binding]
     public class ActionSteps
     {
-        [Given(@"I ""'(.*)""")]
-        [When(@"I ""'(.*)""")]
-        [Then(@"I ""'(.*)""")]
+        [Given(@"I ""(.*)""")]
+        [When(@"I ""(.*)""")]
+        [Then(@"I ""(.*)""")]
         public void TheRecordedActionIsPerformed(string p0)
         {
             Type workflowDesignerMapType = Uimap.GetType();
