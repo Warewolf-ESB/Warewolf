@@ -379,3 +379,49 @@ Scenario: Pin and unpin Debug Output
 Scenario: Pin and unpin variable list
 	Given I "Click_Toggle_Unpin_VariableList"
 	Then I "Click_Toggle_Pin_VariableList"
+
+Scenario: Ensure unused variables do not appear in Debug Input window
+	Given I have variables as
+    | Variable    | Note              | Input | Output | IsUsed |
+    | [[rec().a]] | This is recordset |       | YES    | YES    |
+    | [[rec().b]] |                   |       |        |        |
+    | [[mr()]]    |                   |       |        | YES    |
+    | [[Var]]     |                   | YES   |        | YES    |
+    | [[a]]       |                   |       |        |        |
+    | [[lr().a]]  |                   |       |        |        |
+	When I press "F5"
+	And the Debug Input window is opened
+	Then the variables appear as
+	 | Variable | Note | Input | Output | IsUsed |
+	 | [[mr()]] |      |       |        | YES    |
+	 | [[Var]]  |      | YES   |        | YES    |
+
+
+Scenario Outline: Ensure shorcut keys work
+	Given I have variables as
+    | Variable | Note | Input | Output | IsUsed |
+    | [[var]]  |      |       | YES    | YES    |
+	And I press "<Keys>"
+	Then cursor focus is "<Focus>"
+Examples:
+	| Keys  | Focus          |
+	| Enter | New blank line |
+	| Tab   | Input Checkbox |
+	
+
+Scenario: versioning and mapping
+	Given I have variables as
+	 | Variable | Note | Input | Output | IsUsed |
+	 | [[a]]    |      |       | YES    |        |
+	 | [[b]]    |      | YES   |        |        |
+	When I save workflow as "test"
+	And create variable "[[c]]" equals "" as ""
+	And I save "Mapping"
+	And "Mapping" is visible in the explorer
+	When I right click "Mapping" and "Show Version History"
+	Then version history is visible in the explorer
+	And I open "v1" of "Mapping"
+	Then the variables appear as
+   | Variable | Note | Input | Output | IsUsed |
+   | [[a]]    |      |       | YES    |        |
+   | [[b]]    |      | YES   |        |        |
