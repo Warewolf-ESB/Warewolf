@@ -171,6 +171,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
+                resource.Setup(a => a.IsService).Returns(true);
 
             }
             directory.Setup(a => a.GetDirectories(@"b:\bob")).Returns(new[] { @"b:\bob\1" });
@@ -181,8 +182,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var item = explorerItemFactory.CreateRootExplorerItem(@"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
+            Assert.IsTrue(item.IsServer);
             Assert.AreEqual(1, item.Children.Count);
+            Assert.IsTrue(item.Children[0].IsFolder);
             Assert.AreEqual(4, item.Children[0].Children.Count);
+            Assert.IsTrue(item.Children[0].Children.All(explorerItem => explorerItem.IsService));
         }
 
 
@@ -203,6 +207,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? i.ToString(CultureInfo.InvariantCulture) : "1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
+                resource.Setup(a => a.IsSource).Returns(true);
 
             }
             directory.Setup(a => a.GetDirectories(@"b:\bob")).Returns(new[] { @"b:\bob\1" });
@@ -215,6 +220,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(3, item.Children.Count);
             Assert.AreEqual(2, item.Children[0].Children.Count);
+            Assert.IsTrue(item.Children[0].Children.All(explorerItem => explorerItem.IsSource));
         }
 
 
@@ -238,12 +244,12 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
 
             }
-            resources[0].Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
+            resources[0].Setup(a => a.ResourceType).Returns("EmailSource");
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(MoqUtil.ProxiesFromMockEnumerable(resources).ToList());
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(ResourceType.EmailSource, @"b:\bob", Guid.NewGuid());
+            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(1, item.Children.Count);
@@ -268,14 +274,14 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
-                resource.Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
+                resource.Setup(a => a.ResourceType).Returns("EmailSource");
             }
             directory.Setup(a => a.GetDirectories(@"b:\bob")).Returns(new[] { @"b:\bob\1" });
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(MoqUtil.ProxiesFromMockEnumerable(resources).ToList());
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(ResourceType.EmailSource, @"b:\bob", Guid.NewGuid());
+            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(1, item.Children.Count);
@@ -299,13 +305,13 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
-                resource.Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
+                resource.Setup(a => a.ResourceType).Returns("EmailSource");
             }
             var mockReserverService = new Mock<IResource>();
             mockReserverService.Setup(a => a.ResourcePath).Returns("1");
             mockReserverService.Setup(a => a.ResourceName).Returns("TestReservedService");
             mockReserverService.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
-            mockReserverService.Setup(a => a.ResourceType).Returns(ResourceType.ReservedService);
+            mockReserverService.Setup(a => a.ResourceType).Returns("ReservedService");
             resources.Add(mockReserverService);
             directory.Setup(a => a.GetDirectories(@"b:\bob")).Returns(new[] { @"b:\bob\1" });
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(MoqUtil.ProxiesFromMockEnumerable(resources).ToList());
@@ -338,15 +344,15 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? "" + i : "1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
-                resource.Setup(a => a.ResourceType).Returns(i % 2 == 0 ? ResourceType.EmailSource : ResourceType.DbSource);
+                resource.Setup(a => a.ResourceType).Returns(i % 2 == 0 ? "EmailSource" : "DbSource");
             }
-            resources[3].Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
+            resources[3].Setup(a => a.ResourceType).Returns("EmailSource");
             directory.Setup(a => a.GetDirectories(@"b:\bob")).Returns(new[] { @"b:\bob\1" });
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(MoqUtil.ProxiesFromMockEnumerable(resources).ToList());
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(ResourceType.EmailSource, @"b:\bob", Guid.NewGuid());
+            var item = explorerItemFactory.CreateRootExplorerItem("EmailSource", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(4, item.Children.Count);
@@ -373,14 +379,14 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourcePath).Returns("1");
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
-                resource.Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
+                resource.Setup(a => a.ResourceType).Returns("EmailSource");
             }
             directory.Setup(a => a.GetDirectories(@"b:\bob")).Returns(new[] { @"b:\bob\1", @"b:\bob\2" });
             catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(MoqUtil.ProxiesFromMockEnumerable(resources).ToList());
             var explorerItemFactory = new ExplorerItemFactory(catalogue.Object, directory.Object, auth.Object);
 
             //------------Execute Test---------------------------
-            var item = explorerItemFactory.CreateRootExplorerItem(ResourceType.Folder, @"b:\bob", Guid.NewGuid());
+            var item = explorerItemFactory.CreateRootExplorerItem("Folder", @"b:\bob", Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.AreEqual(Environment.MachineName, item.DisplayName);
             Assert.AreEqual(2, item.Children.Count);
@@ -410,7 +416,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 resource.Setup(a => a.ResourceID).Returns(guid[i]);
 
             }
-            resources[0].Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
+            resources[0].Setup(a => a.ResourceType).Returns("EmailSource");
             auth.Setup(a => a.GetResourcePermissions(guid[0])).Returns(Permissions.Contribute);
             auth.Setup(a => a.GetResourcePermissions(guid[1])).Returns(Permissions.Administrator);
             auth.Setup(a => a.GetResourcePermissions(guid[2])).Returns(Permissions.DeployFrom);

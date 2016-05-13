@@ -13,7 +13,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
@@ -244,7 +243,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebServicesDeserializeServiceWithNullXmlExpectedReturnsNewWebService()
         {
             var services = new WebServicesMock();
-            var result = services.DeserializeService(null, ResourceType.WebService);
+            var result = services.DeserializeService(null, "WebService");
 
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
@@ -255,7 +254,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var xml = XmlResource.Fetch("WebService");
 
             var services = new WebServicesMock();
-            var result = services.DeserializeService(xml, ResourceType.WebService);
+            var result = services.DeserializeService(xml, "WebService");
 
             WebServiceTests.VerifyEmbeddedWebService(result as WebService);
         }
@@ -582,7 +581,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceID = Guid.NewGuid(),
 
                 ResourceName = "DummyWebService",
-                ResourceType = ResourceType.WebService,
+                ResourceType = "WebService",
                 ResourcePath = "Tests"
 
             };

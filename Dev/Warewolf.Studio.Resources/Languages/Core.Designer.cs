@@ -558,7 +558,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/contributors.php.
+        ///   Looks up a localized string similar to https://warewolf.io/contributors.php.
         /// </summary>
         public static string ContributorsUrl {
             get {
@@ -8539,7 +8539,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://warewolf.io/.
+        ///   Looks up a localized string similar to https://warewolf.io/.
         /// </summary>
         public static string WarewolfUrl {
             get {

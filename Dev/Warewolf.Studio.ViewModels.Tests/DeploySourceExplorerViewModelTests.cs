@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Explorer;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -328,7 +327,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var childMock = new Mock<IExplorerItemViewModel>();
             var axMock = new Mock<IExplorerItemViewModel>();
             axMock.SetupGet(it => it.IsResourceChecked).Returns(true);
-            axMock.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            axMock.SetupGet(it => it.ResourceType).Returns("Folder");
             axMock.Setup(it => it.Children)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() {childMock.Object});
 
@@ -349,8 +348,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var axParentMock = new Mock<IExplorerItemViewModel>();
             var axMock = new Mock<IExplorerItemViewModel>();
             axMock.SetupGet(it => it.IsResourceChecked).Returns(true);
-            axMock.SetupGet(it => it.ResourceType).Returns(ResourceType.DbService);
-            axParentMock.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            axMock.SetupGet(it => it.ResourceType).Returns("DbService");
+            axParentMock.SetupGet(it => it.ResourceType).Returns("Folder");
             axMock.SetupGet(it => it.Parent).Returns(axParentMock.Object);
             axMock.Setup(it => it.Children)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() { childMock.Object });
@@ -372,8 +371,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var axParentMock = new Mock<IExplorerItemViewModel>();
             var axMock = new Mock<IExplorerItemViewModel>();
             axMock.SetupGet(it => it.IsResourceChecked).Returns(true);
-            axMock.SetupGet(it => it.ResourceType).Returns(ResourceType.DbService);
-            axParentMock.SetupGet(it => it.ResourceType).Returns(ResourceType.ServerSource);
+            axMock.SetupGet(it => it.ResourceType).Returns("DbService");
+            axParentMock.SetupGet(it => it.ResourceType).Returns("ServerSource");
             axMock.SetupGet(it => it.Parent).Returns(axParentMock.Object);
             axMock.Setup(it => it.Children)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() { childMock.Object });

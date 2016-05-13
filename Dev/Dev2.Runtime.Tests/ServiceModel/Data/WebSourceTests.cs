@@ -14,7 +14,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
@@ -34,7 +33,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //Initialize test resource, save then change path
             string uniquePathText = Guid.NewGuid().ToString() + "\\test web source";
-            var testResource = new Resource { ResourceName = "test web source", ResourcePath = "initialpath\\test web source", ResourceType = ResourceType.WebSource, ResourceID = Guid.NewGuid() };
+            var testResource = new Resource { ResourceName = "test web source", ResourcePath = "initialpath\\test web source", ResourceType = "WebSource", ResourceID = Guid.NewGuid() };
             new WebSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;
 
@@ -42,7 +41,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             new WebSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
 
             //Assert resource saved
-            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, ResourceType.WebSource, testResource.ResourceID.ToString());
+            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, testResource.ResourceID.ToString());
             const string PathStartText = "<Category>";
             int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
             if(start > 0)
@@ -67,7 +66,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             var source = new WebSource();
             Assert.AreEqual(Guid.Empty, source.ResourceID);
-            Assert.AreEqual(ResourceType.WebSource, source.ResourceType);
+            Assert.AreEqual("WebSource", source.ResourceType);
         }
 
         [TestMethod]
@@ -84,7 +83,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var source = new WebSource(xml);
             Assert.AreNotEqual(Guid.Empty, source.ResourceID);
             Assert.IsTrue(source.IsUpgraded);
-            Assert.AreEqual(ResourceType.WebSource, source.ResourceType);
+            Assert.AreEqual("WebSource", source.ResourceType);
         }
 
         [TestMethod]
@@ -94,7 +93,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             var source = new WebSource(xml);
             Assert.AreEqual(Guid.Parse("f62e08d9-0359-4baa-8af3-08e0d812d6c6"), source.ResourceID);
-            Assert.AreEqual(ResourceType.WebSource, source.ResourceType);
+            Assert.AreEqual("WebSource", source.ResourceType);
             Assert.AreEqual("http://www.webservicex.net/globalweather.asmx", source.Address);
             Assert.AreEqual("/GetCitiesByCountry?CountryName=South%20Africa", source.DefaultQuery);
             Assert.AreEqual("user1234", source.UserName);

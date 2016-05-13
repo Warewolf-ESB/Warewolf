@@ -211,7 +211,6 @@
     <Compile Include="ESB\WebServiceContainerMock.cs" />
     <Compile Include="ESB\WebServiceContainerTests.cs" />
     <Compile Include="FileSystemInstanceStoreIoTests.cs" />
-    <Compile Include="Hosting\ResourceTypeConverterTests.cs" />
     <Compile Include="ServiceModel\DummyClassForPluginTest.cs" />
     <Compile Include="ServiceModel\PluginServicesMock.cs" />
     <Compile Include="ServiceModel\PluginServicesTest.cs" />
@@ -421,7 +420,9 @@
     <EmbeddedResource Include="XML\TestDecisionUnsigned.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\CitiesDatabase.xml" />
+    <EmbeddedResource Include="XML\CitiesDatabase.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\ServerConnection1.xml" />
@@ -446,10 +447,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\CatalogServiceAllTools.xml" />
-    <EmbeddedResource Include="XML\CatalogSourceAnytingToXmlPlugin.xml" />
+    <EmbeddedResource Include="XML\CatalogSourceAnytingToXmlPlugin.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\CatalogSourceCitiesDatabase.xml" />
     <EmbeddedResource Include="XML\CatalogServiceCitiesDatabase.xml" />
-    <EmbeddedResource Include="XML\CatalogSourceTestServer.xml" />
+    <EmbeddedResource Include="XML\CatalogSourceTestServer.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\TestForEachOutput.xml" />

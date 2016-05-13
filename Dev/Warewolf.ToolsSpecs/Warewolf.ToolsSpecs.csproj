@@ -236,25 +236,15 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Copy\CopySteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Create\Create.feature.cs">
-      <DependentUpon>Create.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Create\Create1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Create.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Create\CreateSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Delete\Delete.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delete.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Delete\Delete1.feature.cs">
-      <DependentUpon>Delete.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
@@ -270,11 +260,6 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
-      <DependentUpon>Read File.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
@@ -320,22 +305,12 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Write File\WriteFileSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Zip\Zip.feature.cs">
-      <DependentUpon>Zip.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Zip\Zip1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zip.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Zip\ZipSteps.cs" />
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach.feature.cs">
-      <DependentUpon>ForEach.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>
