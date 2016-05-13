@@ -4033,56 +4033,6 @@ Scenario: MYSQL backward Compatiblity
 	When "MySQLMigration" is executed
 	Then the workflow execution has "NO" error
 
-
-Scenario: SQL No Action to be loaded Error
-	Given I have a workflow "NoStoredProceedureToLoad"
-	And "NoStoredProceedureToLoad" contains "Testing/NoSqlStoredProceedure" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter | Empty is Null |
-	When "NoStoredProceedureToLoad" is executed
-	Then the workflow execution has "An" error
-	And the 'Testing/NoSqlStoredProceedure' in Workflow 'NoStoredProceedureToLoad' debug outputs as
-	  |                                                                  |
-	  | Error: The selected database does not contain actions to perform |
-
-
-Scenario: SQL Passing Null Input values
-	Given I have a workflow "PassingNullInputValue"
-	And "PassingNullInputValue" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter | Empty is Null |
-	     | [[value]]                  | a         | True          |
-	When "PassingNullInputValue" is executed
-	Then the workflow execution has "An" error
-	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'PassingNullInputValue' debug outputs as
-	  |                                       |
-	  | Error: Scalar value { value } is NULL |
-
-
-Scenario: SQL Mapped To Recordsets incorrect
-	Given I have a workflow "BadSqlParameterName"
-	And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter | Empty is Null |
-	     |                            | ProductId | True          |
-	And And "BadSqlParameterName" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with Mapping To as
-	| Mapped From | Mapped To                      |
-	| Column1     | [[dbo_ImportOrder()..Column1]] |
-	When "BadSqlParameterName" is executed
-	Then the workflow execution has "An" error
-	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'BadSqlParameterName' debug outputs as
-	  |                               |
-	  | Error: Sql Error: parse error |
-
-Scenario: SQL Recordset has invalid character
-	Given I have a workflow "MappingHasIncorrectCharacter"
-	And "MappingHasIncorrectCharacter" contains "Acceptance Testing Resources/GreenPoint" from server "localhost" with mapping as
-	     | Input Data or [[Variable]] | Parameter | Empty is Null |
-	     | 1                          | charValue | True          |
-	When "MappingHasIncorrectCharacter" is executed
-	Then the workflow execution has "An" error
-	And the 'Acceptance Testing Resources/GreenPoint' in Workflow 'MappingHasIncorrectCharacter' debug outputs as
-	  |                                                                    |
-	  | [[dbo_ConvertTo,Int().result]] : Recordset name has invalid format |
-	  
-
 Scenario: Data connector backward Compatiblity
 	Given I have a workflow "DataMigration"
 	And "DataMigration" contains "DataCon" from server "localhost" with mapping as
