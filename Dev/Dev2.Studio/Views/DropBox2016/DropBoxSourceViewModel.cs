@@ -14,13 +14,13 @@ namespace Dev2.Views.DropBox2016
     public class DropBoxSourceViewModel
     {
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        public string AccessToken { get; set; }
-        public string Uid { get; set; }
+        public string AccessToken { get; private set; }
+        public string Uid { get; private set; }
         public string Secret { get; set; }
         public string Title { get { return "Dropbox Source"; } }
-        public string AuthUri { get; set; }
+        private string AuthUri { get; set; }
         IDropBoxHelper DropBoxHelper { get; set; }
-        public bool HasAuthenticated { get; set; }
+        public bool HasAuthenticated { get; private set; }
         public IContextualResourceModel Resource { get; set; }
 
 
@@ -45,7 +45,7 @@ namespace Dev2.Views.DropBox2016
                 Authorise();
         }
 
-        public async Task LoadBrowserUri(string uri)
+        private async Task LoadBrowserUri(string uri)
         {
             AuthUri = uri;
             var hasConnection = await _network.HasConnectionAsync(uri);
@@ -63,9 +63,7 @@ namespace Dev2.Views.DropBox2016
             }
         }
 
-
-
-        public async void Authorise()
+        private async void Authorise()
         {
 
             _oauth2State = Guid.NewGuid().ToString("N");
