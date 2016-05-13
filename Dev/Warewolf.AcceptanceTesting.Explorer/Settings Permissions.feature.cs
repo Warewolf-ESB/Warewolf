@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs
+namespace Dev2.Activities.Specs.Permissions
 {
     using TechTalk.SpecFlow;
     
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Specs
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Settings Permissions")))
             {
-                Dev2.Activities.Specs.SettingsPermissionsFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Permissions.SettingsPermissionsFeature.FeatureSetup(null);
             }
         }
         
