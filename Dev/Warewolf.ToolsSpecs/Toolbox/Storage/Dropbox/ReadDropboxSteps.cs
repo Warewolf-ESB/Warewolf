@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Caliburn.Micro;
-using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
-using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
