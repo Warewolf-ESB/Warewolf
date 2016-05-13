@@ -211,7 +211,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.Then("the foreach executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 53
- testRunner.And(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \'AN\' error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -222,10 +222,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "InRecordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rs()]]+1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordset names can be used with * in Recordset. Invalid: [[rs()]]+1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Failure")]
         public virtual void ExecuteAForeachOverAToolUsingARecordsetWithInvalid_Variant0()
         {
-            this.ExecuteAForeachOverAToolUsingARecordsetWithInvalid("InRecordset", "[[rs()]]+1", "Only recordset names can be used with * in Recordset. Invalid: [[rs()]]+1", ((string[])(null)));
+            this.ExecuteAForeachOverAToolUsingARecordsetWithInvalid("InRecordset", "[[rs()]]+1", "Failure", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -234,10 +234,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "InRecordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rs().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordset names can be used with * in Recordset. Invalid: [[rs().a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Failure")]
         public virtual void ExecuteAForeachOverAToolUsingARecordsetWithInvalid_Variant1()
         {
-            this.ExecuteAForeachOverAToolUsingARecordsetWithInvalid("InRecordset", "[[rs().a]]", "Only recordset names can be used with * in Recordset. Invalid: [[rs().a]]", ((string[])(null)));
+            this.ExecuteAForeachOverAToolUsingARecordsetWithInvalid("InRecordset", "[[rs().a]]", "Failure", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -246,10 +246,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:type", "InRecordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rs()]]#$%3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Only recordset names can be used with * in Recordset. Invalid: [[rs()]]#$%3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "Failure")]
         public virtual void ExecuteAForeachOverAToolUsingARecordsetWithInvalid_Variant2()
         {
-            this.ExecuteAForeachOverAToolUsingARecordsetWithInvalid("InRecordset", "[[rs()]]#$%3", "Only recordset names can be used with * in Recordset. Invalid: [[rs()]]#$%3", ((string[])(null)));
+            this.ExecuteAForeachOverAToolUsingARecordsetWithInvalid("InRecordset", "[[rs()]]#$%3", "Failure", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2130,7 +2130,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 568
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 569
- testRunner.Then("the foreach executes 4 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the foreach executes 0 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 570
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
