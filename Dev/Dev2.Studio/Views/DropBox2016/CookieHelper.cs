@@ -3,9 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Dev2.Views.DropBox2016
 {
-    class CookieHelper
+    internal class CookieHelper
     {
-
         public static void Clear()
         {
             InternetSetOption(IntPtr.Zero, InternetOptionEndBrowserSession, IntPtr.Zero, 0);
