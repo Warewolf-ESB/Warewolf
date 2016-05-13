@@ -175,11 +175,6 @@
     </Compile>
     <Compile Include="Toolbox\Data\Create JSON\CreateJsonSteps.cs" />
     <Compile Include="Toolbox\Data\DataMerge\DataMerge.feature.cs">
-      <DependentUpon>DataMerge.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Data\DataMerge\DataMerge1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataMerge.feature</DependentUpon>
