@@ -723,6 +723,8 @@ namespace Dev2.Studio.ViewModels
             switch (resourceModel.ServerResourceType)
             {
                 case "SqlDatabase":
+                case "ODBC":
+                case "MySqlDatabase":
                     EditDbSource(resourceModel);
                     break;
                 case "DbSource":
@@ -785,7 +787,7 @@ namespace Dev2.Studio.ViewModels
                 Password = db.Password,
                 Path = db.ResourcePath,
                 ServerName = db.Server,
-                Type = enSourceType.SqlDatabase,
+                Type = db.ServerType,
                 UserName = db.UserID
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
