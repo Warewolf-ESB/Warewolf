@@ -289,24 +289,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Toolbox\Resources\ODBC\ODBCConnector.feature.cs">
-      <DependentUpon>ODBCConnector.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Resources\ODBC\ODBCServerConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OracleServerConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnector.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -342,16 +324,19 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointCreateSteps.cs" />
     <Compile Include="Toolbox\Sharepoint\SharepointDelete.feature.cs">
       <DependentUpon>SharepointDelete.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointDeleteSteps.cs" />
     <Compile Include="Toolbox\Sharepoint\SharepointRead.feature.cs">
       <DependentUpon>SharepointRead.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Sharepoint\SharepointToolSteps.cs" />
     <Compile Include="Toolbox\Sharepoint\SharepointUpdate.feature.cs">
       <DependentUpon>SharepointUpdate.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -564,18 +549,6 @@
     <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\ODBC\ODBCConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\Oracle\OracleServerConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Resources\PostgresSQL\PostgresSqlConnector.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PostgresSqlConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

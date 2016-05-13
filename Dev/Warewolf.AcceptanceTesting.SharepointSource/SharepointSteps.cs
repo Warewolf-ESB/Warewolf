@@ -322,8 +322,6 @@ namespace Warewolf.AcceptanceTesting.SharepointSource
             FeatureContext.Current.Add("viewModel", viewModel);
             FeatureContext.Current.Remove("externalProcessExecutor");
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
-
         }
-
     }
 }
