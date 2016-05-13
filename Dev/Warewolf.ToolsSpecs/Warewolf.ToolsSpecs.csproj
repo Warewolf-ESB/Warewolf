@@ -236,25 +236,15 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Copy\CopySteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Create\Create.feature.cs">
-      <DependentUpon>Create.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Create\Create1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Create.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Create\CreateSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Delete\Delete.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delete.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Delete\Delete1.feature.cs">
-      <DependentUpon>Delete.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
@@ -321,11 +311,6 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Zip\ZipSteps.cs" />
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach.feature.cs">
-      <DependentUpon>ForEach.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>

@@ -50,12 +50,12 @@ Scenario Outline: Execute a foreach over a tool using a recordset with invalid
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed	
 	Then the foreach executes 0 times
-	And the execution has '<error>' error
+	And the execution has 'AN' error
 	Examples: 
-	| type        | input        | error                                                                       |
-	| InRecordset | [[rs()]]+1   | Only recordset names can be used with * in Recordset. Invalid: [[rs()]]+1   |
-	| InRecordset | [[rs().a]]   | Only recordset names can be used with * in Recordset. Invalid: [[rs().a]]   |
-	| InRecordset | [[rs()]]#$%3 | Only recordset names can be used with * in Recordset. Invalid: [[rs()]]#$%3 |
+	| type        | input        | error   |
+	| InRecordset | [[rs()]]+1   | Failure |
+	| InRecordset | [[rs().a]]   | Failure |
+	| InRecordset | [[rs()]]#$%3 | Failure |
 
 
 Scenario: Execute a foreach over a tool for range 0 to 0
@@ -566,7 +566,7 @@ Scenario: Execute a foreach using In Recordset with incorrect recordset
 	And I have selected the foreach type as "InRecordset" and used "[[rs()]%^&]"	
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed	
-	Then the foreach executes 4 times
+	Then the foreach executes 0 times
 	And the execution has "AN" error
 	And the debug inputs as
 	|                | Recordset           |
