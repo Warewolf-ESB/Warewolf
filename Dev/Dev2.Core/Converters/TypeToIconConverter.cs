@@ -12,7 +12,6 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Converters
 {
@@ -23,9 +22,7 @@ namespace Dev2.Converters
             object iconValue = Application.Current.Resources["NoIcon"];
             if (value != null)
             {
-                ResourceType resourceType;
-                Enum.TryParse(value.ToString(), true, out resourceType);
-                if (resourceType == ResourceType.WorkflowService)
+                if (value.ToString() == "WorkflowService")
                 {
                     iconValue = Application.Current.Resources["WorkflowIcon"];
                 }

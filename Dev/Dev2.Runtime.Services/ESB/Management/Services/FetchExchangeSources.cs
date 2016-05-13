@@ -4,7 +4,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -26,9 +25,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
 
             // ReSharper disable MaximumChainedReferences
-            var list = Resources.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(a => a.ResourceType == ResourceType.ExchangeSource).Select(a =>
+            var list = Resources.GetResourceList<ExchangeSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var res = Resources.GetResource<ExchangeSource>(GlobalConstants.ServerWorkspaceID, a.ResourceID);
+                var res = a as ExchangeSource;
                 if (res != null)
                 {
                     return new ExchangeSourceDefinition()

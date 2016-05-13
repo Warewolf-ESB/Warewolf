@@ -10,7 +10,6 @@
 */
 
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -23,7 +22,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             return base.DeserializeService(args);
         }
 
-        public new Service DeserializeService(XElement xml, ResourceType resourceType)
+        public new Service DeserializeService(XElement xml, string resourceType)
         {
             return base.DeserializeService(xml, resourceType);
         }

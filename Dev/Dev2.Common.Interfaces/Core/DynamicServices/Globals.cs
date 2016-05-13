@@ -141,7 +141,7 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         /// <summary>
         ///     An assembly that provides custom functionality e.g. Ftp, File Formatting, Workflow Invocation
         /// </summary>
-        Plugin,
+        PluginSource,
 
         /// <summary>
         ///     Indicates an unknown source type. This will not compile.

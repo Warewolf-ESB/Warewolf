@@ -17,7 +17,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -77,7 +76,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var tempResource = new Resource(result.ToXElement());
                         var resource = tempResource;
 
-                        if (resource.ResourceType == ResourceType.DbSource)
+                        if (resource.ResourceType == "DbSource")
                         {
                             res.Message.Append(result);
                         }

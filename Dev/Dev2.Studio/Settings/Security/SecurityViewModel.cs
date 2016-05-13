@@ -26,7 +26,6 @@ using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Warewolf.Studio.AntiCorruptionLayer;
@@ -212,7 +211,7 @@ namespace Dev2.Settings.Security
             }
 
             permission.ResourceID = resourceModel.ResourceId;
-            permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType.GetTreeDescription(), resourceModel.ResourcePath, resourceModel.ResourceName);
+            permission.ResourceName = string.Format("{0}\\{1}\\{2}", resourceModel.ResourceType, resourceModel.ResourcePath, resourceModel.ResourceName);
         }
 
         IExplorerTreeItem PickResource(WindowsGroupPermission permission)

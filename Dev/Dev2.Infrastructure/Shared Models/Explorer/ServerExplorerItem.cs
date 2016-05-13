@@ -11,12 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Common.Serialization;
-using Newtonsoft.Json;
 
 namespace Dev2.Explorer
 {
@@ -26,7 +23,7 @@ namespace Dev2.Explorer
         {
             Children = new List<IExplorerItem>();
         }
-        public ServerExplorerItem(string displayName, Guid resourceId, ResourceType resourceType,
+        public ServerExplorerItem(string displayName, Guid resourceId, string resourceType,
                                   IList<IExplorerItem> children, Permissions permissions, string resourcePath, string inputs, string outputs)
         {
             DisplayName = displayName;
@@ -42,6 +39,36 @@ namespace Dev2.Explorer
         public Guid ResourceId { get; set; }
         public Guid ServerId { get; set; }
         public string WebserverUri { get; set; }
+        public bool IsSource
+        {
+            get;
+            set;
+        }
+        public bool IsService
+        {
+            get;
+            set;
+        }
+        public bool IsFolder
+        {
+            get;
+            set;
+        }
+        public bool IsReservedService
+        {
+            get;
+            set;
+        }
+        public bool IsServer
+        {
+            get;
+            set;
+        }
+        public bool IsResourceVersion
+        {
+            get;
+            set;
+        }
 
         public string Inputs
         {
@@ -55,8 +82,7 @@ namespace Dev2.Explorer
             set;
         }
 
-        [JsonConverter(typeof(ResourceTypeConvertor))]
-        public ResourceType ResourceType { get; set; }
+        public string ResourceType { get; set; }
 
         public IList<IExplorerItem> Children { get; set; }
         public Permissions Permissions { get; set; }

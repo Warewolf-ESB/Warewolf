@@ -16,7 +16,7 @@ namespace Dev2.Common.Interfaces.Infrastructure
 {
     public interface IExplorerServerResourceRepository : IExplorerResourceRepository
     {
-        IExplorerItem Load(ResourceType type, string filter);
+        IExplorerItem Load(string type, string filter);
         IExplorerItem Load(string filter);
         void MessageSubscription(IExplorerRepositorySync sync);
 

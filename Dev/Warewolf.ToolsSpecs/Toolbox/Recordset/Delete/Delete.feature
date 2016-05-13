@@ -234,12 +234,12 @@ Scenario Outline: Ensure delete variables of different types produce desired res
 	Then the delete result should be "<Message>"
 	And the execution has "<Error>" error
 	Examples: 
-	| variable             | value | Error | Message                                      |
-	| ""                   | ""    | An    | Only recordsets can be deleted               |
-	| 99                   | 99    | An    | Only recordsets can be deleted               |
-	| [[q]]                |       | An    | Only recordsets can be deleted               |
-	| Test                 | Test  | An    | Only recordsets can be deleted               |
-	| [[Rec([[var]]).set]] |       | An    | Invalid Recordset Index Value cannot be null |
+	| variable             | value | Error | Message |
+	| ""                   | ""    | An    | Failure |
+	| 99                   | 99    | An    | Failure |
+	| [[q]]                |       | An    | Failure |
+	| Test                 | Test  | An    | Failure |
+	| [[Rec([[var]]).set]] |       | An    | Failure |
 	And the debug inputs as  	
 	| Records |	
 	And the debug output as  

@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
                 _searchText = value;
-                Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == ResourceType.Folder || a.ResourceType == ResourceType.WorkflowService));
+                Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == "Folder" || a.ResourceType == "WorkflowService"));
 
                 OnPropertyChanged(() => SearchText);
             }
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (FilterByType)
                         {
-                            Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == ResourceType.Folder || a.ResourceType == ResourceType.WorkflowService));
+                            Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == "Folder" || a.ResourceType == "WorkflowService"));
                         }
                         else
                         {
@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
                     else
                     {
                         if (FilterByType)
-                            Environments.First().Filter(a => a.ResourceType == ResourceType.Folder || a.ResourceType == ResourceType.WorkflowService);
+                            Environments.First().Filter(a => a.ResourceType == "Folder" || a.ResourceType == "WorkflowService");
                     }
                 }
             });

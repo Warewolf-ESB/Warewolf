@@ -7,7 +7,6 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
@@ -52,7 +51,7 @@ namespace Warewolf.Studio.ViewModels
             _controller = CustomContainer.Get<IPopupController>();
             Server = server;
             _children = new ObservableCollection<IExplorerItemViewModel>();
-            NewCommand = new DelegateCommand<ResourceType?>(type =>
+            NewCommand = new DelegateCommand<string>(type =>
             {
                 shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
                 shellViewModel.SetActiveServer(Server);
@@ -70,7 +69,6 @@ namespace Warewolf.Studio.ViewModels
                 {
                     await Load();
                 }
-
             });
             IsServerIconVisible = true;
             SelectAction = selectAction ?? (a => { });
@@ -88,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateFolder = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
             CreateFolderCommand = new DelegateCommand(CreateFolder);
             Parent = null;
-            ResourceType = ResourceType.ServerSource;
+            ResourceType = "ServerSource";
             ResourcePath = "";
             ResourceName = DisplayName;
             CanShowServerVersion = true;
@@ -98,7 +96,6 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
-
         }
 
         public IShellViewModel ShellViewModel
@@ -121,10 +118,9 @@ namespace Warewolf.Studio.ViewModels
             int total = 0;
             foreach (var explorerItemModel in Children)
             {
-                if (explorerItemModel.ResourceType != ResourceType.Version &&
-                   explorerItemModel.ResourceType != ResourceType.Message)
+                if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
                 {
-                    if (explorerItemModel.ResourceType == ResourceType.Folder)
+                    if (explorerItemModel.IsFolder)
                     {
                         total += explorerItemModel.ChildrenCount;
                     }
@@ -172,7 +168,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 ResourceName = name,
                 ResourceId = id,
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
+                IsFolder = true,
                 ResourcePath = name,
                 IsSelected = true,
                 IsRenaming = true
@@ -270,6 +267,38 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
+        public bool IsSource
+        {
+            get;
+            set;
+        }
+        public bool IsService
+        {
+            get;
+            set;
+        }
+        public bool IsFolder
+        {
+            get;
+            set;
+        }
+        public bool IsReservedService
+        {
+            get;
+            set;
+        }
+        public bool IsServer
+        {
+            get;
+            set;
+        }
+        public bool IsResourceVersion
+        {
+            get;
+            set;
+        }
+
 
         public void SelectItem(string path, Action<IExplorerItemViewModel> foundAction)
         {
@@ -386,14 +415,14 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
-        public ResourceType ResourceType { get; set; }
+        public string ResourceType { get; set; }
         public string ResourcePath { get; set; }
         public bool CanDrop { get; set; }
         public bool CanDrag
         {
             get
             {
-                return _canDrag && (ResourceType == ResourceType.Server || ResourceType == ResourceType.ServerSource) && string.IsNullOrWhiteSpace(ResourcePath);
+                return _canDrag && (IsServer || ResourceType == "ServerSource") && string.IsNullOrWhiteSpace(ResourcePath);
             }
             set
             {
@@ -528,7 +557,7 @@ namespace Warewolf.Studio.ViewModels
                 _isResourceChecked = value ?? false;
 
                 OnPropertyChanged(() => IsResourceChecked);
-                AsList().Where(o => (o.ResourceType == ResourceType.Folder && o.ChildrenCount >= 1) || o.ResourceType != ResourceType.Folder).Apply(a => a.IsResourceUnchecked = value ?? false);
+                AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceUnchecked = value ?? false);
                 if (SelectAll != null)
                     SelectAll();
             }
@@ -631,9 +660,7 @@ namespace Warewolf.Studio.ViewModels
                 finally
                 {
                     IsLoading = false;
-
                 }
-
             }
             return false;
         }
@@ -721,7 +748,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void RemoveItem(IExplorerItemViewModel vm)
         {
-            if (vm.ResourceType != ResourceType.Server)
+            if (!vm.IsServer)
             {
                 var res = AsList(_children).FirstOrDefault(a => a.Children != null && a.Children.Any(b => b.ResourceId == vm.ResourceId));
                 if (res != null)
@@ -781,7 +808,12 @@ namespace Warewolf.Studio.ViewModels
                     ResourcePath = explorerItem.ResourcePath,
                     AllowResourceCheck = isDeploy,
                     ShowContextMenu = !isDeploy,
-   
+                    IsService =  explorerItem.IsService,
+                    IsFolder = explorerItem.IsFolder,
+                    IsSource = explorerItem.IsSource,
+                    IsReservedService = explorerItem.IsReservedService,
+                    IsResourceVersion = explorerItem.IsResourceVersion,
+                    IsServer = explorerItem.IsServer
                     //Inputs = explorerItem.Inputs,
                     //Outputs = explorerItem.Outputs
                 };
@@ -835,7 +867,12 @@ namespace Warewolf.Studio.ViewModels
                     ResourcePath = explorerItem.ResourcePath,
                     AllowResourceCheck = isDeploy,
                     ShowContextMenu = !isDeploy,
- 
+                    IsService = explorerItem.IsService,
+                    IsFolder = explorerItem.IsFolder,
+                    IsSource = explorerItem.IsSource,
+                    IsReservedService = explorerItem.IsReservedService,
+                    IsResourceVersion = explorerItem.IsResourceVersion,
+                    IsServer = explorerItem.IsServer
                     //Inputs = explorerItem.Inputs,
                     //Outputs = explorerItem.Outputs
                 };

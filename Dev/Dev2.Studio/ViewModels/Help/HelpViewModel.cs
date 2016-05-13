@@ -159,11 +159,11 @@ namespace Dev2.Studio.ViewModels.Help
             HelpViewDisposed = true;
         }
 
-        public Common.Interfaces.Data.ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
-                return Common.Interfaces.Data.ResourceType.StartPage;
+                return "StartPage";
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Warewolf.Studio.ViewModels
@@ -25,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shell.NewResource(ResourceType.ExchangeSource.ToString(), "");
+            _shell.NewResource("ExchangeSource", "");
         }
 
         public void EditSource(IExchangeSource selectedSource)

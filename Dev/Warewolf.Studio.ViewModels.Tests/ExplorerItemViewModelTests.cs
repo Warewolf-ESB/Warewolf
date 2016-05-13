@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Versioning;
@@ -109,7 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOpenCommand()
         {
             //arrange
-            _target.ResourceType = ResourceType.DbSource;//(ResourceType == ResourceType.DbService PluginService WebService)
+            _target.ResourceType = "DbSource";//(ResourceType == ResourceType.DbService PluginService WebService)
             _target.ResourceId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
@@ -127,7 +126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOpenCommandDbService()
         {
             //arrange
-            _target.ResourceType = ResourceType.DbService;
+            _target.ResourceType = "DbService";
             //(ResourceType == ResourceType.DbService PluginService WebService)
             _target.ResourceId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
@@ -146,7 +145,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOpenCommandPluginService()
         {
             //arrange
-            _target.ResourceType = ResourceType.PluginService;
+            _target.ResourceType = "PluginService";
             //(ResourceType == ResourceType.DbService PluginService WebService)
             _target.ResourceId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
@@ -165,7 +164,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOpenCommandWebService()
         {
             //arrange
-            _target.ResourceType = ResourceType.WebService;
+            _target.ResourceType = "WebService";
             //(ResourceType == ResourceType.DbService PluginService WebService)
             _target.ResourceId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
@@ -214,17 +213,17 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.ResourcePath = Guid.NewGuid().ToString();
-            var resourceType = ResourceType.DbService;
+            const string ResourceType = "DbService";
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
             //act
-            _target.NewCommand.Execute(resourceType);
-            Assert.IsTrue(_target.NewCommand.CanExecute(resourceType));
+            _target.NewCommand.Execute(ResourceType);
+            Assert.IsTrue(_target.NewCommand.CanExecute(ResourceType));
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
-            _shellViewModelMock.Verify(it => it.NewResource(resourceType.ToString(), _target.ResourcePath));
+            _shellViewModelMock.Verify(it => it.NewResource(ResourceType.ToString(), _target.ResourcePath));
         }
 
         [TestMethod]
@@ -263,7 +262,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestDeleteCommandResourceTypeVersion()
         {
             //arrange
-            _target.ResourceType = ResourceType.Version;
+            _target.ResourceType = "Version";
+            _target.IsResourceVersion = true;
             _target.ResourceName = Guid.NewGuid().ToString();
             _explorerTreeItemMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() { _target });
@@ -285,7 +285,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             // var explorerRepositoryMock = new Mock<IExplorerRepository>();
-            _target.ResourceType = ResourceType.Version;
+            _target.ResourceType = "Version";
+            _target.IsResourceVersion = true;
             //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             //serverMock.SetupGet(it => it.ExplorerRepository).Returns(explorerRepositoryMock.Object);
             _popupControllerMock.Setup(it => it.ShowDeleteVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.No);
@@ -298,32 +299,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Delete(It.IsAny<IExplorerItemViewModel>()), Times.Never);
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
             //assert
+            //DeleteVersion();
         }
 
-        [TestMethod]
-        public void TestDeleteCommandResourceTypeDbServiceDeleteSuccess()
-        {
-            //arrange
-            var environmentModelMock = new Mock<IEnvironmentModel>();
-            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(true);
-            _target.EnvironmentModel = environmentModelMock.Object;
-            _target.ResourceType = ResourceType.DbService;
-            _target.ResourceId = Guid.NewGuid();
-            _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
-            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
-
-            //act
-            _target.DeleteCommand.Execute(null);
-            Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.ID));
-            _explorerRepositoryMock.Verify(it => it.Delete(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
-            studioManagerUpdateMock.Verify(it => it.FireServerSaved(), Times.Never);
-        }
 
         [TestMethod]
         public void TestDeleteCommandResourceTypeServerSourceDeleteSuccess()
@@ -333,8 +311,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(true);
             _target.EnvironmentModel = environmentModelMock.Object;
-            _target.ResourceType = ResourceType.ServerSource;
+            _target.ResourceType = "ServerSource";
             _target.ResourceId = Guid.NewGuid();
+            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
@@ -358,8 +337,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(true);
             _target.EnvironmentModel = environmentModelMock.Object;
-            _target.ResourceType = ResourceType.Server;
+            _target.ResourceType = "Server";
+            _target.IsServer = true;
             _target.ResourceId = Guid.NewGuid();
+            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
@@ -375,31 +356,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             studioManagerUpdateMock.Verify(it => it.FireServerSaved());
         }
 
-        [TestMethod]
-        public void TestDeleteCommandResourceTypeDbServiceDeleteFailed()
-        {
-            //arrange
-            var environmentModelMock = new Mock<IEnvironmentModel>();
-            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(false);
-            _target.EnvironmentModel = environmentModelMock.Object;
-            _target.ResourceType = ResourceType.DbService;
-            _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
-
-            //act
-            _target.DeleteCommand.Execute(null);
-            Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
-
-            //assert
-            _explorerRepositoryMock.Verify(it => it.Delete(_target));
-            _shellViewModelMock.Verify(it => it.ShowDependencies(_target.ResourceId, _target.Server));
-        }
-
+        
         [TestMethod]
         public void TestOpenVersionCommandResourceTypeVersion()
         {
             //arrange
-            _target.ResourceType = ResourceType.Version;
+            _target.ResourceType = "Version";
+            _target.IsResourceVersion = true;
             var versionInfoMock = new Mock<IVersionInfo>();
             _target.VersionInfo = versionInfoMock.Object;
             _explorerTreeItemMock.Setup(it => it.ResourceId).Returns(Guid.NewGuid());
@@ -413,27 +376,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestOpenVersionCommandResourceTypeVersionOnDoubleClick()
-        {
-            //arrange
-            _target.ResourceType = ResourceType.Version;
-            var versionInfoMock = new Mock<IVersionInfo>();
-            _target.VersionInfo = versionInfoMock.Object;
-            _explorerTreeItemMock.Setup(it => it.ResourceId).Returns(Guid.NewGuid());
-
-            //act
-            _target.OpenCommand.Execute(null);
-            Assert.IsTrue(_target.OpenVersionCommand.CanExecute(null));
-
-            //assert
-            _shellViewModelMock.Verify(it => it.OpenVersion(_target.ResourceId, _target.VersionInfo));
-        }
-
-        [TestMethod]
         public void TestOpenVersionCommandDbService()
         {
             //arrange
-            _target.ResourceType = ResourceType.DbService;
+            _target.ResourceType = "DbService";
 
             //act
             _target.OpenVersionCommand.Execute(null);
@@ -448,7 +394,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
 
             //act
             _target.Expand.Execute(1);
@@ -463,8 +409,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.Folder;
-
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
             //act
             _target.Expand.Execute(2);
             Assert.IsTrue(_target.Expand.CanExecute(2));
@@ -478,7 +424,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.WorkflowService;
+            _target.ResourceType = "WorkflowService";
 
             //act
             _target.Expand.Execute(1);
@@ -493,7 +439,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = true;
-            _target.ResourceType = ResourceType.WorkflowService;
+            _target.ResourceType = "WorkflowService";
 
             //act
             _target.Expand.Execute(2);
@@ -508,7 +454,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
@@ -537,7 +484,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder", It.IsAny<Guid>()));
             var createdFolder = _target.Children.Single();
             Assert.AreEqual("New Folder", createdFolder.ResourceName);
-            Assert.AreEqual(ResourceType.Folder, createdFolder.ResourceType);
+            Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
@@ -564,7 +511,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.DbService;
+            _target.ResourceType = "DbService";
             _target.Children.Clear();
 
             //act
@@ -580,7 +527,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestDeleteVersionCommand()
         {
             //arrange
-            _target.ResourceType = ResourceType.Version;
+            _target.ResourceType = "Version";
             _target.ResourceName = Guid.NewGuid().ToString();
             _explorerTreeItemMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() { _target });
@@ -673,8 +620,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanDropGetFolder()
         {
             //arrange
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
             _target.CanDrop = true;
+            _target.IsFolder = true;
             //act
             var actual = _target.CanDrop;
             //assert
@@ -685,7 +633,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanDropGetOther()
         {
             //arrange
-            _target.ResourceType = ResourceType.Server;
+            _target.ResourceType = "Server";
             _target.CanDrop = true;
             //act
             var actual = _target.CanDrop;
@@ -714,8 +662,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanDragGetFolder()
         {
             //arrange
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
             _target.CanDrag = true;
+            _target.IsFolder = true;
             //act
             var actual = _target.CanDrag;
             //assert
@@ -726,7 +675,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanDragGetOther()
         {
             //arrange
-            _target.ResourceType = ResourceType.Server;
+            _target.ResourceType = "Server";
             _target.CanDrag = true;
             //act
             var actual = _target.CanDrag;
@@ -836,7 +785,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(version.AllowResourceCheck);
             Assert.IsTrue(version.IsResourceChecked.HasValue && !version.IsResourceChecked.Value);
             Assert.AreEqual(_target.CanDelete, version.CanDelete);
-            Assert.AreEqual(ResourceType.Version, version.ResourceType);
+            Assert.AreEqual("Version", version.ResourceType);
             Assert.IsTrue(_target.IsExpanded);
             Assert.IsTrue(isAreVersionsVisibleChanged);
             Assert.IsTrue(isChildrenChanged);
@@ -1003,13 +952,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestActivityName()
         {
             //assert
-            _target.ResourceType = ResourceType.DbService;
+            _target.ResourceType = "DbService";
             Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfDatabaseActivity, Dev2.Activities"));
-            _target.ResourceType = ResourceType.PluginService;
+            _target.ResourceType = "PluginService";
             Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfPluginActivity, Dev2.Activities"));
-            _target.ResourceType = ResourceType.WebService;
+            _target.ResourceType = "WebService";
             Assert.IsTrue(_target.ActivityName.StartsWith("Dev2.Activities.DsfWebserviceActivity, Dev2.Activities"));
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
             Assert.IsTrue(_target.ActivityName.StartsWith("Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity"));
         }
 
@@ -1018,14 +967,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var childMockVersion = new Mock<IExplorerItemViewModel>();
-            childMockVersion.SetupGet(it => it.ResourceType).Returns(ResourceType.Version);
+            childMockVersion.SetupGet(it => it.ResourceType).Returns("Version");
             var childMockMessage = new Mock<IExplorerItemViewModel>();
-            childMockMessage.SetupGet(it => it.ResourceType).Returns(ResourceType.Message);
+            childMockMessage.SetupGet(it => it.ResourceType).Returns("Message");
             var childMockFolder = new Mock<IExplorerItemViewModel>();
-            childMockFolder.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childMockFolder.SetupGet(it => it.ResourceType).Returns("Folder");
             childMockFolder.SetupGet(it => it.ChildrenCount).Returns(2);
             var childMockServer = new Mock<IExplorerItemViewModel>();
-            childMockServer.SetupGet(it => it.ResourceType).Returns(ResourceType.Server);
+            childMockServer.SetupGet(it => it.ResourceType).Returns("Server");
 
             _target.Children.Add(childMockVersion.Object);
             _target.Children.Add(childMockMessage.Object);
@@ -1080,9 +1029,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var isChildrenChanged = false;
             var childMock = new Mock<IExplorerItemViewModel>();
             childMock.SetupGet(it => it.IsVisible).Returns(false);
-            childMock.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childMock.SetupGet(it => it.ResourceType).Returns("Folder");
             _target.ResourceName = "someFilter";
-            _target.ResourceType = ResourceType.Message;
+            _target.ResourceType = "Message";
             _target.Children.Add(childMock.Object);
             _target.PropertyChanged += (sender, e) =>
             {
@@ -1103,8 +1052,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var isChildrenChanged = false;
             var childMock = new Mock<IExplorerItemViewModel>();
             childMock.SetupGet(it => it.IsVisible).Returns(true);
-            childMock.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
-            _target.ResourceType = ResourceType.Message;
+            childMock.SetupGet(it => it.ResourceType).Returns("Folder");
+            _target.ResourceType = "Message";
             _target.ResourceName = "someFilter";
             _target.Children.Add(childMock.Object);
             _target.PropertyChanged += (sender, e) =>
@@ -1126,8 +1075,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var isChildrenChanged = false;
             var childMock = new Mock<IExplorerItemViewModel>();
             childMock.SetupGet(it => it.IsVisible).Returns(false);
-            childMock.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
-            _target.ResourceType = ResourceType.Message;
+            childMock.SetupGet(it => it.ResourceType).Returns("Folder");
+            _target.ResourceType = "Message";
             _target.ResourceName = "someFilter";
             _target.Children.Add(childMock.Object);
             _target.PropertyChanged += (sender, e) =>
@@ -1199,7 +1148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.DbService;
+            _target.ResourceType = "DbService";
             _target.Children.Clear();
 
             //act
@@ -1215,7 +1164,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
             _target.Children.Clear();
             _target.AllowResourceCheck = true;
             _target.IsResourceChecked = true;
@@ -1243,7 +1193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.CreateFolder(_target.ResourcePath, "New Folder", It.IsAny<Guid>()));
             var createdFolder = _target.Children.Single();
             Assert.AreEqual("New Folder", createdFolder.ResourceName);
-            Assert.AreEqual(ResourceType.Folder, createdFolder.ResourceType);
+            Assert.AreEqual("Folder", createdFolder.ResourceType);
             Assert.AreEqual(_target.AllowResourceCheck, createdFolder.AllowResourceCheck);
             Assert.AreEqual(_target.IsResourceChecked, createdFolder.IsResourceChecked);
             Assert.AreEqual(_target.CanCreateFolder, createdFolder.CanCreateFolder);
@@ -1273,7 +1223,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var childMock = new Mock<IExplorerItemViewModel>();
             childMock.SetupGet(it => it.ResourceName).Returns(newFolderName);
             _target.IsExpanded = false;
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
             _target.Children.Clear();
             _target.Children.Add(childMock.Object);
 
@@ -1344,7 +1295,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var propertyChangedRaised = false;
             var child = new Mock<IExplorerItemViewModel>();
             child.SetupGet(it => it.IsVisible).Returns(true);
-            child.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            child.SetupGet(it => it.ResourceType).Returns("Folder");
             _target.Children.Add(child.Object);
             Func<IExplorerItemViewModel, bool> filter = (item) => false;
             _target.PropertyChanged += (sender, e) => propertyChangedRaised = e.PropertyName == "Children";
@@ -1362,7 +1313,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var propertyChangedRaised = false;
             _target.ResourceName = Guid.NewGuid().ToString();
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
 #pragma warning disable 252,253
             Func<IExplorerItemViewModel, bool> filter = (item) => item == _target;
 #pragma warning restore 252,253
@@ -1417,7 +1368,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var permisson = new Mock<IWindowsGroupPermission>();
 
             _target.ResourceId = Guid.NewGuid();
-            _target.ResourceType = ResourceType.WorkflowService;
+            _target.ResourceType = "WorkflowService";
+            _target.IsService = true;
            permisson.SetupGet(it => it.ResourceID).Returns(_target.ResourceId);
             var grpPermissions = new List<IWindowsGroupPermission>() {permisson.Object};
             permisson.SetupGet(it => it.Contribute).Returns(true);
@@ -1451,7 +1403,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var permisson = new Mock<IWindowsGroupPermission>();
 
             _target.ResourceId = Guid.NewGuid();
-            _target.ResourceType = ResourceType.WorkflowService;
+            _target.ResourceType = "WorkflowService";
+            _target.IsService = true;
             permisson.SetupGet(it => it.ResourceID).Returns(Guid.Empty);
             permisson.SetupGet(it => it.IsServer).Returns(true);
             var grpPermissions = new List<IWindowsGroupPermission>() { permisson.Object };
@@ -1484,8 +1437,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
 
-            _target.ResourceType = ResourceType.Folder;
-
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
             //act
             _target.SetPermissions(null);
             //assert
@@ -1498,7 +1451,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
 
-            _target.ResourceType = ResourceType.WorkflowService;
+            _target.ResourceType = "WorkflowService";
 
             //act
             _target.SetPermissions(null, true);
@@ -1525,7 +1478,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var movedItem = new Mock<IExplorerTreeItem>();
             var childDestItem = new Mock<IExplorerItemViewModel>();
             _target.ResourceName = "someName";
-            _target.ResourceType = ResourceType.EmailSource;
+            _target.ResourceType = "EmailSource";
             childDestItem.SetupGet(it => it.ResourceName).Returns(_target.ResourceName);
             movedItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
             {
@@ -1543,15 +1496,16 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns(ResourceType.Folder);
+            destinationMock.Setup(it => it.ResourceType).Returns("Folder");
             var currentChildrenMock = new Mock<IExplorerItemViewModel>();
             currentChildrenMock.SetupGet(it => it.ResourceName).Returns("someResourceName");
             var childDestItem = new Mock<IExplorerItemViewModel>();
             _target.ResourceName = "someName";
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
+            _target.IsFolder = true;
             _target.Children.Add(currentChildrenMock.Object);
             childDestItem.SetupGet(it => it.ResourceName).Returns(_target.ResourceName);
-            childDestItem.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
             childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
             childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
@@ -1574,16 +1528,16 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns(ResourceType.Folder);
+            destinationMock.Setup(it => it.ResourceType).Returns("Folder");
             destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
             var currentChildrenMock = new Mock<IExplorerItemViewModel>();
             currentChildrenMock.SetupGet(it => it.ResourceName).Returns("someResourceName");
             var childDestItem = new Mock<IExplorerItemViewModel>();
             _target.ResourceName = "someName";
-            _target.ResourceType = ResourceType.Folder;
+            _target.ResourceType = "Folder";
             _target.Children.Add(currentChildrenMock.Object);
             childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
-            childDestItem.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
             childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
             childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
@@ -1609,11 +1563,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns(ResourceType.ServerSource);
+            destinationMock.Setup(it => it.ResourceType).Returns("ServerSource");
             destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
             var childDestItem = new Mock<IExplorerItemViewModel>();
             childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
-            childDestItem.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
             childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
             childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
@@ -1621,7 +1575,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 childDestItem.Object
             });
             _target.ResourceName = "someName";
-            _target.ResourceType = ResourceType.WebSource;
+            _target.ResourceType = "WebSource";
             
             var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
 
@@ -1639,12 +1593,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns(ResourceType.DropboxSource);
+            destinationMock.Setup(it => it.ResourceType).Returns("DropboxSource");
             destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
             destinationMock.SetupGet(it => it.Parent).Returns((IExplorerTreeItem)null);
             var childDestItem = new Mock<IExplorerItemViewModel>();
             childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
-            childDestItem.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
             childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
             childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             destinationMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>()
@@ -1652,7 +1606,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 childDestItem.Object
             });
             _target.ResourceName = "someName";
-            _target.ResourceType = ResourceType.WebSource;
+            _target.ResourceType = "WebSource";
 
             var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
 
@@ -1670,11 +1624,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var destinationMock = new Mock<IExplorerTreeItem>();
-            destinationMock.Setup(it => it.ResourceType).Returns(ResourceType.ServerSource);
+            destinationMock.Setup(it => it.ResourceType).Returns("ServerSource");
             destinationMock.SetupGet(it => it.ResourcePath).Returns("someDestPath");
             var childDestItem = new Mock<IExplorerItemViewModel>();
             childDestItem.SetupGet(it => it.ResourceName).Returns("someOtherName");
-            childDestItem.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childDestItem.SetupGet(it => it.ResourceType).Returns("Folder");
             childDestItem.SetupGet(it => it.ResourcePath).Returns("somePath");
             childDestItem.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
             destinationMock.Setup(it => it.AddChild(_target)).Throws(new Exception());
@@ -1683,7 +1637,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 childDestItem.Object
             });
             _target.ResourceName = "someName";
-            _target.ResourceType = ResourceType.WebSource;
+            _target.ResourceType = "WebSource";
 
             var studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _explorerRepositoryMock.Setup(a => a.Move(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IExplorerTreeItem>())).Throws(new Exception());

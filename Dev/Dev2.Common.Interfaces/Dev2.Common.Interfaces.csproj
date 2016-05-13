@@ -153,7 +153,6 @@
     <Compile Include="Data\IResourceUpgrade.cs" />
     <Compile Include="Data\IResourceUpgrader.cs" />
     <Compile Include="Data\IUpgradePath.cs" />
-    <Compile Include="Data\ResourceType.cs" />
     <Compile Include="Data\TO\IErrorResultTO.cs" />
     <Compile Include="DB\IDatabaseService.cs" />
     <Compile Include="DB\IDataProviderSanitizer.cs" />
@@ -271,6 +270,7 @@
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IQueryManager.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IResourceSource.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />
     <Compile Include="ISharepointServerSource.cs" />

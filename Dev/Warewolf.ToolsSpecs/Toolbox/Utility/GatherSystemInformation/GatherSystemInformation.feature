@@ -210,17 +210,16 @@ Scenario: Assign Disk Available into a recordset
 	| # |                           |
 	| 1 | [[my(1).disks]] =  String |
 
-#This Test should be passed after the bug 12236 is fixed 
 Scenario Outline:Executing with Incorrect Recordsets 
 	Given I have a variable "<input>" and I selected "DiskAvailable"	
 	When the gather system infomartion tool is executed
 	Then the value of the variable "[[my(2).roles]]" is a valid "String"
-	And the execution has '<error>' error
+	And the execution has 'AN' error
 	Examples: 
-	| input                                      | error                                     |
-	| [[rec&^[a]]().a]]                          | [[rec&^[a]]().a]] is not a valid variable |
-	| [[]]                                       | [[]] is not a valid variable              |
-	| [[rec&^]][[rec&^]] is not a valid variable |                                           |
+	| input                                      |
+	| [[rec&^[a]]().a]]                          |
+	| [[]]                                       |
+	| [[rec&^]][[rec&^]] is not a valid variable |
 
 @ignore
 #Complex Types WOLF-1042

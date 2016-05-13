@@ -345,6 +345,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resource = new Mock<IResource>();
             resource.Setup(a => a.ResourceName).Returns("moon");
             resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder(ResourceOne));
+            resource.Setup(a => a.ResourceType).Returns("WorkflowService");
             file.Setup(a => a.ReadAllText(It.IsAny<string>())).Returns(ResourceOne);
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
 
@@ -363,7 +364,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
             cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "Unknown", null, false));
+            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService", null, false));
         }
 
 
