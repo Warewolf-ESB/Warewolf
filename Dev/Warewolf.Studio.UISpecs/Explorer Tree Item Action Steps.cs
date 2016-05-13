@@ -16,7 +16,7 @@ using TechTalk.SpecFlow;
 namespace Warewolf.Studio.UISpecs
 {
     [Binding]
-    public sealed class Explorer_Tree_Item_Action_Steps
+    public class Explorer_Tree_Item_Action_Steps
     {
         [When(@"I click ""(.*)"" in the explorer tree")]
         public void WhenIClickTheItemInTheExplorerTree(string path)
@@ -64,13 +64,13 @@ namespace Warewolf.Studio.UISpecs
             Mouse.StopDragging(getToTreeItem, new Point(140, 3));
         }
 
-        [Given("""(.*)"" exists in the explorer tree")]
-        [Then("""(.*)"" exists in the explorer tree")]
-        public void AssertExistsInTheDropdownList(string ListItem)
-        {
-            UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
-            Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
-        }
+        //[Given("""(.*)"" exists in the explorer tree")]
+        //[Then("""(.*)"" exists in the explorer tree")]
+        //public void AssertExistsInTheDropdownList(string ListItem)
+        //{
+        //    UITestControl getFromTreeItem = GetTreeItemFromPath(ListItem);
+        //    Assert.IsNotNull(getFromTreeItem, ListItem + " does not exist in the explorer tree");
+        //}
 
         [Given(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
         [Then(@"The View permission icon for ""(.*)"" exists in the explorer tree")]
