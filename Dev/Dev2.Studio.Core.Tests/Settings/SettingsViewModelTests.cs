@@ -355,7 +355,7 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
             Assert.AreEqual(@"There are duplicate server permissions, 
-    i.e Server permissions have been setup up with the same group twice. 
+    i.e. Server permissions have been setup up with the same group twice. 
     Please clear the duplicates before saving.", viewModel.Errors);
         }
 

@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using ChinhDo.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
@@ -108,11 +109,15 @@ namespace Dev2.Runtime.Hosting
                 }
 
                 // Use the parallel task library to process file system ;)
+                var resourceBaseType = typeof(IResourceSource);
+                var types = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(s => s.GetTypes())
+                    .Where(p => resourceBaseType.IsAssignableFrom(p));
+                var allTypes = types as IList<Type> ?? types.ToList();
                 streams.ForEach(currentItem =>
                 {
 
                     XElement xml = null;
-
                     try
                     {
                         xml = XElement.Load(currentItem.FileStream);
@@ -127,11 +132,22 @@ namespace Dev2.Runtime.Hosting
                     var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
-                        var resource = new Resource(xml)
+                        var typeName = xml.AttributeSafe("Type");
+                        Type type = null;
+                        if (allTypes.Count() != 0)
                         {
-                            FilePath = currentItem.FilePath
-                        };
-
+                            type=allTypes.FirstOrDefault(type1 => type1.Name == typeName);
+                        }
+                        Resource resource;
+                        if (type != null)
+                        {
+                            resource = (Resource)Activator.CreateInstance(type, xml);
+                        }
+                        else
+                        {
+                            resource = new Resource(xml);
+                        }
+                        resource.FilePath = currentItem.FilePath;
                         //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
                         if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
                         {

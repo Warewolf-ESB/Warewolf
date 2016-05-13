@@ -13,7 +13,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,7 +36,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             var service = new PluginService();
             Assert.AreEqual(Guid.Empty, service.ResourceID);
-            Assert.AreEqual(ResourceType.PluginService, service.ResourceType);
+            Assert.AreEqual("PluginService", service.ResourceType);
         }
 
         [TestMethod]
@@ -54,7 +53,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var service = new PluginService(xml);
             Assert.AreNotEqual(Guid.Empty, service.ResourceID);
             Assert.IsTrue(service.IsUpgraded);
-            Assert.AreEqual(ResourceType.PluginService, service.ResourceType);
+            Assert.AreEqual("PluginService", service.ResourceType);
         }
 
         [TestMethod]
@@ -166,7 +165,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public static void VerifyEmbeddedPluginService(PluginService service)
         {
             Assert.AreEqual(Guid.Parse("89098b76-ac11-40b2-b3e8-b175314cb3bb"), service.ResourceID);
-            Assert.AreEqual(ResourceType.PluginService, service.ResourceType);
+            Assert.AreEqual("PluginService", service.ResourceType);
             Assert.AreEqual(Guid.Parse("00746beb-46c1-48a8-9492-e2d20817fcd5"), service.Source.ResourceID);
             Assert.AreEqual("PluginTesterSource", service.Source.ResourceName);
             Assert.AreEqual("Dev2.Terrain.Mountain", service.Namespace);

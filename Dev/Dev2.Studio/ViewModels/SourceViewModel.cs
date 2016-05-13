@@ -76,7 +76,7 @@ namespace Dev2.ViewModels
 
 
 // ReSharper disable once UnusedMember.Global
-        public ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
@@ -84,10 +84,10 @@ namespace Dev2.ViewModels
                 {
                     if(ViewModel.Image != null)
                     {
-                        return ViewModel.Image.Value;
+                        return ViewModel.Image;
                     }
                 }
-                return ResourceType.Unknown;
+                return "Unknown";
             }
         }
 

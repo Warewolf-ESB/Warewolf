@@ -142,7 +142,6 @@
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="Reflection\GAC.cs" />
-    <Compile Include="Serialization\ResourceTypeConvertor.cs" />
     <Compile Include="SharepointSourceTo.cs" />
     <Compile Include="SingleApi.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
@@ -172,6 +171,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Serialization\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

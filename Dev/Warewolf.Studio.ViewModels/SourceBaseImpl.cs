@@ -1,5 +1,4 @@
 using System;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -10,7 +9,7 @@ namespace Warewolf.Studio.ViewModels
     {
         string _header;
 
-        protected SourceBaseImpl(ResourceType? image)
+        protected SourceBaseImpl(string image)
         {
             Image = image;
             PropertyChanged += (sender, args) =>
@@ -64,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
-        public ResourceType? Image { get; private set; }
+        public string Image { get; set; }
 
         #endregion
 

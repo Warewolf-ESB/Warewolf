@@ -105,7 +105,7 @@ namespace Dev2.Runtime.Hosting
         {
         }
 
-        public IExplorerItem Load(ResourceType type, Guid workSpaceId)
+        public IExplorerItem Load(string type, Guid workSpaceId)
         {
             return ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
         }
@@ -116,16 +116,12 @@ namespace Dev2.Runtime.Hosting
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to rename was null");
             }
-            switch (itemToRename.ResourceType)
+            if(itemToRename.ResourceType=="Folder")
             {
-                case ResourceType.Folder:
-                    return RenameFolder(itemToRename.ResourcePath, newName, workSpaceId);
-                default:
-                    {
-                        itemToRename.DisplayName = newName;
-                        return RenameExplorerItem(itemToRename, workSpaceId);
-                    }
+                return RenameFolder(itemToRename.ResourcePath, newName, workSpaceId);
             }
+            itemToRename.DisplayName = newName;
+            return RenameExplorerItem(itemToRename, workSpaceId);
 
         }
 
@@ -293,17 +289,13 @@ namespace Dev2.Runtime.Hosting
             {
                 return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to delete was null");
             }
-            switch (itemToDelete.ResourceType)
+            if (itemToDelete.ResourceType == "Folder")
             {
-                case ResourceType.Folder:
-                    {
-                        var deleteResult = DeleteFolder(itemToDelete.ResourcePath, true, workSpaceId);
-                        return deleteResult;
-                    }
-                default:
-                    ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType.ToString());
-                    return new ExplorerRepositoryResult(result.Status, result.Message);
+                var deleteResult = DeleteFolder(itemToDelete.ResourcePath, true, workSpaceId);
+                return deleteResult;
             }
+            ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
+            return new ExplorerRepositoryResult(result.Status, result.Message);            
         }
 
         public IExplorerRepositoryResult DeleteFolder(string path, bool deleteContents, Guid workSpaceId)
@@ -348,59 +340,48 @@ namespace Dev2.Runtime.Hosting
                 Dev2Logger.Info("Invalid Item");
                 return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to add was null");
             }
-            switch (itemToAdd.ResourceType)
+            var resourceType = itemToAdd.ResourceType;
+            if (resourceType == "Folder")
             {
-                case ResourceType.Folder:
-                    {
-                        try
-                        {
-                            string dir = string.Format("{0}\\", DirectoryStructureFromPath(itemToAdd.ResourcePath));
+                try
+                {
+                    string dir = string.Format("{0}\\", DirectoryStructureFromPath(itemToAdd.ResourcePath));
 
-                            if (Directory.Exists(dir))
-                            {
-                                return new ExplorerRepositoryResult(ExecStatus.Fail, "Requested folder already exists on server.");
-                            }
-                            Directory.CreateIfNotExists(dir);
-                           
-                            _sync.AddItemMessage(itemToAdd);
-                            return new ExplorerRepositoryResult(ExecStatus.Success, "");
-                        }
-                        catch (Exception err)
-                        {
-                            Dev2Logger.Error("Add Folder Error", err);
-                            return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
-                        }
-                    }
-                case ResourceType.DbSource:
-                case ResourceType.EmailSource:
-                case ResourceType.WebSource:
-                case ResourceType.ServerSource:
-                case ResourceType.PluginService:
-                case ResourceType.PluginSource:
-                case ResourceType.WebService:
-                case ResourceType.DbService:
-                case ResourceType.WorkflowService:
+                    if (Directory.Exists(dir))
                     {
-                        try
-                        {
-                            _sync.AddItemMessage(itemToAdd);
-             
-                            return new ExplorerRepositoryResult(ExecStatus.Success, "");
-                        }
-                        catch (Exception err)
-                        {
-                            Dev2Logger.Error("Add Item Error", err);
-                            return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
-                        }
+                        return new ExplorerRepositoryResult(ExecStatus.Fail, "Requested folder already exists on server.");
                     }
-                default:
-                    return new ExplorerRepositoryResult(ExecStatus.Fail, "Only user resources can be added from this repository");
+                    Directory.CreateIfNotExists(dir);
+
+                    _sync.AddItemMessage(itemToAdd);
+                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
+                }
+                catch (Exception err)
+                {
+                    Dev2Logger.Error("Add Folder Error", err);
+                    return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
+                }
             }
+            if (resourceType != null && resourceType != "Unknown" && resourceType != "ReservedService")
+            {
+                try
+                {
+                    _sync.AddItemMessage(itemToAdd);
+
+                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
+                }
+                catch (Exception err)
+                {
+                    Dev2Logger.Error("Add Item Error", err);
+                    return new ExplorerRepositoryResult(ExecStatus.Fail, err.Message);
+                }
+            }
+            return new ExplorerRepositoryResult(ExecStatus.Fail, "Only user resources can be added from this repository");
         }
 
         public IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
         {
-            if (itemToMove.ResourceType == ResourceType.Folder)
+            if (itemToMove.ResourceType == "Folder")
             {
                 if (!string.IsNullOrWhiteSpace(newPath))
                 {
@@ -412,7 +393,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 foreach(var explorerItem in itemToMove.Children)
                 {
-                    if(explorerItem.ResourceType==ResourceType.Folder)
+                    if(explorerItem.ResourceType=="Folder")
                     {
                         MoveItem(explorerItem, newPath, workSpaceId);
                     }
@@ -464,7 +445,7 @@ namespace Dev2.Runtime.Hosting
             return Path.Combine(EnvironmentVariables.ResourcePath, path);
         }
 
-        public IExplorerItem Load(ResourceType type, string filter)
+        public IExplorerItem Load(string type, string filter)
         {
             return ExplorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
         }

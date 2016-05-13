@@ -27,7 +27,6 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -1258,11 +1257,11 @@ namespace Dev2.Settings.Scheduler
 
         #endregion
 
-        public ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
-                return ResourceType.Scheduler;
+                return "Scheduler";
             }
         }
         public IServer Server

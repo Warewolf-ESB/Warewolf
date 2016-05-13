@@ -15,7 +15,6 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Services.Events;
@@ -87,13 +86,13 @@ namespace Dev2.Dialogs
             switch(_activityType)
             {
                 case enDsfActivityType.Workflow :
-                    environmentViewModel.Filter(a => a.ResourceType == ResourceType.Folder || a.ResourceType == ResourceType.WorkflowService);
+                    environmentViewModel.Filter(a => a.IsFolder || a.IsService);
                     break;
                 case enDsfActivityType.Source:
-                    environmentViewModel.Filter(a => a.ResourceType == ResourceType.Folder || (a.ResourceType >= ResourceType.DbSource && a.ResourceType < ResourceType.Folder));
+                    environmentViewModel.Filter(a => a.IsFolder || a.IsSource);
                     break;
                 case enDsfActivityType.Service:
-                    environmentViewModel.Filter(a => a.ResourceType == ResourceType.Folder || (a.ResourceType > ResourceType.WorkflowService && a.ResourceType <= ResourceType.DbService));
+                    environmentViewModel.Filter(a => a.IsFolder || a.IsService);
                     break;
                 
             }

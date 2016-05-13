@@ -19,7 +19,6 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
@@ -49,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker)
-            : base(ResourceType.PluginSource)
+            : base("PluginSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("updateManager", updateManager);
@@ -226,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
             ToItem();
         }
 
-        public ManagePluginSourceViewModel() : base(ResourceType.PluginSource)
+        public ManagePluginSourceViewModel() : base("PluginSource")
         {
           
         }
@@ -432,7 +431,7 @@ namespace Warewolf.Studio.ViewModels
             _updateManager.Save(source);
         }
 
-        public override sealed IPluginSource ToModel()
+        public sealed override IPluginSource ToModel()
         {
             if(_pluginSource == null)
             {
@@ -484,11 +483,8 @@ namespace Warewolf.Studio.ViewModels
 
         protected override void OnDispose()
         {
-            if (RequestServiceNameViewModel != null)
-            {
-                if (RequestServiceNameViewModel != null) RequestServiceNameViewModel.Dispose();
-
-            }
+            if (RequestServiceNameViewModel != null) 
+                RequestServiceNameViewModel.Dispose();
             Dispose(true);
         }
 

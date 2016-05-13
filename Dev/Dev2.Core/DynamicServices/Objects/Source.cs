@@ -132,7 +132,7 @@ namespace Dev2.DynamicServices
 
                     break;
 
-                case enSourceType.Plugin:
+                case enSourceType.PluginSource:
                     if (string.IsNullOrEmpty(AssemblyName))
                     {
                         WriteCompileError(Resources.CompilerError_MissingAssemblyName);
