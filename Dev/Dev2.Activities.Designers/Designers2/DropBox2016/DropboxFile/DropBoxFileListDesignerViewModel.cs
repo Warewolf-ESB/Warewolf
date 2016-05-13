@@ -1,4 +1,5 @@
-﻿using System.Activities.Presentation.Model;
+﻿using System;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -291,6 +292,10 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+            if (propertyName != null && propertyName.ToUpper() == "SelectedSource".ToUpper())
+            {
+                ToPath = String.Empty;
             }
         }
 
