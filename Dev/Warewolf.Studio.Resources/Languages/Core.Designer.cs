@@ -2350,6 +2350,26 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 
+        ///    
+        ///    NOTE: Dropbox has a max return count of 2000..
+        /// </summary>
+        public static string DropBoxFileListRecursive {
+            get {
+                return ResourceManager.GetString("DropBoxFileListRecursive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get the sub folders information as well..
+        /// </summary>
+        public static string DropBoxFileListRecursiveToolTip {
+            get {
+                return ResourceManager.GetString("DropBoxFileListRecursiveToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the operation that you wish to perform. Read from a file on Dropbox..
         /// </summary>
         public static string DropboxOperationToolTip {
@@ -2359,11 +2379,56 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the type of content you want to list.
+        ///   Looks up a localized string similar to Returns the files that are in the given folder, or all the files in the folder and all the files in the sub folders if Recursive is selected..
         /// </summary>
-        public static string DropboxReadFolderToolTip {
+        public static string DropboxReadFiles {
             get {
-                return ResourceManager.GetString("DropboxReadFolderToolTip", resourceCulture);
+                return ResourceManager.GetString("DropboxReadFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns a list of everything in the Dropbox folder provided or everything including sub folders if Recursive is selected..
+        /// </summary>
+        public static string DropboxReadFilesFolders {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get the files and folders.
+        /// </summary>
+        public static string DropboxReadFilesFoldersToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesFoldersToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Just get the files.
+        /// </summary>
+        public static string DropboxReadFilesToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFilesToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the folders that are in the given Dropbox folder, or all the folders in the folder and all the folders in the sub folders if Recursive is selected..
+        /// </summary>
+        public static string DropboxReadFolders {
+            get {
+                return ResourceManager.GetString("DropboxReadFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Just get the folders.
+        /// </summary>
+        public static string DropboxReadFoldersToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFoldersToolTip", resourceCulture);
             }
         }
         

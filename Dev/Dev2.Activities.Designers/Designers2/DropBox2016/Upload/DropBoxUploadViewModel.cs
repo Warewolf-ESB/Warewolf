@@ -19,6 +19,10 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ConvertPropertyToExpressionBody
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.Designers2.DropBox2016.Upload
 {

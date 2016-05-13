@@ -120,16 +120,16 @@ Scenario: Replace when negative recordset index is input
 	When the replace tool is executed
 	Then the execution has "AN" error
 
-#Scenario: Replace when undifined recordset index is input
-#	Given I have a sentence "[[L]]"
-#	And I want to find the characters "XXXX"
-#	And I want to replace them with "Parker"
-#	When the replace tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as 
-#	| In Field(s) | Find | Replace With | Error                                                 |
-#	| [[L]]       | XXXX | Parker       | The given variable is not represent in the dictionary |
-#
+Scenario: Replace when undifined recordset index is input
+	Given I have a sentence "[[L]]"
+	And I want to find the characters "XXXX"
+	And I want to replace them with "Parker"
+	When the replace tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as 
+	| In Field(s) | Find | Replace With | Error                                               |
+	| [[L]]       | XXXX | Parker       | The given variable is not present in the dictionary |
+
 
 Scenario Outline:  Ensuring recordsets work as a Result
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"

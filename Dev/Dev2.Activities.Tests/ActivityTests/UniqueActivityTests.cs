@@ -94,7 +94,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void ScalarExpectedUniqueAsCsv()
+        public void ScalarResultExpectedError()
         {
             const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
             const string DataListWithData = "<ADL>" +
@@ -118,7 +118,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[OutVar1]]");
-            const string Expected = "1,2,5";
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -127,9 +126,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
 
-            // remove test datalist ;)
-
-            Assert.AreEqual(Expected, actual, "Got " + actual + " expected " + Expected);
+            Assert.AreEqual(1,result.Environment.Errors.Count);
+            Assert.AreEqual("'Result' cannot be a scalar. Please use a recordset instead.", result.Environment.FetchErrors());
         }
 
 

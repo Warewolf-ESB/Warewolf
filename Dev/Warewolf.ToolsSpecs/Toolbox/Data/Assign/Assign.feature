@@ -386,7 +386,7 @@ Scenario: Assign values to different columns in a reccord set
     | 5 | [[e]] = 20        |
     | 6 | [[f]] = 30        |
 
-#Below 3 Scenarios should be passed after the bug 12131 is fixed
+
 Scenario: Assign a record set variable equal to a group calculation (sum)
 	Given I assign the value 30 to a variable "[[rec(1).a]]"
 	And I assign the value 30 to a variable "[[rec(1).b]]"
@@ -405,7 +405,7 @@ Scenario: Assign a record set variable equal to a group calculation (sum)
 	| 2 | [[rec(1).b]] = 30 |
 	| 3 | [[Result]] = 60   |
 
-#
+
 Scenario: Assign a variable equal to a group calculation with scalar and recordset
 	Given I assign the value 1 to a variable "[[a]]"
 	And I assign the value 2 to a variable "[[b]]"
@@ -429,8 +429,7 @@ Scenario: Assign a variable equal to a group calculation with scalar and records
 	| 3 | [[rec(1).a]] = 1 |
 	| 4 | [[rec(1).b]] = 2 |
 	| 5 | [[Result]] = 3   |
-#
-#The following 3 Scenarios should be passed after the bug 12132 is fixed
+
 Scenario: Evaluating recursive variable in a group calculation
 	Given I assign the value 1 to a variable "[[a]]"
 	And I assign the value "a" to a variable "[[b]]"
@@ -701,27 +700,26 @@ Scenario: Assign a variable to another variable
     | 3 | [[var]] = x |
 
 
-#Wolf - 485
-#Scenario: Assign values to recordsets
-#	Given I assign the value 1 to a variable "[[AB().a]]"	
-#	And I assign the value a to a variable "[[CD().a]]"
-#	And I assign the value b to a variable "[[CD().a]]"
-#	And I assign the value 2 to a variable "[[AB().a]]"	
-#	When the assign tool is executed
-#	Then the value of "[[AB(2).a]]" equals 2
-#	And the execution has "NO" error
-#	And the debug inputs as
-#	| # | Variable      | New Value |
-#	| 1 | [[AB().a]]  = | 1         |
-#	| 2 | [[CD().a]]  = | a         |
-#	| 3 | [[CD().a]]  = | b         |
-#	| 4 | [[AB().a]]  = | 2         |
-#	And the debug output as
-#    | # |                 |
-#    | 1 | [[AB(1).a]] = 1 |
-#    | 2 | [[CD(1).a]] = a |
-#    | 3 | [[CD(2).a]] = b |
-#    | 4 | [[AB(2).a]] = 2 |
+Scenario: Assign values to recordsets
+	Given I assign the value 1 to a variable "[[AB().a]]"	
+	And I assign the value a to a variable "[[CD().a]]"
+	And I assign the value b to a variable "[[CD().a]]"
+	And I assign the value 2 to a variable "[[AB().a]]"	
+	When the assign tool is executed
+	Then the value of "[[AB(2).a]]" equals 2
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable      | New Value |
+	| 1 | [[AB().a]]  = | 1         |
+	| 2 | [[CD().a]]  = | a         |
+	| 3 | [[CD().a]]  = | b         |
+	| 4 | [[AB().a]]  = | 2         |
+	And the debug output as
+    | # |                 |
+    | 1 | [[AB(1).a]] = 1 |
+    | 2 | [[CD(1).a]] = a |
+    | 3 | [[CD(2).a]] = b |
+    | 4 | [[AB(2).a]] = 2 |
 
 
 

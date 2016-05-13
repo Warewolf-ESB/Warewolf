@@ -89,12 +89,17 @@ namespace Dev2.Runtime.ServiceModel
             var result = new NamespaceList();
             try
             {
-               
-                if(pluginSource != null)
+
+                if (pluginSource != null)
                 {
                     var broker = new PluginBroker();
                     return broker.GetNamespaces(pluginSource);
                 }
+            }
+            catch (BadImageFormatException e)
+            {
+                RaiseError(e);
+                throw;
             }
             catch(Exception ex)
             {

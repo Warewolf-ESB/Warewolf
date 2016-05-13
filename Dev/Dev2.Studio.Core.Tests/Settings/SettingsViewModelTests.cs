@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
@@ -45,7 +46,9 @@ namespace Dev2.Core.Tests.Settings
             var lcl = new Mock<IServer>();
             lcl.Setup(a => a.ResourceName).Returns("Localhost");
             shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
+            // ReSharper disable once RedundantTypeArgumentsOfMethod
             CustomContainer.Register<IShellViewModel>(shell.Object);
+            // ReSharper disable once RedundantTypeArgumentsOfMethod
             CustomContainer.Register<IEventAggregator>(new Mock<IEventAggregator>().Object);
         }
 
@@ -354,9 +357,11 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
-            Assert.AreEqual(@"There are duplicate server permissions, 
-    i.e. Server permissions have been setup up with the same group twice. 
-    Please clear the duplicates before saving.", viewModel.Errors);
+            
+            var expected = StringResources.SaveSettingsDuplicateServerPermissions;
+
+
+            Assert.AreEqual(expected.ToString(CultureInfo.InvariantCulture), viewModel.Errors.ToString(CultureInfo.InvariantCulture));
         }
 
 
@@ -765,11 +770,9 @@ You need Administrator permission.", viewModel.Errors);
         private static IPerformanceCounterTo CreatePerfCounterSettings()
         {
             var performanceCounterTo = new PerformanceCounterTo();
-            var testCounter = new TestCounter();
-            testCounter.IsActive = true;
+            var testCounter = new TestCounter { IsActive = true };
             performanceCounterTo.NativeCounters.Add(testCounter);
-            var resourcePerformanceCounter = new TestResourceCounter();
-            resourcePerformanceCounter.IsActive = true;
+            var resourcePerformanceCounter = new TestResourceCounter { IsActive = true };
             performanceCounterTo.ResourceCounters.Add(resourcePerformanceCounter);
             return performanceCounterTo;
         }

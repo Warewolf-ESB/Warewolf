@@ -132,12 +132,11 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Write Mode" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Write Mode" Margin="0,-3,0,0"/>
         <Grid Grid.Column="1" Grid.Row="2" Margin="0,-3,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <RadioButton GroupName="WriteMode" 
                          Grid.Column="0" 
@@ -161,7 +160,7 @@
             </RadioButton>
         </Grid>
 
-        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,-8,0,0">
+        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,-4,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -172,8 +171,7 @@
             </Grid.RowDefinitions>
             <!--DropBox File Location-->
             <TextBlock x:Name="DropboxFileTextBlock" Grid.Column="0" Grid.Row="0" Text="Dropbox File" />
-            <ui:IntellisenseTextBox Margin="{StaticResource ControlBorderTop}"
-                                Grid.Column="1"
+            <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="0"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
