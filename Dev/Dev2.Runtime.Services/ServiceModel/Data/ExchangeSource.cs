@@ -5,7 +5,6 @@ using Dev2.Common.Common;
 using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Microsoft.Exchange.WebServices.Data;
 using Warewolf.Security.Encryption;
@@ -14,7 +13,7 @@ using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
-    public class ExchangeSource : Resource, IExchangeSource
+    public class ExchangeSource : Resource, IExchangeSource, IResourceSource
     {
         private ExchangeService _exchangeService;
         // ReSharper disable once NotAccessedField.Local
@@ -67,14 +66,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         public ExchangeSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.ExchangeSource;
+            ResourceType = "ExchangeSource";
             Timeout = DefaultTimeout;
         }
 
         public ExchangeSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.ExchangeSource;
+            ResourceType = "ExchangeSource";
             Timeout = DefaultTimeout;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -170,6 +169,49 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
 
             return result;
+        }
+
+        public override bool IsSource
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsReservedService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsServer
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
         }
 
         #endregion

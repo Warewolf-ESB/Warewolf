@@ -1,13 +1,12 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces
 {
     public interface IExplorerTreeItem:IDisposable
     {
-        ResourceType ResourceType { get; set; }
+        string ResourceType { get; set; }
         string ResourcePath { get; set; }
 
         bool CanDrop { get; set; }
@@ -58,5 +57,12 @@ namespace Dev2.Common.Interfaces
         void AddChild(IExplorerItemViewModel child);
         void RemoveChild(IExplorerItemViewModel child);
         void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction);
+
+        bool IsSource { get; set; }
+        bool IsService { get; set; }
+        bool IsFolder { get; set; }
+        bool IsReservedService { get; set; }
+        bool IsServer { get; set; }
+        bool IsResourceVersion { get; set; }
     }
 }

@@ -141,8 +141,9 @@
     <Compile Include="ServiceModel\OauthSource.cs" />
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
     <Compile Include="ServiceModel\PluginSource.cs" />
-    <Compile Include="ServiceModel\ResourceTypeConverter.cs" />
+    <Compile Include="ServiceModel\ResourceBase.cs" />
     <Compile Include="ServiceModel\SharepointSource.cs" />
+    <Compile Include="ServiceModel\VersionInfo.cs" />
     <Compile Include="ServiceModel\WebSource.cs" />
     <Compile Include="ServiceModel\EmailSource.cs" />
     <Compile Include="ServiceModel\Resource.cs" />

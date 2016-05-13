@@ -11,7 +11,6 @@
 
 using System;
 using System.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
@@ -347,7 +346,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 AssemblyLocation = loc,
                 ResourceID = resourceID,
                 ResourceName = "Dummy",
-                ResourceType = ResourceType.PluginSource,
+                ResourceType = "PluginSource",
                 ResourcePath = "Test",
             };
         }
@@ -369,7 +368,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DummyPluginService",
-                ResourceType = ResourceType.PluginService,
+                ResourceType = "PluginService",
                 ResourcePath = "Tests",
                 Namespace = type.FullName,
                 Method = method,

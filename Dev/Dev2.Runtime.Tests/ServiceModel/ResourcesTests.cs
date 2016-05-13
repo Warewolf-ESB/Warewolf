@@ -15,7 +15,6 @@ using System.IO;
 using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -107,12 +106,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         ResourceID = Guid.NewGuid(),
                         ResourceName = string.Format("My Name {0}", i),
                         ResourcePath = string.Format("My Path {0}", i),
-                        ResourceType = i % Modulo == 0 ? ResourceType.DbSource : ResourceType.Unknown
+                        ResourceType = i % Modulo == 0 ? "DbSource" : "Unknown"
                     };
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Resources();
-                var result = resources.Sources("{\"resourceType\":\"" + ResourceType.DbSource + "\"}", workspaceID, Guid.Empty);
+                var result = resources.Sources("{\"resourceType\":\"" + "DbSource" + "\"}", workspaceID, Guid.Empty);
 
                 Assert.AreEqual(ExpectedCount / Modulo, result.Count);
             }
@@ -142,14 +141,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     var resource = new Resource
                     {
                         ResourceID = Guid.NewGuid(),
-                        ResourcePath = i % Modulo == 0 ? ResourceType.WorkflowService + "\\" + string.Format("My Name {0}", i) : string.Format("My Name {0}", i),
+                        ResourcePath = i % Modulo == 0 ? "WorkflowService" + "\\" + string.Format("My Name {0}", i) : string.Format("My Name {0}", i),
                         ResourceName = string.Format("My Name {0}", i),
-                        ResourceType = i % Modulo == 0 ? ResourceType.WorkflowService : ResourceType.Unknown
+                        ResourceType = i % Modulo == 0 ? "WorkflowService" : "Unknown"
                     };
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Resources();
-                var result = resources.Services(ResourceType.WorkflowService.ToString(), workspaceID, Guid.Empty);
+                var result = resources.Services("WorkflowService", workspaceID, Guid.Empty);
 
                 Assert.AreEqual(ExpectedCount / Modulo, result.Count);
             }

@@ -9,7 +9,6 @@ using Dev2;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
@@ -71,7 +70,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, IEventAggregator aggregator)
-            : base(ResourceType.EmailSource)
+            : base("EmailSource")
         {
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
@@ -84,7 +83,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ManageEmailSourceViewModel()
-            : base(ResourceType.EmailSource)
+            : base("EmailSource")
         {
    
         }

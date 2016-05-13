@@ -56,7 +56,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceID = src.Id,
                     DatabaseName = src.DbName,
                     ResourceName = src.Name,
-                    ResourcePath = src.Path
+                    ResourcePath = src.Path,
+                    ResourceType = src.Type.ToString()
                 };
                 var con = new DbSources();
                 var result = con.DoDatabaseValidation(res);
