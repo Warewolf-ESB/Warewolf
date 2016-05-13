@@ -4,7 +4,7 @@
 	I want a tool that finds indexes
 
 Scenario: Find the first Occurrence of a character in a sentence
-	Given I have a Find Index variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
+	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
 	And I search for characters "since"
@@ -20,7 +20,7 @@ Scenario: Find the first Occurrence of a character in a sentence
 	| [[result]] = 49 |
 
 Scenario: Find all Occurrences of a word in a sentence and output to scalar going left to right
-	Given I have a Find Index variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
+	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
 	And I selected Index "All Occurrences"
 	And I search for characters "a"
@@ -36,7 +36,7 @@ Scenario: Find all Occurrences of a word in a sentence and output to scalar goin
 	| [[result]] = 4,9,11,35,43,59,72 |
 
 Scenario: Find all Occurrences of a word in a sentence and output to recordset going right to left 
-	Given I have a Find Index variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
+	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
 	And I selected Index "All Occurrences"
 	And I search for characters "a"
@@ -60,7 +60,7 @@ Scenario: Find all Occurrences of a word in a sentence and output to recordset g
 	| [[result]] = 7,20,36,44,68,70,75 |
 
 Scenario: Find last Occurrence of a bracket in a sentence
-	Given I have a Find Index variable "[[a]]" equal to "!@#$%)@#$%)"
+	Given I have a findindex variable "[[a]]" equal to "!@#$%)@#$%)"
 	And the sentence "[[a]]"
 	And I selected Index "Last Occurrence"
 	And I search for characters ")"
@@ -92,7 +92,7 @@ Scenario: Find first Occurrence of a character in a blank string
 	| [[result]] = -1 |
 
 Scenario: Find first Occurrence of a character in a string where it doesnt exist
-	Given I have a Find Index variable "[[a]]" equal to "fff"
+	Given I have a findindex variable "[[a]]" equal to "fff"
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
 	And I search for characters "a"
@@ -124,10 +124,10 @@ Scenario: Find all Occurrences of a character in a string where it doesnt exist
 	| [[result]] = -1 |
 
 Scenario: Find an xml fragment in a bigger xml document
-	Given I have a Find Index variable "[[a]]" equal to "<x><b id="1">One</b></x>"
+	Given I have a findindex variable "[[a]]" equal to "<x><b id="1">One</b></x>"
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
-	And I have a Find Index variable "[[id]]" equal to "1"
+	And I have a findindex variable "[[id]]" equal to "1"
 	And I search for characters "<b id="[[id]]">"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
@@ -141,7 +141,7 @@ Scenario: Find an xml fragment in a bigger xml document
 	| [[result]] = 4 |
 
 Scenario: Find a negative recordset index in a string
-	Given I have a Find Index variable "[[a]]" equal to "<x><b id="1">One</b></x>"
+	Given I have a findindex variable "[[a]]" equal to "<x><b id="1">One</b></x>"
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
 	And I search for characters "[[my(-1).data]]"
@@ -237,7 +237,7 @@ Scenario: Characters is blank
 #---find out about rule as no error message will display
 
 Scenario: Find all Occurrences of a numeric character in a string
-	Given I have a Find Index variable "[[a]]" equal to "2211"
+	Given I have a findindex variable "[[a]]" equal to "2211"
 	And the sentence "[[a]]"
 	And I selected Index "All Occurrences"
 	And I search for characters "2"
@@ -254,7 +254,7 @@ Scenario: Find all Occurrences of a numeric character in a string
 
 
 Scenario Outline: Find all occurances of Characters in a string
-	Given I have a Find Index variable "[[a]]" equal to " Warewolf"
+	Given I have a findindex variable "[[a]]" equal to " Warewolf"
 	And the sentence "[[a]]"
 	And I have selected Index "<Index>"
 	And I search for characters "<Characters>"
@@ -277,7 +277,7 @@ Examples:
 | 5  | All Occurrences | w          | Right to Left | 2,6    | [[result]] = 2,6 |
 
 Scenario Outline: Find all Recordsets with invalid Indexes
-	Given I have a Find Index variable "<var>" equal to "<value>"
+	Given I have a findindex variable "<var>" equal to "<value>"
 	And I selected Index "First Occurrence"
 	And I search for characters "<Character>"
 	And I selected direction as "Left to Right"
@@ -300,7 +300,7 @@ Examples:
 
 #wolf-914
 Scenario: Tool does not return
-	Given I have a Find Index variable "" equal to ""
+	Given I have a findindex variable "" equal to ""
 	And I selected Index "All Occurrence"
 	And I search for characters ""
 	And I selected direction as "Left to Right"
@@ -316,7 +316,7 @@ Scenario: Tool does not return
 
 #Complex Types WOLF-1042
 Scenario Outline: Find all occurances using complex types
-	Given I have a Find Index variable "<variable>" equal to "<value>"
+	Given I have a findindex variable "<variable>" equal to "<value>"
 	And I selected Index "All Occurrence"
 	And I search for characters "t"
 	And I selected direction as "Left to Right"

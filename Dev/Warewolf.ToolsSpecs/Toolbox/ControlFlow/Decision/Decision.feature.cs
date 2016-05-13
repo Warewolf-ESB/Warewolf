@@ -3603,7 +3603,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1284
  testRunner.And(string.Format("a decision variable \"{0}\" value \"{1}\"", variable2, var2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1285
- testRunner.And(string.Format("check if \"{0}\" \"<matchtype>\" \"{1}\"", variable1, variable2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("is \"{0}\" \"<matchtype>\" \"{1}\"", variable1, variable2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1286
  testRunner.And("Require all decisions to be true is \"<Requirement>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1287
@@ -3914,6 +3914,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("is \"[[A]]\" \"IsEqual\" \"123   234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1374
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1375
+ testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 1376
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

@@ -288,12 +288,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
             GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
         }
-
-        [When(@"I select new_procedure as the action")]
-        public void WhenISelectnew_procedureAsTheAction()
-        {
-            ScenarioContext.Current.Pending();
-        }
         
         [When(@"I click Test")]
         public void WhenIClickTest()
@@ -313,12 +307,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             //GetViewModel().TestInputCommand.Execute(null);
             Assert.Fail();
-        }
-
-
-        [Then(@"the Test Connector and Calculate Outputs window is opened")]
-        public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
-        {            
         }
 
         [Then(@"Test Inputs appear as")]
@@ -372,6 +360,102 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenRecordsetNameEquals(string recsetName)
         {
             Assert.AreEqual<string>(recsetName,GetViewModel().OutputsRegion.RecordsetName);
-        }        
+        }
+
+        [Then(@"the Test Connector and Calculate Outputs window is opened")]
+        public void ThenTheTestConnectorAndCalculateOutputsWindowIsOpened()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I select new_procedure as the action")]
+        public void WhenISelectnew_procedureAsTheAction()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is ""(.*)""")]
+        public void ThenIs(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"Data Source is focused")]
+        public void ThenDataSourceIsFocused()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"""(.*)"" is selected as the data source")]
+        public void WhenIsSelectedAsTheDataSource(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is selected as the action")]
+        public void ThenIsSelectedAsTheAction(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"Inspect Data Connector hyper link is ""(.*)""")]
+        public void ThenInspectDataConnectorHyperLinkIs(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"inputs are")]
+        public void ThenInputsAre(Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"testing the action fails")]
+        public void WhenTestingTheActionFails()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"input mappings are")]
+        public void ThenInputMappingsAre(Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"output mappings are")]
+        public void ThenOutputMappingsAre(Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"I have a workflow ""(.*)""")]
+        public void GivenIHaveAWorkflow(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
+        public void GivenContainsFromServerWithMappingAs(string p0, string p1, string p2, Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"""(.*)"" is executed")]
+        public void WhenIsExecuted(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"the workflow execution has ""(.*)"" error")]
+        public void ThenTheWorkflowExecutionHasError(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"And ""(.*)"" contains ""(.*)"" from server ""(.*)"" with Mapping To as")]
+        public void GivenAndContainsFromServerWithMappingToAs(string p0, string p1, string p2, Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
     }
 }
