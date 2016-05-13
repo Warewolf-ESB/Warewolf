@@ -180,13 +180,6 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        public bool LoggingEnabled
-        {
-            get
-            {
-                return true;
-            }
-        }
 
         /// <summary>
         /// Executes the request.
