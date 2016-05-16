@@ -1367,7 +1367,7 @@ namespace Dev2.Studio.ViewModels
             {
 
                 // ReSharper disable once MaximumChainedReferences
-                var dropBoxSource = new OauthSource { Key = vm.Uid, Secret = vm.AccessToken, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
+                var dropBoxSource = new OauthSource { AppKey = vm.Uid, AccessToken = vm.AccessToken, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
                 ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
 
             }

@@ -168,7 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 },
                 IsFoldersSelected = true,
             };
@@ -202,7 +202,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 },
                 IsFoldersSelected = true,
             };
@@ -236,7 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 },
                 IsFoldersSelected = true,
             };
@@ -270,7 +270,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 },
                 IsFilesAndFoldersSelected = true
             };
@@ -305,7 +305,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 },
                 IsFilesAndFoldersSelected = true,
                 IncludeDeleted = true
@@ -340,7 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 },
                 IncludeDeleted = true
             };
@@ -374,7 +374,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             {
                 SelectedSource = new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 }
             };
 
@@ -409,7 +409,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 dropboxFileListActivityMock.SelectedSource =
                     new OauthSource
                     {
-                        Secret = "Test"
+                        AccessToken = "Test"
                     };
 
                 dropboxFileListActivityMock.DropboxResult = new DropboxFailureResult(TestConstant.ExceptionInstance.Value);
@@ -457,7 +457,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
             dropboxFileListActivityMock.SelectedSource = new OauthSource
             {
-                Secret = "Test"
+                AccessToken = "Test"
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
@@ -479,7 +479,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
             dropboxFileListActivityMock.SelectedSource = new OauthSource
             {
-                Secret = "Test"
+                AccessToken = "Test"
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileListActivityMock);
@@ -507,7 +507,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             dropboxFileListActivityMock.SelectedSource =
                 new OauthSource
                 {
-                    Secret = "Test"
+                    AccessToken = "Test"
                 };
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
             //---------------Assert Precondition----------------
