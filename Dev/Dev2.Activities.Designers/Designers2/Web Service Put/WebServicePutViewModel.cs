@@ -49,6 +49,16 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             Model = model;
 
             SetupCommonProperties();
+            if (IsItemDragged.Instance.IsDragged)
+            {
+                Expand();
+                IsItemDragged.Instance.IsDragged = false;
+            }
+            else
+            {
+                ShowLarge = false;    
+            }
+            
         }
 
         public WebServicePutViewModel(ModelItem modelItem, IWebServiceModel model)
