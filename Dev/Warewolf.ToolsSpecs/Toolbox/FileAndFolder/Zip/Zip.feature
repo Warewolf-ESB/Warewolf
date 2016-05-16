@@ -105,8 +105,7 @@ Scenario Outline: Zip file at location Null
 		| 3  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestSpeed | [[result]] | Success | NO           | 1.66              |
 		| 4  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestCompression | [[result]] | Success | NO           | 1.71              |
 	
-#Complex Types	WOLF-1042	
-@ignore												
+#Complex Types	WOLF-1042								
 Scenario Outline: Zip file at location using complex types
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests

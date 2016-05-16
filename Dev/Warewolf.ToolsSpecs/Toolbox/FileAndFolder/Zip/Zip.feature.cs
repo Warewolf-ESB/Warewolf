@@ -1178,36 +1178,30 @@ this.ScenarioSetup(scenarioInfo);
                     string errorOccured, 
                     string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at location using complex types", @__tags);
-#line 110
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Zip file at location using complex types", exampleTags);
+#line 109
 this.ScenarioSetup(scenarioInfo);
-#line 111
+#line 110
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 112
+#line 111
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\" for zip tests", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 112
  testRunner.And(string.Format("I have a destination path \"{0}\" with value \"{1}\"", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 113
  testRunner.And(string.Format("destination credentials as \"{0}\" and \"{1}\"", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 114
  testRunner.And(string.Format("overwrite is \"{0}\"", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 115
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 116
  testRunner.And(string.Format("Archive Password as \"{0}\"", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 117
  testRunner.And(string.Format("the Compression as \"{0}\"", compression), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 118
     testRunner.When("the Zip file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
+#line 119
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 121
+#line 120
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1230,14 +1224,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", selected),
                         string.Format("{0}", archivepassword),
                         string.Format("{0}", compression)});
-#line 122
+#line 121
  testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table6.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 125
+#line 124
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1247,7 +1241,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Zip file at location using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to Local")]
