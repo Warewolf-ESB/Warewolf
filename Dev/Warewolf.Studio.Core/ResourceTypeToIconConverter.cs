@@ -48,6 +48,8 @@ namespace Warewolf.Studio.Core
                         return _dict[CustomMenuIcons.EmailSource] as DrawingImage;
                     case ResourceType.RabbitMQSource:
                         return _dict[CustomMenuIcons.RabbitMqSource] as DrawingImage;
+                    case ResourceType.ExchangeSource:
+                        return _dict[CustomMenuIcons.ExchangeSource] as DrawingImage;
                     case ResourceType.WebService:
                         return _dict[CustomMenuIcons.WebService] as DrawingImage;
                     case ResourceType.DbSource:
@@ -66,7 +68,7 @@ namespace Warewolf.Studio.Core
                         var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Home, _brush);
                         return imageSource;
                     case ResourceType.OauthSource:
-                        return Application.Current.Resources["AddDropBoxBlackLogo"];
+                        return Application.Current.Resources["DropboxSource"];
                     case ResourceType.Scheduler:
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
                     case ResourceType.Settings:

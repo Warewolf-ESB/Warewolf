@@ -69,14 +69,14 @@ namespace Dev2.Runtime.ServiceModel
                 var resourceId = webRequestPoco.ResourceId;
                 var xmlStr = _resourceCatalog.GetResourceContents(workspaceId, Guid.Parse(resourceId));
 
-                if(xmlStr != null && xmlStr.Length != 0)
+                if (xmlStr != null && xmlStr.Length != 0)
                 {
                     return DeserializeService(xmlStr.ToXElement(), resourceType);
                 }
                 return GetDefaultService(resourceType);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 return GetDefaultService(resourceType);
@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ServiceModel
 
         static Service GetDefaultService(ResourceType resourceType)
         {
-            switch(resourceType)
+            switch (resourceType)
             {
                 case ResourceType.DbService:
                     return DbService.Create();
@@ -109,14 +109,14 @@ namespace Dev2.Runtime.ServiceModel
                 var service = DeserializeService(args);
                 _resourceCatalog.SaveResource(workspaceId, service);
 
-                if(workspaceId != GlobalConstants.ServerWorkspaceID)
+                if (workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, service);
                 }
 
                 return service.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
@@ -131,7 +131,7 @@ namespace Dev2.Runtime.ServiceModel
         public ServiceMethodList DbMethods(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceMethodList();
-            if(!string.IsNullOrEmpty(args))
+            if (!string.IsNullOrEmpty(args))
             {
                 try
                 {
@@ -142,7 +142,7 @@ namespace Dev2.Runtime.ServiceModel
                     var serviceMethods = FetchMethods(actualSource);
                     result.AddRange(serviceMethods);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     RaiseError(ex);
                     result.Add(new ServiceMethod(ex.Message, ex.StackTrace));
@@ -162,7 +162,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var service = JsonConvert.DeserializeObject<DbService>(args);
                 service.Source = _resourceCatalog.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
-                if(string.IsNullOrEmpty(service.Recordset.Name))
+                if (string.IsNullOrEmpty(service.Recordset.Name))
                 {
                     service.Recordset.Name = service.Method.Name;
                 }
@@ -188,7 +188,7 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = args;
-          
+
                 if (string.IsNullOrEmpty(service.Recordset.Name))
                 {
                     service.Recordset.Name = service.Method.Name;
@@ -216,50 +216,50 @@ namespace Dev2.Runtime.ServiceModel
         public virtual Recordset FetchRecordset(DbService dbService, bool addFields)
         {
 
-            if(dbService == null)
+            if (dbService == null)
             {
                 throw new ArgumentNullException("dbService");
             }
-                        var  source = dbService.Source as DbSource;
-            if(source != null)
+            var source = dbService.Source as DbSource;
+            if (source != null)
             {
-                switch(source.ServerType)
+                switch (source.ServerType)
                 {
                     case enSourceType.SqlDatabase:
                         {
-                               var broker = CreateDatabaseBroker();
-            var outputDescription = broker.TestService(dbService);
+                            var broker = CreateDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
 
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-            {
-                throw new Exception("Error retrieving shape from service output.");
-            }
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
 
-            // Clear out the Recordset.Fields list because the sequence and
-            // number of fields may have changed since the last invocation.
-            //
-            // Create a copy of the Recordset.Fields list before clearing it
-            // so that we don't lose the user-defined aliases.
-            //
+                            // Clear out the Recordset.Fields list because the sequence and
+                            // number of fields may have changed since the last invocation.
+                            //
+                            // Create a copy of the Recordset.Fields list before clearing it
+                            // so that we don't lose the user-defined aliases.
+                            //
 
-            if(dbService.Recordset != null)
-            {
-                dbService.Recordset.Name = dbService.Method.ExecuteAction;
-                if(dbService.Recordset.Name != null)
-                {
-                    dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
-                }
-                dbService.Recordset.Fields.Clear();
+                            if (dbService.Recordset != null)
+                            {
+                                dbService.Recordset.Name = dbService.Method.ExecuteAction;
+                                if (dbService.Recordset.Name != null)
+                                {
+                                    dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+                                }
+                                dbService.Recordset.Fields.Clear();
 
-                ServiceMappingHelper smh = new ServiceMappingHelper();
-                smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-            }
-                return dbService.Recordset;
+                                ServiceMappingHelper smh = new ServiceMappingHelper();
+                                smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+                            }
+                            return dbService.Recordset;
                         }
 
                     case enSourceType.MySqlDatabase:
-                    {
-                        
+                        {
+
                             var broker = new MySqlDatabaseBroker();
                             var outputDescription = broker.TestService(dbService);
 
@@ -275,14 +275,68 @@ namespace Dev2.Runtime.ServiceModel
                             smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
 
                             return dbService.Recordset;
-                        
-                    }
+
+                        }
+                    case enSourceType.PostgreSql:
+                        {
+                            var broker = new PostgreSqlDataBaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+                        }
+                    case enSourceType.Oracle:
+                        {
+                            var broker = new OracleDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+                        }
+                    case enSourceType.ODBC:
+                        {
+                            var broker = new ODBCDatabaseBroker();
+                            var outputDescription = broker.TestService(dbService);
+
+                            if (outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                            {
+                                throw new Exception("Error retrieving shape from service output.");
+                            }
+
+                            dbService.Recordset.Fields.Clear();
+
+                            ServiceMappingHelper smh = new ServiceMappingHelper();
+
+                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+
+                            return dbService.Recordset;
+                        }
                     default: return null;
 
                 }
             }
             return null;
-           
+
 
             // Clear out the Recordset.Fields list because the sequence and
             // number of fields may have changed since the last invocation.
@@ -295,7 +349,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
         {
-            if(pluginService == null)
+            if (pluginService == null)
             {
                 throw new ArgumentNullException("pluginService");
             }
@@ -307,9 +361,9 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var recordset in recSet)
                 {
-                    foreach(var field in recordset.Fields)
+                    foreach (var field in recordset.Fields)
                     {
-                        if(String.IsNullOrEmpty(field.Name))
+                        if (String.IsNullOrEmpty(field.Name))
                         {
                             continue;
                         }
@@ -317,27 +371,27 @@ namespace Dev2.Runtime.ServiceModel
                         var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
 
                         var value = string.Empty;
-                        if(!string.IsNullOrEmpty(field.Alias))
+                        if (!string.IsNullOrEmpty(field.Alias))
                         {
                             value = string.IsNullOrEmpty(rsAlias)
                                         ? string.Format("[[{0}]]", field.Alias)
                                         : string.Format("[[{0}().{1}]]", rsAlias, field.Alias);
                         }
 
-                        if(path != null)
+                        if (path != null)
                         {
                             path.OutputExpression = value;
                             dataSourceShape.Paths.Add(path);
                         }
                     }
                 }
-            }            
+            }
             return recSet;
         }
 
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
         {
-            if(webService == null)
+            if (webService == null)
             {
                 throw new ArgumentNullException("webService");
             }
@@ -352,20 +406,30 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
-            switch(dbSource.ServerType)
+            switch (dbSource.ServerType)
             {
-                    case enSourceType.MySqlDatabase:
-                {
-                    var broker = new  MySqlDatabaseBroker();
-                    return broker.GetServiceMethods(dbSource);
-                }
-                default:
-                {
-                            var broker = CreateDatabaseBroker();
+                case enSourceType.MySqlDatabase:
+                    {
+                        var broker = new MySqlDatabaseBroker();
                         return broker.GetServiceMethods(dbSource);
-                }
+                    }
+                case enSourceType.PostgreSql:
+                    {
+                        var broker = new PostgreSqlDataBaseBroker();
+                        return broker.GetServiceMethods(dbSource);
+                    }
+                case enSourceType.Oracle:
+                    {
+                        var broker = new OracleDatabaseBroker();
+                        return broker.GetServiceMethods(dbSource);
+                    }
+                default:
+                    {
+                        var broker = CreateDatabaseBroker();
+                        return broker.GetServiceMethods(dbSource);
+                    }
             }
-    
+
         }
 
         #endregion
@@ -390,7 +454,7 @@ namespace Dev2.Runtime.ServiceModel
         protected virtual Service DeserializeService(string args)
         {
             var service = JsonConvert.DeserializeObject<Service>(args);
-            switch(service.ResourceType)
+            switch (service.ResourceType)
             {
                 case ResourceType.DbService:
                     return JsonConvert.DeserializeObject<DbService>(args);
@@ -400,9 +464,9 @@ namespace Dev2.Runtime.ServiceModel
 
         protected virtual Service DeserializeService(XElement xml, ResourceType resourceType)
         {
-            if(xml != null)
+            if (xml != null)
             {
-                switch(resourceType)
+                switch (resourceType)
                 {
                     case ResourceType.DbService:
                         return new DbService(xml);
@@ -410,7 +474,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             else
             {
-                switch(resourceType)
+                switch (resourceType)
                 {
                     case ResourceType.DbService:
                         return DbService.Create();

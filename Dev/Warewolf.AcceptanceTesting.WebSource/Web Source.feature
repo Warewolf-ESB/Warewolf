@@ -141,7 +141,7 @@ Scenario: Editing saved Web Source
    Then "Save" is "Enabled" 
 
 @WebSource
-Scenario: Cancel Test
+Scenario: Cancel Seb Source Test
    Given I open New Web Source 
    Then "New Web Service Source" tab is opened
    And title is "New Web Service Source"

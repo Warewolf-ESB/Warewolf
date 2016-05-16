@@ -431,6 +431,9 @@ namespace Dev2.Runtime.Hosting
                 case enSourceType.SharepointServerSource:
                     result = BuildSharepointSourceList(resources);
                     break;
+                case enSourceType.ExchangeSource:
+                    result = BuildExchangeList(resources);
+                    break;
                 default:
                     result = null;
                     break;
@@ -1127,6 +1130,11 @@ namespace Dev2.Runtime.Hosting
             return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new WebSource(xe)).ToList();
         }
 
+        private IEnumerable BuildExchangeList(IEnumerable<IResource> resources)
+        {
+            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new ExchangeSource(xe)).ToList();
+        }
+
         #endregion
 
         #region GetResources
@@ -1200,9 +1208,13 @@ namespace Dev2.Runtime.Hosting
 
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new()
         {
-            var resourceContents = ResourceContents<T>(workspaceID, resourceName);
-            if(resourceContents == null || resourceContents.Length == 0) return null;
-            return GetResource<T>(resourceContents);
+            if(resourceName != null)
+            {
+                var resourceContents = ResourceContents<T>(workspaceID, resourceName);
+                if(resourceContents == null || resourceContents.Length == 0) return null;
+                return GetResource<T>(resourceContents);
+            }
+            return null;
         }
 
         public string GetResourcePath(Guid id)

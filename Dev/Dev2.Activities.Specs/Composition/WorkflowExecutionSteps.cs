@@ -21,7 +21,6 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -61,13 +60,17 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Warewolf.Tools.Specs.BaseTypes;
+
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedParameter.Global
 
 namespace Dev2.Activities.Specs.Composition
 {
     [Binding]
     public class WorkflowExecutionSteps : RecordSetBases
     {
-        const int _environmentConnectionTimeout = 3000;
+        const int EnvironmentConnectionTimeout = 3000;
 
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         private readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
@@ -89,8 +92,8 @@ namespace Dev2.Activities.Specs.Composition
             var mockshell = new Mock<IShellViewModel>();
             mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
             mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
-            CustomContainer.Register<IServer>(mockServer.Object);
-            CustomContainer.Register<IShellViewModel>(mockshell.Object);
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
         }
 
         [Given(@"All environments disconnected")]
@@ -189,7 +192,7 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName, Category = remoteServer.ResourcePath };
-                    EnsureEnvironmentConnected(newEnvironment, _environmentConnectionTimeout);
+                    EnsureEnvironmentConnected(newEnvironment, EnvironmentConnectionTimeout);
                     newEnvironment.ForceLoadResources();
 
                     // now find the bloody resource model for execution
@@ -214,7 +217,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             AppSettings.LocalHost = "http://localhost:3142";
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
-            EnsureEnvironmentConnected(environmentModel, _environmentConnectionTimeout);
+            EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
             var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
             environmentModel.ResourceRepository.Add(resourceModel);
@@ -266,25 +269,38 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the perfcounter raw values are")]
         public void ThenThePerfcounterRawValuesAre(Table table)
         {
-           var counters =  new PerformanceCounterCategory("Warewolf").GetCounters();
-           
+            var performanceCounterCategory = new PerformanceCounterCategory("Warewolf");
+            var counters =  performanceCounterCategory.GetCounters();
+            var instanceNames = performanceCounterCategory.GetInstanceNames();
             foreach(var tableRow in table.Rows)
             {
-                if(tableRow[1]=="x")
-                Assert.AreNotEqual(counters.First(a=>a.CounterName==tableRow[0]).RawValue,0);
-                else
+                foreach (var counter in instanceNames)
                 {
-                    Assert.AreEqual(counters.First(a => a.CounterName == tableRow[0]).RawValue, int.Parse( tableRow[1]));
-                }
-              
+                    var performanceCounter = counters.First(a => a.CounterName == tableRow[0]);
+                    if (performanceCounter != null)
+                    {
+                        using (PerformanceCounter cnt = new PerformanceCounter("Warewolf", tableRow[0], counter, true))
+                        {
+                            if (tableRow[1] == "x")
+                            {
+                                Assert.AreNotEqual(cnt.RawValue, 0);
+                            }
+                            else
+                            {
+                                Assert.AreEqual(cnt.RawValue, int.Parse(tableRow[1]));
+                            }
+
+                        }
+                    }
+                }                
             }
         }
 
 
 
-        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int Timeout)
+        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int timeout)
         {
-            if (Timeout <= 0)
+            if (timeout <= 0)
             {
                 ScenarioContext.Current.Add("ConnectTimeoutCountdown", 3000);
                 throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
@@ -292,9 +308,9 @@ namespace Dev2.Activities.Specs.Composition
             environmentModel.Connect();
             if (!environmentModel.IsConnected)
             {
-                Timeout--;
+                timeout--;
                 Thread.Sleep(100);
-                EnsureEnvironmentConnected(environmentModel, Timeout);
+                EnsureEnvironmentConnected(environmentModel, timeout);
             }
         }
 
@@ -499,6 +515,12 @@ namespace Dev2.Activities.Specs.Composition
                         case "sqlserver database":
                             updatedActivity = ActivityUtils.GetDsfSqlServerDatabaseActivity((DsfDatabaseActivity)activity, service, source);
                             break;
+                        case "oracle database":
+                            updatedActivity = ActivityUtils.GetDsfOracleDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
+                        case "odbc database":
+                            updatedActivity = ActivityUtils.GetDsfODBCDatabaseActivity((DsfDatabaseActivity)activity, service, source);
+                            break;
                     }
                     CommonSteps.AddActivityToActivityList(wf, serviceName, updatedActivity);
                 }
@@ -534,7 +556,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
-            EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source, _environmentConnectionTimeout);
+            EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source, EnvironmentConnectionTimeout);
             EnvironmentRepository.Instance.Source.ForceLoadResources();
             
             var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
@@ -545,9 +567,11 @@ namespace Dev2.Activities.Specs.Composition
             }
             if(remoteEnvironment != null)
             {
-                EnsureEnvironmentConnected(remoteEnvironment, _environmentConnectionTimeout);
+                EnsureEnvironmentConnected(remoteEnvironment, EnvironmentConnectionTimeout);
                 remoteEnvironment.ForceLoadResources();
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf || model.Category== remoteWf, true);
+                var splitNameAndCat = remoteWf.Split(new char[]{'/'});
+                var resName = splitNameAndCat[splitNameAndCat.Length-1];
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == resName || model.Category == remoteWf.Replace('/', '\\'), true);
                 if(remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -608,8 +632,10 @@ namespace Dev2.Activities.Specs.Composition
             }
             foreach(var tableRow in mappings.Rows)
             {
-                var output = tableRow["Output from Service"];
-                var toVariable = tableRow["To Variable"];
+                string output;
+                tableRow.TryGetValue("Output from Service", out output);
+                string toVariable;
+                tableRow.TryGetValue("To Variable", out toVariable);
                 if(!string.IsNullOrEmpty(output) && !string.IsNullOrEmpty(toVariable))
                 {
                     var inputOutputViewModel = dataMappingViewModel.Outputs.FirstOrDefault(model => model.DisplayName == output);
@@ -630,8 +656,10 @@ namespace Dev2.Activities.Specs.Composition
                     }
                 }
 
-                var input = tableRow["Input to Service"];
-                var fromVariable = tableRow["From Variable"];
+                string input;
+                tableRow.TryGetValue("Input to Service", out input);
+                string fromVariable;
+                tableRow.TryGetValue("From Variable", out fromVariable);
 
                 if(!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(fromVariable))
                 {
@@ -667,6 +695,12 @@ namespace Dev2.Activities.Specs.Composition
                     activity = new DsfDatabaseActivity();
                     break;
                 case "sqlserver database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "oracle database":
+                    activity = new DsfDatabaseActivity();
+                    break;
+                case "odbc database":
                     activity = new DsfDatabaseActivity();
                     break;
                 case "plugin":
@@ -1318,7 +1352,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
-            EnsureEnvironmentConnected(resourceModel.Environment, _environmentConnectionTimeout);
+            EnsureEnvironmentConnected(resourceModel.Environment, EnvironmentConnectionTimeout);
             var clientContext = resourceModel.Environment.Connection;
             if(clientContext != null)
             {

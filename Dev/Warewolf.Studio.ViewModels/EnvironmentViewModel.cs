@@ -184,6 +184,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanCreateDropboxSource = false;
                 child.CanCreateEmailSource = false;
                 child.CanCreateRabbitMQSource = false;
+                child.CanCreateExchangeSource = false;
                 child.CanCreateServerSource = false;
                 child.CanCreateSharePointSource = false;
                 child.CanCreatePluginSource = false;
@@ -204,6 +205,7 @@ namespace Warewolf.Studio.ViewModels
                 child.CanCreatePluginSource = CanCreatePluginSource;
                 child.CanCreateEmailSource = CanCreateEmailSource;
                 child.CanCreateRabbitMQSource = CanCreateRabbitMQSource;
+                child.CanCreateExchangeSource = CanCreateExchangeSource;
                 child.CanCreateDropboxSource = CanCreateDropboxSource;
                 child.CanCreateSharePointSource = CanCreateSharePointSource;
                 child.CanCreateServerSource = CanCreateServerSource;
@@ -298,6 +300,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreatePluginSource = permissions.Contribute;
             CanCreateEmailSource = permissions.Contribute;
             CanCreateRabbitMQSource = permissions.Contribute;
+            CanCreateExchangeSource = permissions.Contribute;
             CanCreateDropboxSource = permissions.Contribute;
             CanCreateSharePointSource = permissions.Contribute;
             CanCreateServerSource = permissions.Contribute;
@@ -321,6 +324,7 @@ namespace Warewolf.Studio.ViewModels
                 CanCreateDropboxSource = false;
                 CanCreateEmailSource = false;
                 CanCreateRabbitMQSource = false;
+                CanCreateExchangeSource = false;
                 CanCreateServerSource = false;
                 CanCreateSharePointSource = false;
                 CanCreatePluginSource = false;
@@ -338,6 +342,7 @@ namespace Warewolf.Studio.ViewModels
                 CanCreatePluginSource = true;
                 CanCreateEmailSource = true;
                 CanCreateRabbitMQSource = true;
+                CanCreateExchangeSource = true;
                 CanCreateDropboxSource = true;
                 CanCreateSharePointSource = true;
                 CanCreateServerSource = true;
@@ -451,6 +456,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreatePluginSource { get; set; }
         public bool CanCreateEmailSource { get; set; }
         public bool CanCreateRabbitMQSource { get; set; }
+        public bool CanCreateExchangeSource { get; set; }
         public bool CanCreateDropboxSource { get; set; }
         public bool CanCreateSharePointSource { get; set; }
         public bool CanRename { get; set; }
@@ -915,14 +921,6 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanDrag = false;
             itemCreated.CanDrop = false;
             itemCreated.CanRename = false;
-        }
-
-        public string RefreshToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.EnvironmentExplorerRefreshToolTip;
-            }
         }
 
         public void Dispose()

@@ -273,7 +273,12 @@
             </Button>
         </Grid>
         <TextBlock Grid.Column="0" Grid.Row="9" Text="Html Body" Margin="0,-1,0,0" />
-        <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding  ModelItem.IsHtml}" Margin="-6,-1,0,0"></CheckBox>
+        <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding  ModelItem.IsHtml}" Margin="-6,-1,0,0"
+                  ToolTip="{x:Static languages:Core.EmailTooltipBodyCheckbox}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpBodyCheckbox}" DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
         <TextBlock Grid.Column="0" Grid.Row="10" Text="Body"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="10"

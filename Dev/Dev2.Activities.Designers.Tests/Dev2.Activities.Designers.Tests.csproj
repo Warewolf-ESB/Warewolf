@@ -45,7 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
       <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
@@ -134,6 +134,8 @@
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
+    <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
+    <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
     <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
@@ -316,6 +318,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

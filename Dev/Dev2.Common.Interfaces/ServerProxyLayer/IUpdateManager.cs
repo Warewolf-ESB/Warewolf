@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -79,9 +80,11 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         void SavePluginService(IPluginService toDbSource);
 
         string TestEmailServiceSource(IEmailServiceSource emailServiceSource);
+        string TestExchangeServiceSource(IExchangeSource emailServiceSource);
 
         void SaveEmailServiceSource(IEmailServiceSource emailServiceSource, Guid serverWorkspaceID);
 
+        void SaveExchangeSource(IExchangeSource exchangeSource, Guid serverWorkspaceID);
         // ReSharper disable InconsistentNaming
         void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMQServiceSource, Guid serverWorkspaceID);
 

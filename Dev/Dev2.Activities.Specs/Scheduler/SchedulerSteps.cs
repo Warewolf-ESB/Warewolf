@@ -17,7 +17,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;
@@ -32,6 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Dev2.Activities.Specs.Scheduler
 {
@@ -65,6 +66,13 @@ namespace Dev2.Activities.Specs.Scheduler
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
             AppSettings.LocalHost = "http://localhost:3142";
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockshell.Setup(a => a.LocalhostServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
             SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<Dev2.Common.Interfaces.IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
 

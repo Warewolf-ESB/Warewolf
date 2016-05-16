@@ -30,6 +30,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         private string _toPath;
         private string _result;
         private string _fromPath;
+        private bool _overwriteFile;
 
         [ExcludeFromCodeCoverage]
         public DropBoxDownloadViewModel(ModelItem modelItem)
@@ -49,7 +50,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             // ReSharper disable once VirtualMemberCallInContructor
             _sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
-            IsDropboxSourceWizardSourceMessagePulished = false;
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
 
         }
@@ -120,6 +120,20 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
                 OnPropertyChanged();
             }
         }
+        public bool OverwriteFile
+        {
+            get
+            {
+                _overwriteFile = Convert.ToBoolean(GetModelPropertyName());
+                return _overwriteFile;
+            }
+            set
+            {
+                _overwriteFile = value;
+                SetModelItemProperty(_overwriteFile);
+                OnPropertyChanged();
+            }
+        }
 
         public string FromPath
         {
@@ -161,14 +175,11 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
         public void CreateOAuthSource()
         {
-            IsDropboxSourceWizardSourceMessagePulished = false;
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
             _sources = LoadOAuthSources();
-            IsDropboxSourceWizardSourceMessagePulished = true;
             OnPropertyChanged("Sources");
         }
         //Used by specs
-        public bool IsDropboxSourceWizardSourceMessagePulished { get; set; }
 
         public virtual ObservableCollection<OauthSource> LoadOAuthSources()
         {

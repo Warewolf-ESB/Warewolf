@@ -38,3 +38,6 @@ bin
 /TestResults/**
 .sonarqube
 *.tmp_proj
+/Dev/Dev2.Activities.Specs/Composition/WorkflowExecution.feature.cs
+/Dev/Dev2.Activities.Specs/Composition
+/TestScripts/FullVersionString

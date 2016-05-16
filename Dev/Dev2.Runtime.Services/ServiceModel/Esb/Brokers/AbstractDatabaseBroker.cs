@@ -17,6 +17,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
@@ -139,6 +140,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                     var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                     dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
+                }
+                catch (Exception ex)
+                {
+                    throw new WarewolfDbException(ex.Message);
                 }
                 finally
                 {

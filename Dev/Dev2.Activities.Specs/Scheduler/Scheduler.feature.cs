@@ -71,9 +71,11 @@ namespace Dev2.Activities.Specs.Scheduler
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule with history")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ScheduleWithHistory()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule with history", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule with history", new string[] {
+                        "ignore"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -87,6 +89,310 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
    testRunner.And("\"ScheduleWithHistory\" has a username of \"dev2\\IntegrationTester\" and a Password o" +
                     "f \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table889 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ScheduleType",
+                        "Interval",
+                        "StartDate",
+                        "StartTime",
+                        "Recurs",
+                        "RecursInterval",
+                        "Delay",
+                        "DelayInterval",
+                        "Repeat",
+                        "RepeatInterval",
+                        "ExpireDate",
+                        "ExpireTime"});
+            table889.AddRow(new string[] {
+                        "On a schedule",
+                        "Daily",
+                        "2014/01/01",
+                        "15:40:44",
+                        "1",
+                        "day",
+                        "1",
+                        "hour",
+                        "1",
+                        "hour",
+                        "2014/01/02",
+                        "15:40:15"});
+#line 13
+   testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table889, "And ");
+#line 16
+   testRunner.When("the \"ScheduleWithHistory\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 17
+   testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 18
+   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 19
+   testRunner.And("\"ScheduleWithHistory\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table890 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table890.AddRow(new string[] {
+                        "1",
+                        "[[DiceRoll]] = Int32"});
+#line 20
+   testRunner.And("the history debug output for \'ScheduleWithHistory\' for row \"1\" is", ((string)(null)), table890, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating task with schedule statud disabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void CreatingTaskWithScheduleStatudDisabled()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating task with schedule statud disabled", new string[] {
+                        "ignore"});
+#line 25
+this.ScenarioSetup(scenarioInfo);
+#line 26
+      testRunner.Given("I have a schedule \"Diceroll00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 27
+   testRunner.And("\"Diceroll00\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
+   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+   testRunner.And("the task status \"Status\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+   testRunner.And("\"Diceroll00\" has a username of \"IntegrationTester\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table891 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ScheduleType",
+                        "Interval",
+                        "StartDate",
+                        "StartTime",
+                        "Recurs",
+                        "RecursInterval",
+                        "Delay",
+                        "DelayInterval",
+                        "Repeat",
+                        "RepeatInterval",
+                        "ExpireDate",
+                        "ExpireTime"});
+            table891.AddRow(new string[] {
+                        "On a schedule",
+                        "\"Daily\"",
+                        "2014/01/01",
+                        "15:40:44",
+                        "1",
+                        "day",
+                        "1",
+                        "hour",
+                        "1",
+                        "hour",
+                        "2014/01/02",
+                        "15:40:15"});
+#line 31
+   testRunner.And("\"Diceroll00\" has a Schedule of", ((string)(null)), table891, "And ");
+#line 34
+   testRunner.When("the \"Diceroll00\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 35
+   testRunner.Then("the Schedule task has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting schedule task \"At log on\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void SettingScheduleTaskAtLogOn()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting schedule task \"At log on\"", new string[] {
+                        "ignore"});
+#line 38
+this.ScenarioSetup(scenarioInfo);
+#line 39
+      testRunner.Given("I have a schedule \"Diceroll1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 40
+   testRunner.And("\"Diceroll1\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+   testRunner.And("\"Diceroll1\" has a username of \"IntegrationTester\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table892 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ScheduleType",
+                        "Delay",
+                        "DelayInterval",
+                        "Repeat",
+                        "RepeatInterval",
+                        "ExpireDate",
+                        "ExpireTime"});
+            table892.AddRow(new string[] {
+                        "At log on",
+                        "1",
+                        "hour",
+                        "1",
+                        "hour",
+                        "2014/01/02",
+                        "15:40:15"});
+#line 44
+   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table892, "And ");
+#line 47
+   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 48
+   testRunner.When("the \"Diceroll1\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 49
+   testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 50
+   testRunner.And("\"Diceroll1\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table893 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table893.AddRow(new string[] {
+                        "1",
+                        "[[DiceRoll]] = Int32"});
+#line 51
+   testRunner.And("the history debug output for \'ScheduleWithHistory\' for row \"1\" is", ((string)(null)), table893, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule the task with Incorrect username or password")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void ScheduleTheTaskWithIncorrectUsernameOrPassword()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule the task with Incorrect username or password", new string[] {
+                        "ignore"});
+#line 56
+this.ScenarioSetup(scenarioInfo);
+#line 57
+      testRunner.Given("I have a schedule \"Diceroll1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 58
+   testRunner.And("\"Diceroll1\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
+   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+   testRunner.And("\"Diceroll1\" has a username of \"bobthebuilder\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table894 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ScheduleType",
+                        "Delay",
+                        "DelayInterval",
+                        "Repeat",
+                        "RepeatInterval",
+                        "ExpireDate",
+                        "ExpireTime"});
+            table894.AddRow(new string[] {
+                        "At log on",
+                        "1",
+                        "hour",
+                        "1",
+                        "hour",
+                        "2014/01/02",
+                        "15:40:15"});
+#line 62
+   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table894, "And ");
+#line 65
+   testRunner.Then("the Schedule task has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule with LocalUser")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void ScheduleWithLocalUser()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule with LocalUser", new string[] {
+                        "ignore"});
+#line 68
+this.ScenarioSetup(scenarioInfo);
+#line 69
+      testRunner.Given("I have a schedule \"LocalUserSchedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 70
+   testRunner.And("\"LocalUserSchedule\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
+   testRunner.And("\"LocalUserSchedule\" has a username of \"LocalSchedulerAdmin\" and a Password of \"98" +
+                    "7Sched#@!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table895 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ScheduleType",
+                        "Interval",
+                        "StartDate",
+                        "StartTime",
+                        "Recurs",
+                        "RecursInterval",
+                        "Delay",
+                        "DelayInterval",
+                        "Repeat",
+                        "RepeatInterval",
+                        "ExpireDate",
+                        "ExpireTime"});
+            table895.AddRow(new string[] {
+                        "On a schedule",
+                        "Daily",
+                        "2014/01/01",
+                        "15:40:44",
+                        "1",
+                        "day",
+                        "1",
+                        "hour",
+                        "1",
+                        "hour",
+                        "2014/01/02",
+                        "15:40:15"});
+#line 74
+   testRunner.And("\"LocalUserSchedule\" has a Schedule of", ((string)(null)), table895, "And ");
+#line 77
+   testRunner.When("the \"LocalUserSchedule\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 78
+   testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 79
+   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 80
+   testRunner.And("\"LocalUserSchedule\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table896 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table896.AddRow(new string[] {
+                        "1",
+                        "[[DiceRoll]] = Int32"});
+#line 81
+   testRunner.And("the history debug output for \'LocalUserSchedule\' for row \"1\" is", ((string)(null)), table896, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule with ErrorInDebug")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void ScheduleWithErrorInDebug()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule with ErrorInDebug", new string[] {
+                        "ignore"});
+#line 87
+this.ScenarioSetup(scenarioInfo);
+#line 88
+      testRunner.Given("I have a schedule \"ScheduleWithError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 89
+   testRunner.And("\"ScheduleWithError\" executes an Workflow \"moocowimpi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 90
+   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 91
+   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 92
+   testRunner.And("\"ScheduleWithError\" has a username of \"dev2\\IntegrationTester\" and a Password of " +
+                    "\"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table897 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
@@ -114,305 +420,11 @@ this.ScenarioSetup(scenarioInfo);
                         "hour",
                         "2014/01/02",
                         "15:40:15"});
-#line 13
-   testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table897, "And ");
-#line 16
-   testRunner.When("the \"ScheduleWithHistory\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 17
-   testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 18
-   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 19
-   testRunner.And("\"ScheduleWithHistory\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table898 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table898.AddRow(new string[] {
-                        "1",
-                        "[[DiceRoll]] = Int32"});
-#line 20
-   testRunner.And("the history debug output for \'ScheduleWithHistory\' for row \"1\" is", ((string)(null)), table898, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating task with schedule statud disabled")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
-        public virtual void CreatingTaskWithScheduleStatudDisabled()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating task with schedule statud disabled", ((string[])(null)));
-#line 25
-this.ScenarioSetup(scenarioInfo);
-#line 26
-      testRunner.Given("I have a schedule \"Diceroll00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
-   testRunner.And("\"Diceroll00\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
-   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
-   testRunner.And("the task status \"Status\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
-   testRunner.And("\"Diceroll00\" has a username of \"IntegrationTester\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table899 = new TechTalk.SpecFlow.Table(new string[] {
-                        "ScheduleType",
-                        "Interval",
-                        "StartDate",
-                        "StartTime",
-                        "Recurs",
-                        "RecursInterval",
-                        "Delay",
-                        "DelayInterval",
-                        "Repeat",
-                        "RepeatInterval",
-                        "ExpireDate",
-                        "ExpireTime"});
-            table899.AddRow(new string[] {
-                        "On a schedule",
-                        "\"Daily\"",
-                        "2014/01/01",
-                        "15:40:44",
-                        "1",
-                        "day",
-                        "1",
-                        "hour",
-                        "1",
-                        "hour",
-                        "2014/01/02",
-                        "15:40:15"});
-#line 31
-   testRunner.And("\"Diceroll00\" has a Schedule of", ((string)(null)), table899, "And ");
-#line 34
-   testRunner.When("the \"Diceroll00\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
-   testRunner.Then("the Schedule task has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting schedule task \"At log on\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
-        public virtual void SettingScheduleTaskAtLogOn()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting schedule task \"At log on\"", ((string[])(null)));
-#line 38
-this.ScenarioSetup(scenarioInfo);
-#line 39
-      testRunner.Given("I have a schedule \"Diceroll1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
-   testRunner.And("\"Diceroll1\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
-   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
-   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
-   testRunner.And("\"Diceroll1\" has a username of \"IntegrationTester\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table900 = new TechTalk.SpecFlow.Table(new string[] {
-                        "ScheduleType",
-                        "Delay",
-                        "DelayInterval",
-                        "Repeat",
-                        "RepeatInterval",
-                        "ExpireDate",
-                        "ExpireTime"});
-            table900.AddRow(new string[] {
-                        "At log on",
-                        "1",
-                        "hour",
-                        "1",
-                        "hour",
-                        "2014/01/02",
-                        "15:40:15"});
-#line 44
-   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table900, "And ");
-#line 47
-   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 48
-   testRunner.When("the \"Diceroll1\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 49
-   testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 50
-   testRunner.And("\"Diceroll1\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table901 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table901.AddRow(new string[] {
-                        "1",
-                        "[[DiceRoll]] = Int32"});
-#line 51
-   testRunner.And("the history debug output for \'ScheduleWithHistory\' for row \"1\" is", ((string)(null)), table901, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule the task with Incorrect username or password")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
-        public virtual void ScheduleTheTaskWithIncorrectUsernameOrPassword()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule the task with Incorrect username or password", ((string[])(null)));
-#line 56
-this.ScenarioSetup(scenarioInfo);
-#line 57
-      testRunner.Given("I have a schedule \"Diceroll1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
-   testRunner.And("\"Diceroll1\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
-   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
-   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
-   testRunner.And("\"Diceroll1\" has a username of \"bobthebuilder\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table902 = new TechTalk.SpecFlow.Table(new string[] {
-                        "ScheduleType",
-                        "Delay",
-                        "DelayInterval",
-                        "Repeat",
-                        "RepeatInterval",
-                        "ExpireDate",
-                        "ExpireTime"});
-            table902.AddRow(new string[] {
-                        "At log on",
-                        "1",
-                        "hour",
-                        "1",
-                        "hour",
-                        "2014/01/02",
-                        "15:40:15"});
-#line 62
-   testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table902, "And ");
-#line 65
-   testRunner.Then("the Schedule task has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule with LocalUser")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
-        public virtual void ScheduleWithLocalUser()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule with LocalUser", ((string[])(null)));
-#line 67
-this.ScenarioSetup(scenarioInfo);
-#line 68
-      testRunner.Given("I have a schedule \"LocalUserSchedule\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
-   testRunner.And("\"LocalUserSchedule\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
-   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
-   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
-   testRunner.And("\"LocalUserSchedule\" has a username of \"LocalSchedulerAdmin\" and a Password of \"98" +
-                    "7Sched#@!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table903 = new TechTalk.SpecFlow.Table(new string[] {
-                        "ScheduleType",
-                        "Interval",
-                        "StartDate",
-                        "StartTime",
-                        "Recurs",
-                        "RecursInterval",
-                        "Delay",
-                        "DelayInterval",
-                        "Repeat",
-                        "RepeatInterval",
-                        "ExpireDate",
-                        "ExpireTime"});
-            table903.AddRow(new string[] {
-                        "On a schedule",
-                        "Daily",
-                        "2014/01/01",
-                        "15:40:44",
-                        "1",
-                        "day",
-                        "1",
-                        "hour",
-                        "1",
-                        "hour",
-                        "2014/01/02",
-                        "15:40:15"});
-#line 73
-   testRunner.And("\"LocalUserSchedule\" has a Schedule of", ((string)(null)), table903, "And ");
-#line 76
-   testRunner.When("the \"LocalUserSchedule\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 77
-   testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 78
-   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 79
-   testRunner.And("\"LocalUserSchedule\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table904 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table904.AddRow(new string[] {
-                        "1",
-                        "[[DiceRoll]] = Int32"});
-#line 80
-   testRunner.And("the history debug output for \'LocalUserSchedule\' for row \"1\" is", ((string)(null)), table904, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule with ErrorInDebug")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
-        public virtual void ScheduleWithErrorInDebug()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule with ErrorInDebug", ((string[])(null)));
-#line 86
-this.ScenarioSetup(scenarioInfo);
-#line 87
-      testRunner.Given("I have a schedule \"ScheduleWithError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 88
-   testRunner.And("\"ScheduleWithError\" executes an Workflow \"moocowimpi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
-   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
-   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
-   testRunner.And("\"ScheduleWithError\" has a username of \"dev2\\IntegrationTester\" and a Password of " +
-                    "\"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table905 = new TechTalk.SpecFlow.Table(new string[] {
-                        "ScheduleType",
-                        "Interval",
-                        "StartDate",
-                        "StartTime",
-                        "Recurs",
-                        "RecursInterval",
-                        "Delay",
-                        "DelayInterval",
-                        "Repeat",
-                        "RepeatInterval",
-                        "ExpireDate",
-                        "ExpireTime"});
-            table905.AddRow(new string[] {
-                        "On a schedule",
-                        "Daily",
-                        "2014/01/01",
-                        "15:40:44",
-                        "1",
-                        "day",
-                        "1",
-                        "hour",
-                        "1",
-                        "hour",
-                        "2014/01/02",
-                        "15:40:15"});
-#line 92
-   testRunner.And("\"ScheduleWithError\" has a Schedule of", ((string)(null)), table905, "And ");
-#line 95
-   testRunner.When("the \"ScheduleWithError\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 93
+   testRunner.And("\"ScheduleWithError\" has a Schedule of", ((string)(null)), table897, "And ");
 #line 96
+   testRunner.When("the \"ScheduleWithError\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 97
    testRunner.Then("the schedule status is \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

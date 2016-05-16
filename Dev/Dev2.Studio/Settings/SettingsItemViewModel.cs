@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Annotations;
+using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 
 namespace Dev2.Settings
@@ -33,7 +34,18 @@ namespace Dev2.Settings
             set { SetValue(HelpTextProperty, value); }
         }
 
-        public static readonly DependencyProperty HelpTextProperty = DependencyProperty.Register("HelpText", typeof(string), typeof(SettingsItemViewModel), new PropertyMetadata(null));
+        public static readonly DependencyProperty HelpTextProperty = DependencyProperty.Register("HelpText", typeof(string), typeof(SettingsItemViewModel), new PropertyMetadata(null,OnHelpTextChanged));
+
+        private static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(e.NewValue as string?? "");
+            }
+        }
+
+        
 
         public bool IsDirty
         {

@@ -104,8 +104,8 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             region.SelectedSource = pluginSrc;
 
             //------------Assert Results-------------------------
-            dep1.Verify(a => a.RestoreRegion(clone1.Object));
-            dep2.Verify(a => a.RestoreRegion(clone2.Object));
+            dep1.Verify(a => a.RestoreRegion(clone1.Object), Times.Never);
+            dep2.Verify(a => a.RestoreRegion(clone2.Object), Times.Never);
         }
 
         [TestMethod]

@@ -45,6 +45,17 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case "MySqlDatabase":
                     ServerType = enSourceType.MySqlDatabase;
                     break;
+                case "Oracle":
+                    ServerType = enSourceType.Oracle;
+                    Port = 1521;
+                    break;
+                case "ODBC":
+                    ServerType = enSourceType.ODBC;
+                    break;
+                case "PostgreSql":
+                    ServerType = enSourceType.PostgreSql;
+                    
+                    break;
                 default:
                     ServerType = enSourceType.Unknown;
                     break;
@@ -121,6 +132,24 @@ namespace Dev2.Runtime.ServiceModel.Data
                         return string.Format("Server={0};{4}Database={1};Uid={2};Pwd={3};",
                             Server, DatabaseName, UserID, Password,
                             Port > 0 ? string.Format("Port={0};", Port) : string.Empty);
+
+                    case enSourceType.Oracle:
+                     //database refers to owner/schema in oracle
+                        return string.Format("User Id={2};Password={3};Data Source={0};{1}",
+                          Server,( DatabaseName  !=null ? string.Format("Database={0};", DatabaseName) : string.Empty) , UserID, Password,
+                         Port > 0 ? string.Format(":{0}", Port) : string.Empty);
+
+                    case enSourceType.ODBC:
+                        return string.Format("DSN={0};", DatabaseName);
+
+                    case enSourceType.PostgreSql:
+
+                        if (string.IsNullOrEmpty(DatabaseName))
+                            DatabaseName = string.Empty;
+
+                        return string.Format(@"Host={0};Username={1};Password={2};Database={3}", Server, UserID, Password,
+                            DatabaseName);
+
                 }
                 return string.Empty;
             }
@@ -140,6 +169,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     switch(prm[0].ToLowerInvariant())
                     {
                         case "server":
+                        case "host":
                         case "data source":
                             var arr = prm[1].Split(','); // may include port number after comma
                             Server = arr[0];
@@ -149,6 +179,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                 {
                                     Port = port;
                                 }
+
                             }
                             break;
                         case "port":
@@ -156,8 +187,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                             {
                                 Port = port;
                             }
+                          
                             break;
                         case "database":
+                        case "dsn":
                         case "initial catalog":
                             DatabaseName = prm[1];
                             break;
@@ -166,6 +199,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             break;
                         case "user id":
                         case "uid":
+                        case "username":
                             AuthenticationType = AuthenticationType.User;
                             UserID = prm[1];
                             break;

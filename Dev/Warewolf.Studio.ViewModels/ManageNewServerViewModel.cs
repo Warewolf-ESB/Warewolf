@@ -22,16 +22,12 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Interfaces;
-using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Models;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
-using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -46,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IInnerDialogueTemplate
 
-        public IAsyncWorker AsyncWorker { get; set; }
+        public IAsyncWorker AsyncWorker { private get; set; }
         readonly IManageServerSourceModel _updateManager;
         CancellationTokenSource _token;
 
@@ -377,6 +373,10 @@ namespace Warewolf.Studio.ViewModels
 
         void TestConnection()
         {
+            if (string.IsNullOrEmpty(GetAddressName()))
+            {
+                return;
+            }
             _token = new CancellationTokenSource();
             AsyncWorker.Start(SetupProgressSpinner, () =>
             {
@@ -402,7 +402,7 @@ namespace Warewolf.Studio.ViewModels
         /// Command for save/ok
         /// </summary>
         public ICommand OkCommand { get; set; }
-        public ICommand CancelTestCommand { get; set; }
+        public ICommand CancelTestCommand { get; private set; }
 
         public string HeaderText
         {
@@ -672,22 +672,6 @@ namespace Warewolf.Studio.ViewModels
             try
             {
                 StartTesting();
-                Server server = new Server(new EnvironmentModel(Guid.NewGuid(), new ServerProxyWithoutChunking(new Uri(Address))));
-                server.Connect();
-                Version sourceVersionNumber;
-                Version.TryParse(server.GetServerVersion(), out sourceVersionNumber);
-                Version destVersionNumber;
-                Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out destVersionNumber);
-                if (sourceVersionNumber != null && destVersionNumber != null)
-                {
-                    if (sourceVersionNumber < destVersionNumber)
-                    {
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(), destVersionNumber.ToString());
-                        Reset();
-                        return;
-                    }
-                }
                 TestConnection();
             }
             catch (Exception ex)

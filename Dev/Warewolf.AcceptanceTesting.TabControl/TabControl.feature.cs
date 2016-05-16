@@ -532,33 +532,33 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ClosingUnsavedTabOnRemoteServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Closing unsaved tab on remote server", ((string[])(null)));
-#line 182
+#line 180
 this.ScenarioSetup(scenarioInfo);
-#line 183
+#line 181
  testRunner.Given("I \"Start\" the studio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 184
+#line 182
  testRunner.And("selected Source Server is \"Remote Intergration Connection\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 185
+#line 183
  testRunner.And("\"New\" is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 186
+#line 184
  testRunner.And("\"New Workflow - Remote Intergration Connection\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 185
  testRunner.And("I drag an \"Assign\" tool into the workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
+#line 186
  testRunner.And("\"New Workflow - Remote Intergration Connection *\" tab is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 187
  testRunner.And("I disconnect from Source Server is \"Remote Intergration Connection\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
+#line 188
  testRunner.And("I close \"New Workflow - Remote Intergration Connection *\" tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
+#line 189
  testRunner.Then("a warning message appears prompting to \"Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 192
+#line 190
  testRunner.When("\"Save\" is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 193
+#line 191
  testRunner.And("the Save Dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
+#line 192
  testRunner.Then("\"New Workflow - Remote Intergration Connection *\" Server is changed to \"Local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 195
+#line 193
  testRunner.And("\"New Workflow - Remote Intergration Connection *\" is saved as \"Test -Local\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -570,17 +570,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OpeningTheSameWorkflowMultipleTimes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening the same workflow multiple times", ((string[])(null)));
-#line 198
+#line 196
 this.ScenarioSetup(scenarioInfo);
-#line 199
+#line 197
  testRunner.Given("I open \"Dev2GetCountriesWebService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 200
+#line 198
  testRunner.Then("\"Dev2GetCountriesWebService\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 201
+#line 199
  testRunner.And("I open \"Dev2GetCountriesWebService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 200
  testRunner.Then("focus is put on \"Dev2GetCountriesWebService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 203
+#line 201
  testRunner.And("No new tabs are opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

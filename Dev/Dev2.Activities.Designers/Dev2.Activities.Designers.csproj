@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
       <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
@@ -86,9 +86,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\log4net.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -130,10 +129,7 @@
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"/>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -220,6 +216,7 @@
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\ExchangeInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CustomToolViewModelBase.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
@@ -229,6 +226,7 @@
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\ExchangeInputRegion.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
@@ -236,6 +234,7 @@
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\ExchangeSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\WebSourceRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
@@ -305,6 +304,14 @@
     </Compile>
     <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesignerViewModel.cs" />
     <Compile Include="Designers2\RabbitMQ\Publish\Small.xaml.cs">
+    <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesignerViewModel.cs" />
+    <Compile Include="Designers2\ExchangeEmail\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesigner.xaml.cs">
+      <DependentUpon>ExchangeEmailDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\FindIndex\Large.xaml.cs">
@@ -331,6 +338,36 @@
     </Compile>
     <Compile Include="Designers2\Random\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\ODBCDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\ODBC\ODBCDatabaseDesigner.xaml.cs">
+      <DependentUpon>ODBCDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\OracleDatabaseDesigner.xaml.cs">
+      <DependentUpon>OracleDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\OracleDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\Oracle\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\PostgreSqlDatabaseDesigner.xaml.cs">
+      <DependentUpon>PostgreSqlDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\PostgreSqlDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\PostgreSql\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
@@ -641,6 +678,16 @@
     <Compile Include="Designers2\Script\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SelectAndApplyDesigner.xaml.cs">
+      <DependentUpon>SelectAndApplyDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SelectAndApplyDesignerViewModel.cs" />
+    <Compile Include="Designers2\SelectAndApply\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Sequence\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
@@ -1111,6 +1158,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\ExchangeEmail\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ExchangeEmail\ExchangeEmailDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ExchangeEmail\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\FindIndex\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1154,6 +1213,42 @@
     <Page Include="Designers2\Random\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ODBC\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ODBC\ODBCDatabaseDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ODBC\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Oracle\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Oracle\OracleDatabaseDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Oracle\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\PostgreSql\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\PostgreSql\PostgreSqlDatabaseDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\PostgreSql\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1431,6 +1526,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\SelectAndApply\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SelectAndApply\SelectAndApplyDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SelectAndApply\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Sequence\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1692,13 +1799,16 @@
   <ItemGroup>
     <Folder Include="Designers2\Core\Web\Get\" />
     <Folder Include="Designers2\Core\Web\Post\" />
+    <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Designers2\DropBox2016\dropbox-windows.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

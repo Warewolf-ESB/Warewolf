@@ -153,7 +153,6 @@ namespace Warewolf.Studio.ViewModels
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
             _environmentViewModel.LoadDialog(_selectedPath).ContinueWith(a =>
             {
-                HasLoaded = a.Result;
                 if (!string.IsNullOrEmpty(_selectedPath))
                 {
                     _environmentViewModel.SelectItem(_selectedPath, b =>
@@ -162,6 +161,8 @@ namespace Warewolf.Studio.ViewModels
                         b.IsSelected = true;
                     });
                 }
+                HasLoaded = a.Result;
+                ValidateName();
             },TaskContinuationOptions.ExecuteSynchronously);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;

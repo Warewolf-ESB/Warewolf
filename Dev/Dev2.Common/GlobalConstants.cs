@@ -350,7 +350,16 @@ namespace Dev2.Common
 FROM sys.objects
 WHERE type_desc LIKE '%FUNCTION%'
 or type_desc LIKE '%Procedure%'";
+
         public const string SchemaQueryMySql = @"SHOW PROCEDURE STATUS;";
+        public const string SchemaQueryPostgreSql = @"SELECT  p.proname as Name, current_database() as Db
+FROM    pg_catalog.pg_namespace n
+JOIN    pg_catalog.pg_proc p
+ON      p.pronamespace = n.oid
+WHERE   n.nspname = 'public'
+";
+
+        public const string SchemaQueryOracle = @"SELECT OBJECT_NAME AS Name,OWNER AS Db,OBJECT_TYPE as ROUTINE_TYPE FROM ALL_OBJECTS WHERE OWNER = '{0}' AND OBJECT_TYPE IN('FUNCTION','PROCEDURE')";
         public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
         public const string VersionDownloadPath = "Installers\\";
         public const string VersionFolder = "VersionControl";
@@ -551,7 +560,7 @@ or type_desc LIKE '%Procedure%'";
             }
 
         }
-        public static string DropboxPathNotFoundException = "The file specified does not exist in Dropbox";
+        public static string DropboxPathNotFoundException = "Dropbox location cannot be found";
         public static string DropboxPathNotFileException = "Please specify the path of a file in Dropbox";
         public static string DropBoxSucces = "Success";
         public static string DropBoxFailure = "Failed";

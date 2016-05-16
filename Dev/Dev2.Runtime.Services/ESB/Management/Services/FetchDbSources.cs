@@ -12,6 +12,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
+
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchDbSources : IEsbManagementEndpoint
@@ -46,6 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return null;
             }).ToList();
+         
             return serializer.SerializeToBuilder(new ExecuteMessage() { HasError = false, Message = serializer.SerializeToBuilder(list) });
             // ReSharper restore MaximumChainedReferences
         }
