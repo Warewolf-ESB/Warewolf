@@ -637,7 +637,7 @@
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewRabbitMQSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
-                                                                    CommandParameter="{x:Static data:ResourceType.RabbitMQSource}"
+                                                                    CommandParameter="RabbitMQSource"
                                                                     Header="New RabbitMQ Source"
                                                                     Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
@@ -969,7 +969,7 @@
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewRabbitMqSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
-                                                                    CommandParameter="{x:Static data:ResourceType.RabbitMQSource}"
+                                                                    CommandParameter="RabbitMQSource"
                                                                     Header="New RabbitMQ Source"
                                                                     Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>

@@ -468,7 +468,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if (resourceType.IsService)
             {
                 return ResourceType.WorkflowService;
-                case ResourceType.RabbitMQSource:
             }
             if (resourceType.IsServer)
             {

@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         private ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel)
-            : base(ResourceType.RabbitMQSource)
+            : base("RabbitMQSource")
         {
             VerifyArgument.IsNotNull("rabbitMQSourceModel", rabbitMQSourceModel);
 

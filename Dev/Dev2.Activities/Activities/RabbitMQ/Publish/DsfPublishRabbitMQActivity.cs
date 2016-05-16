@@ -89,7 +89,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
             try
             {
                 RabbitMQSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
-                if (RabbitMQSource == null || RabbitMQSource.ResourceType != ResourceType.RabbitMQSource)
+                if (RabbitMQSource == null || RabbitMQSource.ResourceType != "RabbitMQSource")
                 {
                     return "Failure: Source has been deleted.";
                 }

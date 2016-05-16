@@ -7,7 +7,6 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.RabbitMQ.Publish"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -64,11 +63,11 @@
                       SelectedItem="{Binding SelectedRabbitMQSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding RabbitMQSources}"
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipSource}"
+                      ToolTip="{x:Static languages:Core.RabbitMQToolTipSource}"
                       DisplayMemberPath="ResourceName"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsRabbitMQSourceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQSourceHelp}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQSourceHelp}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="SelectedRabbitMQSource"
                                          SourcePropertyValue="{Binding SelectedRabbitMQSource, UpdateSourceTrigger=PropertyChanged}"
@@ -102,7 +101,7 @@
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="1"
                                 DefaultText="Queue Name"
                                 Text="{Binding QueueName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipQueueName}"
+                                ToolTip="{x:Static languages:Core.RabbitMQToolTipQueueName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -133,7 +132,7 @@
                   Margin="-6,0,0,0"
                       Content="Durable"
                   IsChecked="{Binding IsDurable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipIsDurable}">
+                  ToolTip="{x:Static languages:Core.RabbitMQToolTipIsDurable}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpIsDurable}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
@@ -148,7 +147,7 @@
                   Margin="-6,-4,0,0"
                       Content="Exclusive"
                   IsChecked="{Binding Path=IsExclusive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipIsExclusive}">
+                  ToolTip="{x:Static languages:Core.RabbitMQToolTipIsExclusive}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpIsExclusive}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
@@ -163,7 +162,7 @@
                   Margin="-6,-4,0,0"
                       Content="Auto Delete"
                   IsChecked="{Binding Path=IsAutoDelete, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipIsAutoDelete}">
+                  ToolTip="{x:Static languages:Core.RabbitMQToolTipIsAutoDelete}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpIsAutoDelete}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
@@ -191,7 +190,7 @@
                                 VerticalScrollBarVisibility="Auto"
                                 HorizontalScrollBarVisibility="Auto"
                                 Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipMessage}"
+                                ToolTip="{x:Static languages:Core.RabbitMQToolTipMessage}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsMessageFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -200,7 +199,7 @@
                 <TextBlock Text="Message Content" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
             </ui:IntellisenseTextBox.DefaultText>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQHelpMessage}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpMessage}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Message"
                                      SourcePropertyValue="{Binding Message, UpdateSourceTrigger=PropertyChanged}"
@@ -214,13 +213,13 @@
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
                                 Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RabbitMQToolTipResult}"
+                                ToolTip="{x:Static languages:Core.RabbitMQToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resultstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.RabbitMQHelpResult}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.RabbitMQHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName=" Result"
                                      SourcePropertyValue="{Binding  Result, UpdateSourceTrigger=PropertyChanged}"
