@@ -33,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
         private List<string> _types;
         private IOAuthSource _oAuthSource;
         private string _resourceName;
+        private Uri _oAuthUri;
         private const string RedirectUri = "https://www.example.com/";
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
@@ -40,11 +41,11 @@ namespace Warewolf.Studio.ViewModels
         {
             if(updateManager == null)
             {
-                throw new ArgumentNullException(nameof(updateManager));
+                throw new ArgumentNullException("updateManager");
             }
             if(requestServiceNameViewModel == null)
             {
-                throw new ArgumentNullException(nameof(requestServiceNameViewModel));
+                throw new ArgumentNullException("requestServiceNameViewModel");
             }
             _updateManager = updateManager;
             RequestServiceNameViewModel = requestServiceNameViewModel;
@@ -64,7 +65,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if(oAuthSource == null)
             {
-                throw new ArgumentNullException(nameof(oAuthSource));
+                throw new ArgumentNullException("oAuthSource");
             }
             _oAuthSource = oAuthSource;
             // ReSharper disable once VirtualMemberCallInContructor
@@ -243,6 +244,18 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceName = value;
+            }
+        }
+        public Uri OAuthUri
+        {
+            get
+            {
+                return _oAuthUri;
+            }
+            set
+            {
+                _oAuthUri = value;
+                OnPropertyChanged(()=>OAuthUri);
             }
         }
 
