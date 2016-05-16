@@ -76,7 +76,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             {
                 return _dropboxClient;
             }
-            _dropboxClient = DropboxFactory.CreateWithSecret(SelectedSource.Secret);
+            _dropboxClient = DropboxFactory.CreateWithSecret(SelectedSource.AccessToken);
             return _dropboxClient;
         }
 

@@ -12,15 +12,15 @@ namespace Dev2.Webs.Callbacks
     public class DropBoxSourceSourceCallbackHandler : SourceCallbackHandler
     {
         readonly string _token;
-        readonly string _secret;
+        readonly string _accessToken;
         IServer _server;
 
-        public DropBoxSourceSourceCallbackHandler(IEnvironmentRepository environmentRepository, string token, string secret, IServer server)
+        public DropBoxSourceSourceCallbackHandler(IEnvironmentRepository environmentRepository, string token, string accessToken, IServer server)
             : base(environmentRepository)
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object>{{"environmentRepository",environmentRepository},{"token",token},{"secret",secret}});
+            VerifyArgument.AreNotNull(new Dictionary<string, object>{{"environmentRepository",environmentRepository},{"token",token},{"AccessToken",accessToken}});
             _token = token;
-            _secret = secret;
+            _accessToken = accessToken;
             _server = server;
         }
 
@@ -31,11 +31,11 @@ namespace Dev2.Webs.Callbacks
                 return _token;
             }
         }
-        public string Secret
+        public string AccessToken
         {
             get
             {
-                return _secret;
+                return _accessToken;
             }
         }
 
@@ -44,7 +44,7 @@ namespace Dev2.Webs.Callbacks
             // ReSharper disable once MaximumChainedReferences
             string resName = jsonObj.resourceName;
             string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
-            var oauthSource = new OauthSource { Key = Token, Secret = Secret, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() };
+            var oauthSource = new OauthSource { AppKey = Token, AccessToken = AccessToken, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() };
             var dropBoxSource = oauthSource.ToStringBuilder();
             environmentModel.ResourceRepository.SaveResource(environmentModel,dropBoxSource , GlobalConstants.ServerWorkspaceID);
             _server.UpdateRepository.FireItemSaved();

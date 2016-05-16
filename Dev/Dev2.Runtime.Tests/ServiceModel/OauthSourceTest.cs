@@ -2,6 +2,7 @@
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -20,8 +21,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(oauthSource.Secret,"");
-            Assert.AreEqual(oauthSource.Key,"");
+            Assert.AreEqual(oauthSource.AccessToken,"");
+            Assert.AreEqual(oauthSource.AppKey,"");
         }
 
         [TestMethod]
@@ -30,7 +31,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void OauthSource_Ctor_FromXML_Construct_ExpectSource()
         {
             //------------Setup for test--------------------------
-            var oauthSource = new OauthSource(XElement.Parse(@"<Source ID=""00000000-0000-0000-0000-000000000000"" Name="""" ResourceType=""OauthSource"" IsValid=""false"" ConnectionString=""Secret=secret;Key=key"" Type=""OauthSource"">
+            var oauthSource = new OauthSource(XElement.Parse(@"<Source ID=""00000000-0000-0000-0000-000000000000"" Name="""" ResourceType=""OauthSource"" IsValid=""false"" ConnectionString=""AccessToken=secret;AppKey=key"" Type=""OauthSource"">
   <DisplayName></DisplayName>
   <Category></Category>
   <AuthorRoles></AuthorRoles>
@@ -41,8 +42,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(oauthSource.Secret, "secret");
-            Assert.AreEqual(oauthSource.Key, "key");
+            Assert.AreEqual(oauthSource.AccessToken, "secret");
+            Assert.AreEqual(oauthSource.AppKey, "key");
         }
 
         [TestMethod]
@@ -51,15 +52,17 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void OauthSource_ToXML_Construct_ExpectPropertiesSet()
         {
             //------------Setup for test--------------------------
-            var oauthSource = new OauthSource(){Key = "key",Secret = "secret"};
+            var oauthSource = new OauthSource(){AppKey = "key",AccessToken = "secret"};
 
             //------------Execute Test---------------------------
             var outxml = oauthSource.ToXml();
             //------------Assert Results-------------------------
-            var readOauthSource = new OauthSource(outxml);
-            readOauthSource.Key = "key";
-            readOauthSource.Secret = "secret";
-            
+            var readOauthSource = new OauthSource(outxml)
+            {
+                AppKey = "key",
+                AccessToken = "secret"
+            };
+
             var conStringAttr = outxml.Attribute("ConnectionString");
             Assert.IsNotNull(conStringAttr);
             Assert.IsTrue(conStringAttr.Value.IsBase64());            
