@@ -19,6 +19,6 @@ namespace Dev2.Common.Interfaces.Data
         Guid ResourceID { get; set; }
         // ReSharper restore InconsistentNaming
         String ResourceName { get; set; }
-        ResourceType ResourceType { get; set; }
+        string ResourceType { get; set; }
     }
 }

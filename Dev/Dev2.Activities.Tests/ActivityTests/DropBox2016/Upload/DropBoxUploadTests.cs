@@ -6,6 +6,7 @@ using Dropbox.Api;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+// ReSharper disable ObjectCreationAsStatement
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 {
@@ -81,13 +82,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
         public void CreateNewDropboxUpload_GivenMissingFromPath_ShouldBeInValid()
         {
             //---------------Set up test pack-------------------
-            var dropBoxUpload = new DropBoxUpload(null, "random.txt", "");
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(dropBoxUpload);
             //---------------Execute Test ----------------------
-            dropBoxUpload.Validate();
+            new DropBoxUpload(null, "random.txt", "");
             //---------------Test Result -----------------------
-            Assert.IsFalse(dropBoxUpload.IsValid);
         } 
         
         [TestMethod]

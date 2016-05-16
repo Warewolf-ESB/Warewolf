@@ -20,7 +20,6 @@ using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
@@ -58,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
         string _emptyServerName;
 
         public ManageNewServerViewModel(IManageServerSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IExternalProcessExecutor executor)
-            : base(ResourceType.ServerSource)
+            : base("ServerSource")
         {
             VerifyArgument.IsNotNull("executor", executor);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -615,7 +614,7 @@ namespace Warewolf.Studio.ViewModels
                 if (_protocol != value)
                 {
                     _protocol = value;
-                    OnPropertyChanged(Protocol);
+                    
                     Reset();
                     if (Protocol == "https" && SelectedPort == "3142")
                     {
@@ -625,6 +624,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         SelectedPort = "3142";
                     }
+                    OnPropertyChanged(Protocol);
                 }
             }
         }

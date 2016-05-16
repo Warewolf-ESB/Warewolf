@@ -92,6 +92,31 @@ namespace Dev2.Core.Tests.AppResources.Comparers
         }
 
         [TestMethod]
+        public void CreateShowDependencyKeysExpectedKeysCreated()
+        {
+            var resId = Guid.NewGuid();
+            var serverId = Guid.NewGuid();
+            var enviroId = Guid.NewGuid();
+
+            WorkSurfaceKey key1 = WorkSurfaceKeyFactory.CreateKey(Studio.Core.AppResources.Enums.WorkSurfaceContext.DependencyVisualiser) as WorkSurfaceKey;
+            Assert.IsNotNull(key1);
+            key1.EnvironmentID = enviroId;
+            key1.ResourceID = resId;
+            key1.ServerID = serverId;
+
+            var resource2 = Dev2MockFactory.SetupResourceModelMock();
+            resource2.Setup(c => c.ID).Returns(resId);
+            resource2.Setup(c => c.ServerID).Returns(serverId);
+            resource2.Setup(c => c.Environment.ID).Returns(enviroId);
+
+            var key2 = WorkSurfaceKeyFactory.CreateKey(resource2.Object);
+            if (WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key1, key2))
+            {
+                Assert.Fail("The WorkSurfaceContext should not be the same.");
+            }
+        }
+
+        [TestMethod]
         public void CreateKeysWithDebugStateExpectedKeysCreatedWhenNoWorkspaceID()
         {
             var resId = Guid.NewGuid();

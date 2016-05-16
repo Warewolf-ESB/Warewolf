@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Dropbox.Api;
 using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
@@ -29,5 +30,17 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             return mock.Object;
         });
 
+        public static Lazy<ListFolderResult> ListFolderResultInstance=new Lazy<ListFolderResult>(() =>
+        {
+            
+    
+            var folderMetadata = new FolderMetadata("a","a","a","1"){AsFolder = { }};
+            var metadata = new DeletedMetadata("deleted", "deleted", "deleted"){AsFolder = {}};
+            var folderMetadata1 = new FolderMetadata("c","c","c","3");
+            var metadata1 = new FolderMetadata("d","d","d","4");
+            IEnumerable<Metadata> entries = new Metadata[] {folderMetadata, metadata1, metadata, folderMetadata1};
+            var listFolderResult = new ListFolderResult(entries,"3",false);
+            return listFolderResult;
+        });
     }
 }

@@ -11,12 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Data.ServiceModel
@@ -43,8 +40,7 @@ namespace Dev2.Data.ServiceModel
         /// <summary>
         /// Gets or sets the type of the resource.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ResourceType ResourceType { get; set; }
+        public string ResourceType { get; set; }
 
         /// <summary>
         /// Gets or sets the category of the resource.
@@ -106,5 +102,36 @@ namespace Dev2.Data.ServiceModel
         /// Gets or sets the permissions of the resource
         /// </summary>
         public Permissions Permissions { get; set; }
+
+        public bool IsSource
+        {
+            get;
+            set;
+        }
+        public bool IsService
+        {
+            get;
+            set;
+        }
+        public bool IsFolder
+        {
+            get;
+            set;
+        }
+        public bool IsReservedService
+        {
+            get;
+            set;
+        }
+        public bool IsServer
+        {
+            get;
+            set;
+        }
+        public bool IsResourceVersion
+        {
+            get;
+            set;
+        }
     }
 }

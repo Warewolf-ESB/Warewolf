@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Dev2.Activities.Designers2.Core.NamespaceRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
@@ -45,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             var id = Guid.NewGuid();
             var act = new DsfPluginActivity() { SourceId = id };
             var src = new Mock<IPluginServiceModel>();
-            var pluginSrc = new PluginSourceDefinition() { Id = id, Name = "johnny"};
+            var pluginSrc = new PluginSourceDefinition() { Id = id, Name = "johnny" };
             var namespaceItem = new NamespaceItem { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc });
 
@@ -213,6 +214,33 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             //------------Assert Results-------------------------
             Assert.AreEqual(dotNetNamespaceRegion.SelectedNamespace, namespaceItem);
             Assert.IsFalse(dotNetNamespaceRegion.IsEnabled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetNamespaces_GivenHasError_ShouldAddIntoErrors()
+        {
+            //---------------Set up test pack-------------------
+            var id = Guid.NewGuid();
+            var act = new DsfPluginActivity() { SourceId = id };
+            var src = new Mock<IPluginServiceModel>();
+            var pluginSrc = new PluginSourceDefinition() { Id = id };
+            var s2 = new PluginSourceDefinition() { Id = Guid.NewGuid() };
+            var namespaceItem = new NamespaceItem { FullName = "bravo" };
+            src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc, s2 });
+            src.Setup(a => a.GetNameSpaces(It.IsAny<IPluginSource>())).Throws(new BadImageFormatException());
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfPluginActivity());
+            DotNetSourceRegion dotNetSourceRegion = new DotNetSourceRegion(src.Object, modelItem);
+            var mockPluginSource = new Mock<IPluginSource>();
+            dotNetSourceRegion.SelectedSource = mockPluginSource.Object;
+            DotNetNamespaceRegion sourceRegion = new DotNetNamespaceRegion(src.Object, modelItem, dotNetSourceRegion);
+
+            //---------------Test Result -----------------------
+            Assert.AreEqual(sourceRegion.Errors.Count, 1);
+            Assert.AreEqual(sourceRegion.Errors.Count(s => s.Contains("Format of the executable (.exe) or library (.dll) is invalid")), 1);
         }
     }
 }

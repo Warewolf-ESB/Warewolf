@@ -180,13 +180,6 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        public bool LoggingEnabled
-        {
-            get
-            {
-                return true;
-            }
-        }
 
         /// <summary>
         /// Executes the request.
@@ -510,7 +503,7 @@ namespace Dev2.Runtime.ESB.Control
             }
 
             // Handle services ;)
-            if(result.ToString() == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
+            if(result.ToString() == "<DataList />" && resource.ResourceType != "WorkflowService")
             {
                 ErrorResultTO errors;
                 result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);

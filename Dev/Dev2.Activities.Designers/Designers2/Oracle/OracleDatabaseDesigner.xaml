@@ -32,6 +32,6 @@
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource OracleIcon}"/>
+        <Binding Source="{StaticResource DatabaseIcon}"/>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>

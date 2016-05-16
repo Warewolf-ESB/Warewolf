@@ -14,7 +14,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -60,12 +59,12 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Services/Get
         public Service Get(string args, Guid workspaceId, Guid dataListId)
         {
-            ResourceType resourceType = ResourceType.Unknown;
+            string resourceType = "Unknown";
             try
             {
                 var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
                 var resourceTypeStr = webRequestPoco.ResourceType;
-                resourceType = Resources.ParseResourceType(resourceTypeStr);
+                resourceType = resourceTypeStr;
                 var resourceId = webRequestPoco.ResourceId;
                 var xmlStr = _resourceCatalog.GetResourceContents(workspaceId, Guid.Parse(resourceId));
 
@@ -83,15 +82,15 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        static Service GetDefaultService(ResourceType resourceType)
+        static Service GetDefaultService(string resourceType)
         {
             switch (resourceType)
             {
-                case ResourceType.DbService:
+                case "DbService":
                     return DbService.Create();
-                case ResourceType.PluginService:
+                case "PluginService":
                     return PluginService.Create();
-                case ResourceType.WebService:
+                case "WebService":
                     return WebService.Create();
             }
             return DbService.Create();
@@ -456,19 +455,19 @@ namespace Dev2.Runtime.ServiceModel
             var service = JsonConvert.DeserializeObject<Service>(args);
             switch (service.ResourceType)
             {
-                case ResourceType.DbService:
+                case "DbService":
                     return JsonConvert.DeserializeObject<DbService>(args);
             }
             return service;
         }
 
-        protected virtual Service DeserializeService(XElement xml, ResourceType resourceType)
+        protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             if (xml != null)
             {
                 switch (resourceType)
                 {
-                    case ResourceType.DbService:
+                    case "DbService":
                         return new DbService(xml);
                 }
             }
@@ -476,7 +475,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 switch (resourceType)
                 {
-                    case ResourceType.DbService:
+                    case "DbService":
                         return DbService.Create();
                 }
             }

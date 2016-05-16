@@ -13,7 +13,6 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -133,24 +132,28 @@ namespace Dev2.Studio.ViewModels.Workflow
                 switch(ActivityType)
                 {
                     case enDsfActivityType.Workflow:
-                        isMatched = explorerItemModel.ResourceType == ResourceType.WorkflowService;
+                        //isMatched = resourceType == ResourceType.WorkflowService;
+                        isMatched = explorerItemModel.IsService;
                         break;
                     case enDsfActivityType.Service:
-                        isMatched = explorerItemModel.ResourceType == ResourceType.DbService ||
-                                    explorerItemModel.ResourceType == ResourceType.PluginService ||
-                                    explorerItemModel.ResourceType == ResourceType.WebService;
+                        //isMatched = resourceType == ResourceType.DbService ||
+                        //            resourceType == ResourceType.PluginService ||
+                        //            resourceType == ResourceType.WebService;
+                        isMatched = explorerItemModel.IsService;
                         break;
                     case enDsfActivityType.All:
-                        isMatched = explorerItemModel.ResourceType != ResourceType.Folder &&
-                                    explorerItemModel.ResourceType != ResourceType.Server &&
-                                    explorerItemModel.ResourceType != ResourceType.ServerSource;
+                        //isMatched = resourceType != ResourceType.Folder &&
+                        //            resourceType != ResourceType.Server &&
+                        //            resourceType != ResourceType.ServerSource;
+                        isMatched = explorerItemModel.IsService && explorerItemModel.IsSource && explorerItemModel.IsFolder;
                         break;
                     default:
-                        isMatched = explorerItemModel.ResourceType != ResourceType.Folder &&
-                                    explorerItemModel.ResourceType != ResourceType.WorkflowService &&
-                                    explorerItemModel.ResourceType != ResourceType.DbService &&
-                                    explorerItemModel.ResourceType != ResourceType.PluginService &&
-                                    explorerItemModel.ResourceType != ResourceType.WebService;
+                        //isMatched = resourceType != ResourceType.Folder &&
+                        //            resourceType != ResourceType.WorkflowService &&
+                        //            resourceType != ResourceType.DbService &&
+                        //            resourceType != ResourceType.PluginService &&
+                        //            resourceType != ResourceType.WebService;
+                        isMatched = explorerItemModel.IsService && explorerItemModel.IsSource && explorerItemModel.IsFolder;
                         break;
                 }
             }
