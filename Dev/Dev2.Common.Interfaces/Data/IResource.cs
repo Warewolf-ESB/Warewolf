@@ -43,7 +43,7 @@ namespace Dev2.Common.Interfaces.Data
         /// <summary>
         ///     Gets or sets the type of the resource.
         /// </summary>
-        ResourceType ResourceType { get; set; }
+        string ResourceType { get; set; }
 
         /// <summary>
         ///     Gets or sets the category of the resource.
@@ -125,5 +125,12 @@ namespace Dev2.Common.Interfaces.Data
         // ReSharper disable InconsistentNaming
         void UpdateErrorsBasedOnXML(XElement xml);
         // ReSharper restore InconsistentNaming
+
+       bool IsSource { get; }
+       bool IsService { get; }
+       bool IsFolder { get; }
+       bool IsReservedService { get; }
+       bool IsServer { get; }
+       bool IsResourceVersion { get; }
     }
 }

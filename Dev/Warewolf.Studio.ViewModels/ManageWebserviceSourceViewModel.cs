@@ -18,7 +18,6 @@ using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
@@ -57,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDisposed;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker,IExternalProcessExecutor executor)
-            : base(ResourceType.WebSource)
+            : base("WebSource")
         {
             VerifyArgument.IsNotNull("executor", executor);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -118,7 +117,7 @@ namespace Warewolf.Studio.ViewModels
             FromModel(webServiceSource);
         }
 
-        public ManageWebserviceSourceViewModel() : base(ResourceType.WebSource)
+        public ManageWebserviceSourceViewModel() : base("WebSource")
         {
           
         }
@@ -573,11 +572,8 @@ namespace Warewolf.Studio.ViewModels
 
         protected override void OnDispose()
         {
-            if (RequestServiceNameViewModel != null)
-            {
-                if (RequestServiceNameViewModel != null) RequestServiceNameViewModel.Dispose();
-   
-            }
+            if (RequestServiceNameViewModel != null) 
+                RequestServiceNameViewModel.Dispose();
             Dispose(true);
         }
         // Dispose(bool disposing) executes in two distinct scenarios.

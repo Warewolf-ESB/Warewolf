@@ -252,7 +252,8 @@ namespace Dev2.Activities
             var index = 1;
             if(DataListUtil.IsValueScalar(variable))
             {
-                dataObject.Environment.Assign(variable, string.Join(",", eval), update);
+                var values = eval as IList<string> ?? eval.ToList();
+                dataObject.Environment.Assign(variable, eval != null ? values.LastOrDefault() : "", update);
             }
             else
             {

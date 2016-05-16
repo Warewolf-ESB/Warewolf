@@ -107,12 +107,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void ScalarExpectedPathsAndInsertToScalarInCsv()
+        public void ScalarExpectedPathsAndInsertToScalarLastValue()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
             SetUpActivityArguments();
             IDSFDataObject result = ExecuteProcess();
-            const string Expected = "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />,<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />,<method name=\"GetUsage\" signature=\"string()\" />,<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
+            const string Expected = "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
@@ -130,14 +130,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void ScalarExpectedWithXPathInScalarPathsAndInsertToScalarInCsv()
+        public void ScalarExpectedWithXPathInScalarPathsAndInsertToScalarLastValue()
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpath]]", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpath/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpath>//type/method</xpath><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />,<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />,<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />,<method name=\"GetUsage\" signature=\"string()\" />,<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
+            const string expected = "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
@@ -164,8 +164,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetUpActivityArguments();
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", 
-                                                       "void(object),void(object),void(Dev2.DynamicServices.IDynamicServiceObject, object),void(CommandLine.Text.HelpText),string(),Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
+            List<string> expected = new List<string> { "CreateForm", 
+                                                       "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             List<string> actual = new List<string>();
 
             for(int i = 1; i <= 2; i++)
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "void(object),void(object),void(Dev2.DynamicServices.IDynamicServiceObject, object),void(CommandLine.Text.HelpText),string(),Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
+            List<string> expected = new List<string> { "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             List<string> actual = new List<string>();
 
             for(int i = 1; i <= 1; i++)
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
 
-            Assert.AreEqual("ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", actualScalar);
+            Assert.AreEqual("CreateForm", actualScalar);
 
             GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actualRecordSet, out error);
 
@@ -285,7 +285,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
 
 
-            Assert.AreEqual("ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", actualScalar);
+            Assert.AreEqual("CreateForm", actualScalar);
 
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 

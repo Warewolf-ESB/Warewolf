@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -167,7 +166,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "TestResourceIMadeUp",
                 ResourcePath = @"host\Server",
-                ResourceType = ResourceType.DbSource
+                ResourceType = "DbSource"
             };
 
             return testDbSource;

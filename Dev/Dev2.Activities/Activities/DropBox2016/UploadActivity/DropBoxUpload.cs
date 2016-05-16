@@ -1,23 +1,24 @@
+using Dev2.Activities.DropBox2016.Result;
+using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dropbox.Api;
+using Dropbox.Api.Files;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
-using Dev2.Activities.DropBox2016.Result;
-using Dev2.Common;
-using Dropbox.Api;
-using Dropbox.Api.Files;
+
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    public interface IDropBoxUpload : IDropboxSingleExecutor<IDropboxResult>
-    {
-    }
-
     public class DropBoxUpload : IDropBoxUpload
     {
         private readonly IFilenameValidator _validator;
+
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         private WriteMode _writeMode;
+
         private readonly string _dropboxPath;
         private readonly string _fromPath;
 
@@ -31,8 +32,17 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             _validator.Validate();
             _writeMode = writeMode;
-            if (!dropboxPath.StartsWith(@"/"))
+            if (!string.IsNullOrWhiteSpace(dropboxPath) && !dropboxPath.StartsWith(@"/"))
+            {
                 dropboxPath = string.Concat(@"/", dropboxPath);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(dropboxPath))
+                {
+                    dropboxPath = dropboxPath.Trim();
+                }
+            }
             _dropboxPath = dropboxPath;
             _fromPath = fromPath;
             InitializeCertPinning();
@@ -41,6 +51,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         public bool IsValid { get; set; }
 
         #region Implementation of IDropboxSingleExecutor
+
         [ExcludeFromCodeCoverage]
         public IDropboxResult ExecuteTask(DropboxClient client)
         {
@@ -59,13 +70,14 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
         }
 
-        #endregion
+        #endregion Implementation of IDropboxSingleExecutor
 
         public void Validate()
         {
             if (_writeMode != null && !string.IsNullOrEmpty(_dropboxPath) && !string.IsNullOrEmpty(_fromPath))
                 IsValid = true;
         }
+
         [ExcludeFromCodeCoverage]
         private void InitializeCertPinning()
         {

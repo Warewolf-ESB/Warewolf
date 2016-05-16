@@ -111,7 +111,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 {
                     ResourceID = Guid.NewGuid(),
                     ResourceName = "DatabaseService",
-                    ResourceType = ResourceType.DbService,
+                    ResourceType = "DbService",
                     ResourcePath = "Test",
                     AuthorRoles = "",
                     Dependencies = new List<IResourceForTree>(),
@@ -145,7 +145,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 {
                     ResourceID = Guid.NewGuid(),
                     ResourceName = "DatabaseService",
-                    ResourceType = ResourceType.DbService,
+                    ResourceType = "DbService",
                     ResourcePath = "Test",
                     AuthorRoles = "",
                     Dependencies = new List<IResourceForTree>(),
@@ -191,7 +191,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DatabaseService",
-                ResourceType = ResourceType.DbService,
+                ResourceType = "DbService",
                 ResourcePath = "Test",
                 AuthorRoles = "",
                 Dependencies = new List<IResourceForTree>(),
@@ -217,7 +217,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DatabaseService",
-                ResourceType = ResourceType.DbService,
+                ResourceType = "DbService",
                 ResourcePath = "Test",
                 AuthorRoles = "",
                 Dependencies = new List<IResourceForTree>(),
@@ -244,7 +244,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "NullService",
-                ResourceType = ResourceType.DbService,
+                ResourceType = "DbService",
                 ResourcePath = "Test",
                 Method = new ServiceMethod
                 {

@@ -40,13 +40,13 @@ Scenario Outline: Delete file at location Null
 	Examples: 
 	| Name  | source   | sourceLocation | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
 	| Local | [[path]] | NULL           | ""       | ""       | [[result]] |        | AN           |                      |
-#	| Local      | [[path]] | G:\filetodelete                                                        | ""                           | ""       | [[result]] | Failure | AN           |                       |
-#	| UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Memo.txt                | ""                           | ""       | [[result]] | Failure | AN           |                       |
-#	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | password | [[result]] | Failure | AN           |                       |
-#	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.xtx                 | ""                           | ""       | [[result]] | Failure | AN           |                       |
-#	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt/                  | IntegrationTester            | I73573r0 | [[result]] | Failure | AN           |                       |
-#	| SFTP       | [[path]] | sftp://localhost/Memo.txt                                              | dev2.local                   | Q/ulw&]  | [[result]] | Failure | AN           |                       |
-#	| SFTP PK    | [[path]] | sftp://localhost                                                       | dev2                         | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\Temp\key.opk |
+	| Local      | [[path]] | G:\filetodelete                                                        | ""                           | ""       | [[result]] | Failure | AN           |                       |
+	| UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Memo.txt                | ""                           | ""       | [[result]] | Failure | AN           |                       |
+	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | password | [[result]] | Failure | AN           |                       |
+	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.xtx                 | ""                           | ""       | [[result]] | Failure | AN           |                       |
+	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt/                  | IntegrationTester            | I73573r0 | [[result]] | Failure | AN           |                       |
+	| SFTP       | [[path]] | sftp://localhost/Memo.txt                                              | dev2.local                   | Q/ulw&]  | [[result]] | Failure | AN           |                       |
+	| SFTP PK    | [[path]] | sftp://localhost                                                       | dev2                         | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\Temp\key.opk |
 
 
 Scenario Outline: Delete file Validation

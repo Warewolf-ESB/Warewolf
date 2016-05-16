@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -38,7 +37,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             ServerExplorerItem explorerItemModel = new ServerExplorerItem
             {
                 DisplayName = name,
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 ResourcePath = resourcePath,
                 ResourceId = id
             };

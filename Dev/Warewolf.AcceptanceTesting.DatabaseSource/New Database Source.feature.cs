@@ -580,7 +580,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 238
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 239
-   testRunner.When("I change type option from  \"Microsoft SQL Server\" to \"MySql Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("I change type option from \"Microsoft SQL Server\" to \"MySql Database\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 240
    testRunner.Then("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 241

@@ -21,9 +21,9 @@ namespace Dev2.Utilities
 {
     public static class ActivityHelper
     {
-        public static void InjectExpression(Dev2Switch ds, ModelProperty activityExpression)
+        public static string InjectExpression(Dev2Switch ds, ModelProperty activityExpression)
         {
-            if(ds == null) return;
+            if(ds == null) return null;
 
             // FetchSwitchData
             string expressionToInject = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
@@ -34,11 +34,12 @@ namespace Dev2.Utilities
             {
                 activityExpression.SetValue(expressionToInject);
             }
+            return expressionToInject;
         }
 
-        public static void InjectExpression(Dev2DecisionStack ds, ModelProperty activityExpression)
+        public static string InjectExpression(Dev2DecisionStack ds, ModelProperty activityExpression)
         {
-            if(ds == null) return;
+            if(ds == null) return null;
 
             string modelData = ds.ToVBPersistableModel();
             string expressionToInject = String.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
@@ -49,6 +50,7 @@ namespace Dev2.Utilities
             {
                 activityExpression.SetValue(expressionToInject);
             }
+            return expressionToInject;
         }
 
         public static string ExtractData(string val)

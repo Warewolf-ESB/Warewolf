@@ -14,7 +14,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -65,7 +64,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var webService = new WebService(testElm);
             //------------Assert Results-------------------------
             Assert.AreEqual("Test WebService", webService.ResourceName);
-            Assert.AreEqual(ResourceType.WebService, webService.ResourceType);
+            Assert.AreEqual("WebService", webService.ResourceType);
             Assert.AreEqual("51a58300-7e9d-4927-a57b-e5d700b11b55", webService.ResourceID.ToString());
             Assert.AreEqual("$.apath", webService.JsonPath);
             Assert.AreEqual("System", webService.ResourcePath);
@@ -80,7 +79,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             var service = new WebService();
             Assert.AreEqual(Guid.Empty, service.ResourceID);
-            Assert.AreEqual(ResourceType.WebService, service.ResourceType);
+            Assert.AreEqual("WebService", service.ResourceType);
         }
 
         [TestMethod]
@@ -99,7 +98,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var service = new WebService(xml);
             Assert.AreNotEqual(Guid.Empty, service.ResourceID);
             Assert.IsTrue(service.IsUpgraded);
-            Assert.AreEqual(ResourceType.WebService, service.ResourceType);
+            Assert.AreEqual("WebService", service.ResourceType);
         }
 
         [TestMethod]
@@ -290,7 +289,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public static void VerifyEmbeddedWebService(WebService service)
         {
             Assert.AreEqual(Guid.Parse("ec2df7f9-53aa-4873-a13e-4001cef21508"), service.ResourceID);
-            Assert.AreEqual(ResourceType.WebService, service.ResourceType);
+            Assert.AreEqual("WebService", service.ResourceType);
             Assert.AreEqual("/GetWeather?CityName=[[CityName]]&CountryName=[[CountryName]]", service.RequestUrl);
             Assert.AreEqual(WebRequestMethod.Get, service.RequestMethod);
             Assert.AreEqual(Guid.Parse("518edc28-e348-4a52-a900-f6aa75cfe92b"), service.Source.ResourceID);

@@ -16,7 +16,6 @@ using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common;
 using Dev2.Dialogs;
-using Dev2.Help;
 using Dev2.Services.Security;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core;
@@ -796,7 +795,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(HelpTextResources.SettingsSecurityResourceHelpResource, viewModel.HelpText);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.SettingsSecurityResourceHelpResource, viewModel.HelpText);
         }
 
         [TestMethod]

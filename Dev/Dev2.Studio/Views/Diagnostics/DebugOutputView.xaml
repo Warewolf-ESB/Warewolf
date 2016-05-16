@@ -385,7 +385,6 @@
                                                    AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
                                     </Grid>
                                 </StackPanel>
-<!--                                Style="{StaticResource ButtonTransparentStyle}"-->
                                 
                                 <Button x:Name="MoreLink"
                                         Focusable="False"
@@ -424,8 +423,7 @@
                                 <Button x:Name="MoreLink"
                                         Focusable="False"
                                         VerticalAlignment="Bottom"
-                                        HorizontalAlignment="Left"
-                                        Style="{StaticResource ButtonTransparentStyle}"
+                                        HorizontalAlignment="Left"                                        
                                         Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
                                         cal:Message.Attach="OpenMoreLink($DataContext)"
                                         cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">

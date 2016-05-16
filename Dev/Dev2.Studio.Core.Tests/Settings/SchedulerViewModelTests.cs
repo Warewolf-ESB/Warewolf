@@ -139,7 +139,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            string expectedHelpText = Dev2.Activities.Designers2.Core.Help.HelpTextResources.SchedulerSettingsHelpTextSettingsView;
+            string expectedHelpText = Warewolf.Studio.Resources.Languages.Core.SchedulerSettingsHelpTextSettingsView;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedHelpText, schedulerViewModel.HelpText); 

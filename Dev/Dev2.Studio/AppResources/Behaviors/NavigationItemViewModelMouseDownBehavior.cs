@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
 using Dev2.AppResources.Enums;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Models;
 using Dev2.Services.Events;
@@ -225,7 +224,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             //
             if(OpenOnDoubleClick && clickCount == 2)
             {
-                if(model.ResourceType >= ResourceType.Folder)
+                if(model.IsFolder || model.IsServer)
                 {
                     SetIsExpanded(model);
                 }

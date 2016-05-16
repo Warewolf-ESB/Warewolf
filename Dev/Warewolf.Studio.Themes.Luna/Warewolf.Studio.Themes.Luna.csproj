@@ -148,11 +148,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -165,10 +160,6 @@
     <Compile Include="XamGrid\ContextMenuSettings.cs" />
     <Compile Include="XamGrid\XamGridEx.cs" />
     <Resource Include="Images\Resize_Grip.png" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <Resource Include="Fonts\grab.cur" />
     <Resource Include="Fonts\grabbing.cur" />
     <Resource Include="Fonts\Copy.cur" />
