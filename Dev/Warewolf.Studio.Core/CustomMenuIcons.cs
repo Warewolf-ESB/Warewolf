@@ -45,7 +45,7 @@ namespace Warewolf.Studio.Core
             {MenuIcons.PluginSource, "DotNetDllSource"},
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
             {MenuIcons.ExchangeSource, "ExchangeSource"},
-            {MenuIcons.RabbitMqSource, "EmailSourceImageLogo"},
+            {MenuIcons.RabbitMqSource, "RabbitMqSource"},
             {MenuIcons.DbSource, "DatabaseSource"},
             {MenuIcons.ServerSource, "System-Logo-Create"},
             {MenuIcons.Server, "System-Logo"},

@@ -641,7 +641,7 @@
                                                                     Header="New RabbitMQ Source"
                                                                     Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12" Height="12" Source="{StaticResource EmailSourceImageLogo}" />
+                                                            <Image Width="12" Height="12" Source="{StaticResource RabbitMqSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDropboxSource"
@@ -973,7 +973,7 @@
                                                                     Header="New RabbitMQ Source"
                                                                     Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
                                                         <ig:XamMenuItem.Icon>
-                                                            <Image Width="12" Height="12" Source="{StaticResource EmailSourceImageLogo}" />
+                                                            <Image Width="12" Height="12" Source="{StaticResource RabbitMqSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDropboxSource"

@@ -9,7 +9,7 @@
 */
 
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class RabbitMQSource : Resource
+    public class RabbitMQSource : Resource, IResourceSource
     {
         private const int DefaultPort = 5672;
         private const string DefaultVirtualHost = "/";
@@ -98,5 +98,57 @@ namespace Dev2.Data.ServiceModel
         }
 
         #endregion ToXml
+
+        #region Resource override
+
+        public override bool IsSource
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsReservedService
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsServer
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        #endregion Resource override
     }
 }
