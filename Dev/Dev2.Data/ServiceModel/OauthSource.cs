@@ -14,9 +14,9 @@ namespace Dev2.Data.ServiceModel
         #region Properties
 
         // ReSharper disable once MemberCanBePrivate.Global
-        public string Secret { get; set; }
+        public string AccessToken { get; set; }
         // ReSharper disable once MemberCanBePrivate.Global
-        public string Key { get; set; }
+        public string AppKey { get; set; }
 
 
         #endregion
@@ -27,8 +27,8 @@ namespace Dev2.Data.ServiceModel
         {
             ResourceID = Guid.Empty;
             ResourceType = "OauthSource";
-            Secret = string.Empty;
-            Key = string.Empty;
+            AccessToken = string.Empty;
+            AppKey = string.Empty;
         }
 
         public OauthSource(XElement xml)
@@ -39,15 +39,15 @@ namespace Dev2.Data.ServiceModel
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "Secret", string.Empty },
-                { "Key", string.Empty }
+                { "AccessToken", string.Empty },
+                { "AppKey", string.Empty }
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
             ParseProperties(connectionString, properties);
-            Secret = properties["Secret"];
-            Key = properties["Key"];
+            AccessToken = properties["AccessToken"];
+            AppKey = properties["AppKey"];
    
 
         }
@@ -61,8 +61,8 @@ namespace Dev2.Data.ServiceModel
         {
             var result = base.ToXml();
             var connectionString = string.Join(";",
-                string.Format("Secret={0}", Secret),
-                string.Format("Key={0}", Key)
+                string.Format("AccessToken={0}", AccessToken),
+                string.Format("AppKey={0}", AppKey)
                 );
 
             result.Add(
