@@ -124,7 +124,13 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         LoadCompleted="WebBrowserHost_OnLoadCompleted"
-                        Visibility="Collapsed" />
+                        Visibility="Collapsed" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding Path=AccessToken}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </WebBrowser>
         </ScrollViewer>
     </Grid>
 </UserControl>
