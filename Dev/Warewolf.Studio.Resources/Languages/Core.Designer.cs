@@ -4572,6 +4572,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthAuthoriseHelp.
+        /// </summary>
+        public static string ManageOAuthAuthoriseHelp {
+            get {
+                return ResourceManager.GetString("ManageOAuthAuthoriseHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthAuthoriseTooltip.
+        /// </summary>
+        public static string ManageOAuthAuthoriseTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthAuthoriseTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ManageOAuthCancelTestHelp.
         /// </summary>
         public static string ManageOAuthCancelTestHelp {
@@ -4622,24 +4640,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ManageOAuthSecretTooltip {
             get {
                 return ResourceManager.GetString("ManageOAuthSecretTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthTestConnectionHelp.
-        /// </summary>
-        public static string ManageOAuthTestConnectionHelp {
-            get {
-                return ResourceManager.GetString("ManageOAuthTestConnectionHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthTestTooltip.
-        /// </summary>
-        public static string ManageOAuthTestTooltip {
-            get {
-                return ResourceManager.GetString("ManageOAuthTestTooltip", resourceCulture);
             }
         }
         
