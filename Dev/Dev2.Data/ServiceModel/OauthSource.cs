@@ -9,7 +9,7 @@ using Warewolf.Security.Encryption;
 namespace Dev2.Data.ServiceModel
 {
     // ReSharper disable once UnusedMember.Global
-    public class OauthSource : Resource, IResourceSource
+    public class OauthSource : Resource, IResourceSource, IOAuthSource
     {
         #region Properties
 

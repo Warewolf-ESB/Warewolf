@@ -1344,7 +1344,7 @@ namespace Dev2.Studio.ViewModels
 
         #region Dropbox 2016
         IDropboxFactory _dropbox2016Factory;
-        Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDrop2016Action;
+        Func<DropBoxViewWindow, ManageOAuthSourceViewModel, bool?> _showDrop2016Action;
         IDropboxFactory Dropbox2016Factory
         {
              get { return _dropbox2016Factory ?? new DropboxFactory(); }
@@ -1356,7 +1356,7 @@ namespace Dev2.Studio.ViewModels
 
             DropBoxViewWindow dropBoxViewWindow = new DropBoxViewWindow();
             DropBoxHelper helper = new DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
-            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
+            ManageOAuthSourceViewModel vm = new ManageOAuthSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
             dropBoxViewWindow.DataContext = vm;
             var showDialog = ShowDropbox2016Action(dropBoxViewWindow, vm);
             if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
@@ -1373,7 +1373,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> ShowDropbox2016Action
+        public Func<DropBoxViewWindow, ManageOAuthSourceViewModel, bool?> ShowDropbox2016Action
         {
             private get { return _showDrop2016Action ?? ((drop, vm) => drop.ShowDialog()); }
             set { _showDrop2016Action = value; }
