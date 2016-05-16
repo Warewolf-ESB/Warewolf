@@ -199,7 +199,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/ [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Recordset(*) [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CalculateHelpFx {
             get {
@@ -534,7 +534,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///      [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CopyHelpResult {
             get {
@@ -587,7 +587,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///        &lt; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CountHelpResult {
             get {
@@ -661,7 +661,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CreateHelpResult {
             get {
@@ -698,8 +698,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        [[rec(*)]]&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
-        ///        Allowed:&lt;br /&gt;
-        ///      [rest of string was truncated]&quot;;.
+        ///        Allowed:&lt;br [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CreateJSONHelpInput {
             get {
@@ -1236,7 +1235,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///        &lt; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DataMergeHelpUsing {
             get {
@@ -1268,8 +1267,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DataSplitHelpEscape {
             get {
@@ -1316,7 +1314,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*). [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Re [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DataSplitHelpResult {
             get {
@@ -1405,8 +1403,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///   [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Recordset().Fie [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeDifferenceHelpDatetime1 {
             get {
@@ -1427,8 +1424,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///  [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Recordset().Fi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeDifferenceHelpDatetime2 {
             get {
@@ -1447,7 +1443,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        Allowed:&lt;br /&gt;
         ///        Data   
         ///        &lt;ol&gt;
-        ///            &lt; [rest of string was truncated]&quot;;.
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeDifferenceHelpInputFormat {
             get {
@@ -1541,7 +1537,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        Allowed:&lt;br /&gt;
         ///        Data   
         ///        &lt;ol&gt;
-        ///           [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeHelpInputformat {
             get {
@@ -1560,7 +1556,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        Data   
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(n) [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Re [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeHelpOutputformat {
             get {
@@ -1790,7 +1786,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///        &lt;/ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DeleteHelpResult {
             get {
@@ -2210,7 +2206,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[R [rest of string was truncated]&quot;;.
+        ///         [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailHelpFromAddress {
             get {
@@ -2339,7 +2335,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From:.
+        ///   Looks up a localized string similar to From.
         /// </summary>
         public static string EmailSourceEmailFromLabel {
             get {
@@ -2357,7 +2353,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To:.
+        ///   Looks up a localized string similar to To.
         /// </summary>
         public static string EmailSourceEmailToLabel {
             get {
@@ -2375,7 +2371,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp. [rest of string was truncated]&quot;;.
+        ///&lt;tr&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourceEnableSslHelp {
             get {
@@ -2384,7 +2380,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable SSL:.
+        ///   Looks up a localized string similar to Enable SSL.
         /// </summary>
         public static string EmailSourceEnableSslLabel {
             get {
@@ -2401,7 +2397,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;gmail&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/t [rest of string was truncated]&quot;;.
+        ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;t [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourceHostNameHelp {
             get {
@@ -2435,7 +2431,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;yahoo&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;No&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;zoho&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;465&lt;/td&gt;&lt;/tr&gt;
         ///&lt;tr&gt;&lt;td&gt;smtp-mail.&lt;b&gt;outlook&lt;/b&gt;.com&lt;/td&gt;&lt;td&gt;Yes&lt;/td&gt;&lt;td&gt;587&lt;/td&gt;&lt;/tr&gt;
-        ///&lt;tr&gt;&lt;td&gt;smtp.&lt;b&gt;liv [rest of string was truncated]&quot;;.
+        ///&lt;tr [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailSourcePortHelp {
             get {
@@ -2462,7 +2458,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout:.
+        ///   Looks up a localized string similar to Timeout.
         /// </summary>
         public static string EmailSourceTimeoutLabel {
             get {
@@ -2843,7 +2839,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Rec [rest of string was truncated]&quot;;.
+        ///           [rest of string was truncated]&quot;;.
         /// </summary>
         public static string FindHelpResult {
             get {
@@ -2944,7 +2940,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Fi [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Reco [rest of string was truncated]&quot;;.
         /// </summary>
         public static string FindIndexHelpResult {
             get {
@@ -2976,7 +2972,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        * in Range allows you to input a range of indexes.&lt;br/&gt;
         ///        * in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.&lt;br/&gt;
         ///        * in Recordset will execute every index in the given recordset.&lt;br/&gt;
-        ///        * in Executes will execute the activity a given number of times and r [rest of string was truncated]&quot;;.
+        ///        * in Executes will execute the activity a given number of times  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -3092,7 +3088,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Host:.
+        ///   Looks up a localized string similar to Host.
         /// </summary>
         public static string HostNameLabel {
             get {
@@ -4908,7 +4904,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///      [rest of string was truncated]&quot;;.
         /// </summary>
         public static string MoveHelpResult {
             get {
@@ -5333,7 +5329,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Port:.
+        ///   Looks up a localized string similar to Port.
         /// </summary>
         public static string PortLabel {
             get {
@@ -5745,7 +5741,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/ [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Recordset(*) [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ReadFolderHelpResult {
             get {
@@ -5878,7 +5874,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         public static string RenameHelpResult {
             get {
@@ -6392,7 +6388,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        [[my(*).recs]] - input().records&lt;br/&gt;
         ///        You can also put multiple fields into one field with other text much like the assign tool.&lt;br/&gt;
         ///        By default similar matches from the variable list are used where possible.&lt;br /&gt;
-        ///        &lt; [rest of string was truncated]&quot;;.
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {
             get {
@@ -6412,7 +6408,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;ol&gt;
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
-        ///            &lt;li [rest of string was truncated]&quot;;.
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpOutput {
             get {
@@ -6816,8 +6812,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.&lt;br /&gt;
         ///        &lt;br /&gt;
         ///
-        ///        Allowed:&lt;br /&gt;
-        ///  [rest of string was truncated]&quot;;.
+        ///        Allowed:&lt;b [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SQLBulkInsertHelpInputData {
             get {
@@ -6908,8 +6903,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        &lt;br /&gt;
         ///
         ///        Allowed:&lt;br /&gt;
-        ///        Number   
-        /// [rest of string was truncated]&quot;;.
+        ///        Nu [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SqlBulkInsertHelpTimeout {
             get {
@@ -6994,7 +6988,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///        h2 {
         ///            font-size: 16px;
         ///            font-family: &apos;Source Sans Pro&apos;;
-        ///            text-decoration:  [rest of string was truncated]&quot;;.
+        ///         [rest of string was truncated]&quot;;.
         /// </summary>
         public static string StandardStyling {
             get {
@@ -7258,7 +7252,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///       [rest of string was truncated]&quot;;.
         /// </summary>
         public static string UnzipHelpResult {
             get {
@@ -7397,7 +7391,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Virtual Host:.
+        ///   Looks up a localized string similar to Virtual Host.
         /// </summary>
         public static string VirtualHostLabel {
             get {
@@ -7883,7 +7877,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
-        ///        &lt;/ol&gt;.
+        ///       [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WriteFileHelpResult {
             get {
@@ -7926,7 +7920,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///		&lt;/Inputs&gt;
         ///		&lt;Outputs&gt;
         ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; Value=&quot;&quot;/&gt;
-        ///			&lt;Output Name=&quot;vehi [rest of string was truncated]&quot;;.
+        ///			&lt;Out [rest of string was truncated]&quot;;.
         /// </summary>
         public static string xmlNullSourceMethodServiceDef {
             get {
@@ -7939,7 +7933,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///&lt;xamDockManager version=&quot;12.1.20121.2107&quot;&gt;
         ///  &lt;contentPanes&gt;
         ///    &lt;contentPane name=&quot;OutputPane&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;1000,200&quot; lastFloatingWindowRect=&quot;625,541,1016,234&quot; lastFloatingLocation=&quot;625,541&quot; lastActivatedTime=&quot;2013-06-10T07:30:08.998685Z&quot; /&gt;
-        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.882685 [rest of string was truncated]&quot;;.
+        ///    &lt;contentPane name=&quot;Variables&quot; location=&quot;DockedRight&quot; lastFloatingSize=&quot;300,706&quot; lastFloatingWindowRect=&quot;1475,482,316,740&quot; lastFloatingLocation=&quot;1475,482&quot; lastActivatedTime=&quot;2013-06-10T07:30:02.88 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string XmlOriginalLayout {
             get {
@@ -7961,7 +7955,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///			&lt;Input Name=&quot;number&quot; Source=&quot;&quot; DefaultValue=&quot;&quot;/&gt;
         ///		&lt;/Inputs&gt;
         ///		&lt;Outputs&gt;
-        ///			&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; [rest of string was truncated]&quot;;.
+        ///			&lt;Output Name=&quot;vehicleVin&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string xmlServiceDefinition {
             get {
