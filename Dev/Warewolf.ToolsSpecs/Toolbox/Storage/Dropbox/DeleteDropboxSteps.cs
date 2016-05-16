@@ -112,8 +112,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
                 var oauthSource = new OauthSource()
                 {
                     ResourceName = "Drop",
-                    Key = "sourceKey",
-                    Secret = "fgklkgjfkngnf"
+                    AppKey = "sourceKey",
+                    AccessToken = "fgklkgjfkngnf"
                 };
                 GetViewModel().SelectedSource = oauthSource;
             }

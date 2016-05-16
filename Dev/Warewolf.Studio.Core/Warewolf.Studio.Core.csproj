@@ -118,6 +118,7 @@
   <ItemGroup>
     <Compile Include="AsyncObservableCollection.cs" />
     <Compile Include="Converters\HeightConverter.cs" />
+    <Compile Include="CookieHelper.cs" />
     <Compile Include="CustomMenuIcons.cs" />
     <Compile Include="DllListingModel.cs" />
     <Compile Include="FileListingModel.cs" />

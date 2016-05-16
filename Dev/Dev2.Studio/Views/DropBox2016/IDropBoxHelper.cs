@@ -1,6 +1,7 @@
 using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Views.DropBox2016
 {
@@ -11,7 +12,7 @@ namespace Dev2.Views.DropBox2016
         CircularProgressBar CircularProgressBar { get; }
         void Navigate(string uri);
 
-        void CloseAndSave(DropBoxSourceViewModel dropBoxSourceViewModel);
+        void CloseAndSave(ManageOAuthSourceViewModel manageOAuthSourceViewModel);
 
         IEnvironmentModel ActiveEnvironment { get; set; }
         string ResourceType { get; set; }
