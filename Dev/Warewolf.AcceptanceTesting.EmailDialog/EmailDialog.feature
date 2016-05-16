@@ -3,12 +3,6 @@
 	I want to attach items to me email to send
 	So that I can reuse them
 
-
-# Send Email with an attachment
-# Selecting multiple attachments
-
-
-#wolf - 991
 Scenario: Send Email with an attachment
 	Given I open a "New Workflow"
 	And I drag the "Email" tool onto the design surface
@@ -38,8 +32,6 @@ Scenario: Ensure that dialog tree view is populated correctly
 	And I expand "C:\"
 	Then all the folders in "C:\" are visible
 
-
-#Wolf-1099
 Scenario: Ensure Email tool accepts HTML
 	Given I have a workflow "New Workflow"
 	And I drag the "Email" tool onto the design surface

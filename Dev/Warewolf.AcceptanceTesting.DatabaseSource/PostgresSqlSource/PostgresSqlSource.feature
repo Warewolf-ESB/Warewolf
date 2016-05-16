@@ -63,7 +63,7 @@ Scenario: Creating New DB Source as User Auth
    Then "SavedDBSource *" Is the tab Header
 
     @DbSource
-Scenario: Incorrect Server Address Doesnt Allow save user Auth
+Scenario: Incorrect PostgreSQL Server Address Doesnt Allow save user Auth
       Given I open New database Source
       And I Type Server as "LocalHostTest"
       And I Select Authentication type as "User"
@@ -78,7 +78,7 @@ Scenario: Incorrect Server Address Doesnt Allow save user Auth
       And "Save" Save is "Disabled"
 
 	  @DbSource
-Scenario: Editing saved DB Source Remembers credentials
+Scenario: Editing saved PostgreSQL Source Remembers credentials
 	Given I Open "Database Source - testPostgres" 
     And server as "localhost"
     And Authentication type is selected as "User"
@@ -99,7 +99,7 @@ Scenario: Editing saved DB Source Remembers credentials
 	Then "Save" Save is "Enabled"
 	
 @DbSource
-Scenario: Cancel Test
+Scenario: Cancel PostGreSQL Test
    Given I open New database Source
    And I Type Server as "LocalHostTest"
    And "Save" save is "Disabled"

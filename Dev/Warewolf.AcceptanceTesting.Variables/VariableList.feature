@@ -4,23 +4,6 @@ Feature: VariableList
 	As a Warewolf user
 	I want to be told shown all variables in my workflow service
 
-
-## System Requirements for Variable List
-#Ensure variables used in the tools are adding automatically to variable list.
-#Ensure user is able search for variable in variable list.
-#Ensure search clear button is clearing text in variable list search box.
-#Ensure user is able to Delete all the unused variables in variable list.
-#Ensure sort alphabetically button is available in variable list box.
-#Ensure scalar variables are Sorting alphabetically when user clicks on sort button.
-#Ensure Recordset variables are Sorting alphabetically when user clicks on sort button.
-#Ensure user is able to select variables as input.
-#Ensure user is able to select variables as output.
-#Ensure delete button in the textbox is deleting variable in the variable textbox.
-#Ensure removal from design surface updates list and list updates change list correctly
-#Ensure bad variable names are in an error state
-#Ensure unused variables do not appear in Debug Input window
-#Ensure shorcut keys work
-
 Scenario: Variables adding in variable list and removing unused
 	Given I have variables as
     | Variable    | Note              | Input | Output | IsUsed |
@@ -232,7 +215,6 @@ Examples:
 	| Tab   | Input Checkbox |
 	
 
-#wolf-351
 Scenario: versioning and mapping
 	Given I have variables as
 	 | Variable | Note | Input | Output | IsUsed |
