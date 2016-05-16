@@ -58,6 +58,15 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             Model = model;
 
             SetupCommonProperties();
+            if (IsItemDragged.Instance.IsDragged)
+            {
+                Expand();
+                IsItemDragged.Instance.IsDragged = false;
+            }
+            else
+            {
+                ShowLarge = false;
+            }
         }
         Guid UniqueID { get { return GetProperty<Guid>(); } }
         private void SetupCommonProperties()
