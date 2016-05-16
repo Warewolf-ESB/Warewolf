@@ -48,7 +48,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
         {
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
-            ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);

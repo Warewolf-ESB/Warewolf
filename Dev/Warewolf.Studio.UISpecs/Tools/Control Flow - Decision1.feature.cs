@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer.Tools
+namespace Warewolf.Studio.UISpecs.Tools
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Decision")))
             {
-                Warewolf.AcceptanceTesting.Explorer.Tools.DecisionFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.DecisionFeature.FeatureSetup(null);
             }
         }
         

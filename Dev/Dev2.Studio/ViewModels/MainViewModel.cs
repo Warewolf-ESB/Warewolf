@@ -1155,7 +1155,8 @@ namespace Dev2.Studio.ViewModels
             }
             else if (resourceType == "DropboxSource")
             {
-                CreateOAuthType(ActiveEnvironment, resourceType, resourcePath);
+                CreateOAuthSourceType(saveViewModel);
+                //CreateOAuthType(ActiveEnvironment, resourceType, resourcePath);
             }
             else if (resourceType == "ServerSource" || resourceType.ToLower() == "server")
             {
@@ -1265,6 +1266,15 @@ namespace Dev2.Studio.ViewModels
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IPluginSource>(EventPublisher, new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker) { SelectedGuid = key.ResourceID.Value }, PopupProvider, new ManagePluginSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void CreateOAuthSourceType(Task<IRequestServiceNameViewModel> saveViewModel)
+        {
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            key.ServerID = ActiveServer.ServerID;
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IOAuthSource>(EventPublisher, new ManageOAuthSourceViewModel(saveViewModel), PopupProvider, new ManageOAuthSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 

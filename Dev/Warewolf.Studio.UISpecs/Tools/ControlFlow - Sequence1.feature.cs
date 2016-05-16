@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer.Tools
+namespace Warewolf.Studio.UISpecs.Tools
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "ControlFlow - Sequence")))
             {
-                Warewolf.AcceptanceTesting.Explorer.Tools.ControlFlow_SequenceFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.ControlFlow_SequenceFeature.FeatureSetup(null);
             }
         }
         
@@ -138,14 +138,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.Then("\"Create\" is \"visible\" in sequence large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Put error in this variable",
                         "Call this web service"});
-            table10.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "",
                         ""});
 #line 35
- testRunner.And("On Error box consists", ((string)(null)), table10, "And ");
+ testRunner.And("On Error box consists", ((string)(null)), table1, "And ");
 #line 38
     testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39

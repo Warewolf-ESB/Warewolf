@@ -480,6 +480,7 @@
     <Folder Include="Activities\DropBox\UploadActivity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!--
   <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
     <PostBuildEvent>xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio\Dev2.Studio.Core\Shared Dependancies\"

@@ -268,6 +268,38 @@ Software development by: www.dev2.co.za
   <data name="MenuDialogWebLabel" xml:space="preserve">
     <value>Web</value>
   </data>
+  
+  <data name="ManageOAuthTypeTooltip" xml:space="preserve">
+    <value>ManageOAuthTypeTooltip</value>
+  </data>
+  <data name="ManageOAuthTypesHelp" xml:space="preserve">
+    <value>ManageOAuthTypesHelp</value>
+  </data>
+  <data name="ManageOAuthKeyTooltip" xml:space="preserve">
+    <value>ManageOAuthKeyTooltip</value>
+  </data>
+  <data name="ManageOAuthKeyHelp" xml:space="preserve">
+    <value>ManageOAuthKeyHelp</value>
+  </data>
+  <data name="ManageOAuthSecretTooltip" xml:space="preserve">
+    <value>ManageOAuthSecretTooltip</value>
+  </data>
+  <data name="ManageOAuthSecretHelp" xml:space="preserve">
+    <value>ManageOAuthSecretHelp</value>
+  </data>
+  <data name="ManageOAuthAuthoriseTooltip" xml:space="preserve">
+    <value>ManageOAuthAuthoriseTooltip</value>
+  </data>
+  <data name="ManageOAuthAuthoriseHelp" xml:space="preserve">
+    <value>ManageOAuthAuthoriseHelp</value>
+  </data>
+  <data name="ManageOAuthCancelTestTooltip" xml:space="preserve">
+    <value>ManageOAuthCancelTestTooltip</value>
+  </data>
+  <data name="ManageOAuthCancelTestHelp" xml:space="preserve">
+    <value>ManageOAuthCancelTestHelp</value>
+  </data>
+  
   <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
     <value>Select the Warewolf server you want to use or click New Remote Server...</value>
   </data>
