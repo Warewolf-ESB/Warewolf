@@ -12,7 +12,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -39,9 +38,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
 
             // ReSharper disable MaximumChainedReferences
-            List<IRabbitMQServiceSourceDefinition> list = Resources.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(a => a.ResourceType == "RabbitMQSource").Select(a =>
+            List<IRabbitMQServiceSourceDefinition> list = Resources.GetResourceList<RabbitMQSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
-                var res = Resources.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, a.ResourceID);
+                var res = a as RabbitMQSource;
                 if (res != null)
                 {
                     return new RabbitMQServiceSourceDefinition
