@@ -1757,11 +1757,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool dropOccured = true;
             SetLastDroppedPoint(e);
             DataObject = e.Data.GetData(typeof(ExplorerItemViewModel));
-            if (DataObject != null)
+            if (DataObject != null || e.Data != null)
             {
                 IsItemDragged.Instance.IsDragged = true;
             }
-
+            
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if (isWorkflow != null)
             {

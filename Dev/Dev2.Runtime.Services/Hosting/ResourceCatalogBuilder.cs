@@ -115,6 +115,7 @@ namespace Dev2.Runtime.Hosting
                     .SelectMany(s => s.GetTypes())
                     .Where(p => resourceBaseType.IsAssignableFrom(p));
                 var connectionTypeName = typeof(Connection).Name;
+                var dropBoxSourceName = typeof(DropBoxSource).Name;
                 var dbType = typeof(DbSource).Name;
                 var allTypes = types as IList<Type> ?? types.ToList();
                 streams.ForEach(currentItem =>
@@ -152,6 +153,12 @@ namespace Dev2.Runtime.Hosting
                         {
                             xml.SetAttributeValue("Type",connectionTypeName);
                             typeName = connectionTypeName;
+                        }
+
+                        if (typeName == "OauthSource")
+                        {
+                            xml.SetAttributeValue("Type", dropBoxSourceName);
+                            typeName = dropBoxSourceName;
                         }
                         #endregion
 

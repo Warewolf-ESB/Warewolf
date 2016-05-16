@@ -69,6 +69,15 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Model = model;
 
             SetupCommonProperties();
+            if (IsItemDragged.Instance.IsDragged)
+            {
+                Expand();
+                IsItemDragged.Instance.IsDragged = false;
+            }
+            else
+            {
+                ShowLarge = false;
+            }
         }
 
         Guid UniqueID { get { return GetProperty<Guid>(); } }
