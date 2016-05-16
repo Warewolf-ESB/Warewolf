@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -13,6 +14,7 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageOAuthSourceViewModel : SourceBaseImpl<IOAuthSource>, IManageOAuthSourceViewModel
     {
+        public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string AccessToken { get; private set; }
         private string AuthUri { get; set; }
@@ -23,17 +25,30 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper restore UnusedAutoPropertyAccessor.Local
         public DropboxClient Client { get; set; }
         //private string AppKey = GlobalConstants.DropBoxApiKey;       
-
+        private readonly IManageOAuthSourceModel _updateManager;
         private string _oauth2State;
         private string _name;
         private string _appKey;
         private string _selectedOAuthProvider;
         private List<string> _types;
+        private IOAuthSource _oAuthSource;
+        private string _resourceName;
+        private Uri _oAuthUri;
         private const string RedirectUri = "https://www.example.com/";
 
-        public ManageOAuthSourceViewModel(Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
+        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
         {
+            if(updateManager == null)
+            {
+                throw new ArgumentNullException("updateManager");
+            }
+            if(requestServiceNameViewModel == null)
+            {
+                throw new ArgumentNullException("requestServiceNameViewModel");
+            }
+            _updateManager = updateManager;
+            RequestServiceNameViewModel = requestServiceNameViewModel;
             Types = new List<string>
             {
                 "Dropbox"
@@ -46,6 +61,17 @@ namespace Warewolf.Studio.ViewModels
 //                Authorise();
         }
 
+        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource) : base("OAuth")
+        {
+            if(oAuthSource == null)
+            {
+                throw new ArgumentNullException("oAuthSource");
+            }
+            _oAuthSource = oAuthSource;
+            // ReSharper disable once VirtualMemberCallInContructor
+            FromModel(oAuthSource);
+            SetupHeaderTextFromExisting();
+        }
         public List<string> Types
         {
             get
@@ -174,9 +200,90 @@ namespace Warewolf.Studio.ViewModels
 
         public override void Save()
         {
+            SaveOAuthSource();
+        }
+
+        void SetupHeaderTextFromExisting()
+        {
+            if (_oAuthSource != null)
+            {
+                Header = (_oAuthSource.ResourceName ?? ResourceName).Trim();
+            }
+        }
+
+        private void SaveOAuthSource()
+        {
+            if (_oAuthSource == null)
+            {
+                RequestServiceNameViewModel.Wait();
+                if (RequestServiceNameViewModel.Exception == null)
+                {
+                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
+
+                    if (res == MessageBoxResult.OK)
+                    {
+                        var src = ToSource();
+                        src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                        src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        Save(src);
+                        Item = src;
+                        _oAuthSource = src;
+                        ResourceName = _oAuthSource.ResourceName;
+                        SetupHeaderTextFromExisting();
+                    }
+                }
+            }
+        }
+
+        public string ResourceName
+        {
+            get
+            {
+                return _resourceName;
+            }
+            set
+            {
+                _resourceName = value;
+            }
+        }
+        public Uri OAuthUri
+        {
+            get
+            {
+                return _oAuthUri;
+            }
+            set
+            {
+                _oAuthUri = value;
+                OnPropertyChanged(()=>OAuthUri);
+            }
         }
 
         #endregion
+
+        void Save(IOAuthSource source)
+        {
+            _updateManager.Save(source);
+        }
+        IOAuthSource ToSource()
+        {
+            if (_oAuthSource == null)
+                return new DropBoxSource
+                {
+                    AppKey = AppKey,
+                    AccessToken = AccessToken,                   
+                    //Id = _oAuthSource == null ? Guid.NewGuid() : _oAuthSource.Id
+                }
+            ;
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                _oAuthSource.AppKey = AppKey;
+                _oAuthSource.AccessToken = AccessToken;              
+                return _oAuthSource;
+
+            }
+        }
     }
 
     public interface IManageOAuthSourceViewModel
