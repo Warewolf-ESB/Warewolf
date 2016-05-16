@@ -1771,6 +1771,33 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The text on the decision to help understand its purpose.
+        /// </summary>
+        public static string DecisionDisplayTextTooltip {
+            get {
+                return ResourceManager.GetString("DecisionDisplayTextTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The text on the flow arm for readability.
+        /// </summary>
+        public static string DecisionFalseArmTooltip {
+            get {
+                return ResourceManager.GetString("DecisionFalseArmTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The text on the flow arm for readability.
+        /// </summary>
+        public static string DecisionTrueArmTooltip {
+            get {
+                return ResourceManager.GetString("DecisionTrueArmTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
         ///E.g. 6 minutes. 
         ///A blank Time field will default to 0 and not cause any delay.

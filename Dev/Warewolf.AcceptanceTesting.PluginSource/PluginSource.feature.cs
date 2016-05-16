@@ -318,24 +318,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LoadAllDependanciesAfterFilterCleared()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("load all dependancies after filter cleared", ((string[])(null)));
-#line 111
+#line 108
 this.ScenarioSetup(scenarioInfo);
-#line 112
+#line 109
  testRunner.Given("I open New Plugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 113
+#line 110
  testRunner.When("I open \"GAC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 114
+#line 111
  testRunner.And("GAC is \"loading\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 115
+#line 112
  testRunner.And("I filter for \"BDATunePIA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 113
  testRunner.And("\"GAC:BDATunePIA, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e3" +
                     "5.dll\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 114
  testRunner.And("GAC only has one option in the tree", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 115
  testRunner.When("I \"clear\" the filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 119
+#line 116
  testRunner.Then("\"GAC\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -348,26 +348,26 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SearchWhileGACTreeViewIsLoading()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search while GAC tree view is loading", ((string[])(null)));
-#line 122
+#line 119
 this.ScenarioSetup(scenarioInfo);
-#line 123
+#line 120
  testRunner.Given("I open New Plugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 124
+#line 121
  testRunner.When("I open \"GAC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
+#line 122
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 123
  testRunner.When("I filter new for \"vjslib\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 127
+#line 124
  testRunner.And("I click \"vjslib, Version=2.0.0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 125
  testRunner.Then("Assembly value is \"GAC:vjslib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b" +
                     "03f5f7f11d50a3a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 129
+#line 126
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
+#line 127
  testRunner.When("I save Plugin source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 131
+#line 128
  testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -380,21 +380,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ClearFilterUsingClearFilterButton()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Clear filter using clear filter button", ((string[])(null)));
-#line 134
+#line 131
 this.ScenarioSetup(scenarioInfo);
-#line 135
+#line 132
  testRunner.Given("I open New Plugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 136
+#line 133
  testRunner.When("I open \"GAC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 137
+#line 134
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 135
  testRunner.When("I filter new for \"vjslib\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 139
+#line 136
  testRunner.And("I \"Clear\" the filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
+#line 137
  testRunner.Then("\"GAC\" is \"visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 141
+#line 138
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
