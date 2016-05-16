@@ -253,6 +253,7 @@
     <Folder Include="ConverterTests\Case\" />
     <Folder Include="Repository\" />
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PreBuildEvent>"$(DevEnvDir)tf" get /recursive $(ProjectDir)</PreBuildEvent>
