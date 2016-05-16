@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Interfaces;
 using Dropbox.Api;
+using Microsoft.Practices.Prism.Commands;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
@@ -17,7 +19,22 @@ namespace Warewolf.Studio.ViewModels
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string AccessToken { get; private set; }
-        private string AuthUri { get; set; }
+        public Uri AuthUri
+        {
+            get
+            {
+                return _authUri;
+            }
+            set
+            {
+                _authUri = value;
+                if(WebBrowser != null)
+                {
+                    WebBrowser.Navigate(_authUri);
+                }
+                OnPropertyChanged(()=>AuthUri);
+            }
+        }
         public bool HasAuthenticated { get; private set; }
         public IContextualResourceModel Resource { get; set; }
 
@@ -33,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
         private List<string> _types;
         private IOAuthSource _oAuthSource;
         private string _resourceName;
-        private Uri _oAuthUri;
+        private Uri _authUri;
         private const string RedirectUri = "https://www.example.com/";
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
@@ -53,13 +70,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 "Dropbox"
             };
-//            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory", dropboxFactory } });
 //            _network = network;
 //            DropBoxHelper = dropboxHelper;
             CookieHelper.Clear();
-//            if (shouldAuthorise)
-//                Authorise();
+            //            if (shouldAuthorise)
+            //                Authorise();
+            SetupCommands();
+            AppKey = "31qf750f1vzffhu";
+            Authorise();
         }
+
+        
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource) : base("OAuth")
         {
@@ -68,9 +89,17 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException("oAuthSource");
             }
             _oAuthSource = oAuthSource;
+            _updateManager = updateManager;
             // ReSharper disable once VirtualMemberCallInContructor
             FromModel(oAuthSource);
             SetupHeaderTextFromExisting();
+            SetupCommands();
+            Authorise();
+        }
+
+        private void SetupCommands()
+        {
+            Navigated = new DelegateCommand<NavigationEventArgs>(GetAuthTokens);
         }
         public List<string> Types
         {
@@ -83,31 +112,12 @@ namespace Warewolf.Studio.ViewModels
                 _types = value;
             }
         }
-
-        private async Task LoadBrowserUri(string uri)
-        {
-            AuthUri = uri;
-            //var hasConnection = await _network.HasConnectionAsync(uri);
-            //if (hasConnection)
-            {
-
-//                DropBoxHelper.WebBrowser.Navigated += (sender, args) => GetAuthTokens(args);
-//                DropBoxHelper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
-//                {
-//                    DropBoxHelper.CircularProgressBar.Visibility = Visibility.Hidden;
-//                    DropBoxHelper.WebBrowser.Visibility = Visibility.Visible;
-//                });
-//
-//                DropBoxHelper.Navigate(AuthUri);
-            }
-        }
-
-        private async void Authorise()
+        private void Authorise()
         {
 
             _oauth2State = Guid.NewGuid().ToString("N");
             var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
-            await LoadBrowserUri(authorizeUri.ToString());
+            AuthUri = authorizeUri;
         }
         void GetAuthTokens(NavigationEventArgs args)
         {
@@ -245,19 +255,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 _resourceName = value;
             }
-        }
-        public Uri OAuthUri
+        }     
+        public ICommand Navigated
         {
-            get
-            {
-                return _oAuthUri;
-            }
-            set
-            {
-                _oAuthUri = value;
-                OnPropertyChanged(()=>OAuthUri);
-            }
+            get;set;
         }
+        public IWebBrowser WebBrowser { get; set; }
 
         #endregion
 

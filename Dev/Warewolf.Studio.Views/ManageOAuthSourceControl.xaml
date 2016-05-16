@@ -117,17 +117,15 @@
             </Button>
         </StackPanel>
         <ScrollViewer Grid.Row="3">
-            <WebBrowser Name="WebBrowserHost"
-                         Source="{Binding OAuthUri}"
-                         
+            <WebBrowser Name="WebBrowserHost"                         
                         Margin="3"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         LoadCompleted="WebBrowserHost_OnLoadCompleted"
                         Visibility="Collapsed" >
                 <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <i:InvokeCommandAction Command="{Binding Path=AccessToken}" />
+                    <i:EventTrigger EventName="Navigated">
+                        <i:InvokeCommandAction Command="{Binding Path=Navigated}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </WebBrowser>

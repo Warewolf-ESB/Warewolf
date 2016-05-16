@@ -1,21 +1,40 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.Core;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
     /// <summary>
     /// Interaction logic for ManageOAuthSourceControl.xaml
     /// </summary>
-    public partial class ManageOAuthSourceControl : IView, ICheckControlEnabledView
+    public partial class ManageOAuthSourceControl : IView, ICheckControlEnabledView,IWebBrowser
     {
         public ManageOAuthSourceControl()
         {
             InitializeComponent();
             HideScriptErrors(WebBrowserHost, true);
+
+            DataContextChanged += (sender, args) =>
+              {
+                  ViewModel = args.NewValue as ManageOAuthSourceViewModel;
+                  if (ViewModel != null)
+                  {
+                      ViewModel.WebBrowser = this;
+                  }
+              };
         }
+
+        public void Navigate(Uri uri)
+        {
+            WebBrowserHost.Navigate(uri);
+        }
+
+        public ManageOAuthSourceViewModel ViewModel { get; set; }
 
         public void HideScriptErrors(WebBrowser wb, bool Hide)
         {
