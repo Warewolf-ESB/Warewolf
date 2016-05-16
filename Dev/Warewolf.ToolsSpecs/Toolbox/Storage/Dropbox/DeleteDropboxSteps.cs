@@ -39,7 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mockEventAggregator = new Mock<IEventAggregator>();
             var sources = new List<OauthSource>()
             {
-                new OauthSource(){ResourceName = "Test Resource Name"}
+                new DropBoxSource(){ResourceName = "Test Resource Name"}
             };
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
@@ -109,7 +109,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             if (sourceName == "Drop")
             {
-                var oauthSource = new OauthSource()
+                var oauthSource = new DropBoxSource()
                 {
                     ResourceName = "Drop",
                     AppKey = "sourceKey",
@@ -137,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             Assert.AreEqual(oldSourceName, GetViewModel().SelectedSource.ResourceName);
             Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().DeletePath));
-            GetViewModel().SelectedSource = new OauthSource()
+            GetViewModel().SelectedSource = new DropBoxSource()
             {
                 ResourceName = newSourceName
             };

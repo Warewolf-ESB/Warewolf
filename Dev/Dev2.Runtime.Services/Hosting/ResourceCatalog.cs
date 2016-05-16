@@ -1110,7 +1110,7 @@ namespace Dev2.Runtime.Hosting
         }
         private IEnumerable BuildDropboxList(IEnumerable<IResource> resources)
         {
-            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new OauthSource(xe)).ToList();
+            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new DropBoxSource(xe)).ToList();
         }
         private IEnumerable BuildSharepointSourceList(IEnumerable<IResource> resources)
         {

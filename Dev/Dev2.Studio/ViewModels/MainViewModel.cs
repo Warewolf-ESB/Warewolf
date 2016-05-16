@@ -80,7 +80,6 @@ using Dev2.ViewModels;
 using Dev2.Views.Dialogs;
 using Dev2.Views.DropBox2016;
 using Dev2.Webs;
-using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
 using ServiceStack.Common;
@@ -1354,23 +1353,23 @@ namespace Dev2.Studio.ViewModels
         void SaveDropBox2016Source(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource, bool shouldAuthorise)
         {
 
-            DropBoxViewWindow dropBoxViewWindow = new DropBoxViewWindow();
-            DropBoxHelper helper = new DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
-            ManageOAuthSourceViewModel vm = new ManageOAuthSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
-            dropBoxViewWindow.DataContext = vm;
-            var showDialog = ShowDropbox2016Action(dropBoxViewWindow, vm);
-            if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
-            {
-                ShowSaveDialog(vm.Resource, activeEnvironment, vm.Uid, vm.AccessToken, ActiveServer);
-            }
-            else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
-            {
-
-                // ReSharper disable once MaximumChainedReferences
-                var dropBoxSource = new OauthSource { AppKey = vm.Uid, AccessToken = vm.AccessToken, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
-                ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
-
-            }
+//            DropBoxViewWindow dropBoxViewWindow = new DropBoxViewWindow();
+//            DropBoxHelper helper = new DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
+//            ManageOAuthSourceViewModel vm = new ManageOAuthSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
+//            dropBoxViewWindow.DataContext = vm;
+//            var showDialog = ShowDropbox2016Action(dropBoxViewWindow, vm);
+//            if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
+//            {
+//                ShowSaveDialog(vm.Resource, activeEnvironment, vm.Uid, vm.AccessToken, ActiveServer);
+//            }
+//            else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
+//            {
+//
+//                // ReSharper disable once MaximumChainedReferences
+//                var dropBoxSource = new OauthSource { AppKey = vm.Uid, AccessToken = vm.AccessToken, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
+//                ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
+//
+//            }
         }
 
         public Func<DropBoxViewWindow, ManageOAuthSourceViewModel, bool?> ShowDropbox2016Action
