@@ -260,10 +260,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions.feature.cs</LastGenOutput>
     </None>
-    </None>
     <None Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
+	</None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">

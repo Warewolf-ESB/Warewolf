@@ -58,8 +58,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         PluginSource,
         PluginService,
         SharepointServerSource,
-        Exchange
-
+        Exchange,
         // ReSharper disable once InconsistentNaming
         RabbitMQSource
     }

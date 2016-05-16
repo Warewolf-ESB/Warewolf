@@ -2805,7 +2805,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -2836,7 +2836,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
@@ -3580,15 +3580,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Make the queue auto delete.
-        ///
-        ///Allowed:
-        ///Make the queue auto delete..
-        /// </summary>
-        public static string RabbitMQHelpIsAutoDelete {
-            get {
-                return ResourceManager.GetString("RabbitMQHelpIsAutoDelete", resourceCulture);
-            }
         ///   Looks up a localized string similar to The rough data with the variables in it.
         /// </summary>
         public static string QuickVariableVariableListToolTip {
@@ -3598,6 +3589,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Make the queue auto delete.
+        ///
+        ///Allowed:
+        ///Make the queue auto delete..
+        /// </summary>
+        public static string RabbitMQHelpIsAutoDelete {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpIsAutoDelete", resourceCulture);
+            }
         }
         
         /// <summary>
@@ -4779,7 +4779,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {
             get {
@@ -5095,8 +5095,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[ [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Fiel [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SQLBulkInsertHelpInputData {
             get {
@@ -5422,7 +5421,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snapshot: [rest of string was truncated]&quot;;.
+        ///Snap [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionHelpIsolationLevel {
             get {
@@ -5489,7 +5488,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snapshot: [rest of string was truncated]&quot;;.
+        ///Snap [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionToolTipIsolationLevel {
             get {
@@ -5950,7 +5949,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WorkflowServiceHelpInput {
             get {
