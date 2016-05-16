@@ -2099,6 +2099,24 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specify the Dropbox file or folder you would like to delte. This is the path from the root of the Dropbox account..
+        /// </summary>
+        public static string DropBoxDeleteFileNameHelpText {
+            get {
+                return ResourceManager.GetString("DropBoxDeleteFileNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file or folder you want to delete on Dropbox.
+        /// </summary>
+        public static string DropBoxDeleteFileNameTooltip {
+            get {
+                return ResourceManager.GetString("DropBoxDeleteFileNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///     This is the name of the file that will be downloaded from DropBox.
         ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
@@ -2121,11 +2139,41 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Returns the contents of the Dropbox folder you specify here.
+        ///    This is the folder structure you want to list on Dropbox.
+        ///  You can specify the type of information returned by selecting either Files (returns only files), Folders (Returns only folders) or Files and Folders for everything.
+        ///.
+        /// </summary>
+        public static string DropBoxFileListFileName {
+            get {
+                return ResourceManager.GetString("DropBoxFileListFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The folder on Dropbox to list.
+        /// </summary>
+        public static string DropBoxFileListFileNameToolTip {
+            get {
+                return ResourceManager.GetString("DropBoxFileListFileNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the operation that you wish to perform. Read from a file on Dropbox..
         /// </summary>
         public static string DropboxOperationToolTip {
             get {
                 return ResourceManager.GetString("DropboxOperationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns either Files only, or Folders only, or both..
+        /// </summary>
+        public static string DropboxReadFolderToolTip {
+            get {
+                return ResourceManager.GetString("DropboxReadFolderToolTip", resourceCulture);
             }
         }
         

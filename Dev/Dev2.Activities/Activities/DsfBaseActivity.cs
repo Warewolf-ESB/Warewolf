@@ -18,6 +18,7 @@ namespace Dev2.Activities
 {
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
+        private string _result;
         public new abstract string DisplayName { get; set; }
 
         #region Get Debug Inputs/Outputs
@@ -85,16 +86,15 @@ namespace Dev2.Activities
                         var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
                         evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
                     }
-                    var result = PerformExecution(evaluatedValues);
-                    if(!string.IsNullOrEmpty(Result))
-                    {
-                        dataObject.Environment.Assign(Result, result, update);
-                    }
+                    _result = PerformExecution(evaluatedValues);
+                    AssignResult(dataObject, update);
                 }
 
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrWhiteSpace(Result))
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                        if (!string.IsNullOrEmpty(Result))
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
                 allErrors.MergeErrors(errors);
             }
@@ -112,7 +112,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError(DisplayName, allErrors);
                     var errorList = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorList);
-                    if(DisplayName.ToUpper().Contains("Dropbox".ToUpper()))
+                    if (DisplayName.ToUpper().Contains("Dropbox".ToUpper()))
                         dataObject.Environment.Assign(Result, GlobalConstants.DropBoxFailure, update);
                     else
                         dataObject.Environment.Assign(Result, null, update);
@@ -122,6 +122,14 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+            }
+        }
+
+        protected virtual void AssignResult(IDSFDataObject dataObject, int update)
+        {
+            if (!string.IsNullOrEmpty(Result))
+            {
+                dataObject.Environment.Assign(Result, _result, update);
             }
         }
 

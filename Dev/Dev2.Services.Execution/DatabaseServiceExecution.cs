@@ -26,7 +26,6 @@ using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
 using System.Security.Cryptography;
-using Dev2.Common.Interfaces.Data;
 using Npgsql;
 
 namespace Dev2.Services.Execution
@@ -152,7 +151,7 @@ namespace Dev2.Services.Execution
                             new DbSource
                             {
                                 ResourceName = Dsns[i],
-                                ResourceType = ResourceType.DbSource,
+                                ResourceType = "DbSource",
                                 ResourceID = result,
                                 ServerType = enSourceType.ODBC,
                                 DatabaseName = Dsns[i],

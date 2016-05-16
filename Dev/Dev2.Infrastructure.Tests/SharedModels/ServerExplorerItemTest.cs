@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Explorer;
@@ -31,13 +30,13 @@ namespace Dev2.Infrastructure.Tests.SharedModels
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
             const string name = "a";
-            const ResourceType explorerItemType = ResourceType.Folder;
+            const string explorerItemType = "Folder";
             var children = new List<IExplorerItem>();
             const Permissions permissions = Permissions.DeployFrom;
 
 
             //------------Execute Test---------------------------
-            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "/", "", "");
+            var serverExplorerItem = new ServerExplorerItem(name, guid, "Folder", children, permissions, "/", "", "");
             //------------Assert Results-------------------------
 
             Assert.AreEqual(children, serverExplorerItem.Children);
@@ -55,13 +54,12 @@ namespace Dev2.Infrastructure.Tests.SharedModels
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
             const string name = "a";
-            const ResourceType explorerItemType = ResourceType.PluginService;
             var children = new List<IExplorerItem>();
             const Permissions permissions = Permissions.DeployFrom;
 
 
             //------------Execute Test---------------------------
-            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "", "", "");
+            var serverExplorerItem = new ServerExplorerItem(name, guid, "PluginService", children, permissions, "", "", "");
             //------------Assert Results-------------------------
 
             Assert.AreEqual(guid.GetHashCode(), serverExplorerItem.GetHashCode());
@@ -76,7 +74,7 @@ namespace Dev2.Infrastructure.Tests.SharedModels
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
             const string name = "a";
-            const ResourceType explorerItemType = ResourceType.PluginService;
+            const string explorerItemType = "PluginService";
             var children = new List<IExplorerItem>();
             const Permissions permissions = Permissions.DeployFrom;
 

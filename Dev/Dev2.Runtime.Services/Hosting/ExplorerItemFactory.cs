@@ -43,22 +43,22 @@ namespace Dev2.Runtime.Hosting
             return rootNode;
         }
 
-        public IExplorerItem CreateRootExplorerItem(ResourceType type, string workSpacePath, Guid workSpaceId)
+        public IExplorerItem CreateRootExplorerItem(string type, string workSpacePath, Guid workSpaceId)
         {
             var resourceList = Catalogue.GetResourceList(workSpaceId);
             var rootNode = BuildStructureFromFilePathRoot(Directory, workSpacePath, BuildRoot());
-            if(type == ResourceType.Folder)
+            if(type == "Folder")
             {
                 return rootNode;
             }
             AddChildren(rootNode, resourceList, type);
             return rootNode;
         }
-        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, ResourceType type)
+        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, string type)
         {
             // ReSharper disable PossibleMultipleEnumeration
 
-            var children = resourceList.Where(a => GetResourceParent(a.ResourcePath) == rootNode.ResourcePath && a.ResourceType == type);
+            var children = resourceList.Where(a => GetResourceParent(a.ResourcePath) == rootNode.ResourcePath && a.ResourceType == type.ToString());
             // ReSharper restore PossibleMultipleEnumeration
             foreach(var node in rootNode.Children)
             {
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.Hosting
             }
             foreach(var resource in children)
             {
-                if(resource.ResourceType == ResourceType.ReservedService)
+                if (resource.ResourceType == "ReservedService")
                 {
                     continue;
                 }
@@ -107,8 +107,16 @@ namespace Dev2.Runtime.Hosting
         public ServerExplorerItem CreateResourceItem(IResource resource)
         {
             Guid resourceId = resource.ResourceID;
-            var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType == ResourceType.Server ? ResourceType.ServerSource : resource.ResourceType, null,
-                                                   _authService.GetResourcePermissions(resourceId), resource.ResourcePath, "", "");
+            var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType, null,_authService.GetResourcePermissions(resourceId), resource.ResourcePath, "", "")
+            {
+                IsReservedService = resource.IsReservedService,
+                IsService = resource.IsService,
+                IsSource = resource.IsSource,
+                IsFolder = resource.IsFolder,
+                IsServer = resource.IsServer,
+                IsResourceVersion = resource.IsResourceVersion,
+
+            };
             return childNode;
         }
 
@@ -133,7 +141,10 @@ namespace Dev2.Runtime.Hosting
             {
                 var resourcePath = resource.Replace(rootPath, "").Substring(1);
 
-                var node = new ServerExplorerItem(new DirectoryInfo(resource).Name, Guid.NewGuid(), ResourceType.Folder, null, _authService.GetResourcePermissions(Guid.Empty), resourcePath, "", "");
+                var node = new ServerExplorerItem(new DirectoryInfo(resource).Name, Guid.NewGuid(), "Folder", null, _authService.GetResourcePermissions(Guid.Empty), resourcePath, "", "")
+                {
+                    IsFolder = true
+                };
                 children.Add(node);
                 node.Children = BuildStructureFromFilePath(directory, resource, rootPath);
             }
@@ -145,7 +156,12 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem BuildRoot()
         {
-            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, ResourceType.Server, new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "", "", "") { ServerId = HostSecurityProvider.Instance.ServerID, WebserverUri = EnvironmentVariables.WebServerUri };
+            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, "Server", new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "", "", "")
+            {
+                ServerId = HostSecurityProvider.Instance.ServerID, 
+                WebserverUri = EnvironmentVariables.WebServerUri,
+                IsServer = true
+            };
             return serverExplorerItem;
         }
 

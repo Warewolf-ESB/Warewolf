@@ -14,7 +14,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using Dev2.Common.Interfaces.Data;
 using Warewolf.Studio.Core;
 
 namespace Dev2.AppResources.Converters
@@ -41,37 +40,37 @@ namespace Dev2.AppResources.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
 
-            ResourceType resourceType = values[0] is ResourceType ? (ResourceType)values[0] : ResourceType.Unknown;
+            string resourceType = values[0].ToString();
             switch(resourceType)
             {
-                case ResourceType.WorkflowService:
+                case "WorkflowService":
                     return _dict[CustomMenuIcons.WorkflowService] as DrawingImage;
-                case ResourceType.DbService:
+                case "DbService":
                     return _dict[CustomMenuIcons.DbService] as DrawingImage;
-                case ResourceType.PluginService:
+                case "PluginService":
                     return _dict[CustomMenuIcons.PluginService] as DrawingImage;
-                case ResourceType.WebService:
+                case "WebService":
                     return _dict[CustomMenuIcons.WebService] as DrawingImage;
-                case ResourceType.DbSource:
+                case "DbSource":
                     return _dict[CustomMenuIcons.DbSource] as DrawingImage;
-                case ResourceType.PluginSource:
+                case "PluginSource":
                     return _dict[CustomMenuIcons.PluginSource] as DrawingImage;
-                case ResourceType.WebSource:
+                case "WebSource":
                     return _dict[CustomMenuIcons.WebSource] as DrawingImage;
-                case ResourceType.EmailSource:
+                case "EmailSource":
                     return _dict[CustomMenuIcons.EmailSource] as DrawingImage;
-                case ResourceType.ServerSource:
+                case "ServerSource":
                     return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
-                case ResourceType.Server:
+                case "Server":
                     return Application.Current.Resources["System-Logo"];
-                case ResourceType.Version:
-                case ResourceType.Message:
+                case "Version":
+                case "Message":
                     return null;
-                case ResourceType.Folder:
+                case "Folder":
                     return _dict[CustomMenuIcons.Folder] as DrawingImage;
-                case ResourceType.OauthSource :
+                case "OauthSource ":
                     return Application.Current.Resources["Dropbox"];
-                case ResourceType.SharepointServerSource:
+                case "SharepointServerSource":
                     return Application.Current.Resources["AddSharepointBlackLogo"];
                 default:
                     return _dict[CustomMenuIcons.WorkflowService] as DrawingImage;

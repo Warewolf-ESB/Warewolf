@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,7 +25,9 @@ using Dev2.Activities.Designers2.DateTime;
 using Dev2.Activities.Designers2.DateTimeDifference;
 using Dev2.Activities.Designers2.Delete;
 using Dev2.Activities.Designers2.DeleteRecords;
+using Dev2.Activities.Designers2.DropBox2016.Delete;
 using Dev2.Activities.Designers2.DropBox2016.Download;
+using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
 using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Activities.Designers2.ExchangeEmail;
@@ -66,7 +69,9 @@ using Dev2.Activities.Designers2.WebServiceGet;
 using Dev2.Activities.Designers2.WriteFile;
 using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
+using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Activities.DropBox2016.DownloadActivity;
+using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
@@ -142,6 +147,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
+                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
+                 { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },

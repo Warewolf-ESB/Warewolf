@@ -118,65 +118,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Core.resx</DependentUpon>
     </Compile>
-    <Compile Include="Languages\Core.en-gb.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Core.en-gb.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Languages\ExampleResource.Designer.cs">
-      <DependentUpon>ExampleResource.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Languages\ExampleResourceNames.Designer.cs">
-      <DependentUpon>ExampleResourceNames.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Languages\Framework.Designer.cs">
-      <DependentUpon>Framework.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Languages\Services.Designer.cs">
-      <DependentUpon>Services.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Resources.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Languages\Core.en-gb.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Core.en-gb.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Languages\Core.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Core.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Languages\ExampleResource.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExampleResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Languages\ExampleResourceNames.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExampleResourceNames.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Languages\Framework.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Framework.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Languages\Services.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Services.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

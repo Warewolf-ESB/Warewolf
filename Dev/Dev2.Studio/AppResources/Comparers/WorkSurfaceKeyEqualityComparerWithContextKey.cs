@@ -34,7 +34,8 @@ namespace Dev2.Studio.AppResources.Comparers
             {
                 if (x.ResourceID == y.ResourceID
                     && x.ServerID == y.ServerID
-                    && x.EnvironmentID == y.EnvironmentID)
+                    && x.EnvironmentID == y.EnvironmentID
+                    && x.WorkSurfaceContext == y.WorkSurfaceContext)
                 {
                     res = true;
                 }

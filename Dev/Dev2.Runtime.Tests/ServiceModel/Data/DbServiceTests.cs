@@ -12,7 +12,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -31,10 +30,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var service = JsonConvert.DeserializeObject<Service>(args);
             switch(service.ResourceType)
             {
-                case ResourceType.DbService:
+                case "DbService":
                     return JsonConvert.DeserializeObject<DbService>(args);
 
-                case ResourceType.PluginService:
+                case "PluginService":
                     return JsonConvert.DeserializeObject<PluginService>(args);
             }
             return service;
@@ -81,7 +80,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             DbService dbService = new DbService(testElm);
 
             Assert.AreEqual("TravsTestService", dbService.ResourceName);
-            Assert.AreEqual(ResourceType.DbService, dbService.ResourceType);
+            Assert.AreEqual("DbService", dbService.ResourceType);
             Assert.AreEqual("af8d2d38-22b5-4599-8357-adce196beb83", dbService.ResourceID.ToString());
             Assert.AreEqual("WEBPART_WIZARDS", dbService.ResourcePath);
         }
@@ -123,12 +122,12 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Assert Results-------------------------
             Assert.IsNotNull(actual);
             Assert.AreEqual(Guid.Empty, actual.ResourceID);
-            Assert.AreEqual(ResourceType.DbService, actual.ResourceType);
+            Assert.AreEqual("DbService", actual.ResourceType);
 
             Assert.IsNotNull(actual.Source);
             Assert.IsInstanceOfType(actual.Source, typeof(DbSource));
             Assert.AreEqual(Guid.Empty, actual.Source.ResourceID);
-            Assert.AreEqual(ResourceType.DbSource, actual.Source.ResourceType);
+            Assert.AreEqual("DbSource", actual.Source.ResourceType);
         }
 
         #endregion

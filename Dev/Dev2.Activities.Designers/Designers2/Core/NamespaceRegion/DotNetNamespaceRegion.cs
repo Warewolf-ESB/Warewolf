@@ -111,7 +111,10 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
             catch (Exception e)
             {
-                Errors.Add(e.Message);
+                _errors.Add(e.Message);
+                Errors = _errors;
+
+
             }
             finally
             {
@@ -124,6 +127,8 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             if (_source != null && _source.SelectedSource != null)
             {
                 Namespaces = _model.GetNameSpaces(_source.SelectedSource);
+
+
                 IsNamespaceEnabled = true;
                 IsEnabled = true;
             }

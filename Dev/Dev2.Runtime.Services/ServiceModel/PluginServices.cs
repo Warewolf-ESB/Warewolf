@@ -11,7 +11,6 @@
 
 using System;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
@@ -51,7 +50,7 @@ namespace Dev2.Runtime.ServiceModel
             return JsonConvert.DeserializeObject<PluginService>(args);
         }
 
-        protected override Service DeserializeService(XElement xml, ResourceType resourceType)
+        protected override Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new PluginService() : new PluginService(xml);
         }
@@ -90,12 +89,17 @@ namespace Dev2.Runtime.ServiceModel
             var result = new NamespaceList();
             try
             {
-               
-                if(pluginSource != null)
+
+                if (pluginSource != null)
                 {
                     var broker = new PluginBroker();
                     return broker.GetNamespaces(pluginSource);
                 }
+            }
+            catch (BadImageFormatException e)
+            {
+                RaiseError(e);
+                throw;
             }
             catch(Exception ex)
             {

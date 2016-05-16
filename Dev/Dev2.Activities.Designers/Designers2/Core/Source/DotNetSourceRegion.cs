@@ -10,6 +10,8 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.Practices.Prism.Commands;
+
 // ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.Source
@@ -20,6 +22,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         private IPluginSource _selectedSource;
         private ICollection<IPluginSource> _sources;
         private readonly ModelItem _modelItem;
+        // ReSharper disable once UnusedMember.Local
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
         private Guid _sourceId;
         private Action _sourceChangedAction;
@@ -37,8 +40,8 @@ namespace Dev2.Activities.Designers2.Core.Source
             ToolRegionName = "DotNetSourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();
-            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
-            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
+            NewSourceCommand = new DelegateCommand(model.CreateNewSource);
+            EditSourceCommand = new DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
             Sources = sources.ToObservableCollection();
             IsEnabled = true;
@@ -191,7 +194,7 @@ namespace Dev2.Activities.Designers2.Core.Source
         {
             get
             {
-                return _sourceChangedAction??(()=>{});
+                return _sourceChangedAction ?? (() => { });
             }
             set
             {
@@ -248,14 +251,16 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
+
                 SetSelectedSource(value);
                 SourceChangedAction();
                 OnSomethingChanged(this);
-                var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
+                var delegateCommand = EditSourceCommand as DelegateCommand;
                 if (delegateCommand != null)
                 {
                     delegateCommand.RaiseCanExecuteChanged();
                 }
+
             }
         }
 

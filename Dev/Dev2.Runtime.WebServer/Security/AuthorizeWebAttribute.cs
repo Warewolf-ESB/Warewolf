@@ -16,7 +16,6 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
@@ -74,7 +73,7 @@ namespace Dev2.Runtime.WebServer.Security
                     var resourceName = HttpUtility.UrlDecode(absolutePath.Substring(startIndex, absolutePath.Length - startIndex));
                     var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
 
-                    if(resource != null && resource.ResourceType == ResourceType.ReservedService)
+                    if(resource != null && resource.ResourceType == "ReservedService")
                     {
                         authorizationRequest = new AuthorizationRequest
                         {

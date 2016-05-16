@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(resource);
             Assert.AreEqual("1736ca6e-b870-467f-8d25-262972d8c3e8", resource.ResourceID.ToString());
             Assert.AreEqual("Bug6619", resource.ResourceName);
-            Assert.AreEqual(ResourceType.WorkflowService, resource.ResourceType);
+            Assert.AreEqual("WorkflowService", resource.ResourceType);
         }
 
         [TestMethod]
@@ -177,9 +177,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTreeChild1 = resourceForTrees[0];
             var resourceForTreeChild2 = resourceForTrees[1];
             Assert.AreEqual(new Guid("7bce06dc-778d-4b64-9dfe-1a826585f0b0"), resourceForTreeChild2.UniqueID);
-            Assert.AreEqual(ResourceType.WorkflowService, resourceForTreeChild2.ResourceType);
+            Assert.AreEqual("WorkflowService", resourceForTreeChild2.ResourceType);
             Assert.AreEqual(new Guid("7bce06ec-778d-4a64-9dfe-1a826785f0b0"), resourceForTreeChild1.UniqueID);
-            Assert.AreEqual(ResourceType.WorkflowService, resourceForTreeChild1.ResourceType);
+            Assert.AreEqual("WorkflowService", resourceForTreeChild1.ResourceType);
         }
 
         [TestMethod]
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
             Assert.IsNotNull(resourceForTreeService);
-            Assert.AreEqual(ResourceType.PluginService, resourceForTreeService.ResourceType);
+            Assert.AreEqual("PluginService", resourceForTreeService.ResourceType);
         }
 
         [TestMethod]
@@ -236,7 +236,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
             Assert.IsNotNull(resourceForTreeService);
-            Assert.AreEqual(ResourceType.DbService, resourceForTreeService.ResourceType);
+            Assert.AreEqual("DbService", resourceForTreeService.ResourceType);
         }
         
         [TestMethod]
@@ -255,7 +255,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
             Assert.IsNotNull(resourceForTreeService);
-            Assert.AreEqual(ResourceType.DbService, resourceForTreeService.ResourceType);
+            Assert.AreEqual("DbService", resourceForTreeService.ResourceType);
         }
         
         [TestMethod]
@@ -274,7 +274,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
             Assert.IsNotNull(resourceForTreeService);
-            Assert.AreEqual(ResourceType.WebService, resourceForTreeService.ResourceType);
+            Assert.AreEqual("WebService", resourceForTreeService.ResourceType);
         }
 
 
@@ -310,7 +310,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             IResourceForTree serverDependency = resource.Dependencies.First(tree => tree.ResourceID == Guid.Parse("889d3f22-40c5-4466-84bc-d49a5874ae53"));
             Assert.IsNotNull(serverDependency);
             Assert.AreEqual("server - tfs bld", serverDependency.ResourceName);
-            Assert.AreEqual(ResourceType.Server, serverDependency.ResourceType);
+            Assert.AreEqual("Server", serverDependency.ResourceType);
         }
 
         [TestMethod]
@@ -1634,7 +1634,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceParsePropertiesWithNullStringExpectedThrowsArgumentNullException()
         {
-            Resource.ParseProperties(null, null);
+            ResourceBase.ParseProperties(null, null);
         }
 
         // PBI 5656 - 2013.05.20 - TWR - Created
@@ -1642,7 +1642,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [ExpectedException(typeof(ArgumentNullException))]
         public void ResourceParsePropertiesWithNullPropertiesExpectedThrowsArgumentNullException()
         {
-            Resource.ParseProperties("", null);
+            ResourceBase.ParseProperties("", null);
         }
 
         // PBI 5656 - 2013.05.20 - TWR - Created
@@ -1655,7 +1655,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 { "Address", null },
                 { "UserName", null }
             };
-            Resource.ParseProperties(TestStr, properties);
+            ResourceBase.ParseProperties(TestStr, properties);
             Assert.IsNotNull(properties["Address"]);
             Assert.IsNull(properties["UserName"]);
         }
@@ -1676,7 +1676,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 { "UserName", null }
             };
 
-            Resource.ParseProperties(testStr, properties);
+            ResourceBase.ParseProperties(testStr, properties);
 
             Assert.AreEqual(Address, properties["Address"]);
             Assert.AreEqual(AuthenticationType, properties["AuthenticationType"]);

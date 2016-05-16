@@ -159,8 +159,7 @@ Scenario: Web Connector Tool returns text
 
  
 
- @ignore
-Scenario: Web Connector Tool cancel generate outputs for 
+ Scenario: Web Connector Tool cancel generate outputs for 
 	Given I open New Workflow
 	And I drag Web Get Request Connector Tool onto the design surface
 	Then Source is Enabled

@@ -130,18 +130,18 @@ Scenario: Use XPath with no  result but valid xpath
 	| XML                                                                                              | # |  |
 	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> |   |  |
 
-Scenario: Use XPath to get multiple results into a scalar in CSV
+Scenario: Use XPath to get multiple results into a scalar is last result
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
 	And I have a variable "[[ids]]" output with xpath "//root/number/@id"
 	When the xpath tool is executed
-	Then the variable "[[ids]]" should have a value "1,2,3"
+	Then the variable "[[ids]]" should have a value "3"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| XML                                                                                              | # |                             |
 	| <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[ids]] = //root/number/@id |
 	And the debug output as 
 	| # |                 |
-	| 1 | [[ids]] = 1,2,3 | 
+	| 1 | [[ids]] = 3 | 
 
 Scenario: Use the XPath to process blank XML
 	Given I have this xml ''

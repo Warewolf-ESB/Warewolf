@@ -21,11 +21,11 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         {
         }
 
-        public List<WindowsGroupPermission> ReadPermissionsResult { get; set; }
+        public List<WindowsGroupPermission> ReadPermissionsResults { get; set; }
 
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
-            return ReadPermissionsResult;
+            return ReadPermissionsResults;
         }
 
         protected override void WritePermissions(List<WindowsGroupPermission> permissions)

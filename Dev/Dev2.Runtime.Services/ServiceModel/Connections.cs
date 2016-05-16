@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -65,7 +64,7 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Connections/Get
         public Dev2.Data.ServiceModel.Connection Get(string resourceID, Guid workspaceID, Guid dataListID)
         {
-            var result = new Dev2.Data.ServiceModel.Connection { ResourceID = Guid.Empty, ResourceType = ResourceType.Server, WebServerPort = Dev2.Data.ServiceModel.Connection.DefaultWebServerPort };
+            var result = new Dev2.Data.ServiceModel.Connection { ResourceID = Guid.Empty, ResourceType = "Server", WebServerPort = Dev2.Data.ServiceModel.Connection.DefaultWebServerPort };
             try
             {
 
@@ -160,7 +159,7 @@ namespace Dev2.Runtime.ServiceModel
                 var connection = JsonConvert.DeserializeObject<Dev2.Data.ServiceModel.Connection>(args);
                 switch(connection.ResourceType)
                 {
-                    case ResourceType.Server:
+                    case "Server":
                         result = CanConnectToServer(connection);
                         break;
                 }
