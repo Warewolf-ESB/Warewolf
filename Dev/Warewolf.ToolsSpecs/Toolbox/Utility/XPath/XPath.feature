@@ -233,8 +233,8 @@ Scenario: Use XPath with a non existent variable as output
 
 Scenario Outline: Use XPath to get data off XML using recordsets
 	Given I have this xml "<Xmlvalue>"
-	And The result variable is "<Xml>" 
-	And The path variable is "<Xpath>" equals "<path>"
+	And The result variable is "<Xml>"
+	And I have a variable "<Xpath>" output with xpath "<path>"
 	When the xpath tool is executed
 	Then the variable "<Recordset>" should have a value "<value>"
 	And the execution has "<Error>" error

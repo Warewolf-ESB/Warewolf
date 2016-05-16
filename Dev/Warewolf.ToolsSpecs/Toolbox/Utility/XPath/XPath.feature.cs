@@ -814,7 +814,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 236
  testRunner.And(string.Format("The result variable is \"{0}\"", xml), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 237
- testRunner.And(string.Format("The path variable is \"{0}\" equals \"{1}\"", xpath, path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have a variable \"{0}\" output with xpath \"{1}\"", xpath, path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 238
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 239
