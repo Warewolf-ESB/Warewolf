@@ -10,8 +10,11 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance Type=viewModels:ManageOAuthSourceViewModel,
+                                              IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -51,7 +54,7 @@
                                Style="{StaticResource XamComboEditorStyle}"
                                IsEditable="False"
                                views:FocusExtension.IsFocused="True"
-                               SelectedItem="{Binding OAuthType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                               SelectedItem="{Binding SelectedOAuthProvider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.ManageOAuthTypesHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -101,25 +104,15 @@
                                        Height="14"
                                        Margin="{StaticResource ControlBorderRight}" 
                                        Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
-            <Button x:Name="TestConnectionButton" 
+            <Button x:Name="AuthoriseButton" 
                     Width="120" 
                     Height="30" 
                     Margin="{StaticResource ControlBorderRight}"
                     Command="{Binding TestCommand}" 
-                    Content="{x:Static languages:Core.TestConnectionLabel}" 
-                    ToolTip="{x:Static languages:Core.ManageOAuthTestTooltip}">
+                    Content="Authorise" 
+                    ToolTip="{x:Static languages:Core.ManageOAuthAuthoriseTooltip}">
                 <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.ManageOAuthTestConnectionHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-            <Button Width="120" 
-                    Height="30" 
-                    Command="{Binding CancelTestCommand}" 
-                    Content="{x:Static languages:Core.CancelTest}" 
-                    x:Name="CancelTestButton"
-                    ToolTip="{x:Static languages:Core.ManageOAuthCancelTestTooltip}">
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter Text="{x:Static languages:Core.ManageOAuthCancelTestHelp}" DataContext="{Binding}" />
+                    <core:HelpSetter Text="{x:Static languages:Core.ManageOAuthAuthoriseHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </StackPanel>

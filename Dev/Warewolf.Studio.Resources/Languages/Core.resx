@@ -287,11 +287,11 @@ Software development by: www.dev2.co.za
   <data name="ManageOAuthSecretHelp" xml:space="preserve">
     <value>ManageOAuthSecretHelp</value>
   </data>
-  <data name="ManageOAuthTestTooltip" xml:space="preserve">
-    <value>ManageOAuthTestTooltip</value>
+  <data name="ManageOAuthAuthoriseTooltip" xml:space="preserve">
+    <value>ManageOAuthAuthoriseTooltip</value>
   </data>
-  <data name="ManageOAuthTestConnectionHelp" xml:space="preserve">
-    <value>ManageOAuthTestConnectionHelp</value>
+  <data name="ManageOAuthAuthoriseHelp" xml:space="preserve">
+    <value>ManageOAuthAuthoriseHelp</value>
   </data>
   <data name="ManageOAuthCancelTestTooltip" xml:space="preserve">
     <value>ManageOAuthCancelTestTooltip</value>
