@@ -16,7 +16,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void OauthSource_Ctor_Construct_ExpectSource()
         {
             //------------Setup for test--------------------------
-            var oauthSource = new OauthSource();
+            var oauthSource = new DropBoxSource();
             
             //------------Execute Test---------------------------
 
@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void OauthSource_Ctor_FromXML_Construct_ExpectSource()
         {
             //------------Setup for test--------------------------
-            var oauthSource = new OauthSource(XElement.Parse(@"<Source ID=""00000000-0000-0000-0000-000000000000"" Name="""" ResourceType=""OauthSource"" IsValid=""false"" ConnectionString=""AccessToken=secret;AppKey=key"" Type=""OauthSource"">
+            var oauthSource = new DropBoxSource(XElement.Parse(@"<Source ID=""00000000-0000-0000-0000-000000000000"" Name="""" ResourceType=""OauthSource"" IsValid=""false"" ConnectionString=""AccessToken=secret;AppKey=key"" Type=""OauthSource"">
   <DisplayName></DisplayName>
   <Category></Category>
   <AuthorRoles></AuthorRoles>
@@ -52,12 +52,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void OauthSource_ToXML_Construct_ExpectPropertiesSet()
         {
             //------------Setup for test--------------------------
-            var oauthSource = new OauthSource(){AppKey = "key",AccessToken = "secret"};
+            var oauthSource = new DropBoxSource(){AppKey = "key",AccessToken = "secret"};
 
             //------------Execute Test---------------------------
             var outxml = oauthSource.ToXml();
             //------------Assert Results-------------------------
-            var readOauthSource = new OauthSource(outxml)
+            var readOauthSource = new DropBoxSource(outxml)
             {
                 AppKey = "key",
                 AccessToken = "secret"

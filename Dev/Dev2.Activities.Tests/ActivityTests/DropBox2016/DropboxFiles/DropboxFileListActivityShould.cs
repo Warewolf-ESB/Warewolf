@@ -166,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource
+                SelectedSource = new DropBoxSource
                 {
                     AccessToken = "Test"
                 },
@@ -200,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource
+                SelectedSource = new DropBoxSource
                 {
                     AccessToken = "Test"
                 },
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource
+                SelectedSource = new DropBoxSource
                 {
                     AccessToken = "Test"
                 },
@@ -268,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource
+                SelectedSource = new DropBoxSource
                 {
                     AccessToken = "Test"
                 },
@@ -303,7 +303,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource
+                SelectedSource = new DropBoxSource
                 {
                     AccessToken = "Test"
                 },
@@ -338,7 +338,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource
+                SelectedSource = new DropBoxSource
                 {
                     AccessToken = "Test"
                 },
@@ -372,7 +372,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock
             {
-                SelectedSource = new OauthSource
+                SelectedSource = new DropBoxSource
                 {
                     AccessToken = "Test"
                 }
@@ -407,7 +407,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                     .Returns(new DropboxFailureResult(TestConstant.ExceptionInstance.Value));
                 var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock();
                 dropboxFileListActivityMock.SelectedSource =
-                    new OauthSource
+                    new DropBoxSource
                     {
                         AccessToken = "Test"
                     };
@@ -455,7 +455,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivity();
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropboxFileListActivityMock.SelectedSource = new OauthSource
+            dropboxFileListActivityMock.SelectedSource = new DropBoxSource
             {
                 AccessToken = "Test"
             };
@@ -477,7 +477,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
                 .Returns(new DropboxListFolderSuccesResult(TestConstant.ListFolderResultInstance.Value));
             var dropboxFileListActivityMock = new DsfDropboxFileListActivity();
             dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
-            dropboxFileListActivityMock.SelectedSource = new OauthSource
+            dropboxFileListActivityMock.SelectedSource = new DropBoxSource
             {
                 AccessToken = "Test"
             };
@@ -505,7 +505,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock();
             dropboxFileListActivityMock.DropboxResult = new DropboxFailureResult(TestConstant.ExceptionInstance.Value);
             dropboxFileListActivityMock.SelectedSource =
-                new OauthSource
+                new DropBoxSource
                 {
                     AccessToken = "Test"
                 };

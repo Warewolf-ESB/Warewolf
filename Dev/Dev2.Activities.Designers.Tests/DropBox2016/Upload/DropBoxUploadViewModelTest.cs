@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
         {
             var env = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var oauthSources = new List<OauthSource> { new OauthSource { ResourceName = "Dropbox Source" } };
+            var oauthSources = new List<OauthSource> { new DropBoxSource { ResourceName = "Dropbox Source" } };
             mockResourceRepo.Setup(repository => repository.FindSourcesByType<OauthSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
             env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var agg = new Mock<IEventAggregator>();
@@ -384,7 +384,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
 
         List<OauthSource> GetSources()
         {
-            return new List<OauthSource> { new OauthSource { ResourceName = "bob" }, new OauthSource { ResourceName = "dave" } };
+            return new List<OauthSource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
         }
     }
 }
