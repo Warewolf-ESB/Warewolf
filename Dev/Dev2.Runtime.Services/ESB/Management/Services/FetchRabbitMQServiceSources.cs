@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
 
             // ReSharper disable MaximumChainedReferences
-            List<IRabbitMQServiceSourceDefinition> list = Resources.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(a => a.ResourceType == ResourceType.RabbitMQSource).Select(a =>
+            List<IRabbitMQServiceSourceDefinition> list = Resources.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(a => a.ResourceType == "RabbitMQSource").Select(a =>
             {
                 var res = Resources.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, a.ResourceID);
                 if (res != null)

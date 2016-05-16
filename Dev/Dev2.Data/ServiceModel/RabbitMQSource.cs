@@ -40,7 +40,7 @@ namespace Dev2.Data.ServiceModel
         public RabbitMQSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.RabbitMQSource;
+            ResourceType = "RabbitMQSource";
             Port = DefaultPort;
             VirtualHost = DefaultVirtualHost;
         }
@@ -48,7 +48,7 @@ namespace Dev2.Data.ServiceModel
         public RabbitMQSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.RabbitMQSource;
+            ResourceType = "RabbitMQSource";
             Port = DefaultPort;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

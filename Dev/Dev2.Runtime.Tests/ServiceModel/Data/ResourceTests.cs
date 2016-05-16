@@ -217,7 +217,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resourceForTrees = resource.Dependencies.ToList();
             var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
             Assert.IsNotNull(resourceForTreeService);
-            Assert.AreEqual(ResourceType.RabbitMQSource, resourceForTreeService.ResourceType);
+            Assert.AreEqual("RabbitMQSource", resourceForTreeService.ResourceType);
         }
         
         [TestMethod]
