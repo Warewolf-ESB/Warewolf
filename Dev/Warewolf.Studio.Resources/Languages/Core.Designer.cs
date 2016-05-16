@@ -4572,6 +4572,96 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthAuthoriseHelp.
+        /// </summary>
+        public static string ManageOAuthAuthoriseHelp {
+            get {
+                return ResourceManager.GetString("ManageOAuthAuthoriseHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthAuthoriseTooltip.
+        /// </summary>
+        public static string ManageOAuthAuthoriseTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthAuthoriseTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthCancelTestHelp.
+        /// </summary>
+        public static string ManageOAuthCancelTestHelp {
+            get {
+                return ResourceManager.GetString("ManageOAuthCancelTestHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthCancelTestTooltip.
+        /// </summary>
+        public static string ManageOAuthCancelTestTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthCancelTestTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthKeyHelp.
+        /// </summary>
+        public static string ManageOAuthKeyHelp {
+            get {
+                return ResourceManager.GetString("ManageOAuthKeyHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthKeyTooltip.
+        /// </summary>
+        public static string ManageOAuthKeyTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthKeyTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthSecretHelp.
+        /// </summary>
+        public static string ManageOAuthSecretHelp {
+            get {
+                return ResourceManager.GetString("ManageOAuthSecretHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthSecretTooltip.
+        /// </summary>
+        public static string ManageOAuthSecretTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthSecretTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthTypesHelp.
+        /// </summary>
+        public static string ManageOAuthTypesHelp {
+            get {
+                return ResourceManager.GetString("ManageOAuthTypesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOAuthTypeTooltip.
+        /// </summary>
+        public static string ManageOAuthTypeTooltip {
+            get {
+                return ResourceManager.GetString("ManageOAuthTypeTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edits the selected plugin source connection.
         /// </summary>
         public static string ManagePluginServiceEditSourceTooltip {

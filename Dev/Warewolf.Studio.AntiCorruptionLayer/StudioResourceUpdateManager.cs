@@ -85,6 +85,19 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
         }
 
+        public void Save(IOAuthSource source)
+        {
+//            UpdateManagerProxy.SavePluginSource(source, GlobalConstants.ServerWorkspaceID);
+//            if (PluginServiceSourceSaved != null)
+//            {
+//                PluginServiceSourceSaved(source);
+//            }
+//            if (ItemSaved != null)
+//            {
+//                ItemSaved();
+//            }
+        }
+
         public void Save(IEmailServiceSource emailServiceSource)
         {
             UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
