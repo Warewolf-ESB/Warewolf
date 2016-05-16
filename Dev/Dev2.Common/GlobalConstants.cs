@@ -479,8 +479,6 @@ WHERE   n.nspname = 'public'
         public static int MaxWorkflowsToExecute = 1010;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
-        public static string DropBoxApiKey = "l6vuufdy2psuyif";
-        public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
         public static string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
