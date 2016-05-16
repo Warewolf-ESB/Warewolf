@@ -1,17 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
 using Caliburn.Micro;
+using Dev2;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Dropbox;
+using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Webs.Callbacks;
 using Dropbox.Api;
+using Warewolf.Studio.Core;
 
-namespace Dev2.Views.DropBox2016
+namespace Warewolf.Studio.ViewModels
 {
-    public class DropBoxSourceViewModel
+    public class ManageOAuthSourceViewModel : SourceBaseImpl<IOAuthSource>, IManageOAuthSourceViewModel
     {
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string AccessToken { get; private set; }
@@ -31,18 +34,18 @@ namespace Dev2.Views.DropBox2016
         private const string AppKey = "31qf750f1vzffhu";
 
         private string _oauth2State;
+        private string _name;
         private const string RedirectUri = "https://www.example.com/";
 
-        // ReSharper disable TooManyDependencies
-        public DropBoxSourceViewModel(INetworkHelper network, IDropBoxHelper dropboxHelper, IDropboxFactory dropboxFactory, bool shouldAuthorise)
-        // ReSharper restore TooManyDependencies
+        public ManageOAuthSourceViewModel()
+            : base("OAuth")
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory", dropboxFactory } });
-            _network = network;
-            DropBoxHelper = dropboxHelper;
-            CookieHelper.Clear();
-            if (shouldAuthorise)
-                Authorise();
+//            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory", dropboxFactory } });
+//            _network = network;
+//            DropBoxHelper = dropboxHelper;
+//            CookieHelper.Clear();
+//            if (shouldAuthorise)
+//                Authorise();
         }
 
         private async Task LoadBrowserUri(string uri)
@@ -95,5 +98,50 @@ namespace Dev2.Views.DropBox2016
                 DropBoxHelper.CloseAndSave(this);
             }
         }
+
+        #region Overrides of SourceBaseImpl<IOAuthSource>
+
+        public override IOAuthSource ToModel()
+        {
+            return new OauthSource
+            {
+                Key = AppKey
+            };
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
+        public override void FromModel(IOAuthSource service)
+        {
+        }
+
+        public override bool CanSave()
+        {
+            return false;
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+        }
+
+        public override void Save()
+        {
+        }
+
+        #endregion
+    }
+
+    public interface IManageOAuthSourceViewModel
+    {
     }
 }

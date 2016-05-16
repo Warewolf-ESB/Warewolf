@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
-namespace Dev2.Views.DropBox2016
+namespace Warewolf.Studio.Core
 {
-    internal class CookieHelper
+    public class CookieHelper
     {
         public static void Clear()
         {
