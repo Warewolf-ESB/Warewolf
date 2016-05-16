@@ -211,7 +211,9 @@ namespace Warewolf.Studio.ViewModels
             OpenVersionCommand = new DelegateCommand(() =>
             {
                 if (IsResourceVersion)
+                {
                     ShellViewModel.OpenVersion(parent.ResourceId, VersionInfo);
+                }
             });
             VersionHeader = "Show Version History";
             //Builder = builder;
