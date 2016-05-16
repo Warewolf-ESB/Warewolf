@@ -133,6 +133,7 @@
     <Compile Include="DeployDestinationViewModel.cs" />
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
+    <Compile Include="ManageOAuthSourceModel.cs" />
     <Compile Include="ManageOAuthSourceViewModel.cs" />
     <Compile Include="EmailAttachmentModel.cs" />
     <Compile Include="EmailAttachmentVm.cs" />

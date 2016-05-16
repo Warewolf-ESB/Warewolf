@@ -45,6 +45,8 @@ namespace Dev2.Common.Interfaces
         event Action<IDbSource> DatabaseServiceSourceSaved;
         event Action<IPluginSource> PluginServiceSourceSaved;
         event Action<IEmailServiceSource> EmailServiceSourceSaved;
+
+        void Save(IOAuthSource sharePointServiceSource);
     }
 
     public delegate void ItemSaved();
