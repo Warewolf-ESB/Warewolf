@@ -11,7 +11,6 @@
 
 using System;
 using System.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -46,7 +45,7 @@ namespace Dev2.Models
             return controller.ExecuteCommand<IExplorerItem>(Connection, workSpaceId);
         }
 
-        public IExplorerItem Load(ResourceType type, Guid workSpaceId)
+        public IExplorerItem Load(string type, Guid workSpaceId)
         {
             var controller =
                 CommunicationControllerFactory.CreateController("Management Services\\FetchExplorerItemsServiceByType");
@@ -58,7 +57,7 @@ namespace Dev2.Models
             var controller = CommunicationControllerFactory.CreateController("RenameItemService");
             if(itemToRename.Children != null)
             {
-                var any = itemToRename.Children.Where(a => a.ResourceType == ResourceType.Version);
+                var any = itemToRename.Children.Where(a => a.ResourceType == "Version");
                 itemToRename.Children = itemToRename.Children.Except(any).ToList();
             }
             var serializer = new Dev2JsonSerializer();
@@ -98,7 +97,7 @@ namespace Dev2.Models
             var controller = CommunicationControllerFactory.CreateController("MoveItemService");
             if (itemToMove.Children != null)
             {
-                var any = itemToMove.Children.Where(a => a.ResourceType == ResourceType.Version);
+                var any = itemToMove.Children.Where(a => a.ResourceType == "Version");
                 itemToMove.Children = itemToMove.Children.Except(any).ToList();
             }
             var serializer = new Dev2JsonSerializer();

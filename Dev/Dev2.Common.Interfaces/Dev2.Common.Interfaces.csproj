@@ -43,6 +43,10 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.1.4\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
@@ -86,6 +90,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -149,7 +154,6 @@
     <Compile Include="Data\IResourceUpgrade.cs" />
     <Compile Include="Data\IResourceUpgrader.cs" />
     <Compile Include="Data\IUpgradePath.cs" />
-    <Compile Include="Data\ResourceType.cs" />
     <Compile Include="Data\TO\IErrorResultTO.cs" />
     <Compile Include="DB\IDatabaseService.cs" />
     <Compile Include="DB\IDataProviderSanitizer.cs" />
@@ -175,6 +179,7 @@
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
+    <Compile Include="Dropbox\IDropBoxFactory.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
@@ -193,6 +198,8 @@
     <Compile Include="IComputerNameProvider.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IDllListing.cs" />
+    <Compile Include="IDropboxExecutor.cs" />
+    <Compile Include="IDropboxResult.cs" />
     <Compile Include="IEmailAttachmentModel.cs" />
     <Compile Include="IEmailAttachmentView.cs" />
     <Compile Include="IEmailAttachmentVm.cs" />
@@ -212,8 +219,10 @@
     <Compile Include="IExplorerView.cs" />
     <Compile Include="IExplorerViewModel.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
+    <Compile Include="IFilenameValidator.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IHelpView.cs" />
+    <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
     <Compile Include="IManageRabbitMQSourceViewModel.cs" />
@@ -264,6 +273,7 @@
     <Compile Include="IQueryManager.cs" />
     <Compile Include="IRabbitMQServiceSourceDefinition.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IResourceSource.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />
     <Compile Include="ISharepointServerSource.cs" />

@@ -65,7 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            Assert.AreEqual(24, actual.Count);
+            Assert.AreEqual(1, actual.Count);
 
         }
 
@@ -124,8 +124,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            Assert.AreEqual(6, actual.Count);
-            Assert.AreEqual("-1", actual[0]);
+            Assert.AreEqual(4, actual.Count);
+            Assert.AreEqual("1", actual[0]);
 
         }
         /// <summary>
@@ -221,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            Assert.AreEqual(7, actual.Count);
+            Assert.AreEqual(4, actual.Count);
             Assert.AreEqual("2", actual[1]);
 
         }

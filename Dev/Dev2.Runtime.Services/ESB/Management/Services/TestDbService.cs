@@ -52,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     source.DatabaseName = src.Source.DbName;
                     source.ResourceID = src.Source.Id;
                     source.ServerType = src.Source.Type;
-                    source.ResourceType = Common.Interfaces.Data.ResourceType.DbSource;
+                    source.ResourceType = "DbSource";
                 }
                 
                 var res = new DbService

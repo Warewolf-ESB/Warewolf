@@ -17,7 +17,6 @@ using System.Net;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data;
@@ -342,7 +341,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                     var serializableResources = serializer.Deserialize<IList<SerializableResource>>(returnData);
-                    return serializableResources.FirstOrDefault(resource => resource.ResourceType == ResourceType.WorkflowService);
+                    return serializableResources.FirstOrDefault(resource => resource.ResourceType == "WorkflowService");
                 }
             }
             catch (Exception)

@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Moq;
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -29,7 +28,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _filterByType = true;
             _explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
             _explorerItemViewModelMock.SetupGet(it => it.ResourceName).Returns("someResName");
-            _explorerItemViewModelMock.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            _explorerItemViewModelMock.SetupGet(it => it.ResourceType).Returns("Folder");
             _environmentViewModelMock = new Mock<IEnvironmentViewModel>();
             _environmentViewModelMock.Setup(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()))
                 .Callback<Func<IExplorerItemViewModel, bool>>(arg => arg(_explorerItemViewModelMock.Object));

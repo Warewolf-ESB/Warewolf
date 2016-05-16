@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Dev2.Settings.Security"
-             xmlns:help="clr-namespace:Dev2.Help"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -99,9 +99,9 @@
                                     <TextBox Text="{Binding Path=WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              IsEnabled="{Binding Path=CanChangeName}"
                                              Style="{StaticResource PermissionsGridTextBoxStyle}"
-                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
+                                             ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipWindowsGroup}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpWindowsGroup}"
+                                            <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerHelpWindowsGroup}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                         <AutomationProperties.AutomationId>
@@ -113,14 +113,14 @@
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
                                             IsEnabled="{Binding Path=CanChangeName}"
-                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
+                                            ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipWindowsGroup}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupButton_AutoID">
                                                 <Binding Path="WindowsGroup" FallbackValue="New" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerBrowseHelpWindowsGroup}"
+                                            <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerBrowseHelpWindowsGroup}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -143,9 +143,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=DeployTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}">
+                                              ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipDeployTo}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerHelpDeployTo}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -171,9 +171,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=DeployFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}">
+                                              ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipDeployFrom}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployFrom}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerHelpDeployFrom}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -199,9 +199,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=Administrator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipAdministrator}">
+                                              ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipAdministrator}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpAdministrator}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerHelpAdministrator}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -227,9 +227,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{Binding Path=EnableCellEditing}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}">
+                                          ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipView}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpView}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerHelpView}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -255,9 +255,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{Binding Path=EnableCellEditing}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipExecute}">
+                                          ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipExecute}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpExecute}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerHelpExecute}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -283,9 +283,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{Binding Path=EnableCellEditing}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipContribute}">
+                                          ToolTip="{x:Static languages:Core.SettingsSecurityServerToolTipContribute}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpContribute}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityServerHelpContribute}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -361,9 +361,9 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0"
                                                Text="{Binding Path=ResourceName, Mode=TwoWay}"
-                                               ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
+                                               ToolTip="{x:Static languages:Core.SettingsSecurityResourceToolTipResource}">
                                       <i:Interaction.Behaviors>
-                                        <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpResource}"
+                                        <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityResourceHelpResource}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                     </i:Interaction.Behaviors>
                                     <AutomationProperties.AutomationId>
@@ -375,14 +375,14 @@
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
                                             IsEnabled="{Binding Path=EnableCellEditing}"
-                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
+                                            ToolTip="{x:Static languages:Core.SettingsSecurityResourceToolTipResource}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
                                                 <Binding Path="ResourceName" FallbackValue="New" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceBrowseHelpResources}"
+                                            <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityResourceBrowseHelpResources}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -408,9 +408,9 @@
                                     <TextBox Text="{Binding Path=WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource PermissionsGridTextBoxStyle}"
                                              IsEnabled="{Binding Path=EnableCellEditing}"
-                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}">
+                                             ToolTip="{x:Static languages:Core.SettingsSecurityResourceToolTipWindowsGroup}">
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpWindowsGroup}"
+                                            <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityResourceHelpWindowsGroup}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                         <AutomationProperties.AutomationId>
@@ -422,14 +422,14 @@
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
                                             IsEnabled="{Binding Path=EnableCellEditing}"
-                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}">
+                                            ToolTip="{x:Static languages:Core.SettingsSecurityResourceToolTipWindowsGroup}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsButton_AutoID">
                                                 <Binding Path="WindowsGroup" FallbackValue="New" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                         <i:Interaction.Behaviors>
-                                            <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceBrowseHelpWindowsGroup}"
+                                            <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityResourceBrowseHelpWindowsGroup}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </Button>
@@ -451,9 +451,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipView}">
+                                              ToolTip="{x:Static languages:Core.SettingsSecurityResourceToolTipView}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpView}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityResourceHelpView}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -479,9 +479,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipExecute}">
+                                              ToolTip="{x:Static languages:Core.SettingsSecurityResourceToolTipExecute}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpExecute}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityResourceHelpExecute}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>
@@ -507,9 +507,9 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <CheckBox IsChecked="{Binding Path=Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipContribute}">
+                                              ToolTip="{x:Static languages:Core.SettingsSecurityResourceToolTipContribute}">
                                             <i:Interaction.Behaviors>
-                                                <core:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpContribute}"
+                                                <core:HelpSetter Text="{x:Static languages:Core.SettingsSecurityResourceHelpContribute}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                             </i:Interaction.Behaviors>
                                             <AutomationProperties.AutomationId>

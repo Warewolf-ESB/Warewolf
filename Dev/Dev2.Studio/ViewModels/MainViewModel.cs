@@ -28,7 +28,7 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Dropbox;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -40,6 +40,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Data.ServiceModel;
+using Dev2.Factories;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -77,6 +78,7 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Dev2.Views.Dialogs;
+using Dev2.Views.DropBox2016;
 using Dev2.Webs;
 using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
@@ -554,7 +556,7 @@ namespace Dev2.Studio.ViewModels
         {
             var vm = new DependencyVisualiserViewModel(new DependencyVisualiserView(), server, dependsOnMe)
             {
-                ResourceType = Common.Interfaces.Data.ResourceType.DependencyViewer,
+                ResourceType = "DependencyViewer",
                 ResourceModel = model
             };
 
@@ -720,6 +722,11 @@ namespace Dev2.Studio.ViewModels
 
             switch (resourceModel.ServerResourceType)
             {
+                case "SqlDatabase":
+                case "ODBC":
+                case "MySqlDatabase":
+                    EditDbSource(resourceModel);
+                    break;
                 case "DbSource":
                     EditDbSource(resourceModel);
                     break;
@@ -745,6 +752,7 @@ namespace Dev2.Studio.ViewModels
                     EditRabbitMQSource(resourceModel);
                     break;
                 case "Server":
+                case "Dev2Server":
                 case "ServerSource":
                     var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
                     string address = null;
@@ -783,7 +791,7 @@ namespace Dev2.Studio.ViewModels
                 Password = db.Password,
                 Path = db.ResourcePath,
                 ServerName = db.Server,
-                Type = enSourceType.SqlDatabase,
+                Type = db.ServerType,
                 UserName = db.UserID
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
@@ -1381,7 +1389,7 @@ namespace Dev2.Studio.ViewModels
                     var resourceVersion = new ResourceModel(ActiveEnvironment, EventPublishers.Aggregator)
                     {
                         ResourceType = resourceModel.ResourceType,
-                        ResourceName = string.Format("{0} (v.{1})", versionInfo.User, versionInfo.VersionNumber),
+                        ResourceName = string.Format("{0} (v.{1})", resource.ResourceName, versionInfo.VersionNumber),
                         WorkflowXaml = new StringBuilder(xamlString),
                         UserPermissions = Permissions.View,
                         DataList = dataListString,
@@ -1395,20 +1403,20 @@ namespace Dev2.Studio.ViewModels
         }
 
         #region Dropbox 2016
-        Dev2.Views.DropBox2016.IDropboxFactory _dropbox2016Factory;
-        Func<Dev2.Views.DropBox2016.DropBoxViewWindow, Dev2.Views.DropBox2016.DropBoxSourceViewModel, bool?> _showDrop2016Action;
-        public Dev2.Views.DropBox2016.IDropboxFactory Dropbox2016Factory
+        IDropboxFactory _dropbox2016Factory;
+        Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDrop2016Action;
+        IDropboxFactory Dropbox2016Factory
         {
-            private get { return _dropbox2016Factory ?? new Dev2.Views.DropBox2016.DropboxFactory(); }
+             get { return _dropbox2016Factory ?? new DropboxFactory(); }
             set { _dropbox2016Factory = value; }
         }
 
         void SaveDropBox2016Source(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource, bool shouldAuthorise)
         {
 
-            Dev2.Views.DropBox2016.DropBoxViewWindow dropBoxViewWindow = new Dev2.Views.DropBox2016.DropBoxViewWindow();
-            Dev2.Views.DropBox2016.DropBoxHelper helper = new Dev2.Views.DropBox2016.DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
-            Dev2.Views.DropBox2016.DropBoxSourceViewModel vm = new Dev2.Views.DropBox2016.DropBoxSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
+            DropBoxViewWindow dropBoxViewWindow = new DropBoxViewWindow();
+            DropBoxHelper helper = new DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
+            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
             dropBoxViewWindow.DataContext = vm;
             var showDialog = ShowDropbox2016Action(dropBoxViewWindow, vm);
             if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
@@ -1425,7 +1433,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public Func<Dev2.Views.DropBox2016.DropBoxViewWindow, Dev2.Views.DropBox2016.DropBoxSourceViewModel, bool?> ShowDropbox2016Action
+        public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> ShowDropbox2016Action
         {
             private get { return _showDrop2016Action ?? ((drop, vm) => drop.ShowDialog()); }
             set { _showDrop2016Action = value; }

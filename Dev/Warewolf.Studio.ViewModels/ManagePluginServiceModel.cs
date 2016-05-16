@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Warewolf.Core;
 
@@ -68,7 +67,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CreateNewSource()
         {
-            _shell.NewResource(ResourceType.PluginSource.ToString(), "");
+            _shell.NewResource("PluginSource", "");
         }
 
         public void EditSource(IPluginSource selectedSource)

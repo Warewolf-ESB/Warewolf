@@ -6,7 +6,7 @@
              xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-             xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+             
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
              mc:Ignorable="d" 
@@ -44,7 +44,7 @@
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AcceptsReturn="False"
                                     MaxHeight="25"
-                                    ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipPuterrorinthisvariable}"
+                                    ToolTip="{x:Static languages:Core.NativeActivityToolTipPuterrorinthisvariable}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Variable_AutoID}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.NativeActivityHelpPuterrorinthisvariable}" DataContext="{Binding}" />
@@ -65,7 +65,7 @@
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AcceptsReturn="False"
                                     MaxHeight="25"
-                                    ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipCallthiswebservice}"
+                                    ToolTip="{x:Static languages:Core.NativeActivityToolTipCallthiswebservice}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Workflow_AutoID}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.NativeActivityHelpCallthiswebservice}" DataContext="{Binding}" />
@@ -82,7 +82,7 @@
                       Margin="-6,3,0,0"
                       Content="End this workflow"
                       IsChecked="{Binding ModelItem.IsEndedOnError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipEndtheworkflow}"
+                      ToolTip="{x:Static languages:Core.NativeActivityToolTipEndtheworkflow}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IsEnded_AutoID}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.NativeActivityHelpEndtheworkflow}" DataContext="{Binding}" />

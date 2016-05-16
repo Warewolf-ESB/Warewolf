@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
-using Dev2.Activities.DropBox2016.Result;
+﻿using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
@@ -11,16 +9,20 @@ using Dev2.Util;
 using Dropbox.Api;
 using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
-    //[ToolDescriptorInfo("Dropbox", "Dropbox Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxDownloadActivity : DsfBaseActivity
     {
-
         public DsfDropBoxDownloadActivity()
         {
             // ReSharper disable once VirtualMemberCallInContructor
@@ -30,7 +32,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             DropboxFile = new FileWrapper();
         }
 
-      
         public virtual IFile DropboxFile { get; set; }
         private DropboxClient _client;
         protected IDownloadResponse<FileMetadata> Response;
@@ -59,10 +60,9 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             return _localPathManager;
         }
 
-      
-      
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public OauthSource SelectedSource { get; set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
@@ -82,7 +82,6 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             if (_client != null)
             {
-
                 return _client;
             }
             var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
@@ -117,9 +116,9 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             base.ExecuteTool(dataObject, update);
         }
 
-        #endregion
+        #endregion Overrides of DsfBaseActivity
 
-        //All units used here has been unit tested seperately 
+        //All units used here has been unit tested seperately
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(evaluatedValues["ToPath"]);
@@ -135,7 +134,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                     LocalPathManager = new LocalPathManager(evaluatedValues["FromPath"]);
                     var validFolder = LocalPathManager.GetFullFileName();
                     var fileExist = LocalPathManager.FileExist();
-                    if(fileExist && !OverwriteFile)
+                    if (fileExist && !OverwriteFile)
                         throw new Exception("Destination File already exists and overwrite is set to false");
                     DropboxFile.WriteAllBytes(validFolder, bytes);
                 }
@@ -158,8 +157,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         public override string DisplayName { get; set; }
 
-        #endregion
+        #endregion Overrides of DsfActivity
     }
 
-        #endregion
+    #endregion Overrides of DsfActivity
 }

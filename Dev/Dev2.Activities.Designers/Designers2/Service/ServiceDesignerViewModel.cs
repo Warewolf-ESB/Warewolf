@@ -782,28 +782,28 @@ namespace Dev2.Activities.Designers2.Service
             switch (actionType)
             {
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
-                    ResourceType = Common.Interfaces.Data.ResourceType.DbService.ToString();
+                    ResourceType = "DbService";
                     return "DatabaseService-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
-                    ResourceType = Common.Interfaces.Data.ResourceType.WebService.ToString();
+                    ResourceType = "WebService";
                     return "WebService-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
-                    ResourceType = Common.Interfaces.Data.ResourceType.PluginService.ToString();
+                    ResourceType = "PluginService";
                     return "PluginService-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
                     if(string.IsNullOrEmpty(ServiceUri))
                     {
-                        ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService.ToString();
+                        ResourceType = "WorkflowService";
                         return "Workflow-32";
                     }
-                    ResourceType = Common.Interfaces.Data.ResourceType.Server.ToString();
+                    ResourceType = "Server";
                     return "RemoteWarewolf-32";
 
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
-                    ResourceType = Common.Interfaces.Data.ResourceType.Server.ToString();
+                    ResourceType = "Server";
                     return "RemoteWarewolf-32";
 
             }

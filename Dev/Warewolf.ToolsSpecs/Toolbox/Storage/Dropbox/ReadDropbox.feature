@@ -6,32 +6,31 @@
 
 Scenario: Open new Dropbox Tool
 	Given I open New Workflow
-	And I drag Read list Dropbox Tool onto the design surface
-    And Read New is Enabled
-	And Read Edit is Disabled
-	And Read Dropbox File is Enabled
-	When I Click Read New
-	Then the New Dropbox Source window is opened
+	And I drag Readlist Dropbox Tool onto the design surface
+    And Readlist New is Enabled
+	And Readlist Edit is Disabled
+	And Readlist Dropbox File is Enabled
+	When I Click Readlist New
+	Then the New Readlist Dropbox Source window is opened
 	
 Scenario: Editing Dropbox Tool
 	Given I open New Workflow
-	And I drag Read list Dropbox Tool onto the design surface
-    And Read New is Enabled
-	And Read Edit is Disabled
-	And Read Dropbox File is Enabled
-	When I Select "Drop" as the Read source
-	Then Read Edit is Enabled
-	When I click "Edit"
-	Then the Dropbox Source window is opened
+	And I drag Readlist Dropbox Tool onto the design surface
+    And Readlist New is Enabled
+	And Readlist Edit is Disabled
+	And Readlist Dropbox File is Enabled
+	When I Select "Drop" as the Readlist source
+	Then Readlist Edit is Enabled
+	When I Readlist click Edit
+	Then the "Drop" Readlist Dropbox Source window is opened
 
-@ignore
 Scenario: Change Dropbox Source
 	Given I open New Workflow
-	And I drag Read Dropbox Tool onto the design surface
-    And Read New is Enabled
-	And Read Edit is Disabled
-	When I Select "Drop" as the Read source
-	Then Read Edit is Enabled
-	And I set Read Dropbox File equals "Home.txt"
-	When I change Read source from "Drop" to "BackupSource"
-	And Read Dropbox File equals ""
+	And I drag Readlist Dropbox Tool onto the design surface
+    And Readlist New is Enabled
+	And Readlist Edit is Disabled
+	When I Select "Drop" as the Readlist source
+	Then Readlist Edit is Enabled
+	And I set Readlist Dropbox File equals "Home.txt"
+	When I change Readlist source from "Drop" to "BackupSource"
+	And Readlist Dropbox File equals ""

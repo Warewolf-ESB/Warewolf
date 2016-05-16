@@ -115,6 +115,40 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
             variableList.Add(new Tuple<string, string>(variable, value));
         }
+        [Given(@"a find index recordset")]
+        public void GivenAFindIndexRecordset(Table table)
+        {
+            List<TableRow> records = table.Rows.ToList();
+
+            if (records.Count == 0)
+            {
+                var rs = table.Header.ToArray()[0];
+                var field = table.Header.ToArray()[1];
+
+                List<Tuple<string, string>> emptyRecordset;
+
+                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                if (!isAdded)
+                {
+                    emptyRecordset = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                }
+                emptyRecordset.Add(new Tuple<string, string>(rs, field));
+            }
+
+            foreach (TableRow record in records)
+            {
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+                variableList.Add(new Tuple<string, string>(record[0], record[1]));
+            }
+        }
 
         [When(@"the data find index tool is executed")]
         public void WhenTheDataFindIndexToolIsExecuted()

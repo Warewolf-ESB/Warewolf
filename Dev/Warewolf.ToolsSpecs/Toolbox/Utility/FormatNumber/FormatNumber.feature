@@ -235,12 +235,14 @@ Examples:
 | 788.894564545645 | Normal   | [[rs().set().value]] = 0            | [[rj().count().value]] | 0          | No    | [[rec(2).result().value]] = 789 |
 | 788.894564545645 | Normal   | [[rs(1).set([[int]]).value(*).set]] | [[rj().count().value]] | 0          | No    | [[rec(1).result(2).value]] = 10 |
 | 788.894564545645 | Normal   | [[rs(*).set().value()]]             | [[rj().count().value]] | 0          | No    | [[rec(2).result(1).value]] = 50 |
+
 Scenario: Format a variable with a null value
 	Given I have a formatnumber variable "[[int]]" equal to NULL
 	And I have a number "[[int]]"
 	And I want to show "2" decimals 
 	When the format number is executed
 	Then the execution has "AN" error
+
 
 Scenario: Format a variable with a non existent value
 	Given I have a number "[[int]]"
