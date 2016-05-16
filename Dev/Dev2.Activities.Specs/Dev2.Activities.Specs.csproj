@@ -213,12 +213,6 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
-      <DependentUpon>PublishRabbitMQ.feature</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -256,10 +250,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
-	</None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">

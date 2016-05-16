@@ -311,6 +311,12 @@
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
+    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
+      <DependentUpon>PublishRabbitMQ.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -673,6 +679,10 @@
     <None Include="Toolbox\LoopConstructs\ForEach\ForEach.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ForEach.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Count\Count.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
