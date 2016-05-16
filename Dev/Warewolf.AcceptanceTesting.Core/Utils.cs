@@ -39,15 +39,6 @@ namespace Warewolf.AcceptanceTesting.Core
             new LunaTheme();
             Application app = Application.Current ?? new Application();
             ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
-            //            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml");
-            //            app.Resources.MergedDictionaries.Add(themeDictionary);
-
-            //            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Themes/DataTemplates.xaml");
-            //            app.Resources.MergedDictionaries.Add(themeDictionary);
-            //            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml");
-            //            app.Resources.MergedDictionaries.Add(themeDictionary);
-            //            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Themes/ActivityStyles.xaml");
-            //            app.Resources.MergedDictionaries.Add(themeDictionary);
             foreach(var resourceDictionary in themeDictionary.MergedDictionaries)
             {
                 app.Resources.MergedDictionaries.Add(resourceDictionary);
@@ -67,8 +58,6 @@ namespace Warewolf.AcceptanceTesting.Core
             app.Resources.MergedDictionaries.Add(themeDictionary);
             themeDictionary.Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml", UriKind.RelativeOrAbsolute);
             app.Resources.MergedDictionaries.Add(themeDictionary);
-            //themeDictionary.Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Common/generic.xaml", UriKind.RelativeOrAbsolute);
-            //app.Resources.MergedDictionaries.Add(themeDictionary);
             themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Resources/Converters.xaml", UriKind.RelativeOrAbsolute);
             app.Resources.MergedDictionaries.Add(themeDictionary);
         }
@@ -79,13 +68,6 @@ namespace Warewolf.AcceptanceTesting.Core
             new LunaTheme();
             Application app = Application.Current ?? new Application();
             ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
-            //            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Themes/DockManagerGeneric.xaml");
-            //            app.Resources.MergedDictionaries.Add(themeDictionary);
-
-            //            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Themes/DataTemplates.xaml");
-            //            app.Resources.MergedDictionaries.Add(themeDictionary);
-            //            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf Studio;component/Resources/ResourceDictionary.xaml");
-            //            app.Resources.MergedDictionaries.Add(themeDictionary);
             app.Resources.MergedDictionaries.Add(themeDictionary);
   
 
@@ -101,8 +83,7 @@ namespace Warewolf.AcceptanceTesting.Core
                     }
                 }
             }
-
-                      themeDictionary.Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/ActivityStyles/ActivityStyles.xaml", UriKind.RelativeOrAbsolute);
+            themeDictionary.Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/ActivityStyles/ActivityStyles.xaml", UriKind.RelativeOrAbsolute);
             app.Resources.MergedDictionaries.Add(themeDictionary);
             themeDictionary.Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/ActivityStyles/ActivityDesignerStyles.xaml", UriKind.RelativeOrAbsolute);
             app.Resources.MergedDictionaries.Add(themeDictionary);
@@ -139,6 +120,11 @@ namespace Warewolf.AcceptanceTesting.Core
             currentViewModel.Header = newViewModel.Header;
             currentViewModel.Name = newViewModel.Header;
             currentViewModel.Item = currentViewModel.ToModel();
+        }
+
+        public static void ShowTheViewForTesting(object view)
+        {
+            throw new NotImplementedException();
         }
     }
 }

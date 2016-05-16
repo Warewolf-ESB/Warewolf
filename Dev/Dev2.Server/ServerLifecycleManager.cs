@@ -576,7 +576,7 @@ namespace Dev2
                 TerminateGcManager();
             }
 
-            Write(string.Format("Existing with exitcode {0}", result));
+            Write(string.Format("Exiting with exitcode {0}", result));
 
             return result;
         }

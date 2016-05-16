@@ -2434,6 +2434,18 @@ Allowed:
   <data name="FindToolTipRequireAllMatchesToBeTrue" xml:space="preserve">
     <value>Will only return rows that match all of the criteria if selected.</value>
   </data>
+  <data name="DecisionFalseArmTooltip" xml:space="preserve">
+    <value>The text on the flow arm for readability</value>
+  </data>
+  <data name="DecisionTrueArmTooltip" xml:space="preserve">
+    <value>The text on the flow arm for readability</value>
+  </data>
+  <data name="DecisionDisplayTextTooltip" xml:space="preserve">
+    <value>The text on the decision to help understand its purpose</value>
+  </data>
+
+
+
   <data name="FindToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the indexes of the successful matches.
