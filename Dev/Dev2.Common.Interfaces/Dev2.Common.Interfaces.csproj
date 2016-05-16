@@ -227,6 +227,7 @@
     <Compile Include="IManageEmailSourceViewModel.cs" />
     <Compile Include="IManageExchangeSourceViewModel.cs" />
     <Compile Include="IManageNewServerViewModel.cs" />
+    <Compile Include="IManageOAuthSourceModel.cs" />
     <Compile Include="IManagePluginServiceInputViewModel.cs" />
     <Compile Include="IManagePluginSourceModel.cs" />
     <Compile Include="IManagePluginSourceViewModel.cs" />
