@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Navigation;
-using Caliburn.Micro;
-using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Dropbox;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Interfaces;
 using Dropbox.Api;
@@ -18,51 +15,64 @@ namespace Warewolf.Studio.ViewModels
     {
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string AccessToken { get; private set; }
-        public string Uid { get; private set; }
-        public string Secret { get; set; }
-        public string Title { get { return "Dropbox Source"; } }
         private string AuthUri { get; set; }
-        IDropBoxHelper DropBoxHelper { get; set; }
         public bool HasAuthenticated { get; private set; }
         public IContextualResourceModel Resource { get; set; }
 
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local
-        readonly INetworkHelper _network;
         public DropboxClient Client { get; set; }
         //private string AppKey = GlobalConstants.DropBoxApiKey;       
-        private const string AppKey = "31qf750f1vzffhu";
 
         private string _oauth2State;
         private string _name;
+        private string _appKey;
+        private string _selectedOAuthProvider;
+        private List<string> _types;
         private const string RedirectUri = "https://www.example.com/";
 
-        public ManageOAuthSourceViewModel()
+        public ManageOAuthSourceViewModel(Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
         {
+            Types = new List<string>
+            {
+                "Dropbox"
+            };
 //            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory", dropboxFactory } });
 //            _network = network;
 //            DropBoxHelper = dropboxHelper;
-//            CookieHelper.Clear();
+            CookieHelper.Clear();
 //            if (shouldAuthorise)
 //                Authorise();
+        }
+
+        public List<string> Types
+        {
+            get
+            {
+                return _types;
+            }
+            set
+            {
+                _types = value;
+            }
         }
 
         private async Task LoadBrowserUri(string uri)
         {
             AuthUri = uri;
-            var hasConnection = await _network.HasConnectionAsync(uri);
-            if (hasConnection)
+            //var hasConnection = await _network.HasConnectionAsync(uri);
+            //if (hasConnection)
             {
 
-                DropBoxHelper.WebBrowser.Navigated += (sender, args) => GetAuthTokens(args);
-                DropBoxHelper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
-                {
-                    DropBoxHelper.CircularProgressBar.Visibility = Visibility.Hidden;
-                    DropBoxHelper.WebBrowser.Visibility = Visibility.Visible;
-                });
-
-                DropBoxHelper.Navigate(AuthUri);
+//                DropBoxHelper.WebBrowser.Navigated += (sender, args) => GetAuthTokens(args);
+//                DropBoxHelper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
+//                {
+//                    DropBoxHelper.CircularProgressBar.Visibility = Visibility.Hidden;
+//                    DropBoxHelper.WebBrowser.Visibility = Visibility.Visible;
+//                });
+//
+//                DropBoxHelper.Navigate(AuthUri);
             }
         }
 
@@ -89,13 +99,10 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
                 AccessToken = result.AccessToken;
-                Uid = result.Uid;
                 HasAuthenticated = true;
-                DropBoxHelper.CloseAndSave(this);
             }
             catch (ArgumentException)
             {
-                DropBoxHelper.CloseAndSave(this);
             }
         }
 
@@ -103,10 +110,41 @@ namespace Warewolf.Studio.ViewModels
 
         public override IOAuthSource ToModel()
         {
-            return new OauthSource
+            if (SelectedOAuthProvider == "Dropbox")
             {
-                Key = AppKey
-            };
+                return new DropBoxSource
+                {
+                    AppKey = AppKey,
+                    AccessToken = AccessToken
+                };
+            }
+            return null;
+        }
+
+        public string SelectedOAuthProvider
+        {
+            get
+            {
+                return _selectedOAuthProvider;
+            }
+            set
+            {
+                _selectedOAuthProvider = value;
+                OnPropertyChanged(()=>SelectedOAuthProvider);
+            }
+        }
+
+        public string AppKey
+        {
+            get
+            {
+                return _appKey;
+            }
+            set
+            {
+                _appKey = value;
+                OnPropertyChanged(()=>AppKey);
+            }
         }
 
         public override string Name
