@@ -217,9 +217,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var mockShellViewModel = ScenarioContext.Current.Get<Mock<IShellViewModel>>("mockShellViewModel");
             mockShellViewModel.Verify();
-            
         }
-
 
         [Given(@"I should see ""(.*)"" folders")]
         [When(@"I should see ""(.*)"" folders")]
@@ -245,14 +243,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             explorerView.PerformFolderRename(originalFolderName,newFolderName);            
         }
-
-        [Then(@"Conflict error message is occurs")]
-        public void ThenConflictErrorMessageIsOccurs()
-        {
-            //var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
-           // boot.PopupController.Verify(a => a.Show(It.IsAny<PopupMessage>()));
-        }
-
 
         [Then(@"I should not see ""(.*)""")]
         public void ThenIShouldNotSee(string folderName)
@@ -315,7 +305,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
            Assert.IsTrue( environment.AsList().Any(a=>a.ResourcePath==  p0.Substring(p0.IndexOf("\\", StringComparison.Ordinal)+1)));
             // ReSharper restore PossibleNullReferenceException
         }
-
 
         [Then(@"I should not see the path ""(.*)""")]
         public void ThenIShouldNotSeeThePath(string path)
@@ -469,10 +458,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
         public void ThenISetupVersionsToBeReturnedFor(int count, string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey) as ExplorerView;
-            // ReSharper disable once PossibleNullReferenceException
-            //var vm =ScenarioContext.Current[Utils.ViewModelNameKey] as ExplorerViewModel;
-            //Debug.Assert(vm != null, "vm != null");
-            //vm.SelectedItem=(vm.FindItems(a => a.ResourcePath == path).First());
             var mockRepo = ScenarioContext.Current.Get<Mock<IExplorerRepository>>("mockExplorerRepository");
             if (path.Contains("Remote Connection Integration"))
             {

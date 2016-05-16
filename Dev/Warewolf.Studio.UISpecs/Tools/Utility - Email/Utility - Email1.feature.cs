@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer.Tools.Utility_Email
+namespace Warewolf.Studio.UISpecs.Tools.Utility_Email
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools.Utility_Email
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Utility - Email")))
             {
-                Warewolf.AcceptanceTesting.Explorer.Tools.Utility_Email.Utility_EmailFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.Utility_Email.Utility_EmailFeature.FeatureSetup(null);
             }
         }
         
@@ -166,14 +166,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 43
  testRunner.And("result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table396 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Put error in this variable",
                         "Call this web service"});
-            table396.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "",
                         ""});
 #line 44
- testRunner.And("On Error box consists", ((string)(null)), table396, "And ");
+ testRunner.And("On Error box consists", ((string)(null)), table1, "And ");
 #line 47
     testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
@@ -223,14 +223,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
  testRunner.And("result Watermark is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table397 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Put error in this variable",
                         "Call this web service"});
-            table397.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[Errors().Message",
                         "http://lcl:3142/service/err"});
 #line 68
- testRunner.And("On Error box Watermark", ((string)(null)), table397, "And ");
+ testRunner.And("On Error box Watermark", ((string)(null)), table2, "And ");
 #line 71
     testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
