@@ -118,6 +118,8 @@
         </StackPanel>
         <ScrollViewer Grid.Row="3">
             <WebBrowser Name="WebBrowserHost"
+                         Source="{Binding OAuthUri}"
+                         
                         Margin="3"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
