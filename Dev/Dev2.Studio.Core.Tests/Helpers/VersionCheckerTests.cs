@@ -117,24 +117,7 @@ namespace Dev2.Core.Tests.Helpers
 
             //------------Assert Results-------------------------
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("VersionChecker_LatestVersionCheckSum")]
-        public void VersionChecker_LatestVersionCheckSum_CallsCorrectDownloadString()
-        {
-            //------------Setup for test--------------------------
-            var webClient = new Mock<IWarewolfWebClient>();
-            webClient.Setup(a => a.DownloadString(It.IsAny<string>())).Returns("1.2.1.1");
-            var versionChecker = new VersionChecker(webClient.Object, () => new Version(0, 0, 0, 1));
-
-
-            var ax = versionChecker.LatestVersionCheckSum;
-            //------------Execute Test---------------------------
-
-            Assert.AreEqual("1.2.1.1", ax);
-            //------------Assert Results-------------------------
-        }
+        
     }
 }
 // ReSharper restore InconsistentNaming
