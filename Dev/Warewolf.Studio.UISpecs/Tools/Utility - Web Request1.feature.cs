@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Warewolf.AcceptanceTesting.Explorer.Tools
+namespace Warewolf.Studio.UISpecs.Tools
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.Tools
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Utility - Web Request")))
             {
-                Warewolf.AcceptanceTesting.Explorer.Tools.Utility_WebRequestFeature.FeatureSetup(null);
+                Warewolf.Studio.UISpecs.Tools.Utility_WebRequestFeature.FeatureSetup(null);
             }
         }
         
@@ -118,14 +118,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.And("Preview button is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table398 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Put error in this variable",
                         "Call this web service"});
-            table398.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "",
                         ""});
 #line 23
- testRunner.And("On Error box consists", ((string)(null)), table398, "And ");
+ testRunner.And("On Error box consists", ((string)(null)), table1, "And ");
 #line 26
  testRunner.And("End this workflow is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
@@ -157,14 +157,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 35
  testRunner.And("Preview button is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table399 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table399.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[site]] ="});
-            table399.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "[[file]] ="});
 #line 36
- testRunner.And("Preview is", ((string)(null)), table399, "And ");
+ testRunner.And("Preview is", ((string)(null)), table2, "And ");
 #line 40
  testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
@@ -172,14 +172,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
  testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table400 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table400.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "[[site]] = rsaklfsvrtfsbld/IntegrationTestSite/"});
-            table400.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "[[file]] = Proxy.ashx?html"});
 #line 43
- testRunner.When("I Enter in preview", ((string)(null)), table400, "When ");
+ testRunner.When("I Enter in preview", ((string)(null)), table3, "When ");
 #line 47
  testRunner.When("I click on \"Preview\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48

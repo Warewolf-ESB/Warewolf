@@ -408,13 +408,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel Test")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel Seb Source Test")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Web Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WebSource")]
-        public virtual void CancelTest()
+        public virtual void CancelSebSourceTest()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel Test", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel Seb Source Test", new string[] {
                         "WebSource"});
 #line 144
 this.ScenarioSetup(scenarioInfo);

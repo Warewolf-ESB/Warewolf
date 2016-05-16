@@ -4,32 +4,6 @@ Feature: Explorer
 	As a Warewolf User
 	I want explorer view of my resources with management options
 
-# Connected to localhost server
-# Expand a folder
-# Rename folder
-# Search explorer
-# Creating Folder in localhost
-# Creating And Deleting Folder and Popup says cancel in localhost
-# Deleting Resource in folders
-# Deleting Resource in localhost Server
-# Renaming Folder And Workflow Service
-# Searching resources by using filter
-# Checking versions 
-# Clear filter
-# Search explorer on remote server
-# Connected to remote server
-# Creating Folder in remote host
-# Opening and Editing workflow from Explorer
-# Renaming Folder And Workflow Service on a remote server
-# Context menu
-# Show dependencies
-# Open saved Server Sources
-# Move Nested Folder up tree-view
-# Opening server source from explorer
-# Move Nested Folder up tree-view
-# Opening server source from explorer
-# Show Server Version
-
 @Explorer
 Scenario: Connected to localhost server
 	Given the explorer is visible
@@ -292,7 +266,7 @@ Scenario: Opening Versions in Explorer
  When I Delete Version "localhost\Folder 1\Resource 1\v.1"
  Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
 
- #codedui
+
 @ignore 
 Scenario: Opening Dependencies Of All Services In Explorer
    Given the explorer is visible
@@ -304,8 +278,8 @@ Scenario: Opening Dependencies Of All Services In Explorer
 	Then "DB Service1 Dependents" is opened
 	When I open "Show Dependencies" of "PluginServ1" in "Folder1"
 	Then "PluginServ1 Dependents" is opened
- #codedui
-#wolf-996
+
+
 @ignore 
 Scenario: Disconnected from remote server
 	Given the explorer is visible
@@ -316,8 +290,8 @@ Scenario: Disconnected from remote server
 	When I select "Disconnect"
 	Then "Remote Connection Integration" is "Disconnected"
 	And "Localhost" is visible
- #codedui
-#wolf-996
+
+
 @ignore
 Scenario: Debug from Explorer using play icon
 	Given the explorer is visible

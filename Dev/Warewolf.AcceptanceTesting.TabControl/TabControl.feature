@@ -176,8 +176,6 @@ Scenario: Closing unsaved Workflows
 	When "Save" is clicked
 	Then the save dialog is opened
 
-
-#Wolf-1115
 Scenario: Closing unsaved tab on remote server
 	Given I "Start" the studio
 	And selected Source Server is "Remote Intergration Connection"
