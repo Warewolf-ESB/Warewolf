@@ -86,7 +86,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             {
                 Timeout = TimeSpan.FromMinutes(20)
             };
-            _client = new DropboxClient(SelectedSource.Secret, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
+            _client = new DropboxClient(SelectedSource.AccessToken, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
             return _client;
         }
 
