@@ -176,7 +176,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.OutputMappingEnabled)
+            if (!OutputsRegion.IsEnabled)
             {
                 Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() { Message = "Database get must be validated before minimising" } };
             }
@@ -337,20 +337,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.SqlDatabase) { 
-                    SourceChangedAction = () =>
-                {
-                    OutputsRegion.IsEnabled = false;
-                    
-                } };
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.SqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
-                ActionRegion.SomethingChanged += ActionRegion_SomethingChanged;
                 regions.Add(ActionRegion);
-           
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
-               
                 OutputsRegion = new OutputsRegion(ModelItem);
                 regions.Add(OutputsRegion);
                 if (OutputsRegion.Outputs.Count > 0)
@@ -369,10 +361,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             return regions;
         }
 
-        void ActionRegion_SomethingChanged(object sender, IToolRegion args)
-        {
-            Validate();
-        }
         public ErrorRegion ErrorRegion { get; private set; }
 
         #endregion
@@ -514,3 +502,6 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         #endregion
     }
 }
+
+
+

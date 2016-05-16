@@ -576,7 +576,7 @@ namespace Dev2
                 TerminateGcManager();
             }
 
-            Write(string.Format("Existing with exitcode {0}", result));
+            Write(string.Format("Exiting with exitcode {0}", result));
 
             return result;
         }
@@ -1714,7 +1714,7 @@ namespace Dev2
         {
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             MigrateOldResources();
-            ValidatResourceFolder();
+            ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             // First call initializes instance
 #pragma warning disable 168
@@ -1767,16 +1767,26 @@ namespace Dev2
                                     }
                                     if (mustUpdate)
                                     {
-                                        UpdateXaml(chart, resource);
+                                        UpdateXaml(chart, resource);                                        
                                     }
                                 }
                             }
                         }
                         catch(Exception ex)
                         {
-                            Dev2Logger.Debug(ex.Message,ex);
+                            Dev2Logger.Debug(resource.FilePath + " is outdated or corrupted and threw exception on load: " + ex.Message, ex);
                         }
                     }
+                }
+            }
+            for (int index = resources.Count - 1; index >= 0; index--)
+            {
+                var resource = resources[index];
+                if (resource.ResourceType == ResourceType.DbService || resource.ResourceType == ResourceType.PluginService || resource.ResourceType == ResourceType.WebService)
+                {
+#if !DEBUG
+                    ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceType.ToString());
+#endif
                 }
             }
         }
@@ -2424,7 +2434,7 @@ namespace Dev2
                         dbActivityAsActivity = forEachActivity.DataFunc.Handler as DsfActivity;
                     }
                 }
-                if(dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
+                if (dbActivityAsActivity != null && dbActivityAsActivity.Type.Expression != null && dbActivityAsActivity.Type.Expression.ToString() == "InvokeStoredProc")
                 {
                     updated = true;
                     var dbId = dbActivityAsActivity.ResourceID.Expression == null ? Guid.Empty : Guid.Parse(dbActivityAsActivity.ResourceID.Expression.ToString());
@@ -2597,17 +2607,21 @@ namespace Dev2
                 MigrateResources(oldSourcesFolder);
                 WriteLine("done.");
             }
-            if(!Directory.Exists(EnvironmentVariables.ResourcePath))
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath,"Resources");
+            if(!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
             {
-                DirectoryHelper.Copy(Path.Combine(EnvironmentVariables.ApplicationPath,"Resources"),EnvironmentVariables.ResourcePath,true);
+                DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+                DirectoryHelper.CleanUp(serverBinResources);
             }
         }
 
-        static void ValidatResourceFolder()
+        static void ValidateResourceFolder()
         {
             var folder = EnvironmentVariables.ResourcePath;
-            if(!Directory.Exists(folder))
-            Directory.CreateDirectory(folder);
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
         }
 
         static void MigrateResources(string oldResourceFolder)

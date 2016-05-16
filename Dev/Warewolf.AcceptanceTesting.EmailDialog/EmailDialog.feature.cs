@@ -75,31 +75,31 @@ namespace Warewolf.AcceptanceTesting.EmailDialog
         public virtual void SendEmailWithAnAttachment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send Email with an attachment", ((string[])(null)));
-#line 12
+#line 6
 this.ScenarioSetup(scenarioInfo);
-#line 13
+#line 7
  testRunner.Given("I open a \"New Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 14
+#line 8
  testRunner.And("I drag the \"Email\" tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
+#line 9
  testRunner.And("Mail Source is \"EmaiSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
+#line 10
  testRunner.And("\"From\" account is \"warewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 11
  testRunner.And("\"To\" address is \"test1@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 12
  testRunner.And("I  want to attach \"C:\\Test.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
+#line 13
  testRunner.When("I expand the Email tool to Large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 20
+#line 14
  testRunner.And("I click \"...\" for attachments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 15
  testRunner.Then("the file chooser dialog opens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 22
+#line 16
  testRunner.Then("I navigate to \"C:\\Test.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 23
+#line 17
  testRunner.And("I click \"Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 18
  testRunner.Then("attachment should appear as \"C:\\Test.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -111,19 +111,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SelectingMultipleAttachments()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selecting multiple attachments", ((string[])(null)));
-#line 26
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 27
+#line 21
  testRunner.Given("the Email dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 28
+#line 22
  testRunner.And("I navigate to \"C:\\Temp\\Testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 23
  testRunner.And("I attach \"C:\\Temp\\Testing\\test.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 30
+#line 24
  testRunner.And("I navigate to \"E:\\AppData\\Le\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 25
  testRunner.And("I attach \"E:\\AppData\\Le\\test.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 26
  testRunner.Then("attachment should appear as \"C:\\Temp\\Testing\\test.txt;E:\\AppData\\Le\\test.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -135,15 +135,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnsureThatDialogTreeViewIsPopulatedCorrectly()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure that dialog tree view is populated correctly", ((string[])(null)));
-#line 35
+#line 29
 this.ScenarioSetup(scenarioInfo);
-#line 36
+#line 30
  testRunner.Given("the Email dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 37
+#line 31
  testRunner.And("all network drives are visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 32
  testRunner.And("I expand \"C:\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 33
  testRunner.Then("all the folders in \"C:\\\" are visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -155,21 +155,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnsureEmailToolAcceptsHTML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure Email tool accepts HTML", ((string[])(null)));
-#line 43
+#line 35
 this.ScenarioSetup(scenarioInfo);
-#line 44
+#line 36
  testRunner.Given("I have a workflow \"New Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
+#line 37
  testRunner.And("I drag the \"Email\" tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 38
  testRunner.And("Mail Source is \"EmaiSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 39
  testRunner.And("\"From\" account is \"warewolf@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 40
  testRunner.And("\"To\" address is \"test1@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
+#line 41
  testRunner.And("\"Html Body\" is \"Checked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 42
  testRunner.And("Body as \"<h1 style=\"color:blue\">This is a Blue Heading</h1>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

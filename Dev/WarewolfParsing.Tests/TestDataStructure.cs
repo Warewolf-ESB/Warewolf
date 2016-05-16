@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WarewolfParsingTest
 {
@@ -37,6 +35,6 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
         }
-    
+
     }
 }

@@ -3,8 +3,6 @@
 	As a Warewolf User
 	I want to be shown the decision window setup
 
-
-#WOLF-1082 
 Scenario Outline: Ensure Inputs are enabled on decision window load
 	Given I have a workflow "New Workflow"
 	And drop a "Decision" tool onto the design surface
@@ -34,14 +32,14 @@ Scenario: Ensure Decision window caches correctly
 	And drop a "Decision" tool onto the design surface
 	And a decision variable "[[A]]" operation "=" right  "a123 234" position "0"
 	And a decision variable "[[B]]" operation "=" right  "1a23" position "1"
-	And "Require All Decisions To Be True" is "True"
+	And "Require all decisions to be true" is "True"
 	And the Decision window is opened	
 	When I change decision variable position "0" to "3a111"
 	And "Done" is selected
 	Then I open the Decision tool window
 	And decision variable "[[B]]" is not visible
 	And "3a111" is visible in Match field
-	And "Require All Decisions To Be True" has a value of "True"	
+	And "Require all decisions to be true" has a value of "True"	
 
 
 Scenario: Ensure statement line can be removed
@@ -49,7 +47,7 @@ Scenario: Ensure statement line can be removed
 	And drop a "Decision" tool onto the design surface
 	And a decision variable "[[A]]" operation "=" right  "a123 234" position "0"
 	And a decision variable "[[B]]" operation "=" right  "1a23" position "1"
-	And "Require All Decisions To Be True" is "True"
+	And "Require all decisions to be true" is "True"
 	When I select the "remove statement line" button at position 0
 	Then "[[A]]" is removed from the decision
 

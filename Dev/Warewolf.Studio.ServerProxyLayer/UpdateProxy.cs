@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -315,12 +316,37 @@ namespace Warewolf.Studio.ServerProxyLayer
             return output.Message.ToString();
         }
 
+        public string TestExchangeServiceSource(IExchangeSource emailServiceSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestExchangeServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(emailServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return output.Message.ToString();
+        }
+
         public void SaveEmailServiceSource(IEmailServiceSource model, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveEmailServiceSource");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(model));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        public void SaveExchangeSource(IExchangeSource model, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveExchangeServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);

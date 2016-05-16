@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
@@ -129,6 +130,24 @@ namespace Warewolf.Studio.ServerProxyLayer
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<IList<IDbSource>>(result.Message.ToString());
+        }
+
+        public IList<IExchangeSource> FetchExchangeSources()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FetchExchangeSources");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException("Service does not exist", null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<IList<IExchangeSource>>(result.Message.ToString());
         }
 
         public IList<IDbAction> FetchDbActions(IDbSource source)

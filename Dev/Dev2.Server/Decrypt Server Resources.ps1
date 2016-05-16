@@ -20,7 +20,7 @@ $ResourceHandler = New-Object Dev2.Runtime.ESB.Management.Services.FetchResource
 Write-Host Type loaded.
 
 Write-Host Recursing through resources.
-get-childitem "$SolutionDirectory\Resources - Debug","$env:ProgramData\Warewolf\Resources" -recurse | where {$_.extension -eq ".xml"} | % {
+get-childitem "$SolutionDirectory\Resources - Debug\Resources","$env:ProgramData\Warewolf\Resources","$SolutionDirectory\Dev2.Server\bin\Debug\Resources" -recurse | where {$_.extension -eq ".xml"} | % {
 
 	Write-Host Resource found at $_.FullName.
 	$sb = New-Object System.Text.StringBuilder

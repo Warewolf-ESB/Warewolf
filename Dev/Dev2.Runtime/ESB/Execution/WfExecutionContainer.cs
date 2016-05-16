@@ -50,9 +50,9 @@ namespace Dev2.Runtime.ESB.Execution
         /// <returns></returns>
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-          
+
             errors = new ErrorResultTO();
-           // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
+            // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
 
 
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
-           
+
             // Set server ID, only if not set yet - original server;
             if(DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
@@ -157,7 +157,7 @@ namespace Dev2.Runtime.ESB.Execution
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 
         }
-        
+
 
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
@@ -225,7 +225,7 @@ namespace Dev2.Runtime.ESB.Execution
                         {
                             dsfDataObject.Environment.AllErrors.Add(e);
                         }
-                       
+
                     }
                 }
                 else

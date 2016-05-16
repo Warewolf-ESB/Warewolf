@@ -199,7 +199,6 @@ namespace Warewolf.AcceptanceTesting.WebSource
             var uri = ScenarioContext.Current.Get<Uri>("uriCalled");
             var correctUriCalled = String.Equals(expectedUriCalled, uri.ToString(), StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(correctUriCalled);
-
         }
 
         [Given(@"Validation message is thrown")]
@@ -248,7 +247,6 @@ namespace Warewolf.AcceptanceTesting.WebSource
         public void WhenUsernameFieldIs(string visibility)
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-
             var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageWebserviceSourceControl.GetUsernameVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
@@ -260,7 +258,6 @@ namespace Warewolf.AcceptanceTesting.WebSource
         public void WhenPasswordFieldIs(string visibility)
         {
             var expectedVisibility = String.Equals(visibility, "Collapsed", StringComparison.InvariantCultureIgnoreCase) ? Visibility.Collapsed : Visibility.Visible;
-
             var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             var databaseDropDownVisibility = manageWebserviceSourceControl.GetPasswordVisibility();
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
@@ -337,7 +334,6 @@ namespace Warewolf.AcceptanceTesting.WebSource
             {
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<IWebServiceSource>()))
                     .Throws(new WarewolfTestException("Server not found", null));
-
             }
             var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformTestConnection();
@@ -368,7 +364,6 @@ namespace Warewolf.AcceptanceTesting.WebSource
             mockRequestServiceNameViewModel.Setup(model => model.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             var manageWebserviceSourceControl = ScenarioContext.Current.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             manageWebserviceSourceControl.PerformSave();
-            
         }
 
 
@@ -407,7 +402,6 @@ namespace Warewolf.AcceptanceTesting.WebSource
             FeatureContext.Current.Add("viewModel", viewModel);
             FeatureContext.Current.Remove("externalProcessExecutor");
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
-
         }
     }
 }

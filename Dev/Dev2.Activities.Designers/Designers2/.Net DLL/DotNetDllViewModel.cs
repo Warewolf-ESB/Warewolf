@@ -186,7 +186,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Errors.Clear();
 
             Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
-            if (!OutputsRegion.OutputMappingEnabled)
+            if (!OutputsRegion.IsEnabled)
             {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Plugin get must be validated before minimising" } };
             }
@@ -343,13 +343,51 @@ namespace Dev2.Activities.Designers2.Net_DLL
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                SourceRegion = new DotNetSourceRegion(Model, ModelItem) { SourceChangedAction = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if(Regions != null)
+                    {
+                        foreach(var toolRegion in Regions)
+                        {
+                            if(toolRegion.Errors != null)
+                            {
+                                toolRegion.Errors.Clear();
+                            }
+                        }
+                    }
+                }
+                };
                 regions.Add(SourceRegion);
-                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () => { OutputsRegion.IsEnabled = false; } };
-                NamespaceRegion.SomethingChanged += NamespaceRegionOnSomethingChanged;
+                NamespaceRegion = new DotNetNamespaceRegion(Model, ModelItem, SourceRegion) { SourceChangedNamespace = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            if (toolRegion.Errors != null)
+                            {
+                                toolRegion.Errors.Clear();
+                            }
+                        }
+                    }
+                } };
                 regions.Add(NamespaceRegion);
-                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
-                ActionRegion.SomethingChanged += ActionRegionOnSomethingChanged;
+                ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () =>
+                {
+                    OutputsRegion.IsEnabled = false;
+                    if (Regions != null)
+                    {
+                        foreach (var toolRegion in Regions)
+                        {
+                            if (toolRegion.Errors != null)
+                            {
+                                toolRegion.Errors.Clear();
+                            }
+                        }
+                    }
+                } };
                 regions.Add(ActionRegion);
                 InputArea = new DotNetInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
@@ -370,16 +408,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             regions.Add(ManageServiceInputViewModel);
             Regions = regions;
             return regions;
-        }
-
-        private void ActionRegionOnSomethingChanged(object sender, IToolRegion args)
-        {
-            Validate();
-        }
-
-        private void NamespaceRegionOnSomethingChanged(object sender, IToolRegion args)
-        {
-            Validate();
         }
 
         public ErrorRegion ErrorRegion { get; private set; }

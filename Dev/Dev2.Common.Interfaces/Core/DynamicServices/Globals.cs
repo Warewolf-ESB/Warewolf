@@ -108,6 +108,20 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         ///     A MySQL database
         /// </summary>
         MySqlDatabase,
+        /// <summary>
+        ///     A ODBC database
+        /// </summary>
+        ODBC,
+        /// <summary>
+        ///     A Oracle database
+        /// </summary>
+        Oracle,
+
+        /// <summary>
+        ///     A PostgreSql database
+        /// </summary>
+        PostgreSql,
+
 
         /// <summary>
         ///     A SOAP based Web Service: REST web services are not supported
@@ -143,7 +157,8 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         WebSource,
         OauthSource,
         SharepointServerSource,
-        RabbitMQSource
+        RabbitMQSource,
+        ExchangeSource
     }
 
     /// <summary>

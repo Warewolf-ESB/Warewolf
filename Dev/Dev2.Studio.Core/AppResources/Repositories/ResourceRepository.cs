@@ -475,6 +475,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 case ResourceType.DbSource:
                 case ResourceType.DropboxSource:
                 case ResourceType.EmailSource:
+                case ResourceType.ExchangeSource:
                 case ResourceType.OauthSource:
                 case ResourceType.PluginSource:                
                 case ResourceType.SharepointServerSource:

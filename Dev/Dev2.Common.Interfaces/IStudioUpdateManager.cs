@@ -1,5 +1,6 @@
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,10 @@ namespace Dev2.Common.Interfaces
         void Save(IPluginSource source);
 
         void Save(IEmailServiceSource emailServiceSource);
+        void Save(IExchangeSource emailServiceSource);
 
         void Save(ISharepointServerSource sharePointServiceSource);
-
+    
         // ReSharper disable once InconsistentNaming
         void Save(IRabbitMQServiceSourceDefinition rabbitMQServiceSource);
 
@@ -36,6 +38,7 @@ namespace Dev2.Common.Interfaces
 
         string TestConnection(IEmailServiceSource emailServiceSourceSource);
 
+        string TestConnection(IExchangeSource emailServiceSourceSource);
         // ReSharper disable once InconsistentNaming
         string TestConnection(IRabbitMQServiceSourceDefinition rabbitMQServiceSource);
 

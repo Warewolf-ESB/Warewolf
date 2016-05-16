@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Image HorizontalAlignment="Left" Source="{StaticResource DropBoxLogo}" Height="20" Width="20" Margin="{StaticResource ControlBorderLeft}"></Image>
+                <Image HorizontalAlignment="Left" Source="{StaticResource Dropbox}" Height="20" Width="20" Margin="{StaticResource ControlBorderLeft}"></Image>
                 <TextBlock HorizontalAlignment="Left" FontSize="{StaticResource FontSize-Medium}" Text="Dropbox" Margin="{StaticResource ControlBorderLeft}"></TextBlock>
             </StackPanel>
             <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" Command="{x:Static SystemCommands.CloseWindowCommand}" />

@@ -39,6 +39,7 @@ namespace Dev2.Common.Interfaces.Data
         DeployViewer = 262144,
         DropboxSource = 524288,
         // ReSharper disable once InconsistentNaming
-        RabbitMQSource = 1048576
+        ExchangeSource = 1048576,
+        RabbitMQSource = 2097152
     }
 }

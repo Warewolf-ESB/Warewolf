@@ -27,6 +27,7 @@ using Dev2.Activities.Designers2.DeleteRecords;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.Designers2.Email;
+using Dev2.Activities.Designers2.ExchangeEmail;
 using Dev2.Activities.Designers2.FindIndex;
 using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Activities.Designers2.Foreach;
@@ -46,6 +47,7 @@ using Dev2.Activities.Designers2.RecordsLength;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
+using Dev2.Activities.Designers2.SelectAndApply;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.SharepointListCreate;
@@ -67,11 +69,16 @@ using Dev2.Activities.Designers2.Zip;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.RabbitMQ.Publish;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.ViewModels.Workflow;
 using System;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Activities.Designers2.Oracle;
+using Dev2.Activities.Designers2.ODBC;
+using Dev2.Activities.Designers2.PostgreSql;
+using Dev2.Activities.Exchange;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -124,6 +131,10 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
+                { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
+                  { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
+                  { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
+                {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(DotNetDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
@@ -140,6 +151,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
+                { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
             };
 
             workflowVm.InitializeDesigner(designerAttributes, liteInit);
