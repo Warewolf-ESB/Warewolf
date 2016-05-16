@@ -73,6 +73,7 @@ namespace Warewolf.Studio.Core
                     case "StartPage":
                         var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Home, _brush);
                         return imageSource;
+                    case "OAuth":
                     case "OauthSource":
                         return Application.Current.Resources["DropboxSource"];
                     case "Scheduler":
