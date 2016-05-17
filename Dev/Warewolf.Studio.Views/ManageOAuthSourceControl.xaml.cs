@@ -27,12 +27,21 @@ namespace Warewolf.Studio.Views
                       ViewModel.WebBrowser = this;
                   }
               };
+
+            WebBrowserHost.Navigated += (sender, args) => {
+                                                              if(Navigated != null)
+                                                              {
+                                                                  Navigated.Invoke(args.Uri);
+                                                              }
+            };
         }
 
         public void Navigate(Uri uri)
         {
             WebBrowserHost.Navigate(uri);
         }
+
+        public event Action<Uri> Navigated;
 
         public ManageOAuthSourceViewModel ViewModel { get; set; }
 
