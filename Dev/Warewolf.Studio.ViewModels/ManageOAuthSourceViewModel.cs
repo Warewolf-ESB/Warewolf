@@ -130,6 +130,10 @@ namespace Warewolf.Studio.ViewModels
             if (uri != null && !uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
             {
                 // we need to ignore all navigation that isn't to the redirect uri.
+                Testing = false;
+                TestFailed = true;
+                TestPassed = false;
+                TestMessage = "Failed";
                 return;
             }
             try
