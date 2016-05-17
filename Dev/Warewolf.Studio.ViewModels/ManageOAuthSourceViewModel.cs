@@ -9,6 +9,7 @@ using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Input;
 using Warewolf.Studio.Core;
@@ -33,7 +34,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testMessage;
         private Uri _authUri;
         private IWebBrowser _webBrowser;
-        private const string RedirectUri = "https://www.dropbox.com/1/oauth2/redirect_receiver/"; //"https://www.example.com/";
+        private const string RedirectUri = "https://www.dropbox.com/1/oauth2/redirect_receiver/";
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
@@ -63,7 +64,7 @@ namespace Warewolf.Studio.ViewModels
             HasAuthenticated = false;
             SetupCommands();
             AppKey = "31qf750f1vzffhu";
-            Authorise();
+            SetupAuthorizeUri();
         }
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource)
@@ -79,7 +80,7 @@ namespace Warewolf.Studio.ViewModels
             FromModel(oAuthSource);
             SetupHeaderTextFromExisting();
             SetupCommands();
-            Authorise();
+            SetupAuthorizeUri();
         }
 
         private void SetupCommands()
@@ -91,6 +92,62 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
+        private void SetupAuthorizeUri()
+        {
+            _oauth2State = Guid.NewGuid().ToString("N");
+            var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
+            AuthUri = authorizeUri;
+        }
+
+        private void GetAuthTokens(Uri uri)
+        {
+            if (uri != null)
+            {
+                if (!uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
+                {
+                    // we need to ignore all navigation that isn't to the redirect uri.
+                    return;
+                }
+                else
+                {
+                    Testing = false;
+                    if (!uri.ToString().Equals(RedirectUri, StringComparison.OrdinalIgnoreCase))
+                    {
+                        OAuth2Response result = null;
+                        try
+                        {
+                            result = DropboxOAuth2Helper.ParseTokenFragment(uri);
+                        }
+                        catch (ArgumentException)
+                        {
+                        }
+
+                        if (result != null)
+                        {
+                            if (result.State != _oauth2State)
+                            {
+                                TestMessage = "Authentication failed";
+                                AccessToken = string.Empty;
+                                HasAuthenticated = false;
+                            }
+                            else
+                            {
+                                TestMessage = "Authentication passed";
+                                AccessToken = result.AccessToken;
+                                HasAuthenticated = true;
+                            }
+                        }
+                        else
+                        {
+                            string errorDescription = HttpUtility.ParseQueryString(uri.Query).Get("error_description");
+
+                            TestMessage = errorDescription ?? "Authentication failed";
+                        }
+                    }
+                }
+            }
+        }
+
         public List<string> Types
         {
             get
@@ -100,47 +157,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _types = value;
-            }
-        }
-
-        private void Authorise()
-        {
-            _oauth2State = Guid.NewGuid().ToString("N");
-            var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
-            AuthUri = authorizeUri;
-        }
-
-        private void GetAuthTokens(Uri uri)
-        {
-            if (uri != null && !uri.ToString().Equals(RedirectUri, StringComparison.OrdinalIgnoreCase))
-            {
-                // we need to ignore all navigation that isn't to the redirect uri.
-                Testing = false;
-                TestFailed = true;
-                TestPassed = false;
-                TestMessage = "Failed";
-                return;
-            }
-            try
-            {
-                if (uri != null)
-                {
-                    OAuth2Response result = DropboxOAuth2Helper.ParseTokenFragment(uri);
-                    if (result.State != _oauth2State)
-                    {
-                        Testing = false;
-                        HasAuthenticated = false;
-                    }
-                    else
-                    {
-                        AccessToken = result.AccessToken;
-                        Testing = false;
-                        HasAuthenticated = true;
-                    }
-                }
-            }
-            catch (ArgumentException)
-            {
             }
         }
 
