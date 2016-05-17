@@ -122,7 +122,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         LoadCompleted="WebBrowserHost_OnLoadCompleted"
-                        Visibility="Collapsed" >
+                        Visibility="Visible" >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Navigated">
                         <i:InvokeCommandAction Command="{Binding Path=Navigated}" />

@@ -28,10 +28,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _authUri = value;
-                if(WebBrowser != null)
-                {
-                    WebBrowser.Navigate(_authUri);
-                }
                 OnPropertyChanged(()=>AuthUri);
             }
         }
@@ -51,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
         private IOAuthSource _oAuthSource;
         private string _resourceName;
         private Uri _authUri;
+        private IWebBrowser _webBrowser;
         private const string RedirectUri = "https://www.example.com/";
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
@@ -99,7 +96,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetupCommands()
         {
-            Navigated = new DelegateCommand<NavigationEventArgs>(GetAuthTokens);
+            TestCommand = new DelegateCommand(()=>WebBrowser.Navigate(AuthUri));
         }
         public List<string> Types
         {
@@ -119,22 +116,25 @@ namespace Warewolf.Studio.ViewModels
             var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
             AuthUri = authorizeUri;
         }
-        void GetAuthTokens(NavigationEventArgs args)
+        void GetAuthTokens(Uri uri)
         {
 
-            if (!args.Uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
+            if (uri != null && !uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
             {
                 // we need to ignore all navigation that isn't to the redirect uri.
                 return;
             }
             try
             {
-                OAuth2Response result = DropboxOAuth2Helper.ParseTokenFragment(args.Uri);
-                if (result.State != _oauth2State)
+                if(uri != null)
                 {
-                    return;
+                    OAuth2Response result = DropboxOAuth2Helper.ParseTokenFragment(uri);
+                    if (result.State != _oauth2State)
+                    {
+                        return;
+                    }
+                    AccessToken = result.AccessToken;
                 }
-                AccessToken = result.AccessToken;
                 HasAuthenticated = true;
             }
             catch (ArgumentException)
@@ -260,7 +260,25 @@ namespace Warewolf.Studio.ViewModels
         {
             get;set;
         }
-        public IWebBrowser WebBrowser { get; set; }
+        public IWebBrowser WebBrowser
+        {
+            get
+            {
+                return _webBrowser;
+            }
+            set
+            {
+                _webBrowser = value;
+                if (_webBrowser != null)
+                {
+                    _webBrowser.Navigated += GetAuthTokens;
+                }
+            }
+        }
+        public ICommand TestCommand
+        {
+            get;set;
+        }
 
         #endregion
 
