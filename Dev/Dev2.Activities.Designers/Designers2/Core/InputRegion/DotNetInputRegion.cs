@@ -160,14 +160,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
             set
             {
-                if (value.Count < 1)
-                {
-                    
-                }
-                else
-                {
-                    
-                }
                 _inputs = value;
                 OnPropertyChanged();
                 _modelItem.SetProperty("Inputs", value);
