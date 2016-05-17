@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -43,6 +44,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         public DropBoxFileListDesignerViewModel(ModelItem modelItem)
             : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
+            this.RunViewSetup();
         }
 
         public DropBoxFileListDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)

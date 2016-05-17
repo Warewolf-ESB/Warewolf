@@ -1135,6 +1135,22 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestSavePassed()
+        {
+            //arrange
+            var exceptionMessage = "";
+            _updateManagerMock.Setup(it => it.Save(It.IsAny<IDbSource>()));
+
+            //act
+            _targetUpdateManagerAggregatorDbSource.Save();
+
+            //assert
+            _updateManagerMock.Verify(it => it.Save(_targetUpdateManagerAggregatorDbSource.Item));
+            Assert.AreEqual(exceptionMessage, _targetUpdateManagerAggregatorDbSource.TestMessage);
+            Assert.IsFalse(_targetUpdateManagerAggregatorDbSource.TestFailed);
+        }
+
+        [TestMethod]
         public void TestCanSaveTestPassedFalse()
         {
             //arrange
