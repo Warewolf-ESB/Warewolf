@@ -3,22 +3,20 @@ using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Runtime.Hosting;
 using Dev2.Services.Events;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable UnusedMember.Global
@@ -31,8 +29,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 {
     public class DropBoxDownloadViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
-        private ObservableCollection<OauthSource> _sources;
-        private readonly IEnvironmentModel _environmentModel;
+        private ObservableCollection<DropBoxSource> _sources;
         private readonly IEventAggregator _eventPublisher;
         private string _toPath;
         private string _result;
@@ -41,15 +38,14 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
         [ExcludeFromCodeCoverage]
         public DropBoxDownloadViewModel(ModelItem modelItem)
-            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, EventPublishers.Aggregator)
         {
             this.RunViewSetup();
         }
 
-        public DropBoxDownloadViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public DropBoxDownloadViewModel(ModelItem modelItem, IEventAggregator eventPublisher)
             : base(modelItem,"File Or Folder", String.Empty)
         {
-            _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
             ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
@@ -65,13 +61,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         {
             get
             {
-                var oauthSource = GetModelPropertyName() as OauthSource;
-                return oauthSource ?? GetProperty<OauthSource>();
+                var oauthSource = GetProperty<DropBoxSource>();
+                return oauthSource ?? GetProperty<DropBoxSource>();
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             set
             {
-                SetModelItemProperty(value);
+                SetProperty(value);
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged("IsDropboxSourceSelected");
                 // ReSharper disable once RedundantArgumentDefaultValue
@@ -79,17 +75,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             }
         }
 
-        private void SetModelItemProperty(object value, [CallerMemberName]string propName = null)
-        {
-            ModelItem.SetProperty(propName, value);
-        }
-
-        private object GetModelPropertyName([CallerMemberName]string propName = null)
-        {
-            var propertyValue = ModelItem.GetProperty(propName);
-            return propertyValue ?? string.Empty;
-        }
-        public virtual ObservableCollection<OauthSource> Sources
+        public virtual ObservableCollection<DropBoxSource> Sources
         {
             get
             {
@@ -117,13 +103,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         {
             get
             {
-                _toPath = GetModelPropertyName().ToString();
+                _toPath = GetProperty<string>();
                 return _toPath;
             }
             set
             {
                 _toPath = value;
-                SetModelItemProperty(_toPath);
+                SetProperty(value);
                 OnPropertyChanged();
             }
         }
@@ -132,13 +118,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         {
             get
             {
-                _overwriteFile = Convert.ToBoolean(GetModelPropertyName());
+                _overwriteFile = GetProperty<bool>();
                 return _overwriteFile;
             }
             set
             {
                 _overwriteFile = value;
-                SetModelItemProperty(_overwriteFile);
+                SetProperty(value);
                 OnPropertyChanged();
             }
         }
@@ -147,14 +133,14 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         {
             get
             {
-                _fromPath = GetModelPropertyName().ToString();
+                _fromPath = GetProperty<string>();
                 return _fromPath;
 
             }
             set
             {
                 _fromPath = value;
-                SetModelItemProperty(_fromPath);
+                SetProperty(value);
                 OnPropertyChanged();
             }
         }
@@ -162,13 +148,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         {
             get
             {
-                _result = GetModelPropertyName().ToString();
+                _result = GetProperty<string>();
                 return _result;
             }
             set
             {
                 _result = value;
-                SetModelItemProperty(_result);
+                SetProperty(value);
                 OnPropertyChanged();
             }
         }
@@ -189,10 +175,15 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         }
         //Used by specs
 
-        public virtual ObservableCollection<OauthSource> LoadOAuthSources()
+        public virtual ObservableCollection<DropBoxSource> LoadOAuthSources()
         {
-            var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
-            return oauthSources.ToObservableCollection();
+            Dispatcher.Invoke(() =>
+            {
+                _sources = ResourceCatalog.Instance.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
+                    .Cast<DropBoxSource>()
+                    .ToObservableCollection();
+            });
+            return _sources;
         }
 
         #region Overrides of ActivityDesignerViewModel
