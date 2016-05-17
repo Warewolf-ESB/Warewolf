@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Data.ServiceModel;
@@ -28,12 +28,11 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _authUri = value;
-                OnPropertyChanged(()=>AuthUri);
+                OnPropertyChanged(() => AuthUri);
             }
         }
         public bool HasAuthenticated { get; private set; }
         public IContextualResourceModel Resource { get; set; }
-
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local
         public DropboxClient Client { get; set; }
@@ -46,6 +45,10 @@ namespace Warewolf.Studio.ViewModels
         private List<string> _types;
         private IOAuthSource _oAuthSource;
         private string _resourceName;
+        bool _testPassed;
+        bool _testFailed;
+        bool _testing;
+        private string _testMessage;
         private Uri _authUri;
         private IWebBrowser _webBrowser;
         private const string RedirectUri = "https://www.example.com/";
@@ -53,11 +56,11 @@ namespace Warewolf.Studio.ViewModels
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
         {
-            if(updateManager == null)
+            if (updateManager == null)
             {
                 throw new ArgumentNullException("updateManager");
             }
-            if(requestServiceNameViewModel == null)
+            if (requestServiceNameViewModel == null)
             {
                 throw new ArgumentNullException("requestServiceNameViewModel");
             }
@@ -67,21 +70,22 @@ namespace Warewolf.Studio.ViewModels
             {
                 "Dropbox"
             };
-//            _network = network;
-//            DropBoxHelper = dropboxHelper;
+            SelectedOAuthProvider = Types[0];
+            //            _network = network;
+            //            DropBoxHelper = dropboxHelper;
             CookieHelper.Clear();
             //            if (shouldAuthorise)
             //                Authorise();
+            Testing = false;
             SetupCommands();
             AppKey = "31qf750f1vzffhu";
             Authorise();
         }
 
-        
-
-        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource) : base("OAuth")
+        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource)
+            : base("OAuth")
         {
-            if(oAuthSource == null)
+            if (oAuthSource == null)
             {
                 throw new ArgumentNullException("oAuthSource");
             }
@@ -96,7 +100,11 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetupCommands()
         {
-            TestCommand = new DelegateCommand(()=>WebBrowser.Navigate(AuthUri));
+            TestCommand = new DelegateCommand(() =>
+            {
+                Testing = true;
+                WebBrowser.Navigate(AuthUri);
+            });
         }
         public List<string> Types
         {
@@ -111,14 +119,12 @@ namespace Warewolf.Studio.ViewModels
         }
         private void Authorise()
         {
-
             _oauth2State = Guid.NewGuid().ToString("N");
             var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
             AuthUri = authorizeUri;
         }
         void GetAuthTokens(Uri uri)
         {
-
             if (uri != null && !uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
             {
                 // we need to ignore all navigation that isn't to the redirect uri.
@@ -126,7 +132,7 @@ namespace Warewolf.Studio.ViewModels
             }
             try
             {
-                if(uri != null)
+                if (uri != null)
                 {
                     OAuth2Response result = DropboxOAuth2Helper.ParseTokenFragment(uri);
                     if (result.State != _oauth2State)
@@ -139,6 +145,57 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (ArgumentException)
             {
+            }
+        }
+
+        public bool TestPassed
+        {
+            get { return _testPassed; }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(() => TestPassed);
+            }
+        }
+
+        public bool TestFailed
+        {
+            get
+            {
+                return _testFailed;
+            }
+            set
+            {
+                _testFailed = value;
+                OnPropertyChanged(() => TestFailed);
+            }
+        }
+
+        public bool Testing
+        {
+            get
+            {
+                return _testing;
+            }
+            set
+            {
+                _testing = value;
+
+                OnPropertyChanged(() => Testing);
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
+            }
+        }
+
+        public string TestMessage
+        {
+            get { return _testMessage; }
+            // ReSharper disable UnusedMember.Local
+            private set
+            // ReSharper restore UnusedMember.Local
+            {
+                _testMessage = value;
+                OnPropertyChanged(() => TestMessage);
+                OnPropertyChanged(() => TestPassed);
             }
         }
 
@@ -166,7 +223,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedOAuthProvider = value;
-                OnPropertyChanged(()=>SelectedOAuthProvider);
+                OnPropertyChanged(() => SelectedOAuthProvider);
             }
         }
 
@@ -179,7 +236,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _appKey = value;
-                OnPropertyChanged(()=>AppKey);
+                OnPropertyChanged(() => AppKey);
             }
         }
 
@@ -255,10 +312,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 _resourceName = value;
             }
-        }     
+        }
         public ICommand Navigated
         {
-            get;set;
+            get;
+            set;
         }
         public IWebBrowser WebBrowser
         {
@@ -277,7 +335,8 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand TestCommand
         {
-            get;set;
+            get;
+            set;
         }
 
         #endregion
@@ -292,7 +351,7 @@ namespace Warewolf.Studio.ViewModels
                 return new DropBoxSource
                 {
                     AppKey = AppKey,
-                    AccessToken = AccessToken,                   
+                    AccessToken = AccessToken,
                     //Id = _oAuthSource == null ? Guid.NewGuid() : _oAuthSource.Id
                 }
             ;
@@ -300,9 +359,8 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 _oAuthSource.AppKey = AppKey;
-                _oAuthSource.AccessToken = AccessToken;              
+                _oAuthSource.AccessToken = AccessToken;
                 return _oAuthSource;
-
             }
         }
     }

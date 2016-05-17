@@ -12,7 +12,7 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ManageOAuthSourceControl.xaml
     /// </summary>
-    public partial class ManageOAuthSourceControl : IView, ICheckControlEnabledView,IWebBrowser
+    public partial class ManageOAuthSourceControl : IView, ICheckControlEnabledView, IWebBrowser
     {
         public ManageOAuthSourceControl()
         {
@@ -28,11 +28,12 @@ namespace Warewolf.Studio.Views
                   }
               };
 
-            WebBrowserHost.Navigated += (sender, args) => {
-                                                              if(Navigated != null)
-                                                              {
-                                                                  Navigated.Invoke(args.Uri);
-                                                              }
+            WebBrowserHost.Navigated += (sender, args) =>
+            {
+                if (Navigated != null)
+                {
+                    Navigated.Invoke(args.Uri);
+                }
             };
         }
 
