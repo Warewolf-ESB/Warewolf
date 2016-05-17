@@ -441,7 +441,7 @@ Scenario: Evaluating recursive variable in a group calculation
 	| # | Variable     | New Value                   |
 	| 1 | [[a]]    =   | 1                           |
 	| 2 | [[b]]    =   | a                           |
-	| 3 | [[Result]] = | SUM([[[[b]]]],1) = SUM(1,1) |
+	| 3 | [[Result]] = | SUM([[a]],1) = SUM([[a]],1) |
 	And the debug output as
 	| # |                      |
 	| 1 | [[a]]     =        1 |
@@ -456,10 +456,10 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable         | New Value                               |
-	| 1 | [[rec(1).a]]   = | 1                                       |
-	| 2 | [[rec(1).b]]   = | rec(1).a                                |
-	| 3 | [[Result]] =     | [[[[rec(1).b]]]]+1 = 1+1 |
+	| # | Variable         | New Value            |
+	| 1 | [[rec(1).a]]   = | 1                    |
+	| 2 | [[rec(1).b]]   = | rec(1).a             |
+	| 3 | [[Result]] =     | [[rec(1).a]]+1 = [[rec(1).a]]+1 |
 	And the debug output as
 	| # |                         |
 	| 1 | [[rec(1).a]] = 1        |
@@ -801,12 +801,13 @@ Scenario: Assign a variable equal to a complex expression with scalar and record
 	Then the value of "[[Result]]" equals "Test2EndTest"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable         | New Value |
-	| 1 | [[a]]          = | 1         |
-	| 2 | [[b]]          = | 2         |
-	| 3 | [[rec().a]]   = | [[a]] = 1 |
-	| 4 | [[rec().a]]   = | [[b]] = 2 |
-	| 5 | [[Result]] =     | Test[[rec(*).a]]EndTest = Test2EndTest  |
+	| # | Variable         | New Value                              |
+	| 1 | [[a]]          = | 1                                      |
+	| 2 | [[b]]          = | 2                                      |
+	| 3 | [[rec().a]]   =  | [[a]] = 1                              |
+	| 4 | [[rec().a]]   =  | [[b]] = 2                              |
+	| 5 | [[Result]] =     | Test[[rec(1).a]]EndTest = Test1EndTest |
+	|   |                  | Test[[rec(2).a]]EndTest = Test2EndTest |
 	And the debug output as
 	| # |                           |
 	| 1 | [[a]] = 1                 |
