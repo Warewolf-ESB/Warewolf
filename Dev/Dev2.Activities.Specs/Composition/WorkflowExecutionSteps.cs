@@ -758,6 +758,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [Given(@"""(.*)"" in ""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
+        [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenInContainsDataMergeIntoAs(string sequenceName, string forEachName, string activityName, string resultVariable, Table table)
         {
             DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
@@ -1932,126 +1933,6 @@ namespace Dev2.Activities.Specs.Composition
                 CommonSteps.AddVariableToVariableList(result);
             }
             CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
-        }
-
-        [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
-        public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
-        {
-            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
-            foreach (var tableRow in table.Rows)
-            {
-                var variable = tableRow["Variable"];
-                var type = tableRow["Type"];
-                var at = tableRow["Using"];
-                var padding = tableRow["Padding"];
-                var alignment = tableRow["Alignment"];
-
-                activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
-            }
-            CommonSteps.AddVariableToVariableList(resultVariable);
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
-        }
-
-        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
-        public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
-        {
-            DsfBaseConvertActivity activity = new DsfBaseConvertActivity { DisplayName = activityName };
-            foreach (var tableRow in table.Rows)
-            {
-                var variableToConvert = tableRow["Variable"];
-                var from = tableRow["From"];
-                var to = tableRow["To"];
-
-                activity.ConvertCollection.Add(new BaseConvertTO(variableToConvert, from, to, variableToConvert, 1, true));
-            }
-
-            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
-        }
-
-        [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
-        public void GivenContainsCountRecordOnInto(string parentName, string activityName, string recordsetName, string resultVariable)
-        {
-            var dsfCountRecord = new DsfCountRecordsetActivity { DisplayName = activityName, RecordsetName = recordsetName, CurrentResult = resultVariable};
-            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfCountRecord);
-        }
-
-        [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
-        public void GivenContainsCaseConvertAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
-        public void GivenContainsBaseConvertAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
-        public void GivenContainsCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
-        {
-            var dsfCalculate = new DsfCalculateActivity { DisplayName = activityName, Expression = formula, CurrentResult = resultVariable};
-            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfCalculate);
-        }
-
-        [Given(@"""(.*)"" contains Find Index ""(.*)"" into ""(.*)"" as")]
-        public void GivenContainsFindIndexIntoAs(string parentName, string activityName, string p2, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
-        public void GivenContainsDataMergeIntoAs(string parentName, string activityName, string p2, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Date and Time ""(.*)"" as")]
-        public void GivenContainsDateAndTimeAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Date and Time Difference ""(.*)"" as")]
-        public void GivenContainsDateAndTimeDifferenceAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Format Number ""(.*)"" as")]
-        public void GivenContainsFormatNumberAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Random ""(.*)"" as")]
-        public void GivenContainsRandomAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Data Split ""(.*)"" as")]
-        public void GivenContainsDataSplitAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Replace ""(.*)"" into ""(.*)"" as")]
-        public void GivenContainsReplaceIntoAs(string parentName, string activityName, string p2, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Gather System Info ""(.*)"" as")]
-        public void GivenContainsGatherSystemInfoAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
-        [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
-        public void GivenContainsDeleteAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
     }
 }
