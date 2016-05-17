@@ -18,7 +18,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageOAuthSourceViewModel : SourceBaseImpl<IOAuthSource>, IManageOAuthSourceViewModel
     {
-        //private string AppKey = GlobalConstants.DropBoxApiKey;
         private readonly IManageOAuthSourceModel _updateManager;
 
         private string _oauth2State;
@@ -57,21 +56,20 @@ namespace Warewolf.Studio.ViewModels
                 "Dropbox"
             };
             SelectedOAuthProvider = Types[0];
-            //            _network = network;
-            //            DropBoxHelper = dropboxHelper;
             CookieHelper.Clear();
-            //            if (shouldAuthorise)
-            //                Authorise();
             Testing = false;
             HasAuthenticated = false;
             SetupCommands();
-            //AppKey = "31qf750f1vzffhu";
             
         }
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource)
             : base("OAuth")
         {
+            if (updateManager == null)
+            {
+                throw new ArgumentNullException("updateManager");
+            }
             if (oAuthSource == null)
             {
                 throw new ArgumentNullException("oAuthSource");
@@ -109,7 +107,7 @@ namespace Warewolf.Studio.ViewModels
         private void SetupAuthorizeUri()
         {
             _oauth2State = Guid.NewGuid().ToString("N");
-            if(AppKey != null)
+            if (AppKey != null)
             {
                 var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
                 AuthUri = authorizeUri;
