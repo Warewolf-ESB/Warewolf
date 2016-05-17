@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 {
     public class DropBoxDeleteViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
-        private ObservableCollection<OauthSource> _sources;
+        private ObservableCollection<DropBoxSource> _sources;
         private readonly IEnvironmentModel _environmentModel;
         private readonly IEventAggregator _eventPublisher;
         private string _deletePath;
@@ -60,12 +60,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         }
 
         public ICommand NewSourceCommand { get; set; }
-        public OauthSource SelectedSource
+        public DropBoxSource SelectedSource
         {
             get
             {
-                var oauthSource = GetModelPropertyName() as OauthSource;
-                return oauthSource ?? GetProperty<OauthSource>();
+                var oauthSource = GetModelPropertyName() as DropBoxSource;
+                return oauthSource ?? GetProperty<DropBoxSource>();
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             set
@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             var propertyValue = ModelItem.GetProperty(propName);
             return propertyValue ?? string.Empty;
         }
-        public virtual ObservableCollection<OauthSource> Sources
+        public virtual ObservableCollection<DropBoxSource> Sources
         {
             get
             {
@@ -156,9 +156,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         //Used by specs
         public bool IsDropboxSourceWizardSourceMessagePulished { get; set; }
 
-        public virtual ObservableCollection<OauthSource> LoadOAuthSources()
+        public virtual ObservableCollection<DropBoxSource> LoadOAuthSources()
         {
-            var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
+            var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<DropBoxSource>(_environmentModel, enSourceType.OauthSource);
             return oauthSources.ToObservableCollection();
         }
 
