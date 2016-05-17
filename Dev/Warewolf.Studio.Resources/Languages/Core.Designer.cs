@@ -5490,6 +5490,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New OAuth Source.
+        /// </summary>
+        public static string OAuthSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("OAuthSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outputs.
         /// </summary>
         public static string OutputsLabel {

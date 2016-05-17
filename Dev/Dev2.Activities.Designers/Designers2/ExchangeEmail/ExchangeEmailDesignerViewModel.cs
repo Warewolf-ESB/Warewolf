@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -56,6 +57,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public ExchangeEmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
+            this.RunViewSetup();
         }
 
         public ExchangeEmailDesignerViewModel(ModelItem modelItem, IExchangeServiceModel model,IEventAggregator eventPublisher) : base(modelItem)

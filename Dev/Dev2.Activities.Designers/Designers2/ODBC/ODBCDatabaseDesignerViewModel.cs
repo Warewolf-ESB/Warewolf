@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -80,6 +81,7 @@ namespace Dev2.Activities.Designers2.ODBC
             var server = shellViewModel.ActiveServer;
             var dbServiceModel = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             InitialiseViewModel(rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), null, dbServiceModel);
+            this.RunViewSetup();
         }
 
         public ODBCDatabaseDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel,

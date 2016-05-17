@@ -594,6 +594,9 @@ Software development by: www.dev2.co.za
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
   </data>
+  <data name="OAuthSourceNewHeaderLabel" xml:space="preserve">
+    <value>New OAuth Source</value>
+  </data>
   <data name="PluginSourceNewHeaderLabel" xml:space="preserve">
     <value>New Plugin Source</value>
   </data>
