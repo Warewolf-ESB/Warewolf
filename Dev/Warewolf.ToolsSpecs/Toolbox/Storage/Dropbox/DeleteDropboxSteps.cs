@@ -52,9 +52,10 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
 
-            var deleteViewModel = new DropBoxDeleteViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            var deleteViewModel = new DropBoxDeleteViewModel(modelItem, mockEventAggregator.Object);
             ScenarioContext.Current.Add("deleteViewModel", deleteViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            ScenarioContext.Current.Add("mockEventAggregator", mockEventAggregator.Object);
         }
 
         [Given(@"Dropbox Delete New is Enabled")]
@@ -95,13 +96,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void WhenIClickDeleteNew()
         {
             GetViewModel().NewSourceCommand.Execute(null);
-        }
-
-        [Then(@"the New Delete Dropbox Source window is opened")]
-        public void ThenTheNewDeleteDropboxSourceWindowIsOpened()
-        {
-            var isDropboxSourceWizardSourceMessagePulished = GetViewModel().IsDropboxSourceWizardSourceMessagePulished;
-            Assert.IsTrue(isDropboxSourceWizardSourceMessagePulished);
         }
         
         [When(@"I Select ""(.*)"" as the Delete source")]

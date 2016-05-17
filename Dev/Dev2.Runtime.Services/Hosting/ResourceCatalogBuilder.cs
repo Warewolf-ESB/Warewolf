@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Transactions;
 using System.Xml.Linq;
 using ChinhDo.Transactions;
@@ -110,6 +111,7 @@ namespace Dev2.Runtime.Hosting
                 }
 
                 // Use the parallel task library to process file system ;)
+              
                 var resourceBaseType = typeof(IResourceSource);
                 var types = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(s => s.GetTypes())
