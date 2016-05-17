@@ -60,6 +60,7 @@ namespace Warewolf.Studio.ViewModels
             Testing = false;
             HasAuthenticated = false;
             SetupCommands();
+            
         }
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource)
@@ -75,6 +76,10 @@ namespace Warewolf.Studio.ViewModels
             }
             _oAuthSource = oAuthSource;
             _updateManager = updateManager;
+            Types = new List<string>
+            {
+                "Dropbox"
+            };
             // ReSharper disable once VirtualMemberCallInContructor
             FromModel(oAuthSource);
             SetupHeaderTextFromExisting();
@@ -87,8 +92,9 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             TestCommand = new DelegateCommand(() =>
             {
-                SetupAuthorizeUri();
                 Testing = true;
+                TestPassed = false;
+                SetupAuthorizeUri();
                 WebBrowser.Navigate(AuthUri);
             }, CanTest);
         }
@@ -147,7 +153,6 @@ namespace Warewolf.Studio.ViewModels
                             TestMessage = "";
                             AccessToken = result.AccessToken;
                             HasAuthenticated = true;
-                            ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
                         }
                     }
                     else
@@ -317,6 +322,12 @@ namespace Warewolf.Studio.ViewModels
 
         public override IOAuthSource ToModel()
         {
+            if (Item == null)
+            {
+                Item = ToSource();
+                return Item;
+            }
+
             if (SelectedOAuthProvider == "Dropbox")
             {
                 return new DropBoxSource
@@ -368,8 +379,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override void FromModel(IOAuthSource service)
+        public override void FromModel(IOAuthSource source)
         {
+            ResourceName = source.ResourceName;
+            SelectedOAuthProvider = Types[0];
+            AppKey = source.AppKey;
+            AccessToken = source.AccessToken;
+            Path = source.ResourcePath;
         }
 
         public override bool CanSave()
@@ -490,7 +506,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     AppKey = AppKey,
                     AccessToken = AccessToken,
-                    //Id = _oAuthSource == null ? Guid.NewGuid() : _oAuthSource.Id
+                    ResourceID = _oAuthSource == null ? Guid.NewGuid() : _oAuthSource.ResourceID
                 }
             ;
             // ReSharper disable once RedundantIfElseBlock
