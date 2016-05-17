@@ -225,11 +225,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Scheduler.feature</DependentUpon>
     </Compile>
-    <Compile Include="ServerStudioRepository\ServerStudioRepository1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ServerStudioRepository.feature</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -245,10 +240,6 @@
     <None Include="Scheduler\Scheduler.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
-    </None>
-    <None Include="ServerStudioRepository\ServerStudioRepository.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ServerStudioRepository1.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
