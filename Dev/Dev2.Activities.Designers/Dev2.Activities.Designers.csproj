@@ -222,6 +222,7 @@
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
+    <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
