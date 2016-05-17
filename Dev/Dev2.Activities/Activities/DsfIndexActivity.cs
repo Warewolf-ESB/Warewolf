@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
@@ -156,9 +155,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var completeResultList = new List<string>();
                 if (String.IsNullOrEmpty(InField))
+                {
                     allErrors.AddError("'In Field' is blank");
+                }
                 else if (String.IsNullOrEmpty(Characters))
+                {
                     allErrors.AddError("'Characters' is blank");
+                }
                 else
                 {
 
@@ -180,55 +183,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     IEnumerable<int> returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
                                     completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
-                                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                }
-                            }
-                        }
-                    }
-                    var rule = new IsSingleValueRule(() => Result);
-                    var single = rule.Check();
-                    if (single != null)
-                    {
-                        allErrors.AddError(single.Message);
-                    }
-                    else
-                    {
-                        if (DataListUtil.IsValueRecordset(Result))
-                        {
-                            var rsType = DataListUtil.GetRecordsetIndexType(Result);
-                            if (rsType == enRecordsetIndexType.Numeric)
-                            {
-                                dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
-                                allErrors.MergeErrors(errors);
-                            }
-                            else
-                            {
-                                var idx = 1;
-                                foreach (var res in completeResultList)
-                                {
-                                    if (rsType == enRecordsetIndexType.Blank)
+                                    var rule = new IsSingleValueRule(() => Result);
+                                    var single = rule.Check();
+                                    if (single != null)
                                     {
-                                        dataObject.Environment.Assign(Result, res, update);
+                                        allErrors.AddError(single.Message);
                                     }
-                                    if (rsType == enRecordsetIndexType.Star)
+                                    else
                                     {
-                                        var expression = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(Result), DataListUtil.ExtractFieldNameFromValue(Result), idx.ToString());
-                                        dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(expression), res, update);
-                                        idx++;
+                                        dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
+                                        allErrors.MergeErrors(errors);
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
-                        }
-                        allErrors.MergeErrors(errors);
-                        if (!allErrors.HasErrors() && dataObject.IsDebugMode())
-                        {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                            completeResultList = new List<string>();
                         }
                     }
+                    if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+
                 }
 
                 #endregion

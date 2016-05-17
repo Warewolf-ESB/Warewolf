@@ -183,7 +183,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var authorizationService = ServerAuthorizationService.Instance;
                     var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
                     var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-                    canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == ResourceType.ReservedService);
+                    canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
                 }
                 // Build EsbExecutionRequest - Internal Services Require This ;)
                 EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };

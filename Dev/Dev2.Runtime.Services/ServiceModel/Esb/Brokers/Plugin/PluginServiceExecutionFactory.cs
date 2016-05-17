@@ -147,7 +147,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 var runtime = CreateInvokeAppDomain(out childDomain);
 
                 // start the runtime.  call will marshal into the child runtime app domain
+
                 return runtime.FetchNamespaceListObject(pluginSource);
+            }
+                // ReSharper disable once RedundantCatchClause
+            catch (BadImageFormatException)
+            {
+                throw;
             }
             finally
             {

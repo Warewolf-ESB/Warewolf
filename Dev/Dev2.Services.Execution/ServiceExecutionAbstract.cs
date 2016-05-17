@@ -120,7 +120,7 @@ namespace Dev2.Services.Execution
                             new TSource
                             {
                                 ResourceName = Dsns[i],
-                                ResourceType= ResourceType.DbSource,
+                                ResourceType = "DbSource",
                                 ResourceID = result
 
                             }

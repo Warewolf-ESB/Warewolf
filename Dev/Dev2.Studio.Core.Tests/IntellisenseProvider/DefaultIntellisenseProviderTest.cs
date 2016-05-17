@@ -947,7 +947,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual("Invalid expression: Opening and closing brackets dont match.", getResults[0].Description);
+            Assert.AreEqual("Invalid expression: Opening and closing brackets don't match.", getResults[0].Description);
         }
 
         [TestMethod]
@@ -962,7 +962,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
 
-            Assert.AreEqual("Invalid expression: Opening and closing brackets dont match.", getResults[0].Description);
+            Assert.AreEqual("Invalid expression: Opening and closing brackets don't match.", getResults[0].Description);
         }
 
         //2013.04.22: Ashley Lewis - for Bug 6103 QA Feedback

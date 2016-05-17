@@ -2,12 +2,14 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Net_DLL;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -35,7 +37,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             new DotNetDllViewModel(null);
             //------------Assert Results-------------------------
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DotNetDllViewModel_Constructor")]
@@ -47,17 +49,17 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             CustomContainer.Register(mockShellViewModel.Object);
             var ps = SetupEmptyMockSource();
             //------------Execute Test---------------------------
-            var vm = new DotNetDllViewModel(CreateModelItem(),ps.Object);
+            var vm = new DotNetDllViewModel(CreateModelItem(), ps.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
             Assert.IsNotNull(vm.ModelItem);
             Assert.IsTrue(vm.HasLargeView);
             Assert.IsNotNull(vm.ManageServiceInputViewModel);
-            Assert.AreEqual(46,vm.LabelWidth);
-            Assert.AreEqual("Done",vm.ButtonDisplayValue);
+            Assert.AreEqual(46, vm.LabelWidth);
+            Assert.AreEqual("Done", vm.ButtonDisplayValue);
             Assert.IsTrue(vm.ShowLarge);
-            Assert.AreEqual(Visibility.Visible,vm.ThumbVisibility);
-            Assert.AreEqual(Visibility.Collapsed,vm.ShowExampleWorkflowLink);
+            Assert.AreEqual(Visibility.Visible, vm.ThumbVisibility);
+            Assert.AreEqual(Visibility.Collapsed, vm.ShowExampleWorkflowLink);
             Assert.IsNotNull(vm.DesignValidationErrors);
             Assert.IsNotNull(vm.FixErrorsCommand);
             Assert.IsNotNull(vm.SourceRegion);
@@ -67,11 +69,11 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.OutputsRegion);
             Assert.IsNotNull(vm.ErrorRegion);
             Assert.IsNotNull(vm.Regions);
-            Assert.AreEqual(7,vm.Regions.Count);
+            Assert.AreEqual(7, vm.Regions.Count);
             Assert.IsTrue(vm.OutputsRegion.OutputMappingEnabled);
             Assert.IsNotNull(vm.TestInputCommand);
             Assert.IsNotNull(vm.Properties);
-            Assert.AreEqual(1,vm.Properties.Count);
+            Assert.AreEqual(1, vm.Properties.Count);
         }
 
 
@@ -90,7 +92,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             vm.Validate();
 
-            Assert.AreEqual(1,vm.Errors.Count);
+            Assert.AreEqual(1, vm.Errors.Count);
 
         }
 
@@ -161,7 +163,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
             //------------Assert Results-------------------------
             vm.ClearValidationMemoWithNoFoundError();
-            Assert.AreEqual(vm.DesignValidationErrors[0].Message,String.Empty);
+            Assert.AreEqual(vm.DesignValidationErrors[0].Message, String.Empty);
         }
 
 
@@ -182,7 +184,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             vm.SetDisplayName("dsfbob_builer");
             PrivateObject p = new PrivateObject(vm);
-            Assert.AreEqual(p.GetProperty("DisplayName"),"DotNet DLL Connectordsfbob_builer");
+            Assert.AreEqual(p.GetProperty("DisplayName"), "DotNet DLL Connectordsfbob_builer");
         }
 
 
@@ -201,9 +203,9 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             var vm = new DotNetDllViewModel(CreateModelItemWithValues(), ps.Object);
 
             //------------Assert Results-------------------------
-            vm.ErrorMessage(new AccessViolationException("bob"),true );
-            Assert.IsTrue(vm.Errors.Count>0);
-            Assert.AreEqual("bob",vm.Errors[0].Message);
+            vm.ErrorMessage(new AccessViolationException("bob"), true);
+            Assert.IsTrue(vm.Errors.Count > 0);
+            Assert.AreEqual("bob", vm.Errors[0].Message);
         }
 
 
@@ -239,10 +241,10 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Execute Test---------------------------
 
             var vm = new DotNetDllViewModel(CreateModelItemWithValues(), ps.Object);
-            vm.DesignValidationErrors.Add(new ErrorInfo(){Message = "bob error",ErrorType = ErrorType.Critical});
-            PrivateObject p= new PrivateObject(vm);
+            vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
+            PrivateObject p = new PrivateObject(vm);
             p.Invoke("UpdateWorstError");
-          var inf =   p.GetProperty("WorstDesignError") as ErrorInfo;
+            var inf = p.GetProperty("WorstDesignError") as ErrorInfo;
             //------------Assert Results-------------------------
 
             Assert.IsNotNull(inf);
@@ -270,14 +272,35 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildRegions_GivenNamespacesRegionHasErrors_ShouldhaveErrors()
+        {
+            //---------------Set up test pack-------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
+            CustomContainer.Register(mockShellViewModel.Object);
+
+            var ps = new Mock<IPluginServiceModel>();
+            ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Id = id } });
+            ps.Setup(a => a.GetNameSpaces(It.IsAny<IPluginSource>())).Throws(new BadImageFormatException());
+            ps.Setup(a => a.GetActions(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var vm = new DotNetDllViewModel(CreateModelItemWithValues(), ps.Object) { SourceRegion = null };
+            var buildRegions = vm.BuildRegions();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(buildRegions.Single(region => region is INamespaceToolRegion<INamespaceItem>).Errors.Count, 1);
+        }
 
         private static readonly Guid id = Guid.NewGuid();
         private static Mock<IPluginServiceModel> SetupEmptyMockSource()
         {
             var ps = new Mock<IPluginServiceModel>();
-            ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>(){new PluginSourceDefinition(){Id = id}});
-            ps.Setup(a => a.GetNameSpaces(It.IsAny<IPluginSource>())).Returns(new ObservableCollection<INamespaceItem>(){new NamespaceItem(){FullName = "f"}});
-            ps.Setup(a => a.GetActions(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>(){new PluginAction(){FullName = "bob", Inputs = new List<IServiceInput>()}});
+            ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Id = id } });
+            ps.Setup(a => a.GetNameSpaces(It.IsAny<IPluginSource>())).Returns(new ObservableCollection<INamespaceItem>() { new NamespaceItem() { FullName = "f" } });
+            ps.Setup(a => a.GetActions(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new ObservableCollection<IPluginAction>() { new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() } });
             return ps;
         }
 
@@ -290,8 +313,8 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         static ModelItem CreateModelItemWithValues()
         {
             var activity = new DsfDotNetDllActivity();
-            activity.Method = new PluginAction(){FullName = "bob", Inputs = new List<IServiceInput>(){new ServiceInput(){Name = "a",Value = "b"}}};
-            activity.Namespace = new NamespaceItem(){AssemblyLocation = "d",AssemblyName = "e",FullName = "f",MethodName = "g"};
+            activity.Method = new PluginAction() { FullName = "bob", Inputs = new List<IServiceInput>() { new ServiceInput() { Name = "a", Value = "b" } } };
+            activity.Namespace = new NamespaceItem() { AssemblyLocation = "d", AssemblyName = "e", FullName = "f", MethodName = "g" };
             activity.SourceId = id;
             return ModelItemUtils.CreateModelItem(activity);
         }

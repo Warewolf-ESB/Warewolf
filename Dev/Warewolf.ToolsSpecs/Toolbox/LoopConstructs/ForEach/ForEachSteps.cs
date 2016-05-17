@@ -280,8 +280,8 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         [Then(@"The mapping uses the following indexes")]
         public void ThenTheMappingUsesTheFollowingIndexes(Table table)
         {
-
-            var updateValues = ScenarioContext.Current.Get<List<int>>("indexUpdate").Select(a => a.ToString());
+            var scenarioContext = ScenarioContext.Current;
+            var updateValues = scenarioContext.Get<List<int>>("indexUpdate").Select(a => a.ToString());
             foreach(var tableRow in table.Rows)
             {
               Assert.IsTrue(updateValues.Contains(tableRow[0]));

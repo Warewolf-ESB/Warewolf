@@ -5,33 +5,36 @@
 
 
 Scenario: Open new Dropbox Tool
-	And I drag Download Dropbox Tool onto the design surface
-    And New is Enabled
-	And Edit is Disabled
-	And Local File is Enabled
-	And Dropbox File is Enabled
-	When I Click New
-	Then the New Dropbox Source window is opened
+	Given I open New Workflow
+	And I drag DropboxDownload Tool onto the design surface
+    And DropboxDownload New is Enabled
+	And DropboxDownload Edit is Disabled
+	And DropboxDownload Local File is Enabled
+	And DropboxDownload File is Enabled
+	When DropboxDownload I Click New
+	Then the New DropboxDownload Source window is opened
 	
 Scenario: Editing Dropbox Tool
-	And I drag Download Dropbox Tool onto the design surface
-    And New is Enabled
-	And Edit is Disabled
-	And Local File is Enabled
-	And Dropbox File is Enabled
-	When I Select "Drop" as the source
-	Then Edit is Enabled
-	And I Click Edit
-	Then the "Drop" Dropbox Source window is opened
+	Given I open New Workflow
+	And I drag DropboxDownload Tool onto the design surface
+    And DropboxDownload New is Enabled
+	And DropboxDownload Edit is Disabled
+	And DropboxDownload Local File is Enabled
+	And DropboxDownload File is Enabled
+	When DropboxDownload I Select "Drop" as the source
+	Then DropboxDownload Edit is Enabled
+	And DropboxDownload I Click Edit
+	Then DropboxDownload the "Drop" Dropbox Source window is opened
 
 Scenario: Change Dropbox Source
-	And I drag Download Dropbox Tool onto the design surface
-    And New is Enabled
-	And Edit is Disabled
-	When I Select "Drop" as the source
-	Then Edit is Enabled
-	And I set Local File equals "E:\test.txt"
-	And I set Dropbox File equals "Home.txt"
-	When I change source from "Drop" to "BackupSource"
-	Then Local File equals ""
-	And Dropbox File equals ""
+	Given I open New Workflow
+	And I drag DropboxDownload Tool onto the design surface
+    And DropboxDownload New is Enabled
+	And DropboxDownload Edit is Disabled
+	When DropboxDownload I Select "Drop" as the source
+	Then DropboxDownload Edit is Enabled
+	And I set Download Dropbox Local File equals "E:\test.txt"
+	And I set Download Dropbox File equals "Home.txt"
+	When Download I change source from "Drop" to "BackupSource"
+	Then Download Local File equals ""
+	And Download Dropbox File equals ""

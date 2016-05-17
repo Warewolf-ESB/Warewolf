@@ -14,8 +14,8 @@ Scenario: Variables adding in variable list and removing unused
     | [[a]]       |                   |       |        |        |
     | [[lr().a]]  |                   |       |        |        |
 	Then "Variables" is "Enabled"
-	#And variables filter box is "Visible"
-	#And "Filter Clear" is "Disabled"
+	And variables filter box is "Visible"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 
 	And the Variable Names are
@@ -51,8 +51,8 @@ Scenario: Searching Variables in Variable list
     | [[a]]       |                   |       |        |        |
     | [[lr().a]]  |                   |       |        |        |
 	Then "Variables" is "Enabled"
-	#And variables filter box is "Visible"
-	#And "Filter Clear" is "Disabled"
+	And variables filter box is "Visible"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 
 	When I search for variable "[[lr().a]]"
@@ -72,7 +72,7 @@ Scenario: Searching Variables in Variable list
 	| Variable Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
 	And the Recordset Names are 
 	| Recordset Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	#When I press the clear filter button
+	When I press the clear filter button
 	And the Variable Names are
 	| Variable Name | Delete IsEnabled | Note Highlighted | Input | Output |
 	| Var           |                  |                  | YES   |        |

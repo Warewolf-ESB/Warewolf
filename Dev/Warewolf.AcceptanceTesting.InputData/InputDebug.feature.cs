@@ -115,13 +115,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.Given("I have a new workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
- testRunner.And(string.Format("I have variable \"{0}\" set as \"{1}\"", variable1, type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have variable \'{0}\' set as \'{1}\'", variable1, type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
- testRunner.And(string.Format("I have variable \"{0}\" set as \"{1}\"", variable2, type2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I have variable \'{0}\' set as \'{1}\'", variable2, type2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
- testRunner.And(string.Format("variable \"{0}\" equals \"Success {1}\"", variable2, variable1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("variable \'{0}\' equals \"Success {1}\"", variable2, variable1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
- testRunner.And(string.Format("I press \"{0}\"", debug), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I press \'{0}\'", debug), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
  testRunner.Then("the Input Data window is open", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 31
@@ -131,19 +131,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
  testRunner.And("\"Json\" tab header is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
- testRunner.And(string.Format("I assign \"{0}\" the value \"<value>\"", variable1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I assign \'{0}\' the value \'<value>\'", variable1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.When(string.Format("I switch to the \"{0}\" tab", mode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I switch to the \'{0}\' tab", mode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 36
- testRunner.And(string.Format("\"<value>\" is visible in the \"{0}\" tab", mode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("\'<value>\' is visible in the \'{0}\' tab", mode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
  testRunner.And("remember debug input equals \"Checked\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
- testRunner.When(string.Format("I press \"{0}\"", launch), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I press \'{0}\'", launch), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
- testRunner.And("the execution has \"<error>\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \'<error>\' error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.Then("\"<response>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\'<response>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -321,7 +321,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 55
  testRunner.Given("I have a new workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
- testRunner.And("I press \"F5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I press \'F5\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
  testRunner.Then("the Input Debug window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 58
@@ -344,7 +344,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
  testRunner.And("I have variable \"[[variable1]]\" set as Input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
- testRunner.And("I press \"F5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I press \'F5\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
  testRunner.When("I switch to the \"Xml\" tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 65
@@ -374,7 +374,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 73
  testRunner.And("I have variable \"[[variable1]]\" set as Input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
- testRunner.And("I press \"F5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I press \'F5\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
  testRunner.When("I switch to the \"Xml\" tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 76
@@ -406,7 +406,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 85
  testRunner.And("I have variable \"[[variable1]]\" set as Input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
- testRunner.And("I press \"F5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I press \'F5\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
  testRunner.When("I switch to the \"Xml\" tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 88

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -50,17 +49,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(environmentId);
-            var resourceType = ResourceType.DbService;
+            const string ResourceType = "DbService";
             _target.ResourcePath = "resPath";
 
             //act
-            _target.NewCommand.Execute(resourceType);
-            Assert.IsTrue(_target.NewCommand.CanExecute(resourceType));
+            _target.NewCommand.Execute(ResourceType);
+            Assert.IsTrue(_target.NewCommand.CanExecute(ResourceType));
 
             //assert
             _shellViewModelMock.Verify(it=>it.SetActiveEnvironment(environmentId));
             _shellViewModelMock.Verify(it=>it.SetActiveServer(_serverMock.Object));
-            _shellViewModelMock.Verify(it=>it.NewResource(resourceType.ToString(), _target.ResourcePath));
+            _shellViewModelMock.Verify(it=>it.NewResource(ResourceType.ToString(), _target.ResourcePath));
         }
         
         [TestMethod]
@@ -144,17 +143,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var childVersion = new Mock<IExplorerItemViewModel>();
             childVersion.SetupGet(it => it.IsVisible).Returns(true);
-            childVersion.SetupGet(it => it.ResourceType).Returns(ResourceType.Version);
+            childVersion.SetupGet(it => it.ResourceType).Returns("Version");
             var childMessage = new Mock<IExplorerItemViewModel>();
             childMessage.SetupGet(it => it.IsVisible).Returns(true);
-            childMessage.SetupGet(it => it.ResourceType).Returns(ResourceType.Message);
+            childMessage.SetupGet(it => it.ResourceType).Returns("Message");
             var childFolder = new Mock<IExplorerItemViewModel>();
             childFolder.SetupGet(it => it.IsVisible).Returns(true);
-            childFolder.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childFolder.SetupGet(it => it.ResourceType).Returns("Folder");
             childFolder.SetupGet(it => it.ChildrenCount).Returns(2);
             var childDbService = new Mock<IExplorerItemViewModel>();
             childDbService.SetupGet(it => it.IsVisible).Returns(true);
-            childDbService.SetupGet(it => it.ResourceType).Returns(ResourceType.DbService);
+            childDbService.SetupGet(it => it.ResourceType).Returns("DbService");
             _target.Children = new ObservableCollection<IExplorerItemViewModel>()
             {
                 childVersion.Object,
@@ -671,7 +670,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var vm = new Mock<IExplorerItemViewModel>();
-            vm.SetupGet(it=>it.ResourceType).Returns(ResourceType.Folder);
+            vm.SetupGet(it=>it.ResourceType).Returns("Folder");
             var resId = Guid.NewGuid();
             vm.SetupGet(it => it.ResourceId).Returns(resId);
             var child = new Mock<IExplorerItemViewModel>();
@@ -780,12 +779,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             var explorerItem = new Mock<IExplorerItem>();
             explorerItem.SetupGet(it => it.DisplayName).Returns("someDisplayName");
             explorerItem.SetupGet(it => it.ResourceId).Returns(Guid.NewGuid());
-            explorerItem.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            explorerItem.SetupGet(it => it.ResourceType).Returns("Folder");
+            explorerItem.SetupGet(it => it.IsFolder).Returns(true);
             explorerItem.SetupGet(it => it.ResourcePath).Returns("someDisplayName");
             var childExplorerItem = new Mock<IExplorerItem>();
             childExplorerItem.SetupGet(it => it.DisplayName).Returns("someDisplayName");
             childExplorerItem.SetupGet(it => it.ResourceId).Returns(Guid.NewGuid());
-            childExplorerItem.SetupGet(it => it.ResourceType).Returns(ResourceType.Folder);
+            childExplorerItem.SetupGet(it => it.ResourceType).Returns("Folder");
+            childExplorerItem.SetupGet(it => it.IsFolder).Returns(true);
             childExplorerItem.SetupGet(it => it.ResourcePath).Returns("someDisplayName");
             var parentMock = new Mock<IExplorerTreeItem>();
             var collectionParent = new AsyncObservableCollection<IExplorerItemViewModel>();

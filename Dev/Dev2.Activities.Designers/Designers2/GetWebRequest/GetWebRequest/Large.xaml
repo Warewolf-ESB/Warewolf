@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.GetWebRequest"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:preview="clr-namespace:Dev2.Activities.Preview"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
@@ -63,7 +63,7 @@
                                 Text="{Binding Path=ModelItem.Url, Mode=TwoWay,  NotifyOnTargetUpdated=True, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUrlFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipURL}">
+                                ToolTip="{x:Static languages:Core.WebRequestToolTipURL}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpURL}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -86,7 +86,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Headers, Mode=TwoWay,  NotifyOnTargetUpdated=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Inputtxt_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}">
+                                ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpHeader}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -105,7 +105,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipResult}">
+                                ToolTip="{x:Static languages:Core.WebRequestToolTipResult}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.WebRequestHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"

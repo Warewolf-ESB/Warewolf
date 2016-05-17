@@ -100,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"I Click Edit")]
         public void ThenIClickEdit()
         {
-            GetViewModel().EditDropboxSourceCommand.Execute(null);
+            GetViewModel().EditDropboxSourceCommand.CanExecute(null);
         }
 
         [Given(@"Dropbox File is Enabled")]

@@ -14,7 +14,6 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -30,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/dbSources/Get
         public DbSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
-            var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows };
+            var result = new DbSource { ResourceID = Guid.Empty, ResourceType = "DbSource", AuthenticationType = AuthenticationType.Windows };
 
             try
             {
@@ -116,7 +115,7 @@ namespace Dev2.Runtime.ServiceModel
                 var dbSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
                 switch (dbSourceDetails.ResourceType)
                 {
-                    case ResourceType.DbSource:
+                    case "DbSource":
                         result.ErrorMessage = null;
                         result = DoDatabaseValidation(dbSourceDetails);
                         break;

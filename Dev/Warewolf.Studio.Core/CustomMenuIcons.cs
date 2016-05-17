@@ -34,9 +34,9 @@ namespace Warewolf.Studio.Core
         private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
         {
             {MenuIcons.WorkflowService, "Explorer-WorkflowService"},
-            {MenuIcons.DbService, "MicrosoftSQLIcon"},
-            {MenuIcons.PluginService, "DotNetDllIcon"},
-            {MenuIcons.WebService, "WebMethodsIcon"},
+            {MenuIcons.DbService, "Database"},
+            {MenuIcons.PluginService, "DotNetDll"},
+            {MenuIcons.WebService, "WebMethods"},
             {MenuIcons.Folder, "Explorer-Spacer"},
             {MenuIcons.Spacer, "Explorer-Spacer"},
             {MenuIcons.View, "Explorer-Permission-Disbled"},
@@ -45,8 +45,8 @@ namespace Warewolf.Studio.Core
             {MenuIcons.WebSource, "WebMethodsSource"},
             {MenuIcons.PluginSource, "DotNetDllSource"},
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
-            {MenuIcons.ExchangeSource, "EmailSourceImageLogo"},
-            {MenuIcons.DbSource, "MicrosoftSQLSource"},
+            {MenuIcons.ExchangeSource, "ExchangeSource"},
+            {MenuIcons.DbSource, "DatabaseSource"},
             {MenuIcons.ServerSource, "System-Logo-Create"},
             {MenuIcons.Server, "System-Logo"},
             {MenuIcons.StartPage, "Fa-Home"}

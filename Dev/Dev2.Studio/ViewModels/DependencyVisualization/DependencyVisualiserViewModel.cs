@@ -18,7 +18,6 @@ using Dev2.Common;
 using Dev2.Common.DependencyVisualization;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
@@ -36,7 +35,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
     {
         readonly DependencyVisualiserView _view;
         private IContextualResourceModel _resourceModel;
-        public ResourceType ResourceType { get; set; }
+        public string ResourceType { get; set; }
         private double _availableWidth;
         private double _availableHeight;
         ObservableCollection<IExplorerItemNodeViewModel> _allNodes;

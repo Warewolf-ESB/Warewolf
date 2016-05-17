@@ -1077,11 +1077,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 319
 this.ScenarioSetup(scenarioInfo);
 #line 320
-   testRunner.Given(string.Format("I assign the value 10 to a variable \"{0}\"", var), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given(string.Format("I assign the value 10 to a variable \'{0}\'", var), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 321
    testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 322
-   testRunner.Then(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -1116,11 +1116,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\"()\".a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\'()\'.a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
         public virtual void AssignToAInvalidVariable_2()
         {
-            this.AssignToAInvalidVariable("2", "[[rec\"()\".a]]", "AN", ((string[])(null)));
+            this.AssignToAInvalidVariable("2", "[[rec\'()\'.a]]", "AN", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1688,19 +1688,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EvaluatingRecursiveVariableInAGroupCalculation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Evaluating recursive variable in a group calculation", ((string[])(null)));
-#line 434
+#line 433
 this.ScenarioSetup(scenarioInfo);
-#line 435
+#line 434
  testRunner.Given("I assign the value 1 to a variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 436
+#line 435
  testRunner.And("I assign the value \"a\" to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 437
+#line 436
  testRunner.And("I assign the value \"=SUM([[[[b]]]],1)\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 438
+#line 437
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 439
+#line 438
  testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 440
+#line 439
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1719,7 +1719,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[Result]] =",
                         "SUM([[[[b]]]],1) = SUM(1,1)"});
-#line 441
+#line 440
  testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1734,7 +1734,7 @@ this.ScenarioSetup(scenarioInfo);
             table46.AddRow(new string[] {
                         "3",
                         "[[Result]]     =  2"});
-#line 446
+#line 445
  testRunner.And("the debug output as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1746,19 +1746,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EvaluatingRecursiveRecordsetVariableInAGroupCalculation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Evaluating recursive recordset variable in a group calculation", ((string[])(null)));
-#line 452
+#line 451
 this.ScenarioSetup(scenarioInfo);
-#line 453
+#line 452
  testRunner.Given("I assign the value 1 to a variable \"[[rec(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 454
+#line 453
  testRunner.And("I assign the value \"rec(1).a\" to a variable \"[[rec(1).b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 455
+#line 454
  testRunner.And("I assign the value \"=[[[[rec(1).b]]]]+1\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 456
+#line 455
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 457
+#line 456
  testRunner.Then("the value of \"[[Result]]\" equals \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 458
+#line 457
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1777,7 +1777,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[Result]] =",
                         "[[[[rec(1).b]]]]+1 = 1+1"});
-#line 459
+#line 458
  testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1792,7 +1792,7 @@ this.ScenarioSetup(scenarioInfo);
             table48.AddRow(new string[] {
                         "3",
                         "[[Result]] =  2"});
-#line 464
+#line 463
  testRunner.And("the debug output as", ((string)(null)), table48, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1804,17 +1804,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EvaluatingRecursiveInvalidRecordsetVariableInAGroupCalculation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Evaluating recursive invalid recordset variable in a group calculation", ((string[])(null)));
-#line 470
+#line 469
 this.ScenarioSetup(scenarioInfo);
-#line 471
+#line 470
  testRunner.Given("I assign the value 1 to a variable \"[[rec(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 472
+#line 471
  testRunner.And("I assign the value \"rec(1).a*\" to a variable \"[[rec(1).b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 473
+#line 472
  testRunner.And("I assign the value \"=[[[[rec(1).b]]]]+1\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 474
+#line 473
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 475
+#line 474
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1829,7 +1829,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "[[rec(1).b]]   =",
                         "rec(1).a*"});
-#line 476
+#line 475
  testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1841,7 +1841,7 @@ this.ScenarioSetup(scenarioInfo);
             table50.AddRow(new string[] {
                         "2",
                         "[[rec(1).b]] = rec(1).a*"});
-#line 480
+#line 479
  testRunner.And("the debug output as", ((string)(null)), table50, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1853,19 +1853,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignTwoRecordsetValuesToScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign two recordset values to scalar", ((string[])(null)));
-#line 485
+#line 484
 this.ScenarioSetup(scenarioInfo);
-#line 486
+#line 485
  testRunner.Given("I assign the value A to a variable \"[[rec(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 487
+#line 486
  testRunner.And("I assign the value B to a variable \"[[rec(2).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 488
+#line 487
  testRunner.And("I assign the value [[rec(1).a]][[rec(2).a]] to a variable \"[[Scalar]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 489
+#line 488
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 490
+#line 489
  testRunner.Then("the value of \"[[Scalar]]\" equals \"AB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 491
+#line 490
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1884,7 +1884,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[Scalar]] =",
                         "[[rec(1).a]][[rec(2).a]] = AB"});
-#line 492
+#line 491
  testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1899,7 +1899,7 @@ this.ScenarioSetup(scenarioInfo);
             table52.AddRow(new string[] {
                         "3",
                         "[[Scalar]] = AB"});
-#line 497
+#line 496
  testRunner.And("the debug output as", ((string)(null)), table52, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1911,20 +1911,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignTwoRecordsetsAndData()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign two recordsets and data", ((string[])(null)));
-#line 503
+#line 502
 this.ScenarioSetup(scenarioInfo);
-#line 504
+#line 503
  testRunner.Given("I assign the value 1 to a variable \"[[rec(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 505
+#line 504
  testRunner.And("I assign the value 2 to a variable \"[[rec(2).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 506
+#line 505
  testRunner.And("I assign the value Test[[rec(1).a]].Warewolf[[rec(2).a]] to a variable \"[[Lr(1).a" +
                     "]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 507
+#line 506
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 508
+#line 507
  testRunner.Then("the value of \"[[Lr(1).a]]\" equals \"Test1.Warewolf2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 509
+#line 508
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1943,7 +1943,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[Lr(1).a]] =",
                         "Test[[rec(1).a]].Warewolf[[rec(2).a]] = Test1.Warewolf2"});
-#line 510
+#line 509
  testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1958,7 +1958,7 @@ this.ScenarioSetup(scenarioInfo);
             table54.AddRow(new string[] {
                         "3",
                         "[[Lr(1).a]]  = Test1.Warewolf2"});
-#line 515
+#line 514
  testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1970,23 +1970,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignTwoRecordsetWithIndexAsVariableToScalr()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign two recordset with index as variable to scalr", ((string[])(null)));
-#line 521
+#line 520
 this.ScenarioSetup(scenarioInfo);
-#line 522
+#line 521
  testRunner.Given("I assign the value Test to a variable \"[[rec(1).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 523
+#line 522
  testRunner.And("I assign the value Warewolf to a variable \"[[rec(2).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 524
+#line 523
  testRunner.And("I assign the value 1 to a variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 525
+#line 524
  testRunner.And("I assign the value 2 to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 526
+#line 525
  testRunner.And("I assign the value [[rec([[a]]).test]][[rec([[b]]).test]] to a variable \"[[c]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 527
+#line 526
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 528
+#line 527
  testRunner.Then("the value of \"[[c]]\" equals \"TestWarewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 529
+#line 528
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2013,7 +2013,7 @@ this.ScenarioSetup(scenarioInfo);
                         "5",
                         "[[c]]           =",
                         "[[rec([[a]]).test]][[rec([[b]]).test]] = TestWarewolf"});
-#line 530
+#line 529
  testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2034,7 +2034,7 @@ this.ScenarioSetup(scenarioInfo);
             table56.AddRow(new string[] {
                         "5",
                         "[[c]]  = TestWarewolf"});
-#line 537
+#line 536
  testRunner.And("the debug output as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2046,24 +2046,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignTwoRecordsetWithIndexAsRecordsetVariableToScalr()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign two recordset with index as recordset variable to scalr", ((string[])(null)));
-#line 545
+#line 544
 this.ScenarioSetup(scenarioInfo);
-#line 546
+#line 545
  testRunner.Given("I assign the value Test to a variable \"[[rec(1).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 547
+#line 546
  testRunner.And("I assign the value Warewolf to a variable \"[[rec(2).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 548
+#line 547
  testRunner.And("I assign the value 1 to a variable \"[[Index(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 549
+#line 548
  testRunner.And("I assign the value 2 to a variable \"[[Index(2).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 550
+#line 549
  testRunner.And("I assign the value [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] to a " +
                     "variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 551
+#line 550
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 552
+#line 551
  testRunner.Then("the value of \"[[Result]]\" equals \"TestWarewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 553
+#line 552
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2090,7 +2090,7 @@ this.ScenarioSetup(scenarioInfo);
                         "5",
                         "[[Result]]      =",
                         "[[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] = TestWarewolf"});
-#line 554
+#line 553
  testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2111,7 +2111,7 @@ this.ScenarioSetup(scenarioInfo);
             table58.AddRow(new string[] {
                         "5",
                         "[[Result]]  = TestWarewolf"});
-#line 561
+#line 560
  testRunner.And("the debug output as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2123,39 +2123,39 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAdditionOfAllVariablesToScalar2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign addition of all variables to scalar2", ((string[])(null)));
-#line 569
+#line 568
 this.ScenarioSetup(scenarioInfo);
-#line 570
+#line 569
  testRunner.Given("I assign the value 1 to a variable \"[[rec(1).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 571
+#line 570
  testRunner.And("I assign the value 2 to a variable \"[[rec(2).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 572
+#line 571
  testRunner.And("I assign the value 3 to a variable \"[[rec(3).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 573
+#line 572
  testRunner.And("I assign the value 4 to a variable \"[[rec(4).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 574
+#line 573
  testRunner.And("I assign the value 5 to a variable \"[[rec(5).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 575
+#line 574
  testRunner.And("I assign the value 6 to a variable \"[[rec(6).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 576
+#line 575
  testRunner.And("I assign the value 7 to a variable \"[[rec(7).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 577
+#line 576
  testRunner.And("I assign the value 8 to a variable \"[[rec(8).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 578
+#line 577
  testRunner.And("I assign the value 9 to a variable \"[[rec(9).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 579
+#line 578
  testRunner.And("I assign the value 10 to a variable \"[[rec(10).test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 580
+#line 579
  testRunner.And("I assign the value Warewolf to a variable \"[[Lr(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 581
+#line 580
  testRunner.And("I assign the value [[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[" +
                     "rec(5).test]][[rec(6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(1" +
                     "0).test]][[Lr(1).a]] to a variable \"[[new(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 582
+#line 581
  testRunner.And("I assign the value \"[[rec().test]]\" to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 583
+#line 582
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 584
+#line 583
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2216,7 +2216,7 @@ this.ScenarioSetup(scenarioInfo);
                         "13",
                         "[[var]]      =",
                         "[[rec(1).test]] = 10"});
-#line 585
+#line 584
  testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2261,7 +2261,7 @@ this.ScenarioSetup(scenarioInfo);
             table60.AddRow(new string[] {
                         "13",
                         "[[var]]      = 10"});
-#line 600
+#line 599
  testRunner.And("the debug output as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -2270,34 +2270,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1(string no, string variable, string value, string val1, string val2, string validation, string designValidation, string errorOccured, string executionError, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign multiple variables to the end of a recordset1", exampleTags);
-#line 616
+#line 615
 this.ScenarioSetup(scenarioInfo);
+#line 616
+    testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \'{0}\'", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 617
- testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \'{0}\'", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 618
- testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a variable \"[[z]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 619
- testRunner.Given("I have a variable \"[[z]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \'{0}\'", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 620
- testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \'{0}\'", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 621
- testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 622
- testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And(string.Format("I assign the value \'{0}\' to a variable \'{1}\'", value, variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 623
- testRunner.And(string.Format("I assign the value \"{0}\" to a variable \"{1}\"", value, variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 624
  testRunner.When("validating the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 624
+ testRunner.Then(string.Format("validation is \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 625
- testRunner.Then(string.Format("validation is \"{0}\"", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And(string.Format("validation message is \'{0}\'", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 626
- testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 627
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 628
+#line 627
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 629
- testRunner.And(string.Format("execution error message will be \"{0}\"", executionError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 628
+ testRunner.And(string.Format("execution error message will be \'{0}\'", executionError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2420,12 +2420,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "Test")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-[[mr()]] does not exist in your variable list")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-[[mr()]] does not exist in your variable list")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-[[mr()]] does not exist in your variable list")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-[[mr()]] does not exist in your variable list")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_7()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("7", "[[mr().[[z]]]]", "Test", "Test", "a", "True", "\"Variable\"-[[mr()]] does not exist in your variable list", "AN", "1.\"Variable\"-[[mr()]] does not exist in your variable list", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("7", "[[mr().[[z]]]]", "Test", "Test", "a", "True", "\'Variable\'-[[mr()]] does not exist in your variable list", "AN", "1.\'Variable\'-[[mr()]] does not exist in your variable list", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2438,12 +2438,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\" cannot be empty")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\' cannot be empty")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\" cannot be empty")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\' cannot be empty")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_8()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("8", "\"\"", "Test", "\"\"", "\"\"", "True", "\"Variable\" cannot be empty", "AN", "1.\"Variable\" cannot be empty", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("8", "\"\"", "Test", "\"\"", "\"\"", "True", "\'Variable\' cannot be empty", "AN", "1.\'Variable\' cannot be empty", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2456,12 +2456,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Recordset field name a b contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Recordset field name a b contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Recordset field name a b contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Recordset field name a b contains invalid character(s)")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_9()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("9", "[[rec().a b]]", "Test", "\"\"", "\"\"", "True", "\"Variable\"-Recordset field name a b contains invalid character(s)", "AN", "1.\"Variable\"-Recordset field name a b contains invalid character(s)", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("9", "[[rec().a b]]", "Test", "\"\"", "\"\"", "True", "\'Variable\'-Recordset field name a b contains invalid character(s)", "AN", "1.\'Variable\'-Recordset field name a b contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2474,12 +2474,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Recordset field name (**) contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Recordset field name (**) contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Recordset field name (**) contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Recordset field name (**) contains invalid character(s)")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_10()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("10", "[[rec(**).a]]", "Test", "\"\"", "\"\"", "True", "\"Variable\"-Recordset field name (**) contains invalid character(s)", "AN", "1.\"Variable\"-Recordset field name (**) contains invalid character(s)", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("10", "[[rec(**).a]]", "Test", "\"\"", "\"\"", "True", "\'Variable\'-Recordset field name (**) contains invalid character(s)", "AN", "1.\'Variable\'-Recordset field name (**) contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2492,12 +2492,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "Tes")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "t")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Recordset field name [[=+]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Recordset field name [[=+]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Recordset field name [[=+]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Recordset field name [[=+]] contains invalid character(s)")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_11()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("11", "[[=[[a]]+[[b]]]]", "Test", "Tes", "t", "True", "\"Variable\"-Recordset field name [[=+]] contains invalid character(s)", "AN", "1.\"Variable\"-Recordset field name [[=+]] contains invalid character(s)", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("11", "[[=[[a]]+[[b]]]]", "Test", "Tes", "t", "True", "\'Variable\'-Recordset field name [[=+]] contains invalid character(s)", "AN", "1.\'Variable\'-Recordset field name [[=+]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2546,12 +2546,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "rec(10).a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_14()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("14", "[[[[rec(1).a]]]]]", "Test", "rec(10).a", "\"\"", "True", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match", "AN", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("14", "[[[[rec(1).a]]]]]", "Test", "rec(10).a", "\"\"", "True", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match", "AN", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2564,12 +2564,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "rec(10).a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_15()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("15", "[[[[a]]]]]", "Test", "rec(10).a", "\"\"", "True", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match", "AN", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("15", "[[[[a]]]]]", "Test", "rec(10).a", "\"\"", "True", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match", "AN", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2582,12 +2582,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "rec(10).a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_16()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("16", "[[[[[a]]]]", "Test", "rec(10).a", "\"\"", "True", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match", "AN", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("16", "[[[[[a]]]]", "Test", "rec(10).a", "\"\"", "True", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match", "AN", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2600,12 +2600,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "rec(10).a")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_17()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("17", "[[[[[rec(1).a]]]]", "Test", "rec(10).a", "\"\"", "True", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match", "AN", "1.\"Variable\" - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("17", "[[[[[rec(1).a]]]]", "Test", "rec(10).a", "\"\"", "True", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match", "AN", "1.\'Variable\' - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2672,12 +2672,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Variable [[]] is missing name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Variable [[]] is missing name")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.[[]]-Variable [[]] is missing a name")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_21()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("21", "[[]]", "Test", "\"\"", "\"\"", "True", "\"Variable\"-Variable [[]] is missing name", "AN", "1.[[]]-Variable [[]] is missing a name", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("21", "[[]]", "Test", "\"\"", "\"\"", "True", "\'Variable\'-Variable [[]] is missing name", "AN", "1.[[]]-Variable [[]] is missing a name", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2708,12 +2708,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Variable name [[a@]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Variable name [[a@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Variable name [[a@]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Variable name [[a@]] contains invalid character(s)")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_23()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("23", "[[a@]]", "Test", "\"\"", "\"\"", "True", "\"Variable\"-Variable name [[a@]] contains invalid character(s)", "AN", "1.\"Variable\"-Variable name [[a@]] contains invalid character(s)", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("23", "[[a@]]", "Test", "\"\"", "\"\"", "True", "\'Variable\'-Variable name [[a@]] contains invalid character(s)", "AN", "1.\'Variable\'-Variable name [[a@]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2726,12 +2726,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Variable name [[a b]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Variable name [[a b]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Variable name [[a b]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Variable name [[a b]] contains invalid character(s)")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_24()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("24", "[[a b]]", "Test", "\"\"", "\"\"", "True", "\"Variable\"-Variable name [[a b]] contains invalid character(s)", "AN", "1.\"Variable\"-Variable name [[a b]] contains invalid character(s)", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("24", "[[a b]]", "Test", "\"\"", "\"\"", "True", "\'Variable\'-Variable name [[a b]] contains invalid character(s)", "AN", "1.\'Variable\'-Variable name [[a b]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2762,12 +2762,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "False")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Recordset field name a! contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Recordset field name a! contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Recordset field name a b contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Recordset field name a b contains invalid character(s)")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_26()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("26", "[[rec().a!]]", "Test", "\"\"", "\"\"", "False", "\"Variable\"-Recordset field name a! contains invalid character(s)", "AN", "1.\"Variable\"-Recordset field name a b contains invalid character(s)", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("26", "[[rec().a!]]", "Test", "\"\"", "\"\"", "False", "\'Variable\'-Recordset field name a! contains invalid character(s)", "AN", "1.\'Variable\'-Recordset field name a b contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2780,12 +2780,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Invalid expression: opening and closing brackets don\'t match")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_27()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("27", "[[rec().a]]]]", "Test", "\"\"", "\"\"", "True", "\"Variable\"-Invalid expression: opening and closing brackets don\"t match", "AN", "1.\"Variable\"-Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("27", "[[rec().a]]]]", "Test", "\"\"", "\"\"", "True", "\'Variable\'-Invalid expression: opening and closing brackets don\'t match", "AN", "1.\'Variable\'-Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -3170,12 +3170,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Validation", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"Variable\"-Invalid Region [[rec().a]]+[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\'Variable\'-Invalid Region [[rec().a]]+[[a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\"Variable\"-Invalid Region [[rec().a]]+[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ExecutionError", "1.\'Variable\'-Invalid Region [[rec().a]]+[[a]]")]
         public virtual void AssignMultipleVariablesToTheEndOfARecordset1_48()
         {
-            this.AssignMultipleVariablesToTheEndOfARecordset1("48", "[[rec().a]]+[[a]]", "10", "0", "0", "True", "\"Variable\"-Invalid Region [[rec().a]]+[[a]]", "AN", "1.\"Variable\"-Invalid Region [[rec().a]]+[[a]]", ((string[])(null)));
+            this.AssignMultipleVariablesToTheEndOfARecordset1("48", "[[rec().a]]+[[a]]", "10", "0", "0", "True", "\'Variable\'-Invalid Region [[rec().a]]+[[a]]", "AN", "1.\'Variable\'-Invalid Region [[rec().a]]+[[a]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -3238,19 +3238,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAVariableToAnotherVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a variable to another variable", ((string[])(null)));
-#line 685
+#line 684
 this.ScenarioSetup(scenarioInfo);
-#line 686
+#line 685
  testRunner.Given("I assign the value \"a\" to a variable \"[[x]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 687
+#line 686
  testRunner.And("I assign the value \"x\" to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 688
+#line 687
  testRunner.And("I assign the value [[b]] to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 689
+#line 688
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 690
+#line 689
  testRunner.Then("the value of \"[[var]]\" equals \"x\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 691
+#line 690
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3269,7 +3269,7 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "[[var]] =",
                         "[[b]] = x"});
-#line 692
+#line 691
  testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3284,8 +3284,75 @@ this.ScenarioSetup(scenarioInfo);
             table62.AddRow(new string[] {
                         "3",
                         "[[var]] = x"});
-#line 697
+#line 696
  testRunner.And("the debug output as", ((string)(null)), table62, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign values to recordsets")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        public virtual void AssignValuesToRecordsets()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign values to recordsets", ((string[])(null)));
+#line 703
+this.ScenarioSetup(scenarioInfo);
+#line 704
+ testRunner.Given("I assign the value 1 to a variable \"[[AB().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 705
+ testRunner.And("I assign the value a to a variable \"[[CD().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 706
+ testRunner.And("I assign the value b to a variable \"[[CD().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 707
+ testRunner.And("I assign the value 2 to a variable \"[[AB().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 708
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 709
+ testRunner.Then("the value of \"[[AB(2).a]]\" equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 710
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table63.AddRow(new string[] {
+                        "1",
+                        "[[AB().a]]  =",
+                        "1"});
+            table63.AddRow(new string[] {
+                        "2",
+                        "[[CD().a]]  =",
+                        "a"});
+            table63.AddRow(new string[] {
+                        "3",
+                        "[[CD().a]]  =",
+                        "b"});
+            table63.AddRow(new string[] {
+                        "4",
+                        "[[AB().a]]  =",
+                        "2"});
+#line 711
+ testRunner.And("the debug inputs as", ((string)(null)), table63, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table64.AddRow(new string[] {
+                        "1",
+                        "[[AB(1).a]] = 1"});
+            table64.AddRow(new string[] {
+                        "2",
+                        "[[CD(1).a]] = a"});
+            table64.AddRow(new string[] {
+                        "3",
+                        "[[CD(2).a]] = b"});
+            table64.AddRow(new string[] {
+                        "4",
+                        "[[AB(2).a]] = 2"});
+#line 717
+ testRunner.And("the debug output as", ((string)(null)), table64, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3296,15 +3363,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAVariableThatDoesNotExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a Variable That Does Not Exist", ((string[])(null)));
-#line 704
+#line 726
 this.ScenarioSetup(scenarioInfo);
-#line 705
+#line 727
  testRunner.Given("I assign the value \"[[var]]\" to a variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 706
+#line 728
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 707
+#line 729
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 708
+#line 730
  testRunner.And("the execution has \"Scalar value { var } is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3316,21 +3383,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssigningVariablesWithSpaceAfterClosingBrace()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assigning variables with space after closing brace", ((string[])(null)));
-#line 711
+#line 732
 this.ScenarioSetup(scenarioInfo);
-#line 712
+#line 733
  testRunner.Given("I assign the value \"10\" to a variable \"[[x]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 713
+#line 734
  testRunner.And("I add \" \" after the closing bracket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 714
+#line 735
  testRunner.Then("additional closing brackets are added to the variable \"[[x]] ]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 715
+#line 736
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 716
+#line 737
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 717
+#line 738
  testRunner.And("the execution has \"Variable - Invalid expression: opening and closing brackets do" +
-                    "n\"t match\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "n\'t match\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3338,20 +3405,22 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Removing variable and value from assign")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void RemovingVariableAndValueFromAssign()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Removing variable and value from assign", ((string[])(null)));
-#line 720
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Removing variable and value from assign", new string[] {
+                        "ignore"});
+#line 741
 this.ScenarioSetup(scenarioInfo);
-#line 721
+#line 742
  testRunner.Given("I assign the value \"10\" to a variable \"[[x]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 722
+#line 743
  testRunner.And("I assign the value \"20\" to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 723
+#line 744
  testRunner.And("I assign the value \"30\" to a variable \"[[variable]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 724
- testRunner.When("I remove \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 725
+#line 745
+ testRunner.When("I remove \"[[var]]\" equals \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 746
  testRunner.Then("the assign tool row index is update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -3359,24 +3428,30 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void AssigningValueToAComplexType(string @object, string value, string result, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assigning value to a complex type", exampleTags);
-#line 729
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assigning value to a complex type", @__tags);
+#line 751
 this.ScenarioSetup(scenarioInfo);
-#line 730
+#line 752
  testRunner.Given("I assign the value \"<value>\" to a variable \"<object>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 731
+#line 753
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 732
+#line 754
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table63.AddRow(new string[] {
+            table65.AddRow(new string[] {
                         "1",
                         string.Format("{0}", result)});
-#line 733
- testRunner.And("the debug output as", ((string)(null)), table63, "And ");
+#line 755
+ testRunner.And("the debug output as", ((string)(null)), table65, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3384,6 +3459,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent().parent().NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "4")]
@@ -3396,6 +3472,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent().parent(1).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "6")]
@@ -3408,6 +3485,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent().parent(*).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "10")]
@@ -3420,6 +3498,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent().parent([[int]]).NumberOfChildren]],[[int]] = 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "4")]
@@ -3432,6 +3511,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent(*).parent(1).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "7")]
@@ -3444,6 +3524,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent(*).parent(*).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "14")]
@@ -3456,6 +3537,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent([[rec().var]]).parent(*).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "4")]
@@ -3468,6 +3550,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent([[rec().var().set]]).parent(*).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "4")]
@@ -3483,15 +3566,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAVariableThatIsNullToAnotherVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a Variable That is Null to another variable", ((string[])(null)));
-#line 746
+#line 768
 this.ScenarioSetup(scenarioInfo);
-#line 747
+#line 769
  testRunner.Given("I have a variable \"[[b]]\" with a value of \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 748
+#line 770
  testRunner.And("I assign the value \"[[b]]\" to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 749
+#line 771
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 750
+#line 772
  testRunner.Then("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -3499,24 +3582,30 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void AssigningValueToAComplexTypeThatIsIncorrectlyFormatted(string @object, string value, string result, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assigning value to a complex type that is incorrectly formatted", exampleTags);
-#line 753
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assigning value to a complex type that is incorrectly formatted", @__tags);
+#line 776
 this.ScenarioSetup(scenarioInfo);
-#line 754
+#line 777
  testRunner.Given("I assign the value \"<value>\" to a variable \"<object>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 755
+#line 778
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 756
+#line 779
  testRunner.And("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table64.AddRow(new string[] {
+            table66.AddRow(new string[] {
                         "1",
                         string.Format("{0}", result)});
-#line 757
- testRunner.And("the debug output as", ((string)(null)), table64, "And ");
+#line 780
+ testRunner.And("the debug output as", ((string)(null)), table66, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3524,6 +3613,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type that is incorrectly formatted")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[granparent.parent().NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent.parent().NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "4")]
@@ -3536,6 +3626,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type that is incorrectly formatted")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[granparent().parent(1).NumberOfChildren()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent().parent(1).NumberOfChildren()]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "6")]
@@ -3548,6 +3639,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assigning value to a complex type that is incorrectly formatted")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[granparent(Test).parent(*).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Object", "[[granparent(Test).parent(*).NumberOfChildren]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "10")]

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.PopupController;
@@ -122,22 +121,30 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var environmentViewModel = explorerView.OpenEnvironmentNode(serverName);
         }
 
-        [Then(@"the option to ""(.*)"" is ""(.*)"" on server ""(.*)""")]
+        [Then(@"the option to ""(.*)"" is ""(.*)""")]
+        public void ThenTheOptionToIs(string servername, string permissions)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
+            var environmentViewModel = explorerView.OpenEnvironment(servername);
+            Assert.IsTrue(environmentViewModel.AsList().Where(a=> a.ResourceType != "Folder").All(a=>a.CanView &&!a.CanEdit && !a.CanExecute));
+        }
+
+        [Then(@"the option to ""(.*)"" is ""(.*)"" on server '(.*)'")]
         public void ThenTheOptionToIsOnServer(string permission, string state, string servername)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenEnvironment(servername);
-            var resources = environmentViewModel.AsList().Where(a => a.ResourceType != ResourceType.Folder && a.ResourceType != ResourceType.DbService && a.ResourceType != ResourceType.PluginService && a.ResourceType != ResourceType.WebService);
-            var resources2 = environmentViewModel.AsList().Where(a => a.ResourceType == ResourceType.WorkflowService).ToList();
+            var resources = environmentViewModel.AsList().Where(a => a.ResourceType != "Folder" && a.ResourceType != "DbService" && a.ResourceType != "PluginService" && a.ResourceType != "WebService");
+            var resources2 = environmentViewModel.AsList().Where(a => a.ResourceType == "WorkflowService").ToList();
             resources2.Clear();
             if (state.ToLower().Contains("enabled"))
             {
                 if (permission.ToLower().Contains("view"))
                     Assert.IsTrue(resources.All(a => a.CanView));
                 if (permission.ToLower().Contains("execute"))
-                    Assert.IsTrue(resources.Where(a => a.ResourceType == ResourceType.WorkflowService).All(a => a.CanExecute));
+                    Assert.IsTrue(resources.Where(a=> a.ResourceType == "WorkflowService").All(a => a.CanExecute));
                 if (permission.ToLower().Contains("debug"))
-                    Assert.IsTrue(resources.Where(a => a.ResourceType == ResourceType.WorkflowService).All(a => a.CanExecute));
+                    Assert.IsTrue(resources.Where(a => a.ResourceType == "WorkflowService").All(a => a.CanExecute));
             }
             if (state.ToLower().Contains("disabled"))
             {
@@ -202,8 +209,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenItem(resourceName, folderName);
-            Assert.IsNotNull(environmentViewModel);
-        }
+            Assert.IsNotNull(environmentViewModel);            
+        }       
 
         [When(@"""(.*)"" tab is opened")]
         [Then(@"""(.*)"" tab is opened")]
@@ -314,7 +321,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
                     found = true;
             
             }
-            Assert.IsTrue(found);
+           Assert.IsTrue(found);
         }
 
         [Then(@"I setup (.*) resources in ""(.*)""")]
@@ -377,7 +384,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
                     var itm = node1.Data as ExplorerItemViewModel;
                     // ReSharper disable PossibleNullReferenceException
                     Assert.IsFalse(itm.CanExecute);
-                    Assert.AreEqual(itm.ResourceType,ResourceType.Version);
+                    Assert.AreEqual(itm.ResourceType,"Version");
                     Assert.IsFalse(itm.CanEdit);
                     // ReSharper restore PossibleNullReferenceException
                 }

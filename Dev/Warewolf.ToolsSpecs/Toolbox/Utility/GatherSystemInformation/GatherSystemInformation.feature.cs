@@ -719,7 +719,7 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void ExecutingWithIncorrectRecordsets(string input, string error, string[] exampleTags)
+        public virtual void ExecutingWithIncorrectRecordsets(string input, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing with Incorrect Recordsets", exampleTags);
 #line 213
@@ -731,7 +731,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 216
  testRunner.Then("the value of the variable \"[[my(2).roles]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 217
- testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \'AN\' error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -741,10 +741,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec&^[a]]().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec&^[a]]().a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "[[rec&^[a]]().a]] is not a valid variable")]
         public virtual void ExecutingWithIncorrectRecordsets_RecA_A()
         {
-            this.ExecutingWithIncorrectRecordsets("[[rec&^[a]]().a]]", "[[rec&^[a]]().a]] is not a valid variable", ((string[])(null)));
+            this.ExecutingWithIncorrectRecordsets("[[rec&^[a]]().a]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -752,10 +751,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "[[]] is not a valid variable")]
         public virtual void ExecutingWithIncorrectRecordsets_()
         {
-            this.ExecutingWithIncorrectRecordsets("[[]]", "[[]] is not a valid variable", ((string[])(null)));
+            this.ExecutingWithIncorrectRecordsets("[[]]", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -763,24 +761,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec&^]][[rec&^]] is not a valid variable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec&^]][[rec&^]] is not a valid variable")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "")]
         public virtual void ExecutingWithIncorrectRecordsets_RecRecIsNotAValidVariable()
         {
-            this.ExecutingWithIncorrectRecordsets("[[rec&^]][[rec&^]] is not a valid variable", "", ((string[])(null)));
+            this.ExecutingWithIncorrectRecordsets("[[rec&^]][[rec&^]] is not a valid variable", ((string[])(null)));
         }
         
         public virtual void AssignADateTimeIntoAComplexTypes(string @object, string type, string error, string output, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a DateTime into a complex types", exampleTags);
-#line 224
-this.ScenarioSetup(scenarioInfo);
-#line 225
- testRunner.Given(string.Format("I have a variable \"{0}\" and I selected \"{1}\"", @object, type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a DateTime into a complex types", @__tags);
 #line 226
- testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 227
- testRunner.Then(string.Format("the value of the variable \"{0}\" is a valid \"DateTime\"", @object), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given(string.Format("I have a variable \'{0}\' and I selected \'{1}\'", @object, type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 228
+ testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 229
+ testRunner.Then(string.Format("the value of the variable \'{0}\' is a valid \"DateTime\"", @object), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 230
  testRunner.And(string.Format("the execution has \"{0}\" error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -793,7 +796,7 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", @object),
                         string.Format("{0}", type),
                         string.Format("{0}", output)});
-#line 229
+#line 231
  testRunner.And("the debug output as", ((string)(null)), table23, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -802,6 +805,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a DateTime into a complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(1).set().value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:object", "[[rec(1).set().value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "DateTime")]
@@ -815,6 +819,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a DateTime into a complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "GatherSystemInformation")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec(*).set([[int]]).value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:object", "[[rec(*).set([[int]]).value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "DateTime")]

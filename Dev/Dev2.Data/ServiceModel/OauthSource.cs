@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
     // ReSharper disable once UnusedMember.Global
-    public class OauthSource : Resource
+    public class OauthSource : Resource, IResourceSource
     {
         #region Properties
 
@@ -26,7 +26,7 @@ namespace Dev2.Data.ServiceModel
         public OauthSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.OauthSource;
+            ResourceType = "OauthSource";
             Secret = string.Empty;
             Key = string.Empty;
         }
@@ -34,7 +34,7 @@ namespace Dev2.Data.ServiceModel
         public OauthSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.OauthSource;
+            ResourceType = "OauthSource";
 
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -67,11 +67,54 @@ namespace Dev2.Data.ServiceModel
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString)),
-                new XAttribute("Type", ResourceType),
+                new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
 
             return result;
+        }
+
+        public override bool IsSource
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsReservedService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsServer
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
         }
 
         #endregion

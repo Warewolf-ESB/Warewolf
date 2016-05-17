@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Email"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -52,7 +52,7 @@
                       SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding EmailSources}"
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"
+                      ToolTip="{x:Static languages:Core.EmailToolTipMailSource}"
                       DisplayMemberPath="ResourceName">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpMailSource}" DataContext="{Binding}" />
@@ -79,7 +79,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="Account or email address"
-                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipTo}"
+                                ToolTip="{x:Static languages:Core.EmailToolTipTo}"
                                 Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -98,7 +98,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipSubject}"
+                                ToolTip="{x:Static languages:Core.EmailToolTipSubject}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_subjecttxt_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpSubject}" DataContext="{Binding}" />
@@ -112,7 +112,7 @@
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Body" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
-                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipBody}"
+                                ToolTip="{x:Static languages:Core.EmailToolTipBody}"
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowMultilinePaste="True"
                                 Margin="{StaticResource ControlBorderTop}"
@@ -144,7 +144,7 @@
                                 Grid.Row="4"                               
                                 DefaultText="[[EmailSuccess]]"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipResult}"
+                                ToolTip="{x:Static languages:Core.EmailToolTipResult}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

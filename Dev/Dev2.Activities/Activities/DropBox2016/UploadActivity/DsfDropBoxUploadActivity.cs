@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
-using Dev2.Activities.DropBox2016.Result;
+﻿using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Dropbox.Api;
 using Dropbox.Api.Files;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    //[ToolDescriptorInfo("Dropbox", "Dropbox Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxUploadActivity : DsfBaseActivity
     {
         private DropboxClient _client;
@@ -33,14 +36,17 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public OauthSource SelectedSource { get; set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
+
         public bool OverWriteMode
         {
             get
@@ -49,10 +55,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             set
             {
-                _addMode = false;
+                _addMode = !value;
                 _overWriteMode = value;
             }
         }
+
         public bool AddMode
         {
             get
@@ -61,10 +68,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             set
             {
-                _overWriteMode = false;
+                _overWriteMode = !value;
                 _addMode = value;
             }
         }
+
         // ReSharper disable once MemberCanBeProtected.Global
 
         [ExcludeFromCodeCoverage]
@@ -72,7 +80,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             if (_client != null)
             {
-
                 return _client;
             }
             var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
@@ -107,10 +114,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             base.ExecuteTool(dataObject, update);
         }
 
-        #endregion
+        #endregion Overrides of DsfBaseActivity
 
         [ExcludeFromCodeCoverage]
-        //All units used here has been unit tested seperately 
+        //All units used here has been unit tested seperately
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var writeMode = GetWriteMode();
@@ -135,7 +142,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public override string DisplayName { get; set; }
 
-        #endregion
+        #endregion Overrides of DsfActivity
 
         public WriteMode GetWriteMode()
         {
@@ -144,5 +151,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             return WriteMode.Add.Instance;
         }
     }
-        #endregion
+
+    #endregion Overrides of DsfActivity
 }
