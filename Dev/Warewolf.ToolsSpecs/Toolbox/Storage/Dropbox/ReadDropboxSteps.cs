@@ -50,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
 
-            var viewModel = new DropBoxFileListDesignerViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            var viewModel = new DropBoxFileListDesignerViewModel(modelItem, mockEventAggregator.Object);
             ScenarioContext.Current.Add("viewModel", viewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
             ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
