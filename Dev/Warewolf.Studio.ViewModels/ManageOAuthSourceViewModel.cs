@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void GetAuthTokens(Uri uri)
+        public void GetAuthTokens(Uri uri)
         {
             if (uri != null)
             {
@@ -152,6 +152,12 @@ namespace Warewolf.Studio.ViewModels
                     }
                     else
                     {
+                        TestPassed = false;
+                        TestFailed = true;
+                        TestMessage = "Authentication failed";
+                        AccessToken = string.Empty;
+                        HasAuthenticated = false;
+
                         string errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
 
                         TestMessage = errorDescription ?? "Authentication failed";
@@ -181,7 +187,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _accessToken;
             }
-            private set
+            set
             {
                 _accessToken = value;
                 OnPropertyChanged(() => AccessToken);
@@ -299,7 +305,7 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
-            private set
+            set
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
