@@ -19,7 +19,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -77,10 +76,10 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Execute Test---------------------------
             var connectControlSingleton = new Mock<IConnectControlSingleton>().Object;
             var explorerItemModel = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object);
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
             //------------Assert Results-------------------------
             Assert.IsNotNull(explorerItemModel);
             Assert.IsNotNull(explorerItemModel.Children);
@@ -95,12 +94,12 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Execute Test---------------------------
             var connectControlSingleton = new Mock<IConnectControlSingleton>().Object;
             var explorerItemModel = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object);
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Version });
-            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Version });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Version" });
+            explorerItemModel.Children.Add(new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Version" });
             //------------Assert Results-------------------------
             Assert.IsNotNull(explorerItemModel);
             Assert.IsNotNull(explorerItemModel.Children);
@@ -126,7 +125,7 @@ namespace Dev2.Core.Tests.ModelTests
             explorerItemModel.Permissions = Permissions.Contribute;
             explorerItemModel.ResourceId = Guid.NewGuid();
             explorerItemModel.ResourcePath = "TestResourcePath";
-            explorerItemModel.ResourceType = ResourceType.PluginService;
+            explorerItemModel.ResourceType = "PluginService";
             explorerItemModel.VersionInfo = new VersionInfo { VersionNumber = "2", Reason = "Save", ResourceId = Guid.NewGuid() };
 
             var properties = typeof(ExplorerItemModel).GetProperties();
@@ -134,7 +133,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Execute Test---------------------------
             var clonedItemModel = explorerItemModel.Clone(connectControlSingleton, new Mock<IStudioResourceRepository>().Object);
             //------------Assert Results-------------------------
-            Assert.AreEqual(69, properties.Length);
+            Assert.AreEqual(75, properties.Length);
             Assert.AreEqual(explorerItemModel.DisplayName, clonedItemModel.DisplayName);
             Assert.AreEqual(explorerItemModel.Children.Count, clonedItemModel.Children.Count);
             Assert.AreEqual(explorerItemModel.CanConnect, clonedItemModel.CanConnect);
@@ -166,133 +165,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestWorkflow1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsService = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.WorkflowService, explorerItemModel.ResourceType);
-            Assert.AreEqual(false, explorerItemModel.CanAddResoure);
-            Assert.AreEqual(true, explorerItemModel.CanDebug);
-            Assert.AreEqual(true, explorerItemModel.CanRename);
-            Assert.AreEqual(false, explorerItemModel.CanRemove);
-            Assert.AreEqual(true, explorerItemModel.CanDelete);
-            Assert.AreEqual(true, explorerItemModel.CanEdit);
-            Assert.AreEqual(true, explorerItemModel.CanExecute);
-            Assert.AreEqual(false, explorerItemModel.CanConnect);
-            Assert.AreEqual(true, explorerItemModel.CanDeploy);
-            Assert.AreEqual(true, explorerItemModel.CanShowDependencies);
-            Assert.AreEqual(true, explorerItemModel.CanSelectDependencies);
-            Assert.AreEqual(false, explorerItemModel.CanDisconnect);
-            Assert.AreEqual(false, explorerItemModel.IsRenaming);
-            Assert.AreEqual(true, explorerItemModel.IsConnected);
-            Assert.AreEqual(false, explorerItemModel.IsExplorerSelected);
-            Assert.AreEqual(false, explorerItemModel.IsResourcePickerSelected);
-            Assert.AreEqual(false, explorerItemModel.IsDeploySourceSelected);
-            Assert.AreEqual(false, explorerItemModel.IsDeployTargetSelected);
-            Assert.AreEqual(false, explorerItemModel.IsExplorerExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
-            Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
-        }
-
-
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("ExplorerItemModel_Convert")]
-        // ReSharper disable InconsistentNaming
-        public void ExplorerItemModel_ContructorTest_DbService_PropertiesSetCorrectly()
-        // ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            const string name = "TestDbService1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.DbService, Permissions = Permissions.Administrator, DisplayName = name };
-            //------------Assert Results-------------------------
-            Assert.AreEqual(name, explorerItemModel.DisplayName);
-            Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.DbService, explorerItemModel.ResourceType);
-            Assert.AreEqual(false, explorerItemModel.CanAddResoure);
-            Assert.AreEqual(true, explorerItemModel.CanDebug);
-            Assert.AreEqual(true, explorerItemModel.CanRename);
-            Assert.AreEqual(false, explorerItemModel.CanRemove);
-            Assert.AreEqual(true, explorerItemModel.CanDelete);
-            Assert.AreEqual(true, explorerItemModel.CanEdit);
-            Assert.AreEqual(true, explorerItemModel.CanExecute);
-            Assert.AreEqual(false, explorerItemModel.CanConnect);
-            Assert.AreEqual(true, explorerItemModel.CanDeploy);
-            Assert.AreEqual(true, explorerItemModel.CanShowDependencies);
-            Assert.AreEqual(true, explorerItemModel.CanSelectDependencies);
-            Assert.AreEqual(false, explorerItemModel.CanDisconnect);
-            Assert.AreEqual(false, explorerItemModel.IsRenaming);
-            Assert.AreEqual(true, explorerItemModel.IsConnected);
-            Assert.AreEqual(false, explorerItemModel.IsExplorerSelected);
-            Assert.AreEqual(false, explorerItemModel.IsResourcePickerSelected);
-            Assert.AreEqual(false, explorerItemModel.IsDeploySourceSelected);
-            Assert.AreEqual(false, explorerItemModel.IsDeployTargetSelected);
-            Assert.AreEqual(false, explorerItemModel.IsExplorerExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
-            Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("ExplorerItemModel_Convert")]
-        // ReSharper disable InconsistentNaming
-        public void ExplorerItemModel_ContructorTest_PluginService_PropertiesSetCorrectly()
-        // ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            const string name = "TestPluginService1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.PluginService, Permissions = Permissions.Administrator, DisplayName = name };
-            //------------Assert Results-------------------------
-            Assert.AreEqual(name, explorerItemModel.DisplayName);
-            Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.PluginService, explorerItemModel.ResourceType);
-            Assert.AreEqual(false, explorerItemModel.CanAddResoure);
-            Assert.AreEqual(true, explorerItemModel.CanDebug);
-            Assert.AreEqual(true, explorerItemModel.CanRename);
-            Assert.AreEqual(false, explorerItemModel.CanRemove);
-            Assert.AreEqual(true, explorerItemModel.CanDelete);
-            Assert.AreEqual(true, explorerItemModel.CanEdit);
-            Assert.AreEqual(true, explorerItemModel.CanExecute);
-            Assert.AreEqual(false, explorerItemModel.CanConnect);
-            Assert.AreEqual(true, explorerItemModel.CanDeploy);
-            Assert.AreEqual(true, explorerItemModel.CanShowDependencies);
-            Assert.AreEqual(true, explorerItemModel.CanSelectDependencies);
-            Assert.AreEqual(false, explorerItemModel.CanDisconnect);
-            Assert.AreEqual(false, explorerItemModel.IsRenaming);
-            Assert.AreEqual(true, explorerItemModel.IsConnected);
-            Assert.AreEqual(false, explorerItemModel.IsExplorerSelected);
-            Assert.AreEqual(false, explorerItemModel.IsResourcePickerSelected);
-            Assert.AreEqual(false, explorerItemModel.IsDeploySourceSelected);
-            Assert.AreEqual(false, explorerItemModel.IsDeployTargetSelected);
-            Assert.AreEqual(false, explorerItemModel.IsExplorerExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
-            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
-            Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("ExplorerItemModel_Convert")]
-        // ReSharper disable InconsistentNaming
-        public void ExplorerItemModel_ContructorTest_WebService_PropertiesSetCorrectly()
-        // ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-            const string name = "TestWebService1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WebService, Permissions = Permissions.Administrator, DisplayName = name };
-            //------------Assert Results-------------------------
-            Assert.AreEqual(name, explorerItemModel.DisplayName);
-            Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.WebService, explorerItemModel.ResourceType);
+            Assert.AreEqual("WorkflowService", explorerItemModel.ResourceType);
             Assert.AreEqual(false, explorerItemModel.CanAddResoure);
             Assert.AreEqual(true, explorerItemModel.CanDebug);
             Assert.AreEqual(true, explorerItemModel.CanRename);
@@ -328,11 +206,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestDbSource1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.DbSource, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "DbSource", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsSource = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.DbSource, explorerItemModel.ResourceType);
+            Assert.AreEqual("DbSource", explorerItemModel.ResourceType);
             Assert.AreEqual(false, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(true, explorerItemModel.CanRename);
@@ -368,11 +247,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestPluginSource1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.PluginSource, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginSource", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsSource = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.PluginSource, explorerItemModel.ResourceType);
+            Assert.AreEqual("PluginSource", explorerItemModel.ResourceType);
             Assert.AreEqual(false, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(true, explorerItemModel.CanRename);
@@ -407,11 +287,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestWebSource1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WebSource, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebSource", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsSource = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.WebSource, explorerItemModel.ResourceType);
+            Assert.AreEqual("WebSource", explorerItemModel.ResourceType);
             Assert.AreEqual(false, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(true, explorerItemModel.CanRename);
@@ -447,11 +328,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestEmailSource1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.EmailSource, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "EmailSource", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsSource = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.EmailSource, explorerItemModel.ResourceType);
+            Assert.AreEqual("EmailSource", explorerItemModel.ResourceType);
             Assert.AreEqual(false, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(true, explorerItemModel.CanRename);
@@ -487,11 +369,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestServerSource1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.ServerSource, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "ServerSource", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsSource = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.ServerSource, explorerItemModel.ResourceType);
+            Assert.AreEqual("ServerSource", explorerItemModel.ResourceType);
             Assert.AreEqual(false, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(true, explorerItemModel.CanRename);
@@ -527,11 +410,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestFolder1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Folder, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Folder", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsFolder = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.Folder, explorerItemModel.ResourceType);
+            Assert.AreEqual("Folder", explorerItemModel.ResourceType);
             Assert.AreEqual(true, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(true, explorerItemModel.CanRename);
@@ -566,11 +450,12 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestServer1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.Administrator, DisplayName = name };
+            explorerItemModel.IsServer = true;
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.Server, explorerItemModel.ResourceType);
+            Assert.AreEqual("Server", explorerItemModel.ResourceType);
             Assert.AreEqual(true, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(false, explorerItemModel.CanRename);
@@ -606,11 +491,11 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             const string name = "TestReservedService1";
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.ReservedService, Permissions = Permissions.Administrator, DisplayName = name };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "ReservedService", Permissions = Permissions.Administrator, DisplayName = name };
             //------------Assert Results-------------------------
             Assert.AreEqual(name, explorerItemModel.DisplayName);
             Assert.AreEqual(Permissions.Administrator, explorerItemModel.Permissions);
-            Assert.AreEqual(ResourceType.ReservedService, explorerItemModel.ResourceType);
+            Assert.AreEqual("ReservedService", explorerItemModel.ResourceType);
             Assert.AreEqual(false, explorerItemModel.CanAddResoure);
             Assert.AreEqual(false, explorerItemModel.CanDebug);
             Assert.AreEqual(false, explorerItemModel.CanRename);
@@ -788,7 +673,7 @@ namespace Dev2.Core.Tests.ModelTests
             // ReSharper restore MaximumChainedReferences
             var worker = new Mock<IAsyncWorker>();
             var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.Empty, Guid.NewGuid(), out outvalue, studioResourceRepo.Object, worker.Object, new Mock<IConnectControlSingleton>().Object);
-            explorerItemModel.ResourceType = ResourceType.Version;
+            explorerItemModel.ResourceType = "Version";
             //------------Execute Test---------------------------
             explorerItemModel.EditCommand.Execute(null);
             //------------Assert Result--------------------------
@@ -833,7 +718,7 @@ namespace Dev2.Core.Tests.ModelTests
             // ReSharper restore MaximumChainedReferences
             var worker = new Mock<IAsyncWorker>();
             var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.Empty, Guid.NewGuid(), out outvalue, studioResourceRepo.Object, worker.Object, new Mock<IConnectControlSingleton>().Object);
-            explorerItemModel.ResourceType = ResourceType.Version;
+            explorerItemModel.ResourceType = "Version";
             var parent = new Mock<IExplorerItemModel>();
             parent.Setup(p => p.DisplayName).Returns("Javascript the enabler");
             explorerItemModel.Parent = parent.Object;
@@ -969,7 +854,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             Assert.IsNotNull(serverItem);
             Assert.IsNotNull(actualResourceInvoked);
-            Assert.AreEqual(3, actualResourceInvoked.Count);
+            Assert.AreEqual(4, actualResourceInvoked.Count);
             Assert.AreEqual(resourceId, actualResourceInvoked[0].ID);
             Assert.AreEqual(resourceId, actualResourceInvoked[1].ID);
             Assert.AreEqual(resourceId, actualResourceInvoked[2].ID);
@@ -1007,7 +892,7 @@ namespace Dev2.Core.Tests.ModelTests
             const string displayName = "localhost";
             ExplorerItemModel resourceItem;
             var serverItem = SetupExplorerItemModelWithFolderAndFolderChildAndResources(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem);
-            serverItem.Children.First().Children.First().ResourceType = ResourceType.WebSource;
+            serverItem.Children.First().Children.First().ResourceType = "WebSource";
             var item = serverItem.Children.First().Children.First();
             resourceItem.Parent.Children.Add(resourceItem);
             resourceItem.Parent.Children.Add(resourceItem);
@@ -2014,6 +1899,7 @@ namespace Dev2.Core.Tests.ModelTests
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
 #pragma warning restore 168
             var folderItem = serverItem.Children[0];
+            folderItem.IsFolder = true;
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
             CustomContainer.Register(mainViewModel.Object);
@@ -2057,6 +1943,7 @@ namespace Dev2.Core.Tests.ModelTests
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
 #pragma warning restore 168
             var folderItem = serverItem.Children[0];
+            folderItem.IsFolder = true;
             folderItem.Children.Clear();
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
@@ -2101,6 +1988,7 @@ namespace Dev2.Core.Tests.ModelTests
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
 #pragma warning restore 168
             var folderItem = serverItem.Children[0];
+            folderItem.IsFolder = true;
             folderItem.Children.Clear();
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
@@ -2408,7 +2296,8 @@ namespace Dev2.Core.Tests.ModelTests
             const string displayName = "localhost";
             ExplorerItemModel resourceItem;
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
-            resourceItem.ResourceType = ResourceType.Folder;
+            resourceItem.ResourceType = "Folder";
+            resourceItem.IsFolder = true;
             mockResourceModel.Setup(a => a.WorkflowXaml).Returns(new StringBuilder(string.Format("Name=\"{0}\" x:Class=\"{1}\"ToolboxFriendlyName=\"{2}\"DisplayName=\"{3}\"", resourceItem.DisplayName, resourceItem.DisplayName, resourceItem.DisplayName, resourceItem.DisplayName)));
             mockResourceModel.Setup(a => a.ResourceName).Returns(resourceItem.DisplayName);
             var mainViewModel = new Mock<IMainViewModel>();
@@ -2459,7 +2348,7 @@ namespace Dev2.Core.Tests.ModelTests
 #pragma warning disable 168
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
 #pragma warning restore 168
-            resourceItem.ResourceType = ResourceType.Folder;
+            resourceItem.ResourceType = "Folder";
             mockResourceModel.Setup(a => a.WorkflowXaml).Returns(new StringBuilder(string.Format("Name=\"{0}\" x:Class=\"{1}\"ToolboxFriendlyName=\"{2}\"DisplayName=\"{3}\"", resourceItem.DisplayName, resourceItem.DisplayName, resourceItem.DisplayName, resourceItem.DisplayName)));
             mockResourceModel.Setup(a => a.ResourceName).Returns(resourceItem.DisplayName);
             //------------Execute Test---------------------------
@@ -2469,31 +2358,13 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
         [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ExplorerItemModel_Permissions")]
-        // ReSharper disable InconsistentNaming
-        public void ExplorerItemModel_Permissions_Change_UpdateDeployAndExecute()
-        // ReSharper restore InconsistentNaming
-        {
-            //------------Setup for test--------------------------
-
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WebService, Permissions = Permissions.Administrator };
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(explorerItemModel.CanExecute);
-            Assert.IsTrue(explorerItemModel.CanDeploy);
-            explorerItemModel.Permissions = Permissions.View;
-            Assert.IsFalse(explorerItemModel.CanExecute);
-            Assert.IsFalse(explorerItemModel.CanDeploy);
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_IsAutorizedDeployTo")]
         public void ExplorerItemModel_IsAutorizedDeployTo_ViewRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.View };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.View };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployTo = explorerItemModel.IsAuthorizedDeployTo;
             //------------Assert Results-------------------------
@@ -2506,7 +2377,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_NoneRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.None };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.None };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployTo = explorerItemModel.IsAuthorizedDeployTo;
             //------------Assert Results-------------------------
@@ -2519,7 +2391,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_ExecuteRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.Execute };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.Execute };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployTo = explorerItemModel.IsAuthorizedDeployTo;
             //------------Assert Results-------------------------
@@ -2532,7 +2405,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_DeployFromRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.DeployFrom };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.DeployFrom };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployTo = explorerItemModel.IsAuthorizedDeployTo;
             //------------Assert Results-------------------------
@@ -2545,7 +2419,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_DeployToRights_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.DeployTo };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.DeployTo };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployTo = explorerItemModel.IsAuthorizedDeployTo;
             //------------Assert Results-------------------------
@@ -2558,7 +2432,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_AdministratorRights_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.Administrator };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.Administrator };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployTo = explorerItemModel.IsAuthorizedDeployTo;
             //------------Assert Results-------------------------
@@ -2571,7 +2445,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_ContributeRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.Contribute };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.Contribute };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployTo = explorerItemModel.IsAuthorizedDeployTo;
             //------------Assert Results-------------------------
@@ -2584,7 +2459,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_ViewRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.View };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.View };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2597,7 +2473,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_NoneRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.None };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.None };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2610,7 +2487,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_ExecuteRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.Execute };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.Execute };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2623,7 +2501,8 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_DeployToRights_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.DeployTo };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.DeployTo };
+            explorerItemModel.IsServer = true;
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2636,7 +2515,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_DeployFromRights_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.DeployFrom };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.DeployFrom };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2649,7 +2528,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_AdministratorRights_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.Administrator };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.Administrator };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2662,7 +2541,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_ContributeRights_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.DeployFrom };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.DeployFrom };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2675,7 +2554,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_NotServer_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Server, Permissions = Permissions.DeployFrom };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Server", Permissions = Permissions.DeployFrom };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2688,7 +2567,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_NotServer_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.PluginSource, Permissions = Permissions.Contribute };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginSource", Permissions = Permissions.Contribute };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2701,7 +2580,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_DbService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.DbService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "DbService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2714,7 +2593,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_DbService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.DbService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "DbService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2727,7 +2606,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_WorkflowService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2740,7 +2619,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_WorkflowService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WorkflowService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WorkflowService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2753,7 +2632,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_WebSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WebSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2766,7 +2645,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_WebSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WebSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2779,7 +2658,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_WebService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WebService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2792,7 +2671,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_WebService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.WebService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "WebService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2805,7 +2684,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_ReservedService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.ReservedService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "ReservedService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2818,7 +2697,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_ReservedService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.ReservedService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "ReservedService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2831,7 +2710,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_DbSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.DbSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "DbSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2844,7 +2723,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_DbSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.DbSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "DbSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2857,7 +2736,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_EmailSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.EmailSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "EmailSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2870,7 +2749,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_EmailSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.EmailSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "EmailSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2883,7 +2762,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_Folder_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Folder };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Folder" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2896,7 +2775,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_Folder_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.Folder };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "Folder" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2909,7 +2788,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_PluginService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.PluginService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2922,7 +2801,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_PluginService_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.PluginService };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginService" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2936,7 +2815,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployFrom_PluginSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.PluginSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2949,7 +2828,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_IsAutorizedDeployTo_PluginSource_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = ResourceType.PluginSource };
+            var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceType = "PluginSource" };
             //------------Execute Test---------------------------
             bool isAuthorizedDeployFrom = explorerItemModel.IsAuthorizedDeployFrom;
             //------------Assert Results-------------------------
@@ -2972,7 +2851,7 @@ namespace Dev2.Core.Tests.ModelTests
                     Assert.AreEqual(a.DisplayName, "New Folder");
                     Assert.AreEqual(a.Parent, explorerItemModel);
                     Assert.AreEqual(a.Children.Count, 0);
-                    Assert.AreEqual(a.ResourceType, ResourceType.Folder);
+                    Assert.AreEqual(a.ResourceType, "Folder");
                     Assert.AreEqual(a.Permissions, explorerItemModel.Permissions);
                     explorerItemModel.Children.Add(a);
                     called = true;
@@ -3002,7 +2881,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Assert.AreEqual(a.DisplayName, "New Folder");
                 Assert.AreEqual(a.Parent, explorerItemModel);
                 Assert.AreEqual(a.Children.Count, 0);
-                Assert.AreEqual(a.ResourceType, ResourceType.Folder);
+                Assert.AreEqual(a.ResourceType, "Folder");
                 Assert.AreEqual(a.Permissions, explorerItemModel.Permissions);
                 explorerItemModel.Children.Add(a);
                 called = true;
@@ -3016,7 +2895,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Assert.AreEqual(a.DisplayName, "New Folder1");
                 Assert.AreEqual(a.Parent, explorerItemModel);
                 Assert.AreEqual(a.Children.Count, 0);
-                Assert.AreEqual(a.ResourceType, ResourceType.Folder);
+                Assert.AreEqual(a.ResourceType, "Folder");
                 Assert.AreEqual(a.Permissions, explorerItemModel.Permissions);
                 explorerItemModel.Children.Add(a);
 
@@ -3044,7 +2923,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Assert.AreEqual(a.DisplayName, "New Folder");
                 Assert.AreEqual(a.Parent, explorerItemModel);
                 Assert.AreEqual(a.Children.Count, 0);
-                Assert.AreEqual(a.ResourceType, ResourceType.Folder);
+                Assert.AreEqual(a.ResourceType, "Folder");
                 Assert.AreEqual(a.Permissions, explorerItemModel.Permissions);
 
                 called = true;
@@ -3063,9 +2942,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanAddNewFolder")]
         public void ExplorerItemModel_CanAddNewFolder_Folder_Expect_Success()
         {
-            const ResourceType type = ResourceType.Folder;
-            const bool result = true;
-            AssertCanAdd(type, result);
+            AssertCanAdd("Folder", true, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3073,15 +2950,12 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanAddNewFolder")]
         public void ExplorerItemModel_CanAddNewFolder_NonFolder_Expect_False()
         {
-
-            AssertCanAdd(ResourceType.DbService, false);
-            AssertCanAdd(ResourceType.DbSource, false);
-            AssertCanAdd(ResourceType.EmailSource, false);
-            AssertCanAdd(ResourceType.PluginService, false);
-            AssertCanAdd(ResourceType.PluginSource, false);
-            AssertCanAdd(ResourceType.ReservedService, false);
-            AssertCanAdd(ResourceType.Server, true);
-            AssertCanAdd(ResourceType.ServerSource, false);
+            AssertCanAdd("DbSource", false, false, false, true, false, false, false);
+            AssertCanAdd("EmailSource", false, false, false, true, false, false, false);
+            AssertCanAdd("PluginSource", false, false, false, true, false, false, false);
+            AssertCanAdd("ReservedService", false, false, false, false, false, true, false);
+            AssertCanAdd("Server", true, true, false, false, false, false, false);
+            AssertCanAdd("ServerSource", false, false, false, true, false, false, false);
         }
 
         [TestMethod]
@@ -3090,10 +2964,10 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_ActivityName_Expect_DSFActivity()
         {
 
-            Assert.AreEqual(Item(ResourceType.Server).ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
-            Assert.AreEqual(Item(ResourceType.Folder).ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
-            Assert.AreEqual(Item(ResourceType.WorkflowService).ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
-            Assert.AreEqual(Item(ResourceType.ReservedService).ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
+            Assert.AreEqual(Item("Server").ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
+            Assert.AreEqual(Item("Folder").ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
+            Assert.AreEqual(Item("WorkflowService").ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
+            Assert.AreEqual(Item("ReservedService").ActivityName, typeof(DsfActivity).AssemblyQualifiedName);
 
         }
         [TestMethod]
@@ -3102,9 +2976,9 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_ActivityName_Expect_NonDSFActivity()
         {
 
-            Assert.AreEqual(Item(ResourceType.PluginService).ActivityName, typeof(DsfPluginActivity).AssemblyQualifiedName);
-            Assert.AreEqual(Item(ResourceType.WebService).ActivityName, typeof(DsfWebserviceActivity).AssemblyQualifiedName);
-            Assert.AreEqual(Item(ResourceType.DbService).ActivityName, typeof(DsfDatabaseActivity).AssemblyQualifiedName);
+            Assert.AreEqual(Item("PluginService").ActivityName, typeof(DsfPluginActivity).AssemblyQualifiedName);
+            Assert.AreEqual(Item("WebService").ActivityName, typeof(DsfWebserviceActivity).AssemblyQualifiedName);
+            Assert.AreEqual(Item("DbService").ActivityName, typeof(DsfDatabaseActivity).AssemblyQualifiedName);
 
         }
 
@@ -3113,24 +2987,21 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_IsLocalHost")]
         public void ExplorerItemModel_IsLocalHostr_ServerWithGuid_Expect_Success()
         {
-
-            IsServer(ResourceType.Server, false, Guid.NewGuid());
+            IsServer("Server", false, Guid.NewGuid());
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_CanEdit")]
         public void ExplorerItemModel_CanEdit_ServerWithGuid_Expect_Success()
         {
-
-            PermissionsTest(a => a.CanEdit, Permissions.Administrator, true);
-            PermissionsTest(a => a.CanEdit, Permissions.View, true);
-            PermissionsTest(a => a.CanEdit, Permissions.Contribute, true);
-            PermissionsTest(a => a.CanEdit, Permissions.Execute, false);
-            PermissionsTest(a => a.CanEdit, Permissions.DeployFrom, false);
-            PermissionsTest(a => a.CanEdit, Permissions.DeployTo, false);
-            PermissionsTest(a => a.CanConnect, Permissions.None, false);
+            PermissionsTest(a => a.CanEdit, Permissions.Administrator, true, false, true);
+            PermissionsTest(a => a.CanEdit, Permissions.View, true, false, true);
+            PermissionsTest(a => a.CanEdit, Permissions.Contribute, true, false, true);
+            PermissionsTest(a => a.CanEdit, Permissions.Execute, false, false, true);
+            PermissionsTest(a => a.CanEdit, Permissions.DeployFrom, false, false, true);
+            PermissionsTest(a => a.CanEdit, Permissions.DeployTo, false, false, true);
+            PermissionsTest(a => a.CanConnect, Permissions.None, false, false, true);
         }
 
         [TestMethod]
@@ -3138,29 +3009,27 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanExecute")]
         public void ExplorerItemModel_CanExecute_ServerWithGuid_Expect_Success()
         {
-            PermissionsTest(a => a.CanExecute, Permissions.Administrator, true);
-            PermissionsTest(a => a.CanExecute, Permissions.View, false);
-            PermissionsTest(a => a.CanExecute, Permissions.Contribute, true);
-            PermissionsTest(a => a.CanExecute, Permissions.Execute, true);
-            PermissionsTest(a => a.CanExecute, Permissions.DeployFrom, false);
-            PermissionsTest(a => a.CanExecute, Permissions.DeployTo, false);
-            PermissionsTest(a => a.CanConnect, Permissions.None, false);
+            PermissionsTest(a => a.CanExecute, Permissions.Administrator, true, false, true);
+            PermissionsTest(a => a.CanExecute, Permissions.View, false, false, true);
+            PermissionsTest(a => a.CanExecute, Permissions.Contribute, true, false, true);
+            PermissionsTest(a => a.CanExecute, Permissions.Execute, true, false, true);
+            PermissionsTest(a => a.CanExecute, Permissions.DeployFrom, false, false, true);
+            PermissionsTest(a => a.CanExecute, Permissions.DeployTo, false, false, true);
+            PermissionsTest(a => a.CanConnect, Permissions.None, false, false, true);
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_CanConnect")]
         public void ExplorerItemModel_CanConnect_Expect_Success()
         {
-
-            PermissionsTest(a => a.CanConnect, Permissions.Administrator, true, ResourceType.Server);
-            PermissionsTest(a => a.CanConnect, Permissions.View, true, ResourceType.Server);
-            PermissionsTest(a => a.CanConnect, Permissions.Contribute, true, ResourceType.Server);
-            PermissionsTest(a => a.CanConnect, Permissions.Execute, true, ResourceType.Server);
-            PermissionsTest(a => a.CanConnect, Permissions.DeployFrom, true, ResourceType.Server);
-            PermissionsTest(a => a.CanConnect, Permissions.DeployTo, true, ResourceType.Server);
-            PermissionsTest(a => a.CanConnect, Permissions.None, false, ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.Administrator, true, true, false, "Server");
+            PermissionsTest(a => a.CanConnect, Permissions.View, true, true, false, "Server");
+            PermissionsTest(a => a.CanConnect, Permissions.Contribute, true, true, false, "Server");
+            PermissionsTest(a => a.CanConnect, Permissions.Execute, true, true, false, "Server");
+            PermissionsTest(a => a.CanConnect, Permissions.DeployFrom, true, true, false, "Server");
+            PermissionsTest(a => a.CanConnect, Permissions.DeployTo, true, true, false, "Server");
+            PermissionsTest(a => a.CanConnect, Permissions.None, false, true, false, "Server");
         }
 
         [TestMethod]
@@ -3168,41 +3037,37 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanDisConnect")]
         public void ExplorerItemModel_CanDisConnect_ServerWithGuid_Expect_Success()
         {
-
-            PermissionsTest(a => a.CanDisconnect, Permissions.Administrator, true, ResourceType.Server);
-            PermissionsTest(a => a.CanDisconnect, Permissions.View, true, ResourceType.Server);
-            PermissionsTest(a => a.CanDisconnect, Permissions.Contribute, true, ResourceType.Server);
-            PermissionsTest(a => a.CanDisconnect, Permissions.Execute, true, ResourceType.Server);
-            PermissionsTest(a => a.CanDisconnect, Permissions.DeployFrom, true, ResourceType.Server);
-            PermissionsTest(a => a.CanDisconnect, Permissions.DeployTo, true, ResourceType.Server);
-            PermissionsTest(a => a.CanDisconnect, Permissions.None, false, ResourceType.Server);
+            PermissionsTest(a => a.CanDisconnect, Permissions.Administrator, true, true, false, "Server");
+            PermissionsTest(a => a.CanDisconnect, Permissions.View, true, true, false, "Server");
+            PermissionsTest(a => a.CanDisconnect, Permissions.Contribute, true, true, false, "Server");
+            PermissionsTest(a => a.CanDisconnect, Permissions.Execute, true, true, false, "Server");
+            PermissionsTest(a => a.CanDisconnect, Permissions.DeployFrom, true, true, false, "Server");
+            PermissionsTest(a => a.CanDisconnect, Permissions.DeployTo, true, true, false, "Server");
+            PermissionsTest(a => a.CanDisconnect, Permissions.None, false, true, false, "Server");
         }
-
-
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_CanViewDependencies")]
         public void ExplorerItemModel_CanViewDependencies_ServerWithGuid_Expect_Success()
         {
-
-            PermissionsTest(a => a.CanShowDependencies, Permissions.Administrator, true);
-            PermissionsTest(a => a.CanShowDependencies, Permissions.View, true);
-            PermissionsTest(a => a.CanShowDependencies, Permissions.Contribute, true);
-            PermissionsTest(a => a.CanShowDependencies, Permissions.Execute, true);
-            PermissionsTest(a => a.CanShowDependencies, Permissions.DeployFrom, true);
-            PermissionsTest(a => a.CanShowDependencies, Permissions.DeployTo, true);
-            PermissionsTest(a => a.CanShowDependencies, Permissions.None, false);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.Administrator, false, true, false);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.View, false, true, false);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.Contribute, false, true, false);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.Execute, false, true, false);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.DeployFrom, false, true, false);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.DeployTo, false, true, false);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.None, false, true, false);
         }
 
-
-        public void PermissionsTest(Func<IExplorerItemModel, bool> property, Permissions permissions, bool expected, ResourceType resourceType = ResourceType.WorkflowService)
+        public void PermissionsTest(Func<IExplorerItemModel, bool> property, Permissions permissions, bool expected, bool isServer, bool isService, string resourceType = "WorkflowService")
         {
 
             var serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
                 ResourceType = resourceType,
+                IsService = isService,
+                IsServer = isServer,
                 DisplayName = "bob",
                 ResourceId = Guid.Empty,
                 Permissions = permissions,
@@ -3220,7 +3085,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             var serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
+                IsFolder = true,
                 DisplayName = "bob",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -3230,7 +3096,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
            {
-               ResourceType = ResourceType.Server,
+               ResourceType = "Server",
+               IsServer = true,
                DisplayName = "bob",
                ResourceId = Guid.Empty,
                Permissions = Permissions.Administrator,
@@ -3244,21 +3111,21 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_DeployTitle_ServerWithGuid_Expect_NotAll()
         {
 
-            var it = Item(ResourceType.DbService);
+            var it = Item("DbService");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item(ResourceType.DbSource);
+            it = Item("DbSource");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item(ResourceType.EmailSource);
+            it = Item("EmailSource");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item(ResourceType.PluginService);
+            it = Item("PluginService");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item(ResourceType.PluginSource);
+            it = Item("PluginSource");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item(ResourceType.ReservedService);
+            it = Item("ReservedService");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item(ResourceType.Unknown);
+            it = Item("Unknown");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
-            it = Item(ResourceType.WebService);
+            it = Item("WebService");
             Assert.AreEqual("Deploy bob", it.DeployTitle);
 
         }
@@ -3270,7 +3137,8 @@ namespace Dev2.Core.Tests.ModelTests
         {
             ExplorerItemModel exp;
             var item = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), new Mock<IConnectControlSingleton>().Object, out exp);
-            item.ResourceType = ResourceType.Server;
+            item.ResourceType = "Server";
+            item.IsServer = true;
             item.IsAuthorized = false;
             Assert.IsFalse(item.Children[0].IsAuthorized);
         }
@@ -3282,7 +3150,8 @@ namespace Dev2.Core.Tests.ModelTests
         {
             ExplorerItemModel exp;
             var item = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), new Mock<IConnectControlSingleton>().Object, out exp);
-            item.ResourceType = ResourceType.Server;
+            item.ResourceType = "Server";
+            item.IsServer = true;
             item.IsAuthorized = true;
             Assert.IsTrue(item.Children[0].IsAuthorized);
         }
@@ -3293,22 +3162,19 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_ActivityNames_ServerWithGuid_ExpectCorrectTypes()
         {
 
-            IsServer(ResourceType.Server, false, Guid.NewGuid());
+            IsServer("Server", false, Guid.NewGuid());
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_IsLocalHost")]
         public void ExplorerItemModel_IsLocalHostr_NonServerResourceTypes_ExpectNotLocalHost()
         {
-
-            IsServer(ResourceType.DbService, false, Guid.Empty);
-            IsServer(ResourceType.DbSource, false, Guid.Empty);
-            IsServer(ResourceType.EmailSource, false, Guid.Empty);
-            IsServer(ResourceType.PluginService, false, Guid.Empty);
-            IsServer(ResourceType.PluginSource, false, Guid.Empty);
-            IsServer(ResourceType.ReservedService, false, Guid.Empty);
-            IsServer(ResourceType.Server, true, Guid.Empty);
-            IsServer(ResourceType.ServerSource, false, Guid.Empty);
+            IsServer("DbSource", false, Guid.Empty);
+            IsServer("EmailSource", false, Guid.Empty);
+            IsServer("PluginSource", false, Guid.Empty);
+            IsServer("ReservedService", false, Guid.Empty);
+            IsServer("Server", true, Guid.Empty);
+            IsServer("ServerSource", false, Guid.Empty);
         }
 
 
@@ -3349,7 +3215,7 @@ namespace Dev2.Core.Tests.ModelTests
             {
                 updateStats = a.UpdateStats;
             };
-            item.Children[0].ResourceType = ResourceType.WebService;
+            item.Children[0].ResourceType = "WebService";
             item.Children[0].ResourcePath = "bob\\dave\\item";
             item.Children[0].SetIsChecked(null, true, true);
             Assert.IsTrue(updateStats);
@@ -3368,7 +3234,7 @@ namespace Dev2.Core.Tests.ModelTests
             {
                 updateStats = a.UpdateStats;
             };
-            item.Children[0].ResourceType = ResourceType.WebService;
+            item.Children[0].ResourceType = "WebService";
             item.Children[0].ResourcePath = "bob";
             item.Children[0].SetIsChecked(null, true, true);
             Assert.IsTrue(updateStats);
@@ -3495,7 +3361,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsUnknownAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.Unknown, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("Unknown", Permissions.View, false, false, false, false, false, false, false);
         }
 
         [TestMethod]
@@ -3503,15 +3369,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsWorkflowServiceAndPermissionIsView_True()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.WorkflowService, Permissions.View, true);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ExplorerItemModel_CanShowHistory")]
-        public void ExplorerItemModel_CanShowHistory_ResourceTypeIsDbServiceAndPermissionIsView_False()
-        {
-            CanShowVersionHistoryTestExecution(ResourceType.DbService, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("WorkflowService", Permissions.View, true, true, false, false, false, false, false);
         }
 
         [TestMethod]
@@ -3519,23 +3377,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsVersionAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.Version, Permissions.View, false);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ExplorerItemModel_CanShowHistory")]
-        public void ExplorerItemModel_CanShowHistory_ResourceTypeIsPluginServiceAndPermissionIsView_False()
-        {
-            CanShowVersionHistoryTestExecution(ResourceType.PluginService, Permissions.View, false);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ExplorerItemModel_CanShowHistory")]
-        public void ExplorerItemModel_CanShowHistory_ResourceTypeIsWebServiceAndPermissionIsView_False()
-        {
-            CanShowVersionHistoryTestExecution(ResourceType.WebService, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("Version", Permissions.View, false, false, false, false, false, false, true);
         }
 
         [TestMethod]
@@ -3543,7 +3385,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsDbSourceAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.DbSource, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("DbSource", Permissions.View, false, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3551,7 +3393,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsWebSourceAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.WebSource, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("WebSource", Permissions.View, false, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3559,7 +3401,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsEmailSourceAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.EmailSource, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("EmailSource", Permissions.View, false, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3567,7 +3409,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsServerSourceAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.ServerSource, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("ServerSource", Permissions.View, false, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3575,7 +3417,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsFolderAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.Folder, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("Folder", Permissions.View, false, false, false, false, false, true, false);
         }
 
         [TestMethod]
@@ -3583,7 +3425,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsServerAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.Server, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("Server", Permissions.View, false, false, false, false, true, false, false);
         }
 
         [TestMethod]
@@ -3591,7 +3433,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsReservedServiceAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.ReservedService, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("ReservedService", Permissions.View, false, false, false, true, false, false, false);
         }
 
         [TestMethod]
@@ -3599,7 +3441,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsMessageAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.Message, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("Message", Permissions.View, false, false, false, false, false, false, false);
         }
 
         [TestMethod]
@@ -3607,14 +3449,20 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowHistory")]
         public void ExplorerItemModel_CanShowHistory_ResourceTypeIsPluginSourceAndPermissionIsView_False()
         {
-            CanShowVersionHistoryTestExecution(ResourceType.PluginSource, Permissions.View, false);
+            CanShowVersionHistoryTestExecution("PluginSource", Permissions.View, false, false, true, false, false, false, false);
         }
 
-        static void CanShowVersionHistoryTestExecution(ResourceType resourceType, Permissions permission, bool expectedResult)
+        static void CanShowVersionHistoryTestExecution(string resourceType, Permissions permission, bool expectedResult, bool isService, bool isSource, bool isReservedService, bool isServer, bool isFolder, bool isResourceVersion)
         {
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
                 {
                     ResourceType = resourceType,
+                    IsService = isService,
+                    IsSource = isSource,
+                    IsReservedService = isReservedService,
+                    IsServer = isServer,
+                    IsResourceVersion = isResourceVersion,
+                    IsFolder = isFolder,
                     Permissions = permission,
                     DisplayName = "My Resource"
                 };
@@ -3626,7 +3474,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsUnknownAndPermissionIsView_True()
         {
-            CanShowDependenciesTestExecution(ResourceType.Unknown, Permissions.View, true);
+            CanShowDependenciesTestExecution("Unknown", Permissions.View, true, false, false, false, false, false, false);
         }
 
         [TestMethod]
@@ -3634,15 +3482,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsWorkflowServiceAndPermissionIsView_True()
         {
-            CanShowDependenciesTestExecution(ResourceType.WorkflowService, Permissions.View, true);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ExplorerItemModel_CanShowDependencies")]
-        public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsDbServiceAndPermissionIsView_True()
-        {
-            CanShowDependenciesTestExecution(ResourceType.DbService, Permissions.View, true);
+            CanShowDependenciesTestExecution("WorkflowService", Permissions.View, true, true, false, false, false, false, false);
         }
 
         [TestMethod]
@@ -3650,23 +3490,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsVersionAndPermissionIsView_False()
         {
-            CanShowDependenciesTestExecution(ResourceType.Version, Permissions.View, false);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ExplorerItemModel_CanShowDependencies")]
-        public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsPluginServiceAndPermissionIsView_True()
-        {
-            CanShowDependenciesTestExecution(ResourceType.PluginService, Permissions.View, true);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("ExplorerItemModel_CanShowDependencies")]
-        public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsWebServiceAndPermissionIsView_True()
-        {
-            CanShowDependenciesTestExecution(ResourceType.WebService, Permissions.View, true);
+            CanShowDependenciesTestExecution("Version", Permissions.View, false, false, false, false, false, false, true);
         }
 
         [TestMethod]
@@ -3674,7 +3498,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsDbSourceAndPermissionIsView_True()
         {
-            CanShowDependenciesTestExecution(ResourceType.DbSource, Permissions.View, true);
+            CanShowDependenciesTestExecution("DbSource", Permissions.View, true, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3682,7 +3506,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsWebSourceAndPermissionIsView_True()
         {
-            CanShowDependenciesTestExecution(ResourceType.WebSource, Permissions.View, true);
+            CanShowDependenciesTestExecution("WebSource", Permissions.View, true, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3690,7 +3514,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsEmailSourceAndPermissionIsView_True()
         {
-            CanShowDependenciesTestExecution(ResourceType.EmailSource, Permissions.View, true);
+            CanShowDependenciesTestExecution("EmailSource", Permissions.View, true, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3698,7 +3522,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsServerSourceAndPermissionIsView_False()
         {
-            CanShowDependenciesTestExecution(ResourceType.ServerSource, Permissions.View, false);
+            CanShowDependenciesTestExecution("ServerSource", Permissions.View, false, false, true, false, false, false, false);
         }
 
         [TestMethod]
@@ -3706,7 +3530,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsFolderAndPermissionIsView_False()
         {
-            CanShowDependenciesTestExecution(ResourceType.Folder, Permissions.View, false);
+            CanShowDependenciesTestExecution("Folder", Permissions.View, false, false, false, false, false, true, false);
         }
 
         [TestMethod]
@@ -3714,7 +3538,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsServerAndPermissionIsView_False()
         {
-            CanShowDependenciesTestExecution(ResourceType.Server, Permissions.View, false);
+            CanShowDependenciesTestExecution("Server", Permissions.View, false, false, false, false, true, false, false);
         }
 
         [TestMethod]
@@ -3722,7 +3546,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsReservedServiceAndPermissionIsView_False()
         {
-            CanShowDependenciesTestExecution(ResourceType.ReservedService, Permissions.View, false);
+            CanShowDependenciesTestExecution("ReservedService", Permissions.View, false, false, false, true, false, false, false);
         }
 
         [TestMethod]
@@ -3730,7 +3554,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsMessageAndPermissionIsView_False()
         {
-            CanShowDependenciesTestExecution(ResourceType.Message, Permissions.View, false);
+            CanShowDependenciesTestExecution("Message", Permissions.View, false, false, false, false, false, false, false);
         }
 
         [TestMethod]
@@ -3738,14 +3562,20 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_CanShowDependencies")]
         public void ExplorerItemModel_CanShowDependencies_ResourceTypeIsPluginSourceAndPermissionIsView_True()
         {
-            CanShowDependenciesTestExecution(ResourceType.PluginSource, Permissions.View, true);
+            CanShowDependenciesTestExecution("PluginSource", Permissions.View, true, false, true, false, false, false, false);
         }
 
-        static void CanShowDependenciesTestExecution(ResourceType resourceType, Permissions permission, bool expectedResult)
+        static void CanShowDependenciesTestExecution(string resourceType, Permissions permission, bool expectedResult, bool isService, bool isSource, bool isReservedService, bool isServer, bool isFolder, bool isResourceVersion)
         {
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
                 ResourceType = resourceType,
+                IsService = isService,
+                IsSource = isSource,
+                IsReservedService = isReservedService,
+                IsServer = isServer,
+                IsResourceVersion = isResourceVersion,
+                IsFolder = isFolder,
                 Permissions = permission,
                 DisplayName = "My Resource"
             };
@@ -3760,7 +3590,8 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
                 {
-                    ResourceType = ResourceType.Server,
+                    ResourceType = "Server",
+                    IsServer = true,
                     Permissions = Permissions.View
                 };
             //------------Execute Test---------------------------
@@ -3777,7 +3608,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Version,
+                ResourceType = "Version",
                 Permissions = Permissions.View
             };
             //------------Execute Test---------------------------
@@ -3794,7 +3625,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Message,
+                ResourceType = "Message",
                 Permissions = Permissions.View
             };
             //------------Execute Test---------------------------
@@ -3816,7 +3647,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository.Object)
             {
-                ResourceType = ResourceType.Message,
+                ResourceType = "Message",
                 Permissions = Permissions.View
             };
             //------------Execute Test---------------------------
@@ -3837,7 +3668,7 @@ namespace Dev2.Core.Tests.ModelTests
                 .Verifiable();
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository.Object)
             {
-                ResourceType = ResourceType.Message,
+                ResourceType = "Message",
                 Permissions = Permissions.View
             };
             explorerItemModel.Children.Add(new Mock<IExplorerItemModel>().Object);
@@ -3956,7 +3787,7 @@ namespace Dev2.Core.Tests.ModelTests
                 .Verifiable();
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository.Object)
             {
-                ResourceType = ResourceType.Message,
+                ResourceType = "Message",
                 Permissions = Permissions.View
             };
             explorerItemModel.Children.Add(new Mock<IExplorerItemModel>().Object);
@@ -3983,7 +3814,7 @@ namespace Dev2.Core.Tests.ModelTests
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
                 ResourcePath = "S111",
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4003,7 +3834,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4031,7 +3862,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4059,7 +3890,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4087,7 +3918,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4115,7 +3946,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4143,7 +3974,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4171,7 +4002,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4199,7 +4030,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4227,7 +4058,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4255,7 +4086,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4283,7 +4114,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Version,
+                ResourceType = "Version",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.View,
@@ -4303,7 +4134,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Setup for test--------------------------
             var explorerItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = "S111",
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.View,
@@ -4322,11 +4153,11 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
-            var checkStateChangedArgs = new CheckStateChangedArgs(true, false, guid, ResourceType.Message, false);
+            var checkStateChangedArgs = new CheckStateChangedArgs(true, false, guid, "Message", false);
             Assert.IsTrue(checkStateChangedArgs.PreviousState);
             Assert.IsFalse(checkStateChangedArgs.NewState);
             Assert.AreEqual(checkStateChangedArgs.ResourceId, guid);
-            Assert.AreEqual(ResourceType.Message, checkStateChangedArgs.ResourceType);
+            Assert.AreEqual("Message", checkStateChangedArgs.ResourceType);
             Assert.IsFalse(checkStateChangedArgs.UpdateStats);
 
         }
@@ -4362,12 +4193,13 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
 
-        static void IsServer(ResourceType type, bool result, Guid id)
+        static void IsServer(string type, bool result, Guid id)
         {
             var serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
             {
                 ResourceType = type,
                 DisplayName = "bob",
+                IsServer = result,
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
                 EnvironmentId = id
@@ -4375,7 +4207,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(result, serverItem.IsLocalHost);
         }
 
-        static ExplorerItemModel Item(ResourceType type)
+        static ExplorerItemModel Item(string type)
         {
             return new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
              {
@@ -4388,12 +4220,18 @@ namespace Dev2.Core.Tests.ModelTests
 
         }
 
-        static void AssertCanAdd(ResourceType type, bool result)
+        static void AssertCanAdd(string type, bool result, bool isServer, bool isFolder, bool isSource, bool isService, bool isReservedService, bool isResourceVersion)
         {
             var serverItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object)
                 {
                     ResourceType = type,
                     DisplayName = "bob",
+                    IsServer = isServer,
+                    IsFolder = isFolder,
+                    IsSource = isSource,
+                    IsService = isService,
+                    IsReservedService = isReservedService,
+                    IsResourceVersion = isResourceVersion,
                     ResourceId = Guid.Empty,
                     Permissions = Permissions.Administrator,
                     EnvironmentId = Guid.NewGuid()
@@ -4407,7 +4245,8 @@ namespace Dev2.Core.Tests.ModelTests
                 studioRepo = new Mock<IStudioResourceRepository>();
             var serverItem = new ExplorerItemModel(connectControlSingleton, studioRepo.Object)
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
+                IsServer = true,
                 DisplayName = displayName,
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4415,7 +4254,8 @@ namespace Dev2.Core.Tests.ModelTests
             };
             var folderItem = new ExplorerItemModel(connectControlSingleton, studioRepo.Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
+                IsFolder = true,
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4425,7 +4265,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             resourceItem = new ExplorerItemModel(connectControlSingleton, studioRepo.Object)
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
+                IsService = true,
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = resourceId,
                 Permissions = Permissions.Administrator,
@@ -4443,7 +4284,8 @@ namespace Dev2.Core.Tests.ModelTests
         {
             var serverItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
+                IsServer = true,
                 DisplayName = displayName,
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4451,7 +4293,8 @@ namespace Dev2.Core.Tests.ModelTests
             };
             var folderItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
+                IsFolder = true,
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4468,7 +4311,7 @@ namespace Dev2.Core.Tests.ModelTests
         {
             var serverItem = new ExplorerItemModel(rep, worker, connectControlSingleton)
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
                 DisplayName = displayName,
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4476,7 +4319,7 @@ namespace Dev2.Core.Tests.ModelTests
             };
             var folderItem = new ExplorerItemModel(rep, worker, connectControlSingleton)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4485,7 +4328,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             resourceItem = new ExplorerItemModel(rep, worker, connectControlSingleton)
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = resourceId,
                 Permissions = Permissions.Administrator,
@@ -4503,7 +4346,7 @@ namespace Dev2.Core.Tests.ModelTests
         {
             var serverItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
                 DisplayName = displayName,
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4511,7 +4354,7 @@ namespace Dev2.Core.Tests.ModelTests
             };
             var folderItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4520,7 +4363,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             var folderItem2 = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4529,7 +4372,7 @@ namespace Dev2.Core.Tests.ModelTests
 
             resourceItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = resourceId,
                 Permissions = Permissions.Administrator,
@@ -4556,7 +4399,8 @@ namespace Dev2.Core.Tests.ModelTests
         {
             var serverItem = new ExplorerItemModel(repo, new SynchronousAsyncWorker(), connectControlSingleton)
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
+                IsServer = true,
                 DisplayName = displayName,
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4564,7 +4408,8 @@ namespace Dev2.Core.Tests.ModelTests
             };
             var folderItem = new ExplorerItemModel(repo, new SynchronousAsyncWorker(), connectControlSingleton)
             {
-                ResourceType = ResourceType.Folder,
+                ResourceType = "Folder",
+                IsFolder = true,
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = Guid.Empty,
                 Permissions = Permissions.Administrator,
@@ -4573,7 +4418,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             resourceItem = new ExplorerItemModel(repo, new SynchronousAsyncWorker(), connectControlSingleton)
             {
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
+                IsService = true,
                 DisplayName = Guid.NewGuid().ToString(),
                 ResourceId = resourceId,
                 Permissions = Permissions.Administrator,

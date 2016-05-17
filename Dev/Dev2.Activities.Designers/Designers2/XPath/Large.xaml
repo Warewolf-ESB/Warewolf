@@ -9,7 +9,6 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
@@ -17,6 +16,7 @@
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="350"
                                MinWidth="350"
                                MinHeight="350"
@@ -72,12 +72,12 @@
                                     VerticalScrollBarVisibility="Auto"
                                     DefaultText="[[Xml]]"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static help:HelpTextResources.XPathToolTipXML}"
+                                    ToolTip="{x:Static languages:Core.XPathToolTipXML}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXML}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Core.XPathHelpXML}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.SourceString"
                                          SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
@@ -130,11 +130,11 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.XpathToolTipResults}"
+                                                    ToolTip="{x:Static languages:Core.XpathToolTipResults}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.XpathHelpResults}"
+                                    <core1:HelpSetter Text="{x:Static languages:Core.XpathHelpResults}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="OutputVariable"
@@ -164,11 +164,11 @@
                                                     WrapInBrackets="False"
                                                     DefaultText="Xpath" 
                                                     Text="{Binding XPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.XPathToolTipXPath}"
+                                                    ToolTip="{x:Static languages:Core.XPathToolTipXPath}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsXpathVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.XPathHelpXPath}"
+                                    <core1:HelpSetter Text="{x:Static languages:Core.XPathHelpXPath}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="XPath"

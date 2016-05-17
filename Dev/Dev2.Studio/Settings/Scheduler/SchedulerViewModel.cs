@@ -27,7 +27,6 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -52,6 +51,7 @@ using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
 using Microsoft.Win32.TaskScheduler;
 using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Scheduler
@@ -186,6 +186,7 @@ namespace Dev2.Settings.Scheduler
             {
                 server.UpdateRepository.ItemSaved += Refresh;
             }
+            // ReSharper disable once ObjectCreationAsStatement
             new EnvironmentViewModel(server, shellViewModel);
         }
 
@@ -816,7 +817,7 @@ namespace Dev2.Settings.Scheduler
         void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
-            HelpText = HelpTextResources.SchedulerSettingsHelpTextSettingsView;
+            HelpText = Core.SchedulerSettingsHelpTextSettingsView;
         }
 
         ActivityDesignerToggle CreateHelpToggle()
@@ -1256,11 +1257,11 @@ namespace Dev2.Settings.Scheduler
 
         #endregion
 
-        public ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
-                return ResourceType.Scheduler;
+                return "Scheduler";
             }
         }
         public IServer Server

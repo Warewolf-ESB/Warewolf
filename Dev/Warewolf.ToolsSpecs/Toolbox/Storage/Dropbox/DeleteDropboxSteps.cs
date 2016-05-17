@@ -1,40 +1,152 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Caliburn.Micro;
-using Dev2.Activities.Designers2.DropBox2016.Download;
-using Dev2.Activities.DropBox2016.DownloadActivity;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using Dev2.Activities.Designers2.DropBox2016.Delete;
+using Dev2.Studio.Core.Interfaces;
+using Caliburn.Micro;
 using Warewolf.Storage;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using System.Linq.Expressions;
 
-namespace Warewolf.ToolsSpecs.Toolbox.Storage.Dropbox
+namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
     [Binding]
     public class DeleteDropboxSteps
     {
-        [Given(@"Delete Dropbox File is Enabled")]
-        public void GivenDeleteDropboxFileIsEnabled()
+        private static DropBoxDeleteViewModel GetViewModel()
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            return ScenarioContext.Current.Get<DropBoxDeleteViewModel>("deleteViewModel");
+        }
+        private static Mock<IEnvironmentModel> GeEnvrionmentModel()
+        {
+            return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
 
         [Given(@"I drag Delete Dropbox Tool onto the design surface")]
         public void GivenIDragDeleteDropboxToolOntoTheDesignSurface()
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            var dropBoxDeleteTool = new DsfDropBoxDeleteActivity();
+            var modelItem = ModelItemUtils.CreateModelItem(dropBoxDeleteTool);
+            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
+            var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var sources = new List<OauthSource>()
+            {
+                new OauthSource(){ResourceName = "Test Resource Name"}
+            };
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+            mockResourcRepositorySetUp.Setup(repository => repository.FindSourcesByType<OauthSource>(mockEnvironmentModel.Object, It.IsAny<enSourceType>()))
+                .Returns(sources);
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourcRepositorySetUp.Object);
+
+            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+            var deleteViewModel = new DropBoxDeleteViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            ScenarioContext.Current.Add("deleteViewModel", deleteViewModel);
+            ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
         }
 
-        [When(@"I Select ""(.*)"" as the Delete source")]
-        public void WhenISelectAsTheDeleteSource(string p0)
+        [Given(@"Dropbox Delete New is Enabled")]
+        public void GivenDropboxDeleteNewIsEnabled()
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+            var canExecute = GetViewModel().NewSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+        [Given(@"Dropbox Delete Edit is Disabled")]
+        public void GivenDropboxDeleteEditIsDisabled()
+        {
+            var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
+            Assert.IsFalse(canExecute);
+        }
+
+        [Then(@"Dropbox Delete Edit is Enabled")]
+        public void ThenDropboxDeleteEditIsEnabled()
+        {
+            var canExecute = GetViewModel().EditDropboxSourceCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+        [When(@"I click Dropbox Delete Edit")]
+        public void WhenIClickDropboxDeleteEdit()
+        {
+            GetViewModel().EditDropboxSourceCommand.CanExecute(null);
+        }
+
+        [Given(@"Delete Dropbox File is Enabled")]
+        public void GivenDeleteDropboxFileIsEnabled()
+        {
+            var dropBoxDeletePath = GetViewModel().DeletePath;
+            Assert.IsNotNull(dropBoxDeletePath);
+        }
+        
+        [When(@"I Click Delete New")]
+        public void WhenIClickDeleteNew()
+        {
+            GetViewModel().NewSourceCommand.Execute(null);
+        }
+
+        [Then(@"the New Delete Dropbox Source window is opened")]
+        public void ThenTheNewDeleteDropboxSourceWindowIsOpened()
+        {
+            var isDropboxSourceWizardSourceMessagePulished = GetViewModel().IsDropboxSourceWizardSourceMessagePulished;
+            Assert.IsTrue(isDropboxSourceWizardSourceMessagePulished);
+        }
+        
+        [When(@"I Select ""(.*)"" as the Delete source")]
+        public void WhenISelectAsTheDeleteSource(string sourceName)
+        {
+            if (sourceName == "Drop")
+            {
+                var oauthSource = new OauthSource()
+                {
+                    ResourceName = "Drop",
+                    Key = "sourceKey",
+                    Secret = "fgklkgjfkngnf"
+                };
+                GetViewModel().SelectedSource = oauthSource;
+            }
+        }
+        
+        [Then(@"I set Delete Dropbox File equals ""(.*)""")]
+        public void ThenISetDeleteDropboxFileEquals(string deletePath)
+        {
+            GetViewModel().DeletePath = deletePath;
+        }
+
+        [Then(@"the Delete ""(.*)"" Dropbox Source window is opened")]
+        public void ThenTheDeleteDropboxSourceWindowIsOpened(string sourceName)
+        {
+            if (sourceName == "Drop")
+                Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+        }
+
+        [When(@"I change Delete source from ""(.*)"" to ""(.*)""")]
+        public void WhenIChangeDeleteSourceFromTo(string oldSourceName, string newSourceName)
+        {
+            Assert.AreEqual(oldSourceName, GetViewModel().SelectedSource.ResourceName);
+            Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().DeletePath));
+            GetViewModel().SelectedSource = new OauthSource()
+            {
+                ResourceName = newSourceName
+            };
+        }
+
+        [When(@"Delete Dropbox File equals ""(.*)""")]
+        public void WhenDeleteDropboxFileEquals(string deletePath)
+        {
+            Assert.IsTrue(string.IsNullOrEmpty(deletePath));
         }
     }
 }

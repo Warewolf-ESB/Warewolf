@@ -5,28 +5,28 @@
 
 Scenario: Open new Delete Dropbox Tool
 	And I drag Delete Dropbox Tool onto the design surface
-    And Delete New is Enabled
-	And Delete Edit is Disabled
+    And Dropbox Delete New is Enabled
+	And Dropbox Delete Edit is Disabled
 	And Delete Dropbox File is Enabled
-	When I Click New
-	Then the New Dropbox Source window is opened
+	When I Click Delete New
+	Then the New Delete Dropbox Source window is opened
 	
 Scenario: Editing Delete Dropbox Tool
 	And I drag Delete Dropbox Tool onto the design surface
-    And Delete New is Enabled
-	And Delete Edit is Disabled
+    And Dropbox Delete New is Enabled
+	And Dropbox Delete Edit is Disabled
 	And Delete Dropbox File is Enabled
 	When I Select "Drop" as the Delete source
-	Then Delete Edit is Enabled
-	When I click "Edit"
-	Then the "Drop" Dropbox Source window is opened
+	Then Dropbox Delete Edit is Enabled
+	When I click Dropbox Delete Edit
+	Then the Delete "Drop" Dropbox Source window is opened
 
 Scenario: Change Delete Dropbox Source
 	And I drag Delete Dropbox Tool onto the design surface
-    And Delete New is Enabled
-	And Delete Edit is Disabled
+    And Dropbox Delete New is Enabled
+	And Dropbox Delete Edit is Disabled
 	When I Select "Drop" as the Delete source
-	Then Delete Edit is Enabled
-	And I set Dropbox File equals "Home.txt"
-	When I change source from "Drop" to "BackupSource"
-	And Dropbox File equals ""
+	Then Dropbox Delete Edit is Enabled
+	And I set Delete Dropbox File equals "Home.txt"
+	When I change Delete source from "Drop" to "BackupSource"
+	And Delete Dropbox File equals ""

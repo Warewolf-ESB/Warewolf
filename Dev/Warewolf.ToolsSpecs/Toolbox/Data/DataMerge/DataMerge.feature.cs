@@ -1372,82 +1372,21 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge a scalar to a scalar using merge type none 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataMerge")]
-        public virtual void MergeAScalarToAScalarUsingMergeTypeNone2()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a scalar to a scalar using merge type none 2", ((string[])(null)));
-#line 348
-this.ScenarioSetup(scenarioInfo);
-#line 349
- testRunner.Given("a merge variable \"[[a]]\" equal to \"Warewolf \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 350
- testRunner.And("a merge variable \"[[b]]\" equal to \"Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 351
- testRunner.And("a merge variable \"[[c]]\" equal to \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 352
- testRunner.And("an Input \"[[a]]\" and merge type \"None\" and string at as \"\" and Padding \"[[c]]\" an" +
-                    "d Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
- testRunner.And("an Input \"[[b]]\" and merge type \"None\" and string at as \"\" and Padding \"[[c]]\" an" +
-                    "d Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 354
- testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 355
- testRunner.Then("the merged result is \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 356
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "",
-                        "With",
-                        "Using",
-                        "Pad",
-                        "Align"});
-            table45.AddRow(new string[] {
-                        "1",
-                        "[[a]] = Warewolf",
-                        "None",
-                        "\"\"",
-                        "[[c]] =10",
-                        "Left"});
-            table45.AddRow(new string[] {
-                        "2",
-                        "[[b]] = Rocks",
-                        "None",
-                        "\"\"",
-                        "[[c]] =10",
-                        "Left"});
-#line 357
- testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table46.AddRow(new string[] {
-                        "[[result]] = Warewolf Rocks"});
-#line 361
- testRunner.And("the debug output as", ((string)(null)), table46, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
         public virtual void MergeAVariableThatDoesNotExist(string no, string type, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge a variable that does not exist", exampleTags);
-#line 365
+#line 348
 this.ScenarioSetup(scenarioInfo);
-#line 366
+#line 349
  testRunner.Given(string.Format("an Input \"[[a]]\" and merge type \"{0}\" and string at as \"[[b]]\" and Padding \"[[c]]" +
                         "\" and Alignment \"Left\"", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 367
+#line 350
  testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 368
+#line 351
  testRunner.Then("the merged result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 369
+#line 352
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 370
+#line 353
  testRunner.And("the execution has \"Scalar value { a } is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

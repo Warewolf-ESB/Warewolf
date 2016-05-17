@@ -7,7 +7,6 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.SqlBulkInsert"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dto="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
@@ -71,7 +70,7 @@
                   Margin="{StaticResource ControlBorderRight}"
                   DisplayMemberPath="ResourceName"
                   SelectedItem="{Binding SelectedDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipDatabase}"
+                  ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipDatabase}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
@@ -100,7 +99,7 @@
                   ItemsSource="{Binding Tables}"
                   DisplayMemberPath="FullName"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.SQLBulkInsertToolTipTable}"
+                  ToolTip="{x:Static languages:Core.SQLBulkInsertToolTipTable}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
@@ -148,7 +147,7 @@
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsMappingFieldFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"                                                    
+                                                    ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipInputColumn}"                                                    
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
@@ -246,7 +245,7 @@
                                     DefaultText="[[Rows]]"
                                     Text="{Binding ModelItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipBatchSize}"
+                                    ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipBatchSize}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsBatchSizeFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_BatchSize_AutoID}">
                 <i:Interaction.Behaviors>
@@ -266,7 +265,7 @@
                                     DefaultText="[[Seconds]]"
                                     Text="{Binding ModelItem.Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTimeout}"
+                                    ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipTimeout}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsTimeoutFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Timeout_AutoID}">
                 <i:Interaction.Behaviors>
@@ -284,7 +283,7 @@
                       Grid.ColumnSpan="2"
                       Content="Check Constraints"
                       IsChecked="{Binding ModelItem.CheckConstraints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipCheckConstraints}"
+                      ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipCheckConstraints}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_CheckConstraints_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpCheckConstraints}" DataContext="{Binding}" />
@@ -301,7 +300,7 @@
                       Grid.ColumnSpan="2"
                       Content="Keep Table Lock"
                       IsChecked="{Binding ModelItem.KeepTableLock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipKeepTableLock}"
+                      ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipKeepTableLock}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_KeepTableLock_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpTablelock}" DataContext="{Binding}" />
@@ -318,7 +317,7 @@
                       Grid.ColumnSpan="2"
                       Content="Fire Triggers"
                       IsChecked="{Binding ModelItem.FireTriggers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipFireTriggers}"
+                      ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipFireTriggers}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FireTriggers_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpFiretriggers}" DataContext="{Binding}" />
@@ -335,7 +334,7 @@
                       Grid.ColumnSpan="2"
                       Content="Keep Identity"
                       IsChecked="{Binding ModelItem.KeepIdentity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipKeepIdentity}"
+                      ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipKeepIdentity}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_KeepIdentity_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpKeepidentity}" DataContext="{Binding}" />
@@ -352,7 +351,7 @@
                       Grid.ColumnSpan="2"
                       Content="Use Internal Transaction"
                       IsChecked="{Binding ModelItem.UseInternalTransaction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipUseInternalTransaction}"
+                      ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipUseInternalTransaction}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UseInternalTransaction_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SqlBulkInsertHelpUseInternalTransaction}" DataContext="{Binding}" />
@@ -369,7 +368,7 @@
                       Grid.ColumnSpan="2"
                       Content="Skip blank rows"
                       IsChecked="{Binding ModelItem.IgnoreBlankRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.SQLBulkInsertToolTipSkipblankrows}"
+                      ToolTip="{x:Static languages:Core.SQLBulkInsertToolTipSkipblankrows}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IgnoreBlankRows_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.SQLBulkInsertHelpSkipblankrows}" DataContext="{Binding}" />
@@ -394,7 +393,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
+                                ToolTip="{x:Static languages:Core.SqlBulkInsertToolTipResult}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>

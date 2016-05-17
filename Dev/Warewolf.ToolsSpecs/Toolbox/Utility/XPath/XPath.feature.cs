@@ -480,11 +480,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Use XPath to get multiple results into a scalar in CSV")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Use XPath to get multiple results into a scalar is last result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "XPath")]
-        public virtual void UseXPathToGetMultipleResultsIntoAScalarInCSV()
+        public virtual void UseXPathToGetMultipleResultsIntoAScalarIsLastResult()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath to get multiple results into a scalar in CSV", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath to get multiple results into a scalar is last result", ((string[])(null)));
 #line 133
 this.ScenarioSetup(scenarioInfo);
 #line 134
@@ -495,7 +495,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 136
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 137
- testRunner.Then("the variable \"[[ids]]\" should have a value \"1,2,3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 138
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -516,7 +516,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table20.AddRow(new string[] {
                         "1",
-                        "[[ids]] = 1,2,3"});
+                        "[[ids]] = 3"});
 #line 142
  testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden

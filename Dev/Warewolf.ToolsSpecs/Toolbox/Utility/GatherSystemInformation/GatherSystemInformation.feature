@@ -214,12 +214,12 @@ Scenario Outline:Executing with Incorrect Recordsets
 	Given I have a variable "<input>" and I selected "DiskAvailable"	
 	When the gather system infomartion tool is executed
 	Then the value of the variable "[[my(2).roles]]" is a valid "String"
-	And the execution has "<error>" error
+	And the execution has 'AN' error
 	Examples: 
-	| input                                      | error                                     |
-	| [[rec&^[a]]().a]]                          | [[rec&^[a]]().a]] is not a valid variable |
-	| [[]]                                       | [[]] is not a valid variable              |
-	| [[rec&^]][[rec&^]] is not a valid variable |                                           |
+	| input                                      |
+	| [[rec&^[a]]().a]]                          |
+	| [[]]                                       |
+	| [[rec&^]][[rec&^]] is not a valid variable |
 
 Scenario Outline: Assign a DateTime into a complex types
 	Given I have a variable "<object>" and I selected "<Type>"	

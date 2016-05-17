@@ -25,6 +25,8 @@ Scenario: Read tool Small View water marks
        Then Read small view watermarks are
        | File Name      | Result      |
        | [[PathToRead]] | [[Success]] |
+
+@ignore
 Scenario: Read tool Large View Water marks
        Given I have Read Large View on design surface
        Then Read Large View watermarks are
@@ -35,6 +37,8 @@ Scenario: Read tool Large View Water marks
        | Put error in this variable | Call this web service        |
        | [[Error().Message]]        | http://lcl:3142/services/err |     
        And Done button is "Visible"
+
+@ignore
 Scenario: Removing Data in the field brings back water marks
        Given I have Read Large View on design surface
        And Read Large View has

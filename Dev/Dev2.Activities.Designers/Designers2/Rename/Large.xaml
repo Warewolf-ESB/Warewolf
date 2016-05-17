@@ -6,7 +6,6 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
@@ -68,7 +67,7 @@
                                 FilterType="All"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RenameToolTipFileFolder}"
+                                ToolTip="{x:Static languages:Core.RenameToolTipFileFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -94,7 +93,7 @@
                                 DefaultText="[[Username]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RenameToolTipUsername}"
+                                ToolTip="{x:Static languages:Core.RenameToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
@@ -111,7 +110,7 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="2"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static help:HelpTextResources.RenameToolTipPassword}"
+                     ToolTip="{x:Static languages:Core.RenameToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -133,7 +132,7 @@
                                 WrapInBrackets="False"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.PrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.SftpPrivateKeyValue}"
+                                ToolTip="{x:Static languages:Core.SftpPrivateKeyValue}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -144,7 +143,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPrivateKey}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.CreateSftpPrivateKey}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.PrivateKeyFile"
                                      SourcePropertyValue="{Binding  ModelItem.PrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
@@ -160,7 +159,7 @@
                                 WrapInBrackets="False"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RenameToolTipNewName}"
+                                ToolTip="{x:Static languages:Core.RenameToolTipNewName}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsOutputPathFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_NewNametxt_AutoID}">
@@ -186,7 +185,7 @@
                                 DefaultText="[[Username]]"
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.DestinationUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RenameToolTipUsername}"
+                                ToolTip="{x:Static languages:Core.RenameToolTipUsername}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationUsernameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
@@ -203,7 +202,7 @@
         <PasswordBox Grid.Column="1"
                      Grid.Row="6"
                      Margin="{StaticResource ActivityBorderTop}"
-                     ToolTip="{x:Static help:HelpTextResources.RenameToolTipPassword}"
+                     ToolTip="{x:Static languages:Core.RenameToolTipPassword}"
                      attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.DestinationPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -225,7 +224,7 @@
                                 WrapInBrackets="False"
                                 Margin="{StaticResource ActivityBorderTop}"
                                 Text="{Binding Path=ModelItem.DestinationPrivateKeyFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.SftpPrivateKeyValue}"
+                                ToolTip="{x:Static languages:Core.SftpPrivateKeyValue}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSftpFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -236,7 +235,7 @@
                 </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <core1:HelpSetter Text="{x:Static help:HelpTextResources.CreateSftpPrivateKey}" DataContext="{Binding}" />
+                <core1:HelpSetter Text="{x:Static languages:Core.CreateSftpPrivateKey}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationPrivateKeyFile"
                                      SourcePropertyValue="{Binding  ModelItem.DestinationPrivateKeyFile, UpdateSourceTrigger=PropertyChanged}"
@@ -251,7 +250,7 @@
                   Style="{StaticResource CheckBoxStyle}"
                   Content="Overwrite"
                   IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.RenameToolTipForceoverwrite}">
+                  ToolTip="{x:Static languages:Core.RenameToolTipForceoverwrite}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.RenameHelpForceoverwrite}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -269,7 +268,7 @@
                                 Margin="0,-1,0,0"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.RenameToolTipResult}"
+                                ToolTip="{x:Static languages:Core.RenameToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>

@@ -36,21 +36,13 @@ Scenario Outline: Insert for All FilterType and Default Provider
 	| 17       | <var/><var2/><rec><var/><var2/></rec> | All        | [[rec([[va]]).var]]    | 10    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[rec([[var]]).var]]        | Default  | 13            |
 	| 18       | <var/><var2/><rec><var/><var2/></rec> | All        | [[[[a]]]]              | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[[[var]]]]                 | Default  | 9             |
 	| 19       | <var/><var2/><rec><var/><var2/></rec> | All        | [[                     | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var]]         | [[var]]                     | Default  | 7             |
-#	| 20       | <a/><rec><a/><b/></rec>               | All        | [[rec().[[]]           | 10    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().[[[[a]]]]           | Default  | 15            |
-#	| 21       | <a/><rec><a/><b/></rec>               | All        | [[rec().a[[]]          | 11    | [[a]],[[rec]]                                                                       | [[a]]           | [[rec().a[[a]]]]            | Default  | 14            |
-#	| 22       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec()[[a]]           | 9     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[b]]           | [[rec()[[a]]a]]             | Default  | 12            |
-#	| 23       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec().a]]+[[rec().]] | 20    | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | [[rec().a]]+[[rec().[[a]]]] | Default  | 25            |
-#	| 24       | <a/><b/><rec><a/><b/></rec>           | All        | sin(45.)]]             | 7     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | sin(45.[[a]])               | Default  | 12            |
+	| 20       | <a/><rec><a/><b/></rec>               | All        | [[rec().[[]]           | 10    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().[[a]]			   | Default  | 13            |
+	| 21       | <a/><rec><a/><b/></rec>               | All        | [[rec().a[[]]          | 11    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().a[[a]]              | Default  | 14            |
+	| 22       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec()[[a]]           | 9     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[b]]           | [[rec()[[ba]]               | Default  | 12            |
+	| 23       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec().a]]+[[rec().]] | 20    | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | [[rec().a]]+[[a]]		   | Default  | 15            |
+	| 24       | <a/><b/><rec><a/><b/></rec>           | All        | sin(45.)]]             | 7     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | sin([[a]])]]                | Default  | 9             |
 #Bug 12133
-#	| 25       | <rec><a/><b/></rec><xs><a/><b/></xs>  | All        | [[().a]]              | 3     | [[xc(,[[xc().a]],[[xc(*).a]],[[x(,[[x().a]],[[x(*).a]]                              | [[x(            | [[xc().a]]                  | Default  | 5             |
-
-
-
-
-
-
-
-
+	| 25       | <rec><a/><b/></rec><xs><a/><b/></xs>  | All        | [[().a]]               | 3     |																					   | [[x(            | [[([[x().a]]                | Default  | 7             |
 
 Scenario Outline: Insert for All FilterType and DateTime Provider
 	Given I have the following variable list "<varlist>"
@@ -130,17 +122,18 @@ Scenario Outline: Recset only has no errors for valid variable indexes
 Examples: 	
 	| testName | varlist                            | expectError | input                |
 	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[x]])]]       |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[sum([[assc]])]]    |
-	#Newly Added
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[12]])]]      |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[12]]               |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[12]]).set]]  |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123().1234]]       |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123(a).1234]]      |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[var1.1]]           |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[.var]]             |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[-var]]             |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[*]])]].set]] |
+	| 2        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[sum([[assc]])]]    |
+	| 3        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[12]])]]      |
+	| 4        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[12]]               |
+	| 5        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[12]]).set]]  |
+	| 6        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[123().1234]]       |
+	| 7        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[123(a).1234]]      |
+	| 8        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[var1.1]]           |
+	| 9        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[.var]]             |
+	| 10       | <x/><sum><b/></sum><mus><b/></mus> | true        | [[-var]]             |
+	| 11       | <x/><sum><b/></sum><mus><b/></mus> | false       | [[rec([[*]])]].set]] |
+
+
 
 Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
 	Given I have the following variable list "<varlist>"

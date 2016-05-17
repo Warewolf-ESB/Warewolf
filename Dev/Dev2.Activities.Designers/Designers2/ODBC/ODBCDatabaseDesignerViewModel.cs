@@ -1095,7 +1095,7 @@ namespace Dev2.Activities.Designers2.ODBC
 
         string GetIconPath()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.DbService.ToString();
+            ResourceType = "DbService";
             return "DatabaseService-32";
         }
 

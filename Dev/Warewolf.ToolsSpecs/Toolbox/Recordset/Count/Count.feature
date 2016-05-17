@@ -68,9 +68,6 @@ Scenario: Count a number of records in a unassigned recordset
 	Then the execution has "An" error
 
 
-#Below 3 scenarios should be passed after the bug 12136 is fixed.
-#This 3 scenarios are getting passed but error is not actually generating in studio and in browser too,
-# please investigate why this specs are getting passed without the functionality is not coming right
 Scenario: Count record with invalid variables
 	Given I have a recordset with this shape
 	| rs       |   |

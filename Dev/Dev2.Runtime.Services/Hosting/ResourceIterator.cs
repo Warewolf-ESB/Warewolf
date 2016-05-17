@@ -80,7 +80,7 @@ namespace Dev2.Runtime.Hosting
 
         public void Iterate(string resourcePath, Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)
         {
-            if(delimiters == null || delimiters.Length == 0 || action == null || string.IsNullOrEmpty(resourcePath))
+            if(delimiters == null || delimiters.Length == 0 || action == null)
             {
                 return;
             }

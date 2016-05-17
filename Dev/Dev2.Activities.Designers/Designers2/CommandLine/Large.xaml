@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.CommandLine"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
@@ -70,7 +70,7 @@
                                 FilterType="All" 
                                 WrapInBrackets="False" 
                                 HorizontalScrollBarVisibility="Auto"
-                                ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipCMD}"
+                                ToolTip="{x:Static languages:Core.CMDLineToolTipCMD}"
                                 Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Cmdtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
@@ -99,7 +99,7 @@
                   SelectedValuePath="Key"
                   Margin="{StaticResource ControlBorderTop}"
                   SelectedValue="{Binding Path=ModelItem.CommandPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"            
-                  ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipPrioritytype}"
+                  ToolTip="{x:Static languages:Core.CMDLineToolTipPrioritytype}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_CmdPriority_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.CMDLineHelpPrioritytype}" DataContext="{Binding}" />
@@ -112,7 +112,7 @@
                                 DefaultText="[[Result]]" 
                                 WrapInBrackets="True" 
                                 Text="{Binding Path=ModelItem.CommandResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipResult}"
+                                ToolTip="{x:Static languages:Core.CMDLineToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">

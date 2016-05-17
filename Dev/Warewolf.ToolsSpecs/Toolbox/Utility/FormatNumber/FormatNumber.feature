@@ -242,6 +242,7 @@ Scenario: Format a variable with a null value
 	When the format number is executed
 	Then the execution has "AN" error
 
+
 Scenario: Format a variable with a non existent value
 	Given I have a number "[[int]]"
 	And I want to show "2" decimals 

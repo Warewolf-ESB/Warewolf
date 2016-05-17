@@ -13,27 +13,27 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class DbSource : Resource
+    public class DbSource : Resource, IResourceSource
     {
         #region CTOR
 
         public DbSource()
         {
-            ResourceType = ResourceType.DbSource;
+            ResourceType = "DbSource";
         }
 
         public DbSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.DbSource;
+            ResourceType = "DbSource";
 
             // Setup type include default port
             switch(xml.AttributeSafe("ServerType"))
@@ -62,6 +62,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             var conString = xml.AttributeSafe("ConnectionString");
             var connectionString = conString.CanBeDecrypted() ? DpapiWrapper.Decrypt(conString) : conString;
+            ResourceType = ServerType.ToString();
             ConnectionString = connectionString;
         }
 
@@ -220,7 +221,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
-            result.Add(new XAttribute("Type", ServerType));
+            result.Add(new XAttribute("Type", GetType().Name));
             result.Add(new XAttribute("ConnectionString", DpapiWrapper.Encrypt(ConnectionString) ?? string.Empty));
 
             result.Add(new XElement("AuthorRoles", string.Empty));
@@ -231,6 +232,49 @@ namespace Dev2.Runtime.ServiceModel.Data
             result.Add(new XElement("BizRule", string.Empty));
             result.Add(new XElement("WorkflowActivityDef", string.Empty));
             return result;
+        }
+
+        public override bool IsSource
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsReservedService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsServer
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
         }
 
         #endregion

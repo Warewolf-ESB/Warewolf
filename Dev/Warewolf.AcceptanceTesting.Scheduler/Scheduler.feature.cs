@@ -438,9 +438,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ViewingNumberOfRecordsInHistory()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Viewing number of records in history", ((string[])(null)));
-#line 105
+#line 104
 this.ScenarioSetup(scenarioInfo);
-#line 106
+#line 105
  testRunner.Given("I have Scheduler tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -455,9 +455,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Double Roll and Check",
                         "Enabled",
                         "Int"});
-#line 107
+#line 106
  testRunner.And("the saved tasks are", ((string)(null)), table15, "And ");
-#line 111
+#line 110
  testRunner.And("\"Dice Roll\" task is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -476,11 +476,11 @@ this.ScenarioSetup(scenarioInfo);
                         "true",
                         "8/7/2015 - Present",
                         "Enabled"});
-#line 112
+#line 111
  testRunner.And("task settings are", ((string)(null)), table16, "And ");
-#line 115
+#line 114
  testRunner.And("Number of History records to load equals \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 115
  testRunner.Then("all records should display", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

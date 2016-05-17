@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.DeleteRecords"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -54,7 +54,7 @@
                                 Grid.Row="0"
                                 DefaultText="[[Recordset(*)]]"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static help:HelpTextResources.DeleteToolTipRecords}"
+                                ToolTip="{x:Static languages:Core.DeleteToolTipRecords}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.RecordsetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
@@ -73,7 +73,7 @@
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
                                 DefaultText="[[Success]]"
-                                ToolTip="{x:Static help:HelpTextResources.DeleteToolTipResult}"
+                                ToolTip="{x:Static languages:Core.DeleteToolTipResult}"
                                 WrapInBrackets="True"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
