@@ -209,6 +209,7 @@
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
     <Compile Include="ESB\Management\Services\SaveDbSourceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveExchangeServiceSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveOAuthSource.cs" />
     <Compile Include="ESB\Management\Services\SavePerformanceCounters.cs" />
     <Compile Include="ESB\Management\Services\SavePluginService.cs" />
     <Compile Include="ESB\Management\Services\SavePluginSource.cs" />
