@@ -25,8 +25,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
         {
             var env = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var oauthSources = new List<OauthSource> { new DropBoxSource { ResourceName = "Dropbox Source" } };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<OauthSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
+            var oauthSources = new List<DropBoxSource> { new DropBoxSource { ResourceName = "Dropbox Source" } };
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<DropBoxSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
             env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var agg = new Mock<IEventAggregator>();
             var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(CreateModelItem(), env.Object, agg.Object);
@@ -123,7 +123,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSourcesByType<DropBoxSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -151,7 +151,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource))
+            res.Setup(a => a.FindSourcesByType<DropBoxSource>(env.Object, enSourceType.OauthSource))
                 .Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                 .Returns(new Mock<IResourceModel>().Object);
@@ -177,7 +177,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSourcesByType<DropBoxSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             
@@ -201,7 +201,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSourcesByType<DropBoxSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
             
@@ -231,7 +231,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSourcesByType<DropBoxSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             var model = CreateModelItem();
 
@@ -261,7 +261,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             env.Setup(a => a.ResourceRepository).Returns(res.Object);
             var sources = GetSources();
-            res.Setup(a => a.FindSourcesByType<OauthSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
+            res.Setup(a => a.FindSourcesByType<DropBoxSource>(env.Object, enSourceType.OauthSource)).Returns(sources);
             res.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
 
             var model = CreateModelItem();
@@ -278,9 +278,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             Assert.AreEqual(2, mockVM.Sources.Count);
         }
 
-        List<OauthSource> GetSources()
+        List<DropBoxSource> GetSources()
         {
-            return new List<OauthSource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
+            return new List<DropBoxSource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
         }
     }
 }
