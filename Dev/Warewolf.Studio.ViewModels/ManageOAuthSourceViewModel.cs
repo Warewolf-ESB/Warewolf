@@ -141,7 +141,7 @@ namespace Warewolf.Studio.ViewModels
                         }
                         else
                         {
-                            string errorDescription = HttpUtility.ParseQueryString(uri.Query).Get("error_description");
+                            string errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
 
                             TestMessage = errorDescription ?? "Authentication failed";
                         }
