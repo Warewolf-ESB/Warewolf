@@ -52,6 +52,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testMessage;
         private Uri _authUri;
         private IWebBrowser _webBrowser;
+        private string _path;
         private const string RedirectUri = "https://www.example.com/";
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
@@ -102,6 +103,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetupCommands()
         {
+            OkCommand = new DelegateCommand(SaveConnection, CanSave);
             TestCommand = new DelegateCommand(() =>
             {
                 Testing = true;
@@ -151,6 +153,56 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (ArgumentException)
             {
+            }
+        }
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+            set
+            {
+                _path = value;
+                OnPropertyChanged(() => Path);
+            }
+        }
+
+        void SaveConnection()
+        {
+            Testing = true;
+            TestFailed = false;
+            TestPassed = false;
+            if (_oAuthSource == null)
+            {
+                RequestServiceNameViewModel.Wait();
+                if (RequestServiceNameViewModel.Exception == null)
+                {
+
+                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
+
+                    if (res == MessageBoxResult.OK)
+                    {
+                        _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                        var src = ToSource();
+
+                        src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        Save(src);
+                        _oAuthSource = src;
+                        Path = _oAuthSource.ResourcePath;
+                        SetupHeaderTextFromExisting();
+                    }
+                }
+                else
+                {
+                    throw RequestServiceNameViewModel.Exception;
+                }
+            }
+            else
+            {
+                var src = ToSource();
+                Save(src);
+                _oAuthSource = src;
             }
         }
 
@@ -264,7 +316,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return false;
+            return TestPassed && !String.IsNullOrEmpty(AccessToken);
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -349,12 +401,24 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
+        public ICommand OkCommand { get; set; }
 
         #endregion
 
         void Save(IOAuthSource source)
         {
-            _updateManager.Save(source);
+            try
+            {
+                _updateManager.Save(source);
+                Item = ToSource();
+                SetupHeaderTextFromExisting();
+            }
+            catch(Exception ex)
+            {
+                TestMessage = ex.Message;
+                TestFailed = true;
+                TestPassed = false;
+            }
         }
         IOAuthSource ToSource()
         {
