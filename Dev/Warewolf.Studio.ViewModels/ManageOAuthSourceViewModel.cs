@@ -66,6 +66,7 @@ namespace Warewolf.Studio.ViewModels
             }
             _updateManager = updateManager;
             RequestServiceNameViewModel = requestServiceNameViewModel;
+            Header = Resources.Languages.Core.OAuthSourceNewHeaderLabel;
             Types = new List<string>
             {
                 "Dropbox"
