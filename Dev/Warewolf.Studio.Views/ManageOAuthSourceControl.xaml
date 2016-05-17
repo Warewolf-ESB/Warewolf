@@ -63,7 +63,7 @@
                        Grid.Row="1"
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
-                       Text="OAuth key"/>
+                       Text="OAuth key:"/>
             <TextBox x:Name="OAuthKeyTextBox" 
                      VerticalAlignment="Top"
                      Grid.Row="1"
@@ -105,9 +105,8 @@
                                        Margin="{StaticResource ControlBorderRight}" 
                                        Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
             <Button x:Name="AuthoriseButton" 
-                    Width="120" 
+                    Width="Auto" 
                     Height="30" 
-                    Margin="{StaticResource ControlBorderRight}"
                     Command="{Binding TestCommand}" 
                     Content="Authorise" 
                     ToolTip="{x:Static languages:Core.ManageOAuthAuthoriseTooltip}">
