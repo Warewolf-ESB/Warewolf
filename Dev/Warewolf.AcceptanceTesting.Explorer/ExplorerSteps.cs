@@ -157,14 +157,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             }
         }
 
-        [Then(@"the option to ""(.*)"" is ""(.*)""")]
-        public void ThenTheOptionToIs(string servername, string permissions)
-        {
-            var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
-            var environmentViewModel = explorerView.OpenEnvironment(servername);
-            Assert.IsTrue(environmentViewModel.AsList().Where(a => a.ResourceType != ResourceType.Folder).All(a => a.CanView && !a.CanEdit && !a.CanExecute));
-        }
-
         [Given(@"I open ""(.*)"" server")]
         [When(@"I open ""(.*)"" server")]
         public void WhenIOpenServer(string serverName)
