@@ -11,6 +11,7 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Interfaces;
@@ -30,6 +31,7 @@ namespace Dev2.Activities.Designers2.SharepointListDelete
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
             dynamic mi = ModelItem;
             InitializeItems(mi.FilterCriteria);
+            this.RunViewSetup();
         }
 
         public override string CollectionName { get { return "FilterCriteria"; } }
