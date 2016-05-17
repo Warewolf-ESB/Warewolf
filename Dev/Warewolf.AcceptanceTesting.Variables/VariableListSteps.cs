@@ -174,7 +174,7 @@ namespace Warewolf.AcceptanceTesting.Variables
         public void WhenIClearTheFilter()
         {
             var variableListViewModel = Utils.GetView<DataListViewModel>();
-            //variableListViewModel.ClearFilter();
+            variableListViewModel.SearchText = string.Empty;
         }
 
         [When(@"I click ""(.*)""")]

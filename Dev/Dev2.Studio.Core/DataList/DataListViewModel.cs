@@ -480,7 +480,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void FilterItems()
         {
-            //ConvertDataListStringToCollections(Resource.DataList);
             if (_backupScalars != null)
             {
                 ScalarCollection.Clear();
@@ -498,12 +497,11 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
 
-
             if (SearchText == null)
             {
-
                 return;
             }
+
             _backupScalars = new ObservableCollection<IDataListItemModel>();
             _backupRecsets = new ObservableCollection<IDataListItemModel>();
             foreach (var dataListItemModel in ScalarCollection)
@@ -520,7 +518,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 var item = ScalarCollection[index];
                 if (!item.Name.ToUpper().Contains(SearchText.ToUpper()))
                     ScalarCollection.Remove(item);
-                
             }
 
             for (int index = 0; index < RecsetCollection.Count; index++)
@@ -529,10 +526,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 item.Filter(SearchText);
                 if (!item.FilterText.ToUpper().Contains(SearchText.ToUpper()))
                     RecsetCollection.Remove(item);
-               
             }
-
-         
         }
 
         public void AddBlankRow(IDataListItemModel item)
