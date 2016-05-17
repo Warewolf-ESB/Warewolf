@@ -74,6 +74,7 @@ namespace Warewolf.Studio.Core
                         return imageSource;
                     case "OAuth":
                     case "OauthSource":
+                    case "DropBoxSource":
                         return Application.Current.Resources["DropboxSource"];
                     case "Scheduler":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
