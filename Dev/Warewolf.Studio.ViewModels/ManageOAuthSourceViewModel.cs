@@ -36,6 +36,7 @@ namespace Warewolf.Studio.ViewModels
         private IWebBrowser _webBrowser;
         private const string RedirectUri = "https://www.dropbox.com/1/oauth2/redirect_receiver/";
         private string _path;
+        private string _accessToken;
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
@@ -64,8 +65,7 @@ namespace Warewolf.Studio.ViewModels
             Testing = false;
             HasAuthenticated = false;
             SetupCommands();
-            AppKey = "31qf750f1vzffhu";
-            SetupAuthorizeUri();
+            //AppKey = "31qf750f1vzffhu";
         }
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource)
@@ -89,16 +89,25 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             TestCommand = new DelegateCommand(() =>
             {
+                SetupAuthorizeUri();
                 Testing = true;
                 WebBrowser.Navigate(AuthUri);
-            });
+            }, CanTest);
+        }
+
+        private bool CanTest()
+        {
+            return SelectedOAuthProvider != null && !string.IsNullOrWhiteSpace(AppKey);
         }
 
         private void SetupAuthorizeUri()
         {
             _oauth2State = Guid.NewGuid().ToString("N");
-            var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
-            AuthUri = authorizeUri;
+            if(AppKey != null)
+            {
+                var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
+                AuthUri = authorizeUri;
+            }
         }
 
         private void GetAuthTokens(Uri uri)
@@ -108,48 +117,52 @@ namespace Warewolf.Studio.ViewModels
                 if (!uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
                 {
                     // we need to ignore all navigation that isn't to the redirect uri.
+                    TestMessage = "Waiting for user details...";
                     return;
                 }
-                else
+                Testing = false;
+                if (!uri.ToString().Equals(RedirectUri, StringComparison.OrdinalIgnoreCase))
                 {
-                    Testing = false;
-                    if (!uri.ToString().Equals(RedirectUri, StringComparison.OrdinalIgnoreCase))
+                    OAuth2Response result = null;
+                    try
                     {
-                        OAuth2Response result = null;
-                        try
-                        {
-                            result = DropboxOAuth2Helper.ParseTokenFragment(uri);
-                        }
-                        catch (ArgumentException)
-                        {
-                        }
+                        result = DropboxOAuth2Helper.ParseTokenFragment(uri);
+                    }
+                    catch (ArgumentException)
+                    {
+                    }
 
-                        if (result != null)
+                    if (result != null)
+                    {
+                        if (result.State != _oauth2State)
                         {
-                            if (result.State != _oauth2State)
-                            {
-                                TestMessage = "Authentication failed";
-                                AccessToken = string.Empty;
-                                HasAuthenticated = false;
-                            }
-                            else
-                            {
-                                TestMessage = "Authentication passed";
-                                AccessToken = result.AccessToken;
-                                HasAuthenticated = true;
-                            }
+                            TestPassed = false;
+                            TestFailed = true;
+                            TestMessage = "Authentication failed";
+                            AccessToken = string.Empty;
+                            HasAuthenticated = false;
                         }
                         else
                         {
-                            string errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
-
-                            TestMessage = errorDescription ?? "Authentication failed";
+                            TestPassed = true;
+                            TestFailed = false;
+                            TestMessage = "";
+                            AccessToken = result.AccessToken;
+                            HasAuthenticated = true;
+                            ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
                         }
+                    }
+                    else
+                    {
+                        string errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
+
+                        TestMessage = errorDescription ?? "Authentication failed";
                     }
                 }
             }
         }
 
+        // ReSharper disable once ConvertToAutoProperty
         public List<string> Types
         {
             get
@@ -164,8 +177,18 @@ namespace Warewolf.Studio.ViewModels
 
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        public string AccessToken { get; private set; }
+        public string AccessToken
+        {
+            get
+            {
+                return _accessToken;
+            }
+            private set
+            {
+                _accessToken = value;
+                OnPropertyChanged(() => AccessToken);
+            }
+        }
 
         public Uri AuthUri
         {
@@ -278,9 +301,7 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
             private set
-            // ReSharper restore UnusedMember.Local
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
@@ -326,9 +347,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 _appKey = value;
                 OnPropertyChanged(() => AppKey);
+                ViewModelUtils.RaiseCanExecuteChanged(TestCommand);
             }
         }
 
+        // ReSharper disable once ConvertToAutoProperty
         public override string Name
         {
             get
