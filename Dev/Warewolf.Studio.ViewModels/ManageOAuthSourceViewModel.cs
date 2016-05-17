@@ -2,6 +2,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dropbox.Api;
 using Microsoft.Practices.Prism.Commands;
@@ -47,6 +48,7 @@ namespace Warewolf.Studio.ViewModels
             }
             _updateManager = updateManager;
             RequestServiceNameViewModel = requestServiceNameViewModel;
+            Header = Resources.Languages.Core.OAuthSourceNewHeaderLabel;
             Types = new List<string>
             {
                 "Dropbox"
@@ -113,6 +115,10 @@ namespace Warewolf.Studio.ViewModels
             if (uri != null && !uri.ToString().Equals(RedirectUri, StringComparison.OrdinalIgnoreCase))
             {
                 // we need to ignore all navigation that isn't to the redirect uri.
+                Testing = false;
+                TestFailed = true;
+                TestPassed = false;
+                TestMessage = "Failed";
                 return;
             }
             try
@@ -278,6 +284,11 @@ namespace Warewolf.Studio.ViewModels
 
         public override void UpdateHelpDescriptor(string helpText)
         {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if (mainViewModel != null)
+            {
+                mainViewModel.HelpViewModel.UpdateHelpText(helpText);
+            }
         }
 
         public override void Save()
