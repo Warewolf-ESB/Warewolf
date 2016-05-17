@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Permissions
+namespace Warewolf.AcceptanceTesting.Explorer
 {
     using TechTalk.SpecFlow;
     
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Specs.Permissions
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Settings Permissions")))
             {
-                Dev2.Activities.Specs.Permissions.SettingsPermissionsFeature.FeatureSetup(null);
+                Warewolf.AcceptanceTesting.Explorer.SettingsPermissionsFeature.FeatureSetup(null);
             }
         }
         
