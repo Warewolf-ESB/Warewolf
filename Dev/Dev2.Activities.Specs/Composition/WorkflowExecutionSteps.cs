@@ -1968,13 +1968,6 @@ namespace Dev2.Activities.Specs.Composition
             CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
 
-
-        [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
-        public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenContainsCountRecordOnInto(string parentName, string activityName, string recordsetName, string resultVariable)
         {
