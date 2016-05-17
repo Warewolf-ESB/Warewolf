@@ -84,8 +84,7 @@
                     VerticalAlignment="Center">
             <TextBlock TextWrapping="WrapWithOverflow" 
                        x:Name="ErrorTextBlock" 
-                       Text="{Binding TestMessage}" 
-                       Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+                       Text="{Binding TestMessage}" />
             <fa:ImageAwesome Width="14" 
                              Height="14" 
                              Margin="{StaticResource ControlBorderRight}" 
