@@ -1568,36 +1568,6 @@ namespace Dev2.Activities.Specs.Composition
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), string.Format("async logging should not add more than {0} milliseconds to the execution", d));
         }
 
-        //Steps from tools
-
-        [Given(@"""(.*)"" contains an Assign ""(.*)"" as")]
-        public void GivenContainsAnAssignAs(string parentName, string assignName, Table table)
-        {
-            DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
-
-            foreach (var tableRow in table.Rows)
-            {
-                var value = tableRow["value"];
-                var variable = tableRow["variable"];
-
-                value = value.Replace('"', ' ').Trim();
-
-                if (value.StartsWith("="))
-                {
-                    value = value.Replace("=", "");
-                    value = string.Format("!~calculation~!{0}!~~calculation~!", value);
-                }
-
-                List<ActivityDTO> fieldCollection;
-                ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
-
-                CommonSteps.AddVariableToVariableList(variable);
-
-                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
-            }
-            CommonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
-        }
-
         [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
         public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
         {
