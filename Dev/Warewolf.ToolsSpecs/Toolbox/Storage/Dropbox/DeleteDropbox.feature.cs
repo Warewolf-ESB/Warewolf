@@ -119,8 +119,6 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("Dropbox Delete Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
  testRunner.When("I click Dropbox Delete Edit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
- testRunner.Then("the Delete \"Drop\" Dropbox Source window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

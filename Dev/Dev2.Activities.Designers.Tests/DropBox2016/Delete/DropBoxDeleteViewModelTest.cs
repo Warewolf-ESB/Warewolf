@@ -23,13 +23,11 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
     {
         private DropBoxDeleteViewModel CreateMockViewModel()
         {
-            var env = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var oauthSources = new List<DropBoxSource> { new DropBoxSource { ResourceName = "Dropbox Source" } };
             mockResourceRepo.Setup(repository => repository.FindSourcesByType<DropBoxSource>(It.IsAny<IEnvironmentModel>(), enSourceType.OauthSource)).Returns(oauthSources);
-            env.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var agg = new Mock<IEventAggregator>();
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(CreateModelItem(), env.Object, agg.Object);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(CreateModelItem(), agg.Object);
             return dropBoxDeleteViewModel;
         }
 
@@ -131,7 +129,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             CustomContainer.Register(mockShellViewModel.Object);
             
             //------------Execute Test---------------------------
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, env.Object, agg.Object);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model,  agg.Object);
             dropBoxDeleteViewModel.SelectedSource = dropBoxDeleteViewModel.Sources.First();
             dropBoxDeleteViewModel.EditDropboxSourceCommand.Execute(null);
 
@@ -158,7 +156,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var model = CreateModelItem();
             
             //------------Execute Test---------------------------
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, env.Object, agg.Object);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(dropBoxDeleteViewModel.IsDropboxSourceSelected);
@@ -182,7 +180,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var model = CreateModelItem();
             
             //------------Execute Test---------------------------
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, env.Object, agg.Object);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(dropBoxDeleteViewModel.IsDropboxSourceSelected);
@@ -207,7 +205,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             
             //------------Execute Test---------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, env.Object, agg.Object);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object);
             dropBoxDeleteViewModel.DeletePath = "A";
 
             //------------Assert Results-------------------------
@@ -237,7 +235,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
 
             //------------Execute Test---------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, env.Object, agg.Object);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model,  agg.Object);
             dropBoxDeleteViewModel.Result = "A";
 
             //------------Assert Results-------------------------
@@ -267,7 +265,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var model = CreateModelItem();
             
             //------------Execute Test---------------------------
-            var mockVM = new DropBoxDeleteViewModel(model, env.Object, agg.Object);
+            var mockVM = new DropBoxDeleteViewModel(model,  agg.Object);
             mockVM.Sources.Clear();
             var count = mockVM.Sources.Count();
 

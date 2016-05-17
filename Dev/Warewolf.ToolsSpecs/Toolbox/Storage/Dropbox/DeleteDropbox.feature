@@ -21,7 +21,7 @@ Scenario: Editing Dropbox Tool
 	When I Select "Drop" as the Delete source
 	Then Dropbox Delete Edit is Enabled
 	When I click Dropbox Delete Edit
-	Then the Delete "Drop" Dropbox Source window is opened
+	
 
 Scenario: Change Dropbox Source
 	Given I open New Workflow
