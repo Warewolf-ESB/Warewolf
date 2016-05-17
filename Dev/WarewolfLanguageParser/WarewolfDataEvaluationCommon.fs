@@ -341,9 +341,8 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
             | ScalarExpression a -> WarewolfAtomResult (evalScalar a env)
             | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
             | RecordSetNameExpression x ->evalDataSetExpression env update x
-            | ComplexExpression  a ->  
-                                        let c = EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)
-                                        c                                         
+            | ComplexExpression  a -> EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)
+                                                                                 
 
 and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) : WarewolfEvalResult=
     let lang = reduceForCalculate env update langs

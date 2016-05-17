@@ -141,8 +141,8 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                                             | IntIndex a-> true
                                             | Star -> false
                                             | Last -> true
-                                            | _-> true
-                            | _->true                  
+                                            | _-> true                            
+                            | _->false                  
     match right with 
                 | WarewolfAtomResult x -> 
                             match left with 
