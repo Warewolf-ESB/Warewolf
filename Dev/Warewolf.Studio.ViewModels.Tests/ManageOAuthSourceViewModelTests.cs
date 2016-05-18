@@ -79,6 +79,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestManageOAuthSourceViewModelProperties()
+        {
+            Assert.AreEqual(_manageOAuthSourceViewModel.Name, "Testing OAuth");
+        }
+
+        [TestMethod]
         public void TestOkCommandCanExecuteTrue()
         {
             //arrange
@@ -208,6 +214,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsFalse(_manageOAuthSourceViewModel.Testing);
+            Assert.IsFalse(_manageOAuthSourceViewModel.HasAuthenticated);
             Assert.IsTrue(_manageOAuthSourceViewModel.TestFailed);
             Assert.IsFalse(_manageOAuthSourceViewModel.TestPassed);
             Assert.AreEqual(_manageOAuthSourceViewModel.AccessToken, "");
@@ -331,6 +338,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(_manageOAuthSourceViewModel.Item);
             Assert.AreEqual(result.AppKey, "123");
             Assert.AreEqual(result.AccessToken, "token");
+        }
+
+        [TestMethod]
+        public void TestToModelOtherItem()
+        {
+            //arrange
+            _manageOAuthSourceViewModel.Item = new DropBoxSource();
+            _manageOAuthSourceViewModel.SelectedOAuthProvider = "Other";
+
+            //act
+            IOAuthSource result = _manageOAuthSourceViewModel.ToModel();
+
+            //assert
+            Assert.IsNull(result);
         }
 
         [TestMethod]
