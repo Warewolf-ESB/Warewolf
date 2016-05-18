@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testMessage;
         private Uri _authUri;
         private IWebBrowser _webBrowser;
-        private string RedirectUri = Resources.Languages.Core.OAuthSourceRedirectUri;
+        private readonly string _redirectUri = Resources.Languages.Core.OAuthSourceRedirectUri;
         private string _path;
         private string _accessToken;
 
@@ -95,6 +95,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Testing = true;
                     TestPassed = false;
+                    TestFailed = false;
                     SetupAuthorizeUri();
                     WebBrowser.Navigate(AuthUri);
                 }
@@ -116,7 +117,7 @@ namespace Warewolf.Studio.ViewModels
             _oauth2State = Guid.NewGuid().ToString("N");
             if (AppKey != null)
             {
-                var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(RedirectUri), _oauth2State);
+                var authorizeUri = DropboxOAuth2Helper.GetAuthorizeUri(OAuthResponseType.Token, AppKey, new Uri(_redirectUri), _oauth2State);
                 AuthUri = authorizeUri;
             }
         }
@@ -125,14 +126,14 @@ namespace Warewolf.Studio.ViewModels
         {
             if (uri != null)
             {
-                if (!uri.ToString().StartsWith(RedirectUri, StringComparison.OrdinalIgnoreCase))
+                if (!uri.ToString().StartsWith(_redirectUri, StringComparison.OrdinalIgnoreCase))
                 {
                     // we need to ignore all navigation that isn't to the redirect uri.
                     TestMessage = "Waiting for user details...";
                     return;
                 }
                 Testing = false;
-                if (!uri.ToString().Equals(RedirectUri, StringComparison.OrdinalIgnoreCase))
+                if (!uri.ToString().Equals(_redirectUri, StringComparison.OrdinalIgnoreCase))
                 {
                     OAuth2Response result = null;
                     try
