@@ -3,7 +3,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
-using Dev2.Studio.Core.Interfaces;
 using Dropbox.Api;
 using Microsoft.Practices.Prism.Commands;
 using System;
@@ -88,7 +87,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetupCommands()
         {
-            OkCommand = new DelegateCommand(SaveConnection, CanSave);
+            OkCommand = new DelegateCommand(Save, CanSave);
             TestCommand = new DelegateCommand(() =>
             {
                 if (WebBrowser != null &&
@@ -233,49 +232,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SaveConnection()
-        {
-            Testing = true;
-            TestFailed = false;
-            TestPassed = false;
-            if (_oAuthSource == null)
-            {
-                RequestServiceNameViewModel.Wait();
-                if (RequestServiceNameViewModel.Exception == null)
-                {
-                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
-
-                    if (res == MessageBoxResult.OK)
-                    {
-                        _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
-                        var src = ToSource();
-
-                        src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
-                        Save(src);
-                        _oAuthSource = src;
-                        Path = _oAuthSource.ResourcePath;
-                        SetupHeaderTextFromExisting();
-                    }
-                }
-                else
-                {
-                    throw RequestServiceNameViewModel.Exception;
-                }
-            }
-            else
-            {
-                var src = ToSource();
-                Save(src);
-                _oAuthSource = src;
-            }
-        }
-
         public bool HasAuthenticated { get; private set; }
 
-        public IContextualResourceModel Resource { get; set; }
+        //public IContextualResourceModel Resource { get; set; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local
-        public DropboxClient Client { get; set; }
+        //public DropboxClient Client { get; set; }
 
         public bool TestPassed
         {
@@ -326,8 +288,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        #region Overrides of SourceBaseImpl<IOAuthSource>
-
         public override IOAuthSource ToModel()
         {
             if (Item == null)
@@ -374,6 +334,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        #region Overrides of SourceBaseImpl<IOAuthSource>
+
         // ReSharper disable once ConvertToAutoProperty
         public override string Name
         {
@@ -407,40 +369,33 @@ namespace Warewolf.Studio.ViewModels
 
         public override void Save()
         {
-            SaveOAuthSource();
+            SaveConnection();
+            //SaveOAuthSource();
         }
 
-        private void SetupHeaderTextFromExisting()
-        {
-            if (_oAuthSource != null)
-            {
-                Header = (_oAuthSource.ResourceName ?? ResourceName).Trim();
-            }
-        }
+        //private void SaveOAuthSource()
+        //{
+        //    if (_oAuthSource == null)
+        //    {
+        //        RequestServiceNameViewModel.Wait();
+        //        if (RequestServiceNameViewModel.Exception == null)
+        //        {
+        //            var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
 
-        private void SaveOAuthSource()
-        {
-            if (_oAuthSource == null)
-            {
-                RequestServiceNameViewModel.Wait();
-                if (RequestServiceNameViewModel.Exception == null)
-                {
-                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
-
-                    if (res == MessageBoxResult.OK)
-                    {
-                        var src = ToSource();
-                        src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
-                        src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
-                        Save(src);
-                        Item = src;
-                        _oAuthSource = src;
-                        ResourceName = _oAuthSource.ResourceName;
-                        SetupHeaderTextFromExisting();
-                    }
-                }
-            }
-        }
+        //            if (res == MessageBoxResult.OK)
+        //            {
+        //                var src = ToSource();
+        //                src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+        //                src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+        //                Save(src);
+        //                Item = src;
+        //                _oAuthSource = src;
+        //                ResourceName = _oAuthSource.ResourceName;
+        //                SetupHeaderTextFromExisting();
+        //            }
+        //        }
+        //    }
+        //}
 
         public string ResourceName
         {
@@ -453,6 +408,16 @@ namespace Warewolf.Studio.ViewModels
                 _resourceName = value;
             }
         }
+
+        #endregion Overrides of SourceBaseImpl<IOAuthSource>
+
+        public ICommand TestCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand OkCommand { get; set; }
 
         public ICommand Navigated
         {
@@ -476,15 +441,42 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICommand TestCommand
+        private void SaveConnection()
         {
-            get;
-            set;
+            Testing = true;
+            TestFailed = false;
+            TestPassed = false;
+            if (_oAuthSource == null)
+            {
+                RequestServiceNameViewModel.Wait();
+                if (RequestServiceNameViewModel.Exception == null)
+                {
+                    var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
+
+                    if (res == MessageBoxResult.OK)
+                    {
+                        _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
+                        var src = ToSource();
+
+                        src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        Save(src);
+                        _oAuthSource = src;
+                        Path = _oAuthSource.ResourcePath;
+                        SetupHeaderTextFromExisting();
+                    }
+                }
+                else
+                {
+                    throw RequestServiceNameViewModel.Exception;
+                }
+            }
+            else
+            {
+                var src = ToSource();
+                Save(src);
+                _oAuthSource = src;
+            }
         }
-
-        public ICommand OkCommand { get; set; }
-
-        #endregion Overrides of SourceBaseImpl<IOAuthSource>
 
         private void Save(IOAuthSource source)
         {
@@ -499,6 +491,14 @@ namespace Warewolf.Studio.ViewModels
                 TestMessage = ex.Message;
                 TestFailed = true;
                 TestPassed = false;
+            }
+        }
+
+        private void SetupHeaderTextFromExisting()
+        {
+            if (_oAuthSource != null)
+            {
+                Header = (_oAuthSource.ResourceName ?? ResourceName).Trim();
             }
         }
 
