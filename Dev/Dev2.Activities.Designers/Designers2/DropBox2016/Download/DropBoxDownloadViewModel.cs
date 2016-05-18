@@ -52,7 +52,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
-            _sources = LoadOAuthSources();
+            Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
 
@@ -172,7 +172,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         public void CreateOAuthSource()
         {
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
-            _sources = LoadOAuthSources();
+            Sources = LoadOAuthSources();
             OnPropertyChanged("Sources");
         }
         //Used by specs
@@ -181,11 +181,11 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         {
             Dispatcher.Invoke(() =>
             {
-                _sources = Catalog.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
+                Sources = Catalog.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
                     .Cast<DropBoxSource>()
                     .ToObservableCollection();
             });
-            return _sources;
+            return Sources;
         }
 
         #region Overrides of ActivityDesignerViewModel
