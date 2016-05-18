@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Activities.Designers2.Core.Web.Delete;
 using Dev2.Common.Interfaces;
@@ -58,15 +59,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             Model = model;
 
             SetupCommonProperties();
-            if (IsItemDragged.Instance.IsDragged)
-            {
-                Expand();
-                IsItemDragged.Instance.IsDragged = false;
-            }
-            else
-            {
-                ShowLarge = false;
-            }
+            this.RunViewSetup();
         }
         Guid UniqueID { get { return GetProperty<Guid>(); } }
         private void SetupCommonProperties()

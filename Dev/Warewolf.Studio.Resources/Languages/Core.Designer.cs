@@ -5499,6 +5499,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://www.dropbox.com/1/oauth2/redirect_receiver/.
+        /// </summary>
+        public static string OAuthSourceRedirectUri {
+            get {
+                return ResourceManager.GetString("OAuthSourceRedirectUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outputs.
         /// </summary>
         public static string OutputsLabel {

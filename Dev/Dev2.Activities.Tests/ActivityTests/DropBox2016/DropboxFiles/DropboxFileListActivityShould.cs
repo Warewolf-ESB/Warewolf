@@ -94,7 +94,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Execute Test ----------------------
             var debugInputs = dropboxFileListActivity.GetDebugInputs(CreateExecutionEnvironment(), 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count());
+            Assert.AreEqual(4, debugInputs.Count());
         }
 
         [TestMethod]
@@ -550,7 +550,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var mockExecutionEnv = new Mock<IExecutionEnvironment>();
             List<DebugItem> debugInputs = dropboxFileListActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(5,debugInputs.Count());
+            Assert.AreEqual(4,debugInputs.Count());
         }
     }
 
