@@ -131,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             splitCollection.Add(dto);
         }
 
-        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)""")]
+        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" without escaping")]
         public void GivenAssignToVariableSplitTypeAtAndInclude(string variable, string splitType, string splitAt, string include)
         {
             var included = include.ToLower() == "selected";
@@ -144,7 +144,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         {
             var included = include.ToLower() == "selected";
             AddVariables(variable, splitType, splitAt, included, escape);
-
         }
 
         [Given(@"I have a variable ""(.*)"" with a value ""(.*)""")]

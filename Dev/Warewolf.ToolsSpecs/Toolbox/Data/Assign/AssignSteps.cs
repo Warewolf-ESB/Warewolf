@@ -192,12 +192,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
-        [Then(@"validation is ""(.*)""")]
-        public void ThenValidationIs(string p0)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
         [Then(@"validation message is """"""(.*)""")]
         public void ThenValidationMessageIs(string p0)
         {
