@@ -163,20 +163,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             base.GetDebugInputs(env, update);
 
-           DebugItem debugItem = new DebugItem();
+            DebugItem debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Overwrite Local"), debugItem);
             string value = OverwriteFile ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
-
-              debugItem = new DebugItem();
-              AddDebugItem(new DebugItemStaticDataParams("", "Path in the user's Dropbox"), debugItem);
-            AddDebugItem(new DebugEvalResult(ToPath, "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
-
-            debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Local File Path"), debugItem);
-            AddDebugItem(new DebugEvalResult(FromPath, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
             return _debugInputs;
@@ -189,5 +179,5 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         #endregion Overrides of DsfActivity
     }
 
-    #endregion Overrides of DsfActivity
+        #endregion Overrides of DsfActivity
 }
