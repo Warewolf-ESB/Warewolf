@@ -106,9 +106,9 @@ Scenario Outline: Copy file at location using complex types
 
 
 Scenario Outline: Copy file at location1
-   Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[index]]" with a value "1"
+   Given I have a variable "[[a]]" with a value of '<Val1>'
+	Given I have a variable "[[b]]" with a value of '<Val2>'
+	Given I have a variable "[[index]]" with a value of "1"
 	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
 	And source credentials as '<username>' and '<password>'
 	And I have a destination path '<destination>' with value '<destinationLocation>'
