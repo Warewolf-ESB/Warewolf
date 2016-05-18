@@ -4572,7 +4572,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthAuthoriseHelp.
+        ///   Looks up a localized string similar to Warewolf needs to get Authorization from the external application to connect using your key and credentials. Make sure your application is setup correctly on the remote system before continuing with this step.&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///Dropbox: &lt;a href=&quot;https://www.dropbox.com/developers/apps/create&quot;&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;
+        ///Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:
+        ///https://www.dropbox.com/1/oauth2/redirect_receiver/.
         /// </summary>
         public static string ManageOAuthAuthoriseHelp {
             get {
@@ -4581,7 +4585,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthAuthoriseTooltip.
+        ///   Looks up a localized string similar to Validate the key with the provider.
         /// </summary>
         public static string ManageOAuthAuthoriseTooltip {
             get {
@@ -4590,25 +4594,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthCancelTestHelp.
-        /// </summary>
-        public static string ManageOAuthCancelTestHelp {
-            get {
-                return ResourceManager.GetString("ManageOAuthCancelTestHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthCancelTestTooltip.
-        /// </summary>
-        public static string ManageOAuthCancelTestTooltip {
-            get {
-                return ResourceManager.GetString("ManageOAuthCancelTestTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthKeyHelp.
+        ///   Looks up a localized string similar to The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key..
         /// </summary>
         public static string ManageOAuthKeyHelp {
             get {
@@ -4617,7 +4603,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthKeyTooltip.
+        ///   Looks up a localized string similar to The application key provided by the app.
         /// </summary>
         public static string ManageOAuthKeyTooltip {
             get {
@@ -4626,25 +4612,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthSecretHelp.
-        /// </summary>
-        public static string ManageOAuthSecretHelp {
-            get {
-                return ResourceManager.GetString("ManageOAuthSecretHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthSecretTooltip.
-        /// </summary>
-        public static string ManageOAuthSecretTooltip {
-            get {
-                return ResourceManager.GetString("ManageOAuthSecretTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthTypesHelp.
+        ///   Looks up a localized string similar to Select the provider you want to use for Authentication. The provider must be compatible with the tool you are using. Make sure you have setup the account on the external application correctly..
         /// </summary>
         public static string ManageOAuthTypesHelp {
             get {
@@ -4653,7 +4621,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthTypeTooltip.
+        ///   Looks up a localized string similar to Select the provider you want to use.
         /// </summary>
         public static string ManageOAuthTypeTooltip {
             get {

@@ -268,38 +268,28 @@ Software development by: www.dev2.co.za
   <data name="MenuDialogWebLabel" xml:space="preserve">
     <value>Web</value>
   </data>
-  
   <data name="ManageOAuthTypeTooltip" xml:space="preserve">
-    <value>ManageOAuthTypeTooltip</value>
+    <value>Select the provider you want to use</value>
   </data>
   <data name="ManageOAuthTypesHelp" xml:space="preserve">
-    <value>ManageOAuthTypesHelp</value>
+    <value>Select the provider you want to use for Authentication. The provider must be compatible with the tool you are using. Make sure you have setup the account on the external application correctly.</value>
   </data>
   <data name="ManageOAuthKeyTooltip" xml:space="preserve">
-    <value>ManageOAuthKeyTooltip</value>
+    <value>The application key provided by the app</value>
   </data>
   <data name="ManageOAuthKeyHelp" xml:space="preserve">
-    <value>ManageOAuthKeyHelp</value>
-  </data>
-  <data name="ManageOAuthSecretTooltip" xml:space="preserve">
-    <value>ManageOAuthSecretTooltip</value>
-  </data>
-  <data name="ManageOAuthSecretHelp" xml:space="preserve">
-    <value>ManageOAuthSecretHelp</value>
+    <value>The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key.</value>
   </data>
   <data name="ManageOAuthAuthoriseTooltip" xml:space="preserve">
-    <value>ManageOAuthAuthoriseTooltip</value>
+    <value>Validate the key with the provider</value>
   </data>
   <data name="ManageOAuthAuthoriseHelp" xml:space="preserve">
-    <value>ManageOAuthAuthoriseHelp</value>
+    <value>Warewolf needs to get Authorization from the external application to connect using your key and credentials. Make sure your application is setup correctly on the remote system before continuing with this step.&lt;br/&gt;
+&lt;br/&gt;
+Dropbox: &lt;a href="https://www.dropbox.com/developers/apps/create"&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;
+Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:
+https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
   </data>
-  <data name="ManageOAuthCancelTestTooltip" xml:space="preserve">
-    <value>ManageOAuthCancelTestTooltip</value>
-  </data>
-  <data name="ManageOAuthCancelTestHelp" xml:space="preserve">
-    <value>ManageOAuthCancelTestHelp</value>
-  </data>
-  
   <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
     <value>Select the Warewolf server you want to use or click New Remote Server...</value>
   </data>
