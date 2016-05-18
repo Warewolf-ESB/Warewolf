@@ -58,8 +58,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
         public const string ValidationMessage = "validationMessage";
 
         [Then(@"the execution has ""(.*)"" error")]
-        [Then(@"the execution has ""(.*)"" error")]
-        [When(@"the execution has ""(.*)"" error")]
         [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
         {

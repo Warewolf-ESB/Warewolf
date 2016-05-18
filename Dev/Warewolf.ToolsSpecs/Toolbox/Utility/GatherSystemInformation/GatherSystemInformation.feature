@@ -214,7 +214,7 @@ Scenario Outline:Executing with Incorrect Recordsets
 	Given I have a variable "<input>" and I selected "DiskAvailable"	
 	When the gather system infomartion tool is executed
 	Then the value of the variable "[[my(2).roles]]" is a valid "String"
-	And the execution has 'AN' error
+	And the execution has "AN" error
 	Examples: 
 	| input                                      |
 	| [[rec&^[a]]().a]]                          |
