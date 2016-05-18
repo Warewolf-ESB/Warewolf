@@ -45,7 +45,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
             
-            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEventAggregator.Object);
             ScenarioContext.Current.Add("uploadViewModel", uploadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
         }
