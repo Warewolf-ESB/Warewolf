@@ -6,7 +6,10 @@ using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -49,8 +52,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
-
-            var viewModel = new DropBoxFileListDesignerViewModel(modelItem, mockEventAggregator.Object);
+            var mockCatalog = new Mock<IResourceCatalog>();
+            mockCatalog.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
+            var viewModel = new DropBoxFileListDesignerViewModel(modelItem, mockEventAggregator.Object, mockCatalog.Object);
             ScenarioContext.Current.Add("viewModel", viewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
             ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);

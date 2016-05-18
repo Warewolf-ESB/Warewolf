@@ -9,7 +9,10 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -24,8 +27,11 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
     {
         private DropBoxDownloadViewModel CreateMockViewModel()
         {
+            var mock = new Mock<IResourceCatalog>();
+            var sources = GetSources();
+            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(sources);
             var agg = new Mock<IEventAggregator>();
-            var dropBoxDownloadViewModel = new DropBoxDownloadViewModel(CreateModelItem(), agg.Object);
+            var dropBoxDownloadViewModel = new DropBoxDownloadViewModel(CreateModelItem(), agg.Object, mock.Object);
             return dropBoxDownloadViewModel;
         }
 
@@ -128,8 +134,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.Register(mockShellViewModel.Object);
             //------------Setup for test--------------------------
-            var downloadViewModel = new DropBoxDownloadViewModel(model,  agg.Object);
-            downloadViewModel.SelectedSource = downloadViewModel.Sources.First();
+            var downloadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value) { SelectedSource = new DropBoxSource() };
             downloadViewModel.EditDropboxSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -143,12 +148,11 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
         public void downloadViewModel_EditSourceOnlyAvailableIfSourceSelected()
         {
             var agg = new Mock<IEventAggregator>();
-            var sources = GetSources();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var downloadViewModel = new DropBoxDownloadViewModel(model,  agg.Object);
+            var downloadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
             Assert.IsFalse(downloadViewModel.IsDropboxSourceSelected);
-            downloadViewModel.SelectedSource = sources[1];
+            downloadViewModel.SelectedSource = new DropBoxSource();
             Assert.IsTrue(downloadViewModel.IsDropboxSourceSelected);
 
         }
@@ -162,9 +166,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
             Assert.IsFalse(boxUploadViewModel.IsDropboxSourceSelected);
-            boxUploadViewModel.SelectedSource = boxUploadViewModel.Sources[0];
+            boxUploadViewModel.SelectedSource = new DropBoxSource();
             Assert.IsTrue(boxUploadViewModel.IsDropboxSourceSelected);
         }
 
@@ -177,7 +181,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model,agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.ToPath = "A";
@@ -199,7 +203,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.FromPath = "A";
@@ -221,7 +225,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object);
+            var boxUploadViewModel = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.Result = "A";
@@ -244,8 +248,13 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
             var model = CreateModelItem();
             //------------Setup for test--------------------------
+            var mock = new Mock<IResourceCatalog>();
+            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>()
+            {
+                new DropBoxSource(), new DropBoxSource()
+            });
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var mockVM = new DropBoxDownloadViewModel(model, agg.Object);
+            var mockVM = new DropBoxDownloadViewModel(model, agg.Object, mock.Object);
             //---------------Assert Precondition----------------
             mockVM.Sources.Clear();
             var count = mockVM.Sources.Count();
@@ -267,7 +276,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var mockVM = new DropBoxDownloadViewModel(model,  agg.Object);
+            var mockVM = new DropBoxDownloadViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
             //---------------Assert Precondition----------------
             mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------
@@ -277,9 +286,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Download
 
 
 
-        List<DropBoxSource> GetSources()
+        List<IResource> GetSources()
         {
-            return new List<DropBoxSource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
+            return new List<IResource> { new DropBoxSource { ResourceName = "bob" }, new DropBoxSource { ResourceName = "dave" } };
         }
     }
 }
