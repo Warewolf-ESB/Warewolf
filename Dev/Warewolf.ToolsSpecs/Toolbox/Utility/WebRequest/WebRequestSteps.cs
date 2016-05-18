@@ -58,7 +58,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             ScenarioContext.Current.Add("activity", webGet);
         }
 
-        [Given(@"I have the url ""(.*)""")]
+        [Given(@"I have the url ""(.*)"" without timeout")]
         public void GivenIHaveTheUrl(string url)
         {
             ScenarioContext.Current.Add("url", url);
