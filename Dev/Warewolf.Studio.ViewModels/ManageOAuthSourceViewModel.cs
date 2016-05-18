@@ -25,7 +25,6 @@ namespace Warewolf.Studio.ViewModels
         private string _selectedOAuthProvider;
         private List<string> _types;
         private IOAuthSource _oAuthSource;
-        private string _resourceName;
         private bool _testPassed;
         private bool _testFailed;
         private bool _testing;
@@ -56,7 +55,6 @@ namespace Warewolf.Studio.ViewModels
             };
             SelectedOAuthProvider = Types[0];
             CookieHelper.Clear();
-            Testing = false;
             HasAuthenticated = false;
             SetupCommands();
         }
@@ -368,17 +366,7 @@ namespace Warewolf.Studio.ViewModels
             SaveConnection();
         }
 
-        public string ResourceName
-        {
-            get
-            {
-                return _resourceName;
-            }
-            set
-            {
-                _resourceName = value;
-            }
-        }
+        public string ResourceName { get; set; }
 
         #endregion Overrides of SourceBaseImpl<IOAuthSource>
 
@@ -414,9 +402,6 @@ namespace Warewolf.Studio.ViewModels
 
         private void SaveConnection()
         {
-            Testing = true;
-            TestFailed = false;
-            TestPassed = false;
             if (_oAuthSource == null)
             {
                 RequestServiceNameViewModel.Wait();
@@ -445,8 +430,12 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToSource();
+                src.ResourcePath = Item.ResourcePath ?? "";
+                src.ResourceName = Item.ResourceName;
                 Save(src);
+                Item = src;
                 _oAuthSource = src;
+                SetupHeaderTextFromExisting();
             }
         }
 
