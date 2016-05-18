@@ -134,6 +134,7 @@
     <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
     <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
     <Compile Include="DropBox2016\DropboxFiles\DropboxFileListViewModelTest.cs" />
+    <Compile Include="DropBox2016\TestResourceCatalog.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
