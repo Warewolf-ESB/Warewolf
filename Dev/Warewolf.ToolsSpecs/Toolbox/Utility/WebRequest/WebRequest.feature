@@ -44,7 +44,7 @@ Scenario: Enter a URL made up of text and variables with no header
 
 
 Scenario: Enter a URL and 2 variables each with a header parameter (json)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx"	
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/json"	
 	And I have the Header "[[ContentType]]: [[Type]]"
