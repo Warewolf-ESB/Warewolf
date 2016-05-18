@@ -119,7 +119,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Execute Test ----------------------
             var debugInputs = dropBoxDownloadActivity.GetDebugInputs(CreateExecutionEnvironment(), 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count());
+            Assert.AreEqual(1, debugInputs.Count());
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Execute Test ----------------------
             var debugInputs = dropBoxDownloadActivity.GetDebugInputs(CreateExecutionEnvironment(), 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count());
+            Assert.AreEqual(1, debugInputs.Count());
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Execute Test ----------------------
             var debugInputs = dropBoxDownloadActivity.GetDebugInputs(environment, 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count());
+            Assert.AreEqual(1, debugInputs.Count());
         }
 
         [TestMethod]
@@ -536,7 +536,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var mockExecutionEnv = new Mock<IExecutionEnvironment>();
             List<DebugItem> debugInputs = dropBoxDownloadActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(3, debugInputs.Count());
+            Assert.AreEqual(1, debugInputs.Count());
         }
     }
 

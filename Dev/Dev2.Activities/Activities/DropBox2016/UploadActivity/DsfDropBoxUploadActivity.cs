@@ -173,16 +173,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             value = AddMode ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
-
-            debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Path in the user's Dropbox"), debugItem);
-            AddDebugItem(new DebugEvalResult(ToPath ?? "", "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
-
-            debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Local File Path"), debugItem);
-            AddDebugItem(new DebugEvalResult(FromPath ?? "", "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
+           
             return _debugInputs;
 
         }

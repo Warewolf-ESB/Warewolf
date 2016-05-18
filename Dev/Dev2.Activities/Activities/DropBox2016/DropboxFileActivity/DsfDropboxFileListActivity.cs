@@ -180,13 +180,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             value = IsRecursive ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
-
-
-            debugItem = new DebugItem();
-            AddDebugItem(new DebugItemStaticDataParams("", "Path in the user's Dropbox"), debugItem);
-            AddDebugItem(new DebugEvalResult(ToPath ?? "", "", env, update), debugItem);
-            _debugInputs.Add(debugItem);
-
             return _debugInputs;
 
         }
