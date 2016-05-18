@@ -4,7 +4,7 @@
 	I want to be to backup/move files to a dropbox account
 
 
-Scenario: Open new Dropbox Tool
+Scenario: Open new Dropbox Upload Tool
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
@@ -13,7 +13,7 @@ Scenario: Open new Dropbox Tool
 	When I Click New
 	Then the New Dropbox Source window is opened
 
-Scenario: Editing Dropbox Tool
+Scenario: Editing Dropbox Upload Tool
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled
@@ -24,7 +24,7 @@ Scenario: Editing Dropbox Tool
 	And I Click Edit
 	Then the "Drop" Dropbox Source window is opened
 
-Scenario: Change Dropbox Source
+Scenario: Change Dropbox Upload Source
 	And I drag Upload Dropbox Tool onto the design surface
     And New is Enabled
 	And Edit is Disabled

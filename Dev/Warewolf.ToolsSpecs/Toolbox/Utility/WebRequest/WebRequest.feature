@@ -59,7 +59,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (json)
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL and 2 variables each with a header parameter (xml)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx"	
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/xml"	
 	And I have the Header "[[ContentType]]: [[Type]]"
@@ -74,7 +74,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (xml)
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a URL that returns json
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json"	
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json" without timeout
 	When the web request tool is executed	
 	Then the result should contain the string "["value1","value2"]"
 	And the execution has "NO" error
@@ -86,7 +86,7 @@ Scenario: Enter a URL that returns json
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL that returns xml
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml"
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml" without timeout
 	When the web request tool is executed	
 	Then the result should contain the string "<string>value1</string>"
 	And the execution has "NO" error
@@ -98,7 +98,7 @@ Scenario: Enter a URL that returns xml
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a blank URL
-	Given I have the url ""
+	Given I have the url "" without timeout
 	When the web request tool is executed	
 	Then the result should contain the string ""
 	And the execution has "AN" error

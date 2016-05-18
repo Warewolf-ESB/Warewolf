@@ -50,7 +50,7 @@ Scenario Outline: Execute a foreach over a tool using a recordset with invalid
 	And the underlying dropped activity is a(n) "Tool"
 	When the foreach tool is executed	
 	Then the foreach executes 0 times
-	And the execution has 'AN' error
+	And the execution has "AN" error
 	Examples: 
 	| type        | input        | error   |
 	| InRecordset | [[rs()]]+1   | Failure |

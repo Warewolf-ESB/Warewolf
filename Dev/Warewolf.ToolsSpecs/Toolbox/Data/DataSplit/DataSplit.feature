@@ -304,7 +304,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 Scenario: Split blank text using All split types
 	Given A string to split with value ""
 	And  assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape ""	
-	And  assign to variable "[[vowels().letters]]" split type "Tab" at "" and Include "unselected"	 without escaping
+	And  assign to variable "[[vowels().letters]]" split type "Tab" at "" and Include "unselected" without escaping
 	And  assign to variable "[[vowels().letters]]" split type "Chars" at "ars," and Include "selected" and Escape "" 
 	And  assign to variable "[[vowels().letters]]" split type "Space" at "" and Include "unselected" and Escape "\"
 	And  assign to variable "[[vowels().letters]]" split type "End" at "" and Include "unselected" without escaping
