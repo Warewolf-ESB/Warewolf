@@ -28,8 +28,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _oAuthSource = new Mock<IOAuthSource>();
             _oAuthSource.SetupProperty(p => p.ResourceName, "Test");
 
-            //Mock< IManageOAuthSourceModel>
-
             _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object) { Name = "Testing OAuth" };
         }
 
@@ -74,7 +72,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Mock<IRequestServiceNameViewModel> requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             Task<IRequestServiceNameViewModel> requestServiceNameViewModelTask = new Task<IRequestServiceNameViewModel>(() => requestServiceNameViewModel.Object);
 
-            //IManageOAuthSourceModel nullParam = null;
             new ManageOAuthSourceViewModel(_updateManager.Object, requestServiceNameViewModelTask);
         }
 
@@ -128,28 +125,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_manageOAuthSourceViewModel.TestFailed);
             Assert.IsFalse(_manageOAuthSourceViewModel.TestPassed);
         }
-
-        //[TestMethod]
-        //public void TestOkCommandExecute()
-        //{
-        //    //arrange
-        //    Mock<IRequestServiceNameViewModel> requestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
-        //    Task<IRequestServiceNameViewModel> requestServiceNameViewModelTask = new Task<IRequestServiceNameViewModel>(() => requestServiceNameViewModel.Object);
-        //    _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(updateManager.Object, requestServiceNameViewModelTask);
-
-        //    _manageOAuthSourceViewModel.Testing = false;
-        //    _manageOAuthSourceViewModel.TestFailed = true;
-        //    _manageOAuthSourceViewModel.TestPassed = true;
-        //    _manageOAuthSourceViewModel.ToModel();
-
-        //    //act
-        //    _manageOAuthSourceViewModel.OkCommand.Execute(null);
-
-        //    //assert
-        //    Assert.IsTrue(_manageOAuthSourceViewModel.Testing);
-        //    Assert.IsFalse(_manageOAuthSourceViewModel.TestFailed);
-        //    Assert.IsFalse(_manageOAuthSourceViewModel.TestPassed);
-        //}
 
         [TestMethod]
         public void TestGetAuthTokens()
@@ -386,6 +361,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_manageOAuthSourceViewModel.AppKey, "test app key");
             Assert.AreEqual(_manageOAuthSourceViewModel.AccessToken, "test token");
             Assert.AreEqual(_manageOAuthSourceViewModel.SelectedOAuthProvider, "test provider");
+        }
+
+        [TestMethod]
+        public void TestSaveExceptionMessage()
+        {
+            //arrange
+            _updateManager.Setup(u => u.Save(It.IsAny<IOAuthSource>())).Throws(new Exception("Test save exception"));
+            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object) { Name = "Testing OAuth" };
+            _manageOAuthSourceViewModel.TestMessage = "";
+            _manageOAuthSourceViewModel.TestPassed = false;
+
+            //act
+            _manageOAuthSourceViewModel.Save();
+
+            //assert
+            Assert.AreEqual(_manageOAuthSourceViewModel.TestMessage, "Test save exception");
         }
     }
 }

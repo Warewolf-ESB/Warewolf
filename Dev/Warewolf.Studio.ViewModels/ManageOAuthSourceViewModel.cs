@@ -90,13 +90,13 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(Save, CanSave);
             TestCommand = new DelegateCommand(() =>
             {
+                SetupAuthorizeUri();
                 if (WebBrowser != null &&
                     AuthUri != null)
                 {
                     Testing = true;
                     TestPassed = false;
                     TestFailed = false;
-                    SetupAuthorizeUri();
                     WebBrowser.Navigate(AuthUri);
                 }
             }, CanTest);
@@ -235,11 +235,6 @@ namespace Warewolf.Studio.ViewModels
 
         public bool HasAuthenticated { get; private set; }
 
-        //public IContextualResourceModel Resource { get; set; }
-
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
-        //public DropboxClient Client { get; set; }
-
         public bool TestPassed
         {
             get { return _testPassed; }
@@ -371,32 +366,7 @@ namespace Warewolf.Studio.ViewModels
         public override void Save()
         {
             SaveConnection();
-            //SaveOAuthSource();
         }
-
-        //private void SaveOAuthSource()
-        //{
-        //    if (_oAuthSource == null)
-        //    {
-        //        RequestServiceNameViewModel.Wait();
-        //        if (RequestServiceNameViewModel.Exception == null)
-        //        {
-        //            var res = RequestServiceNameViewModel.Result.ShowSaveDialog();
-
-        //            if (res == MessageBoxResult.OK)
-        //            {
-        //                var src = ToSource();
-        //                src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
-        //                src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
-        //                Save(src);
-        //                Item = src;
-        //                _oAuthSource = src;
-        //                ResourceName = _oAuthSource.ResourceName;
-        //                SetupHeaderTextFromExisting();
-        //            }
-        //        }
-        //    }
-        //}
 
         public string ResourceName
         {
@@ -456,10 +426,11 @@ namespace Warewolf.Studio.ViewModels
 
                     if (res == MessageBoxResult.OK)
                     {
-                        _resourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
                         var src = ToSource();
-
+                        src.ResourceName = RequestServiceNameViewModel.Result.ResourceName.Name;
                         src.ResourcePath = RequestServiceNameViewModel.Result.ResourceName.Path ?? RequestServiceNameViewModel.Result.ResourceName.Name;
+                        Save(src);
+
                         Save(src);
                         _oAuthSource = src;
                         Path = _oAuthSource.ResourcePath;
@@ -490,8 +461,6 @@ namespace Warewolf.Studio.ViewModels
             catch (Exception ex)
             {
                 TestMessage = ex.Message;
-                TestFailed = true;
-                TestPassed = false;
             }
         }
 
