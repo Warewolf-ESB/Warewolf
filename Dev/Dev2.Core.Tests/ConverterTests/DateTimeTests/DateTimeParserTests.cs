@@ -547,12 +547,13 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             string result;
             const string InputString = "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D. ";
             const string FormatString = "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era ";
-
             IDateTimeResultTO dateTimeResult;
-            Assert.IsTrue(_parser.TryParseDateTime(InputString, FormatString, out dateTimeResult, out result), "Cannot parse valid date time");
-            var returnDate = dateTimeResult.ToDateTime();
 
-            Assert.IsTrue(returnDate.Day == 16 && returnDate.Month == 10 && returnDate.Year == 2044, "Incorrect object returned");
+            var resultBool = _parser.TryParseDateTime(InputString, FormatString, out dateTimeResult, out result);
+
+            Assert.IsTrue(result == string.Empty, "Error returned: " + result);
+            Assert.IsTrue(resultBool, "Cannot parse valid date time.");
+            Assert.IsTrue(dateTimeResult.Days == 16 && dateTimeResult.Months == 10 && dateTimeResult.Years == 2044, "Incorrect object returned");
         }
 
         #endregion Valid Parse Formats
