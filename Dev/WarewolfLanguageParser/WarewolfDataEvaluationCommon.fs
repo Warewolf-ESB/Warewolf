@@ -328,11 +328,15 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
                 if (List.length vals = 1 && (not (vals.Head.Contains("[[")))) then
                     WarewolfAtomResult (DataString vals.Head)
                 else
-                    let atoms = List.map DataString vals 
-                    WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",atoms))
-                    //WarewolfAtomListresult (WarewolfAtomList vals)
-                
-                //else WarewolfAtomResult( DataString (eval env update str|>  evalResultToString))
+                    let checkVal (str:string) =
+                        if(str.Contains("[[")) then
+                            eval env update str
+                        else
+                            WarewolfAtomResult (DataString str)                    
+                    let atoms = List.map checkVal vals
+                    let v = List.map evalResultToString atoms
+                    let x = List.map DataString v 
+                    WarewolfAtomListresult( WarewolfAtomList<WarewolfAtomRecord>(DataString "",x))
     
         let buffer =  parseLanguageExpression lang update
                         
