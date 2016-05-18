@@ -193,11 +193,6 @@
     </Compile>
     <Compile Include="Toolbox\Data\FindIndex\FindIndexSteps.cs" />
     <Compile Include="Toolbox\Data\Replace\Replace.feature.cs">
-      <DependentUpon>Replace.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Data\Replace\Replace1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Replace.feature</DependentUpon>
