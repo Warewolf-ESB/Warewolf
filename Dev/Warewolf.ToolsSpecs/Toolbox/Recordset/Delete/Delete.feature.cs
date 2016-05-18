@@ -811,14 +811,8 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void DeleteAComplexTypes(string result, string success, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a complex types", @__tags);
-#line 251
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a complex types", exampleTags);
+#line 250
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -833,13 +827,13 @@ this.ScenarioSetup(scenarioInfo);
             table45.AddRow(new string[] {
                         "rs().row().set",
                         "3"});
-#line 252
+#line 251
  testRunner.Given("I have the following recordset", ((string)(null)), table45, "Given ");
-#line 257
+#line 256
  testRunner.And("I delete a record \"[[rs().row(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 258
+#line 257
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 259
+#line 258
  testRunner.Then("the delete result should be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
@@ -851,16 +845,16 @@ this.ScenarioSetup(scenarioInfo);
             table46.AddRow(new string[] {
                         "rs().row().set",
                         "3"});
-#line 260
+#line 259
  testRunner.And("the recordset \"[[rs(*).row]]\" will be as follows", ((string)(null)), table46, "And ");
-#line 264
+#line 263
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "result"});
             table47.AddRow(new string[] {
                         string.Format("{0} = {1}", result, success)});
-#line 265
+#line 264
  testRunner.And("the debug output as", ((string)(null)), table47, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -869,7 +863,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rj().set().value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rj().set().value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Success", "Success")]
