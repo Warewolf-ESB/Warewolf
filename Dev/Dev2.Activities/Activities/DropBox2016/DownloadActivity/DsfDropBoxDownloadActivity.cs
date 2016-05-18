@@ -13,8 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
+using Dev2.Activities.Debug;
+using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -152,7 +155,33 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             throw new Exception(executionError);
         }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            if (env == null)
+            {
+                return new List<DebugItem>();
+            }
+            base.GetDebugInputs(env, update);
 
+           DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Overwrite Local"), debugItem);
+            string value = OverwriteFile ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+              debugItem = new DebugItem();
+              AddDebugItem(new DebugItemStaticDataParams("", "Path in the user's Dropbox"), debugItem);
+            AddDebugItem(new DebugEvalResult(ToPath, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Local File Path"), debugItem);
+            AddDebugItem(new DebugEvalResult(FromPath, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            return _debugInputs;
+
+        }
         #region Overrides of DsfActivity
 
         public override string DisplayName { get; set; }
