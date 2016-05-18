@@ -113,17 +113,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommandExecuteNullSource()
         {
             //arrange
-            _manageOAuthSourceViewModel.Testing = false;
-            _manageOAuthSourceViewModel.TestFailed = true;
-            _manageOAuthSourceViewModel.TestPassed = true;
+            _manageOAuthSourceViewModel.Item = new DropBoxSource() { ResourceName = "testing", ResourcePath = "" };
 
             //act
             _manageOAuthSourceViewModel.OkCommand.Execute(null);
 
             //assert
-            Assert.IsTrue(_manageOAuthSourceViewModel.Testing);
-            Assert.IsFalse(_manageOAuthSourceViewModel.TestFailed);
-            Assert.IsFalse(_manageOAuthSourceViewModel.TestPassed);
+            Assert.IsNotNull(_manageOAuthSourceViewModel.Item);
         }
 
         [TestMethod]
@@ -369,8 +365,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _updateManager.Setup(u => u.Save(It.IsAny<IOAuthSource>())).Throws(new Exception("Test save exception"));
             _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object) { Name = "Testing OAuth" };
-            _manageOAuthSourceViewModel.TestMessage = "";
-            _manageOAuthSourceViewModel.TestPassed = false;
+            _manageOAuthSourceViewModel.Item = new DropBoxSource() { ResourceName = "testing", ResourcePath = "" };
 
             //act
             _manageOAuthSourceViewModel.Save();
