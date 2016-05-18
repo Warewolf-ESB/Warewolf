@@ -15,12 +15,14 @@ namespace Dev2.Activities
     {
         string _inputVariable;
         readonly string _label;
+        private readonly bool _isCalculate;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
-        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false)
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false)
         {
             _inputVariable = inputVariable.Trim();
             _label = label;
+            _isCalculate = isCalculate;
             try
             {
                 if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable))
@@ -122,7 +124,7 @@ namespace Dev2.Activities
                 var listResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                 if (listResult != null)
                 {
-                    return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=").GetDebugItemResult();
+                    return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=", _isCalculate).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfRecordSetResult)
