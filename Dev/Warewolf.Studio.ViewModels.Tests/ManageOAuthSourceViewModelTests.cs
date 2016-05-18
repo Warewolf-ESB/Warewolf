@@ -274,7 +274,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _manageOAuthSourceViewModel.Testing = false;
             _manageOAuthSourceViewModel.TestFailed = true;
-            _manageOAuthSourceViewModel.TestPassed = false;
+            _manageOAuthSourceViewModel.TestPassed = true;
             _manageOAuthSourceViewModel.WebBrowser = new Mock<IWebBrowser>().Object;
             _manageOAuthSourceViewModel.AuthUri = new Uri("https://example.com");
             _manageOAuthSourceViewModel.AppKey = "123";
@@ -284,7 +284,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(_manageOAuthSourceViewModel.Testing);
-            Assert.IsTrue(_manageOAuthSourceViewModel.TestFailed);
+            Assert.IsFalse(_manageOAuthSourceViewModel.TestFailed);
             Assert.IsFalse(_manageOAuthSourceViewModel.TestPassed);
         }
 
