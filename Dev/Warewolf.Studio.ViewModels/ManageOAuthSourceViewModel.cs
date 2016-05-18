@@ -60,7 +60,6 @@ namespace Warewolf.Studio.ViewModels
             Testing = false;
             HasAuthenticated = false;
             SetupCommands();
-            
         }
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource)
@@ -92,11 +91,20 @@ namespace Warewolf.Studio.ViewModels
             OkCommand = new DelegateCommand(SaveConnection, CanSave);
             TestCommand = new DelegateCommand(() =>
             {
-                Testing = true;
-                TestPassed = false;
-                SetupAuthorizeUri();
-                WebBrowser.Navigate(AuthUri);
+                if (WebBrowser != null &&
+                    AuthUri != null)
+                {
+                    Testing = true;
+                    TestPassed = false;
+                    SetupAuthorizeUri();
+                    WebBrowser.Navigate(AuthUri);
+                }
             }, CanTest);
+        }
+
+        public override bool CanSave()
+        {
+            return TestPassed && !String.IsNullOrEmpty(AccessToken);
         }
 
         private bool CanTest()
@@ -386,11 +394,6 @@ namespace Warewolf.Studio.ViewModels
             AppKey = source.AppKey;
             AccessToken = source.AccessToken;
             Path = source.ResourcePath;
-        }
-
-        public override bool CanSave()
-        {
-            return TestPassed && !String.IsNullOrEmpty(AccessToken);
         }
 
         public override void UpdateHelpDescriptor(string helpText)
