@@ -329,7 +329,7 @@ and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEval
                     WarewolfAtomResult (DataString vals.Head)
                 else
                     let checkVal (str:string) =
-                        if(str.Contains("[[")) then
+                        if(str.Contains("[[") && (not (str=start))) then
                             eval env update str
                         else
                             WarewolfAtomResult (DataString str)                    
