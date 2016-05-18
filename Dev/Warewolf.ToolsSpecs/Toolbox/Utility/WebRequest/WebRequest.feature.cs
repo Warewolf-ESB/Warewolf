@@ -193,7 +193,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 46
 this.ScenarioSetup(scenarioInfo);
 #line 47
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\" without ti" +
+                    "meout", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 48
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
