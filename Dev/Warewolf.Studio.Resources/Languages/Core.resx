@@ -597,6 +597,9 @@ Software development by: www.dev2.co.za
   <data name="OAuthSourceNewHeaderLabel" xml:space="preserve">
     <value>New OAuth Source</value>
   </data>
+  <data name="OAuthSourceRedirectUri" xml:space="preserve">
+    <value>https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
+  </data>
   <data name="PluginSourceNewHeaderLabel" xml:space="preserve">
     <value>New Plugin Source</value>
   </data>

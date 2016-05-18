@@ -33,7 +33,7 @@ namespace Warewolf.Studio.ViewModels
         private string _testMessage;
         private Uri _authUri;
         private IWebBrowser _webBrowser;
-        private const string RedirectUri = "https://www.dropbox.com/1/oauth2/redirect_receiver/";
+        private string RedirectUri = Resources.Languages.Core.OAuthSourceRedirectUri;
         private string _path;
         private string _accessToken;
 
