@@ -13,6 +13,10 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Runtime.Hosting;
+using Dev2.Studio.Core.Messages;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
@@ -44,10 +48,12 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
-            
-            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEventAggregator.Object);
+            var mock = new Mock<IResourceCatalog>();
+            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
+            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEventAggregator.Object, mock.Object);
             ScenarioContext.Current.Add("uploadViewModel", uploadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            ScenarioContext.Current.Add("mockEventAggregator", mockEventAggregator);
         }
         private static DropBoxUploadViewModel GetViewModel()
         {
@@ -153,8 +159,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the New Dropbox Source window is opened")]
         public void ThenTheNewDropboxSourceWindowIsOpened()
         {
-            var isDropboxSourceWizardSourceMessagePulished = GetViewModel().IsDropboxSourceWizardSourceMessagePulished;
-            Assert.IsTrue(isDropboxSourceWizardSourceMessagePulished);
+            var mock = ScenarioContext.Current.Get<Mock<IEventAggregator>>("mockEventAggregator");
+            mock.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
         }
 
         [Then(@"the ""(.*)"" Dropbox Source window is opened")]

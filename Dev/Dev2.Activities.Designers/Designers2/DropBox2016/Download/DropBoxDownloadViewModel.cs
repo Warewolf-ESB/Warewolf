@@ -38,16 +38,17 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
         [ExcludeFromCodeCoverage]
         public DropBoxDownloadViewModel(ModelItem modelItem)
-            : this(modelItem, EventPublishers.Aggregator)
+            : this(modelItem, EventPublishers.Aggregator, ResourceCatalog.Instance)
         {
             this.RunViewSetup();
         }
 
-        public DropBoxDownloadViewModel(ModelItem modelItem, IEventAggregator eventPublisher)
+        public DropBoxDownloadViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IResourceCatalog resourceCatalog)
             : base(modelItem,"File Or Folder", String.Empty)
         {
             _eventPublisher = eventPublisher;
             ThumbVisibility = Visibility.Visible;
+            Catalog = resourceCatalog;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
@@ -57,6 +58,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
         }
         public ICommand NewSourceCommand { get; set; }
+        public IResourceCatalog Catalog { get; set; }
         public OauthSource SelectedSource
         {
             get
@@ -179,7 +181,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         {
             Dispatcher.Invoke(() =>
             {
-                _sources = ResourceCatalog.Instance.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
+                _sources = Catalog.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
                     .Cast<DropBoxSource>()
                     .ToObservableCollection();
             });
