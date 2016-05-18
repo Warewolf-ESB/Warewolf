@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Warewolf.Storage;
+// ReSharper disable UseObjectOrCollectionInitializer
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
@@ -524,12 +525,40 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Test Result -----------------------
             Assert.Fail("Exception Not Throw");
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetDebugInputs_GivenValues_ShouldAddDebugInputs()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+                .Returns(new DropboxFailureResult(new Exception("Test Exception")));
+            var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock();
+            dropboxFileListActivityMock.DropboxResult = new DropboxFailureResult(TestConstant.ExceptionInstance.Value);
+            dropboxFileListActivityMock.SelectedSource =
+                new DropBoxSource
+                {
+                    AccessToken = "Test"
+                };
+            dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            dropboxFileListActivityMock.IsFilesSelected = true;
+            dropboxFileListActivityMock.IsRecursive = true;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var mockExecutionEnv = new Mock<IExecutionEnvironment>();
+            List<DebugItem> debugInputs = dropboxFileListActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(5,debugInputs.Count());
+        }
     }
 
     public class DsfDropboxFileListActivityMock : DsfDropboxFileListActivity
     {
         public string PerformBaseExecution(Dictionary<string, string> evaluatedValues)
         {
+            // ReSharper disable once RedundantBaseQualifier
             return base.PerformExecution(evaluatedValues);
         }
 
