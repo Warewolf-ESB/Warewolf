@@ -196,7 +196,7 @@ Scenario: Output values in recordset with numeric notation
 	| In Field     | Index           | Characters | Direction     |
 	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
 	And the debug output as
-	|                       |
+	|                      |
 	| [[rs(1).a]] = 4,8,12 |
 
 Scenario: Output values in multiple result variables

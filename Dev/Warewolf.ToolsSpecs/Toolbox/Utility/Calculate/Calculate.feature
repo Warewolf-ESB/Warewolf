@@ -70,8 +70,10 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	Then the calculate result should be "6"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| fx =                             |
-	| SUM([[var(*).int]]) = SUM(1,2,3) |	
+	| fx =                         |
+	| SUM([[var(*).int]]) = SUM(1) |
+	| SUM([[var(*).int]]) = SUM(2) |
+	| SUM([[var(*).int]]) = SUM(3) |
 	And the debug output as 
 	|                |
 	| [[result]] = 6 |
