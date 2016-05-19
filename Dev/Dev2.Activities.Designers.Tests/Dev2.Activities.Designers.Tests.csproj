@@ -135,6 +135,7 @@
     <Compile Include="DropBox2016\DropboxFiles\DropboxFileListViewModelTest.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
+    <Compile Include="RabbitMQ\Consume\RabbitMQConsumeDesignerViewModelTest.cs" />
     <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />

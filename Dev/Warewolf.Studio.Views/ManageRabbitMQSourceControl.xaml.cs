@@ -1,6 +1,5 @@
 ﻿using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {

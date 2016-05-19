@@ -122,7 +122,7 @@ namespace Dev2.Runtime.ServiceModel
                     Port = rabbitMQSource.Port,
                     UserName = rabbitMQSource.UserName,
                     Password = rabbitMQSource.Password,
-                    VirtualHost = rabbitMQSource.VirtualHost
+                    VirtualHost = rabbitMQSource.VirtualHost                  
                 };
 
                 using (IConnection connection = connectionFactory.CreateConnection())

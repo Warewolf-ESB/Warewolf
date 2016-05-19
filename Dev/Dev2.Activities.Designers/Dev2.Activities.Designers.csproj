@@ -320,6 +320,16 @@
     <Compile Include="Designers2\DropBox2016\Upload\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.xaml.cs">
+      <DependentUpon>RabbitMQConsumeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Consume\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\RabbitMQ\Publish\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -327,7 +337,7 @@
       <DependentUpon>RabbitMQPublishDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesignerViewModel.cs" />
-    <Compile Include="Designers2\RabbitMQ\Publish\Small.xaml.cs" >
+    <Compile Include="Designers2\RabbitMQ\Publish\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesignerViewModel.cs" />
@@ -1233,6 +1243,18 @@
     <Page Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\RabbitMQ\Publish\Large.xaml">
       <SubType>Designer</SubType>
