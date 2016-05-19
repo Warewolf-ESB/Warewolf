@@ -3,14 +3,12 @@ using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
-using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
@@ -31,23 +29,24 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
     {
         private ObservableCollection<DropBoxSource> _sources;
         private readonly IEventAggregator _eventPublisher;
+        private readonly IDropboxSourceManager _sourceManager;
         private string _deletePath;
         private string _result;
 
         [ExcludeFromCodeCoverage]
         // ReSharper disable once UnusedMember.Global
         public DropBoxDeleteViewModel(ModelItem modelItem)
-            : this(modelItem, EventPublishers.Aggregator, ResourceCatalog.Instance)
+            : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
         {
             this.RunViewSetup();
         }
 
-        public DropBoxDeleteViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IResourceCatalog resourceCatalog)
+        public DropBoxDeleteViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
             : base(modelItem, "File Or Folder", String.Empty)
         {
             _eventPublisher = eventPublisher;
+            _sourceManager = sourceManager;
             ThumbVisibility = Visibility.Visible;
-            Catalog = resourceCatalog;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
@@ -58,7 +57,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         }
 
         public ICommand NewSourceCommand { get; set; }
-        public IResourceCatalog Catalog { get; set; }
         public IResourceCatalog ResourceManager
         {
             get
@@ -131,7 +129,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             set
             {
                 _result = value;
-               SetProperty(value);
+                SetProperty(value);
                 OnPropertyChanged();
             }
         }
@@ -147,16 +145,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             Sources = LoadOAuthSources();
             OnPropertyChanged("Sources");
         }
-        public virtual ObservableCollection<DropBoxSource> LoadOAuthSources()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                Sources = Catalog.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
-                    .Cast<DropBoxSource>()
-                    .ToObservableCollection();
-            });
-            return Sources;
-        }
+
 
         #region Overrides of ActivityDesignerViewModel
         [ExcludeFromCodeCoverage]
@@ -181,6 +170,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public ObservableCollection<DropBoxSource> LoadOAuthSources()
+        {
+            Sources = _sourceManager.FetchSources<DropBoxSource>().ToObservableCollection();
+            return Sources;
         }
     }
 }
