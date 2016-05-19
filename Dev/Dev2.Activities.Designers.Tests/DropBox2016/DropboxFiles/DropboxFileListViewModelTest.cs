@@ -10,8 +10,6 @@ using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
-using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Messages;
 using Dev2.Util;
@@ -34,11 +32,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 
         private DropBoxFileListDesignerViewModel CreateMockViewModel()
         {
-            var mock = new Mock<IResourceCatalog>();
-            var sources = GetSources();
-            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(sources);
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var agg = new Mock<IEventAggregator>();
-            var dropBoxDownloadViewModel = new DropBoxFileListDesignerViewModel(CreateModelItem(), agg.Object, mock.Object);
+            var dropBoxDownloadViewModel = new DropBoxFileListDesignerViewModel(CreateModelItem(), agg.Object, dropBoxSourceManager.Object);
             return dropBoxDownloadViewModel;
         }
 
@@ -53,7 +49,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         public void DropBoxFileListViewModel_GivenIsNew_ShouldReturnInstance()
         {
             //---------------Set up test pack-------------------
-            var viewModel = new DropBoxFileListDesignerViewModel(CreateModelItem(), TestResourceCatalog.EventAggr.Value.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var viewModel = new DropBoxFileListDesignerViewModel(CreateModelItem(), TestResourceCatalog.EventAggr.Value.Object, TestResourceCatalog.LazySourceManager.Value);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
@@ -233,7 +229,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.Register(mockShellViewModel.Object);
             //------------Setup for test--------------------------
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value) { SelectedSource = new DropBoxSource() };
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
             dropBoxFileListViewModel.EditDropboxSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -249,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
 
             //------------Setup for test--------------------------
-            var dropBoxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value) { SelectedSource = new DropBoxSource() };
+            var dropBoxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
             dropBoxUploadViewModel.NewSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -265,7 +261,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var sources = GetSources();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             Assert.IsFalse(dropBoxFileListViewModel.IsDropboxSourceSelected);
             dropBoxFileListViewModel.SelectedSource = sources[1] as DropBoxSource;
             Assert.IsTrue(dropBoxFileListViewModel.IsDropboxSourceSelected);
@@ -281,7 +277,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Setup for test--------------------------
-            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             Assert.IsFalse(boxUploadViewModel.IsDropboxSourceSelected);
             boxUploadViewModel.SelectedSource = new DropBoxSource();
             Assert.IsTrue(boxUploadViewModel.IsDropboxSourceSelected);
@@ -296,7 +292,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.ToPath = "A";
@@ -318,7 +314,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IncludeMediaInfo = true;
@@ -340,7 +336,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsRecursive = true;
@@ -362,7 +358,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IncludeDeleted = true;
@@ -384,7 +380,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFilesSelected = true;
@@ -405,7 +401,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFoldersSelected = true;
@@ -426,7 +422,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFilesAndFoldersSelected = true;
@@ -448,7 +444,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var model = CreateModelItem();
             //------------Setup for test--------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var boxUploadViewModel = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Execute Test---------------------------
             boxUploadViewModel.Result = "A";
@@ -470,8 +466,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
 
             var model = CreateModelItem();
-            var mock = new Mock<IResourceCatalog>();
-            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>()
+            var mock = new Mock<IDropboxSourceManager>();
+            mock.Setup(catalog => catalog.FetchSources<DropBoxSource>()).Returns(new List<DropBoxSource>()
             {
                 new DropBoxSource(), new DropBoxSource()
             });
@@ -499,7 +495,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             // ReSharper disable once UseObjectOrCollectionInitializer
            
             
-            var mockVM = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var mockVM = new DropBoxFileListDesignerViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             //---------------Assert Precondition----------------
             mockVM.CreateOAuthSource();
             //---------------Execute Test ----------------------
