@@ -44,10 +44,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
         [Inputs("Queue Name")]
         [FindMissing]
         public string QueueName { get; set; }
-
-        [FindMissing]
-        [Outputs("Result")]
-        public new string Result { get; set; }
+        
+        public QueueingBasicConsumer Consumer { get; set; }
 
         [NonSerialized]
         private ConnectionFactory _connectionFactory;
@@ -87,9 +85,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 string queueName;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName))
                 {
-                    return "Failure: Queue Name and Message are required.";
+                    return "Failure: Queue Name is required.";
                 }
-
+                QueueName = queueName;
                 ConnectionFactory.HostName = RabbitMQSource.HostName;
                 ConnectionFactory.Port = RabbitMQSource.Port;
                 ConnectionFactory.UserName = RabbitMQSource.UserName;
@@ -102,12 +100,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     {
                         Channel.BasicQos(0,1,false);
 
-                        var consumer = new QueueingBasicConsumer(Channel);
-                        var consume = Channel.BasicConsume(queue: queueName,
+                        Consumer = new QueueingBasicConsumer(Channel);
+                        var consumer = Consumer;
+                        Channel.BasicConsume(queue: queueName,
                             noAck: false,
                             consumer: consumer);
-                        var deleveryArgs = consumer.Queue.Dequeue();
-                        Channel.BasicAck(deleveryArgs.DeliveryTag, false);
+                        //var deleveryArgs = consumer.Queue.Dequeue();
+                        //Channel.BasicAck(deleveryArgs.DeliveryTag, false);
                     }
                 }
                 Dev2Logger.Debug(String.Format("Message consumed from queue {0}", queueName));

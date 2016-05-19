@@ -96,7 +96,6 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
 
             var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
             vm.QueueName = "";
-            vm.Message = "Some test message";
             vm.SelectedRabbitMQSource = new RabbitMQServiceSourceDefinition();
             //------------Execute Test---------------------------
             vm.Validate();
@@ -141,23 +140,6 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsNotNull(vm);
             model.Verify(p => p.EditSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
         }
-
-        //[TestMethod]
-        //[Owner("Sanele")]
-        //[TestCategory("RabbitMQConsumeDesignerViewModelTest_Commands")]
-        //public void RabbitMQConsumeDesignerViewModel_NewRabbitMQSourceCommand_ShouldPublishShowNewResourceWizard()
-        //{
-        //    var model = new Mock<IRabbitMQSourceModel>();
-        //    var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
-
-        //    //------------Execute Test---------------------------
-        //    vm.NewRabbitMQSourceCommand.Execute(null);
-        //    //------------Assert Results-------------------------
-        //    Assert.IsNotNull(vm);
-        //    Assert.IsNull(vm.SelectedRabbitMQSource);
-        //    Assert.IsFalse(vm.IsRabbitMQSourceSelected);
-        //    model.Verify(p => p.CreateNewSource());
-        //}
 
         private static ModelItem CreateModelItem()
         {
