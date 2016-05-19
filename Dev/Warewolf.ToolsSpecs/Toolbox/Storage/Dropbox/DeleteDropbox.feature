@@ -10,7 +10,7 @@ Scenario: Open new Dropbox Tool
 	And Dropbox Delete Edit is Disabled
 	And Delete Dropbox File is Enabled
 	When I Click Delete New
-	Then the New Delete Dropbox Source window is opened
+	
 	
 Scenario: Editing Dropbox Tool
 	Given I open New Workflow

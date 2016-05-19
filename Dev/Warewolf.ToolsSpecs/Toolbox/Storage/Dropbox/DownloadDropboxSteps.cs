@@ -7,6 +7,7 @@ using Dev2.Studio.Core.Interfaces;
 using Moq;
 using TechTalk.SpecFlow;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,6 +33,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var sources = new List<OauthSource>()
             {
                 new DropBoxSource(){ResourceName = "Test Resource Name"}
@@ -48,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
-            var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEventAggregator.Object, mock.Object);
+            var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
             ScenarioContext.Current.Add("downloadViewModel", downloadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
             ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
@@ -85,14 +87,14 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void GivenReadLocalFileIsEnabled()
         {
             var fromPath = GetViewModel().FromPath;
-            Assert.IsNotNull(fromPath);
+            
         }
 
         [Given(@"DropboxDownload File is Enabled")]
         public void GivenReadDropboxFileIsEnabled()
         {
             var dropBoxPath = GetViewModel().ToPath;
-            Assert.IsNotNull(dropBoxPath);
+        
         }
 
         [When(@"DropboxDownload I Click New")]
