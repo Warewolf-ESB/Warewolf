@@ -113,7 +113,6 @@
     </Compile>
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
     <Compile Include="CEventHelperTests.cs" />
-    <Compile Include="Core.cs" />
     <Compile Include="Core\ActivityDesignerViewModelExentionTests.cs" />
     <Compile Include="Core\Database\DatabaseSourceRegionTest.cs" />
     <Compile Include="Core\Database\DatabaseActionRegionTest.cs" />

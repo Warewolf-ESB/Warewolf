@@ -118,7 +118,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Core.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
