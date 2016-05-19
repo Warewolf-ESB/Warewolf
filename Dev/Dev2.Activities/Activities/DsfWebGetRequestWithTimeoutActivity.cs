@@ -25,6 +25,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 namespace Dev2.Activities
 {
@@ -113,6 +115,7 @@ namespace Dev2.Activities
                 var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers,update));
                 colItr.AddVariableToIterateOn(urlitr);
                 colItr.AddVariableToIterateOn(headerItr);
+                var counter = 1;
                 while (colItr.HasMoreData())
                 {
                     var c = colItr.FetchNextValue(urlitr);
@@ -123,18 +126,7 @@ namespace Dev2.Activities
 
                     var headersEntries = new List<Tuple<string, string>>();
 
-                    foreach (var header in headers)
-                    {
-                        var headerSegments = header.Split(':');
-                        headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
-
-                        if (dataObject.IsDebugMode())
-                        {
-                            DebugItem debugItem = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment,update), debugItem);
-                            _debugInputs.Add(debugItem);
-                        }
-                    }
+                    AddHeaderDebug(dataObject, update, headers, headersEntries);
                     bool timeoutSecondsError = false;
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
@@ -171,8 +163,9 @@ namespace Dev2.Activities
                             );
 
                         allErrors.MergeErrors(errorsTo);
-                        PushResultsToDataList(Result, result, dataObject,update);
-                    }
+                        PushResultsToDataList(Result, result, dataObject, update == 0 ? counter : update);
+                        counter++;
+                    }                    
                     else
                         throw new ApplicationException("Execution aborted - see error messages.");
 
@@ -201,6 +194,21 @@ namespace Dev2.Activities
             }
         }
 
+        private void AddHeaderDebug(IDSFDataObject dataObject, int update, string[] headers, List<Tuple<string, string>> headersEntries)
+        {
+            foreach(var header in headers)
+            {
+                var headerSegments = header.Split(':');
+                headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
+
+                if(dataObject.IsDebugMode())
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
+                    _debugInputs.Add(debugItem);
+                }
+            }
+        }
 
         void PushResultsToDataList(string expression, string result, IDSFDataObject dataObject,int update)
         {
