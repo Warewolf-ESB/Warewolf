@@ -1,14 +1,3 @@
-
-/*
-*  Warewolf - The Easy Service Bus
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -28,11 +17,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Utility-Calculate", "Calculate", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
-    public class DsfCalculateActivity : DsfActivityAbstract<string>
+    [ToolDescriptorInfo("Utility-Calculate", "Aggregate Calculate", ToolType.Native, "8889E69B-38A3-43BC-A98F-7190C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    public class DsfAggregateCalculateActivity : DsfActivityAbstract<string>
     {
 
         #region Properties
@@ -55,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Ctor
 
-        public DsfCalculateActivity()
+        public DsfAggregateCalculateActivity()
             : base("Calculate")
         {
             Expression = string.Empty;
@@ -95,7 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
-                var calc = String.Format(GlobalConstants.CalculateTextConvertFormat, input);
+                var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
                 var scalarResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
                 if(scalarResult != null && scalarResult.Item.IsNothing)
@@ -104,12 +92,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 var inputIterator = new WarewolfIterator(warewolfEvalResult);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
-                var counter = 1;
                 while(warewolfListIterator.HasMoreData())
                 {
                     var result = warewolfListIterator.FetchNextValue(inputIterator);
-                    dataObject.Environment.Assign(Result, result, update == 0 ? counter : update);
-                    counter++;
+                    dataObject.Environment.Assign(Result, result, update);
                 }
 
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
@@ -120,7 +106,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Calculate Exception", ex);
+                Dev2Logger.Error("Aggregate Calculate Exception", ex);
                 allErrors.AddError(ex.Message);
             }
             finally
@@ -129,7 +115,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
-                    DisplayAndWriteError("DsfCalculateActivity", allErrors);
+                    DisplayAndWriteError("DsfAggregateCalculateActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
@@ -220,4 +206,3 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
     }
 }
-

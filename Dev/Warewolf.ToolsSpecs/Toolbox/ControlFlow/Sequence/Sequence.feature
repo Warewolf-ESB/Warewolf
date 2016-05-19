@@ -523,5 +523,5 @@ Scenario: Execute a Sequence with For each with 3 executions
 	  | 788.894564545645 | Up       | 3              | 3                |
 	  And the "Fnumber" debug outputs as 
 	  |                                |
-	  | [[test().result4]] = 788.895 |
+	  | [[test(7).result4]] = 788.895 |
 

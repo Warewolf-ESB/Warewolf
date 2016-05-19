@@ -19,6 +19,10 @@ type WarewolfEvalResult =
     | WarewolfRecordSetResult of WarewolfRecordset
 
 
+let enQuote (atom:WarewolfAtom) = 
+    match atom with 
+        | DataString a -> DataString (sprintf "\"%s\"" a)
+        |_ -> atom
 
 let atomtoString (x:WarewolfAtom )=
     match x with 
@@ -49,6 +53,15 @@ let evalResultToStringAsList (a:WarewolfEvalResult) =
                                 let list = [ f ]
                                 Seq.ofList list
     | WarewolfAtomListresult x -> Seq.map warewolfAtomRecordtoString x |> fun a -> a
+    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a -> Seq.map warewolfAtomRecordtoString a |> fun a -> a
+
+let evalResultToStringAsListQuote (a:WarewolfEvalResult) = 
+    match a with
+    | WarewolfAtomResult x ->   let f = atomtoString (enQuote x)
+                                let list = [ f ]
+                                Seq.ofList list
+    | WarewolfAtomListresult x -> Seq.map enQuote x |> Seq.map atomtoString
+                                  //Seq.map warewolfAtomRecordtoString x |> fun a -> a
     | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a -> Seq.map warewolfAtomRecordtoString a |> fun a -> a
 
 let atomToJsonCompatibleObject (a:WarewolfAtom) :System.Object= 
@@ -296,11 +309,11 @@ and evalDataSetExpression (env: WarewolfEnvironment) (update:int) (name:RecordSe
 
           
 and  eval  (env: WarewolfEnvironment)  (update:int) (lang:string) : WarewolfEvalResult=
-
     if lang.StartsWith(Dev2.Common.GlobalConstants.CalculateTextConvertPrefix) then
         evalForCalculate env update lang
+    elif lang.StartsWith(Dev2.Common.GlobalConstants.AggregateCalculateTextConvertPrefix) then
+       evalForCalculateAggregate env update lang
     else
-       
         let EvalComplex (exp:LanguageExpression list) = 
             if((List.length exp) =1) then
                 match exp.[0] with
@@ -359,7 +372,7 @@ and  evalForCalculate  (env: WarewolfEnvironment)  (update:int) (langs:string) :
                     | _ ->failwith "you should not get here"
             else    
                 let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
-                let evaled = (List.map (languageExpressionToString >> (eval  env update)>>evalResultToStringAsList)  exp )  
+                let evaled = (List.map (languageExpressionToString >> (evalForCalculate  env update)>>evalResultToStringAsList)  exp )
                 let apply (fList: ('a->'b) list) (xList: 'a list)  = 
                     [ for f in fList do
                         for x in xList do
@@ -408,7 +421,7 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
                 | _ ->failwith "you should not get here"
         else    
             let start = List.map languageExpressionToString  exp |> (List.fold (+) "")
-            let evaled = (List.map (languageExpressionToString >> (evalForCalculate   env update)>>evalResultToString)  exp )|> (List.fold (+) "")
+            let evaled = (List.map (languageExpressionToString >> (evalForCalculateAggregate   env update)>>evalResultToString)  exp )|> (List.fold (+) "")
             if( evaled = start || (not (evaled.Contains("[[")))) then
                 DataString evaled
             else DataString (eval env update evaled |>  evalResultToString)
@@ -421,11 +434,6 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
         | WarewolfAtomAtomExpression a -> WarewolfAtomResult a
         | RecordSetNameExpression x ->evalDataSetExpression env update x
         | ComplexExpression  a ->  WarewolfAtomResult (EvalComplex ( List.filter (fun b -> "" <> (languageExpressionToString b)) a)) 
-
-and enQuote (atom:WarewolfAtom) = 
-    match atom with 
-        | DataString a -> DataString (sprintf "\"%s\"" a)
-        |_ -> atom
 
 and  reduceForCalculate  (env: WarewolfEnvironment) (update:int) (langs:string) : string=
     let lang = langs.Trim() 

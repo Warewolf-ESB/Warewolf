@@ -1925,7 +1925,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table112.AddRow(new string[] {
-                        "[[test().result4]] = 788.895"});
+                        "[[test(7).result4]] = 788.895"});
 #line 524
    testRunner.And("the \"Fnumber\" debug outputs as", ((string)(null)), table112, "And ");
 #line hidden

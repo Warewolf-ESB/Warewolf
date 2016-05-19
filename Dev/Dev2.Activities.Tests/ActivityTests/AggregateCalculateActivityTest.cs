@@ -1,14 +1,3 @@
-
-/*
-*  Warewolf - The Easy Service Bus
-*  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -19,7 +8,6 @@ using ActivityUnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -27,7 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class CalculateActivityTest : BaseActivityUnitTest
+    public class AggregateCalculateActivityTest : BaseActivityUnitTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -42,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = @"now()", Result = "[[result]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = @"now()", Result = "[[result]]" }
             };
 
             CurrentDl = "<ADL><result></result></ADL>";
@@ -74,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = @"Sum([[scalar]], 10)", Result = "[[result]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = @"Sum([[scalar]], 10)", Result = "[[result]]" }
             };
 
             CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
@@ -97,7 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = @"sum(10,20)", Result = "[[scalar]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = @"sum(10,20)", Result = "[[scalar]]" }
             };
 
             TestData = @"<ADL><scalar></scalar></ADL>";
@@ -120,7 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = @"Sum([[scalar]],[[RecordSet(1).Field]],[[RecordSet(2).Field]])", Result = "[[result]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = @"Sum([[scalar]],[[RecordSet(1).Field]],[[RecordSet(2).Field]])", Result = "[[result]]" }
             };
 
             CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
@@ -143,7 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = "Concatenate([[testVar]], \"moreText\")", Result = "[[NewTestVar]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = "Concatenate([[testVar]], \"moreText\")", Result = "[[NewTestVar]]" }
             };
 
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
@@ -164,7 +152,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = "Right([[testVar]], 2)", Result = "[[NewTestVar]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = "Right([[testVar]], 2)", Result = "[[NewTestVar]]" }
             };
 
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
@@ -185,7 +173,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = "Left([[testVar]], 2)", Result = "[[NewTestVar]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = "Left([[testVar]], 2)", Result = "[[NewTestVar]]" }
             };
 
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
@@ -207,7 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = "Concatenate([[testRecSet(1).testField]], \"moreText\")", Result = "[[NewTestVar]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = "Concatenate([[testRecSet(1).testField]], \"moreText\")", Result = "[[NewTestVar]]" }
             };
 
             CurrentDl = "<ADL><testRecSet><testField></testField></testRecSet><NewTestVar></NewTestVar></ADL>";
@@ -230,13 +218,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]])", Result = "[[sumResult]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = "sum([[rec(*).val]])", Result = "[[sumResult]]" }
             };
 
             CurrentDl = "<ADL><rec><val></val></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "4";
+            const string expected = "10";
             string error;
             string actual;
 
@@ -252,13 +240,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]],[[rec(*).val2]])", Result = "[[sumResult]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = "sum([[rec(*).val]],[[rec(*).val2]])", Result = "[[sumResult]]" }
             };
 
             CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val><val2>0</val2></rec><rec><val>3</val><val2>0</val2></rec><rec><val>4</val><val2>0</val2></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "4";
+            const string expected = "20";
             string error;
             string actual;
 
@@ -274,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]],[[rec(*).val2]])", Result = "[[sumResult]]" }
+                Action = new DsfAggregateCalculateActivity { Expression = "sum([[rec(*).val]],[[rec(*).val2]])", Result = "[[sumResult]]" }
             };
 
             CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
@@ -299,7 +287,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfCalculateActivity_GetForEachInputs_NullContext_EmptyList()
         {
             //------------Setup for test--------------------------
-            var dsfCalculateActivity = new DsfCalculateActivity();
+            var dsfCalculateActivity = new DsfAggregateCalculateActivity();
             //------------Execute Test---------------------------
             var dsfForEachItems = dsfCalculateActivity.GetForEachInputs();
             //------------Assert Results-------------------------
@@ -313,7 +301,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
-            var act = new DsfCalculateActivity { Expression = expression, Result = "[[res]]" };
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = "[[res]]" };
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
             //------------Assert Results-------------------------
@@ -330,7 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
-            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
             //------------Assert Results-------------------------
@@ -345,7 +333,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
-            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
@@ -362,7 +350,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
-            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
             var tuple1 = new Tuple<string, string>("Test1", "Test");
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 });
@@ -378,7 +366,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
-            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(null);
             //------------Assert Results-------------------------
@@ -393,7 +381,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
-            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = result };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
@@ -410,7 +398,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
-            var act = new DsfCalculateActivity { Expression = expression, Result = result };
+            var act = new DsfAggregateCalculateActivity { Expression = expression, Result = result };
             var tuple1 = new Tuple<string, string>("[[res]]", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 });

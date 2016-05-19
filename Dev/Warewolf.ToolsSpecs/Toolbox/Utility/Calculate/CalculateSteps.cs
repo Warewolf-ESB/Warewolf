@@ -36,7 +36,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if (ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             string formula;
@@ -44,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
 
             var calculate = new DsfCalculateActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVariable,
                     Expression = formula
                 };
 
@@ -159,6 +165,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"calculate result as ""(.*)""")]
+        public void GivenCalculateResultAs(string p0)
+        {
+            ScenarioContext.Current.Add("resVar", p0);
+        }
 
     }
 }
