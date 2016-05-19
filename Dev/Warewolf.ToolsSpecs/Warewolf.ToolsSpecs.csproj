@@ -427,11 +427,6 @@
     </Compile>
     <Compile Include="Toolbox\Resources\Web\PutWebConnectoToolSteps.cs" />
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
-      <DependentUpon>Command.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Scripting\Command\Command1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Command.feature</DependentUpon>
