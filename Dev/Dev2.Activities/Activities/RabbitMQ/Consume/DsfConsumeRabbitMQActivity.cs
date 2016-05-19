@@ -16,6 +16,7 @@ using Dev2.Util;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using RabbitMQ.Client.Events;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -39,8 +40,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             DisplayName = "RabbitMQ Consume";
         }
 
-        #endregion Ctor
-
+        #endregion Ctor        
         public Guid RabbitMQSourceResourceId { get; set; }
 
         [Inputs("Queue Name")]
@@ -49,6 +49,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
         
         [FindMissing]
         public ushort? Prefetch { get; set; }
+
+        [ExcludeFromCodeCoverage]
         [FindMissing]
         public bool ReQueue { get; set; }
         
@@ -94,7 +96,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     return "Failure: Queue Name is required.";
                 }
-                QueueName = queueName;
                 ConnectionFactory.HostName = RabbitMQSource.HostName;
                 ConnectionFactory.Port = RabbitMQSource.Port;
                 ConnectionFactory.UserName = RabbitMQSource.UserName;
@@ -108,20 +109,31 @@ namespace Dev2.Activities.RabbitMQ.Consume
                         Channel.BasicQos(0, Prefetch == null ? (ushort)1 : Prefetch.GetValueOrDefault(), false);
                         //Channel.BasicQos(0,1,false);
                         Consumer = new QueueingBasicConsumer(Channel);
-                        Channel.BasicConsume(queue: queueName,
+                        try
+                        {
+                            Channel.BasicConsume(queue: queueName,
                             noAck: false,
                             consumer: Consumer);
-
-                        BasicDeliverEventArgs basicDeliverEventArgs;
-                        Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
-                        if (basicDeliverEventArgs == null)
-                        {
-                            Dev2Logger.Debug(String.Format("Nothing in the Queue {0}", queueName));
-                            return "Nothing in the Queue";
                         }
-                        var body = basicDeliverEventArgs.Body;
-                        res = Encoding.Default.GetString(body);
-                        Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
+                        catch (Exception)
+                        {
+                            throw new Exception(string.Format("Queue '{0}' not found", queueName));
+                        }                        
+                        
+                        if(!ReQueue)
+                        {
+                            BasicDeliverEventArgs basicDeliverEventArgs;
+                            Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
+                            if(basicDeliverEventArgs == null)
+                            {                                
+                                throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
+                            }
+                            var body = basicDeliverEventArgs.Body;
+                            res = Encoding.Default.GetString(body);
+                            Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
+                        }
+                        else
+                            res = "Message Consumed";
                     }
                 }
                 Dev2Logger.Debug(String.Format("Message consumed from queue {0}", queueName));

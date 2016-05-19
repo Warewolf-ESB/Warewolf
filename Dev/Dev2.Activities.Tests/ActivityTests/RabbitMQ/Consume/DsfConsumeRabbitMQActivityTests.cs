@@ -6,12 +6,14 @@ using Moq;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfConsumeRabbitMQActivityTests
     {
         [TestMethod]
@@ -22,9 +24,15 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+            dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId = Guid.Empty;
+            dsfConsumeRabbitMQActivity.QueueName = string.Empty;
+            dsfConsumeRabbitMQActivity.Prefetch = null;
             //------------Assert Results-------------------------
             Assert.IsNotNull(dsfConsumeRabbitMQActivity);
             Assert.AreEqual("RabbitMQ Consume", dsfConsumeRabbitMQActivity.DisplayName);
+            Assert.IsTrue(string.IsNullOrEmpty(dsfConsumeRabbitMQActivity.QueueName));
+            Assert.AreEqual(Guid.Empty, dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId);
+            Assert.IsNull(dsfConsumeRabbitMQActivity.Prefetch);
         }
 
         [TestMethod]
@@ -46,36 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             //------------Assert Results-------------------------
             Assert.AreEqual(result.ToString(), "Failure: Source has been deleted.");
-        }
-        [TestMethod]
-        [Owner("Sanele")]
-        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
-        public void DsfConsumeRabbitMQActivity_Execute_Should_Set_QueueName()
-        {
-            //------------Setup for test--------------------------
-            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
-
-            const string queueName = "Q1";
-            var resourceCatalog = new Mock<IResourceCatalog>();
-            var rabbitMQSource = new Mock<RabbitMQSource>();
-            var connectionFactory = new Mock<ConnectionFactory>();
-            var connection = new Mock<IConnection>();
-            var channel = new Mock<IModel>();
-
-            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
-            connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
-            connection.Setup(c => c.CreateModel()).Returns(channel.Object);
-            channel.Setup(c => c.BasicQos(0, 1, false));
-
-            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
-            privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
-            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
-
-            //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
-            //------------Assert Results-------------------------            
-            Assert.AreEqual(queueName, dsfConsumeRabbitMQActivity.QueueName);
-        }
+        }       
 
         [TestMethod]
         [Owner("Sanele")]
@@ -130,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Setup for test--------------------------
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
 
+            
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new Mock<RabbitMQSource>();
             var connectionFactory = new Mock<ConnectionFactory>();
@@ -150,8 +130,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
         [TestMethod]
         [Owner("Sanele")]
-        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
-        public void DsfConsumeRabbitMQActivity_Execute_Success()
+        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]        
+        public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception()
         {
             //------------Setup for test--------------------------
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
@@ -174,14 +154,86 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName }});            
-            //------------Assert Results-------------------------
-            resourceCatalog.Verify(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
-            connectionFactory.Verify(c => c.CreateConnection(), Times.Once);
-            connection.Verify(c => c.CreateModel(), Times.Once);
-            channel.Verify(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            try
+            {
+                var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+            }
+            catch(Exception ex)
+            {
+                Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
+            }            
+            //------------Assert Results-------------------------            
+        }
 
-            Assert.AreEqual(result.ToString(), "Success");
+        [TestMethod]
+        [Owner("Sanele")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
+        public void DsfConsumeRabbitMQActivity_Execute_Requeue_Should_Not_Remove_MessageFrom_Queue()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new Mock<RabbitMQSource>();
+            var connectionFactory = new Mock<ConnectionFactory>();
+            var connection = new Mock<IConnection>();
+            var channel = new Mock<IModel>();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
+            connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
+            connection.Setup(c => c.CreateModel()).Returns(channel.Object);
+            channel.Setup(c => c.BasicQos(0, 1, false));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c=>c.BasicAck(It.IsAny<ulong>(), It.IsAny<bool>()));
+
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            privateObject.SetProperty("Channel", channel.Object);
+            //------------Execute Test---------------------------                        
+            dsfConsumeRabbitMQActivity.ReQueue = true;
+            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+            //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]        
+        public void DsfConsumeRabbitMQActivity_Execute_Consume_From_UnExisting_Queue_Exception()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new Mock<RabbitMQSource>();
+            var connectionFactory = new Mock<ConnectionFactory>();
+            var connection = new Mock<IConnection>();
+            var channel = new Mock<IModel>();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
+            connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
+            connection.Setup(c => c.CreateModel()).Returns(channel.Object);
+            channel.Setup(c => c.BasicQos(0, 1, false));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()))
+                .Throws(new Exception(string.Format("Queue '{0}' not found", queueName)));
+
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            privateObject.SetProperty("Channel", channel.Object);
+            //------------Execute Test---------------------------
+            try
+            {
+                var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+            }
+            catch(Exception ex)
+            {
+                Assert.AreEqual(ex.Message, string.Format("Queue '{0}' not found", queueName));
+            }            
+            //------------Assert Results-------------------------            
         }
     }
 }
