@@ -1670,7 +1670,8 @@ namespace Warewolf.Studio.Resources.Languages {
         ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
         ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
-        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;        /// [rest of string was truncated]&quot;;.
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DataSplitHelpEscape {
             get {
