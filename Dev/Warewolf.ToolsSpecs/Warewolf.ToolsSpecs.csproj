@@ -187,11 +187,6 @@
     </Compile>
     <Compile Include="Toolbox\Data\DataSplit\DataSplitSteps.cs" />
     <Compile Include="Toolbox\Data\FindIndex\FindIndex.feature.cs">
-      <DependentUpon>FindIndex.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Data\FindIndex\FindIndex1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FindIndex.feature</DependentUpon>
@@ -244,11 +239,6 @@
     <Compile Include="Toolbox\FileAndFolder\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
     <Compile Include="Toolbox\FileAndFolder\Move\Move.feature.cs">
-      <DependentUpon>Move.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Move\Move1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Move.feature</DependentUpon>
@@ -289,11 +279,6 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Write File\Write File.feature.cs">
-      <DependentUpon>Write File.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\FileAndFolder\Write File\Write File1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Write File.feature</DependentUpon>

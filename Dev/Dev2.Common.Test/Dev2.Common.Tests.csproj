@@ -75,7 +75,6 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ExtensionMethodsTest.cs" />
-    <Compile Include="Serialization\ResourceJsonConvertorTests.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
   </ItemGroup>
   <ItemGroup>

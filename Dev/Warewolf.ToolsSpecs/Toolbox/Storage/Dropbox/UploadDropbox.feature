@@ -12,7 +12,6 @@ Scenario: Open new Dropbox Tool
 	And Local File is Enabled
 	And Dropbox File is Enabled
 	When I Click New
-	Then the New Dropbox Source window is opened
 
 Scenario: Editing Dropbox Tool
 	Given I open New Workflow
