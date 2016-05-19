@@ -1844,26 +1844,6 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListViewModel.RecsetCollection.Count == 0, "Recordset field was not filtered out");
         }
-        
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DataListViewModel_SearchText")]
-        public void DataListViewModel_SearchText_WithMatchingRecsetField_ShouldNotFilterOutRecsetField()
-        {
-            //------------Setup for test--------------------------
-            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
-            const string recsetName = "recset";
-            const string firstFieldName = "f1";
-            IDataListItemModel recSetDataModel = DataListItemModelFactory.CreateDataListModel(recsetName, "A recordset of information about a car", enDev2ColumnArgumentDirection.Both);
-            IDataListItemModel firstFieldDataListItemModel = CreateFieldDataListModel(firstFieldName, recSetDataModel);
-            recSetDataModel.Children.Add(firstFieldDataListItemModel);
-            dataListViewModel.RecsetCollection.Add(recSetDataModel);
-            //------------Execute Test---------------------------
-            dataListViewModel.SearchText = "f";
-            //------------Assert Results-------------------------
-            Assert.IsTrue(dataListViewModel.RecsetCollection.Count == 1, "Recordset with matching field was filtered out");
-            Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children.Count == 1, "Matching recordset field was filtered out");
-        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
