@@ -147,6 +147,15 @@ namespace Dev2.Data.Util
                 }
             }
 
+            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix))
+            {
+                if (expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix))
+                {
+                    newExpression = expression.Substring(GlobalConstants.AggregateCalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.AggregateCalculateTextConvertSuffix.Length + GlobalConstants.AggregateCalculateTextConvertPrefix.Length));
+                    result = true;
+                }
+            }
+
             return result;
         }
 

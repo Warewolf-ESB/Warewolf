@@ -67,7 +67,7 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	| 3			|
 	And I have the formula "SUM([[var(*).int]])"
 	When the calculate tool is executed
-	Then the calculate result should be "6"
+	Then the calculate result should be "3"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| fx =                         |
@@ -76,7 +76,57 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	| SUM([[var(*).int]]) = SUM(3) |
 	And the debug output as 
 	|                |
-	| [[result]] = 6 |
+	| [[result]] = 3 |
+
+Scenario: Calculate using Recordset (*) input in an agregate function like SUM and output recordset star
+	Given I have a calculate variable "[[var().int]]" equal to 
+	| var().int	|
+	| 1			|
+	| 2			|
+	| 3			|
+	And I have a calculate variable "[[rs().val]]" equal to 
+	| rs().val |
+	| 10       |
+	| 23       |
+	And I have the formula "SUM([[var(*).int]])"
+	And calculate result as "[[rs(*).val]]"
+	When the calculate tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| fx =                         |
+	| SUM([[var(*).int]]) = SUM(1) |
+	| SUM([[var(*).int]]) = SUM(2) |
+	| SUM([[var(*).int]]) = SUM(3) |
+	And the debug output as 
+	|                   |
+	| [[rs(1).val]] = 1 |
+	| [[rs(2).val]] = 2 |
+	| [[rs(3).val]] = 3 |
+
+Scenario: Calculate using Recordset (*) input in an agregate function like SUM and output recordset star complex
+	Given I have a calculate variable "[[var().int]]" equal to 
+	| var().int	|
+	| 1			|
+	| 2			|
+	| 3			|
+	And I have a calculate variable "[[rs().val]]" equal to 
+	| rs().val |
+	| 10       |
+	| 23       |
+	And I have the formula "SUM([[var(*).int]]) + 15"
+	And calculate result as "[[rs(*).val]]"
+	When the calculate tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| fx =                                   |
+	| SUM([[var(*).int]]) + 15 = SUM(1) + 15 |
+	| SUM([[var(*).int]]) + 15 = SUM(2) + 15 |
+	| SUM([[var(*).int]]) + 15 = SUM(3) + 15 |
+	And the debug output as 
+	|                    |
+	| [[rs(1).val]] = 16 |
+	| [[rs(2).val]] = 17 |
+	| [[rs(3).val]] = 18 |
 
 Scenario: Calculate using incorrect formula
 	Given I have the formula "asdf"
