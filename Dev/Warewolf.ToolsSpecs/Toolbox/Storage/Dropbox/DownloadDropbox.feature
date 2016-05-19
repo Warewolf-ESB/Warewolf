@@ -12,7 +12,6 @@ Scenario: Open new Dropbox Tool
 	And DropboxDownload Local File is Enabled
 	And DropboxDownload File is Enabled
 	When DropboxDownload I Click New
-	Then the New DropboxDownload Source window is opened
 	
 Scenario: Editing Dropbox Tool
 	Given I open New Workflow
@@ -24,7 +23,6 @@ Scenario: Editing Dropbox Tool
 	When DropboxDownload I Select "Drop" as the source
 	Then DropboxDownload Edit is Enabled
 	And DropboxDownload I Click Edit
-	Then DropboxDownload the "Drop" Dropbox Source window is opened
 
 Scenario: Change Dropbox Source
 	Given I open New Workflow

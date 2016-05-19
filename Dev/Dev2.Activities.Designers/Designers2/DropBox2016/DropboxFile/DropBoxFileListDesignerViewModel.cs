@@ -4,19 +4,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
-using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Runtime.Hosting;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -37,19 +34,19 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         private bool _isFilesSelected;
         private bool _isFoldersSelected;
         private bool _isFilesAndFoldersSelected;
-
+        private readonly IDropboxSourceManager _sourceManager;
         public DropBoxFileListDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, EventPublishers.Aggregator, ResourceCatalog.Instance)
+            : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
         {
             this.RunViewSetup();
         }
 
-        public DropBoxFileListDesignerViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IResourceCatalog resourceCatalog)
+        public DropBoxFileListDesignerViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
             : base(modelItem)
         {
             _eventPublisher = eventPublisher;
             ThumbVisibility = Visibility.Visible;
-            Catalog = resourceCatalog;
+            _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
@@ -60,10 +57,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
             IncludeDeleted = false;
             IsRecursive = false;
             IncludeMediaInfo = false;
-            
-
         }
-        public IResourceCatalog Catalog { get; set; }
+
         public ICommand NewSourceCommand { get; set; }
         public DropBoxSource SelectedSource
         {
@@ -249,14 +244,9 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
             OnPropertyChanged("Sources");
         }
 
-        public virtual ObservableCollection<DropBoxSource> LoadOAuthSources()
+        public ObservableCollection<DropBoxSource> LoadOAuthSources()
         {
-            Dispatcher.Invoke(() =>
-            {
-                Sources = Catalog.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
-                    .Cast<DropBoxSource>()
-                    .ToObservableCollection();
-            });
+            Sources = _sourceManager.FetchSources<DropBoxSource>().ToObservableCollection();
             return Sources;
         }
 
