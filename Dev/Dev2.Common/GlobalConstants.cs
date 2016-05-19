@@ -566,6 +566,7 @@ WHERE   n.nspname = 'public'
         public static string GlobalCounterName = "All";
         public static string Warewolf = "Warewolf";
         public static string WarewolfServices = "Warewolf Services";
+        public static string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

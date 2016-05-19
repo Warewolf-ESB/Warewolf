@@ -160,6 +160,7 @@
     <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\DirectoryEntryWrapper.cs" />
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
+    <Compile Include="Wrappers\ExternalProcessWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

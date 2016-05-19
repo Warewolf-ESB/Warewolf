@@ -24,10 +24,11 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
         private DropBoxDeleteViewModel CreateMockViewModel()
         {
             var mock = new Mock<IResourceCatalog>();
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var sources = GetSources();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(sources);
             var agg = new Mock<IEventAggregator>();
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(CreateModelItem(), agg.Object, mock.Object);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(CreateModelItem(), agg.Object, dropBoxSourceManager.Object);
             return dropBoxDeleteViewModel;
         }
 
@@ -121,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.Register(mockShellViewModel.Object);
             //------------Execute Test---------------------------
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value) { SelectedSource = new DropBoxSource() };
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
             dropBoxDeleteViewModel.EditDropboxSourceCommand.Execute(null);
             //------------Assert Results-------------------------
             mockShellViewModel.Verify(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
@@ -137,7 +138,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Execute Test---------------------------
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             //------------Assert Results-------------------------
             Assert.IsFalse(dropBoxDeleteViewModel.IsDropboxSourceSelected);
             dropBoxDeleteViewModel.SelectedSource = new DropBoxSource();
@@ -153,7 +154,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Execute Test---------------------------
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(dropBoxDeleteViewModel.IsDropboxSourceSelected);
@@ -172,7 +173,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
 
             //------------Execute Test---------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             dropBoxDeleteViewModel.DeletePath = "A";
 
             //------------Assert Results-------------------------
@@ -195,7 +196,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var model = CreateModelItem();
             //------------Execute Test---------------------------
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.ResourceCatalog.Value);
+            var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, agg.Object, TestResourceCatalog.LazySourceManager.Value);
             dropBoxDeleteViewModel.Result = "A";
 
             //------------Assert Results-------------------------
@@ -216,8 +217,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             //------------Setup for test--------------------------
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
-            var mock = new Mock<IResourceCatalog>();
-            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>()
+            var mock = new Mock<IDropboxSourceManager>();
+            mock.Setup(catalog => catalog.FetchSources<DropBoxSource>()).Returns(new List<DropBoxSource>()
             {
                 new DropBoxSource(), new DropBoxSource()
             });
