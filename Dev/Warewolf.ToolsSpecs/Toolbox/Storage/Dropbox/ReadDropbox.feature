@@ -11,7 +11,6 @@ Scenario: Open new Dropbox Tool
 	And Readlist Edit is Disabled
 	And Readlist Dropbox File is Enabled
 	When I Click Readlist New
-	Then the New Readlist Dropbox Source window is opened
 	
 Scenario: Editing Dropbox Tool
 	Given I open New Workflow
@@ -22,7 +21,6 @@ Scenario: Editing Dropbox Tool
 	When I Select "Drop" as the Readlist source
 	Then Readlist Edit is Enabled
 	When I Readlist click Edit
-	Then the "Drop" Readlist Dropbox Source window is opened
 
 Scenario: Change Dropbox Source
 	Given I open New Workflow
