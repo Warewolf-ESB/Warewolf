@@ -16,6 +16,8 @@ using Dev2.Util;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using RabbitMQ.Client.Events;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 
@@ -44,6 +46,11 @@ namespace Dev2.Activities.RabbitMQ.Consume
         [Inputs("Queue Name")]
         [FindMissing]
         public string QueueName { get; set; }
+        
+        [FindMissing]
+        public ushort? Prefetch { get; set; }
+        [FindMissing]
+        public bool ReQueue { get; set; }
         
         public QueueingBasicConsumer Consumer { get; set; }
 
@@ -82,7 +89,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     return "Failure: Source has been deleted.";
                 }
 
-                string queueName;
+                string queueName, res;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName))
                 {
                     return "Failure: Queue Name is required.";
@@ -98,19 +105,27 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     using (Channel = Connection.CreateModel())
                     {
-                        Channel.BasicQos(0,1,false);
-
+                        Channel.BasicQos(0, Prefetch == null ? (ushort)1 : Prefetch.GetValueOrDefault(), false);
+                        //Channel.BasicQos(0,1,false);
                         Consumer = new QueueingBasicConsumer(Channel);
-                        var consumer = Consumer;
                         Channel.BasicConsume(queue: queueName,
                             noAck: false,
-                            consumer: consumer);
-                        //var deleveryArgs = consumer.Queue.Dequeue();
-                        //Channel.BasicAck(deleveryArgs.DeliveryTag, false);
+                            consumer: Consumer);
+
+                        BasicDeliverEventArgs basicDeliverEventArgs;
+                        Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
+                        if (basicDeliverEventArgs == null)
+                        {
+                            Dev2Logger.Debug(String.Format("Nothing in the Queue {0}", queueName));
+                            return "Nothing in the Queue";
+                        }
+                        var body = basicDeliverEventArgs.Body;
+                        res = Encoding.Default.GetString(body);
+                        Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
                     }
                 }
                 Dev2Logger.Debug(String.Format("Message consumed from queue {0}", queueName));
-                return "Success";
+                return res;
             }
             catch (Exception ex)
             {
@@ -118,6 +133,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 throw new Exception(ex.GetAllMessages());
             }
         }
+        
 
         #endregion Overrides of DsfBaseActivity
     }

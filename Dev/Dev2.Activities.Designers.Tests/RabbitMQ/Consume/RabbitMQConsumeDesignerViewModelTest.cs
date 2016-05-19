@@ -66,7 +66,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             vm.Result = "Success";
             vm.IsRabbitMQSourceFocused = false;
             vm.IsQueueNameFocused = false;
-            vm.IsMessageFocused = false;
+            vm.IsPrefetchFocused = false;
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
             Assert.IsNotNull(vm.EditRabbitMQSourceCommand);
@@ -76,13 +76,13 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsNotNull(vm.RabbitMQSources);
             Assert.IsFalse(vm.IsRabbitMQSourceFocused);
             Assert.IsFalse(vm.IsQueueNameFocused);
-            Assert.IsFalse(vm.IsMessageFocused);
+            Assert.IsFalse(vm.IsPrefetchFocused);
             Assert.IsNull(vm.SelectedRabbitMQSource);
             Assert.AreEqual(vm.QueueName, "Q1");            
             Assert.AreEqual(vm.Result, "Success");
             Assert.AreEqual(vm.IsRabbitMQSourceFocused, false);
             Assert.AreEqual(vm.IsQueueNameFocused, false);
-            Assert.AreEqual(vm.IsMessageFocused, false);
+            Assert.AreEqual(vm.IsPrefetchFocused, false);
         }
 
         [TestMethod]

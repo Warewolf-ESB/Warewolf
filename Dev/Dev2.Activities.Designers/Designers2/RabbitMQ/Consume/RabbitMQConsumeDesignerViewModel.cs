@@ -81,9 +81,9 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
         public bool IsQueueNameFocused { get { return (bool)GetValue(IsQueueNameFocusedProperty); } set { SetValue(IsQueueNameFocusedProperty, value); } }
         public static readonly DependencyProperty IsQueueNameFocusedProperty = DependencyProperty.Register("IsQueueNameFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsMessageFocused { get { return (bool)GetValue(IsMessageFocusedProperty); } set { SetValue(IsMessageFocusedProperty, value); } }
-        public static readonly DependencyProperty IsMessageFocusedProperty = DependencyProperty.Register("IsMessageFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
-
+        public bool IsPrefetchFocused { get { return (bool)GetValue(IsPrefetchFocusedProperty); } set { SetValue(IsPrefetchFocusedProperty, value); } }
+        public static readonly DependencyProperty IsPrefetchFocusedProperty = DependencyProperty.Register("IsPrefetchFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
+        
         private IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;
 
         public IRabbitMQServiceSourceDefinition SelectedRabbitMQSource
@@ -124,6 +124,17 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
         public string QueueName
         {
             get { return GetProperty<string>(); }
+            set { SetProperty(value); }
+        }
+        public ushort? Prefetch
+        {
+            get { return GetProperty<ushort?>(); }
+            set { SetProperty(value); }
+        }
+
+        public bool ReQueue
+        {
+            get { return GetProperty<bool>(); }
             set { SetProperty(value); }
         }
 
