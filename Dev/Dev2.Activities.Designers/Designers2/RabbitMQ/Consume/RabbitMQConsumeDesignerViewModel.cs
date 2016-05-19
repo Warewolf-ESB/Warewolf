@@ -127,29 +127,6 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             set { SetProperty(value); }
         }
 
-        public bool IsDurable
-        {
-            get { return GetProperty<bool>(); }
-            set { SetProperty(value); }
-        }
-
-        public bool IsExclusive
-        {
-            get { return GetProperty<bool>(); }
-            set { SetProperty(value); }
-        }
-
-        public bool IsAutoDelete
-        {
-            get { return GetProperty<bool>(); }
-            set { SetProperty(value); }
-        }
-
-        public string Message
-        {
-            get { return GetProperty<string>(); }
-            set { SetProperty(value); }
-        }
 
         public string Result
         {
