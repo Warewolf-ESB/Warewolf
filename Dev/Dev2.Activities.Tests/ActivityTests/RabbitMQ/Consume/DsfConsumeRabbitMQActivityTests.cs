@@ -6,7 +6,6 @@ using Moq;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
-using RabbitMQ.Client.Events;
 
 // ReSharper disable InconsistentNaming
 
@@ -184,6 +183,5 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
             Assert.AreEqual(result.ToString(), "Success");
         }
-
     }
 }
