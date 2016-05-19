@@ -187,11 +187,6 @@
     </Compile>
     <Compile Include="Toolbox\Data\DataSplit\DataSplitSteps.cs" />
     <Compile Include="Toolbox\Data\FindIndex\FindIndex.feature.cs">
-      <DependentUpon>FindIndex.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\Data\FindIndex\FindIndex1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FindIndex.feature</DependentUpon>

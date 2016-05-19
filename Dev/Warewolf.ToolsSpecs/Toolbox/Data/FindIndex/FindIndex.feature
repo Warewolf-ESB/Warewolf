@@ -76,7 +76,7 @@ Scenario: Find last Occurrence of a bracket in a sentence
 	| [[result]] = 11 |
 
 Scenario: Find first Occurrence of a character in a blank string
-	Given I have a findindex variable "[[a]]" equal to "blank"
+	Given I have a Find Index variable "[[a]]" equal to "blank"
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
 	And I search for characters "a"
@@ -108,7 +108,7 @@ Scenario: Find first Occurrence of a character in a string where it doesnt exist
 	| [[result]] = -1 |
 
 Scenario: Find all Occurrences of a character in a string where it doesnt exist
-	Given I have a findindex variable "[[a]]" equal to "blank"
+	Given I have a Find Index variable "[[a]]" equal to "blank"
 	And the sentence "[[a]]"
 	And I selected Index "All Occurrence"
 	And I search for characters "a"
@@ -215,7 +215,7 @@ Scenario: Output values in multiple result variables
 	| [[res]],[[rs(*).a]] = |
 
 Scenario: InField is blank
-	Given I have a findindex variable "" equal to ""
+	Given I have a Find Index variable "" equal to ""
 	And the sentence ""
 	And I selected Index "1"
 	And I search for characters "a"
@@ -224,7 +224,7 @@ Scenario: InField is blank
 	Then the execution has "An" error
 
 Scenario: Characters is blank
-	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
+	Given I have a Find Index variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
 	And I selected Index "1"
 	And I search for characters ""
@@ -338,7 +338,7 @@ Scenario: Find first Occurrence of a character non existent imput
 	Then the execution has "AN" error
 
 Scenario: Find first Occurrence of  of a character non existent character
-	Given I have a findindex variable "[[a]]" equal to ""
+	Given I have a Find Index variable "[[a]]" equal to ""
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
 	And I search for characters "[[x]]"
