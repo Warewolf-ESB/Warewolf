@@ -147,7 +147,7 @@
         <CheckBox Grid.Column="1"
                   Grid.Row="4"
                   Margin="-6,0,0,0"
-                      Content="Durable"
+                      Content="ReQueue"
                   IsChecked="{Binding ReQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Core.RabbitMQToolTipIsDurable}">
             <i:Interaction.Behaviors>
