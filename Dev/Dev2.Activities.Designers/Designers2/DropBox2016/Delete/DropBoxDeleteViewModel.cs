@@ -57,7 +57,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         }
 
         public ICommand NewSourceCommand { get; set; }
-        public IResourceCatalog Catalog { get; set; }
         public IResourceCatalog ResourceManager
         {
             get

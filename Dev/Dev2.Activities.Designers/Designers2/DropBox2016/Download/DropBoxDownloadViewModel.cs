@@ -56,7 +56,6 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
         }
         public ICommand NewSourceCommand { get; set; }
-        public IResourceCatalog Catalog { get; set; }
         public OauthSource SelectedSource
         {
             get
