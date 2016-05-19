@@ -1904,5 +1904,11 @@ namespace Dev2.Activities.Specs.Composition
             }
             CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
         }
+
+        [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
+        public void GivenContainsBaseConvertAs(string p0, string p1, Table table)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
     }
 }
