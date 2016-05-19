@@ -6747,6 +6747,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=Lc2neiss3Kwc5jBrMcX9nq9v2XfPlRyomaE4bW69.
+        /// </summary>
+        public static string SendErrorReportUrl {
+            get {
+                return ResourceManager.GetString("SendErrorReportUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To execute a set of Activities in sequence put them in the order you want them executed.
         ///To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
         ///Error handling operates as a catch all for all items in the sequence..
