@@ -198,7 +198,7 @@ Scenario: Assign Disk Total into a recordset
 	And the execution has "NO" error
 	And the debug output as 
 	| # |                          |
-	| 1 | [[my(1).disks]] = String |
+	| 1 | [[my().disks]] = String |
 
 #This scenario requires the machine the test runs on to have more than 1 drive. You can map a network drive if it only has 1 logical.
 Scenario: Assign Disk Available into a recordset
@@ -208,7 +208,7 @@ Scenario: Assign Disk Available into a recordset
 	And the execution has "NO" error
 	And the debug output as 
 	| # |                           |
-	| 1 | [[my(1).disks]] =  String |
+	| 1 | [[my().disks]] =  String |
 
 Scenario Outline:Executing with Incorrect Recordsets 
 	Given I have a variable "<input>" and I selected "DiskAvailable"	
