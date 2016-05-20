@@ -8,5 +8,6 @@ namespace Dev2.Common.Interfaces
         string AccessToken { get; set; }
         string ResourceName { get; set; }
         string ResourcePath { get; set; }
+        Guid ResourceID { get; set; }
     }
 }

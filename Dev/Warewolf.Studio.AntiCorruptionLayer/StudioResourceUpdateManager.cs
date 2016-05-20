@@ -87,15 +87,15 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public void Save(IOAuthSource source)
         {
-//            UpdateManagerProxy.SavePluginSource(source, GlobalConstants.ServerWorkspaceID);
-//            if (PluginServiceSourceSaved != null)
-//            {
-//                PluginServiceSourceSaved(source);
-//            }
-//            if (ItemSaved != null)
-//            {
-//                ItemSaved();
-//            }
+            UpdateManagerProxy.SaveOAuthSource(source, GlobalConstants.ServerWorkspaceID);
+            if (OAuthSourceSaved != null)
+            {
+                OAuthSourceSaved(source);
+            }
+            if (ItemSaved != null)
+            {
+                ItemSaved();
+            }
         }
 
         public void Save(IEmailServiceSource emailServiceSource)
@@ -242,6 +242,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public event Action<IWebServiceSource> WebServiceSourceSaved;
         public event Action<IDbSource> DatabaseServiceSourceSaved;
         public event Action<IPluginSource> PluginServiceSourceSaved;
+        public event Action<IOAuthSource> OAuthSourceSaved;
         public event Action<IEmailServiceSource> EmailServiceSourceSaved;
         public event Action<IExchangeSource> ExchangedServiceSourceSaved;
 

@@ -4,21 +4,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -27,8 +23,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
 {
     public class DropBoxFileListDesignerViewModel : ActivityDesignerViewModel,INotifyPropertyChanged
     {
-        private ObservableCollection<OauthSource> _sources;
-        private readonly IEnvironmentModel _environmentModel;
+        private ObservableCollection<DropBoxSource> _sources;
         private readonly IEventAggregator _eventPublisher;
         private string _toPath;
         private string _result;
@@ -39,61 +34,51 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         private bool _isFilesSelected;
         private bool _isFoldersSelected;
         private bool _isFilesAndFoldersSelected;
-
+        private readonly IDropboxSourceManager _sourceManager;
         public DropBoxFileListDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
         {
+            this.RunViewSetup();
         }
 
-        public DropBoxFileListDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public DropBoxFileListDesignerViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
             : base(modelItem)
         {
-            _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
             ThumbVisibility = Visibility.Visible;
+            _sourceManager = sourceManager;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
-            _sources = LoadOAuthSources();
+            Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
             IsFilesSelected = true;
             IncludeDeleted = false;
             IsRecursive = false;
             IncludeMediaInfo = false;
-
         }
+
         public ICommand NewSourceCommand { get; set; }
-        public OauthSource SelectedSource
+        public DropBoxSource SelectedSource
         {
             get
             {
-                var oauthSource = GetModelPropertyName<OauthSource>();
-                return oauthSource ?? GetProperty<OauthSource>();
+                var oauthSource = GetProperty<DropBoxSource>();
+                return oauthSource ?? GetProperty<DropBoxSource>();
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             set
             {
-                SetModelItemProperty(value);
+                SetProperty(value);
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged("IsDropboxSourceSelected");
                 // ReSharper disable once RedundantArgumentDefaultValue
                 OnPropertyChanged("SelectedSource");
             }
         }
-
-
-        private void SetModelItemProperty(object value, [CallerMemberName]string propName = null)
-        {
-            ModelItem.SetProperty(propName, value);
-        }
-
-        private T GetModelPropertyName<T>([CallerMemberName]string propName = null)
-        {
-            var propertyValue = ModelItem.GetProperty<T>(propName);
-            return propertyValue;
-        }
-        public virtual ObservableCollection<OauthSource> Sources
+       
+        public virtual ObservableCollection<DropBoxSource> Sources
         {
             get
             {
@@ -121,13 +106,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _toPath = GetModelPropertyName<string>();
+                _toPath = GetProperty<string>();
                 return _toPath;
             }
             set
             {
                 _toPath = value;
-                SetModelItemProperty(_toPath);
+                SetProperty(_toPath);
                 OnPropertyChanged();
             }
         }
@@ -135,7 +120,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _files = GetModelPropertyName<List<string>>();
+                _files = GetProperty<List<string>>();
                 return _files;
             }
         }
@@ -144,13 +129,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _includeMediaInfo = GetModelPropertyName<bool>();
+                _includeMediaInfo = GetProperty<bool>();
                 return _includeMediaInfo;
             }
             set
             {
                 _includeMediaInfo = value;
-                SetModelItemProperty(_includeMediaInfo);
+                SetProperty(_includeMediaInfo);
                 OnPropertyChanged();
             }
         }
@@ -159,13 +144,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _isRecursive = GetModelPropertyName<bool>();
+                _isRecursive = GetProperty<bool>();
                 return _isRecursive;
             }
             set
             {
                 _isRecursive = value;
-                SetModelItemProperty(_isRecursive);
+                SetProperty(_isRecursive);
                 OnPropertyChanged();
             }
         }
@@ -174,13 +159,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _includeDeleted = GetModelPropertyName<bool>();
+                _includeDeleted = GetProperty<bool>();
                 return _includeDeleted;
             }
             set
             {
                 _includeDeleted = value;
-                SetModelItemProperty(_includeDeleted);
+                SetProperty(_includeDeleted);
                 OnPropertyChanged();
             }
         }
@@ -190,13 +175,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _result = GetModelPropertyName<string>();
+                _result = GetProperty<string>();
                 return _result;
             }
             set
             {
                 _result = value;
-                SetModelItemProperty(_result);
+                SetProperty(_result);
                 OnPropertyChanged();
             }
         }
@@ -205,13 +190,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _isFilesSelected = GetModelPropertyName<bool>();
+                _isFilesSelected = GetProperty<bool>();
                 return _isFilesSelected;
             }
             set
             {
                 _isFilesSelected = value;
-                SetModelItemProperty(_isFilesSelected);
+                SetProperty(_isFilesSelected);
                 OnPropertyChanged();
             }
         }
@@ -219,13 +204,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _isFoldersSelected = GetModelPropertyName<bool>();
+                _isFoldersSelected = GetProperty<bool>();
                 return _isFoldersSelected;
             }
             set
             {
                 _isFoldersSelected = value;
-                SetModelItemProperty(_isFoldersSelected);
+                SetProperty(_isFoldersSelected);
                 OnPropertyChanged();
             }
         }
@@ -234,13 +219,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         {
             get
             {
-                _isFilesAndFoldersSelected = GetModelPropertyName<bool>();
+                _isFilesAndFoldersSelected = GetProperty<bool>();
                 return _isFilesAndFoldersSelected;
             }
             set
             {
                 _isFilesAndFoldersSelected = value;
-                SetModelItemProperty(_isFilesAndFoldersSelected);
+                SetProperty(_isFilesAndFoldersSelected);
                 OnPropertyChanged();
             }
         }
@@ -255,14 +240,14 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         public void CreateOAuthSource()
         {
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
-            _sources = LoadOAuthSources();
+            Sources = LoadOAuthSources();
             OnPropertyChanged("Sources");
         }
 
-        public virtual ObservableCollection<OauthSource> LoadOAuthSources()
+        public ObservableCollection<DropBoxSource> LoadOAuthSources()
         {
-            var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
-            return oauthSources.ToObservableCollection();
+            Sources = _sourceManager.FetchSources<DropBoxSource>().ToObservableCollection();
+            return Sources;
         }
 
         #region Overrides of ActivityDesignerViewModel

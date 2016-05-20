@@ -79,6 +79,23 @@ namespace Dev2.Activities
                         _inputVariable = evalToExpression;
                     }
                     _evalResult = environment.Eval(_inputVariable, update,false);
+                    string cleanExpression;
+                    var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
+                    if (isCalcExpression && !isCalculate)
+                    {
+                        if (_evalResult.IsWarewolfAtomResult)
+                        {
+                            var atomResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if (atomResult != null)
+                            {
+                                var res = atomResult.Item.ToString();
+                                string resValue;
+                                DataListUtil.IsCalcEvaluation(res, out resValue);
+                                _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(resValue));
+                            }
+                        }
+                        _inputVariable = cleanExpression;
+                    }
                 }
 
             }
