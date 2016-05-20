@@ -1363,10 +1363,16 @@ Scenario: Workflow with Assign and Calculate
 	  | 5 | [[Benz(1).a2]]  =  20 |
 	  | 6 | [[Benz(1).a3]]  =  30 |
 	  And the 'Calculate1' in WorkFlow 'WFAssign&Calculate' debug inputs as 
-      | fx =                                                          |
-      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum([[Benz(1)]])+sum([[Honda(1)]]) = sum(10)+sum(1) |       
-      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum([[Benz(2)]])+sum([[Honda(2)]]) = sum(20)+sum(2) |       
-      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum([[Benz(3)]])+sum([[Honda(3)]]) = sum(30)+sum(3) |       
+      | fx =                                                |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10)+sum(1) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10)+sum(2) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10)+sum(3) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(20)+sum(1) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(20)+sum(2) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(20)+sum(3) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(30)+sum(1) |       
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(30)+sum(2) |       
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(30)+sum(3) |       
       And the 'Calculate1' in Workflow 'WFAssign&Calculate' debug outputs as  
 	  |                 |
 	  | [[result]] = 33 |
@@ -2380,15 +2386,13 @@ Scenario: Workflow with Calculation using Star notation
 	  | 2 | [[rs(2).a]] =  20 |
 	  | 3 | [[rs(3).a]] =  40 |
 	   And the 'Calculation' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
-	  | # | Variable      | New Value           |
-	  | 1  | [[rec().sum]] | [[rs(1).]]+1 = 19+1 |
-	  | 2  | [[rec().sum]] | [[rs(2).]]+1 = 20+1 |
-	  | 3  | [[rec().sum]] | [[rs(3).]]+1 = 40+1 |
+	  | # | Variable        | New Value            |
+	  | 1 | [[rec().sum]] = | [[rs(1).a]]+1 = 19+1 |
+	  |   |                 | [[rs(2).a]]+1 = 20+1 |
+	  |   |                 | [[rs(3).a]]+1 = 40+1 |
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
 	  | # |                     |
-	  | 1 | [[rec(1).sum]] = 20 |
-	  | 2 | [[rec(2).sum]] = 21 |
-	  | 3 | [[rec(3).sum]] = 41 |
+	  | 1 | [[rec(3).sum]] = 41 |
 
 Scenario: Workflow with Assign Unique to check debug outputs
       Given I have a workflow "workflowithAssignUniquedebugoutputs"
