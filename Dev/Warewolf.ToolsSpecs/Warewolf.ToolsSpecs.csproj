@@ -108,16 +108,6 @@
       <DependentUpon>Decision.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
-    <Compile Include="Toolbox\ControlFlow\Sequence\Sequence.feature.cs">
-      <DependentUpon>Sequence.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Toolbox\ControlFlow\Sequence\Sequence1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Sequence.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\ControlFlow\Sequence\SequenceSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Switch\Switch.feature.cs">
       <DependentUpon>Switch.feature</DependentUpon>
