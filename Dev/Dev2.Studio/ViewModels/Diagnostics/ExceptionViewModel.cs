@@ -1,14 +1,19 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Caliburn.Micro;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Model;
+using Dev2.Threading;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -18,12 +23,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Caliburn.Micro;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Model;
-using Dev2.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -36,6 +35,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     public sealed class ExceptionViewModel : SimpleBaseViewModel, IExceptionViewModel
     {
         #region private fields
+
         private BindableCollection<ExceptionUiModel> _exception;
         private RelayCommand _cancelComand;
         private string _stackTrace;
@@ -43,7 +43,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private bool _testing;
         private CancellationTokenSource _token;
 
-        #endregion
+        #endregion private fields
 
         #region Constructor
 
@@ -57,8 +57,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #endregion Constructor
 
         #region public properties
+
         public IWindowManager WindowNavigation { get; set; }
-        
+
         public string OutputText { get; set; }
 
         public string OutputPath { get; set; }
@@ -105,7 +106,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if(_stackTrace == value) return;
+                if (_stackTrace == value) return;
 
                 _stackTrace = value;
                 NotifyOfPropertyChange(() => StackTrace);
@@ -122,7 +123,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        #endregion
+        #endregion public properties
 
         public ICommand CancelCommand
         {
@@ -131,6 +132,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return _cancelComand ?? (_cancelComand = new RelayCommand(param => Cancel(), param => true));
             }
         }
+
         public ICommand SendErrorCommand
         {
             get
@@ -161,17 +163,15 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             string url = Warewolf.Studio.Resources.Languages.Core.SendErrorReportUrl;
 
-
             var worker = new AsyncWorker();
             worker.Start(() => SetupProgressSpinner(messageList, url), () =>
             {
                 Testing = false;
                 RequestClose();
             });
-            
         }
 
-        void SetupProgressSpinner(List<string> messageList, string url)
+        private void SetupProgressSpinner(List<string> messageList, string url)
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
@@ -190,6 +190,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             WindowNavigation.ShowDialog(this);
         }
 
-        #endregion
+        #endregion public methods
     }
 }
