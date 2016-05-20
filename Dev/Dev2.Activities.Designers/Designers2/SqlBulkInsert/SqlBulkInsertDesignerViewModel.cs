@@ -17,6 +17,7 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Properties;
 using Dev2.Common.Interfaces;
@@ -77,6 +78,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
            // Modelitem = modelItem;
+            this.RunViewSetup();
         }
 
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)

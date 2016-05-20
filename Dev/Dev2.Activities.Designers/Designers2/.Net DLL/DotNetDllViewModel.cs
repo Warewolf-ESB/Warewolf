@@ -18,6 +18,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.NamespaceRegion;
 using Dev2.Activities.Designers2.Core.Source;
@@ -69,15 +70,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Model = model;
 
             SetupCommonProperties();
-            if (IsItemDragged.Instance.IsDragged)
-            {
-                Expand();
-                IsItemDragged.Instance.IsDragged = false;
-            }
-            else
-            {
-                ShowLarge = false;
-            }
+            this.RunViewSetup();
         }
 
         Guid UniqueID { get { return GetProperty<Guid>(); } }

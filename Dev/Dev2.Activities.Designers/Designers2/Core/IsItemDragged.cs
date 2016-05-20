@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -16,14 +17,17 @@ namespace Dev2.Activities.Designers2.Core
     {
 
         #region Fields
-        private static IsItemDragged _instance;
+        // ReSharper disable once InconsistentNaming
+        private static readonly Lazy<IsItemDragged> _instance = new Lazy<IsItemDragged>(() => new IsItemDragged());
+
+
         bool _isDragged;
 
         #endregion
 
         #region Ctor
 
-        public IsItemDragged()
+        private IsItemDragged()
         {
             IsDragged = false;
         }
@@ -36,14 +40,11 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                if(_instance == null)
-                {
-                    _instance = new IsItemDragged();
-                }
-                return _instance;
+                return _instance.Value;
             }
         }
 
+        // ReSharper disable once ConvertToAutoProperty
         public bool IsDragged
         {
             get

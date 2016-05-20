@@ -138,5 +138,7 @@ namespace Dev2.Runtime.Hosting
         string GetResourcePath(Guid id);
 
         ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true);
+
+        IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new();
     }
 }

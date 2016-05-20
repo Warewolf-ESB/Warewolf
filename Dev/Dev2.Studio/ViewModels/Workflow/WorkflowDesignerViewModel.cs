@@ -1798,6 +1798,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             }
+            else
+            {
+                IsItemDragged.Instance.IsDragged = false;
+            }
             _resourcePickerDialog = null;
 
             var mainViewModel = CustomContainer.Get<IMainViewModel>();
