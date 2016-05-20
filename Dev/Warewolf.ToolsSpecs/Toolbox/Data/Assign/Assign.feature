@@ -441,7 +441,7 @@ Scenario: Evaluating recursive variable in a group calculation
 	| # | Variable     | New Value                   |
 	| 1 | [[a]]    =   | 1                           |
 	| 2 | [[b]]    =   | a                           |
-	| 3 | [[Result]] = | SUM([[a]],1) = SUM([[a]],1) |
+	| 3 | [[Result]] = | SUM([[a]],1) = SUM(1,1) |
 	And the debug output as
 	| # |                      |
 	| 1 | [[a]]     =        1 |
@@ -459,7 +459,7 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	| # | Variable         | New Value            |
 	| 1 | [[rec(1).a]]   = | 1                    |
 	| 2 | [[rec(1).b]]   = | rec(1).a             |
-	| 3 | [[Result]] =     | [[rec(1).a]]+1 = [[rec(1).a]]+1 |
+	| 3 | [[Result]] =     | [[rec(1).a]]+1 = 1+1 |
 	And the debug output as
 	| # |                         |
 	| 1 | [[rec(1).a]] = 1        |
@@ -856,20 +856,20 @@ Scenario: Assign a variable equal to a complex expression with scalar and record
 	Then the value of "[[Result]]" equals "12"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable         | New Value                              |
-	| 1 | [[a]]          = | 1                                      |
-	| 2 | [[b]]          = | 2                                      |
-	| 3 | [[rec().a]]   =  | [[a]] = 1                              |
-	| 4 | [[rec().a]]   =  | [[b]] = 2                              |
-	| 5 | [[Result]] =     | Test[[rec(1).a]]EndTest = Test1EndTest |
-	|   |                  | Test[[rec(2).a]]EndTest = Test2EndTest |
+	| # | Variable         | New Value              |
+	| 1 | [[a]]          = | 1                      |
+	| 2 | [[b]]          = | 2                      |
+	| 3 | [[rec().a]]   =  | [[a]] = 1              |
+	| 4 | [[rec().a]]   =  | [[b]] = 2              |
+	| 5 | [[Result]] =     | [[rec(1).a]]+10 = 1+10 |
+	|   |                  | [[rec(2).a]]+10 = 2+10  |
 	And the debug output as
-	| # |                           |
-	| 1 | [[a]] = 1                 |
-	| 2 | [[b]] = 2                 |
-	| 3 | [[rec(1).a]] = 1          |
-	| 4 | [[rec(2).a]] = 2          |
-	| 5 | [[Result]] = Test2EndTest |
+	| # |                  |
+	| 1 | [[a]] = 1        |
+	| 2 | [[b]] = 2        |
+	| 3 | [[rec(1).a]] = 1 |
+	| 4 | [[rec(2).a]] = 2 |
+	| 5 | [[Result]] = 12  |
 
 
 Scenario: Assign all recordset values to all recordset complex with calculation
@@ -889,18 +889,18 @@ Scenario: Assign all recordset values to all recordset complex with calculation
 	| 2 | [[rec(2).set]] =      | 20                        |
 	| 3 | [[rec(3).set]] =      | 30                        |
 	| 4 | [[rs().val]] =        | Hello                     |
-	| 5 | [[rs(1).val]] = Hello | Bye[[rec(1).set]] = Bye10 |
-	|   |                       | Bye[[rec(2).set]] = Bye20 |
-	|   |                       | Bye[[rec(3).set]] = Bye30 |
+	| 5 | [[rs(1).val]] = Hello | [[rec(1).set]]*10 = 10*10 |
+	|   |                       | [[rec(2).set]]*10 = 20*10 |
+	|   |                       | [[rec(3).set]]*10 = 30*10 |
 	And the debug output as
     | # |                       |
     | 1 | [[rec(1).set]] = 10   |
     | 2 | [[rec(2).set]] = 20   |
     | 3 | [[rec(3).set]] = 30   |
     | 4 | [[rs(1).val]] = Hello |
-    | 5 | [[rs(1).val]] = Bye10 |
-    |   | [[rs(2).val]] = Bye20 |
-    |   | [[rs(3).val]] = Bye30 |
+    | 5 | [[rs(1).val]] = 100   |
+    |   | [[rs(2).val]] = 200   |
+    |   | [[rs(3).val]] = 300   |
 
 
 
