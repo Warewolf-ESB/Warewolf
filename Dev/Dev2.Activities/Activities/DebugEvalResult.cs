@@ -29,8 +29,10 @@ namespace Dev2.Activities
                 {
                     if (DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
                     {
-                        var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
-                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
+                        string cleanExpression;
+                        DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
+                        var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(cleanExpression));
+                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(cleanExpression, length);
                     }                    
                 }
                 if (isDataMerge)
@@ -79,6 +81,23 @@ namespace Dev2.Activities
                         _inputVariable = evalToExpression;
                     }
                     _evalResult = environment.Eval(_inputVariable, update,false);
+                    string cleanExpression;
+                    var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
+                    if (isCalcExpression && !isCalculate)
+                    {
+                        if (_evalResult.IsWarewolfAtomResult)
+                        {
+                            var atomResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if (atomResult != null)
+                            {
+                                var res = atomResult.Item.ToString();
+                                string resValue;
+                                DataListUtil.IsCalcEvaluation(res, out resValue);
+                                _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(resValue));
+                            }
+                        }
+                        _inputVariable = cleanExpression;
+                    }
                 }
 
             }

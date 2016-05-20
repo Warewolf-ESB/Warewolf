@@ -507,6 +507,11 @@
       <DependentUpon>UploadDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\UploadDropboxSteps.cs" />
+    <Compile Include="Toolbox\Utility\Calculate\Aggregate Calculate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Aggregate Calculate.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -762,6 +767,10 @@
     <None Include="Toolbox\Storage\Dropbox\UploadDropbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>UploadDropbox.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Calculate\Aggregate Calculate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Aggregate Calculate.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Calculate\Calculate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
