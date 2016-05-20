@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Activities;
+using Dev2.Activities.Designers2.AggregateCalculate;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Activities.Designers2.Calculate;
 using Dev2.Activities.Designers2.CaseConvert;
@@ -104,6 +105,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
+                { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                 { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
                 { typeof(DsfPathCopy), typeof(CopyDesigner) },

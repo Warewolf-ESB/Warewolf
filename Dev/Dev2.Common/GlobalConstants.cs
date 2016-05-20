@@ -204,6 +204,11 @@ namespace Dev2.Common
         public const string CalculateTextConvertSuffix = "!~~calculation~!";
         public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
+        public const string AggregateCalculateTextConvertPrefix = "!~aggcalculation~!";
+        public const string AggregateCalculateTextConvertSuffix = "!~~aggcalculation~!";
+        public const string AggregateCalculateTextConvertFormat = AggregateCalculateTextConvertPrefix + "{0}" + AggregateCalculateTextConvertSuffix;
+
+
         // Website constants
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 

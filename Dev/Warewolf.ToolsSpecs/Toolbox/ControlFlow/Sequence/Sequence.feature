@@ -44,6 +44,30 @@ Scenario: Execute a Sequence with Assign and Calculate
 	   |                |
 	   | [[result]] = 3 |
 
+Scenario: Execute a Sequence with Assign and Aggregate Calculate
+       Given I have a Sequence "Test"
+	   And "Test" contains an Assign "SetVariables" as
+       | variable | value |
+       | [[numbers().num]] | 1         |
+       | [[numbers().num]] | 2         |
+       And "Test" contains Aggregate Calculate "Calculate Aggregate Sum" with formula "sum([[numbers(*).num]])" into "[[result]]"
+       When the Sequence tool is executed
+       Then the execution has "NO" error
+       And the "SetVariables" debug inputs as
+       | # | Variable   | New Value |
+       | 1 | [[numbers().num]] = | 1         |
+       | 2 | [[numbers().num]] = | 2         |    
+       And the "SetVariables" debug outputs as
+       | # |              |
+       | 1 | [[numbers(1).num]] = 1 |
+       | 2 | [[numbers(2).num]] = 2 |
+       And the "Calculate Aggregate Sum" debug inputs as
+       | fx =                               |
+       | sum([[numbers(*).num]]) = sum(1,2) |          
+       And the "Calculate Aggregate Sum" debug outputs as
+	   |                |
+	   | [[result]] = 3 |
+
  Scenario: Execute a Sequence with Assign and Count
       Given I have a Sequence "Test"
 	  And "Test" contains an Assign "Records" as
@@ -523,5 +547,5 @@ Scenario: Execute a Sequence with For each with 3 executions
 	  | 788.894564545645 | Up       | 3              | 3                |
 	  And the "Fnumber" debug outputs as 
 	  |                                |
-	  | [[test().result4]] = 788.895 |
+	  | [[test(7).result4]] = 788.895 |
 

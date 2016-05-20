@@ -106,6 +106,16 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
         }
 
+        [Given(@"""(.*)"" contains Aggregate Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
+        public void GivenContainsAggregateCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)
+        {
+            CommonSteps.AddVariableToVariableList(resultVariable);
+
+            DsfAggregateCalculateActivity aggCalculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+
+            CommonSteps.AddActivityToActivityList(parentName, activityName, aggCalculateActivity);
+        }
+
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)
         {
