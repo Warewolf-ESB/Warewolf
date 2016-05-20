@@ -130,6 +130,9 @@ Server: Version {1}
 Software development by: www.dev2.co.za
 </value>
   </data>
+  <data name="SendErrorReportUrl" xml:space="preserve">
+    <value>https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=Lc2neiss3Kwc5jBrMcX9nq9v2XfPlRyomaE4bW69</value>
+  </data>
   <data name="About_Description_Header" xml:space="preserve">
     <value>About Server and Studio</value>
   </data>
@@ -268,38 +271,28 @@ Software development by: www.dev2.co.za
   <data name="MenuDialogWebLabel" xml:space="preserve">
     <value>Web</value>
   </data>
-  
   <data name="ManageOAuthTypeTooltip" xml:space="preserve">
-    <value>ManageOAuthTypeTooltip</value>
+    <value>Select the provider you want to use</value>
   </data>
   <data name="ManageOAuthTypesHelp" xml:space="preserve">
-    <value>ManageOAuthTypesHelp</value>
+    <value>Select the provider you want to use for Authentication. The provider must be compatible with the tool you are using. Make sure you have setup the account on the external application correctly.</value>
   </data>
   <data name="ManageOAuthKeyTooltip" xml:space="preserve">
-    <value>ManageOAuthKeyTooltip</value>
+    <value>The application key provided by the app</value>
   </data>
   <data name="ManageOAuthKeyHelp" xml:space="preserve">
-    <value>ManageOAuthKeyHelp</value>
-  </data>
-  <data name="ManageOAuthSecretTooltip" xml:space="preserve">
-    <value>ManageOAuthSecretTooltip</value>
-  </data>
-  <data name="ManageOAuthSecretHelp" xml:space="preserve">
-    <value>ManageOAuthSecretHelp</value>
+    <value>The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key.</value>
   </data>
   <data name="ManageOAuthAuthoriseTooltip" xml:space="preserve">
-    <value>ManageOAuthAuthoriseTooltip</value>
+    <value>Validate the key with the provider</value>
   </data>
   <data name="ManageOAuthAuthoriseHelp" xml:space="preserve">
-    <value>ManageOAuthAuthoriseHelp</value>
+    <value>Warewolf needs to get Authorization from the external application to connect using your key and credentials. Make sure your application is setup correctly on the remote system before continuing with this step.&lt;br/&gt;
+&lt;br/&gt;
+Dropbox: &lt;a href="https://www.dropbox.com/developers/apps/create"&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;
+Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:
+https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
   </data>
-  <data name="ManageOAuthCancelTestTooltip" xml:space="preserve">
-    <value>ManageOAuthCancelTestTooltip</value>
-  </data>
-  <data name="ManageOAuthCancelTestHelp" xml:space="preserve">
-    <value>ManageOAuthCancelTestHelp</value>
-  </data>
-  
   <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
     <value>Select the Warewolf server you want to use or click New Remote Server...</value>
   </data>
@@ -593,6 +586,12 @@ Software development by: www.dev2.co.za
   </data>
   <data name="DatabaseSourceServerNewHeaderLabel" xml:space="preserve">
     <value>New Database Source</value>
+  </data>
+  <data name="OAuthSourceNewHeaderLabel" xml:space="preserve">
+    <value>New OAuth Source</value>
+  </data>
+  <data name="OAuthSourceRedirectUri" xml:space="preserve">
+    <value>https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
   </data>
   <data name="PluginSourceNewHeaderLabel" xml:space="preserve">
     <value>New Plugin Source</value>
@@ -1352,18 +1351,6 @@ Data
   <data name="BaseConversionHelpBaseInput" xml:space="preserve">
     <value>Any variable and data goes in here.
 To convert Text, Hex, Binary and Base64, put the data to be converted in here.
-
-Allowed:
-Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="CalculateHelpFx" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To perform a calculation, put the calculation in here in BODMAS format.
-There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.
 
 Allowed:
 Data   
@@ -3734,11 +3721,6 @@ Returns the count of the number of replacements.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="CalculateToolTipFx" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To perform a calculation, put the calculation in here in BODMAS format.
-There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
-  </data>
   <data name="CalculateForAggregatesToolTipFx" xml:space="preserve">
 <value>Excel like calculation</value>
   </data>
@@ -3811,12 +3793,6 @@ The file must be available on the local file system.</value>
     <value>When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 
     
     NOTE: Dropbox has a max return count of 2000.</value>
-  </data>
-  <data name="CalculateToolTipResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the formatted number.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="CalculateForAggregatesToolTipResult" xml:space="preserve">
 <value>Returns the calculation result.</value>
@@ -4561,5 +4537,24 @@ Data
   </data>
   <data name="WebRequestToolTipTimeOut" xml:space="preserve">
     <value>The length of time to wait for a web request to complete before failing</value>
+  </data>
+  <data name="CalculateHelpFx" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To perform a calculation, put the calculation in here in BODMAS format.
+Using (*) notation for recordsets, will perform the calculation and give a result, for each record.
+To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Calculate For Aggregates tool.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CalculateToolTipFx" xml:space="preserve">
+    <value>Excel like calculation</value>
+  </data>
+  <data name="CalculateToolTipResult" xml:space="preserve">
+    <value>Returns the calculation result.</value>
   </data>
 </root>

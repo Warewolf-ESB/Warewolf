@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -13,6 +14,10 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Runtime.Hosting;
+using Dev2.Studio.Core.Messages;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
@@ -30,6 +35,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var sources = new List<OauthSource>()
             {
                 new DropBoxSource(){ResourceName = "Test Resource Name"}
@@ -44,10 +50,12 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
-            
-            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            var mock = new Mock<IResourceCatalog>();
+            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
+            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
             ScenarioContext.Current.Add("uploadViewModel", uploadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            ScenarioContext.Current.Add("mockEventAggregator", mockEventAggregator);
         }
         private static DropBoxUploadViewModel GetViewModel()
         {
@@ -89,7 +97,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void GivenLocalFileIsEnabled()
         {
             var fromPath = GetViewModel().FromPath;
-            Assert.IsNotNull(fromPath);
         }
 
         [Then(@"I Click Edit")]
@@ -103,7 +110,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void GivenDropboxFileIsEnabled()
         {
             var dropBoxPath = GetViewModel().ToPath;
-            Assert.IsNotNull(dropBoxPath);
         }
 
         [When(@"I Click New")]
@@ -153,8 +159,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the New Dropbox Source window is opened")]
         public void ThenTheNewDropboxSourceWindowIsOpened()
         {
-            var isDropboxSourceWizardSourceMessagePulished = GetViewModel().IsDropboxSourceWizardSourceMessagePulished;
-            Assert.IsTrue(isDropboxSourceWizardSourceMessagePulished);
+            var mock = ScenarioContext.Current.Get<Mock<IEventAggregator>>("mockEventAggregator");
+            mock.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
         }
 
         [Then(@"the ""(.*)"" Dropbox Source window is opened")]

@@ -1959,11 +1959,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Contents - Invalid expression: Opening and closing brackets dont match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - Invalid expression: Opening and closing brackets dont match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Contents - Invalid expression: Opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Contents - Invalid expression: Opening and closing brackets don\'t match")]
         public virtual void WriteFileValidation_Variant51()
         {
-            this.WriteFileValidation("47", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "c:\\filetoread.txt", "Append Bottom", "[[rec(**).a", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Contents - Invalid expression: Opening and closing brackets dont match", "1.Contents - Invalid expression: Opening and closing brackets dont match", ((string[])(null)));
+            this.WriteFileValidation("47", "Local with Overwrite", "[[sourcePath]]", "\"\"", "\"\"", "c:\\filetoread.txt", "Append Bottom", "[[rec(**).a", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Contents - Invalid expression: Opening and closing brackets don\'t match", "1.Contents - Invalid expression: Opening and closing brackets don\'t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]

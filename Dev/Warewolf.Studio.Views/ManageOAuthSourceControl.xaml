@@ -11,6 +11,7 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=viewModels:ManageOAuthSourceViewModel,
@@ -63,19 +64,20 @@
                        Grid.Row="1"
                        Grid.Column="0"
                        Margin="{StaticResource ControlBorderTop}"
-                       Text="OAuth key"/>
-            <TextBox x:Name="OAuthKeyTextBox" 
-                     VerticalAlignment="Top"
-                     Grid.Row="1"
-                     Grid.Column="1" 
-                     Height="25"
-                     Margin="{StaticResource ControlBorderTop}"
-                     ToolTip="{x:Static languages:Core.ManageOAuthKeyTooltip}"
-                     Text="{Binding AppKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                       Text="OAuth key:"/>
+            <PasswordBox x:Name="OAuthKeyTextBox" 
+                         VerticalAlignment="Top"
+                         Grid.Row="1"
+                         Grid.Column="1" 
+                         Height="25"
+                         Margin="{StaticResource ControlBorderTop}"
+                         ToolTip="{x:Static languages:Core.ManageOAuthKeyTooltip}"
+                         customControls:PasswordBoxAssistant.BindPassword="true"
+                         customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=AppKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.ManageOAuthKeyHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
-            </TextBox>
+            </PasswordBox>
         </Grid>
         <StackPanel Grid.Row="2" 
                     Margin="{StaticResource ControlBorderTop}"
@@ -84,8 +86,7 @@
                     VerticalAlignment="Center">
             <TextBlock TextWrapping="WrapWithOverflow" 
                        x:Name="ErrorTextBlock" 
-                       Text="{Binding TestMessage}" 
-                       Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+                       Text="{Binding TestMessage}" />
             <fa:ImageAwesome Width="14" 
                              Height="14" 
                              Margin="{StaticResource ControlBorderRight}" 
@@ -105,9 +106,8 @@
                                        Margin="{StaticResource ControlBorderRight}" 
                                        Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
             <Button x:Name="AuthoriseButton" 
-                    Width="120" 
+                    Width="Auto" 
                     Height="30" 
-                    Margin="{StaticResource ControlBorderRight}"
                     Command="{Binding TestCommand}" 
                     Content="Authorise" 
                     ToolTip="{x:Static languages:Core.ManageOAuthAuthoriseTooltip}">
