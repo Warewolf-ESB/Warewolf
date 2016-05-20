@@ -44,7 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Ctor
 
         public DsfAggregateCalculateActivity()
-            : base("Calculate")
+            : base("Aggregate Calculate")
         {
             Expression = string.Empty;
             Result = string.Empty;
