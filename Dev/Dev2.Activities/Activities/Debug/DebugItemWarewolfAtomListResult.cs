@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -205,7 +206,17 @@ namespace Dev2.Activities.Debug
                                 {
                                     grpIdx++;
                                     groupName = rawExpression;
-                                    displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_assignedToVariableName), DataListUtil.ExtractFieldNameFromValue(_assignedToVariableName), grpIdx.ToString()));
+                                    Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
+                                    var vals = dataLanguageParser.ParseForActivityDataItems(_assignedToVariableName);
+                                    if (vals != null)
+                                    {
+                                        foreach(var val in vals)
+                                        {
+                                            var repVal = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(val), DataListUtil.ExtractFieldNameFromValue(val), grpIdx.ToString());
+                                            displayExpression = _assignedToVariableName.Replace(val, repVal);
+                                        }
+                                    }
+                                    
                                 }
                                 else
                                 {

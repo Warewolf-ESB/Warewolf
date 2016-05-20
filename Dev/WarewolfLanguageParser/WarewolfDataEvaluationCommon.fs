@@ -55,15 +55,6 @@ let evalResultToStringAsList (a:WarewolfEvalResult) =
     | WarewolfAtomListresult x -> Seq.map warewolfAtomRecordtoString x |> fun a -> a
     | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a -> Seq.map warewolfAtomRecordtoString a |> fun a -> a
 
-let evalResultToStringAsListQuote (a:WarewolfEvalResult) = 
-    match a with
-    | WarewolfAtomResult x ->   let f = atomtoString (enQuote x)
-                                let list = [ f ]
-                                Seq.ofList list
-    | WarewolfAtomListresult x -> Seq.map enQuote x |> Seq.map atomtoString
-                                  //Seq.map warewolfAtomRecordtoString x |> fun a -> a
-    | WarewolfRecordSetResult x -> Map.toList x.Data |> List.filter (fun (a, _) ->not (a=PositionColumn)) |>  List.map snd |> Seq.collect (fun a->a) |> fun a -> Seq.map warewolfAtomRecordtoString a |> fun a -> a
-
 let atomToJsonCompatibleObject (a:WarewolfAtom) :System.Object= 
     match a with 
         | Int a -> a :> System.Object
