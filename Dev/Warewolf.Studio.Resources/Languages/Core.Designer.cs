@@ -303,7 +303,8 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To perform a calculation, put the calculation in here in BODMAS format.
-        ///There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.
+        ///Using (*) notation for recordsets, will perform the calculation and give a result, for each record.
+        ///To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Calculate For Aggregates tool.
         ///
         ///Allowed:
         ///Data   
@@ -320,7 +321,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the calculation result.
+        ///Returns the formatted number.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
         ///Using recordset () will add a new record and (*) will assign every record.
         ///
