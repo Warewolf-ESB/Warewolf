@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -600,17 +601,17 @@ namespace BusinessDesignStudio.Unit.Tests
 
                     return resourceData;
                 });
-             conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
-                .Returns(() =>
-                {
-                    if (callCnt <= 1)
-                    {
-                        callCnt++;
-                        return Task.FromResult(new StringBuilder(payload));
-                    }
+            conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
+               .Returns(() =>
+               {
+                   if (callCnt <= 1)
+                   {
+                       callCnt++;
+                       return Task.FromResult(new StringBuilder(payload));
+                   }
 
-                    return Task.FromResult(resourceData);
-                });
+                   return Task.FromResult(resourceData);
+               });
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
@@ -662,8 +663,8 @@ namespace BusinessDesignStudio.Unit.Tests
                     }
 
                     return resourceData;
-                }); 
-            
+                });
+
             conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
@@ -1960,6 +1961,43 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreNotEqual(0, result.Count);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetResourceList_GivenDropboxSource_ShouldReturnDroboxSources()
+        {
+            //---------------Set up test pack-------------------
+            var res = new DropBoxSource() { ResourceID = Guid.NewGuid() };
+            var resList = new List<DropBoxSource> { res };
+            var src = JsonConvert.SerializeObject(resList);
+            var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
+            ResourceRepository resourceRepository = GetResourceRepository();
+            //---------------Assert Precondition----------------
+            var format = string.Format("Fetch{0}Sources", typeof(DropBoxSource).Name);
+            //---------------Execute Test ----------------------
+            IList<DropBoxSource> result = resourceRepository.GetResourceList<DropBoxSource>(env.Object, _workspaceID);
+            //---------------Test Result -----------------------
+            Assert.AreNotEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetResourceList_GivenDropboxSource_ShouldCreateCorrectServiceName()
+        {
+            //---------------Set up test pack-------------------
+            var res = new DropBoxSource() { ResourceID = Guid.NewGuid() };
+            var resList = new List<DropBoxSource> { res };
+            var src = JsonConvert.SerializeObject(resList);
+            var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
+            ResourceRepository resourceRepository = GetResourceRepository();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(resourceRepository);
+            var invoke = privateObject.Invoke("CreateServiceName", typeof(DropBoxSource));
+            //---------------Test Result -----------------------
+            var serviceName = invoke.ToString();
+            Assert.AreEqual("FetchDropBoxSources".ToString(CultureInfo.CurrentCulture), serviceName.ToString(CultureInfo.CurrentCulture));
+
+        }
         #endregion
 
         #region Find
@@ -2211,7 +2249,7 @@ namespace BusinessDesignStudio.Unit.Tests
                     }
 
                     return resourceData;
-                }); 
+                });
             conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
