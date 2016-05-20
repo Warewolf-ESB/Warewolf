@@ -1372,6 +1372,9 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="AggregateCalculateHelpFx" xml:space="preserve">
+    <value>AggregateCalculateHelpFx</value>
+  </data>
   <data name="CalculateHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the formatted number.
@@ -1383,6 +1386,9 @@ Allowed:
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
+  </data>
+  <data name="AggregateCalculateHelpResult" xml:space="preserve">
+    <value>AggregateCalculateHelpResult</value>
   </data>
   <data name="CaseConversionHelpConvertToCaseType" xml:space="preserve">
     <value>Select the type of conversion you would like to make.
@@ -3689,6 +3695,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 To perform a calculation, put the calculation in here in BODMAS format.
 There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
   </data>
+  <data name="AggregateCalculateToolTipFx" xml:space="preserve">
+    <value>AggregateCalculateToolTipFx</value>
+  </data>
   <data name="DropBoxToolTipLocalSource" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 The file must be available on the local file system.</value>
@@ -3764,6 +3773,9 @@ The file must be available on the local file system.</value>
 Returns the formatted number.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="AggregateCalculateToolTipResult" xml:space="preserve">
+    <value>AggregateCalculateToolTipResult</value>
   </data>
   <data name="FormatNumberToolTipNumber" xml:space="preserve">
     <value>Any variable and/or data goes in here.

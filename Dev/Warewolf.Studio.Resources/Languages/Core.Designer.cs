@@ -83,6 +83,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AggregateCalculateHelpFx.
+        /// </summary>
+        public static string AggregateCalculateHelpFx {
+            get {
+                return ResourceManager.GetString("AggregateCalculateHelpFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AggregateCalculateHelpResult.
+        /// </summary>
+        public static string AggregateCalculateHelpResult {
+            get {
+                return ResourceManager.GetString("AggregateCalculateHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AggregateCalculateToolTipFx.
+        /// </summary>
+        public static string AggregateCalculateToolTipFx {
+            get {
+                return ResourceManager.GetString("AggregateCalculateToolTipFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AggregateCalculateToolTipResult.
+        /// </summary>
+        public static string AggregateCalculateToolTipResult {
+            get {
+                return ResourceManager.GetString("AggregateCalculateToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationToolTip {
