@@ -1372,7 +1372,57 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="CalculateForAggregatesHelpFx" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To perform a calculation, put the calculation in here in BODMAS format.
+To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset.
+Aggregate functions are:
+ &lt;table&gt;
+  &lt;tr&gt;
+    &lt;td&gt;sum()&lt;/td&gt;
+    &lt;td&gt;average()&lt;/td&gt;
+    &lt;td&gt;product()&lt;/td&gt;
+    &lt;td&gt;count()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;max()&lt;/td&gt;
+    &lt;td&gt;median()&lt;/td&gt;
+    &lt;td&gt;min()&lt;/td&gt;
+    &lt;td&gt;var()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;stdev()&lt;/td&gt;
+    &lt;td&gt;concatenate()&lt;/td&gt;
+    &lt;td&gt;choose()&lt;/td&gt;
+    &lt;td&gt;irr()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;counta()&lt;/td&gt;
+    &lt;td&gt;subtotal()&lt;/td&gt;
+    &lt;td&gt;avedev()&lt;/td&gt;
+    &lt;td&gt;and()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;or()&lt;/td&gt;
+    &lt;td&gt;isnull()&lt;/td&gt;
+    &lt;td&gt;istext()&lt;/td&gt;
+    &lt;td&gt;npv()&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;   </value>
+  </data>
   <data name="CalculateHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CalculateForAggregatesHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the formatted number.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
@@ -3689,6 +3739,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 To perform a calculation, put the calculation in here in BODMAS format.
 There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
   </data>
+  <data name="CalculateForAggregatesToolTipFx" xml:space="preserve">
+<value>Excel like calculation</value>
+  </data>
   <data name="DropBoxToolTipLocalSource" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 The file must be available on the local file system.</value>
@@ -3764,6 +3817,9 @@ The file must be available on the local file system.</value>
 Returns the formatted number.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CalculateForAggregatesToolTipResult" xml:space="preserve">
+<value>Returns the calculation result.</value>
   </data>
   <data name="FormatNumberToolTipNumber" xml:space="preserve">
     <value>Any variable and/or data goes in here.
