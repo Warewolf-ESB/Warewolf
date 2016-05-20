@@ -77,6 +77,8 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
 
         void SavePluginSource(IPluginSource source, Guid serverWorkspaceID);
 
+        void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID);
+
         string TestPluginService(IPluginService inputValues);
 
         void SavePluginService(IPluginService toDbSource);

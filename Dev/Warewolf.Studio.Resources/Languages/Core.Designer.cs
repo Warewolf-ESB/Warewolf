@@ -320,7 +320,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted number.
+        ///Returns the calculation result.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
         ///Using recordset () will add a new record and (*) will assign every record.
         ///
@@ -337,9 +337,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To perform a calculation, put the calculation in here in BODMAS format.
-        ///There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset..
+        ///   Looks up a localized string similar to Excel like calculation.
         /// </summary>
         public static string CalculateToolTipFx {
             get {
@@ -348,10 +346,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted number.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record..
+        ///   Looks up a localized string similar to Returns the calculation result..
         /// </summary>
         public static string CalculateToolTipResult {
             get {
@@ -4630,7 +4625,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthAuthoriseHelp.
+        ///   Looks up a localized string similar to Warewolf needs to get Authorization from the external application to connect using your key and credentials. Make sure your application is setup correctly on the remote system before continuing with this step.&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///Dropbox: &lt;a href=&quot;https://www.dropbox.com/developers/apps/create&quot;&gt;Create your app in Dropbox here.&lt;/a&gt;&lt;br/&gt;
+        ///Make sure you have set the &lt;b&gt;Redirect URIs&lt;/b&gt; in your app to:
+        ///https://www.dropbox.com/1/oauth2/redirect_receiver/.
         /// </summary>
         public static string ManageOAuthAuthoriseHelp {
             get {
@@ -4639,7 +4638,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthAuthoriseTooltip.
+        ///   Looks up a localized string similar to Validate the key with the provider.
         /// </summary>
         public static string ManageOAuthAuthoriseTooltip {
             get {
@@ -4648,25 +4647,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthCancelTestHelp.
-        /// </summary>
-        public static string ManageOAuthCancelTestHelp {
-            get {
-                return ResourceManager.GetString("ManageOAuthCancelTestHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthCancelTestTooltip.
-        /// </summary>
-        public static string ManageOAuthCancelTestTooltip {
-            get {
-                return ResourceManager.GetString("ManageOAuthCancelTestTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthKeyHelp.
+        ///   Looks up a localized string similar to The app key provided by the application that is doing the authentication. You will need to log into that application and follow their instructions to generate this key..
         /// </summary>
         public static string ManageOAuthKeyHelp {
             get {
@@ -4675,7 +4656,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthKeyTooltip.
+        ///   Looks up a localized string similar to The application key provided by the app.
         /// </summary>
         public static string ManageOAuthKeyTooltip {
             get {
@@ -4684,25 +4665,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthSecretHelp.
-        /// </summary>
-        public static string ManageOAuthSecretHelp {
-            get {
-                return ResourceManager.GetString("ManageOAuthSecretHelp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthSecretTooltip.
-        /// </summary>
-        public static string ManageOAuthSecretTooltip {
-            get {
-                return ResourceManager.GetString("ManageOAuthSecretTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthTypesHelp.
+        ///   Looks up a localized string similar to Select the provider you want to use for Authentication. The provider must be compatible with the tool you are using. Make sure you have setup the account on the external application correctly..
         /// </summary>
         public static string ManageOAuthTypesHelp {
             get {
@@ -4711,7 +4674,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ManageOAuthTypeTooltip.
+        ///   Looks up a localized string similar to Select the provider you want to use.
         /// </summary>
         public static string ManageOAuthTypeTooltip {
             get {
@@ -5544,6 +5507,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string NewServerLabel {
             get {
                 return ResourceManager.GetString("NewServerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New OAuth Source.
+        /// </summary>
+        public static string OAuthSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("OAuthSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://www.dropbox.com/1/oauth2/redirect_receiver/.
+        /// </summary>
+        public static string OAuthSourceRedirectUri {
+            get {
+                return ResourceManager.GetString("OAuthSourceRedirectUri", resourceCulture);
             }
         }
         
@@ -6815,6 +6796,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ScriptingToolTipScript {
             get {
                 return ResourceManager.GetString("ScriptingToolTipScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=Lc2neiss3Kwc5jBrMcX9nq9v2XfPlRyomaE4bW69.
+        /// </summary>
+        public static string SendErrorReportUrl {
+            get {
+                return ResourceManager.GetString("SendErrorReportUrl", resourceCulture);
             }
         }
         

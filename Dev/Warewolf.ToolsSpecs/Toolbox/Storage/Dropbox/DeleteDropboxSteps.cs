@@ -12,6 +12,10 @@ using Caliburn.Micro;
 using Warewolf.Storage;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using System.Linq.Expressions;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Activities.Designers2.Core;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
@@ -37,6 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var sources = new List<OauthSource>()
             {
                 new DropBoxSource(){ResourceName = "Test Resource Name"}
@@ -51,10 +56,12 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
-
-            var deleteViewModel = new DropBoxDeleteViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            var mock = new Mock<IResourceCatalog>();
+            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
+            var deleteViewModel = new DropBoxDeleteViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
             ScenarioContext.Current.Add("deleteViewModel", deleteViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            ScenarioContext.Current.Add("mockEventAggregator", mockEventAggregator.Object);
         }
 
         [Given(@"Dropbox Delete New is Enabled")]
@@ -88,20 +95,13 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void GivenDeleteDropboxFileIsEnabled()
         {
             var dropBoxDeletePath = GetViewModel().DeletePath;
-            Assert.IsNotNull(dropBoxDeletePath);
+            //No asserts neccessary
         }
         
         [When(@"I Click Delete New")]
         public void WhenIClickDeleteNew()
         {
             GetViewModel().NewSourceCommand.Execute(null);
-        }
-
-        [Then(@"the New Delete Dropbox Source window is opened")]
-        public void ThenTheNewDeleteDropboxSourceWindowIsOpened()
-        {
-            var isDropboxSourceWizardSourceMessagePulished = GetViewModel().IsDropboxSourceWizardSourceMessagePulished;
-            Assert.IsTrue(isDropboxSourceWizardSourceMessagePulished);
         }
         
         [When(@"I Select ""(.*)"" as the Delete source")]

@@ -39,32 +39,31 @@ namespace Warewolf.Studio.Core
                         return _dict[CustomMenuIcons.WorkflowService] as DrawingImage;
                     case "DbService":
                         return _dict[CustomMenuIcons.DbService] as DrawingImage;
+                    case "WebService":
+                        return _dict[CustomMenuIcons.WebService] as DrawingImage;
+                    case "PluginService":
+                        return _dict[CustomMenuIcons.PluginService] as DrawingImage;
+
                     case "PluginSource":
                         return _dict[CustomMenuIcons.PluginSource] as DrawingImage;
                     case "EmailSource":
                         return _dict[CustomMenuIcons.EmailSource] as DrawingImage;
                     case "ExchangeSource":
                         return _dict[CustomMenuIcons.ExchangeSource] as DrawingImage;
-                    case "WebService":
-                        return _dict[CustomMenuIcons.WebService] as DrawingImage;
-                    case "DbSource":
-                        return _dict[CustomMenuIcons.DbSource] as DrawingImage;
                     case "SqlDatabase":
                         return _dict["MicrosoftSQLSource"] as DrawingImage;
+                    case "DbSource":
+                    case "Oracle":
                     case "MySqlDatabase":
                         return _dict[CustomMenuIcons.DbSource] as DrawingImage;
                     case "PostgreSql":
                         return _dict["PostgreSource"] as DrawingImage;
-                    case "Oracle":
-                        return _dict[CustomMenuIcons.DbSource] as DrawingImage;
                     case "ODBC":
                         return _dict["OdbcSource"] as DrawingImage;
-                    case "PluginService":
-                        return _dict[CustomMenuIcons.PluginService] as DrawingImage;
                     case "WebSource":
                         return _dict[CustomMenuIcons.WebSource] as DrawingImage;
                     case "SharepointServerSource":
-                        return Application.Current.Resources["AddSharepointBlackLogo"];
+                        return Application.Current.Resources["SharepointSource"];
                     case "ServerSource":
                         return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
                     case "Server":
@@ -75,6 +74,7 @@ namespace Warewolf.Studio.Core
                         return imageSource;
                     case "OAuth":
                     case "OauthSource":
+                    case "DropBoxSource":
                         return Application.Current.Resources["DropboxSource"];
                     case "Scheduler":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);

@@ -10,8 +10,11 @@ using Dropbox.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Debug;
+using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Storage;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
@@ -144,5 +147,44 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         {
             return enFindMissingType.StaticActivity;
         }
+
+        #region Overrides of DsfBaseActivity
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            if (env == null)
+            {
+                return new List<DebugItem>();
+            }
+            base.GetDebugInputs(env, update);
+
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Folders"), debugItem);
+            string value = IsFoldersSelected ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Files"), debugItem);
+            value = IsFilesSelected ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Files and Folders"), debugItem);
+            value = IsFilesAndFoldersSelected ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Recursive"), debugItem);
+            value = IsRecursive ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+            return _debugInputs;
+
+        }
+
+
+        #endregion
     }
 }

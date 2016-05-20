@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
+using mshtml;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
@@ -12,7 +13,7 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ManageOAuthSourceControl.xaml
     /// </summary>
-    public partial class ManageOAuthSourceControl : IView, ICheckControlEnabledView,IWebBrowser
+    public partial class ManageOAuthSourceControl : IView, ICheckControlEnabledView, IWebBrowser
     {
         public ManageOAuthSourceControl()
         {
@@ -28,11 +29,12 @@ namespace Warewolf.Studio.Views
                   }
               };
 
-            WebBrowserHost.Navigated += (sender, args) => {
-                                                              if(Navigated != null)
-                                                              {
-                                                                  Navigated.Invoke(args.Uri);
-                                                              }
+            WebBrowserHost.Navigated += (sender, args) =>
+            {
+                if (Navigated != null)
+                {
+                    Navigated.Invoke(args.Uri);
+                }
             };
         }
 
@@ -69,6 +71,15 @@ namespace Warewolf.Studio.Views
 
             if (document.readyState != "complete")
                 return;
+
+            var title = ((HTMLDocument)WebBrowserHost.Document).title;
+            if (title == "Dropbox - 400")
+            {
+                ViewModel.TestMessage = "";
+                ViewModel.TestPassed = false;
+                ViewModel.TestFailed = true;
+                ViewModel.Testing = false;
+            }
 
             dynamic script = document.createElement("script");
             script.type = @"text/javascript";
