@@ -21,8 +21,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(oauthSource.AccessToken,"");
-            Assert.AreEqual(oauthSource.AppKey,"");
+            Assert.AreEqual(null,oauthSource.AccessToken);
+            Assert.AreEqual(null,oauthSource.AppKey);
         }
 
         [TestMethod]
