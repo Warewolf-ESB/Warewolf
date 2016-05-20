@@ -357,7 +357,7 @@ https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
     <value>Create a new connection to a database</value>
   </data>
   <data name="ManageExchangeServiceNewSourceTooltip" xml:space="preserve">
-    <value>Create a new connection to a exchange server</value>
+    <value>Create a new connection to an exchange server</value>
   </data>
   <data name="ManageDbServiceActionsTooltip" xml:space="preserve">
     <value>Select the procedure or function you want to perform on the database</value>
@@ -1359,6 +1359,68 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="CalculateForAggregatesHelpFx" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To perform a calculation, put the calculation in here in BODMAS format.
+To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset.
+Aggregate functions are:
+ &lt;table&gt;
+  &lt;tr&gt;
+    &lt;td&gt;sum()&lt;/td&gt;
+    &lt;td&gt;average()&lt;/td&gt;
+    &lt;td&gt;product()&lt;/td&gt;
+    &lt;td&gt;count()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;max()&lt;/td&gt;
+    &lt;td&gt;median()&lt;/td&gt;
+    &lt;td&gt;min()&lt;/td&gt;
+    &lt;td&gt;var()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;stdev()&lt;/td&gt;
+    &lt;td&gt;concatenate()&lt;/td&gt;
+    &lt;td&gt;choose()&lt;/td&gt;
+    &lt;td&gt;irr()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;counta()&lt;/td&gt;
+    &lt;td&gt;subtotal()&lt;/td&gt;
+    &lt;td&gt;avedev()&lt;/td&gt;
+    &lt;td&gt;and()&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;or()&lt;/td&gt;
+    &lt;td&gt;isnull()&lt;/td&gt;
+    &lt;td&gt;istext()&lt;/td&gt;
+    &lt;td&gt;npv()&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;   </value>
+  </data>
+  <data name="CalculateHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CalculateForAggregatesHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
   <data name="CaseConversionHelpConvertToCaseType" xml:space="preserve">
     <value>Select the type of conversion you would like to make.
 
@@ -1878,13 +1940,13 @@ Data
 [[Recordset().Field]]</value>
   </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
-    <value>Enter the path to the attachments you want to send separated by a semicolon ;
+    <value>Enter the path to the attachments you want to send, separated by a semicolon ;
 
 Allowed:
 </value>
   </data>
   <data name="EmailHelpBcc" xml:space="preserve">
-    <value>List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+    <value>List the email addresses you want to blind carbon copy on the email you are sending, separated by a semicolon ;
 If you are on a domain, you still need to provide the email address of the account you are sending to.
 
 Allowed:
@@ -1905,7 +1967,7 @@ Data
 [[Recordset().Field]]</value>
   </data>
   <data name="EmailHelpCc" xml:space="preserve">
-    <value>List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+    <value>List the email addresses you want to carbon copy on the email you are sending, separated by a semicolon ;
 If you are on a domain, you still need to provide the email address of the account you are sending to.
 
 Allowed:
@@ -1971,7 +2033,7 @@ Data
 [[Recordset().Field]]</value>
   </data>
   <data name="EmailHelpTo" xml:space="preserve">
-    <value>List the email addresses you want to send to separated by a semicolon ;
+    <value>List the email addresses you want to send to, separated by a semicolon ;
 If you are on a domain, you still need to provide the email address of the account you are sending to.
 
 Allowed:
@@ -3659,6 +3721,9 @@ Returns the count of the number of replacements.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
+  <data name="CalculateForAggregatesToolTipFx" xml:space="preserve">
+    <value>Excel like calculation</value>
+  </data>
   <data name="DropBoxToolTipLocalSource" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 The file must be available on the local file system.</value>
@@ -3692,7 +3757,7 @@ The file must be available on the local file system.</value>
     <value>The file or folder you want to delete on Dropbox</value>
   </data>
   <data name="DropBoxDeleteFileNameHelpText" xml:space="preserve">
-    <value>Specify the Dropbox file or folder you would like to delte. This is the path from the root of the Dropbox account.</value>
+    <value>Specify the Dropbox file or folder you would like to delete. This is the path from the root of the Dropbox account.</value>
   </data>
   <data name="DropBoxFileListFileNameToolTip" xml:space="preserve">
     <value>The folder on Dropbox to list</value>
@@ -3728,6 +3793,9 @@ The file must be available on the local file system.</value>
     <value>When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 
     
     NOTE: Dropbox has a max return count of 2000.</value>
+  </data>
+  <data name="CalculateForAggregatesToolTipResult" xml:space="preserve">
+    <value>Returns the calculation result.</value>
   </data>
   <data name="FormatNumberToolTipNumber" xml:space="preserve">
     <value>Any variable and/or data goes in here.
@@ -4081,7 +4149,7 @@ Leaving the Archive Password blank will result in no password being required to 
   </data>
   <data name="SchedulerSettingsHelpTextName" xml:space="preserve">
     <value>The name of the schedule that will appear in the list of Schedules in the left hand column.
-Renaming a Schedule will loose its History.</value>
+Renaming a Schedule will lose its History.</value>
   </data>
   <data name="SchedulerSettingsHelpTextPassword" xml:space="preserve">
     <value>Each workflow must be executed with the correct security context. The account details entered here will be passed to the server and execute the workflow as that user.</value>
@@ -4474,23 +4542,11 @@ Data
     <value>Any variable and/or data goes in here.
 To perform a calculation, put the calculation in here in BODMAS format.
 Using (*) notation for recordsets, will perform the calculation and give a result, for each record.
-To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Calculate For Aggregates tool.
+To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Aggregate Calculate tool.
 
 Allowed:
 Data   
 [[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="CalculateHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the calculation result.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.
-
-Allowed:
-[[Scalar]]  
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>

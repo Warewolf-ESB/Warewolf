@@ -245,8 +245,66 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To perform a calculation, put the calculation in here in BODMAS format.
+        ///To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset.
+        ///Aggregate functions are:
+        /// &lt;table&gt;
+        ///  &lt;tr&gt;
+        ///    &lt;td&gt;sum()&lt;/td&gt;
+        ///    &lt;td&gt;average()&lt;/td&gt;
+        ///    &lt;td&gt;product()&lt;/td&gt;
+        ///    &lt;td&gt;count()&lt;/td&gt;
+        ///  &lt;/tr&gt;
+        ///  &lt;tr&gt;
+        ///    &lt;td&gt;max()&lt;/td&gt;
+        ///    &lt;td&gt;medi [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CalculateForAggregatesHelpFx {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesHelpFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted number.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///
+        ///Allowed:
+        ///[[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CalculateForAggregatesHelpResult {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel like calculation.
+        /// </summary>
+        public static string CalculateForAggregatesToolTipFx {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesToolTipFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the calculation result..
+        /// </summary>
+        public static string CalculateForAggregatesToolTipResult {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To perform a calculation, put the calculation in here in BODMAS format.
         ///Using (*) notation for recordsets, will perform the calculation and give a result, for each record.
-        ///To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Calculate For Aggregates tool.
+        ///To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Aggregate Calculate tool.
         ///
         ///Allowed:
         ///Data   
@@ -263,7 +321,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the calculation result.
+        ///Returns the formatted number.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
         ///Using recordset () will add a new record and (*) will assign every record.
         ///
@@ -2285,7 +2343,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Specify the Dropbox file or folder you would like to delte. This is the path from the root of the Dropbox account..
+        ///   Looks up a localized string similar to Specify the Dropbox file or folder you would like to delete. This is the path from the root of the Dropbox account..
         /// </summary>
         public static string DropBoxDeleteFileNameHelpText {
             get {
@@ -2493,7 +2551,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the path to the attachments you want to send separated by a semicolon ;
+        ///   Looks up a localized string similar to Enter the path to the attachments you want to send, separated by a semicolon ;
         ///
         ///Allowed:
         ///.
@@ -2505,7 +2563,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending, separated by a semicolon ;
         ///If you are on a domain, you still need to provide the email address of the account you are sending to.
         ///
         ///Allowed:
@@ -2547,7 +2605,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending, separated by a semicolon ;
         ///If you are on a domain, you still need to provide the email address of the account you are sending to.
         ///
         ///Allowed:
@@ -2655,7 +2713,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the email addresses you want to send to separated by a semicolon ;
+        ///   Looks up a localized string similar to List the email addresses you want to send to, separated by a semicolon ;
         ///If you are on a domain, you still need to provide the email address of the account you are sending to.
         ///
         ///Allowed:
@@ -4550,7 +4608,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new connection to a exchange server.
+        ///   Looks up a localized string similar to Create a new connection to an exchange server.
         /// </summary>
         public static string ManageExchangeServiceNewSourceTooltip {
             get {
@@ -6524,7 +6582,7 @@ namespace Warewolf.Studio.Resources.Languages {
         
         /// <summary>
         ///   Looks up a localized string similar to The name of the schedule that will appear in the list of Schedules in the left hand column.
-        ///Renaming a Schedule will loose its History..
+        ///Renaming a Schedule will lose its History..
         /// </summary>
         public static string SchedulerSettingsHelpTextName {
             get {

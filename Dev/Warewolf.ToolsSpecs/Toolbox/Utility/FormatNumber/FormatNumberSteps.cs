@@ -34,7 +34,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if (ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             string number;
@@ -48,7 +54,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
 
             var numberFormat = new DsfNumberFormatActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVariable,
                     Expression = number,
                     RoundingType = roundingType,
                     RoundingDecimalPlaces = roundingDecimalPlaces,
@@ -138,5 +144,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 Assert.AreEqual(expectedResult, actualValue);
             }
         }
+
+        [Given(@"I have a formatnumber result is ""(.*)""")]
+        public void GivenIHaveAFormatnumberResultIs(string resultVar)
+        {
+            ScenarioContext.Current.Add("resVar", resultVar);
+        }
+
     }
 }

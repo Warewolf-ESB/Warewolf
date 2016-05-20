@@ -35,7 +35,13 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if (ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             string commandToExecute;
@@ -44,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             var commandLine = new DsfExecuteCommandLineActivity
                 {
                     CommandFileName = commandToExecute,
-                    CommandResult = ResultVariable,
+                    CommandResult = resultVariable,
                 };
 
             TestStartNode = new FlowStep
@@ -55,6 +61,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         }
 
         [Given(@"I have this command script to execute ""(.*)""")]
+        [Given(@"I have this command script to execute '(.*)'")]
         public void GivenIHaveThisCommandScriptToExecute(string commandToExecute)
         {
             ScenarioContext.Current.Add("commandToExecute", commandToExecute);
@@ -82,6 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         }
 
         [Then(@"the result of the command tool will be ""(.*)""")]
+        [Then(@"the result of the command tool will be '(.*)'")]
         public void ThenTheResultOfTheCommandToolWillBe(string expectedResult)
         {
             string error;
@@ -101,6 +109,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         }
 
         [Given(@"I have a command variable ""(.*)"" equal to ""(.*)""")]
+        [Given(@"I have a command variable '(.*)' equal to '(.*)'")]
         public void GivenIHaveACommandVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
@@ -113,5 +122,13 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             }
             variableList.Add(new Tuple<string, string>(variable, value));
         }
+
+        [Given(@"I have a command result equal to ""(.*)""")]
+        [Given(@"I have a command result equal to '(.*)'")]
+        public void GivenIHaveACommandResultEqualTo(string resultVar)
+        {
+            ScenarioContext.Current.Add("resVar", resultVar);
+        }
+
     }
 }

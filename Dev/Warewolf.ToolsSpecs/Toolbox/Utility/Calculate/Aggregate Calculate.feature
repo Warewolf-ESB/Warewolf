@@ -1,5 +1,5 @@
-﻿Feature: Calculate
-	In order to perform basic calculations
+﻿Feature: Aggregate Calculate
+	In order to perform aggrgate calculations
 	As a Warewolf user
 	I want a tool that I can input a formula and will calculate and retun a result
 
@@ -21,7 +21,7 @@
 
 Scenario: Calculate using a given formula
 	Given I have the formula "mod(sqrt(49), 7)"	
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "0"
 	And the execution has "NO" error
 	And the debug inputs as  
@@ -35,7 +35,7 @@ Scenario: Calculate using multiple scalars and recordset inputs
 	Given I have a calculate variable "[[var]]" equal to "1"
 	And I have a calculate variable "[[var2]]" equal to "20"
 	And I have the formula "((([[var]]+[[var]])/[[var2]])+[[var2]]*[[var]])"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "20.1"
 	And the execution has "NO" error
 	And the debug inputs as  
@@ -49,7 +49,7 @@ Scenario: Calculate with new lines should concatenate values
 	Given I have a calculate variable "[[var]]" equal to "1"
 	And I have a calculate variable "[[var2]]" equal to "20"
 	And I have the formula "[[var]]\r\n[[var2]]"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "120"
 	And the execution has "NO" error
 	And the debug inputs as  
@@ -66,17 +66,15 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	| 2			|
 	| 3			|
 	And I have the formula "SUM([[var(*).int]])"
-	When the calculate tool is executed
-	Then the calculate result should be "3"
+	When the aggregate calculate tool is executed
+	Then the calculate result should be "6"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| fx =                         |
-	| SUM([[var(*).int]]) = SUM(1) |
-	| SUM([[var(*).int]]) = SUM(2) |
-	| SUM([[var(*).int]]) = SUM(3) |
+	| fx =                             |
+	| SUM([[var(*).int]]) = SUM(1,2,3) |
 	And the debug output as 
 	|                |
-	| [[result]] = 3 |
+	| [[result]] = 6 |
 
 Scenario: Calculate using Recordset (*) input in an agregate function like SUM and output recordset star
 	Given I have a calculate variable "[[var().int]]" equal to 
@@ -90,18 +88,15 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM a
 	| 23       |
 	And I have the formula "SUM([[var(*).int]])"
 	And calculate result as "[[rs(*).val]]"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the execution has "NO" error
 	And the debug inputs as  
-	| fx =                         |
-	| SUM([[var(*).int]]) = SUM(1) |
-	| SUM([[var(*).int]]) = SUM(2) |
-	| SUM([[var(*).int]]) = SUM(3) |
+	| fx =                             |
+	| SUM([[var(*).int]]) = SUM(1,2,3) |
 	And the debug output as 
-	|                   |
-	| [[rs(1).val]] = 1 |
-	| [[rs(2).val]] = 2 |
-	| [[rs(3).val]] = 3 |
+	|                    |
+	| [[rs(1).val]] = 6  |
+	| [[rs(2).val]] = 23 |
 
 Scenario: Calculate using Recordset (*) input in an agregate function like SUM and output recordset star complex
 	Given I have a calculate variable "[[var().int]]" equal to 
@@ -115,22 +110,19 @@ Scenario: Calculate using Recordset (*) input in an agregate function like SUM a
 	| 23       |
 	And I have the formula "SUM([[var(*).int]]) + 15"
 	And calculate result as "[[rs(*).val]]"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the execution has "NO" error
 	And the debug inputs as  
-	| fx =                                   |
-	| SUM([[var(*).int]]) + 15 = SUM(1) + 15 |
-	| SUM([[var(*).int]]) + 15 = SUM(2) + 15 |
-	| SUM([[var(*).int]]) + 15 = SUM(3) + 15 |
+	| fx =                                     |
+	| SUM([[var(*).int]]) + 15 = SUM(1,2,3)+15 |
 	And the debug output as 
 	|                    |
-	| [[rs(1).val]] = 16 |
-	| [[rs(2).val]] = 17 |
-	| [[rs(3).val]] = 18 |
+	| [[rs(1).val]] = 21 |
+	| [[rs(2).val]] = 23 |
 
 Scenario: Calculate using incorrect formula
 	Given I have the formula "asdf"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be ""
 	And the execution has "Formula syntax error. Unable to compile the formula: Unexpected end of file, on line: 1 column: 5" error
 	And the debug inputs as  
@@ -144,7 +136,7 @@ Scenario: Calculate using incorrect formula
 Scenario: Calculate using variable as full calculation
 	Given I have a calculate variable "[[var]]" equal to "SUM(1,2,3)-5"
 	And I have the formula "[[var]]"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "1"
 	And the execution has "NO" error
 	And the debug inputs as  
@@ -156,7 +148,7 @@ Scenario: Calculate using variable as full calculation
 
 Scenario: Calculate using a negative index recordset value
 	Given I have the formula "[[my(-1).formula]]"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the execution has "Recordset index [ -1 ] is not greater than zero" error
 	And the debug inputs as  
 	| fx =                 |
@@ -179,7 +171,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable
 	Given I have a calculate variable "[[a]]" equal to "b"
 	And I have a calculate variable "[[b]]" equal to "20"
 	And I have the formula "[[[[a]]]]+1"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "21"
 	And the execution has "NO" error
 	And the debug inputs as  
@@ -193,7 +185,7 @@ Scenario: Calculate Assign by evaluating a variable inside a variable with funct
 	Given I have a calculate variable "[[a]]" equal to "b"
 	And I have a calculate variable "[[b]]" equal to "20"
 	And I have the formula "SUM([[[[a]]]],[[b]])"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "40"
 	And the execution has "NO" error
 	And the debug inputs as  
@@ -214,7 +206,7 @@ Scenario Outline: Calculate Assign by evaluating variables with functions
 	And I have a calculate variable "[[b]]" equal to "3"
 	And I have a calculate variable "[[e]]" equal to "1000"
 	And I have the Example formula '<fx>'
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "<result>"
 	And the execution has "NO" error
 	Examples: 
@@ -394,7 +386,7 @@ Scenario Outline: Calculate using Recordset input in an agregate function like S
 	| 3			|
 	And I have a calculate variable "[[val]]" equal to "3"
 	And I have the formula "<fx>"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "<value>"
 	And the execution has "NO" error
 	Examples: 
@@ -407,7 +399,7 @@ Scenario: Calculate using variables with a null value
 	Given I have a calculate variable "[[a]]" equal to "NULL"
 	And I have a calculate variable "[[b]]" equal to "NULL"
 	And I have the formula "SUM([[a]],[[b]])"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the execution has "An" error
 	And the debug inputs as  
 	| fx =                       |
@@ -417,7 +409,7 @@ Scenario: Variable that does not exist
 	Given I have a calculate variable "[[a]]" equal to "1"
 	And I have a calculate variable "[[b]]" equal to "20"
 	And I have the formula "Sum([[a]],[[b]],[[c]])"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| fx =                             |
@@ -427,7 +419,7 @@ Scenario: Variable that does not exist
 	| [[rs().a]] = 3 |
 Scenario: Calculate using variables with a no existent value
 	Given I have the formula "SUM([[a]],[[b]])"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the execution has "An" error
 	And the debug inputs as  
 	| fx =                       |
@@ -443,7 +435,7 @@ Scenario Outline: Calculate using complex types () input in an agregate function
 	| var().int().value | 2     |
 	| var().int().value | 3     |
 	And I have the formula "<fx>"
-	When the calculate tool is executed
+	When the aggregate calculate tool is executed
 	Then the calculate result should be "3"
 	And the execution has "NO" error
 	Then the calculate "<result>" should be "<value>"
