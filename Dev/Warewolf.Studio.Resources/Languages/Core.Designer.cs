@@ -83,42 +83,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AggregateCalculateHelpFx.
-        /// </summary>
-        public static string AggregateCalculateHelpFx {
-            get {
-                return ResourceManager.GetString("AggregateCalculateHelpFx", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AggregateCalculateHelpResult.
-        /// </summary>
-        public static string AggregateCalculateHelpResult {
-            get {
-                return ResourceManager.GetString("AggregateCalculateHelpResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AggregateCalculateToolTipFx.
-        /// </summary>
-        public static string AggregateCalculateToolTipFx {
-            get {
-                return ResourceManager.GetString("AggregateCalculateToolTipFx", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to AggregateCalculateToolTipResult.
-        /// </summary>
-        public static string AggregateCalculateToolTipResult {
-            get {
-                return ResourceManager.GetString("AggregateCalculateToolTipResult", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationToolTip {
@@ -275,6 +239,64 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string BaseConversionToolTipTotype {
             get {
                 return ResourceManager.GetString("BaseConversionToolTipTotype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To perform a calculation, put the calculation in here in BODMAS format.
+        ///To use the aggregate functions, use the recordset (*) notation e.g. SUM([[Staff(*).Salaries]]) will perform one calculation and give one result that is the total of all the Salaries fields in the Staff() recordset.
+        ///Aggregate functions are:
+        /// &lt;table&gt;
+        ///  &lt;tr&gt;
+        ///    &lt;td&gt;sum()&lt;/td&gt;
+        ///    &lt;td&gt;average()&lt;/td&gt;
+        ///    &lt;td&gt;product()&lt;/td&gt;
+        ///    &lt;td&gt;count()&lt;/td&gt;
+        ///  &lt;/tr&gt;
+        ///  &lt;tr&gt;
+        ///    &lt;td&gt;max()&lt;/td&gt;
+        ///    &lt;td&gt;medi [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string CalculateForAggregatesHelpFx {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesHelpFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns the formatted number.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset () will add a new record and (*) will assign every record.
+        ///
+        ///Allowed:
+        ///[[Scalar]]  
+        ///[[Recordset(n).Field]]   
+        ///[[Recordset(*).Field]]   
+        ///[[Recordset().Field]].
+        /// </summary>
+        public static string CalculateForAggregatesHelpResult {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel like calculation.
+        /// </summary>
+        public static string CalculateForAggregatesToolTipFx {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesToolTipFx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the calculation result..
+        /// </summary>
+        public static string CalculateForAggregatesToolTipResult {
+            get {
+                return ResourceManager.GetString("CalculateForAggregatesToolTipResult", resourceCulture);
             }
         }
         
