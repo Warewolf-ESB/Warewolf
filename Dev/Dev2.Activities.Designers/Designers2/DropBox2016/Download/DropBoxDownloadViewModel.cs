@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Runtime.Hosting;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
