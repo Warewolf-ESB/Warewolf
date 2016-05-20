@@ -19,7 +19,7 @@ using Warewolf.Storage;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Utility-Calculate", "Aggregate Calculate", ToolType.Native, "8889E69B-38A3-43BC-A98F-7190C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Utility-Calculate", "Calculate for Aggregates", ToolType.Native, "8889E69B-38A3-43BC-A98F-7190C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfAggregateCalculateActivity : DsfActivityAbstract<string>
     {
 
@@ -44,7 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Ctor
 
         public DsfAggregateCalculateActivity()
-            : base("Aggregate Calculate")
+            : base("Calculate for Aggregates")
         {
             Expression = string.Empty;
             Result = string.Empty;
@@ -106,7 +106,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Aggregate Calculate Exception", ex);
+                Dev2Logger.Error("Calculate for Aggregates Exception", ex);
                 allErrors.AddError(ex.Message);
             }
             finally
