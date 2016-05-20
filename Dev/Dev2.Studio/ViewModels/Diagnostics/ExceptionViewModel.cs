@@ -9,6 +9,7 @@
 */
 
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -17,7 +18,6 @@ using Dev2.Threading;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -41,16 +41,17 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private string _stackTrace;
         private ICommand _sendErrorCommand;
         private bool _testing;
-        private CancellationTokenSource _token;
+        private IAsyncWorker _asyncWorker;
 
         #endregion private fields
 
         #region Constructor
 
-        public ExceptionViewModel()
+        public ExceptionViewModel(IAsyncWorker asyncWorker)
         {
             //MEF!!!
             WindowNavigation = CustomContainer.Get<IWindowManager>();
+            _asyncWorker = asyncWorker;
             Testing = false;
         }
 
@@ -63,6 +64,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public string OutputText { get; set; }
 
         public string OutputPath { get; set; }
+
+        public IAsyncWorker AsyncWorker
+        {
+            get
+            {
+                if (_asyncWorker == null)
+                {
+                    _asyncWorker = new AsyncWorker();
+                }
+                return _asyncWorker;
+            }
+        }
 
         public bool Testing
         {
@@ -147,8 +160,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region public methods
 
-        public void Cancel()
+        private void Cancel()
         {
+            Testing = false;
             RequestClose();
         }
 
@@ -163,8 +177,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             string url = Warewolf.Studio.Resources.Languages.Core.SendErrorReportUrl;
 
-            var worker = new AsyncWorker();
-            worker.Start(() => SetupProgressSpinner(messageList, url), () =>
+            AsyncWorker.Start(() => SetupProgressSpinner(messageList, url), () =>
             {
                 Testing = false;
                 RequestClose();
