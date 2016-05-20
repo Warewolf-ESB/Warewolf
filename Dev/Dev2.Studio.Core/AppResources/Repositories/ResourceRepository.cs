@@ -46,6 +46,7 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+// ReSharper disable RedundantNameQualifier
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories
@@ -1290,9 +1291,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             return lists;
         }
+        private string CreateServiceName(Type type)
+        {
+            var serviceName = string.Format("Fetch{0}s", type.Name);
+            return serviceName;
+        }
         public IList<T> GetResourceList<T>(IEnvironmentModel targetEnvironment, Guid workspaceId) where T : new()
         {
-            var comController = new CommunicationController { ServiceName = "FetchDropboxSources" };
+            var comController = new CommunicationController { ServiceName = CreateServiceName(typeof(T)) };
             var sources = comController.ExecuteCommand<List<T>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
             return sources;
         }
@@ -1321,6 +1327,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return false;
         }
 
+        // ReSharper disable once RedundantNameQualifier
         public List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, Enums.ResourceType resourceType)
         {
             if (targetEnvironment == null || guids == null)

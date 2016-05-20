@@ -33,11 +33,11 @@ namespace Dev2.Activities.Designers2.Core
 
     public interface IDropboxSourceManager : ISourceManager
     {
-        IEnumerable<T> FetchSources<T>() where T : new();
+       
     }
 
     public interface ISourceManager
     {
-       
+        IEnumerable<T> FetchSources<T>() where T : new();
     }
 }

@@ -12,13 +12,13 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchDropboxSource : IEsbManagementEndpoint
+    public class FetchDropBoxSource : IEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<out string>
 
         public string HandlesType()
         {
-            return "FetchDropboxSources";
+            return "FetchDropBoxSources";
         }
 
         #endregion
