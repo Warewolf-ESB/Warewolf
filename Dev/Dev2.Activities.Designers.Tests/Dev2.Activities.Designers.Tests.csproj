@@ -111,6 +111,8 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
+    <Compile Include="AggregateCalculate\AggregateCalculateDesignerViewModelTests.cs" />
+    <Compile Include="Calculate\CalculateDesignerViewModelTest.cs" />
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
     <Compile Include="CEventHelperTests.cs" />
     <Compile Include="Core.cs" />
