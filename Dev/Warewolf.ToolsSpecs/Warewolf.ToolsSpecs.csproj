@@ -311,7 +311,7 @@
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\ConsumeRabbitMQSteps.cs" />
+    <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQSteps.cs" />
     <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

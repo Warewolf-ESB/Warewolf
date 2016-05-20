@@ -91,7 +91,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     return "Failure: Source has been deleted.";
                 }
 
-                string queueName, res;
+                string queueName, consumed;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName))
                 {
                     return "Failure: Queue Name is required.";
@@ -129,15 +129,15 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
                             }
                             var body = basicDeliverEventArgs.Body;
-                            res = Encoding.Default.GetString(body);
+                            consumed = Encoding.Default.GetString(body);
                             Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
                         }
                         else
-                            res = "Message Consumed";
+                            consumed = "Message Consumed";
                     }
                 }
                 Dev2Logger.Debug(String.Format("Message consumed from queue {0}", queueName));
-                return res;
+                return consumed;
             }
             catch (Exception ex)
             {
