@@ -6,8 +6,10 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Activities.Expressions;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Core;
@@ -17,19 +19,62 @@ using Dev2.Common.Interfaces.Core;
 namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RabbitMQConsumeDesignerViewModelTest
     {
         [TestMethod]
         [Owner("Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void RabbitMQConsumeDesignerViewModel_Constructor_NullModelItem_ThrowsException()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var vm = new RabbitMQConsumeDesignerViewModel(null, new Mock<IRabbitMQSourceModel>().Object);
             //------------Assert Results-------------------------
-            Assert.IsNull(vm);
+            Assert.IsNull(vm);            
+        }
+
+        [TestMethod]
+        [Owner("Sanele")]
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]        
+        public void RabbitMQConsumeDesignerViewModel_Constructor_Properties()
+        {
+            var model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+
+            //------------Execute Test---------------------------
+            RabbitMQConsumeDesignerViewModel vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
+            vm.QueueName = "Q1";
+            vm.Result = "Success";
+            vm.ReQueue = true;
+            vm.Prefetch = 2;
+            vm.IsRabbitMQSourceFocused = false;
+            vm.IsQueueNameFocused = false;
+            vm.IsPrefetchFocused = false;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(vm);
+            Assert.AreEqual("Q1", vm.QueueName);
+            Assert.IsTrue(vm.ReQueue);
+            Assert.IsFalse(vm.IsRabbitMQSourceSelected);
+            Assert.AreEqual((ushort)2, vm.Prefetch);
+        }
+        [TestMethod]
+        [Owner("Sanele")]
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]        
+        public void RabbitMQConsumeDesignerViewModel_Create_NewRabbitMQSource()
+        {
+            var model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+
+            //------------Execute Test---------------------------
+            var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
+            var privateObject = new PrivateObject(vm);
+            privateObject.Invoke("NewRabbitMQSource");
+            var property = privateObject.Invoke("_model.CreateNewSource");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(vm);
+            Assert.IsNotNull(property);
         }
 
         [TestMethod]
