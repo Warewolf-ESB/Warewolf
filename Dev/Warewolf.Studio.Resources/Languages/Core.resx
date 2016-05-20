@@ -1359,30 +1359,6 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="CalculateHelpFx" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To perform a calculation, put the calculation in here in BODMAS format.
-There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.
-
-Allowed:
-Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="CalculateHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the formatted number.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.
-
-Allowed:
-[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
   <data name="CaseConversionHelpConvertToCaseType" xml:space="preserve">
     <value>Select the type of conversion you would like to make.
 
@@ -3683,11 +3659,6 @@ Returns the count of the number of replacements.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="CalculateToolTipFx" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To perform a calculation, put the calculation in here in BODMAS format.
-There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
-  </data>
   <data name="DropBoxToolTipLocalSource" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 The file must be available on the local file system.</value>
@@ -3757,12 +3728,6 @@ The file must be available on the local file system.</value>
     <value>When selected, will recursively look up everything from the given path onwards - to a maximum of 2000 items. 
     
     NOTE: Dropbox has a max return count of 2000.</value>
-  </data>
-  <data name="CalculateToolTipResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the formatted number.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="FormatNumberToolTipNumber" xml:space="preserve">
     <value>Any variable and/or data goes in here.
@@ -4504,5 +4469,36 @@ Data
   </data>
   <data name="WebRequestToolTipTimeOut" xml:space="preserve">
     <value>The length of time to wait for a web request to complete before failing</value>
+  </data>
+  <data name="CalculateHelpFx" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To perform a calculation, put the calculation in here in BODMAS format.
+Using (*) notation for recordsets, will perform the calculation and give a result, for each record.
+To use aggregate functions on the whole recordset e.g. to Sum all the [[Product(*).Price]] fields in a recordset, use the Calculate For Aggregates tool.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CalculateHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the calculation result.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CalculateToolTipFx" xml:space="preserve">
+    <value>Excel like calculation</value>
+  </data>
+  <data name="CalculateToolTipResult" xml:space="preserve">
+    <value>Returns the calculation result.</value>
   </data>
 </root>
