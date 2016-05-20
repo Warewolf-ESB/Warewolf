@@ -29,10 +29,8 @@ namespace Dev2.Activities
                 {
                     if (DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
                     {
-                        string cleanExpression;
-                        DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
-                        var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(cleanExpression));
-                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(cleanExpression, length);
+                        var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
+                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
                     }                    
                 }
                 if (isDataMerge)

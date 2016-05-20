@@ -683,7 +683,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table21.AddRow(new string[] {
                         "1",
-                        "[[my().disks]] = String"});
+                        "[[my(1).disks]] = String"});
 #line 199
  testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
@@ -712,7 +712,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table22.AddRow(new string[] {
                         "1",
-                        "[[my().disks]] =  String"});
+                        "[[my(1).disks]] =  String"});
 #line 209
  testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
