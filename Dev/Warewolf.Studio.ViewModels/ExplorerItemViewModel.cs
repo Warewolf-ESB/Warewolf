@@ -393,6 +393,7 @@ namespace Warewolf.Studio.ViewModels
                     CanRename = CanRename,
                     CanCreatePluginSource = CanCreatePluginSource,
                     CanCreateEmailSource = CanCreateEmailSource,
+                    CanCreateRabbitMQSource = CanCreateRabbitMQSource,
                     CanCreateExchangeSource = CanCreateExchangeSource,
                     CanCreateDropboxSource = CanCreateDropboxSource,
                     CanCreateSharePointSource = CanCreateSharePointSource,
@@ -568,6 +569,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbSource = serverPermission.Contribute;
             CanCreatePluginSource = serverPermission.Contribute;
             CanCreateEmailSource = serverPermission.Contribute;
+            CanCreateRabbitMQSource = serverPermission.Contribute;
             CanCreateExchangeSource = serverPermission.Contribute;
             CanCreateDropboxSource = serverPermission.Contribute;
             CanCreateSharePointSource = serverPermission.Contribute;
@@ -591,6 +593,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbSource = resourcePermission.Contribute;
             CanCreatePluginSource = resourcePermission.Contribute;
             CanCreateEmailSource = resourcePermission.Contribute;
+            CanCreateRabbitMQSource = resourcePermission.Contribute;
             CanCreateExchangeSource = resourcePermission.Contribute;
             CanCreateDropboxSource = resourcePermission.Contribute;
             CanCreateSharePointSource = resourcePermission.Contribute;
@@ -886,6 +889,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginSource { get; set; }
         public bool CanCreateEmailSource { get; set; }
+        public bool CanCreateRabbitMQSource { get; set; }        
         public bool CanCreateExchangeSource { get; set; }
         public bool CanCreateDropboxSource { get; set; }
         public bool CanCreateSharePointSource { get; set; }
@@ -1050,6 +1054,7 @@ namespace Warewolf.Studio.ViewModels
                         ShowContextMenu = true,
                         CanCreatePluginSource = false,
                         CanCreateEmailSource = false,
+                        CanCreateRabbitMQSource = false,
                         CanCreateExchangeSource = false,
                         CanCreateDropboxSource = false,
                         CanCreateSharePointSource = false,

@@ -239,6 +239,18 @@
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
+    <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQSteps.cs" />
+    <Compile Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConsumeRabbitMQ.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
+      <DependentUpon>PublishRabbitMQ.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -287,6 +299,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Resources\ODBC\ODBCConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ODBCConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\ODBC\ODBCServerConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleServerConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -523,6 +547,14 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ForEach.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\RabbitMQ\Consum\ConsumeRabbitMQ.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ConsumeRabbitMQ.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Recordset\Count\Count.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Count.feature.cs</LastGenOutput>
@@ -554,6 +586,14 @@
     <None Include="Toolbox\Resources\Database\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\ODBC\ODBCConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Oracle\OracleServerConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -757,6 +797,7 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

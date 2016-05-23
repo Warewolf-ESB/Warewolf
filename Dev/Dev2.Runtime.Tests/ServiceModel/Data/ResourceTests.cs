@@ -200,6 +200,25 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(resourceForTreeService);
             Assert.AreEqual("PluginService", resourceForTreeService.ResourceType);
         }
+
+        [TestMethod]
+        public void ConstructWhereValidXMLWithMultipleServiceDependencyExpectResourceWithServiceDependency_PublishRabbitMQ()
+        {
+            //------------Setup for test--------------------------
+            var validXML = GetValidXMLStringWithMultipleDependenciesWithServiceDependencies_PublishRabbitMQ();
+            var textReader = new StringReader(validXML);
+            XElement element = XElement.Load(textReader, LoadOptions.None);
+            //------------Execute Test---------------------------
+            var resource = new Resource(element);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(resource);
+            Assert.IsNotNull(resource.Dependencies);
+            Assert.AreEqual(3, resource.Dependencies.Count);
+            var resourceForTrees = resource.Dependencies.ToList();
+            var resourceForTreeService = resourceForTrees.Find(tree => tree.UniqueID == new Guid("48869a05-7121-4e45-970e-a40f6a2f8fd9"));
+            Assert.IsNotNull(resourceForTreeService);
+            Assert.AreEqual("RabbitMQSource", resourceForTreeService.ResourceType);
+        }
         
         [TestMethod]
         public void ConstructWhereValidXMLWithMultipleServiceDependencyExpectResourceWithServiceDependency_SqlServer()
@@ -870,6 +889,159 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 "</scg:Dictionary>" +
                 "</sap:WorkflowViewStateService.ViewState>" +
                 "</uaba:DsfDotNetDllActivity>" +
+                "</FlowStep>" +
+                    "</Flowchart.StartNode>" +
+                "<x:Reference>__ReferenceID0</x:Reference>" +
+                "</Flowchart>" +
+                "</Activity>" +
+                "</XamlDefinition>" +
+                "</Action>" +
+                "<Comment/>" +
+                "<Category>Bugs</Category>" +
+                "<Tags/>" +
+                "<IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>" +
+                "<DisplayName>Workflow</DisplayName>" +
+                "<DataList/>" +
+                "<AuthorRoles />" +
+                "<UnitTestTargetWorkflowService />" +
+                "<HelpLink />" +
+                "<BizRule />" +
+                "<WorkflowActivityDef />" +
+                "<Source />" +
+                "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">" +
+                "<SignedInfo>" +
+                "<CanonicalizationMethod Algorithm=\"http://www.w3.org/TR/2001/REC-xml-c14n-20010315\" />" +
+                "<SignatureMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\" />" +
+                "<Reference URI=\"\">" +
+                "<Transforms>" +
+                "<Transform Algorithm=\"http://www.w3.org/2000/09/xmldsig#enveloped-signature\" />" +
+                "</Transforms>" +
+                "<DigestMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#sha1\" />" +
+                "<DigestValue>2VkOcM2OPhMQW6V2F1NcFQywprc=</DigestValue>" +
+                "</Reference>" +
+                "</SignedInfo>" +
+                "<SignatureValue>Aw4KEyJkPEYNZq3kJ22My0kc8PWrbuV4l2d2OYebadrCOS3KcEar9kEJaNIqrbox9W8PYYKX77S56wbEX6UwXq8g9OaV9LTR99iQcuOGEIDzl59GKiGkIZ/9xZslDId6M1IYqXPtefEgMzAAx0GPTvpDQrQAEyizk7JDxrmRUXY=</SignatureValue>" +
+                "</Signature>" +
+                "</Service>";
+        }
+        
+        string GetValidXMLStringWithMultipleDependenciesWithServiceDependencies_PublishRabbitMQ()
+        {
+            return "<Service Name=\"Bug6619\" ID=\"1736ca6e-b870-467f-8d25-262972d8c3e8\" ServerID=\"51a58300-7e9d-4927-a57b-e5d700b11b55\">" +
+                "<Action Name=\"InvokeWorkflow\" Type=\"Workflow\">" +
+                "<XamlDefinition>" +
+                "<Activity mc:Ignorable=\"sads sap\" x:Class=\"Bug6619\" xmlns=\"http://schemas.microsoft.com/netfx/2009/xaml/activities\" xmlns:av=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" " +
+                "xmlns:ddd=\"clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"  " +
+                "xmlns:mva=\"clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities\" xmlns:s=\"clr-namespace:System;assembly=mscorlib\"" +
+                " xmlns:sads=\"http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger\" xmlns:sap=\"http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation\"  " +
+                "xmlns:scg=\"clr-namespace:System.Collections.Generic;assembly=mscorlib\" xmlns:uaba=\"clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities\"  " +
+                "xmlns:uf=\"clr-namespace:Unlimited.Framework;assembly=Dev2.Core\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">" +
+                "<x:Members>" +
+                "<x:Property Name=\"AmbientDataList\" Type=\"InOutArgument(scg:List(x:String))\" />" +
+                "<x:Property Name=\"ParentWorkflowInstanceId\" Type=\"InOutArgument(s:Guid)\" />" +
+                "<x:Property Name=\"ParentServiceName\" Type=\"InOutArgument(x:String)\" />" +
+                "</x:Members>" +
+                "<sap:VirtualizedContainerService.HintSize>654,676</sap:VirtualizedContainerService.HintSize>" +
+                "<mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>" +
+                "<Flowchart DisplayName=\"Bug6619\" sap:VirtualizedContainerService.HintSize=\"614,636\">" +
+                "<Flowchart.Variables>" +
+                "<Variable x:TypeArguments=\"scg:List(x:String)\" Name=\"InstructionList\" />" +
+                "<Variable x:TypeArguments=\"x:String\" Name=\"LastResult\" />" +
+                "<Variable x:TypeArguments=\"x:Boolean\" Name=\"HasError\" />" +
+                "<Variable x:TypeArguments=\"x:String\" Name=\"ExplicitDataList\" />" +
+                "<Variable x:TypeArguments=\"x:Boolean\" Name=\"IsValid\" />" +
+                "<Variable x:TypeArguments=\"uf:UnlimitedObject\" Name=\"d\" />" +
+                "<Variable x:TypeArguments=\"uaba:Util\" Name=\"t\" />" +
+                "<Variable x:TypeArguments=\"ddd:Dev2DataListDecisionHandler\" Name=\"Dev2DecisionHandler\" />" +
+                "</Flowchart.Variables>" +
+                "<sap:WorkflowViewStateService.ViewState>" +
+                "<scg:Dictionary x:TypeArguments=\"x:String, x:Object\">" +
+                "<x:Boolean x:Key=\"IsExpanded\">False</x:Boolean>" +
+                "<av:Point x:Key=\"ShapeLocation\">270,2.5</av:Point>" +
+                "<av:Size x:Key=\"ShapeSize\">60,75</av:Size>" +
+                "<av:PointCollection x:Key=\"ConnectorLocation\">300,77.5 300,174</av:PointCollection>" +
+                "</scg:Dictionary>" +
+                "</sap:WorkflowViewStateService.ViewState>" +
+                "<Flowchart.StartNode>" +
+                "<FlowStep x:Name=\"__ReferenceID0\">" +
+                "<sap:WorkflowViewStateService.ViewState>" +
+                "<scg:Dictionary x:TypeArguments=\"x:String, x:Object\">" +
+                "<av:Point x:Key=\"ShapeLocation\">175,174</av:Point>" +
+                "<av:Size x:Key=\"ShapeSize\">250,87</av:Size>" +
+                "</scg:Dictionary>" +
+                "</sap:WorkflowViewStateService.ViewState>" +
+                "<uaba:DsfActivity ActionName=\"{x:Null}\" ActivityStateData=\"{x:Null}\" AuthorRoles=\"{x:Null}\" Category=\"{x:Null}\" Compiler=\"{x:Null}\" CurrentResult=\"{x:Null}\" DataObject=\"{x:Null}\" " +
+                "DataTags=\"{x:Null}\" ExplicitDataList=\"{x:Null}\" InputTransformation=\"{x:Null}\" OnResumeKeepList=\"{x:Null}\" ParentServiceID=\"{x:Null}\" ParentServiceName=\"{x:Null}\" " +
+                "ParentWorkflowInstanceId=\"{x:Null}\" ResultTransformation=\"{x:Null}\" ResultValidationExpression=\"{x:Null}\" ResultValidationRequiredTags=\"{x:Null}\" ScenarioID=\"{x:Null}\" ScopingObject=\"{x:Null}\" " +
+                "SimulationOutput=\"{x:Null}\" Tags=\"{x:Null}\" Add=\"False\" DatabindRecursive=\"False\" DeferExecution=\"False\" DisplayName=\"Bug6619Dep\" FriendlySourceName=\"localhost\" " +
+                "HasError=\"[HasError]\" sap:VirtualizedContainerService.HintSize=\"250,87\" IconPath=\"pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png\" " +
+                "InputMapping=\"\" InstructionList=\"[InstructionList]\" IsSimulationEnabled=\"False\" IsUIStep=\"False\" IsValid=\"[IsValid]\" IsWorkflow=\"True\" OnResumeClearAmbientDataList=\"False\" " +
+                "OnResumeClearTags=\"FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage\" OutputMapping=\"\" RemoveInputFromOutput=\"False\" ServiceName=\"Bug6619Dep\" " +
+                "SimulationMode=\"OnDemand\" ToolboxFriendlyName=\"Bug6619Dep\" Type=\"Workflow\" UniqueID=\"7bce06ec-778d-4a64-9dfe-1a826785f0b0\">" +
+                "<uaba:DsfActivity.AmbientDataList>" +
+                "<InOutArgument x:TypeArguments=\"scg:List(x:String)\" />" +
+                "</uaba:DsfActivity.AmbientDataList>" +
+                "<uaba:DsfActivity.HelpLink>" +
+                "<InArgument x:TypeArguments=\"x:String\">" +
+                "<Literal x:TypeArguments=\"x:String\" Value=\"\" />" +
+                "</InArgument>" +
+                "</uaba:DsfActivity.HelpLink>" +
+                "<uaba:DsfActivity.ParentInstanceID>" +
+                "<InOutArgument x:TypeArguments=\"x:String\" />" +
+                "</uaba:DsfActivity.ParentInstanceID>" +
+                "<sap:WorkflowViewStateService.ViewState>" +
+                "<scg:Dictionary x:TypeArguments=\"x:String, x:Object\">" +
+                "<x:Boolean x:Key=\"IsExpanded\">True</x:Boolean>" +
+                "</scg:Dictionary>" +
+                "</sap:WorkflowViewStateService.ViewState>" +
+                "</uaba:DsfActivity>" +
+                 "<uaba:DsfActivity ActionName=\"{x:Null}\" ActivityStateData=\"{x:Null}\" AuthorRoles=\"{x:Null}\" Category=\"{x:Null}\" Compiler=\"{x:Null}\" CurrentResult=\"{x:Null}\" DataObject=\"{x:Null}\" " +
+                "DataTags=\"{x:Null}\" ExplicitDataList=\"{x:Null}\" InputTransformation=\"{x:Null}\" OnResumeKeepList=\"{x:Null}\" ParentServiceID=\"{x:Null}\" ParentServiceName=\"{x:Null}\" " +
+                "ParentWorkflowInstanceId=\"{x:Null}\" ResultTransformation=\"{x:Null}\" ResultValidationExpression=\"{x:Null}\" ResultValidationRequiredTags=\"{x:Null}\" ScenarioID=\"{x:Null}\" ScopingObject=\"{x:Null}\" " +
+                "SimulationOutput=\"{x:Null}\" Tags=\"{x:Null}\" Add=\"False\" DatabindRecursive=\"False\" DeferExecution=\"False\" DisplayName=\"Bug6619Dep\" FriendlySourceName=\"localhost\" " +
+                "HasError=\"[HasError]\" sap:VirtualizedContainerService.HintSize=\"250,87\" IconPath=\"pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png\" " +
+                "InputMapping=\"\" InstructionList=\"[InstructionList]\" IsSimulationEnabled=\"False\" IsUIStep=\"False\" IsValid=\"[IsValid]\" IsWorkflow=\"True\" OnResumeClearAmbientDataList=\"False\" " +
+                "OnResumeClearTags=\"FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage\" OutputMapping=\"\" RemoveInputFromOutput=\"False\" ServiceName=\"Bug6619Dep\" " +
+                "SimulationMode=\"OnDemand\" ToolboxFriendlyName=\"Bug6619Dep2\" Type=\"Workflow\" UniqueID=\"7bce06dc-778d-4b64-9dfe-1a826585f0b0\">" +
+                "<uaba:DsfActivity.AmbientDataList>" +
+                "<InOutArgument x:TypeArguments=\"scg:List(x:String)\" />" +
+                "</uaba:DsfActivity.AmbientDataList>" +
+                "<uaba:DsfActivity.HelpLink>" +
+                "<InArgument x:TypeArguments=\"x:String\">" +
+                "<Literal x:TypeArguments=\"x:String\" Value=\"\" />" +
+                "</InArgument>" +
+                "</uaba:DsfActivity.HelpLink>" +
+                "<uaba:DsfActivity.ParentInstanceID>" +
+                "<InOutArgument x:TypeArguments=\"x:String\" />" +
+                "</uaba:DsfActivity.ParentInstanceID>" +
+                "<sap:WorkflowViewStateService.ViewState>" +
+                "<scg:Dictionary x:TypeArguments=\"x:String, x:Object\">" +
+                "<x:Boolean x:Key=\"IsExpanded\">True</x:Boolean>" +
+                "</scg:Dictionary>" +
+                "</sap:WorkflowViewStateService.ViewState>" +
+                "</uaba:DsfActivity>" +
+               "<uaba:DsfPublishRabbitMQActivity ActivityStateData=\"{x:Null}\" AuthorRoles=\"{x:Null}\" Category=\"{x:Null}\" Compiler=\"{x:Null}\" CurrentResult=\"{x:Null}\" DataObject=\"{x:Null}\" DataTags=\"{x:Null}\" " +
+                "ExplicitDataList=\"{x:Null}\" HelpLink=\"{x:Null}\" IconPath=\"{x:Null}\" InputTransformation=\"{x:Null}\" OnResumeKeepList=\"{x:Null}\" ParentServiceID=\"{x:Null}\" ParentServiceName=\"{x:Null}\" " +
+                "ParentWorkflowInstanceId=\"{x:Null}\" ResultTransformation=\"{x:Null}\" ResultValidationExpression=\"{x:Null}\" ResultValidationRequiredTags=\"{x:Null}\" ScenarioID=\"{x:Null}\" " +
+                "ScopingObject=\"{x:Null}\" SimulationOutput=\"{x:Null}\" Tags=\"{x:Null}\" ActionName=\"Connect\" Add=\"False\" DatabindRecursive=\"False\" DeferExecution=\"False\" " +
+                "DisplayName=\"DEV2Plugin_SQLServer_Connect\" FriendlySourceName=\"DEV2Plugin_SQLServer\" HasError=\"[HasError]\" sap:VirtualizedContainerService.HintSize=\"250,104\" " +
+                "InputMapping=\"&lt;Inputs&gt;&lt;Input Name=&quot;XML&quot; Source=&quot;XML&quot;&gt;&lt;Validator Type=&quot;Required&quot; /&gt;&lt;/Input&gt;&lt;/Inputs&gt;\" " +
+                "InstructionList=\"[InstructionList]\" IsSimulationEnabled=\"False\" IsUIStep=\"False\" IsValid=\"[IsValid]\" IsWorkflow=\"False\" OnResumeClearAmbientDataList=\"False\" " +
+                "OnResumeClearTags=\"FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage\" OutputMapping=\"&lt;Outputs&gt;&lt;Output Name=&quot;Error&quot; MapsTo=&quot;Error&quot; Value=&quot;[[Error]]&quot; /&gt;&lt;Output Name=&quot;Connect&quot; MapsTo=&quot;Connect&quot; Value=&quot;[[Connect]]&quot; /&gt;&lt;/Outputs&gt;\" " +
+                "RemoveInputFromOutput=\"False\" ServiceName=\"DEV2Plugin_SQLServer_Connect\" SimulationMode=\"OnDemand\" ToolboxFriendlyName=\"DEV2Plugin_SQLServer_Connect\" Type=\"Plugin\" " +
+                "RabbitMQSourceResourceId=\"48869a05-7121-4e45-970e-a40f6a2f8fe9\" UniqueID=\"48869a05-7121-4e45-970e-a40f6a2f8fd9\">" +
+                "<uaba:DsfActivity.AmbientDataList>" +
+                "<InOutArgument x:TypeArguments=\"scg:List(x:String)\" />" +
+                "</uaba:DsfActivity.AmbientDataList>" +
+                "<uaba:DsfActivity.ParentInstanceID>" +
+                "<InOutArgument x:TypeArguments=\"x:String\" />" +
+                "</uaba:DsfActivity.ParentInstanceID>" +
+                "<sap:WorkflowViewStateService.ViewState>" +
+                "<scg:Dictionary x:TypeArguments=\"x:String, x:Object\">" +
+                "<x:Boolean x:Key=\"IsExpanded\">True</x:Boolean>" +
+                "</scg:Dictionary>" +
+                "</sap:WorkflowViewStateService.ViewState>" +
+                "</uaba:DsfPublishRabbitMQActivity>" +
                 "</FlowStep>" +
                     "</Flowchart.StartNode>" +
                 "<x:Reference>__ReferenceID0</x:Reference>" +

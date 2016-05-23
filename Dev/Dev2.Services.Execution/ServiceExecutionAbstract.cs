@@ -27,6 +27,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Framework.Converters.Graph;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Services.Execution
 {
@@ -498,7 +499,45 @@ namespace Dev2.Services.Execution
                 }
             }
         }
+        internal string ODBCParameterIterators(int update, string command)
+        {
+            var itrs = new List<IWarewolfIterator>(5);
+            IWarewolfListIterator itrCollection = new WarewolfListIterator();
 
+            if (string.IsNullOrEmpty(InstanceInputDefinitions))
+            {
+                List<string> okay = new List<string>();
+                int startindex = 0;
+                while (command.IndexOf("[[", startindex, StringComparison.Ordinal) != -1)
+                {
+                    int first = command.IndexOf("[[", startindex, StringComparison.Ordinal);
+                    int second = command.IndexOf("]]", first, StringComparison.Ordinal);
+                    if (second != -1)
+                    {
+                        string val = command.Substring(first, (second - first) + 2);
+                        okay.Add(val);
+
+                        var toInject = val;
+                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
+
+                        itrCollection.AddVariableToIterateOn(paramIterator);
+                        itrs.Add(paramIterator);
+                        startindex = second;
+                    }
+                    else
+                    {
+                        startindex = command.Length - 1;
+                    }
+                }
+                for (int i = 0; i < itrs.Count; i++)
+                {
+                    var vari = itrCollection.FetchNextValue(itrs[i]);
+                    command = command.Replace(okay[i], vari);
+                }
+            }
+            
+            return command;
+        }
         string UnescapeRawXml(string innerXml)
         {
             if(innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))

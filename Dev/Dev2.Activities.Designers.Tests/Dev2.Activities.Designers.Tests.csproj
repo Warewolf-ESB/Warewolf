@@ -139,7 +139,11 @@
     <Compile Include="DropBox2016\TestResourceCatalog.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
+    <Compile Include="RabbitMQ\Consume\RabbitMQConsumeDesignerViewModelTest.cs" />
+    <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
+    <Compile Include="ODBC\TestODBCServerViewModel.cs" />
+    <Compile Include="OracleServer\TestOracleServerViewModel.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
     <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />

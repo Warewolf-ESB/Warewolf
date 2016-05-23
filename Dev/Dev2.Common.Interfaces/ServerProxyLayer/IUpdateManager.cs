@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.WebServices;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Common.Interfaces.WebServices;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -27,14 +27,12 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <param name="workspaceId">the workspace to save to</param>
         void SaveResource(StringBuilder resource, Guid workspaceId);
 
-
         /// <summary>
         /// Save a resource to the server
         /// </summary>
         /// <param name="resource">resource to save</param>
         /// <param name="workspaceId">the workspace to save to</param>
         void SaveResource(IResource resource, Guid workspaceId);
-
 
         /// <summary>
         /// Save a resource to the server
@@ -87,6 +85,13 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         string TestExchangeServiceSource(IExchangeSource emailServiceSource);
 
         void SaveEmailServiceSource(IEmailServiceSource emailServiceSource, Guid serverWorkspaceID);
+
         void SaveExchangeSource(IExchangeSource exchangeSource, Guid serverWorkspaceID);
+        // ReSharper disable InconsistentNaming
+        void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMQServiceSource, Guid serverWorkspaceID);
+
+        string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMQServiceSource);
+
+        // ReSharper enable InconsistentNaming
     }
 }
