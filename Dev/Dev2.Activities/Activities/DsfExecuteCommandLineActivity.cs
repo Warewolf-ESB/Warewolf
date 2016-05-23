@@ -203,6 +203,9 @@ namespace Dev2.Activities
                 if(!string.IsNullOrEmpty(_fullPath))
                 {
                     File.Delete(_fullPath);
+                    string tmpFile = _fullPath.Replace(".bat", "");
+                    if(File.Exists(tmpFile))
+                        File.Delete(tmpFile);
                 }
             }
         }
