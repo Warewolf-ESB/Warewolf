@@ -3826,30 +3826,32 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a variable equal to a complex expression with scalar and recordset with st" +
-            "ar with calculate")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign all recordset values to all recordset complex new recordset does not exist" +
+            "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        public virtual void AssignAVariableEqualToAComplexExpressionWithScalarAndRecordsetWithStarWithCalculate()
+        public virtual void AssignAllRecordsetValuesToAllRecordsetComplexNewRecordsetDoesNotExist()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a variable equal to a complex expression with scalar and recordset with st" +
-                    "ar with calculate", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign all recordset values to all recordset complex new recordset does not exist" +
+                    "", ((string[])(null)));
 #line 849
 this.ScenarioSetup(scenarioInfo);
 #line 850
- testRunner.Given("I assign the value 1 to a variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 851
- testRunner.And("I assign the value 2 to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 852
- testRunner.And("I assign the value [[a]] to a variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 853
- testRunner.And("I assign the value [[b]] to a variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value \"Bye[[rec(*).set]]\" to a variable \"[[rs().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 854
- testRunner.And("I assign the value \"=[[rec(*).a]]+10\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 855
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 855
+ testRunner.Then("the value of \"[[rs(1).val]]\" equals \"Bye10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 856
- testRunner.Then("the value of \"[[Result]]\" equals \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("the value of \"[[rs(2).val]]\" equals \"Bye20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 857
+ testRunner.And("the value of \"[[rs(3).val]]\" equals \"Bye30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 858
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3858,29 +3860,29 @@ this.ScenarioSetup(scenarioInfo);
                         "New Value"});
             table71.AddRow(new string[] {
                         "1",
-                        "[[a]]          =",
-                        "1"});
+                        "[[rec(1).set]] =",
+                        "10"});
             table71.AddRow(new string[] {
                         "2",
-                        "[[b]]          =",
-                        "2"});
+                        "[[rec(2).set]] =",
+                        "20"});
             table71.AddRow(new string[] {
                         "3",
-                        "[[rec().a]]   =",
-                        "[[a]] = 1"});
+                        "[[rec(3).set]] =",
+                        "30"});
             table71.AddRow(new string[] {
                         "4",
-                        "[[rec().a]]   =",
-                        "[[b]] = 2"});
-            table71.AddRow(new string[] {
-                        "5",
-                        "[[Result]] =",
-                        "[[rec(1).a]]+10 = 1+10"});
+                        "[[rs().val]] =",
+                        "Bye[[rec(1).set]] = Bye10"});
             table71.AddRow(new string[] {
                         "",
                         "",
-                        "[[rec(2).a]]+10 = 2+10"});
-#line 858
+                        "Bye[[rec(2).set]] = Bye20"});
+            table71.AddRow(new string[] {
+                        "",
+                        "",
+                        "Bye[[rec(3).set]] = Bye30"});
+#line 859
  testRunner.And("the debug inputs as", ((string)(null)), table71, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3888,21 +3890,100 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table72.AddRow(new string[] {
                         "1",
-                        "[[a]] = 1"});
+                        "[[rec(1).set]] = 10"});
             table72.AddRow(new string[] {
                         "2",
-                        "[[b]] = 2"});
+                        "[[rec(2).set]] = 20"});
             table72.AddRow(new string[] {
                         "3",
-                        "[[rec(1).a]] = 1"});
+                        "[[rec(3).set]] = 30"});
             table72.AddRow(new string[] {
                         "4",
+                        "[[rs(3).val]] = Bye30"});
+#line 867
+ testRunner.And("the debug output as", ((string)(null)), table72, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a variable equal to a complex expression with scalar and recordset with st" +
+            "ar with calculate")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        public virtual void AssignAVariableEqualToAComplexExpressionWithScalarAndRecordsetWithStarWithCalculate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a variable equal to a complex expression with scalar and recordset with st" +
+                    "ar with calculate", ((string[])(null)));
+#line 874
+this.ScenarioSetup(scenarioInfo);
+#line 875
+ testRunner.Given("I assign the value 1 to a variable \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 876
+ testRunner.And("I assign the value 2 to a variable \"[[b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 877
+ testRunner.And("I assign the value [[a]] to a variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 878
+ testRunner.And("I assign the value [[b]] to a variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 879
+ testRunner.And("I assign the value \"=[[rec(*).a]]+10\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 880
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 881
+ testRunner.Then("the value of \"[[Result]]\" equals \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 882
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table73.AddRow(new string[] {
+                        "1",
+                        "[[a]]          =",
+                        "1"});
+            table73.AddRow(new string[] {
+                        "2",
+                        "[[b]]          =",
+                        "2"});
+            table73.AddRow(new string[] {
+                        "3",
+                        "[[rec().a]]   =",
+                        "[[a]] = 1"});
+            table73.AddRow(new string[] {
+                        "4",
+                        "[[rec().a]]   =",
+                        "[[b]] = 2"});
+            table73.AddRow(new string[] {
+                        "5",
+                        "[[Result]] =",
+                        "[[rec(1).a]]+10 = 1+10"});
+            table73.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[rec(2).a]]+10 = 2+10"});
+#line 883
+ testRunner.And("the debug inputs as", ((string)(null)), table73, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table74.AddRow(new string[] {
+                        "1",
+                        "[[a]] = 1"});
+            table74.AddRow(new string[] {
+                        "2",
+                        "[[b]] = 2"});
+            table74.AddRow(new string[] {
+                        "3",
+                        "[[rec(1).a]] = 1"});
+            table74.AddRow(new string[] {
+                        "4",
                         "[[rec(2).a]] = 2"});
-            table72.AddRow(new string[] {
+            table74.AddRow(new string[] {
                         "5",
                         "[[Result]] = 12"});
-#line 866
- testRunner.And("the debug output as", ((string)(null)), table72, "And ");
+#line 891
+ testRunner.And("the debug output as", ((string)(null)), table74, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3913,90 +3994,90 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAllRecordsetValuesToAllRecordsetComplexWithCalculation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign all recordset values to all recordset complex with calculation", ((string[])(null)));
-#line 875
+#line 900
 this.ScenarioSetup(scenarioInfo);
-#line 876
+#line 901
  testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 877
+#line 902
  testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 878
+#line 903
  testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 879
+#line 904
  testRunner.And("I assign the value Hello to a variable \"[[rs().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 880
+#line 905
  testRunner.And("I assign the value \"=[[rec(*).set]]*10\" to a variable \"[[rs(*).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 881
+#line 906
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 882
+#line 907
  testRunner.Then("the value of \"[[rs(1).val]]\" equals \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 883
+#line 908
  testRunner.And("the value of \"[[rs(2).val]]\" equals \"200\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 884
+#line 909
  testRunner.And("the value of \"[[rs(3).val]]\" equals \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 885
+#line 910
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table73.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "1",
                         "[[rec(1).set]] =",
                         "10"});
-            table73.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "2",
                         "[[rec(2).set]] =",
                         "20"});
-            table73.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "3",
                         "[[rec(3).set]] =",
                         "30"});
-            table73.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "4",
                         "[[rs().val]] =",
                         "Hello"});
-            table73.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "5",
                         "[[rs(1).val]] = Hello",
                         "[[rec(1).set]]*10 = 10*10"});
-            table73.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(2).set]]*10 = 20*10"});
-            table73.AddRow(new string[] {
+            table75.AddRow(new string[] {
                         "",
                         "",
                         "[[rec(3).set]]*10 = 30*10"});
-#line 886
- testRunner.And("the debug inputs as", ((string)(null)), table73, "And ");
+#line 911
+ testRunner.And("the debug inputs as", ((string)(null)), table75, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table74.AddRow(new string[] {
+            table76.AddRow(new string[] {
                         "1",
                         "[[rec(1).set]] = 10"});
-            table74.AddRow(new string[] {
+            table76.AddRow(new string[] {
                         "2",
                         "[[rec(2).set]] = 20"});
-            table74.AddRow(new string[] {
+            table76.AddRow(new string[] {
                         "3",
                         "[[rec(3).set]] = 30"});
-            table74.AddRow(new string[] {
+            table76.AddRow(new string[] {
                         "4",
                         "[[rs(1).val]] = Hello"});
-            table74.AddRow(new string[] {
+            table76.AddRow(new string[] {
                         "5",
                         "[[rs(1).val]] = 100"});
-            table74.AddRow(new string[] {
+            table76.AddRow(new string[] {
                         "",
                         "[[rs(2).val]] = 200"});
-            table74.AddRow(new string[] {
+            table76.AddRow(new string[] {
                         "",
                         "[[rs(3).val]] = 300"});
-#line 895
- testRunner.And("the debug output as", ((string)(null)), table74, "And ");
+#line 920
+ testRunner.And("the debug output as", ((string)(null)), table76, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

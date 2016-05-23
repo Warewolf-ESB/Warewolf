@@ -127,7 +127,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceData.Outputs = outputData;
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(inputData, model.Inputs);
@@ -144,7 +144,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "DbService");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
@@ -161,7 +161,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "DbSource");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png");
@@ -178,7 +178,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "EmailSource");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png");
@@ -195,7 +195,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "PluginSource");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
@@ -212,7 +212,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "WebService");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
@@ -228,7 +228,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "WebSource");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/WebService-32.png");
@@ -244,7 +244,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "WorkflowService");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png");
@@ -260,7 +260,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("TestWF", "Server");
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png");
@@ -276,7 +276,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildSerializableResourceFromName("Unsaved 1", "WorkflowService", true);
 
             //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(Dev2.Studio.Core.AppResources.Enums.ResourceType.Service, resourceData, Guid.Empty);
+            var model = resourceRepository.HydrateResourceModel(resourceData, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsTrue(NewWorkflowNames.Instance.Contains("Unsaved 1"));

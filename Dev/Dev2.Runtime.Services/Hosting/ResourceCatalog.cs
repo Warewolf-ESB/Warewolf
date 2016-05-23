@@ -1196,7 +1196,12 @@ namespace Dev2.Runtime.Hosting
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
         {
             var resourceContents = ResourceContents<T>(workspaceID, serviceID);
-            if(resourceContents == null || resourceContents.Length == 0) return null;
+            if(resourceContents == null || resourceContents.Length == 0)
+            {
+                var resource = GetResource(workspaceID, serviceID);
+                var content = GetResourceContents(resource);
+                return GetResource<T>(content);
+            }
             return GetResource<T>(resourceContents);
         }
 

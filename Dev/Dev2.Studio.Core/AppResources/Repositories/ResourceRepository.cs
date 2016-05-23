@@ -131,7 +131,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(con, workspaceIdToUse);
             foreach (var serializableResource in toReloadResources)
             {
-                var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true);
+                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if (resourceToUpdate != null)
@@ -161,7 +161,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
             foreach (var serializableResource in toReloadResources)
             {
-                var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true);
+                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if (resourceToUpdate != null)
@@ -265,7 +265,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             foreach (var serializableResource in toReloadResources)
             {
-                IResourceModel resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
+                IResourceModel resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
                 if (resourceToUpdate != null)
@@ -302,7 +302,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             foreach (var serializableResource in toReloadResources)
             {
-                IResourceModel resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
+                IResourceModel resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, fetchXaml);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => equalityComparer.Equals(r, resource));
 
                 if (resourceToUpdate != null)
@@ -363,7 +363,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = comsController.ExecuteCompressedCommand<List<SerializableResource>>(con, workspaceIdToUse);
             foreach (var serializableResource in toReloadResources)
             {
-                var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true);
+                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if (resourceToUpdate != null)
@@ -432,7 +432,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 var serializableResource = toReloadResources[0];
                 var resourceType = GetResourceType(serializableResource);
-                var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true, true, true);
+                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, true, true);
                 var contextualResourceModel = new ResourceModel(_environmentModel);
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
@@ -451,7 +451,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 var serializableResource = toReloadResources[0];
                 var resourceType = GetResourceType(serializableResource);
-                var resource = HydrateResourceModel(resourceType, serializableResource, _environmentModel.Connection.ServerID, true, true, true);
+                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true, true, true);
                 var contextualResourceModel = new ResourceModel(_environmentModel);
                 contextualResourceModel.Update(resource);
                 return contextualResourceModel;
@@ -886,9 +886,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         continue;
                     }
 
-                    var enumsResourceType = resourceType == "TypeWildcard" ? Enums.ResourceType.Unknown : (Enums.ResourceType)Enum.Parse(typeof(Enums.ResourceType), resourceType);
-
-                    IResourceModel resource = HydrateResourceModel(enumsResourceType, item, serverId);
+                    IResourceModel resource = HydrateResourceModel(item, serverId);
                     if (resource != null)
                     {
                         ResourceModels.Add(resource);
@@ -909,7 +907,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // Make public for testing, should be extracted to a util class for testing....
-        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverId, bool forced = false, bool fetchXaml = false, bool prepairForDeployment = false)
+        public IResourceModel HydrateResourceModel(SerializableResource data, Guid serverId, bool forced = false, bool fetchXaml = false, bool prepairForDeployment = false)
         {
             Guid id = data.ResourceID;
 
@@ -1021,7 +1019,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = await comsController.ExecuteCompressedCommandAsync<List<SerializableResource>>(con, workspaceIdToUse);
             foreach (var serializableResource in toReloadResources)
             {
-                var resource = HydrateResourceModel(ResourceType.Unknown, serializableResource, _environmentModel.Connection.ServerID, true);
+                var resource = HydrateResourceModel(serializableResource, _environmentModel.Connection.ServerID, true);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if (resourceToUpdate != null)
@@ -1347,7 +1345,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             if (models != null)
             {
-                result.AddRange(models.Select(model => HydrateResourceModel(resourceType, model, serverId)));
+                result.AddRange(models.Select(model => HydrateResourceModel(model, serverId)));
             }
 
             return result;
