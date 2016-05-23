@@ -16,7 +16,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -72,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             Dev2Logger.Info("Get Directories Relative to Server. "+directory);
             result.Append("<JSON>");
-            var explorerItem = ServerExplorerRepo.Load(ResourceType.Folder, string.Empty);
+            var explorerItem = ServerExplorerRepo.Load("Folder", string.Empty);
             var jsonTreeNode = new JsonTreeNode(explorerItem);
             var serializer = new Dev2JsonSerializer();
             var directoryInfoAsJson = serializer.Serialize(jsonTreeNode);
@@ -123,7 +122,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public JsonTreeNode(IExplorerItem explorerItem)
         {
-            if(explorerItem.ResourceType == ResourceType.Server)
+            if(explorerItem.ResourceType == "Server")
             {
                 title = "Root";
                 key = "root";

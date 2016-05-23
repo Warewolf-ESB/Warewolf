@@ -56,7 +56,8 @@ namespace Dev2.TO
         {
             UpdateDisplayAction = updateDisplayAction??(a=>{});
             Inserted = inserted;
-
+            From = "";
+            To = "";
             MatchValue = matchValue;
             SearchCriteria = searchCriteria;
             SearchType = searchType;

@@ -5,7 +5,6 @@
 # Incorrect Xml syntax entered
 # Incorrect Json syntax entered
 
-@ignore
 Scenario: Open Debug window to add inputs
 	Given I a new workflow
 	And I have variable "[[a]]" set as "Input"
@@ -24,21 +23,21 @@ Scenario: Open Debug window to add inputs
 	
 Scenario Outline: Working with tabs in Debug window
 	Given I have a new workflow
-	And I have variable '<variable1>' set as '<type>'
-	And I have variable '<variable2>' set as '<type2>'
-	And variable '<variable2>' equals "Success <variable1>"
-	And I press '<Debug>'
+	And I have variable "<variable1>" set as "<type>"
+	And I have variable "<variable2>" set as "<type2>"
+	And variable "<variable2>" equals "Success <variable1>"
+	And I press "<Debug>"
 	Then the Input Data window is open
 	And "Input Data" tab is visible
 	And "Xml" tab header is visible
 	And "Json" tab header is visible
-	And I assign '<variable1>' the value '<value>'
-	When I switch to the '<Mode>' tab
-	And '<value>' is visible in the '<Mode>' tab
+	And I assign "<variable1>" the value "<value>"
+	When I switch to the "<Mode>" tab
+	And "<value>" is visible in the "<Mode>" tab
 	And remember debug input equals "Checked"
-	When I press '<launch>'
-	And the execution has '<error>' error
-	Then '<response>'
+	When I press "<launch>"
+	And the execution has "<error>" error
+	Then "<response>"
 	Examples: 
 	| variable1     | Value | type  | variable2 | type2  | Debug | Mode       | launch | Response                                     |
 	| [[a]]         | Test  | input | [[b]]     | output | F5    | Input Data | F6     | [[b]] = Test                                 |
@@ -54,14 +53,14 @@ Scenario Outline: Working with tabs in Debug window
 
 Scenario: Message when there are no inputs
 	Given I have a new workflow
-	And I press 'F5'
+	And I press "F5"
 	Then the Input Debug window is opened
 	And "Mark the Input checkbox in the variable window to set workflow inputs" message is visible
 
 Scenario: Incorrect Xml syntax entered
 	Given I a new workflow
 	And I have variable "[[variable1]]" set as Input
-	And I press 'F5'
+	And I press "F5"
 	When I switch to the "Xml" tab
 	And the xml "<DataList><a></a></DataList>" is visible
 	And I insert "<DataList><a>Test</a><DataList"
@@ -72,7 +71,7 @@ Scenario: Incorrect Xml syntax entered
 Scenario: Incorrect Json syntax entered
 	Given I a new workflow
 	And I have variable "[[variable1]]" set as Input
-	And I press 'F5'
+	And I press "F5"
 	When I switch to the "Xml" tab
 	And the json "{"variable": ""}" is visible
 	And I insert "{"variable": "test"variable2}"
@@ -84,7 +83,7 @@ Scenario: Incorrect Json syntax entered
 Scenario: Shortcut Keys now working after error
 	Given I a new workflow
 	And I have variable "[[variable1]]" set as Input
-	And I press 'F5'
+	And I press "F5"
 	When I switch to the "Xml" tab
 	And the json "{"variable": ""}" is visible
 	And I insert "{"variable": "test"variable2}"

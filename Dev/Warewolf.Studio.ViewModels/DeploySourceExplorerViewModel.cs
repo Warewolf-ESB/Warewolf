@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure;
 
@@ -152,7 +151,7 @@ namespace Warewolf.Studio.ViewModels
 
         void SelectAction(IExplorerItemViewModel ax)
         {
-            if (ax.ResourceType == ResourceType.Folder)
+            if (ax.ResourceType == "Folder")
             {
                 ax.Children.Apply(ay =>
                 {
@@ -161,7 +160,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (ax.Parent.ResourceType == ResourceType.Folder || ax.Parent.ResourceType == ResourceType.ServerSource)
+                if (ax.Parent.ResourceType == "Folder" || ax.Parent.ResourceType == "ServerSource")
                 {
                     ax.Parent.IsFolderChecked = ax.IsResourceChecked;
                 }

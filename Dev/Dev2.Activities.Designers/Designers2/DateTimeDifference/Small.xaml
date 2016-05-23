@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.DateTimeDifference"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
@@ -50,7 +50,7 @@
                                 MaxHeight="52"
                                 TextWrapping="Wrap"
                                 DefaultText="Date Time"
-                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDatetime1}"
+                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipDatetime1}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Input1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input1txt_AutoID}">
@@ -77,7 +77,7 @@
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Input2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDatetime2}"
+                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipDatetime2}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input2txt_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpDatetime2}" DataContext="{Binding}" />
@@ -102,7 +102,7 @@
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.InputFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipInputFormat}"
+                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipInputFormat}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InputFormattxt_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpInputFormat}" DataContext="{Binding}" />
@@ -127,7 +127,7 @@
                   SelectedValue="{Binding SelectedOutputType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding OutputTypes}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_OutputIncbx_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipOutputType}">
+                  ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipOutputType}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.DateTimeDifferenceHelpOutputType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -144,7 +144,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 FilterType="All"
                                 WrapInBrackets="True"
-                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipResult}"
+                                ToolTip="{x:Static languages:Core.DateTimeDifferenceToolTipResult}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">

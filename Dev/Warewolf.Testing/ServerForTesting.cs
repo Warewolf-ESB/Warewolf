@@ -142,7 +142,7 @@ namespace Warewolf.Testing
             foreach (var name in names)
             {
                 var mockIExplorerItem = new Mock<IExplorerItem>();
-                mockIExplorerItem.Setup(item => item.ResourceType).Returns(ResourceType.Folder);
+                mockIExplorerItem.Setup(item => item.ResourceType).Returns("Folder");
                 mockIExplorerItem.Setup(item => item.DisplayName).Returns(name);
                 mockIExplorerItem.Setup(item => item.Children).Returns(new List<IExplorerItem>());
                 mockIExplorerItem.Setup(item => item.ResourcePath).Returns(name);
@@ -158,21 +158,21 @@ namespace Warewolf.Testing
 
         private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
         {
-            
-            var resourceType = ResourceType.EmailSource;
+
+            var resourceType = "EmailSource";
             foreach (var name in childNames)
             {
                 if (i % 2 == 0)
                 {
-                    resourceType = ResourceType.WorkflowService;
+                    resourceType = "WorkflowService";
                 }
                 if (i % 3 == 0)
                 {
-                    resourceType = ResourceType.DbService;
+                    resourceType = "DbService";
                 }
                 if (i % 4 == 0)
                 {
-                    resourceType = ResourceType.WebSource;
+                    resourceType = "WebSource";
                 }
                 var mockIExplorerItem = new Mock<IExplorerItem>();
                 mockIExplorerItem.Setup(item => item.ResourceType).Returns(resourceType);

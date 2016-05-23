@@ -106,7 +106,7 @@ Scenario Outline: Save enables when I change server logs
 	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
-	When Server System Logs setup as '<Serverlogs>'
+	When Server System Logs setup as "<Serverlogs>"
 	And Save is "Enabled"
 Examples: 
      | No | Serverlogs |
@@ -123,7 +123,7 @@ Scenario Outline: Save enables when I change studio logs
 	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"
-	When Studio System Logs selected '<Studiologs>'
+	When Studio System Logs selected "<Studiologs>"
 	And Save is "Enabled"
 Examples: 
      | No | Studiologs |
@@ -162,8 +162,8 @@ Scenario: Server and studio defaults file size
 	And Logging is selected
 	Then Server System Logs is "Visible"
 	And Studio Logs is "Visible"	
-	And Server System Logs selected 'Warning'
-	And Studio System Logs selected 'Warning'
+	And Server System Logs selected "Warning"
+	And Studio System Logs selected "Warning"
 	And Max Log file Size for Server default is "200" MB
 	And Max Log file Size for Studio default is "200" MB
 
@@ -190,9 +190,9 @@ Scenario: Load remote Server log file
 	| ServerLog | ServerSize |
 	| None      | 1          |
 	Then Max Log file Size for Server is "1" MB
-	And Server System Logs selected 'None'
+	And Server System Logs selected "None"
 	And Studio System Logs is "Disabled"
 	And Max Log file Size for Studio is "Disabled"
 	And Studio Log File Link is "Disabled"
-	When Studio System Logs selected 'Info'
+	When Studio System Logs selected "Info"
 	Then "Save" is "Enabled"

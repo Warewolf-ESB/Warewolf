@@ -163,6 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
+                        var counter = 1;
                         while (iteratorCollection.HasMoreData())
                         {
                             // now process each field for entire evaluated Where expression....                    
@@ -177,15 +178,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                                 if (!string.IsNullOrEmpty(findValue))
                                 {
-                                    dataObject.Environment.ApplyUpdate(s, a => DataASTMutable.WarewolfAtom.NewDataString(replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount)), update);
+                                    if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
+                                    {
+                                        if (!dataObject.Environment.HasRecordSet(DataListUtil.ExtractRecordsetNameFromValue(Result)))
+                                        {
+                                            dataObject.Environment.AssignDataShape(Result);
+                                        }
+                                    }
+                                        dataObject.Environment.ApplyUpdate(s, a =>
+                                    {
+                                        replacementCount = 0;
+                                        var replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount);
+                                        if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
+                                        {
+                                            dataObject.Environment.Assign(Result, replacementCount.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
+                                        }   
+                                        replacementTotal += replacementCount;
+                                        counter++;
+                                        return DataASTMutable.WarewolfAtom.NewDataString(replace);
+                                    }, update);
                                 }
-
-                                replacementTotal += replacementCount;
+                                if (DataListUtil.IsValueScalar(Result))
+                                {
+                                    dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
+                                }
+                                
                                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                                 {
                                     if (!string.IsNullOrEmpty(Result))
                                     {
-                                        if (replacementCount > 0)
+                                        if (replacementTotal > 0)
                                         {
                                             AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment, update));
                                         }
@@ -194,10 +216,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
                     }
-                    if (!string.IsNullOrEmpty(Result))
-                    {
-                        dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture), update);
-                    }
+                    
                 }
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {

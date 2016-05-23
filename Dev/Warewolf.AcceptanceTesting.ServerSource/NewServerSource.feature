@@ -112,7 +112,6 @@ Scenario: Editing Saved Server Source Authentication
 
 
 @ServerSource
-#wolf-1201
 Scenario: Creating New Source as windows with external server address
 	Given I open New Server Source	
 	And I type Server as "test-warewolf.cloudapp.net"

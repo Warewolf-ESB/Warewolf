@@ -30,7 +30,7 @@ Scenario: Attempting to close unsaved workflow is throwing validation message
 	Given design surface "localhost\SavedWf" is opened with star
 	When I close design surface 
 	Then "Workflow not saved" pop up is thrown
-	And the validation message contains "The workflow '2' that you are closing is not saved. Would you like to save the workflow?"
+	And the validation message contains "The workflow "2" that you are closing is not saved. Would you like to save the workflow?"
 	And "close" button is visible in "Workflow not saved"
 	And "Yes" button is visible in "Workflow not saved"
 	And "No" button is visible in "Workflow not saved"

@@ -52,6 +52,10 @@
     <Reference Include="ChinhDo.Transactions">
       <HintPath>..\packages\TxFileManager.1.3\lib\net20\ChinhDo.Transactions.dll</HintPath>
     </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dropbox.Api.3.0.5\lib\net45\Dropbox.Api.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -175,6 +179,7 @@
     <Compile Include="ESB\Management\Services\FetchDbActions.cs" />
     <Compile Include="ESB\Management\Services\FetchDbSources.cs" />
     <Compile Include="ESB\Management\Services\FetchExchangeSources.cs" />
+    <Compile Include="ESB\Management\Services\FetchDropboxSource.cs" />
     <Compile Include="ESB\Management\Services\FetchPerfCounters.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginActions.cs" />
     <Compile Include="ESB\Management\Services\FetchPluginNamespaces.cs" />
@@ -205,6 +210,7 @@
     <Compile Include="ESB\Management\Services\SaveDbService.cs" />
     <Compile Include="ESB\Management\Services\SaveDbSourceSource.cs" />
     <Compile Include="ESB\Management\Services\SaveExchangeServiceSource.cs" />
+    <Compile Include="ESB\Management\Services\SaveOAuthSource.cs" />
     <Compile Include="ESB\Management\Services\SavePerformanceCounters.cs" />
     <Compile Include="ESB\Management\Services\SavePluginService.cs" />
     <Compile Include="ESB\Management\Services\SavePluginSource.cs" />
@@ -316,6 +322,7 @@
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ODBCDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\OracleDatabaseBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\Plugin\AssemblyLoader.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\IRuntime.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginInvokeArgs.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.cs" />
@@ -462,6 +469,7 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

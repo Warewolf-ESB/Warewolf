@@ -111,9 +111,11 @@
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>
+    <Compile Include="AggregateCalculate\AggregateCalculateDesignerViewModelTests.cs" />
+    <Compile Include="Calculate\CalculateDesignerViewModelTest.cs" />
     <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
     <Compile Include="CEventHelperTests.cs" />
-    <Compile Include="Core.cs" />
+    <Compile Include="Core\ActivityDesignerViewModelExentionTests.cs" />
     <Compile Include="Core\Database\DatabaseSourceRegionTest.cs" />
     <Compile Include="Core\Database\DatabaseActionRegionTest.cs" />
     <Compile Include="Core\Database\DatabaseInputRegionTest.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Core\DotNet\DotNetSourceRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
+    <Compile Include="Core\DropboxSourceManagerTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
@@ -130,7 +133,10 @@
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
-    <Compile Include="DropBox2016\Download\DropBoxUploadViewModelTest.cs" />
+    <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
+    <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
+    <Compile Include="DropBox2016\DropboxFiles\DropboxFileListViewModelTest.cs" />
+    <Compile Include="DropBox2016\TestResourceCatalog.cs" />
     <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
     <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
     <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
@@ -317,6 +323,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

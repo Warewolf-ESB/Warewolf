@@ -15,12 +15,14 @@ namespace Dev2.Activities
     {
         string _inputVariable;
         readonly string _label;
+        private readonly bool _isCalculate;
         readonly WarewolfDataEvaluationCommon.WarewolfEvalResult _evalResult;
 
-        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false)
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false)
         {
             _inputVariable = inputVariable.Trim();
             _label = label;
+            _isCalculate = isCalculate;
             try
             {
                 if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable))
@@ -77,6 +79,23 @@ namespace Dev2.Activities
                         _inputVariable = evalToExpression;
                     }
                     _evalResult = environment.Eval(_inputVariable, update,false);
+                    string cleanExpression;
+                    var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
+                    if (isCalcExpression && !isCalculate)
+                    {
+                        if (_evalResult.IsWarewolfAtomResult)
+                        {
+                            var atomResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+                            if (atomResult != null)
+                            {
+                                var res = atomResult.Item.ToString();
+                                string resValue;
+                                DataListUtil.IsCalcEvaluation(res, out resValue);
+                                _evalResult = WarewolfDataEvaluationCommon.WarewolfEvalResult.NewWarewolfAtomResult(DataASTMutable.WarewolfAtom.NewDataString(resValue));
+                            }
+                        }
+                        _inputVariable = cleanExpression;
+                    }
                 }
 
             }
@@ -122,7 +141,7 @@ namespace Dev2.Activities
                 var listResult = _evalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
                 if (listResult != null)
                 {
-                    return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=").GetDebugItemResult();
+                    return new DebugItemWarewolfAtomListResult(listResult, "", "", _inputVariable, LabelText, "", "=", _isCalculate).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfRecordSetResult)

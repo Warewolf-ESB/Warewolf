@@ -6,15 +6,15 @@
 #FilterTypes: All, RecordsetsOnly, RecordsetFields
 #Providers: Calculate, File, DateTime, Default
 Scenario Outline: Insert for All FilterType and Default Provider
-	Given I have the following variable list '<varlist>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
+	Given I have the following variable list "<varlist>"
+	And the filter type is "<filterType>"
+	And the current text in the textbox is "<input>"
+	And the cursor is at index "<index>"		
+	And the provider used is "<provider>"	
+	And the drop down list as "<dropDownList>"		
+	When I select the following option "<option>"
+	Then the result text should be "<result>"
+	And the caret position will be "<caretposition>"
 	Examples: 
 	| testName | varlist                               | filterType | input                  | index | dropDownList                                                                        | option          | result                      | provider | caretposition |
 	| 1        | <var/><var2/><rec><var/><var2/></rec> | All        | text var               | 8     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | text [[var]]                | Default  | 12            |
@@ -36,32 +36,24 @@ Scenario Outline: Insert for All FilterType and Default Provider
 	| 17       | <var/><var2/><rec><var/><var2/></rec> | All        | [[rec([[va]]).var]]    | 10    | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[rec([[var]]).var]]        | Default  | 13            |
 	| 18       | <var/><var2/><rec><var/><var2/></rec> | All        | [[[[a]]]]              | 5     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]        | [[var]]         | [[[[var]]]]                 | Default  | 9             |
 	| 19       | <var/><var2/><rec><var/><var2/></rec> | All        | [[                     | 2     | [[var]],[[var2]],[[rec(,[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]] | [[var]]         | [[var]]                     | Default  | 7             |
-#	| 20       | <a/><rec><a/><b/></rec>               | All        | [[rec().[[]]           | 10    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().[[[[a]]]]           | Default  | 15            |
-#	| 21       | <a/><rec><a/><b/></rec>               | All        | [[rec().a[[]]          | 11    | [[a]],[[rec]]                                                                       | [[a]]           | [[rec().a[[a]]]]            | Default  | 14            |
-#	| 22       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec()[[a]]           | 9     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[b]]           | [[rec()[[a]]a]]             | Default  | 12            |
-#	| 23       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec().a]]+[[rec().]] | 20    | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | [[rec().a]]+[[rec().[[a]]]] | Default  | 25            |
-#	| 24       | <a/><b/><rec><a/><b/></rec>           | All        | sin(45.)]]             | 7     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | sin(45.[[a]])               | Default  | 12            |
+	| 20       | <a/><rec><a/><b/></rec>               | All        | [[rec().[[]]           | 10    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().[[a]]			   | Default  | 13            |
+	| 21       | <a/><rec><a/><b/></rec>               | All        | [[rec().a[[]]          | 11    | [[a]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                      | [[a]]           | [[rec().a[[a]]              | Default  | 14            |
+	| 22       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec()[[a]]           | 9     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[b]]           | [[rec()[[ba]]               | Default  | 12            |
+	| 23       | <a/><b/><rec><a/><b/></rec>           | All        | [[rec().a]]+[[rec().]] | 20    | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | [[rec().a]]+[[a]]		   | Default  | 15            |
+	| 24       | <a/><b/><rec><a/><b/></rec>           | All        | sin(45.)]]             | 7     | [[a]],[[b]],[[rec(,[[rec().a]],[[rec(*).a]],[[rec().b]],[[rec(*).b]]                | [[a]]           | sin([[a]])]]                | Default  | 9             |
 #Bug 12133
-#	| 25       | <rec><a/><b/></rec><xs><a/><b/></xs>  | All        | [[().a]]              | 3     | [[xc(,[[xc().a]],[[xc(*).a]],[[x(,[[x().a]],[[x(*).a]]                              | [[x(            | [[xc().a]]                  | Default  | 5             |
-
-
-
-
-
-
-
-
+	| 25       | <rec><a/><b/></rec><xs><a/><b/></xs>  | All        | [[().a]]               | 3     |																					   | [[x(            | [[([[x().a]]                | Default  | 7             |
 
 Scenario Outline: Insert for All FilterType and DateTime Provider
-	Given I have the following variable list '<varlist>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
+	Given I have the following variable list "<varlist>"
+	And the filter type is "<filterType>"
+	And the current text in the textbox is "<input>"
+	And the cursor is at index "<index>"		
+	And the provider used is "<provider>"	
+	And the drop down list as "<dropDownList>"		
+	When I select the following option "<option>"
+	Then the result text should be "<result>"
+	And the caret position will be "<caretposition>"
 	Examples: 
 	| testName | varlist                        | filterType | input     | index | dropDownList                                           | option          | result              | provider          | caretposition |
 	| 1        | <var/><var2/><rec><var/></rec> | All        | a         | 1     | [[var]],[[var2]],[[rec().var]],[[rec(*).var]],am/pm    | am/pm           | am/pm               | Default, DateTime | 5             |
@@ -75,16 +67,16 @@ Scenario Outline: Insert for All FilterType and DateTime Provider
 	| 9        | <ww/><min/><rec><minss/></rec> | All        | [[min]]y  | 8     | yy,yyyy                                                | yy              | [[min]]yy           | Default, DateTime | 9             |
 	
 Scenario Outline: Insert for All FilterType and File Provider
-	Given I have the following variable list '<varlist>'
-	And the file path structure is '<pathStructure>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
+	Given I have the following variable list "<varlist>"
+	And the file path structure is "<pathStructure>"
+	And the filter type is "<filterType>"
+	And the current text in the textbox is "<input>"
+	And the cursor is at index "<index>"		
+	And the provider used is "<provider>"	
+	And the drop down list as "<dropDownList>"		
+	When I select the following option "<option>"
+	Then the result text should be "<result>"
+	And the caret position will be "<caretposition>"
 	Examples: 
 	| testName | pathStructure                       | varlist                       | filterType | input               | index | dropDownList                                        | option               | result                              | provider      | caretposition |
 	| 1        |                                     | <myfile/><file><name/></file> | All        | c:\[[fil            | 8     | [[myfile]],[[file(,[[file().name]],[[file(*).name]] | [[myfile]]           | c:\[[myfile]]                       | Default, File | 13            |
@@ -100,15 +92,15 @@ Scenario Outline: Insert for All FilterType and File Provider
 	| 11       | c:\,c:\FolderA,c:\FolderA\FileA.txt | <c/><cd/>                     | All        | del c:\FolderA\     | 15    | c:\FolderA\FileA.txt                                | c:\FolderA\FileA.txt | del c:\FolderA\FileA.txt            | Default, File | 24            |
 
 Scenario Outline: Insert for All FilterType and Calculate Provider
-	Given I have the following variable list '<varlist>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
+	Given I have the following variable list "<varlist>"
+	And the filter type is "<filterType>"
+	And the current text in the textbox is "<input>"
+	And the cursor is at index "<index>"		
+	And the provider used is "<provider>"	
+	And the drop down list as "<dropDownList>"		
+	When I select the following option "<option>"
+	Then the result text should be "<result>"
+	And the caret position will be "<caretposition>"
 	Examples: 
 	| testName | varlist                   | filterType | input                  | index | dropDownList                  | option  | result                  | provider           | caretposition |
 	| 1        | <att/><sum><b/></sum>     | All        | at                     | 2     | [[att]],atan,atan2,atanh      | atan    | atan                    | Default, Calculate | 4             |
@@ -121,37 +113,38 @@ Scenario Outline: Insert for All FilterType and Calculate Provider
 	| 8        | <a/><att/><sum><b/></sum> | All        | tan([[at]]) tan([[a]]) | 8     | [[att]]                       | [[att]] | tan([[att]]) tan([[a]]) | Default, Calculate | 11            |
 
 Scenario Outline: Recset only has no errors for valid variable indexes
-	Given I have the following variable list '<varlist>'
-	And the filter type is 'RecordsetsOnly'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '11'		
-	And the provider used is 'Default'	
-	Then the result has '<expectError>' errors
+	Given I have the following variable list "<varlist>"
+	And the filter type is "RecordsetsOnly"
+	And the current text in the textbox is "<input>"
+	And the cursor is at index "11"		
+	And the provider used is "Default"	
+	Then the result has "<expectError>" errors
 Examples: 	
 	| testName | varlist                            | expectError | input                |
 	| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[x]])]]       |
-	| 1        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[sum([[assc]])]]    |
-	#Newly Added
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[12]])]]      |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[12]]               |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[12]]).set]]  |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123().1234]]       |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[123(a).1234]]      |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[var1.1]]           |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[.var]]             |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[-var]]             |
-	#| 1        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[*]])]].set]] |
+	| 2        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[sum([[assc]])]]    |
+	| 3        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[sum([[12]])]]      |
+	| 4        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[12]]               |
+	| 5        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[rec([[12]]).set]]  |
+	| 6        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[123().1234]]       |
+	| 7        | <x/><sum><b/></sum><mus><b/></mus> | false       | [[123(a).1234]]      |
+	| 8        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[var1.1]]           |
+	| 9        | <x/><sum><b/></sum><mus><b/></mus> | true        | [[.var]]             |
+	| 10       | <x/><sum><b/></sum><mus><b/></mus> | true        | [[-var]]             |
+	| 11       | <x/><sum><b/></sum><mus><b/></mus> | false       | [[rec([[*]])]].set]] |
+
+
 
 Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
-	Given I have the following variable list '<varlist>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
+	Given I have the following variable list "<varlist>"
+	And the filter type is "<filterType>"
+	And the current text in the textbox is "<input>"
+	And the cursor is at index "<index>"		
+	And the provider used is "<provider>"	
+	And the drop down list as "<dropDownList>"		
+	When I select the following option "<option>"
+	Then the result text should be "<result>"
+	And the caret position will be "<caretposition>"
 	Examples: 
 	| testName | varlist                                      | filterType      | input                              | index | dropDownList                                                                              | option       | result                                 | provider | caretposition |
 	| 1        | <b/><sum><b/></sum><mus><b/></mus>           | RecordsetsOnly  | u                                  | 1     | [[sum()]],[[mus()]]                                                                       | [[sum()]]    | [[sum()]]                              | Default  | 9             |
@@ -175,15 +168,15 @@ Scenario Outline: Insert for RecordsetsOnly FilterType and Default Provider
 	
 	
 Scenario Outline: Insert for RecordsetFields FilterType and Default Provider
-	Given I have the following variable list '<varlist>'
-	And the filter type is '<filterType>'
-	And the current text in the textbox is '<input>'
-	And the cursor is at index '<index>'		
-	And the provider used is '<provider>'	
-	And the drop down list as '<dropDownList>'		
-	When I select the following option '<option>'
-	Then the result text should be '<result>'
-	And the caret position will be '<caretposition>'
+	Given I have the following variable list "<varlist>"
+	And the filter type is "<filterType>"
+	And the current text in the textbox is "<input>"
+	And the cursor is at index "<index>"		
+	And the provider used is "<provider>"	
+	And the drop down list as "<dropDownList>"		
+	When I select the following option "<option>"
+	Then the result text should be "<result>"
+	And the caret position will be "<caretposition>"
 	Examples: 
 	| testName | varlist                            | filterType      | input                   | index | dropDownList                                                    | option       | result                  | provider | caretposition |
 	| 1        | <a/><rec><a/></rec><set><z/></set> | RecordsetFields | a                       | 1     | [[rec().a]],[[rec(*).a]]                                        | [[rec(*).a]] | [[rec(*).a]]            | Default  | 12            |

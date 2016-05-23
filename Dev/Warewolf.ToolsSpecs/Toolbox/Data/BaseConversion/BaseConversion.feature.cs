@@ -1803,7 +1803,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 517
  testRunner.And("I have a convert variable \"[[b]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 518
- testRunner.And(string.Format("I convert a variable \"[[a]][[b]]\" from type \'{0}\' to type \'{1}\'", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I convert a variable \"[[a]][[b]]\" from type \"{0}\" to type \"{1}\"", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 519
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 520
@@ -1977,7 +1977,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 541
  testRunner.Given("I have a convert variable \"[[a]]\" with a value of \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 542
- testRunner.And(string.Format("I convert a variable \"[[a]]test\" from type \'{0}\' to type \'{1}\'", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I convert a variable \"[[a]]test\" from type \"{0}\" to type \"{1}\"", from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 543
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 544
@@ -2184,9 +2184,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 566
 this.ScenarioSetup(scenarioInfo);
 #line 567
- testRunner.Given(string.Format("I have a convert variable \'{0}\' with a value of \'{1}\'", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"{1}\"", variable, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 568
- testRunner.And(string.Format("I convert a variable \'{0}\' from type \'{1}\' to type \'{2}\'", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I convert a variable \"{0}\" from type \"{1}\" to type \"{2}\"", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 569
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 570
@@ -2260,14 +2260,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\'()\'.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "QUE=")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Base 64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\'()\']] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant4()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("5", "[[rec\'()\'.a]]", "QUE=", "Base 64", "Text", "Recordset name [[rec\'()\']] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("5", "[[rec\"()\".a]]", "QUE=", "Base 64", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -2686,14 +2686,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\'()\'.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "AA")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\'()\']] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant32()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("33", "[[rec\'()\'.a]]", "AA", "Text", "Text", "Recordset name [[rec\'()\']] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("33", "[[rec\"()\".a]]", "AA", "Text", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -3112,14 +3112,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 60")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "61")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\'()\'.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0100000101000001")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\'()\']] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant60()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("61", "[[rec\'()\'.a]]", "0100000101000001", "Binary", "Text", "Recordset name [[rec\'()\']] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("61", "[[rec\"()\".a]]", "0100000101000001", "Binary", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -3538,14 +3538,14 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "89")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\'()\'.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[rec\"()\".a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Value", "0x4141")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:From", "Hex")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:To", "Text")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\'()\']] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Error", "Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public virtual void ValidationMessagesWhenConvertInvalidVariables_Variant88()
         {
-            this.ValidationMessagesWhenConvertInvalidVariables("89", "[[rec\'()\'.a]]", "0x4141", "Hex", "Text", "Recordset name [[rec\'()\']] contains invalid character(s)", ((string[])(null)));
+            this.ValidationMessagesWhenConvertInvalidVariables("89", "[[rec\"()\".a]]", "0x4141", "Hex", "Text", "Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -3895,9 +3895,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 690
 this.ScenarioSetup(scenarioInfo);
 #line 691
- testRunner.Given(string.Format("I convert a variable \"{0}\" with a value of \"<value>\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a convert variable \"{0}\" with a value of \"<value>\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 692
- testRunner.And(string.Format("I convert a variable \'{0}\' from type \'{1}\' to type \'{2}\'", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I convert a variable \"{0}\" from type \"{1}\" to type \"{2}\"", variable, from, to), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 693
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 694
@@ -4630,24 +4630,18 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void ConvertFromTextToBinaryUsingComplexTypes(string variables, string value, string types, string results, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary using complex types", @__tags);
-#line 749
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary using complex types", exampleTags);
+#line 748
 this.ScenarioSetup(scenarioInfo);
+#line 749
+ testRunner.Given(string.Format("I have a convert variable \"<variable>\" with a value of \"{0}\"", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 750
- testRunner.Given(string.Format("I have a convert variable \'<variable>\' with a value of \'{0}\'", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And(string.Format("I convert a variable \"<variable>\" from type \"Text\" to type \"{0}\"", types), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 751
- testRunner.And(string.Format("I convert a variable \'<variable>\' from type \"Text\" to type \'{0}\'", types), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 752
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 752
+ testRunner.Then("the result is \"<result>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 753
- testRunner.Then("the result is \'<result>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 754
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4660,7 +4654,7 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", variables),
                         string.Format("{0}", types),
                         string.Format("{0}", types)});
-#line 755
+#line 754
  testRunner.And("the debug inputs as", ((string)(null)), table82, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
@@ -4669,7 +4663,7 @@ this.ScenarioSetup(scenarioInfo);
             table83.AddRow(new string[] {
                         "1",
                         string.Format("{0} = {1}", variables, value)});
-#line 758
+#line 757
  testRunner.And("the debug output as", ((string)(null)), table83, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -4678,7 +4672,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variables", "[[granparent(*).parents().initials]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "AA")]
@@ -4692,7 +4685,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variables", "[[granparent().parents([[int]]).initials]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "AA")]
@@ -4706,7 +4698,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variables", "[[granparent(*).parents(*).initials]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:value", "AA")]
@@ -4723,17 +4714,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAVariableThatIsNull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a Variable that is null", ((string[])(null)));
-#line 767
+#line 766
 this.ScenarioSetup(scenarioInfo);
-#line 768
+#line 767
  testRunner.Given("I have a convert variable \"[[var]]\" with a value of \"NULL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 769
+#line 768
  testRunner.And("I convert a variable \"[[var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 770
+#line 769
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 771
+#line 770
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 772
+#line 771
  testRunner.And("the execution has \"Scalar value {[[var]]} is NULL\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

@@ -25,8 +25,6 @@ using MySql.Data.MySqlClient;
 using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
-using System.Security.Cryptography;
-using Dev2.Common.Interfaces.Data;
 using Npgsql;
 
 namespace Dev2.Services.Execution
@@ -136,41 +134,41 @@ namespace Dev2.Services.Execution
         // ReSharper disable once OptionalParameterHierarchyMismatch
         protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
         {
-            ODBCServer Odbc = new ODBCServer();
-            List<DbSource> list = new List<DbSource>();
-            var Dsns = Odbc.GetDSN();
-            for (int i = 0; i < Dsns.Count; i++)
-            {
-                string input = Dsns[i];
-                using (MD5 md5 = MD5.Create())
-                {
-                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
-                    Guid result = new Guid(hash);
+//            ODBCServer Odbc = new ODBCServer();
+//            List<DbSource> list = new List<DbSource>();
+//            var Dsns = Odbc.GetDSN();
+//            for (int i = 0; i < Dsns.Count; i++)
+//            {
+//                string input = Dsns[i];
+//                using (MD5 md5 = MD5.Create())
+//                {
+//                    byte[] hash = md5.ComputeHash(Encoding.Default.GetBytes(input));
+//                    Guid result = new Guid(hash);
+//
+//                    list.Add(
+//
+//                            new DbSource
+//                            {
+//                                ResourceName = Dsns[i],
+//                                ResourceType = "DbSource",
+//                                ResourceID = result,
+//                                ServerType = enSourceType.ODBC,
+//                                DatabaseName = Dsns[i],
+//                                ConnectionString = "DSN=" + Dsns[i]
+//
+//                            }
+//
+//                  );
+//                }
+//
+//            }
 
-                    list.Add(
+            //var temp = list.Find(S => S.ResourceID == Source.ResourceID);
 
-                            new DbSource
-                            {
-                                ResourceName = Dsns[i],
-                                ResourceType = ResourceType.DbSource,
-                                ResourceID = result,
-                                ServerType = enSourceType.ODBC,
-                                DatabaseName = Dsns[i],
-                                ConnectionString = "DSN=" + Dsns[i]
-
-                            }
-
-                  );
-                }
-
-            }
-
-            var temp = list.Find(S => S.ResourceID == Source.ResourceID);
-
-            if (temp != null)
-            {
-                Source = temp;
-            }
+//            if (temp != null)
+//            {
+//                Source = temp;
+//            }
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
             switch (Source.ServerType)

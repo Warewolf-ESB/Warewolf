@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.PopupController;
@@ -103,7 +102,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             server.ResourceName = serverName;
             explorerViewModel.ConnectControlViewModel.Connect(server);       
             ScenarioContext.Current.Add("mockRemoteExplorerRepository",explorerRepository);
-            
         }
 
         [When(@"I open the server ""(.*)"" server and the permissions are ""(.*)""")]
@@ -121,8 +119,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             explorerViewModel.ConnectControlViewModel.Connect(server);
             ScenarioContext.Current.Add("mockRemoteExplorerRepository", explorerRepository);
             var environmentViewModel = explorerView.OpenEnvironmentNode(serverName);
-          
-          
         }
 
         [Then(@"the option to ""(.*)"" is ""(.*)""")]
@@ -130,7 +126,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenEnvironment(servername);
-            Assert.IsTrue(environmentViewModel.AsList().Where(a=>a.ResourceType!=ResourceType.Folder).All(a=>a.CanView &&!a.CanEdit && !a.CanExecute) );
+            Assert.IsTrue(environmentViewModel.AsList().Where(a=> a.ResourceType != "Folder").All(a=>a.CanView &&!a.CanEdit && !a.CanExecute));
         }
 
         [Then(@"the option to ""(.*)"" is ""(.*)"" on server '(.*)'")]
@@ -138,17 +134,17 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             var environmentViewModel = explorerView.OpenEnvironment(servername);
-            var resources = environmentViewModel.AsList().Where(a => a.ResourceType != ResourceType.Folder && a.ResourceType != ResourceType.DbService && a.ResourceType != ResourceType.PluginService && a.ResourceType != ResourceType.WebService);
-            var resources2 = environmentViewModel.AsList().Where(a => a.ResourceType == ResourceType.WorkflowService).ToList();
+            var resources = environmentViewModel.AsList().Where(a => a.ResourceType != "Folder" && a.ResourceType != "DbService" && a.ResourceType != "PluginService" && a.ResourceType != "WebService");
+            var resources2 = environmentViewModel.AsList().Where(a => a.ResourceType == "WorkflowService").ToList();
             resources2.Clear();
             if (state.ToLower().Contains("enabled"))
             {
                 if (permission.ToLower().Contains("view"))
                     Assert.IsTrue(resources.All(a => a.CanView));
                 if (permission.ToLower().Contains("execute"))
-                    Assert.IsTrue(resources.Where(a=>a.ResourceType==ResourceType.WorkflowService).All(a => a.CanExecute));
+                    Assert.IsTrue(resources.Where(a=> a.ResourceType == "WorkflowService").All(a => a.CanExecute));
                 if (permission.ToLower().Contains("debug"))
-                    Assert.IsTrue(resources.Where(a => a.ResourceType == ResourceType.WorkflowService).All(a => a.CanExecute));
+                    Assert.IsTrue(resources.Where(a => a.ResourceType == "WorkflowService").All(a => a.CanExecute));
             }
             if (state.ToLower().Contains("disabled"))
             {
@@ -159,7 +155,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
                 if (permission.ToLower().Contains("debug"))
                     Assert.IsTrue(!resources.Any(a => a.CanExecute));
             }
-
         }
 
         [Given(@"I open ""(.*)"" server")]
@@ -181,7 +176,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsTrue(environmentViewModel.IsExpanded);
         }
 
-
         [When(@"I select ""(.*)""")]
         public void WhenISelect(string serverName)
         {
@@ -191,9 +185,9 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsTrue(environmentViewModel.IsExpanded);
         }
 
-
         [Given(@"I open ""(.*)""")]
         [When(@"I open ""(.*)""")]
+        [Then(@"""(.*)"" is opened")]
         public void WhenIOpen(string folderName)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
@@ -201,16 +195,14 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsNotNull(environmentViewModel);
         }
 
-       
-        [Given(@"I open '(.*)' in ""(.*)""")]
-        [When(@"I open '(.*)' in ""(.*)""")]
-        public void WhenIOpenIn(string resourceName,string folderName)
+        [Given(@"I open ""(.*)"" in ""(.*)""")]
+        [When(@"I open ""(.*)"" in ""(.*)""")]
+        public void WhenIOpenIn(string resourceName, string folderName)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
-            var environmentViewModel = explorerView.OpenItem(resourceName,folderName);
+            var environmentViewModel = explorerView.OpenItem(resourceName, folderName);
             Assert.IsNotNull(environmentViewModel);            
         }       
-
 
         [When(@"""(.*)"" tab is opened")]
         [Then(@"""(.*)"" tab is opened")]
@@ -218,9 +210,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var mockShellViewModel = ScenarioContext.Current.Get<Mock<IShellViewModel>>("mockShellViewModel");
             mockShellViewModel.Verify();
-            
         }
-
 
         [Given(@"I should see ""(.*)"" folders")]
         [When(@"I should see ""(.*)"" folders")]
@@ -246,14 +236,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             explorerView.PerformFolderRename(originalFolderName,newFolderName);            
         }
-
-        [Then(@"Conflict error message is occurs")]
-        public void ThenConflictErrorMessageIsOccurs()
-        {
-            //var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
-           // boot.PopupController.Verify(a => a.Show(It.IsAny<PopupMessage>()));
-        }
-
 
         [Then(@"I should not see ""(.*)""")]
         public void ThenIShouldNotSee(string folderName)
@@ -312,11 +294,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
            var vm =FeatureContext.Current.Get<IExplorerViewModel>(Utils.ViewModelNameKey);
            var env =p0.Substring(0,p0.IndexOf("\\", StringComparison.Ordinal));
            var environment = vm.Environments.FirstOrDefault(a => a.DisplayName == env);
-            // ReSharper disable PossibleNullReferenceException
            Assert.IsTrue( environment.AsList().Any(a=>a.ResourcePath==  p0.Substring(p0.IndexOf("\\", StringComparison.Ordinal)+1)));
-            // ReSharper restore PossibleNullReferenceException
         }
-
 
         [Then(@"I should not see the path ""(.*)""")]
         public void ThenIShouldNotSeeThePath(string path)
@@ -397,7 +376,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
                     var itm = node1.Data as ExplorerItemViewModel;
                     // ReSharper disable PossibleNullReferenceException
                     Assert.IsFalse(itm.CanExecute);
-                    Assert.AreEqual(itm.ResourceType,ResourceType.Version);
+                    Assert.AreEqual(itm.ResourceType,"Version");
                     Assert.IsFalse(itm.CanEdit);
                     // ReSharper restore PossibleNullReferenceException
                 }
@@ -438,7 +417,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
         [When(@"I Delete Version ""(.*)""")]
         public void WhenIDeleteVersion(string versionPath)
         {
-
             var popup = FeatureContext.Current.Get<Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
             popup.Setup(a => a.ShowDeleteVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             var mockRepo = ScenarioContext.Current.Get<Mock<IExplorerRepository>>("mockExplorerRepository");
@@ -470,10 +448,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
         public void ThenISetupVersionsToBeReturnedFor(int count, string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey) as ExplorerView;
-            // ReSharper disable once PossibleNullReferenceException
-            //var vm =ScenarioContext.Current[Utils.ViewModelNameKey] as ExplorerViewModel;
-            //Debug.Assert(vm != null, "vm != null");
-            //vm.SelectedItem=(vm.FindItems(a => a.ResourcePath == path).First());
             var mockRepo = ScenarioContext.Current.Get<Mock<IExplorerRepository>>("mockExplorerRepository");
             if (path.Contains("Remote Connection Integration"))
             {
@@ -492,18 +466,6 @@ namespace Warewolf.AcceptanceTesting.Explorer
                 });                
             }
             ScenarioContext.Current.Add("versions", count);
-        }
-
-        [Then(@"I Setup  ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
-        public void ThenISetupResourcesOfTypeIn(int count, string path, string type)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I delete ""(.*)"" in ""(.*)"" server")]
-        public void WhenIDeleteInServer(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
         }
 
         [When(@"I delete ""(.*)""")]
@@ -546,16 +508,17 @@ namespace Warewolf.AcceptanceTesting.Explorer
             else
             {
                 ScenarioContext.Current["popupResult"] = result;
-
             }
         }
 
         [When(@"I create ""(.*)""")]
+        [Then(@"I create ""(.*)""")]
         public void WhenICreate(string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
             explorerView.AddNewFolderFromPath(path);
         }
+
         [When(@"I add ""(.*)"" in ""(.*)""")]
         public void WhenIAddIn(string folder , string server)
         {
@@ -565,6 +528,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
 
         [Given(@"I change path ""(.*)"" to ""(.*)""")]
         [When(@"I change path ""(.*)"" to ""(.*)""")]
+        [Then(@"I move ""(.*)"" to ""(.*)""")]
         public void WhenIChangePathTo(string originalPath, string destinationPath)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>(Utils.ViewNameKey);
@@ -603,6 +567,205 @@ namespace Warewolf.AcceptanceTesting.Explorer
             }
             ScenarioContext.Current.Remove(Utils.ViewModelNameKey);
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, explorerViewModel);
+        }
+
+        [Then(@"I Setup  ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
+        public void ThenISetupResourcesOfTypeIn(int count, string path, string type)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I delete ""(.*)"" in ""(.*)"" server")]
+        public void WhenIDeleteInServer(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"Conflict error message occurs")]
+        public void ThenConflictErrorMessageOccurs()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is Disconnected")]
+        public void ThenIsDisconnected(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is visible")]
+        public void ThenIsVisible(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is executed")]
+        public void ThenIsExecuted(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"I select ""(.*)""")]
+        public void ThenISelect(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I drag ""(.*)"" onto the design surface")]
+        public void WhenIDragOntoTheDesignSurface(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" permissions are ""(.*)""")]
+        public void ThenPermissionsAre(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"the ""(.*)"" window is opened")]
+        public void WhenTheWindowIsOpened(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is Collapsed")]
+        public void ThenIsCollapsed(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"resource shows that it cannot be placed in the design surface")]
+        public void WhenResourceShowsThatItCannotBePlacedInTheDesignSurface()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is not visible on design surface")]
+        public void ThenIsNotVisibleOnDesignSurface(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"I have a workflow ""(.*)""")]
+        public void GivenIHaveAWorkflow(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"the ""(.*)"" tab is opened")]
+        public void ThenTheTabIsOpened(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is checked by default")]
+        public void ThenIsCheckedByDefault(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"Nesting Levels equals ""(.*)"" equals ""(.*)""")]
+        public void ThenNestingLevelsEqualsEquals(int p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is enabled")]
+        public void ThenIsEnabled(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" has no dependancies")]
+        public void ThenHasNoDependancies(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Given(@"I select ""(.*)""")]
+        public void GivenISelect(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"Nothing depends on ""(.*)""")]
+        public void ThenNothingDependsOn(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is shown as the first level of dependancy")]
+        public void ThenIsShownAsTheFirstLevelOfDependancy(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is shown as the second level of dependancy")]
+        public void ThenIsShownAsTheSecondLevelOfDependancy(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"Nesting Levels ""(.*)"" equals ""(.*)"" only")]
+        public void WhenNestingLevelsEqualsOnly(int p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is visible in the Explorer")]
+        public void ThenIsVisibleInTheExplorer(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"""(.*)"" is invisible")]
+        public void ThenIsInvisible(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"Nesting Levels equals ""(.*)"" equals ""(.*)""")]
+        [Then(@"Nesting Levels ""(.*)"" equals ""(.*)""")]
+        public void ThenNestingLevelsEquals(int p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I double click ""(.*)""")]
+        public void WhenIDoubleClick(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I click Refresh")]
+        public void WhenIClickRefresh()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [When(@"I Show Dependencies of ""(.*)""")]
+        public void WhenIShowDependenciesOf(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"the Debug output window is populated")]
+        public void ThenTheDebugOutputWindowIsPopulated()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"there are No errors")]
+        public void ThenThereAreNoErrors()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
+        [Then(@"""(.*)"" is merged with ""(.*)""")]
+        public void ThenIsMergedWith(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
     }

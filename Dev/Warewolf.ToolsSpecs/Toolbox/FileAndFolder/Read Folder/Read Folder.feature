@@ -6,13 +6,13 @@ Feature: Read Folder
 
 
 Scenario Outline: Read Folder file at location	
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And Read is '<read>'   
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And Read is "<read>"   
+	And result as "<resultVar>"
     When the read folder file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                   | Read   | Username   | Password |Private Key File       |
@@ -49,22 +49,22 @@ Scenario Outline: Read Folder file at location
 	
 	
 Scenario Outline: Read Folder file validation
-    Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+    Given I have a variable "[[a]]" with a value "<Val1>"
+	Given I have a variable "[[b]]" with a value "<Val2>"
+	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And Read is '<read>'  
-	And result as '<resultVar>'
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And Read is "<read>"  
+	And result as "<resultVar>"
 	When validating the tool
-	Then validation is '<ValidationResult>'
-	And validation message is '<DesignValidation>'
+	Then validation is "<ValidationResult>"
+	And validation message is "<DesignValidation>"
     When the read folder file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	And execution error message will be '<DesignValidation>'
+	And execution error message will be "<DesignValidation>"
 	And the debug inputs as
          | Input Path                          | Username   | Password |
          | <File or Folder> = <sourceLocation> | <username> | String   |
@@ -100,11 +100,11 @@ Scenario Outline: Read Folder file validation
 		| 25 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | [[a]]\[[b]]           | String   | [[result]]             | ""     | AN           | False            | ""                                                                                                                            | 1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]                                                                    |
 		| 26 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | [[rec([[index]]).a]]  | String   | [[result]]             | ""     | AN           | False            | ""                                                                                                                            | 1.No Value assigned for [[index]]                                                                                                |
 		| 27 | Local Files | [[sourcePath]].txt                           | ""                     | ""                         | c:\                                            | [[rec([[index&]]).a]] | String   | [[result]]             | ""     | AN           | True             | Username - Recordset name [[indexx&]] contains invalid character(s)                                                           | Username - Recordset name [[indexx&]] contains invalid character(s)                                                              |
-		| 28 | Local Files | [[sourcePath]].txt                           | ""                     | ""                         | c:\                                            | [[a]]*]]              | String   | [[result]]             | ""     | AN           | True             | Username - Invalid expression: opening and closing brackets don't match                                                       | 1.Username - Invalid expression: opening and closing brackets don't match                                                        |
+		| 28 | Local Files | [[sourcePath]].txt                           | ""                     | ""                         | c:\                                            | [[a]]*]]              | String   | [[result]]             | ""     | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match                                                       | 1.Username - Invalid expression: opening and closing brackets don"t match                                                        |
 		| 29 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[result]][[a]]        | ""     | AN           | True             | The result field only allows a single result                                                                                  | 1.The result field only allows a single result                                                                                   |
-		| 30 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[a]]*]]               | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don't match                                                         | 1.Result - Invalid expression: opening and closing brackets don't match                                                          |
+		| 30 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[a]]*]]               | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match                                                         | 1.Result - Invalid expression: opening and closing brackets don"t match                                                          |
 		| 31 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[var@]]               | ""     | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                 | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                  |
-		| 32 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[var]]00]]            | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don't match                                                         | 1.Result - Invalid expression: opening and closing brackets don't match                                                          |
+		| 32 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[var]]00]]            | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match                                                         | 1.Result - Invalid expression: opening and closing brackets don"t match                                                          |
 		| 33 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[(1var)]]             | ""     | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                 | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                  |
 		| 34 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[var[[a]]]]           | ""     | AN           | True             | Result - Invalid Region [[var[[a]]]]                                                                                          | 1.Result - Invalid Region [[var[[a]]]]                                                                                           |
 		| 35 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[var.a]]              | ""     | AN           | True             | Result - Variable name [[var.a]]contains invalid character(s)                                                                 | 1.Result - Variable name [[var.a]] contains invalid character(s)                                                                 |
@@ -114,19 +114,19 @@ Scenario Outline: Read Folder file validation
 		| 39 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[rec(@).a]]           | ""     | AN           | True             | Result - Recordset index [[@]] contains invalid character(s)                                                                  | 1.Result - Recordset index [[@]] contains invalid character(s)                                                                   |
 		| 40 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[rec"()".a]]          | ""     | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)                                                             | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                                                              |
 		| 41 | Local Files | [[sourcePath]]                               | ""                     | ""                         | c:\                                            | ""                    | ""       | [[rec([[[[b]]]]).a]]   | ""     | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                   |
-		| 42 | Local Files | [[a]                                         | ""                     | ""                         |                                                | ""                    | ""       | [[result]]             | ""     | AN           | True             | Directory - Invalid expression: opening and closing brackets don't match                                                      | 1.Directory - Invalid expression: opening and closing brackets don't match                                                       |
+		| 42 | Local Files | [[a]                                         | ""                     | ""                         |                                                | ""                    | ""       | [[result]]             | ""     | AN           | True             | Directory - Invalid expression: opening and closing brackets don"t match                                                      | 1.Directory - Invalid expression: opening and closing brackets don"t match                                                       |
 		| 43 | Local Files | [[rec]                                       | ""                     | ""                         |                                                | ""                    | ""       | [[result]]             | ""     | AN           | True             | Directory - [[rec]] does not exist in your variable list                                                                      | 1.Directory - [[rec]] does not exist in your variable list                                                                       |
 		| 44 | Local Files | [[sourcePath]]                               | ""                     | """                        | c:\                                            | Test                  | ""       | [[result]]             | ""     | AN           | True             | Password cannot be empty or only white space                                                                                  | 1.Password cannot be empty or only white space                                                                                   |
 		| 45 | Local Files | [[var@]]                                     | ""                     | ""                         |                                                | [[var@]]              | String   | [[var@]]               | ""     | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s) | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s) |
 
 Scenario Outline: Read Folder file at location with invalid directories	
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And Read is '<read>'   
-	And result as '<resultVar>'
-	And use private public key for source is ''
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And Read is "<read>"   
+	And result as "<resultVar>"
+	And use private public key for source is ""
     When the read folder file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "AN" error
 	And the debug inputs as
          | Input Path                   | Read   | Username   | Password |
@@ -142,15 +142,14 @@ Scenario Outline: Read Folder file at location with invalid directories
 
 	
 	
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Read Folder file at location using complex types
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And Read is '<read>'   
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And Read is "<read>"   
+	And result as "<resultVar>"
     When the read folder file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                   | Read   | Username   | Password |

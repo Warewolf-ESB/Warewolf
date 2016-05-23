@@ -79,13 +79,13 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connected to localhost server", new string[] {
                         "Explorer"});
-#line 34
+#line 8
 this.ScenarioSetup(scenarioInfo);
-#line 35
+#line 9
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 36
+#line 10
  testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 37
+#line 11
  testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -100,15 +100,15 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Expand a folder", new string[] {
                         "Explorer"});
-#line 40
+#line 14
 this.ScenarioSetup(scenarioInfo);
-#line 41
+#line 15
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
+#line 16
  testRunner.And("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 17
  testRunner.When("I open \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 18
  testRunner.Then("I should see \"18\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -123,19 +123,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Rename folder", new string[] {
                         "Explorer"});
-#line 47
+#line 21
 this.ScenarioSetup(scenarioInfo);
-#line 48
+#line 22
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
+#line 23
  testRunner.And("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 24
  testRunner.When("I rename \"localhost\\Folder 2\" to \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 51
+#line 25
  testRunner.Then("I should see \"18\" children for \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 52
+#line 26
  testRunner.Then("I should see the path \"localhost\\Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 53
+#line 27
  testRunner.Then("I should not see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -150,23 +150,23 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search explorer", new string[] {
                         "Explorer"});
-#line 56
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 57
+#line 31
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
+#line 32
  testRunner.And("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 33
  testRunner.When("I search for \"Folder 3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 60
+#line 34
  testRunner.Then("I should see \"localhost\\Folder 3\" only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 61
+#line 35
  testRunner.And("I should not see \"Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 36
  testRunner.And("I should not see \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 37
  testRunner.And("I should not see \"Folder 4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 38
  testRunner.And("I should not see \"Folder 5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -181,17 +181,17 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Folder in localhost", new string[] {
                         "Explorer"});
-#line 67
+#line 41
 this.ScenarioSetup(scenarioInfo);
-#line 68
+#line 42
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 43
    testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 70
+#line 44
    testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 71
+#line 45
    testRunner.When("I add \"MyNewFolder\" in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 46
    testRunner.Then("I should see the path \"localhost\\MyNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -206,41 +206,41 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating And Deleting Folder and Popup says cancel in localhost", new string[] {
                         "Explorer"});
-#line 76
+#line 50
 this.ScenarioSetup(scenarioInfo);
-#line 77
+#line 51
   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 78
+#line 52
   testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 79
+#line 53
   testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 80
+#line 54
   testRunner.When("I add \"MyOtherNewFolder\" in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 81
+#line 55
   testRunner.Then("I should see the path \"localhost\\MyOtherNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
+#line 56
   testRunner.And("I should see \"6\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 57
   testRunner.And("I choose to \"Cancel\" Any Popup Messages", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 58
   testRunner.Then("I should see \"6\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
+#line 59
   testRunner.When("I open \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 86
+#line 60
   testRunner.Then("I should see \"18\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 87
+#line 61
   testRunner.When("I create \"localhost\\Folder 2\\myTestNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 62
   testRunner.Then("I should see \"19\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 89
+#line 63
   testRunner.Then("I should see the path \"localhost\\Folder 2\\myTestNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 90
+#line 64
   testRunner.And("I choose to \"OK\" Any Popup Messages", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
+#line 65
   testRunner.When("I delete \"localhost\\Folder 2\\myTestNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 92
+#line 66
   testRunner.Then("I should see \"18\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 93
+#line 67
   testRunner.Then("I should not see the path \"localhost\\Folder 2\\myTestNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -255,23 +255,23 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Resource in folders", new string[] {
                         "Explorer"});
-#line 96
+#line 70
 this.ScenarioSetup(scenarioInfo);
-#line 97
+#line 71
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 98
+#line 72
    testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
+#line 73
    testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 100
+#line 74
    testRunner.When("I open \"Folder 5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 101
+#line 75
    testRunner.And("I create the \"localhost\\Folder 5\\deleteresource\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 76
    testRunner.Then("I should see the path \"localhost\\Folder 5\\deleteresource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 103
+#line 77
    testRunner.When("I delete \"localhost\\Folder 5\\deleteresource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
+#line 78
    testRunner.Then("I should not see \"deleteresouce\" in \"Folder 5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -286,23 +286,23 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Resource in localhost Server", new string[] {
                         "Explorer"});
-#line 107
+#line 81
 this.ScenarioSetup(scenarioInfo);
-#line 108
+#line 82
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 109
+#line 83
    testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 110
+#line 84
    testRunner.And("I create the \"localhost\\Folder 1\\Resource 1\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 85
    testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 112
+#line 86
    testRunner.Then("I should see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 113
+#line 87
     testRunner.And("I choose to \"OK\" Any Popup Messages", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 88
    testRunner.When("I delete \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
+#line 89
    testRunner.Then("I should not see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -317,38 +317,38 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Renaming Folder And Workflow Service", new string[] {
                         "Explorer"});
-#line 118
+#line 92
 this.ScenarioSetup(scenarioInfo);
-#line 119
+#line 93
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 120
+#line 94
  testRunner.And("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
+#line 95
  testRunner.When("I rename \"localhost\\Folder 2\" to \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 122
+#line 96
  testRunner.Then("I should see \"18\" children for \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 123
+#line 97
  testRunner.When("I open \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 124
+#line 98
  testRunner.And("I create the \"localhost\\Folder New\\Resource 1\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
+#line 99
  testRunner.And("I create the \"localhost\\Folder New\\Resource 2\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 100
  testRunner.Then("I should see the path \"localhost\\Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 127
+#line 101
  testRunner.Then("I should see the path \"localhost\\Folder New\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 128
+#line 102
  testRunner.And("I should not see \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
+#line 103
  testRunner.And("I should not see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
+#line 104
  testRunner.When("I rename \"localhost\\Folder New\\Resource 1\" to \"WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 131
+#line 105
  testRunner.Then("I should see the path \"localhost\\Folder New\\WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 132
+#line 106
  testRunner.When("I rename \"localhost\\Folder New\\Resource 2\" to \"WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 133
- testRunner.Then("Conflict error message is occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 107
+ testRunner.Then("Conflict error message occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -362,31 +362,31 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching resources by using filter", new string[] {
                         "Explorer"});
-#line 136
+#line 110
 this.ScenarioSetup(scenarioInfo);
-#line 137
+#line 111
   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 138
+#line 112
   testRunner.And("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 113
   testRunner.When("I open \"Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 140
+#line 114
   testRunner.And("I create the \"localhost\\Folder 1\\Resource 1\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
+#line 115
   testRunner.Then("I should see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 142
+#line 116
   testRunner.When("I search for \"Folder 1\" in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 143
+#line 117
   testRunner.Then("I should see the path \"localhost\\Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 144
+#line 118
   testRunner.Then("I should not see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 145
+#line 119
   testRunner.Then("I should not see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 146
+#line 120
   testRunner.When("I search for \"Resource 1\" in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 147
+#line 121
   testRunner.When("I open \"Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 148
+#line 122
   testRunner.Then("I should see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -401,27 +401,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Checking versions", new string[] {
                         "Explorer"});
-#line 151
+#line 125
 this.ScenarioSetup(scenarioInfo);
-#line 152
+#line 126
   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 153
+#line 127
   testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 154
+#line 128
   testRunner.And("I create the \"localhost\\Folder 1\\Resource 1\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 155
+#line 129
   testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 156
+#line 130
   testRunner.And("I Setup  \"3\" Versions to be returned for \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
+#line 131
   testRunner.When("I Show Version History for \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 158
+#line 132
   testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 159
+#line 133
   testRunner.When("I search for \"Resource 1\" in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 160
+#line 134
   testRunner.Then("I should see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 161
+#line 135
   testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -436,41 +436,41 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Clear filter", new string[] {
                         "Explorer"});
-#line 164
+#line 138
 this.ScenarioSetup(scenarioInfo);
-#line 165
+#line 139
   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 166
+#line 140
   testRunner.And("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 167
+#line 141
   testRunner.When("I open \"Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 168
+#line 142
   testRunner.And("I create the \"localhost\\Folder 1\\Resource 1\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
+#line 143
   testRunner.Then("I should see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 170
+#line 144
   testRunner.When("I search for \"Folder 1\" in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 171
+#line 145
   testRunner.Then("I should see the path \"localhost\\Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 172
+#line 146
   testRunner.Then("I should not see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 173
+#line 147
   testRunner.Then("I should not see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 174
+#line 148
   testRunner.When("I search for \"Resource 1\" in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 175
+#line 149
   testRunner.When("I open \"Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 176
+#line 150
   testRunner.Then("I should see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 177
+#line 151
   testRunner.When("I clear \"Explorer\" Filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 152
   testRunner.Then("I should see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 179
+#line 153
   testRunner.Then("I should see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 180
+#line 154
   testRunner.Then("I should see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 181
+#line 155
   testRunner.Then("I should see the path \"localhost\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -485,22 +485,22 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search explorer on remote server", new string[] {
                         "Explorer"});
-#line 184
+#line 158
 this.ScenarioSetup(scenarioInfo);
-#line 185
+#line 159
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 186
+#line 160
  testRunner.And("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 161
  testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 188
+#line 162
  testRunner.And("I create the \"Remote Connection Integration\\Hello World\" of type \"WorkflowService" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 163
  testRunner.Then("I should see \"10\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 190
+#line 164
  testRunner.When("I search for \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 191
+#line 165
  testRunner.Then("I should see \"Remote Connection Integration\\Hello World\" only", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -515,17 +515,17 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connected to remote server", new string[] {
                         "Explorer"});
-#line 194
+#line 168
 this.ScenarioSetup(scenarioInfo);
-#line 195
+#line 169
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 196
+#line 170
  testRunner.When("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 197
+#line 171
  testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 172
  testRunner.Then("I should see \"10\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 199
+#line 173
  testRunner.Then("I should see the path \"Remote Connection Integration\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -540,19 +540,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Folder in remote host", new string[] {
                         "Explorer"});
-#line 205
+#line 179
 this.ScenarioSetup(scenarioInfo);
-#line 206
+#line 180
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 207
+#line 181
    testRunner.And("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
+#line 182
    testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
+#line 183
    testRunner.And("I should see \"10\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
+#line 184
    testRunner.When("I add \"MyNewFolder\" in \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 211
+#line 185
    testRunner.Then("I should see the path \"Remote Connection Integration\\MyNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -567,17 +567,17 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening and Editing workflow from Explorer localhost", new string[] {
                         "Explorer"});
-#line 214
+#line 188
 this.ScenarioSetup(scenarioInfo);
-#line 215
+#line 189
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 216
+#line 190
  testRunner.And("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 191
  testRunner.And("I create the \"localhost\\Hello World\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
- testRunner.When("I open \'Hello World\' in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 219
+#line 192
+ testRunner.When("I open \"Hello World\" in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 193
  testRunner.And("\"Hello World\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -592,20 +592,20 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening and Editing workflow from Explorer Remote", new string[] {
                         "Explorer"});
-#line 222
+#line 196
 this.ScenarioSetup(scenarioInfo);
-#line 223
+#line 197
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 224
+#line 198
  testRunner.And("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 225
+#line 199
  testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 226
+#line 200
  testRunner.And("I create the \"Remote Connection Integration\\Hello World\" of type \"WorkflowService" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 227
- testRunner.When("I open \'Hello World\' in \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 228
+#line 201
+ testRunner.When("I open \"Hello World\" in \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 202
  testRunner.And("\"Hello World\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -620,40 +620,40 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Renaming Folder And Workflow Service on a remote server", new string[] {
                         "Explorer"});
-#line 232
+#line 206
 this.ScenarioSetup(scenarioInfo);
-#line 233
+#line 207
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 234
+#line 208
  testRunner.And("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
+#line 209
     testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
+#line 210
  testRunner.When("I rename \"Remote Connection Integration\\Folder 2\" to \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 237
+#line 211
  testRunner.Then("I should see \"18\" children for \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 238
+#line 212
  testRunner.When("I open \"Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 239
+#line 213
  testRunner.And("I create the \"Remote Connection Integration\\Folder New\\Resource 1\" of type \"Workf" +
                     "lowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
+#line 214
  testRunner.And("I create the \"Remote Connection Integration\\Folder New\\Resource 2\" of type \"Workf" +
                     "lowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 241
+#line 215
  testRunner.Then("I should see the path \"Remote Connection Integration\\Folder New\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 242
+#line 216
  testRunner.Then("I should see the path \"Remote Connection Integration\\Folder New\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 243
+#line 217
  testRunner.And("I should not see the path \"Remote Connection Integration\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 244
+#line 218
  testRunner.When("I rename \"Remote Connection Integration\\Folder New\\Resource 1\" to \"WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 245
+#line 219
  testRunner.Then("I should see the path \"Remote Connection Integration\\Folder New\\WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 246
+#line 220
  testRunner.When("I rename \"Remote Connection Integration\\Folder New\\Resource 2\" to \"WorkFlow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 247
- testRunner.Then("Conflict error message is occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 221
+ testRunner.Then("Conflict error message occurs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -667,22 +667,22 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Nested Folder up tree-view Remote", new string[] {
                         "Explorer"});
-#line 252
+#line 226
 this.ScenarioSetup(scenarioInfo);
-#line 253
+#line 227
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 254
+#line 228
  testRunner.And("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 255
+#line 229
  testRunner.And("I open \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 256
+#line 230
  testRunner.When("I create \"Remote Connection Integration\\Testing2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 257
+#line 231
  testRunner.When("I create \"Remote Connection Integration\\Testing2\\ForEach\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 258
+#line 232
  testRunner.And("I change path \"Remote Connection Integration\\Testing2\\ForEach\" to \"Remote Connect" +
                     "ion Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 259
+#line 233
  testRunner.Then("I should see the path \"Remote Connection Integration\\Testing2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -697,21 +697,21 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Move Nested Folder up tree-view", new string[] {
                         "Explorer"});
-#line 262
+#line 236
 this.ScenarioSetup(scenarioInfo);
-#line 263
+#line 237
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 264
+#line 238
  testRunner.And("I open \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 265
+#line 239
  testRunner.When("I create \"localhost\\MyFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 266
+#line 240
  testRunner.When("I create \"localhost\\MyFolder\\NewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 267
+#line 241
  testRunner.And("I change path \"localhost\\MyFolder\\NewFolder\" to \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
+#line 242
  testRunner.Then("I should see the path \"localhost\\MyFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 269
+#line 243
  testRunner.Then("I should see the path \"localhost\\NewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -726,23 +726,23 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Checking versions in remote connection", new string[] {
                         "Explorer"});
-#line 272
+#line 246
 this.ScenarioSetup(scenarioInfo);
-#line 273
+#line 247
   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 274
+#line 248
   testRunner.And("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 249
   testRunner.When("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 276
+#line 250
   testRunner.And("I create the \"Remote Connection Integration\\Folder 1\\Resource 1\" of type \"Workflo" +
                     "wService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
+#line 251
   testRunner.And("I Setup  \"3\" Versions to be returned for \"Remote Connection Integration\\Folder 1\\" +
                     "Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 278
+#line 252
   testRunner.When("I Show Version History for \"Remote Connection Integration\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 279
+#line 253
   testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"Remote Connection Integration\\Fol" +
                     "der 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -758,31 +758,31 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Versions in Explorer", new string[] {
                         "Explorer"});
-#line 282
+#line 256
 this.ScenarioSetup(scenarioInfo);
-#line 283
+#line 257
   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 284
+#line 258
   testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 285
+#line 259
   testRunner.And("I create the \"localhost\\Folder 1\\Resource 1\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 286
+#line 260
   testRunner.Then("I should see the path \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 287
+#line 261
   testRunner.And("I Setup  \"3\" Versions to be returned for \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 288
- testRunner.When("I Show Version History for \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 289
- testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 290
+#line 262
+  testRunner.When("I Show Version History for \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 263
+  testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 264
   testRunner.When("I Make \"localhost\\Folder 1\\Resource 1\\v.1\" the current version of \"localhost\\Fold" +
                     "er 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 291
- testRunner.Then("I should see \"4\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 292
- testRunner.When("I Delete Version \"localhost\\Folder 1\\Resource 1\\v.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 293
- testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 265
+  testRunner.Then("I should see \"4\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 266
+  testRunner.When("I Delete Version \"localhost\\Folder 1\\Resource 1\\v.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 267
+  testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost\\Folder 1\\Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -791,31 +791,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Dependencies Of All Services In Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void OpeningDependenciesOfAllServicesInExplorer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Dependencies Of All Services In Explorer", new string[] {
-                        "ignore"});
-#line 297
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Dependencies Of All Services In Explorer", ((string[])(null)));
+#line 269
 this.ScenarioSetup(scenarioInfo);
-#line 298
+#line 270
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 299
- testRunner.When("I open \"Show Dependencies\" of \"WF1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 300
- testRunner.Then("\"WF1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 301
- testRunner.When("I open \"Show Dependencies\" of \"WebServ1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 302
- testRunner.Then("\"WebServ1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 303
- testRunner.When("I open \"Show Dependencies\" of \"DB Service1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 304
- testRunner.Then("\"DB Service1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 305
- testRunner.When("I open \"Show Dependencies\" of \"PluginServ1\" in \"Folder1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 306
- testRunner.Then("\"PluginServ1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 271
+   testRunner.When("I Show Dependencies of \"Folder1/WF1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 272
+   testRunner.Then("\"WF1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 273
+   testRunner.When("I Show Dependencies of \"Folder1/WebServ1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 274
+   testRunner.Then("\"WebServ1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 275
+   testRunner.When("I Show Dependencies of \"Folder1/DB Service1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 276
+   testRunner.Then("\"DB Service1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 277
+   testRunner.When("I Show Dependencies of \"Folder1/PluginServ1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 278
+   testRunner.Then("\"PluginServ1 Dependents\" is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -824,28 +822,26 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Disconnected from remote server")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void DisconnectedFromRemoteServer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnected from remote server", new string[] {
-                        "ignore"});
-#line 310
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnected from remote server", ((string[])(null)));
+#line 280
 this.ScenarioSetup(scenarioInfo);
-#line 311
+#line 281
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 312
+#line 282
  testRunner.When("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 313
+#line 283
  testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 314
+#line 284
  testRunner.Then("I should see \"10\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 315
+#line 285
  testRunner.Then("I should see the path \"Remote Connection Integration\\Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 316
+#line 286
  testRunner.When("I select \"Disconnect\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 317
- testRunner.Then("\"Remote Connection Integration\" is \"Disconnected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 318
+#line 287
+ testRunner.Then("\"Remote Connection Integration\" is Disconnected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 288
  testRunner.And("\"Localhost\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -855,26 +851,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug from Explorer using play icon")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void DebugFromExplorerUsingPlayIcon()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug from Explorer using play icon", new string[] {
-                        "ignore"});
-#line 322
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug from Explorer using play icon", ((string[])(null)));
+#line 290
 this.ScenarioSetup(scenarioInfo);
-#line 323
+#line 291
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 324
+#line 292
  testRunner.Then("I should see the path \"Localhost\\Dice Roll Example\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 325
+#line 293
  testRunner.And("I select \"Debug\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
+#line 294
  testRunner.Then("\"Dice Roll\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 327
+#line 295
  testRunner.And("\"Dice Roll\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 328
- testRunner.And("there are \"No\" errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 329
+#line 296
+ testRunner.And("there are No errors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 297
  testRunner.And("the Debug output window is populated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -884,21 +878,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Moving Nested folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void MovingNestedFolders()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moving Nested folders", new string[] {
-                        "ignore"});
-#line 334
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moving Nested folders", ((string[])(null)));
+#line 300
 this.ScenarioSetup(scenarioInfo);
-#line 335
+#line 301
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 336
+#line 302
  testRunner.Then("I should see the path \"Localhost\\Dice Roll Example\\Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 337
+#line 303
  testRunner.And("I move \"Localhost\\Dice Roll Example\\Tests\" to \"Localhost\\Tests\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
- testRunner.Then("\"Localhost\\Tests\" is visible in the Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 304
+ testRunner.Then("\"Localhost\\Tests\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -907,26 +899,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Conflicting file names")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ConflictingFileNames()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting file names", new string[] {
-                        "ignore"});
-#line 343
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting file names", ((string[])(null)));
+#line 308
 this.ScenarioSetup(scenarioInfo);
-#line 344
+#line 309
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 345
+#line 310
  testRunner.Then("I should see the path \"Localhost\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 346
+#line 311
  testRunner.Then("I should see the path \"Localhost\\Category\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 347
- testRunner.And("I create \"New Folder\" in \"Localhost\\Category\" named \"Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 348
+#line 312
+ testRunner.And("I create \"Localhost\\Category\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 313
  testRunner.Then("I should see the path \"Localhost\\Category\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 349
+#line 314
  testRunner.And("I move \"Localhost\\Examples\" to \"Localhost\\Category\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 350
+#line 315
  testRunner.Then("\"Localhost\\Examples\" is merged with \"Localhost\\Category\\Examples\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -939,17 +929,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ServerViewPermissionsOnARemoteServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Server view permissions on a remote server", ((string[])(null)));
-#line 354
+#line 317
 this.ScenarioSetup(scenarioInfo);
-#line 355
+#line 318
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 356
+#line 319
  testRunner.When("I open the server \"Remote Connection Integration\" server and the permissions are " +
                     "\"View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 357
- testRunner.Then("the option to \"View\" is \"Enabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 358
- testRunner.And("the option to \"Debug\" is \"Disabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 320
+ testRunner.Then("the option to \"View\" is \"Enabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 321
+ testRunner.And("the option to \"Debug\" is \"Disabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -961,17 +951,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ServerExecutePermissionsOnARemoteServer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Server execute permissions on a remote server", ((string[])(null)));
-#line 363
+#line 323
 this.ScenarioSetup(scenarioInfo);
-#line 364
+#line 324
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 365
+#line 325
  testRunner.When("I open the server \"Remote Connection Integration\" server and the permissions are " +
                     "\"View,Execute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 366
- testRunner.Then("the option to \"View\" is \"Enabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 367
- testRunner.And("the option to \"Debug\" is \"Enabled\" on server \'Remote Connection Integration\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 326
+ testRunner.Then("the option to \"View\" is \"Enabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 327
+ testRunner.And("the option to \"Debug\" is \"Enabled\" on server \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -980,35 +970,33 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resource view permissions on a remote server")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void ResourceViewPermissionsOnARemoteServer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resource view permissions on a remote server", new string[] {
-                        "ignore"});
-#line 373
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resource view permissions on a remote server", ((string[])(null)));
+#line 330
 this.ScenarioSetup(scenarioInfo);
-#line 374
+#line 331
  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 375
+#line 332
  testRunner.When("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 376
+#line 333
  testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 377
+#line 334
  testRunner.And("\"Remote Connection Integration\" permissions are \"View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 378
+#line 335
  testRunner.Then("I should see the path \"Remote Connection Integration\\Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 379
+#line 336
  testRunner.And("\"Remote Connection Integration\\Hello World\" permissions are \"View,Execute,Contrib" +
                     "ute\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 380
+#line 337
  testRunner.Then("the option to \"View\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 381
+#line 338
  testRunner.And("the option to \"Debug\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 382
+#line 339
  testRunner.When("I click \"Debug\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 383
+#line 340
  testRunner.Then("\"Remote Connection Integration\\Hello World\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 384
+#line 341
  testRunner.And("the Debug output window is populated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1018,31 +1006,83 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deleting Resource with the same name in different location on localhost Server")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void DeletingResourceWithTheSameNameInDifferentLocationOnLocalhostServer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Resource with the same name in different location on localhost Server", new string[] {
-                        "ignore"});
-#line 388
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Resource with the same name in different location on localhost Server", ((string[])(null)));
+#line 344
 this.ScenarioSetup(scenarioInfo);
-#line 389
+#line 345
    testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 390
+#line 346
    testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 391
+#line 347
    testRunner.And("I create the \"localhost\\Folder 1\\PLuginS\" of type \"PluginService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
+#line 348
    testRunner.And("I create the \"localhost\\PLuginS\" of type \"PluginService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 393
+#line 349
    testRunner.Then("I should see the path \"localhost\\Folder 1\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 394
+#line 350
    testRunner.And("I should see the path \"localhost\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 395
+#line 351
    testRunner.When("I delete \"localhost\\Folder 1\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 396
-   testRunner.And("I click \"Refresh\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
+#line 352
+   testRunner.And("I click Refresh", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 353
    testRunner.Then("I should not see the path \"localhost\\Folder 1\\PLuginS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Copying resources directly into the resource folder")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
+        public virtual void CopyingResourcesDirectlyIntoTheResourceFolder()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copying resources directly into the resource folder", ((string[])(null)));
+#line 355
+this.ScenarioSetup(scenarioInfo);
+#line 356
+ testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 357
+ testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Resource view permissions on a remote server prohibit resource from being used in" +
+            " workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
+        public virtual void ResourceViewPermissionsOnARemoteServerProhibitResourceFromBeingUsedInWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resource view permissions on a remote server prohibit resource from being used in" +
+                    " workflow", ((string[])(null)));
+#line 359
+this.ScenarioSetup(scenarioInfo);
+#line 360
+ testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 361
+ testRunner.When("I connect to \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 362
+ testRunner.And("I open \"Remote Connection Integration\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 363
+ testRunner.And("\"Remote Connection Integration\" permissions are \"View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 364
+ testRunner.Then("the option to \"View\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 365
+ testRunner.And("the option to \"Debug\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 366
+ testRunner.Then("I should see the path \"Remote Connection Integration\\workflow1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 367
+ testRunner.And("\"Remote Connection Integration\\workflow1\" permissions are \"View\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 368
+ testRunner.When("I drag \"Service tool\" onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 369
+ testRunner.And("the \"Resource picker\" window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 370
+ testRunner.Then("\"Remote Connection Integration\\workflow1\" is Collapsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

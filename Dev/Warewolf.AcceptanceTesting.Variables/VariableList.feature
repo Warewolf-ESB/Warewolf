@@ -4,23 +4,6 @@ Feature: VariableList
 	As a Warewolf user
 	I want to be told shown all variables in my workflow service
 
-
-## System Requirements for Variable List
-#Ensure variables used in the tools are adding automatically to variable list.
-#Ensure user is able search for variable in variable list.
-#Ensure search clear button is clearing text in variable list search box.
-#Ensure user is able to Delete all the unused variables in variable list.
-#Ensure sort alphabetically button is available in variable list box.
-#Ensure scalar variables are Sorting alphabetically when user clicks on sort button.
-#Ensure Recordset variables are Sorting alphabetically when user clicks on sort button.
-#Ensure user is able to select variables as input.
-#Ensure user is able to select variables as output.
-#Ensure delete button in the textbox is deleting variable in the variable textbox.
-#Ensure removal from design surface updates list and list updates change list correctly
-#Ensure bad variable names are in an error state
-#Ensure unused variables do not appear in Debug Input window
-#Ensure shorcut keys work
-
 Scenario: Variables adding in variable list and removing unused
 	Given I have variables as
     | Variable    | Note              | Input | Output | IsUsed |
@@ -31,8 +14,8 @@ Scenario: Variables adding in variable list and removing unused
     | [[a]]       |                   |       |        |        |
     | [[lr().a]]  |                   |       |        |        |
 	Then "Variables" is "Enabled"
-	#And variables filter box is "Visible"
-	#And "Filter Clear" is "Disabled"
+	And variables filter box is "Visible"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 
 	And the Variable Names are
@@ -68,8 +51,8 @@ Scenario: Searching Variables in Variable list
     | [[a]]       |                   |       |        |        |
     | [[lr().a]]  |                   |       |        |        |
 	Then "Variables" is "Enabled"
-	#And variables filter box is "Visible"
-	#And "Filter Clear" is "Disabled"
+	And variables filter box is "Visible"
+	And "Filter Clear" is "Disabled"
 	And "Delete Variables" is "Enabled"
 	And "Sort Variables" is "Enabled" 
 	When I search for variable "[[lr().a]]"
@@ -89,7 +72,7 @@ Scenario: Searching Variables in Variable list
 	| Variable Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
 	And the Recordset Names are 
 	| Recordset Name | Delete IsEnabled | Note Visible | Note Highlighted | Input       | Output      |
-	#When I press the clear filter button
+	When I press the clear filter button
 	And the Variable Names are
 	| Variable Name | Delete IsEnabled | Note Highlighted | Input | Output |
 	| Var           |                  |                  | YES   |        |
@@ -200,52 +183,3 @@ Scenario: Variables removed from design surface and list
 	| lr().a         | YES              |                  |       |        |
 	| rec()          |                  |                  |       |        |
 	| rec().a        |                  | YES              |       | YES    |
-
-
-
-Scenario: Ensure unused variables do not appear in Debug Input window
-	Given I have variables as
-    | Variable    | Note              | Input | Output | IsUsed |
-    | [[rec().a]] | This is recordset |       | YES    | YES    |
-    | [[rec().b]] |                   |       |        |        |
-    | [[mr()]]    |                   |       |        | YES    |
-    | [[Var]]     |                   | YES   |        | YES    |
-    | [[a]]       |                   |       |        |        |
-    | [[lr().a]]  |                   |       |        |        |
-	When I press "F5"
-	And the Debug Input window is opened
-	Then the variables appear as
-	 | Variable | Note | Input | Output | IsUsed |
-	 | [[mr()]] |      |       |        | YES    |
-	 | [[Var]]  |      | YES   |        | YES    |
-
-
-Scenario Outline: Ensure shorcut keys work
-	Given I have variables as
-    | Variable | Note | Input | Output | IsUsed |
-    | [[var]]  |      |       | YES    | YES    |
-	And I press '<Keys>'
-	Then cursor focus is '<Focus>'
-Examples:
-	| Keys  | Focus          |
-	| Enter | New blank line |
-	| Tab   | Input Checkbox |
-	
-
-#wolf-351
-Scenario: versioning and mapping
-	Given I have variables as
-	 | Variable | Note | Input | Output | IsUsed |
-	 | [[a]]    |      |       | YES    |        |
-	 | [[b]]    |      | YES   |        |        |
-	When I save workflow as "test"
-	And create variable "[[c]]" equals "" as ""
-	And I save "Mapping"
-	And "Mapping" is visible in the explorer
-	When I right click "Mapping" and "Show Version History"
-	Then version history is visible in the explorer
-	And I open "v1" of "Mapping"
-	Then the variables appear as
-   | Variable | Note | Input | Output | IsUsed |
-   | [[a]]    |      |       | YES    |        |
-   | [[b]]    |      | YES   |        |        |

@@ -162,13 +162,19 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
+    <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
+    <Compile Include="ActivityTests\DropBox2016\Delete\DropBoxDeleteTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DropBoxDownloadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxDownloadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\Download\DsfDropBoxUploadAcivtityTestShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxFileNameValidatorShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxFiles\DropboxFileListActivityShould.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxFiles\DropboxFileReadTests.cs" />
+    <Compile Include="ActivityTests\DropBox2016\DropboxListFolderResultShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\ExceptionTests\DropboxFileNotFoundExceptionShould.cs" />
     <Compile Include="ActivityTests\DropBox2016\LocalPathManagerTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\TestConstant.cs" />
@@ -228,6 +234,7 @@
     <Compile Include="ActivityTests\BaseActivityUnitTest.cs" />
     <Compile Include="ActivityTests\Web\WebGetRequestActivityTests.cs" />
     <Compile Include="ActivityTests\Web\WebRequestDataDtoTests.cs" />
+    <Compile Include="ActivityTests\Web\WebWebXmlConvertTests.cs" />
     <Compile Include="ActivityTests\XPathActivityTests.cs" />
     <Compile Include="ActivityTests\ZipTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebBaseActivityTests.cs" />

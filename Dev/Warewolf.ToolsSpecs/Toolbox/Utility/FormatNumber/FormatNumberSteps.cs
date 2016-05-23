@@ -34,7 +34,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if (ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             string number;
@@ -48,7 +54,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
 
             var numberFormat = new DsfNumberFormatActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVariable,
                     Expression = number,
                     RoundingType = roundingType,
                     RoundingDecimalPlaces = roundingDecimalPlaces,
@@ -75,11 +81,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             ScenarioContext.Current.Add("to", to.Replace('"', ' ').Trim());
         }
 
-        //[Given(@"I want to show (.*) decimals with value (.*)") ]
-        //public void GivenIWantToShowDecimals(string decimalToShow)
-        //{
-        //    ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
-        //}
+        [Given(@"I want to show ""(.*)"" decimals")]
+        public void GivenIWantToShowDecimals(int p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
 
         [Given(@"I want to show (.*) decimals with value ""(.*)""")]
         public void GivenIWantToShowDecimalsWithValue(string p0, string decimalToShow)
@@ -87,14 +93,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
         }
 
-
         [Given(@"I want to show ""(.*)"" decimals with values ""(.*)""")]
         public void GivenIWantToShowDecimalsWithValues(string p0, string decimalToShow)
         {
             ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
-
         }
-
 
         [Given(@"I have a formatnumber variable ""(.*)"" equal to (.*)")]
         public void GivenIHaveAFormatnumberVariableEqualTo(string variable, string value)
@@ -138,5 +141,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 Assert.AreEqual(expectedResult, actualValue);
             }
         }
+
+        [Given(@"I have a formatnumber result is ""(.*)""")]
+        public void GivenIHaveAFormatnumberResultIs(string resultVar)
+        {
+            ScenarioContext.Current.Add("resVar", resultVar);
+        }
+
     }
 }

@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Activities.Designers2.Core.Web.Put;
 using Dev2.Common.Interfaces;
@@ -49,6 +50,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             Model = model;
 
             SetupCommonProperties();
+            this.RunViewSetup();
         }
 
         public WebServicePutViewModel(ModelItem modelItem, IWebServiceModel model)
@@ -213,7 +215,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             LabelWidth = 46;
             ButtonDisplayValue = DoneText;
 
-            ShowLarge = true;
+            //ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
 

@@ -13,7 +13,6 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                MinWidth="350"
                                Width="350"
                                MinHeight="430"
@@ -114,7 +113,7 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
+                                                    ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
@@ -149,7 +148,7 @@
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.WebRequestToolTipHeader}"
+                                                    ToolTip="{x:Static languages:Core.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
@@ -182,7 +181,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="Url" />
+                        <TextBlock Grid.Column="0" x:Name="UrlLabel" Text="URL" />
                         <TextBlock Grid.Row="0" Grid.Column="1" x:Name="AddressLabel" Text="{Binding InputArea.RequestUrl}" TextTrimming="CharacterEllipsis" />
                         <TextBlock Grid.Column="0"  x:Name="QueryStringLable" Grid.Row="1" Text="Query String" />
                         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding InputArea.QueryString, UpdateSourceTrigger=PropertyChanged}">

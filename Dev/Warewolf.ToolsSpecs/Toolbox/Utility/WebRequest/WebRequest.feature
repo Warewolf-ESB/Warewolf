@@ -5,7 +5,7 @@
 
 
 Scenario: Enter a URL to download html  
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html"	
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html" without timeout
 	When the web request tool is executed 
 	Then the result should contain the string "Welcome to ASP.NET Web API"
 	And the execution has "NO" error
@@ -17,7 +17,7 @@ Scenario: Enter a URL to download html
 	| [[result]] = String |
 
 Scenario: Enter a badly formed URL
-	Given I have the url "www.google.comx"	
+	Given I have the url "www.google.comx" without timeout
 	When the web request tool is executed 
 	Then the result should contain the string ""
 	And the execution has "AN" error
@@ -29,7 +29,7 @@ Scenario: Enter a badly formed URL
 	| [[result]] = |
 
 Scenario: Enter a URL made up of text and variables with no header
-    Given I have the url "http://[[site]][[file]]"	
+    Given I have the url "http://[[site]][[file]]" without timeout
 	And I have a web request variable "[[site]]" equal to "rsaklfsvrtfsbld/IntegrationTestSite/"	
 	And I have a web request variable "[[file]]" equal to "Proxy.ashx?html"
 	When the web request tool is executed 
@@ -44,7 +44,7 @@ Scenario: Enter a URL made up of text and variables with no header
 
 
 Scenario: Enter a URL and 2 variables each with a header parameter (json)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx"	
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/json"	
 	And I have the Header "[[ContentType]]: [[Type]]"
@@ -59,7 +59,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (json)
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL and 2 variables each with a header parameter (xml)
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx"	
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx" without timeout
 	And I have a web request variable "[[ContentType]]" equal to "Content-Type"	
 	And I have a web request variable "[[Type]]" equal to "application/xml"	
 	And I have the Header "[[ContentType]]: [[Type]]"
@@ -74,7 +74,7 @@ Scenario: Enter a URL and 2 variables each with a header parameter (xml)
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a URL that returns json
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json"	
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json" without timeout
 	When the web request tool is executed	
 	Then the result should contain the string "["value1","value2"]"
 	And the execution has "NO" error
@@ -86,7 +86,7 @@ Scenario: Enter a URL that returns json
 	| [[result]] = ["value1","value2"] |
 
 Scenario: Enter a URL that returns xml
-	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml"
+	Given I have the url "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml" without timeout
 	When the web request tool is executed	
 	Then the result should contain the string "<string>value1</string>"
 	And the execution has "NO" error
@@ -98,7 +98,7 @@ Scenario: Enter a URL that returns xml
 	| [[result]] = <string>value1</string> |
 
 Scenario: Enter a blank URL
-	Given I have the url ""
+	Given I have the url "" without timeout
 	When the web request tool is executed	
 	Then the result should contain the string ""
 	And the execution has "AN" error
@@ -110,7 +110,7 @@ Scenario: Enter a blank URL
 	| [[result]] = |
 
 Scenario: Enter a URL that is a negative index recordset
-	Given I have the url "[[rec(-1).set]]"
+	Given I have the url "[[rec(-1).set]]" without timeout
 	When the web request tool is executed	
 	Then the result should contain the string ""
 	And the execution has "AN" error
@@ -122,7 +122,7 @@ Scenario: Enter a URL that is a negative index recordset
 	| [[result]] = |
 
 Scenario Outline: Enter a number or variable that does not exist as URL
-	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
+	Given I have the url "<url>" with timeoutSeconds "<timeoutSeconds>"
 	And I have the Header "<Header>"
 	When the web request tool is executed	
 	Then the result should contain the string ""
@@ -146,7 +146,7 @@ Examples:
 
 Scenario: Enter a URL that is a null variable
 	Given I have a formatnumber variable "[[var]]" equal to NULL
-	And I have the url "[[var]]"
+	And I have the url "[[var]]" without timeout
 	When the web request tool is executed	
 	Then the execution has "AN" error
 	And the debug inputs as  
@@ -155,7 +155,7 @@ Scenario: Enter a URL that is a null variable
 
 
 Scenario: Enter a URL that is a non existent variable
-	Given I have the url "[[var]]"
+	Given I have the url "[[var]]" without timeout
 	When the web request tool is executed	
 	Then the execution has "AN" error
 	And the debug inputs as  
@@ -163,7 +163,7 @@ Scenario: Enter a URL that is a non existent variable
 	| [[var]] = |        |
 	
 Scenario Outline: Enter a URL to download html with timeout specified too short 
-	Given I have the url '<url>' with timeoutSeconds '<timeoutSeconds>'
+	Given I have the url "<url>" with timeoutSeconds "<timeoutSeconds>"
 	When the web request tool is executed 
 	Then the execution has "AN" error
 	And the debug inputs as  
@@ -176,3 +176,20 @@ Scenario Outline: Enter a URL to download html with timeout specified too short
 	| url                                                   | timeoutSeconds |
 	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150 | 10             |
 	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15  | 10             |
+
+Scenario: Enter a recordset star input and output
+	Given I have a web request variable "[[urls().url]]" equal to "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx"	
+	And I have a web request variable "[[urls().url]]" equal to "http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15"	
+	And I have a web request variable "[[results().res]]" equal to "res1"	
+	And I have the url "[[urls(*).url]]"	
+	And I have web request result as "[[results(*).res]]"
+	When the web request tool is executed 
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| URL                                                                     | Header |
+	| [[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx |        |
+	| [[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15  |        |
+	And the debug output as 
+	|                                                                            |
+	| [[results(1).res]] = <string>value1</string>                               |
+	| [[results(2).res]] = <DataList><Result>Wait Successful</Result></DataList> |

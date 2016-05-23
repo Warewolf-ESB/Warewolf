@@ -271,23 +271,7 @@ Scenario: Generate a Number between double min and double max
 	|                     |
 	| [[result]] = Double |
 
-
-##This test seems to crash or timeout...	
-#Scenario: Generate a Number between double min and double max scientific
-#	Given I have a type as "Numbers"
-#	And I have a range from "5.0E-324" to "1.7E+308" 
-#	When the random tool is executed 
-#	Then the result from the random tool should be of the same type as "System.Double" 
-#	And the random value will be between "5.0E-324" and "1.7E+308" inclusive 
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Random  | From | To |
-#	| Numbers | 5.E-324    | 1.7E+308  |
-#	And the debug output as 
-#	|                     |
-#	| [[result]] = Double |
-
-		
+	
 Scenario: Generate a Number between double min and double max with no decimals
 	Given I have a type as "Numbers"
 	And I have a range from "0" to "170000000000000" 
@@ -302,15 +286,34 @@ Scenario: Generate a Number between double min and double max with no decimals
 	|                     |
 	| [[result]] = Double |
 
+
+Scenario: Generate random using star notation
+	Given I have a type as "Letters"
+	And I have a a random variable "[[rand().num]]" equal to "5"
+	And I have a a random variable "[[rand().num]]" equal to "10"
+	And I have a a random variable "[[res().val]]" equal to "bob"
+	And I have a length as "[[rand(*).num]]"
+	And I have a random result variable as "[[res(*).val]]"
+	When the random tool is executed 
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| Random  | Length               |
+	| Letters | [[rand(1).num]] = 5  |
+	|         | [[rand(2).num]] = 10 |
+	And the debug output as 
+	|                     |
+	| [[res(1).val]] = String |
+	| [[res(2).val]] = String |
+
 @ignore
 #Complex Types WOLF-1042
 Scenario Outline: Generate numbers using complex types
-	Given I have a type as '<Type>'
-	And I have a range from '<From>' to '<To>' 
+	Given I have a type as "<Type>"
+	And I have a range from "<From>" to "<To>" 
 	When the random tool is executed 
-	Then the result from the random tool should be of type "System.Int32" with a length of '<length>'
+	Then the result from the random tool should be of type "System.Int32" with a length of "<length>"
 	And the execution has "<Error>" error
-	And the execution has '<Message>' error
+	And the execution has "<Message>" error
 Examples: 
 	| Type    | From                        | To                             | length | res                      | Error | Message                        |
 	| Numbers | [[rec(1).count(3).val]] = 9 | [[rec(1).count(1).val]] = 1000 |        | [[rec().result().value]] | An    | [[rec().result().value]] = 557 |

@@ -281,6 +281,17 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
+        public void SaveOAuthSource(IOAuthSource source, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveOAuthSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("OAuthSource", serialiser.SerializeToBuilder(source));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
         public string TestPluginService(IPluginService plugin)
         {
             var con = Connection;

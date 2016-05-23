@@ -20,5 +20,12 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
 
         }
+    }public class DropboxFileMalformdedException : Exception
+    {
+        public DropboxFileMalformdedException()
+            : base(GlobalConstants.DropboxPathMalformdedException)
+        {
+
+        }
     }
 }

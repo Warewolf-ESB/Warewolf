@@ -9,7 +9,7 @@ Scenario Outline: Single Scalar Variable
 	And I select variable "[[a]]" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                 |
@@ -35,7 +35,7 @@ Scenario Outline: Single Scalar VariableMultipleSelections
 	And I select variable "[[b]]" with name "c"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                 |
@@ -59,7 +59,7 @@ Scenario Outline: Single Scalar Variable with changed name
 	And I select variable "[[a]]" with name "myVar"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                 |
@@ -82,7 +82,7 @@ Scenario Outline: Simple Recordset single field
 	And I select variable "[[rec().a]]" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                        |
@@ -104,7 +104,7 @@ Scenario Outline: Simple Recordset single field Null
 	And I select variable "[[rec().a]]" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                        |
@@ -123,7 +123,7 @@ Scenario Outline: Multiple Scalars Variable
 	And I select variable "[[b]]" with name "b"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -149,7 +149,7 @@ Scenario Outline: Multiple Recordset Variable
 	And I select variable "[[rec().b]]" with name "b"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -174,7 +174,7 @@ Scenario Outline: Multiple Scalars Variable comma seperated
 	And I select variable "[[a]],[[b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -197,7 +197,7 @@ Scenario Outline: Multiple Scalars Variable comma seperated Null
 	And I select variable "[[a]],[[b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -215,7 +215,7 @@ Scenario Outline: Multiple Recordset Variable comma seperatedNull
 	And I select variable "[[rec().a]],[[rec().b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -233,7 +233,7 @@ Scenario Outline: Multiple Recordset Variable comma seperated
 	And I select variable "[[rec().a]],[[rec().b]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -255,7 +255,7 @@ Scenario Outline: Simple Recordset with * single field Null
 	And I select variable "[[rec(*).a]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                        |
@@ -272,7 +272,7 @@ Scenario Outline: Simple Recordset with * single field
 	And I select variable "[[rec(*).a]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                        |
@@ -300,7 +300,7 @@ Scenario Outline: Recordset with * multiple fields and values Null
 	And I select variable "[[rec(*)]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                          |
@@ -324,7 +324,7 @@ Scenario Outline: Recordset with * multiple fields and values
 	And I select variable "[[rec(*)]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                          |
@@ -356,7 +356,7 @@ Scenario: Recordset with * multiple fields and values different length for colum
 	And I select variable "[[rec(*)]]" with name "rec"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '{"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}]}'
+	Then the value of "[[json]]" should be "{"rec":[{"a":"c","b":1},{"a":"b","b":2},{"a":"g","b":null}]}"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -382,7 +382,7 @@ Scenario: Recordset with * multiple fields and  scalar values different length f
 	And I select variable "[[a]]" with name "bob"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '{"rec":["c","b","g"],"bob":"the builder"}'
+	Then the value of "[[json]]" should be "{"rec":["c","b","g"],"bob":"the builder"}"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                  |
@@ -395,14 +395,13 @@ Scenario: Recordset with * multiple fields and  scalar values different length f
 	| [[json]] = { rec :[ c , b , g ], bob : the builder } |
 
 
-@ignore
 #COmplex Types WOLF-1042
 Scenario Outline: Simple object with single field
 	Given I have a variable "<object>" with value "<value>"
 	And I select variable "<object>" with name "a"
 	And a result variable "[[json]]"
 	When the create json tool is executed
-	Then the value of "[[json]]" should be '<result>'
+	Then the value of "[[json]]" should be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as
 	| # |                              |

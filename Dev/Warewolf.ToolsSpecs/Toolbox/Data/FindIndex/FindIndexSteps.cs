@@ -101,8 +101,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             ScenarioContext.Current.Add("direction", direction);
         }
 
-        [Given(@"I have a findindex variable ""(.*)"" equal to ""(.*)""")]
-        public void GivenIHaveAFindindexVariableEqualTo(string variable, string value)
+        [Given(@"I have a Find Index variable ""(.*)"" equal to ""(.*)""")]
+        public void GivenIHaveAFindIndexVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -114,6 +114,41 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             }
 
             variableList.Add(new Tuple<string, string>(variable, value));
+        }
+
+        [Given(@"a find index recordset")]
+        public void GivenAFindIndexRecordset(Table table)
+        {
+            List<TableRow> records = table.Rows.ToList();
+
+            if (records.Count == 0)
+            {
+                var rs = table.Header.ToArray()[0];
+                var field = table.Header.ToArray()[1];
+
+                List<Tuple<string, string>> emptyRecordset;
+
+                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                if (!isAdded)
+                {
+                    emptyRecordset = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                }
+                emptyRecordset.Add(new Tuple<string, string>(rs, field));
+            }
+
+            foreach (TableRow record in records)
+            {
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+                variableList.Add(new Tuple<string, string>(record[0], record[1]));
+            }
         }
 
         [When(@"the data find index tool is executed")]
@@ -129,7 +164,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         {
             string error;
             string actualValue;
-            results = results.Replace("\"\"", "");
+            if (string.IsNullOrEmpty(results))
+            {
+                results = null;
+            }
+            else
+            {
+                results = results.Replace("\"\"", "");
+            }
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);

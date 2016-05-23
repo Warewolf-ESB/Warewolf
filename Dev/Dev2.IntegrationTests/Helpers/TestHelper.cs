@@ -22,6 +22,7 @@ using Dev2.Controller;
 using Dev2.Core.Tests.Utils;
 using Dev2.Integration.Tests.MEF.WebTester;
 using Dev2.Network;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Integration.Tests.Helpers
 {

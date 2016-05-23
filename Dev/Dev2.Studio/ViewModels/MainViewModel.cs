@@ -28,7 +28,6 @@ using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -77,11 +76,8 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Dev2.Views.Dialogs;
-using Dev2.Webs;
-using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
-using ServiceStack.Common;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Resource = Dev2.Runtime.ServiceModel.Data.Resource;
@@ -553,7 +549,7 @@ namespace Dev2.Studio.ViewModels
         {
             var vm = new DependencyVisualiserViewModel(new DependencyVisualiserView(), server, dependsOnMe)
             {
-                ResourceType = Common.Interfaces.Data.ResourceType.DependencyViewer,
+                ResourceType = "DependencyViewer",
                 ResourceModel = model
             };
 
@@ -719,6 +715,11 @@ namespace Dev2.Studio.ViewModels
 
             switch (resourceModel.ServerResourceType)
             {
+                case "SqlDatabase":
+                case "ODBC":
+                case "MySqlDatabase":
+                    EditDbSource(resourceModel);
+                    break;
                 case "DbSource":
                     EditDbSource(resourceModel);
                     break;
@@ -734,6 +735,9 @@ namespace Dev2.Studio.ViewModels
                 case "ExchangeSource":
                     EditExchangeSource(resourceModel);
                     break;
+                case "DropBoxSource":
+                    EditDropBoxSource(resourceModel);
+                    break;
                 case "SharepointServerSource":
                     EditSharePointSource(resourceModel);
                     break;
@@ -741,6 +745,7 @@ namespace Dev2.Studio.ViewModels
                     ShowEditResourceWizard(resourceModel);
                     break;
                 case "Server":
+                case "Dev2Server":
                 case "ServerSource":
                     var connection = new Connection(resourceModel.WorkflowXaml.ToXElement());
                     string address = null;
@@ -779,7 +784,7 @@ namespace Dev2.Studio.ViewModels
                 Password = db.Password,
                 Path = db.ResourcePath,
                 ServerName = db.Server,
-                Type = enSourceType.SqlDatabase,
+                Type = db.ServerType,
                 UserName = db.UserID
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
@@ -878,6 +883,24 @@ namespace Dev2.Studio.ViewModels
                 Password = db.Password,
                 UserName = db.UserName,
                 Timeout = db.Timeout,
+                ResourceName = db.ResourceName,
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        void EditDropBoxSource(IContextualResourceModel resourceModel)
+        {
+            var db = new DropBoxSource(resourceModel.WorkflowXaml.ToXElement());
+
+            var def = new DropBoxSource()
+            {
+                AccessToken = db.AccessToken,
+                ResourceID = db.ResourceID,
+                AppKey = db.AppKey,
                 ResourceName = db.ResourceName,
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange);
@@ -1109,6 +1132,25 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var oauthSourceViewModel = new ManageOAuthSourceViewModel(new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), selectedSource);
+            var vm = new SourceViewModel<IOAuthSource>(EventPublisher, oauthSourceViewModel, PopupProvider, new ManageOAuthSourceControl());
+
+            if (workSurfaceKey == null)
+            {
+                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+                workSurfaceKey.ResourceID = selectedSource.ResourceID;
+                workSurfaceKey.ServerID = ActiveServer.ServerID;
+            }
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
         public void EditResource(ISharepointServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var viewModel = new SharepointServerSourceViewModel(new SharepointServerSourceModel(ActiveServer.UpdateRepository, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker, null);
@@ -1148,7 +1190,8 @@ namespace Dev2.Studio.ViewModels
             }
             else if (resourceType == "DropboxSource")
             {
-                CreateOAuthType(ActiveEnvironment, resourceType, resourcePath);
+                CreateOAuthSourceType(saveViewModel);
+                //CreateOAuthType(ActiveEnvironment, resourceType, resourcePath);
             }
             else if (resourceType == "ServerSource" || resourceType.ToLower() == "server")
             {
@@ -1261,17 +1304,19 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void CreateOAuthSourceType(Task<IRequestServiceNameViewModel> saveViewModel)
+        {
+            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+            key.ServerID = ActiveServer.ServerID;
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IOAuthSource>(EventPublisher, new ManageOAuthSourceViewModel(new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name),saveViewModel), PopupProvider, new ManageOAuthSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
         void AddNewSharePointServerSource(Task<IRequestServiceNameViewModel> saveViewModel)
         {
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SharepointServerSource) as WorkSurfaceKey, new SourceViewModel<ISharepointServerSource>(EventPublisher, new SharepointServerSourceViewModel(new SharepointServerSourceModel(ActiveServer.UpdateRepository, ActiveEnvironment.Name), saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, ActiveEnvironment), PopupProvider, new SharepointServerSource()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
-        }
-
-        public void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, bool shouldAuthorise = true)
-        {
-            var resource = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
-            SaveDropBox2016Source(activeEnvironment, resourceType, resourcePath, resource, shouldAuthorise);
-
         }
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
@@ -1321,7 +1366,7 @@ namespace Dev2.Studio.ViewModels
                     var resourceVersion = new ResourceModel(ActiveEnvironment, EventPublishers.Aggregator)
                     {
                         ResourceType = resourceModel.ResourceType,
-                        ResourceName = string.Format("{0} (v.{1})", versionInfo.User, versionInfo.VersionNumber),
+                        ResourceName = string.Format("{0} (v.{1})", resource.ResourceName, versionInfo.VersionNumber),
                         WorkflowXaml = new StringBuilder(xamlString),
                         UserPermissions = Permissions.View,
                         DataList = dataListString,
@@ -1334,71 +1379,20 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        #region Dropbox 2016
-        Dev2.Views.DropBox2016.IDropboxFactory _dropbox2016Factory;
-        Func<Dev2.Views.DropBox2016.DropBoxViewWindow, Dev2.Views.DropBox2016.DropBoxSourceViewModel, bool?> _showDrop2016Action;
-        public Dev2.Views.DropBox2016.IDropboxFactory Dropbox2016Factory
-        {
-            private get { return _dropbox2016Factory ?? new Dev2.Views.DropBox2016.DropboxFactory(); }
-            set { _dropbox2016Factory = value; }
-        }
-
-        void SaveDropBox2016Source(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource, bool shouldAuthorise)
-        {
-
-            Dev2.Views.DropBox2016.DropBoxViewWindow dropBoxViewWindow = new Dev2.Views.DropBox2016.DropBoxViewWindow();
-            Dev2.Views.DropBox2016.DropBoxHelper helper = new Dev2.Views.DropBox2016.DropBoxHelper(dropBoxViewWindow, activeEnvironment, resourceType, resourcePath);
-            Dev2.Views.DropBox2016.DropBoxSourceViewModel vm = new Dev2.Views.DropBox2016.DropBoxSourceViewModel(new NetworkHelper(), helper, Dropbox2016Factory, shouldAuthorise) { Resource = resource };
-            dropBoxViewWindow.DataContext = vm;
-            var showDialog = ShowDropbox2016Action(dropBoxViewWindow, vm);
-            if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
-            {
-                ShowSaveDialog(vm.Resource, activeEnvironment, vm.Uid, vm.AccessToken, ActiveServer);
-            }
-            else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
-            {
-
-                // ReSharper disable once MaximumChainedReferences
-                var dropBoxSource = new OauthSource { Key = vm.Uid, Secret = vm.AccessToken, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
-                ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
-
-            }
-        }
-
-        public Func<Dev2.Views.DropBox2016.DropBoxViewWindow, Dev2.Views.DropBox2016.DropBoxSourceViewModel, bool?> ShowDropbox2016Action
-        {
-            private get { return _showDrop2016Action ?? ((drop, vm) => drop.ShowDialog()); }
-            set { _showDrop2016Action = value; }
-        }
-        #endregion
-
-
-        public Action<IContextualResourceModel, IEnvironmentModel, string, string, IServer> ShowSaveDialog
-        {
-            private get { return _showSaveDialog ?? SaveDialogHelper.ShowNewOAuthsourceSaveDialog; }
-            set { _showSaveDialog = value; }
-        }
-
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
-            if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("OauthSource"))
-            {
-                SaveDropBox2016Source(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel, true);
-            }
-            else
-            {
-                //Activates if exists
-                var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
 
-                if (exists)
-                {
-                    ActivateWorkSurfaceIfPresent(resourceModel);
-                    return;
-                }
+            //Activates if exists
+            var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
 
-                DisplayResourceWizard(resourceModel, true);
+            if (exists)
+            {
+                ActivateWorkSurfaceIfPresent(resourceModel);
+                return;
             }
+
+            DisplayResourceWizard(resourceModel, true);
         }
 
 
@@ -2367,7 +2361,6 @@ namespace Dev2.Studio.ViewModels
         //}
 
         public Func<bool> IsBusyDownloadingInstaller;
-        Action<IContextualResourceModel, IEnvironmentModel, string, string, IServer> _showSaveDialog;
         IMenuViewModel _menuViewModel;
         IServer _activeServer;
         private IExplorerViewModel _explorerViewModel;

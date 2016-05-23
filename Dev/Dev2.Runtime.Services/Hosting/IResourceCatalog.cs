@@ -28,7 +28,7 @@ namespace Dev2.Runtime.Hosting
 
         void RemoveWorkspace(Guid workspaceID);
 
-        IResource GetResource(Guid workspaceID, string resourceName, ResourceType resourceType = ResourceType.Unknown, string version = null);
+        IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null);
 
         IResource GetResource(Guid workspaceID, Guid resourceID);
 
@@ -138,5 +138,7 @@ namespace Dev2.Runtime.Hosting
         string GetResourcePath(Guid id);
 
         ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true);
+
+        IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new();
     }
 }
