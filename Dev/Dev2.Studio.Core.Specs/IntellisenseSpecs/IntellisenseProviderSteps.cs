@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
     [Binding]
     public class IntellisenseProviderSteps
     {
-        [Given(@"I have the following variable list '(.*)'")]
+        [Given(@"I have the following variable list ""(.*)""")]
         public void GivenIHaveTheFollowingVariableList(string variableList)
         {
             const string Root = "<DataList>##</DataList>";
@@ -52,26 +52,26 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             DataListSingleton.ActiveDataList.InitializeDataListViewModel(resourceModel);
         }
 
-        [Given(@"the filter type is '(.*)'")]
+        [Given(@"the filter type is ""(.*)""")]
         public void GivenTheFilterTypeIs(string filterType)
         {
             var filterTypeEnum = (enIntellisensePartType)Enum.Parse(typeof(enIntellisensePartType), filterType);
             ScenarioContext.Current.Add("filterType", filterTypeEnum);
         }
 
-        [Given(@"the current text in the textbox is '(.*)'")]
+        [Given(@"the current text in the textbox is ""(.*)""")]
         public void GivenTheCurrentTextInTheTextboxIs(string inputText)
         {
             ScenarioContext.Current.Add("inputText", inputText);
         }
 
-        [Given(@"the cursor is at index '(.*)'")]
+        [Given(@"the cursor is at index ""(.*)""")]
         public void GivenTheCursorIsAtIndex(int cursorIndex)
         {
             ScenarioContext.Current.Add("cursorIndex", cursorIndex);
         }
 
-        [Given(@"the provider used is '(.*)'")]
+        [Given(@"the provider used is ""(.*)""")]
         public void GivenTheProviderUsedIs(string providerName)
         {
             IIntellisenseProvider provider;
@@ -93,7 +93,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             ScenarioContext.Current.Add("provider", provider);
         }
 
-        [Given(@"the file path structure is '(.*)'")]
+        [Given(@"the file path structure is ""(.*)""")]
         public void GivenTheFilePathStructureIs(string pathStructure)
         {
             var fileQueryHelper = new FileQueryHelper();
@@ -131,7 +131,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         }
 
 
-        [Then(@"the result has '(.*)' errors")]
+        [Then(@"the result has ""(.*)"" errors")]
         public void ThenTheResultHasErrors(string p0)
         {
             var calc = ScenarioContext.Current.Get<bool>("IsInCalculate");
@@ -155,7 +155,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             Assert.AreEqual(!actualist.Any(),bool.Parse(p0));
         }
 
-        [Given(@"the drop down list as '(.*)'")]
+        [Given(@"the drop down list as ""(.*)""")]
         public void GivenTheDropDownListAs(string dropDownList)
         {
             var expectedList = string.IsNullOrEmpty(dropDownList) ? new string[] { } : dropDownList.Split(',');
@@ -181,7 +181,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             CollectionAssert.AreEqual(expectedList, actualist);
         }
 
-        [When(@"I select the following option '(.*)'")]
+        [When(@"I select the following option ""(.*)""")]
         public void WhenISelectTheFollowingOption(string option)
         {
             var context = ScenarioContext.Current.Get<IntellisenseProviderContext>("context");
@@ -207,14 +207,14 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             ScenarioContext.Current.Add("result", result);
         }
 
-        [Then(@"the result text should be '(.*)'")]
+        [Then(@"the result text should be ""(.*)""")]
         public void ThenTheResultTextShouldBe(string result)
         {
             var actual = ScenarioContext.Current.Get<string>("result");
             Assert.AreEqual(result, actual);
         }
 
-        [Then(@"the caret position will be '(.*)'")]
+        [Then(@"the caret position will be ""(.*)""")]
         public void ThenTheCaretPositionWillBe(int caretpostion)
         {
             var context = ScenarioContext.Current.Get<IntellisenseProviderContext>("context");

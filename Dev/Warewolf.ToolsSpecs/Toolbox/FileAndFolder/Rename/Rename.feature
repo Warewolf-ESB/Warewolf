@@ -6,16 +6,16 @@ Feature: Rename
 
 
 Scenario Outline: Rename file at location
-	Given I have a source path '<source>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
     When the rename file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
@@ -56,24 +56,24 @@ Scenario Outline: Rename file at location
 
 
 Scenario Outline: Rename file validation
-    Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+    Given I have a variable "[[a]]" with a value "<Val1>"
+	Given I have a variable "[[b]]" with a value "<Val2>"
+	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And result as "<resultVar>"
 	When validating the tool
-	Then validation is '<ValidationResult>'
-	And validation message is '<DesignValidation>'
+	Then validation is "<ValidationResult>"
+	And validation message is "<DesignValidation>"
     When the rename file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	And execution error message will be '<DesignValidation>'
+	And execution error message will be "<DesignValidation>"
 	And the debug inputs as
         | Source Path                         | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
         | <File or FOlder> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |
@@ -125,7 +125,7 @@ Scenario Outline: Rename file validation
 		| 40 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile45.txt | ""                    | ""       | c:\copyfile0.txt                 | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed37.txt          | integrationtester | I73573r0     | True     | [[result]]             | Success | NO           | False            | ""                                                                            | ""                                                                                    |
 		| 41 | [[a&]]                         | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed38.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | File or Folder - Variable name [[a&]] contains invalid character(s)           | 1.File or Folder - Variable name [[a&]] contains invalid character(s)                 |
 		| 42 | [[rec(**).a]]                  | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed39.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | File or Folder - Recordset index (**) contains invalid character(s)           | 1.File or Folder - Recordset index (**) contains invalid character(s)                 |
-		| 43 | [[a]                           | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed40.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don't match | 1.File or Folder - Invalid expression: opening and closing brackets don't match       |
+		| 43 | [[a]                           | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed40.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don"t match | 1.File or Folder - Invalid expression: opening and closing brackets don"t match       |
 		| 44 | [[rec(a]]                      | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed41.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | File or Folder - Recordset name [[rec(a]] contains invalid character(s)       | 1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)             |
 		| 45 | c(*()                          | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed42.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Please supply a valid File or Folder                                          | 1.Please supply a valid File or Folder                                                |
 		| 46 | [[rec([[inde$x]]).a]]          | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed43.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | File or Folder - Variable name [[inde$x]]  contains invalid character(s)      | 1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)            |
@@ -133,7 +133,7 @@ Scenario Outline: Rename file validation
 		| 48 | ""                             | ""                                                  | ""                            |                     | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed45.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | File or Folder cannot be empty or only white space                            | 1.File or Folder cannot be empty or only white space                                  |
 		| 49 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile46.txt | ""                    | ""       | [[a&]]                           | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed46.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Destination - Variable name [[a&]] contains invalid character(s)              | 1.Destination - Variable name [[a&]] contains invalid character(s)                    |
 		| 50 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile47.txt | ""                    | ""       | [[rec(**).a]]                    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed47.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Destination - Recordset index (**) contains invalid character(s)              | 1.Destination - Recordset index (**) contains invalid character(s)                    |
-		| 51 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile48.txt | ""                    | ""       | [[a]                             | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed48.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Destination - Invalid expression: opening and closing brackets don't match    | 1.Destination - Invalid expression: opening and closing brackets don't match          |
+		| 51 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile48.txt | ""                    | ""       | [[a]                             | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed48.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Destination - Invalid expression: opening and closing brackets don"t match    | 1.Destination - Invalid expression: opening and closing brackets don"t match          |
 		| 52 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile49.txt | ""                    | ""       | [[rec(a]]                        | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed49.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Destination - Recordset name [[rec(a]] contains invalid character(s)          | 1.Destination - Recordset name [[rec(a]] contains invalid character(s)                |
 		| 53 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile50.txt | ""                    | ""       | c(*()                            | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed50.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Please supply a valid File or Folder                                          | 1.Please supply a valid File or Folder                                                |
 		| 54 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile51.txt | ""                    | ""       | [[rec([[inde$x]]).a]]            | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed51.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Destination - Variable name [[inde$x]]  contains invalid character(s)         | 1.Destination - Variable name [[inde$x]]  contains invalid character(s)               |
@@ -141,20 +141,20 @@ Scenario Outline: Rename file validation
 		| 56 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile53.txt | ""                    | ""       | ""                               | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed53.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Destination cannot be empty or only white space                               | 1.Destination cannot be empty or only white space                                     |
 		| 57 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile54.txt | [[a&]]                | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed54.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Variable name [[a&]] contains invalid character(s)                 | 1.Username - Variable name [[a&]] contains invalid character(s)                       |
 		| 58 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile55.txt | [[rec(**).a]]         | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed55.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Recordset index (**) contains invalid character(s)                 | 1.Username - Recordset index (**) contains invalid character(s)                       |
-		| 59 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile56.txt | [[a]                  | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed56.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don't match       | 1.Username - Invalid expression: opening and closing brackets don't match             |
+		| 59 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile56.txt | [[a]                  | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed56.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match       | 1.Username - Invalid expression: opening and closing brackets don"t match             |
 		| 60 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile57.txt | [[rec(a]]             | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed57.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Recordset name [[rec(a]] contains invalid character(s)             | 1.Username - Recordset name [[rec(a]] contains invalid character(s)                   |
 		| 61 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile58.txt | [[rec([[inde$x]]).a]] | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed58.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Variable name [[inde$x]]  contains invalid character(s)            | 1.Username - Variable name [[inde$x]]  contains invalid character(s)                  |
 		| 62 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile59.txt |                       | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed59.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username cannot be empty or only white space                                  | 1.Username cannot be empty or only white space                                        |
 		| 63 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile50.txt | [[a&]]                | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed60.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Variable name [[a&]] contains invalid character(s)                 | 1.Destination Username - Variable name [[a&]] contains invalid character(s)           |
 		| 64 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile61.txt | [[rec(**).a]]         | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed61.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Recordset index (**) contains invalid character(s)                 | 1.Destination Username - Recordset index (**) contains invalid character(s)           |
-		| 65 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile62.txt | [[a]                  | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed62.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don't match       | 1.Destination Username - Invalid expression: opening and closing brackets don't match |
+		| 65 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile62.txt | [[a]                  | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed62.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match       | 1.Destination Username - Invalid expression: opening and closing brackets don"t match |
 		| 66 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile63.txt | [[rec(a]]             | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed63.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Recordset name [[rec(a]] contains invalid character(s)             | 1.Destination Username - Recordset name [[rec(a]] contains invalid character(s)       |
 		| 67 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile64.txt | [[rec([[inde$x]]).a]] | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed64.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username - Variable name [[inde$x]]  contains invalid character(s)            | 1.Destination Username - Variable name [[inde$x]]  contains invalid character(s)      |
 		| 68 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile65.txt | ""                    | String   | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed65.txt          | integrationtester | I73573r0     | True     | [[result]]             | ""      | AN           | True             | Username cannot be empty or only white space                                  | 1.Destination Username cannot be empty or only white space                            |
 		| 69 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile66.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed66.txt          | integrationtester | I73573r0     | True     | [[result]][[a]]        | ""      | AN           | True             | The result field only allows a single result                                  | 1.The result field only allows a single result                                        |
-		| 70 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile67.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed67.txt          | integrationtester | I73573r0     | True     | [[a]]*]]               | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don't match         | 1.Result - Invalid expression: opening and closing brackets don't match               |
+		| 70 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile67.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed67.txt          | integrationtester | I73573r0     | True     | [[a]]*]]               | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match         | 1.Result - Invalid expression: opening and closing brackets don"t match               |
 		| 71 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile68.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed68.txt          | integrationtester | I73573r0     | True     | [[var@]]               | ""      | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                 | 1.Result - Variable name [[var@]] contains invalid character(s)                       |
-		| 72 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile69.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed69.txt          | integrationtester | I73573r0     | True     | [[var]]00]]            | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don't match         | 1.Result - Invalid expression: opening and closing brackets don't match               |
+		| 72 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile69.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed69.txt          | integrationtester | I73573r0     | True     | [[var]]00]]            | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match         | 1.Result - Invalid expression: opening and closing brackets don"t match               |
 		| 73 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile70.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed70.txt          | integrationtester | I73573r0     | True     | [[(1var)]]             | ""      | AN           | True             | Result - Variable name [[1var]] contains invalid character(s)                 | 1.Result - Variable name [[1var]] contains invalid character(s)                       |
 		| 74 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile71.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed71.txt          | integrationtester | I73573r0     | True     | [[var[[a]]]]           | ""      | AN           | True             | Result - Invalid Region [[var[[a]]]]                                          | 1.Result - Invalid Region [[var[[a]]]]                                                |
 		| 75 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile72.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed72.txt          | integrationtester | I73573r0     | True     | [[var.a]]              | ""      | AN           | True             | Result - Variable name [[var.a]]contains invalid character(s)                 | 1.Result - Variable name [[var.a]] contains invalid character(s)                      |
@@ -166,14 +166,14 @@ Scenario Outline: Rename file validation
 		| 81 | [[sourcePath]]                 | ""                                                  | ""                            | c:\renamefile78.txt | ""                    | ""       | [[destPath]]                     | ftp://rsaklfsvrsbspdc:1002/FORTESTING/renamed78.txt          | integrationtester | I73573r0     | True     | [[rec([[[[b]]]]).a]]   | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
 	
 Scenario Outline: Rename file at location with invalid directories
-	Given I have a source path '<source>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And result as "<resultVar>"
     When the rename file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "AN" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
@@ -190,17 +190,16 @@ Scenario Outline: Rename file at location with invalid directories
 	| 5  | Local to FTP   | [[variable]] | E:\tr.txt      | ""       | ""       | [[v]]        | ""                                                 | ""                | ""           | True     | [[result]] |        | 
 	| 6  | Local to FTPS  | [[path]]     | E:\test.txt    | ""       | ""       | 5453         | 5453                                               | integrationtester | I73573r0     | True     | [[result]] |        | 
 		
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Rename file at location using complex types
-	Given I have a source path '<source>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And result as "<resultVar>"
     When the rename file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |

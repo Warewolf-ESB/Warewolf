@@ -167,7 +167,7 @@ Scenario Outline:  Ensuring recordsets work as a Result
 	And replace result is "<resultVar>"
 	When the replace tool is executed
 	Then the execution has "NO" error
-	And the result variable '<resultVar>' will be '<result>'
+	And the result variable "<resultVar>" will be "<result>"
 Examples: 
 | value         | replace | resultVar               | result | output                                                    |
 | [[text]]      | West    | [[rec().string]]        | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
@@ -178,7 +178,6 @@ Examples:
 | [[text]]      | 12      | [[var]]                 | 1      | [[sentence]] = Dear Mr 12, We welcome you as a customer   |
 
 #Complex types WOLF-1042
-@ignore
 Scenario Outline: Replace values using complex types
 	Given I have a replace variable "<var>" equal to "<value>"
 	And I have a sentence "<var>"

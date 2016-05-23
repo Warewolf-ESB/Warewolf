@@ -6,10 +6,10 @@
 
 
 Scenario Outline: Parse text input
-	Given I have text '<variable>' as input
+	Given I have text "<variable>" as input
     When I validate
-	Then has error will be '<error>'.
-	And the error message will be '<message>'
+	Then has error will be "<error>".
+	And the error message will be "<message>"
 Examples: 	
 	| Name | variable                                  | error | message                                                                                                                                                                                                                                                 |
 	| 1    | [[var]]                                   | false |                                                                                                                                                                                                                                                         |
@@ -60,7 +60,7 @@ Examples:
 	| 46   | [[var/]]                                  | true  | Variable name [[var/]] contains invalid character(s)                                                                                                                                                                                                    |
 	| 47   | [[var:]]                                  | true  | Variable name [[var:]] contains invalid character(s)                                                                                                                                                                                                    |
 	| 48   | [[var"]]                                  | true  | Variable name [[var"]] contains invalid character(s)                                                                                                                                                                                                    |
-	| 49   | [[var']]                                  | true  | Variable name [[var']] contains invalid character(s)                                                                                                                                                                                                    |
+	| 49   | [[var"]]                                  | true  | Variable name [[var"]] contains invalid character(s)                                                                                                                                                                                                    |
 	| 50   | [[var;]]                                  | true  | Variable name [[var;]] contains invalid character(s)                                                                                                                                                                                                    |
 	| 51   | [[var?]]                                  | true  | Variable name [[var?]] contains invalid character(s)                                                                                                                                                                                                    |
 	| 52   | [[var 1]]                                 | true  | Variable name [[var 1]] contains invalid character(s)                                                                                                                                                                                                   |
@@ -123,7 +123,7 @@ Examples:
 	| 109  | [[rec(:).a]]                              | true  | Recordset index (:) contains invalid character(s)                                                                                                                                                                                                       |
 	| 110  | [[rec(,).a]]                              | true  | Recordset index (,) contains invalid character(s)                                                                                                                                                                                                       |
 	| 111  | [[rec"()".a]]                             | true  | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
-	| 112  | [[rec'()'.a]]                             | true  | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+	| 112  | [[rec"()".a]]                             | true  | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 113  | [[rec").a]]                               | true  | Variable name [[rec").a]] contains invalid character(s)                                                                                                                                                                                                 |
 	| 114  | [[rec{a]]                                 | true  | Variable name [[rec{a]] contains invalid character(s)                                                                                                                                                                                                   |
 	| 115  | [[rec{a}]]                                | true  | Variable name [[rec{a}]] contains invalid character(s)                                                                                                                                                                                                  |

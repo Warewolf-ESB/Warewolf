@@ -19,7 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_Folder
     [Binding]
     public class ReadFolderSteps : FileToolsBase
     {
-        [Given(@"Read is '(.*)'")]
+        [Given(@"Read is ""(.*)""")]
         public void GivenReadIs(string readType)
         {
             ScenarioContext.Current.Add("readType", readType);

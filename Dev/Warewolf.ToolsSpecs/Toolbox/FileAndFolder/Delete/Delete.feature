@@ -6,12 +6,12 @@ Feature: Delete
 
 
 Scenario Outline: Delete file at location
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
 	When the delete file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password | Private Key File |
@@ -30,12 +30,12 @@ Scenario Outline: Delete file at location
 	| SFTP PK    | [[path]] | sftp://localhost/filetodelete1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Delete file at location Null
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
 	When the delete file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	Then the execution has "<errorOccured>" error
 	Examples: 
 	| Name			| source	| sourceLocation															| username						| password | resultVar  | result	| errorOccured | sourcePrivateKeyFile	|
@@ -49,21 +49,21 @@ Scenario Outline: Delete file at location Null
 	| SFTP PK		| [[path]]	| sftp://localhost															| dev2							| Q/ulw&]  | [[result]] | 			| NO           | C:\\Temp\Temp\key.opk	|
 
 Scenario Outline: Delete file Validation
-    Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+    Given I have a variable "[[a]]" with a value "<Val1>"
+	Given I have a variable "[[b]]" with a value "<Val2>"
+	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When validating the tool
-	Then validation is '<ValidationResult>'
-	And validation message is '<DesignValidation>'
+	Then validation is "<ValidationResult>"
+	And validation message is "<DesignValidation>"
     When the delete file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	And execution error message will be '<DesignValidation>'
+	And execution error message will be "<DesignValidation>"
 	And the debug inputs as
          | Input Path                          | Username   | Password |
          | <File or Folder> = <sourceLocation> | <username> | String   |
@@ -99,11 +99,11 @@ Scenario Outline: Delete file Validation
 		| 25 | [[sourcePath]]                  |                                                |                    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetodelete1.txt        | [[a]]\[[b]]           | [[result]]             | ""      | AN           | False            | ""                                                                                                                            | 1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]                                                                    |
 		| 26 | [[sourcePath]]                  |                                                |                    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete2.txt | [[rec([[index]]).a]]  | [[result]]             | ""      | AN           | False            | ""                                                                                                                            | 1.No Value assigned for [[index]]                                                                                                |
 		| 27 | [[sourcePath]].txt              |                                                |                    | c:\filetodelete2.txt                                                    | [[rec([[index&]]).a]] | [[result]]             | ""      | AN           | True             | Username - Recordset name [[indexx&]] contains invalid character(s)                                                           | Username - Recordset name [[indexx&]] contains invalid character(s)                                                              |
-		| 28 | [[sourcePath]].txt              |                                                |                    | c:\filetodelete2.txt                                                    | [[a]]*]]              | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don't match                                                       | 1.Username - Invalid expression: opening and closing brackets don't match                                                        |
+		| 28 | [[sourcePath]].txt              |                                                |                    | c:\filetodelete2.txt                                                    | [[a]]*]]              | [[result]]             | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match                                                       | 1.Username - Invalid expression: opening and closing brackets don"t match                                                        |
 		| 29 | [[sourcePath]]                  |                                                |                    | c:\filetodelete1.txt                                                    | ""                    | [[result]][[a]]        | ""      | AN           | True             | The result field only allows a single result                                                                                  | 1.The result field only allows a single result                                                                                   |
 		| 30 | [[sourcePath]]                  |                                                |                    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetodelete1.txt        | ""                    | [[a]]*]]               | ""      | AN           | True             | Result - The Result field only allows single result                                                                           | 1.Result - The Result field only allows single result                                                                            |
 		| 31 | [[sourcePath]]                  |                                                |                    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetodelete2.txt | ""                    | [[var@]]               | ""      | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                 | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                  |
-		| 32 | [[sourcePath]]                  |                                                |                    | c:\filetodelete2.txt                                                    | ""                    | [[var]]00]]            | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don't match                                                         | 1.Result - Invalid expression: opening and closing brackets don't match                                                          |
+		| 32 | [[sourcePath]]                  |                                                |                    | c:\filetodelete2.txt                                                    | ""                    | [[var]]00]]            | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match                                                         | 1.Result - Invalid expression: opening and closing brackets don"t match                                                          |
 		| 33 | [[sourcePath]]                  |                                                |                    | c:\filetodelete3.txt                                                    | ""                    | [[(1var)]]             | ""      | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                 | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                  |
 		| 34 | [[sourcePath]]                  |                                                |                    | c:\filetodelete13.txt                                                   | ""                    | [[var[[a]]]]           | ""      | AN           | True             | Result - Invalid Region [[var[[a]]]]                                                                                          | 1.Result - Invalid Region [[var[[a]]]]                                                                                           |
 		| 35 | [[sourcePath]]                  |                                                |                    | c:\filetodelete14.txt                                                   | ""                    | [[var.a]]              | ""      | AN           | True             | Result - Variable name [[var.a]]contains invalid character(s)                                                                 | 1.Result - Variable name [[var.a]] contains invalid character(s)                                                                 |
@@ -116,11 +116,11 @@ Scenario Outline: Delete file Validation
 		| 42 | [[var@]]                        |                                                |                    |                                                                         | [[var@]]              | [[var@]]               | ""      | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s) | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s) |                            
 
 Scenario Outline: Delete file at location with incorrect directories
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When the delete file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password |
@@ -134,14 +134,13 @@ Scenario Outline: Delete file at location with incorrect directories
 	| UNC        | [[var]]      |                     | ""                           | ""       | [[result]] |        | AN           | 
 	| UNC Secure | [[variable]] | ""                  | dev2.local\IntegrationTester | I73573r0 | [[result]] |        | AN           | 
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Delete file at location using complex types
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When the delete file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password |

@@ -489,7 +489,7 @@ namespace Dev2.Common.DateAndTime
                             {
                                 //no result, throw error
                                 error =
-                                    "Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)";
+                                    "Could not parse input datetime with given input format (if you left the input format blank then even after trying default datetime formats from other cultures) " + error;
                             }
                         }
                         else
@@ -1180,6 +1180,10 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("era",
                 new List<IDateTimeFormatPartOptionTO>
                 {
+                    new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.",
+                        AssignEra),
+                    new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D",
+                        AssignEra),
                     new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD",
                         AssignEra)
                 });
@@ -1187,7 +1191,11 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatPartOptions.Add("Era",
                 new List<IDateTimeFormatPartOptionTO>
                 {
+                    new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.",
+                        AssignEra),
                     new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D",
+                        AssignEra),
+                    new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD",
                         AssignEra)
                 });
 
@@ -1195,6 +1203,10 @@ namespace Dev2.Common.DateAndTime
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.",
+                        AssignEra),
+                    new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D",
+                        AssignEra),
+                    new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD",
                         AssignEra)
                 });
         }
