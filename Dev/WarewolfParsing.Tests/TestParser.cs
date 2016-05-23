@@ -224,11 +224,11 @@ namespace WarewolfParsingTest
             var env = CreateTestEnvWithData();
 
             var ast = PublicFunctions.EvalEnvExpression("[[[[c]]]]", 0, env);
-            Assert.IsTrue(ast.IsWarewolfAtomResult);
-            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsTrue(ast.IsWarewolfAtomListresult);
+            var x = ast as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
             // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(x.Item.IsDataString);
-            var val = x.Item as DataASTMutable.WarewolfAtom.DataString;
+            Assert.IsTrue(x.Item[0].IsDataString);
+            var val = x.Item[0] as DataASTMutable.WarewolfAtom.DataString;
             Assert.AreEqual("a", val.Item);
             // ReSharper rstore PossibleNullReferenceException
         }

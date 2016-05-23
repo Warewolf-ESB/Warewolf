@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Upload;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -13,12 +14,15 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
-using Dev2.Activities.Designers2.DropBox2016.Download;
-using Dev2.Activities.DropBox2016.DownloadActivity;
+using Dev2.Runtime.Hosting;
+using Dev2.Studio.Core.Messages;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
     [Binding]
+    //[Owner("Nkosinathi Sangweni")]
     public class UploadDropboxSteps : RecordSetBases
     {
         [Given(@"I drag Upload Dropbox Tool onto the design surface")]
@@ -31,9 +35,10 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var sources = new List<OauthSource>()
             {
-                new OauthSource(){ResourceName = "Test Resource Name"}
+                new DropBoxSource(){ResourceName = "Test Resource Name"}
             };
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
@@ -45,22 +50,21 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
-            
-            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            var mock = new Mock<IResourceCatalog>();
+            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
+            var uploadViewModel = new DropBoxUploadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
             ScenarioContext.Current.Add("uploadViewModel", uploadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
+            ScenarioContext.Current.Add("mockEventAggregator", mockEventAggregator);
         }
-
         private static DropBoxUploadViewModel GetViewModel()
         {
             return ScenarioContext.Current.Get<DropBoxUploadViewModel>("uploadViewModel");
         }
-
         private static Mock<IEnvironmentModel> GeEnvrionmentModel()
         {
             return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
-
         [Given(@"New is Enabled")]
         [When(@"New is Enabled")]
         [Then(@"New is Enabled")]
@@ -69,7 +73,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var canExecute = GetViewModel().NewSourceCommand.CanExecute(null);
             Assert.IsTrue(canExecute);
         }
-
         [When(@"the Dropbox tool is executed")]
         public void WhenTheDropboxToolIsExecuted()
         {
@@ -94,7 +97,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void GivenLocalFileIsEnabled()
         {
             var fromPath = GetViewModel().FromPath;
-            Assert.IsNotNull(fromPath);
         }
 
         [Then(@"I Click Edit")]
@@ -103,11 +105,11 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             GetViewModel().EditDropboxSourceCommand.CanExecute(null);
         }
 
+
         [Given(@"Dropbox File is Enabled")]
         public void GivenDropboxFileIsEnabled()
         {
             var dropBoxPath = GetViewModel().ToPath;
-            Assert.IsNotNull(dropBoxPath);
         }
 
         [When(@"I Click New")]
@@ -121,11 +123,11 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             if (sourceName == "Drop")
             {
-                var oauthSource = new OauthSource()
+                var oauthSource = new DropBoxSource()
                 {
                     ResourceName = "Drop",
-                    Key = "sourceKey",
-                    Secret = "fgklkgjfkngnf"
+                    AppKey = "sourceKey",
+                    AccessToken = "fgklkgjfkngnf"
                 };
                 GetViewModel().SelectedSource = oauthSource;
             }
@@ -136,7 +138,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             GetViewModel().FromPath = localPath;
         }
-
         [Then(@"I set Dropbox File equals ""(.*)""")]
         public void ThenISetDropboxFileEquals(string dropboxPath)
         {
@@ -149,7 +150,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             Assert.AreEqual<string>(oldSourceName,GetViewModel().SelectedSource.ResourceName);
             Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().FromPath));
             Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().ToPath));
-            GetViewModel().SelectedSource = new OauthSource()
+            GetViewModel().SelectedSource = new DropBoxSource()
             {
                 ResourceName = newSourceName
             };
@@ -158,8 +159,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the New Dropbox Source window is opened")]
         public void ThenTheNewDropboxSourceWindowIsOpened()
         {
-            var isDropboxSourceWizardSourceMessagePulished = GetViewModel().IsDropboxSourceWizardSourceMessagePulished;
-            Assert.IsTrue(isDropboxSourceWizardSourceMessagePulished);
+            var mock = ScenarioContext.Current.Get<Mock<IEventAggregator>>("mockEventAggregator");
+            mock.Verify(aggregator => aggregator.Publish(It.IsAny<IMessage>()));
         }
 
         [Then(@"the ""(.*)"" Dropbox Source window is opened")]
@@ -168,7 +169,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             if(sourceName == "Drop")
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
         }
-
         [Then(@"Edit is Enabled")]
         public void ThenEditIsEnabled()
         {
@@ -182,7 +182,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             Assert.IsTrue(string.IsNullOrEmpty(emptyString));
         }
 
-        [When(@"Dropbox File equals ""(.*)""")]
         [Then(@"Dropbox File equals ""(.*)""")]
         public void ThenDropboxFileEquals(string emptyString)
         {

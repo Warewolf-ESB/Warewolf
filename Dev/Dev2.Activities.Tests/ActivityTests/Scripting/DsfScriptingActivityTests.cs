@@ -143,7 +143,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual("1,2,3,4", dataListItems[0], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("1", dataListItems[0], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("2", dataListItems[1], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("3", dataListItems[2], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("4", dataListItems[3], "Valid Javascript with datalist region executed incorrectly");
             }
             else
             {
@@ -289,7 +292,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual("1,2,3,4", dataListItems[0], "Valid Rubyscript with datalist region executed incorrectly");
+                Assert.AreEqual("1", dataListItems[0], "Valid Rubyscript with datalist region executed incorrectly");
+                Assert.AreEqual("2", dataListItems[1], "Valid Rubyscript with datalist region executed incorrectly");
+                Assert.AreEqual("3", dataListItems[2], "Valid Rubyscript with datalist region executed incorrectly");
+                Assert.AreEqual("4", dataListItems[3], "Valid Rubyscript with datalist region executed incorrectly");
             }
             else
             {

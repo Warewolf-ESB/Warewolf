@@ -8,16 +8,14 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Runtime.Hosting;
 using Dev2.Services.Events;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
@@ -29,47 +27,54 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 {
     public class DropBoxDeleteViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
-        private ObservableCollection<OauthSource> _sources;
-        private readonly IEnvironmentModel _environmentModel;
+        private ObservableCollection<DropBoxSource> _sources;
         private readonly IEventAggregator _eventPublisher;
+        private readonly IDropboxSourceManager _sourceManager;
         private string _deletePath;
         private string _result;
 
         [ExcludeFromCodeCoverage]
         // ReSharper disable once UnusedMember.Global
         public DropBoxDeleteViewModel(ModelItem modelItem)
-            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, EventPublishers.Aggregator, new DropboxSourceManager())
         {
+            this.RunViewSetup();
         }
 
-        public DropBoxDeleteViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public DropBoxDeleteViewModel(ModelItem modelItem, IEventAggregator eventPublisher, IDropboxSourceManager sourceManager)
             : base(modelItem, "File Or Folder", String.Empty)
         {
-            _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
-            ShowLarge = true;
+            _sourceManager = sourceManager;
             ThumbVisibility = Visibility.Visible;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), p => IsDropboxSourceSelected);
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateOAuthSource);
             // ReSharper disable once VirtualMemberCallInContructor
-            _sources = LoadOAuthSources();
+            // ReSharper disable once VirtualMemberCallInContructor
+            Sources = LoadOAuthSources();
             AddTitleBarLargeToggle();
             EditDropboxSourceCommand.RaiseCanExecuteChanged();
-            IsDropboxSourceWizardSourceMessagePulished = false;
         }
 
         public ICommand NewSourceCommand { get; set; }
-        public OauthSource SelectedSource
+        public IResourceCatalog ResourceManager
         {
             get
             {
-                var oauthSource = GetModelPropertyName() as OauthSource;
-                return oauthSource ?? GetProperty<OauthSource>();
+                return ResourceCatalog.Instance;
+            }
+        }
+        public DropBoxSource SelectedSource
+        {
+            get
+            {
+                var oauthSource = GetProperty<DropBoxSource>();
+                return oauthSource ?? GetProperty<DropBoxSource>();
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             set
             {
-                SetModelItemProperty(value);
+                SetProperty(value);
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged("IsDropboxSourceSelected");
                 // ReSharper disable once RedundantArgumentDefaultValue
@@ -77,17 +82,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             }
         }
 
-        private void SetModelItemProperty(object value, [CallerMemberName]string propName = null)
-        {
-            ModelItem.SetProperty(propName, value);
-        }
-
-        private object GetModelPropertyName([CallerMemberName]string propName = null)
-        {
-            var propertyValue = ModelItem.GetProperty(propName);
-            return propertyValue ?? string.Empty;
-        }
-        public virtual ObservableCollection<OauthSource> Sources
+        public virtual ObservableCollection<DropBoxSource> Sources
         {
             get
             {
@@ -114,13 +109,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         {
             get
             {
-                _deletePath = GetModelPropertyName().ToString();
+                _deletePath = GetProperty<string>();
                 return _deletePath;
             }
             set
             {
                 _deletePath = value;
-                SetModelItemProperty(_deletePath);
+                SetProperty(value);
                 OnPropertyChanged();
             }
         }
@@ -128,13 +123,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         {
             get
             {
-                _result = GetModelPropertyName().ToString();
+                _result = GetProperty<string>();
                 return _result;
             }
             set
             {
                 _result = value;
-                SetModelItemProperty(_result);
+                SetProperty(value);
                 OnPropertyChanged();
             }
         }
@@ -146,20 +141,11 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 
         public void CreateOAuthSource()
         {
-            IsDropboxSourceWizardSourceMessagePulished = false;
             _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
-            _sources = LoadOAuthSources();
-            IsDropboxSourceWizardSourceMessagePulished = true;
+            Sources = LoadOAuthSources();
             OnPropertyChanged("Sources");
         }
-        //Used by specs
-        public bool IsDropboxSourceWizardSourceMessagePulished { get; set; }
 
-        public virtual ObservableCollection<OauthSource> LoadOAuthSources()
-        {
-            var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
-            return oauthSources.ToObservableCollection();
-        }
 
         #region Overrides of ActivityDesignerViewModel
         [ExcludeFromCodeCoverage]
@@ -184,6 +170,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public ObservableCollection<DropBoxSource> LoadOAuthSources()
+        {
+            Sources = _sourceManager.FetchSources<DropBoxSource>().ToObservableCollection();
+            return Sources;
         }
     }
 }

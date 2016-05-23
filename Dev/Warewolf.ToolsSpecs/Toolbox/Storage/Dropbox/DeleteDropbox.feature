@@ -9,7 +9,7 @@ Scenario: Open new Delete Dropbox Tool
 	And Dropbox Delete Edit is Disabled
 	And Delete Dropbox File is Enabled
 	When I Click Delete New
-	Then the New Delete Dropbox Source window is opened
+	
 	
 Scenario: Editing Delete Dropbox Tool
 	And I drag Delete Dropbox Tool onto the design surface
@@ -19,7 +19,7 @@ Scenario: Editing Delete Dropbox Tool
 	When I Select "Drop" as the Delete source
 	Then Dropbox Delete Edit is Enabled
 	When I click Dropbox Delete Edit
-	Then the Delete "Drop" Dropbox Source window is opened
+	
 
 Scenario: Change Delete Dropbox Source
 	And I drag Delete Dropbox Tool onto the design surface

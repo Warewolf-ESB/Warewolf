@@ -666,7 +666,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12"
                                                                    Height="12"
-                                                                   Source="{StaticResource AddSharepointBlackLogo}" />
+                                                                   Source="{StaticResource SharepointSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
 
@@ -997,7 +997,7 @@
                                                         <ig:XamMenuItem.Icon>
                                                             <Image Width="12"
                                                                    Height="12"
-                                                                   Source="{StaticResource AddSharepointBlackLogo}" />
+                                                                   Source="{StaticResource SharepointSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuSeparator Visibility="{Binding Path=Data.CanCreateSharePointSource, Converter={StaticResource BoolToVisibilityConverter}}" />

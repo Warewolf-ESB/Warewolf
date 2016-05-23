@@ -109,7 +109,6 @@
     </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Sequence\Sequence.feature.cs">
-      <DependentUpon>Sequence.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -224,7 +223,6 @@
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Write File\Write File.feature.cs">
-      <DependentUpon>Write File.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -374,6 +372,11 @@
       <DependentUpon>UploadDropbox.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Storage\Dropbox\UploadDropboxSteps.cs" />
+    <Compile Include="Toolbox\Utility\Calculate\Aggregate Calculate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Aggregate Calculate.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -613,6 +616,10 @@
     <None Include="Toolbox\Storage\Dropbox\UploadDropbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>UploadDropbox.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Calculate\Aggregate Calculate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Aggregate Calculate.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Calculate\Calculate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

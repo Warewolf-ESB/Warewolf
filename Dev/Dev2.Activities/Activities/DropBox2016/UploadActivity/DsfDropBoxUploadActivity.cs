@@ -10,8 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
+using Dev2.Activities.Debug;
+using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -86,7 +89,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             {
                 Timeout = TimeSpan.FromMinutes(20)
             };
-            _client = new DropboxClient(SelectedSource.Secret, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
+            _client = new DropboxClient(SelectedSource.AccessToken, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
             return _client;
         }
 
@@ -150,7 +153,31 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 return WriteMode.Overwrite.Instance;
             return WriteMode.Add.Instance;
         }
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            if (env == null)
+            {
+                return new List<DebugItem>();
+            }
+            base.GetDebugInputs(env, update);
+
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "OverWrite"), debugItem);
+            string value = OverWriteMode ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Add"), debugItem);
+            value = AddMode ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+           
+            return _debugInputs;
+
+        }
     }
 
-    #endregion Overrides of DsfActivity
+        #endregion Overrides of DsfActivity
 }
