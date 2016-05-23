@@ -6,7 +6,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Activities.Expressions;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -23,7 +22,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
     public class RabbitMQConsumeDesignerViewModelTest
     {
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RabbitMQConsumeDesignerViewModel_Constructor_NullModelItem_ThrowsException()
@@ -36,7 +35,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]        
         public void RabbitMQConsumeDesignerViewModel_Constructor_Properties()
         {
@@ -60,7 +59,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.AreEqual((ushort)2, vm.Prefetch);
         }
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]        
         public void RabbitMQConsumeDesignerViewModel_Create_NewRabbitMQSource()
         {
@@ -78,7 +77,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]
         public void RabbitMQConsumeDesignerViewModel_Constructor_Given_A_Model_Should_SetupCommonViewModelProperties()
         {
@@ -97,7 +96,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]
         public void RabbitMQConsumeDesignerViewModel_Constructor1()
         {
@@ -131,7 +130,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Validate")]
         public void RabbitMQConsumeDesignerViewModel_Validate_With_No_QueueName_ShouldBreakRule()
         {
@@ -152,7 +151,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Validate")]
         public void RabbitMQConsumeDesignerViewModel_Validate_With_No_RabbitMQ_Source_ShouldBreakRule()
         {
@@ -172,7 +171,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Commands")]
         public void RabbitMQConsumeDesignerViewModel_EditRabbitMQSourceCommand_ShouldCallOpenResource()
         {

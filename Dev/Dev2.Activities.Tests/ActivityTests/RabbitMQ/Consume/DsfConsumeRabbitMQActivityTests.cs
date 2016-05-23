@@ -17,7 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
     public class DsfConsumeRabbitMQActivityTests
     {
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
         public void DsfConsumeRabbitMQActivity_Construct_Paramterless_SetsDefaultPropertyValues()
         {
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_Execute_Failure_NullSource()
         {
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }       
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_Execute_Failure_NoParams()
         {
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_Execute_Failure_InvalidParams()
         {
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         [ExpectedException(typeof(Exception))]
         public void DsfConsumeRabbitMQActivity_Execute_Failure_NullException()
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]        
         public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception()
         {
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void DsfConsumeRabbitMQActivity_Execute_Requeue_Should_Not_Remove_MessageFrom_Queue()
         {
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
 
         [TestMethod]
-        [Owner("Sanele")]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]        
         public void DsfConsumeRabbitMQActivity_Execute_Consume_From_UnExisting_Queue_Exception()
         {
