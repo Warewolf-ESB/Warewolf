@@ -76,17 +76,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Delete
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And(string.Format("use private public key for source is \'{0}\'", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -252,17 +252,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
 this.ScenarioSetup(scenarioInfo);
 #line 33
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
- testRunner.And(string.Format("use private public key for source is \'{0}\'", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 39
  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -427,35 +427,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
 this.ScenarioSetup(scenarioInfo);
 #line 53
-    testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \'{0}\'", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 54
- testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \'{0}\'", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 55
- testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \'{0}\'", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
- testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \'{0}\'", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 57
  testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 58
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 59
- testRunner.And(string.Format("source credentials as \'{0}\' and \'<password>\'", username), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"<password>\"", username), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
  testRunner.When("validating the tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 62
- testRunner.Then(string.Format("validation is \'{0}\'", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
- testRunner.And(string.Format("validation message is \'{0}\'", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
     testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 65
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 66
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
- testRunner.And(string.Format("execution error message will be \'{0}\'", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("execution error message will be \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
@@ -1087,11 +1087,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\"t match")]
         public virtual void DeleteFileValidation_28()
         {
-            this.DeleteFileValidation("28", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[a]]*]]", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\'t match", "1.Username - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.DeleteFileValidation("28", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[a]]*]]", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1175,11 +1175,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\'t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\'t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
         public virtual void DeleteFileValidation_32()
         {
-            this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\'t match", "1.Result - Invalid expression: opening and closing brackets don\'t match", ((string[])(null)));
+            this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1412,15 +1412,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 119
 this.ScenarioSetup(scenarioInfo);
 #line 120
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 121
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 122
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 123
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 124
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 125
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1501,26 +1501,20 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void DeleteFileAtLocationUsingComplexTypes(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location using complex types", @__tags);
-#line 140
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location using complex types", exampleTags);
+#line 139
 this.ScenarioSetup(scenarioInfo);
+#line 140
+ testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 141
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
- testRunner.And(string.Format("source credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 143
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 144
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 144
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 145
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 146
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1531,14 +1525,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
-#line 147
+#line 146
  testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 150
+#line 149
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1548,7 +1542,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[file().resources().path]]")]
@@ -1567,7 +1560,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[file(*).resources(3).path]]")]
@@ -1586,7 +1578,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[file(1).resources([[int]]).path]]")]

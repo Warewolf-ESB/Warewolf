@@ -4,18 +4,16 @@
 	I want to be to view files available on a dropbox account
 
 
-Scenario: Open new Dropbox Tool
-	Given I open New Workflow
-	And I drag Readlist Dropbox Tool onto the design surface
+Scenario: Open new Read Dropbox Tool
+	Given I drag Readlist Dropbox Tool onto the design surface
     And Readlist New is Enabled
 	And Readlist Edit is Disabled
 	And Readlist Dropbox File is Enabled
 	When I Click Readlist New
 	Then the New Readlist Dropbox Source window is opened
 	
-Scenario: Editing Dropbox Tool
-	Given I open New Workflow
-	And I drag Readlist Dropbox Tool onto the design surface
+Scenario: Editing Read Dropbox Tool
+	Given I drag Readlist Dropbox Tool onto the design surface
     And Readlist New is Enabled
 	And Readlist Edit is Disabled
 	And Readlist Dropbox File is Enabled
@@ -24,9 +22,8 @@ Scenario: Editing Dropbox Tool
 	When I Readlist click Edit
 	Then the "Drop" Readlist Dropbox Source window is opened
 
-Scenario: Change Dropbox Source
-	Given I open New Workflow
-	And I drag Readlist Dropbox Tool onto the design surface
+Scenario: Change Read Dropbox Source
+	Given I drag Readlist Dropbox Tool onto the design surface
     And Readlist New is Enabled
 	And Readlist Edit is Disabled
 	When I Select "Drop" as the Readlist source

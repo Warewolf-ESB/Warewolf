@@ -286,15 +286,14 @@ Scenario: Generate a Number between double min and double max with no decimals
 	|                     |
 	| [[result]] = Double |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Generate numbers using complex types
-	Given I have a type as '<Type>'
-	And I have a range from '<From>' to '<To>' 
+	Given I have a type as "<Type>"
+	And I have a range from "<From>" to "<To>" 
 	When the random tool is executed 
-	Then the result from the random tool should be of type "System.Int32" with a length of '<length>'
+	Then the result from the random tool should be of type "System.Int32" with a length of "<length>"
 	And the execution has "<Error>" error
-	And the execution has '<Message>' error
+	And the execution has "<Message>" error
 Examples: 
 	| Type    | From                        | To                             | length | res                      | Error | Message                        |
 	| Numbers | [[rec(1).count(3).val]] = 9 | [[rec(1).count(1).val]] = 1000 |        | [[rec().result().value]] | An    | [[rec().result().value]] = 557 |

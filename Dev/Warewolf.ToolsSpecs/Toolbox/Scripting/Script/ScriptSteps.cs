@@ -71,6 +71,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         }
 
         [Given(@"I have this script to execute ""(.*)""")]
+        [Given(@"I have the script to execute ""(.*)""")]
         public void GivenIHaveThisScriptToExecute(string scriptFileName)
         {
             string scriptToExecute;
@@ -80,7 +81,6 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             }
             else
             {
-                
                 string resourceName = string.Format("Warewolf.ToolsSpecs.Toolbox.Scripting.Script.testfiles.{0}",
                                                     scriptFileName);
                 scriptToExecute = ReadFile(resourceName);

@@ -332,7 +332,7 @@ Scenario: Execute Python with a negative recordset index
 	| [[result]] = |
 
 Scenario Outline:Excute Javascript with incorrect values
-	Given I have the script to execute '<script>'
+	Given I have the script to execute "<script>"
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the execution has "AN" error
@@ -345,11 +345,11 @@ Scenario Outline:Excute Javascript with incorrect values
 	| [[result]] = |
 	Examples: 
 	| Script  | ErrorOccured                                                                                                               |
-	| 88      | There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result |
+	| 88      | There was an error when returning a value from your script, remember to use the "Return" keyword when returning the result |
 	| [[var]] | Scalar value {var} is NULL                                                                                                 |
 
 Scenario Outline:Execute Javascript using recordsets
-	Given I have the script to execute '<script>' equals to '<val>'
+	Given I have the script to execute "<script>" equals to "<val>"
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the execution has "No" error
@@ -368,9 +368,8 @@ Scenario Outline:Execute Javascript using recordsets
 	| [[rec([[int]]).a]],[[int]] =1 | return "a message"; | [[rs([[int]]).a]],[[int]]=1 | a message |
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline:Execute Javascript using complex types
-	Given I have the script to execute '<script>' equals to '<val>'
+	Given I have the script to execute "<script>" equals to "<val>"
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the execution has "No" error

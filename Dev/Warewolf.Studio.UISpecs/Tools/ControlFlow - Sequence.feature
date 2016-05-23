@@ -5,7 +5,6 @@
 
 @Sequence 
 # Coded UI Tests
-@ignore
 Scenario: Four tool names is visible in sequence small view
 	Given I have Sequence small view on design surface
 	And I have Assign in Sequence small view
@@ -38,7 +37,6 @@ Scenario: Tools are visible when I expand large view
     And End this workflow is "Unselected"
     And Done button is "Visible"
 
-@ignore
 Scenario: Service in sequence
 	Given I have Sequence small view on design surface
 	And I have "Service" in Sequence small view

@@ -5,7 +5,6 @@
 
 @FindRecordIndex
 # Coded UI Test
-@ignore
 Scenario: Find Record Index small view
 	Given I have Find Record Index Small view on design surface
 	And Infield is ""
@@ -43,7 +42,6 @@ Scenario: Find Record Index Large view
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 
-@ignore
 Scenario: Find Record Index small view water marks
 	Given I have Find Record Index Small view on design surface
 	And Infield water mark is "[[Recordset().Field]]"
@@ -100,7 +98,6 @@ Scenario: FRI small view to large view data persisting correctly
     And Done button is "Visible"
 
 
-@ignore
 Scenario: In small view Rows are creating one after one and scroll bar is enabling
 	Given I have Find Record Index Small view on design surface
 	And Infield is "[[rec().a]]"
@@ -129,7 +126,6 @@ Scenario: In small view Rows are creating one after one and scroll bar is enabli
 	And Done button is "Visible"
 
 
-@ignore
 Scenario: Fields are creating one after one in large view
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -160,7 +156,6 @@ Scenario: Fields are creating one after one in large view
 	| 7 | Choose... | Disabled |
 	 And Scroll bar is "Enaabled"
 
-@ignore
 Scenario Outline: LargeView Selecting Match Type from dropbox
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -185,9 +180,9 @@ Examples:
     | 7  | Starts With        |
     | 8  | Ends With          |
     | 9  | Contains           |
-    | 10 | Doesn't Start With |
-    | 11 | Doesn't End With   |
-    | 12 | Doesn't Contain    |
+    | 10 | Doesn"t Start With |
+    | 11 | Doesn"t End With   |
+    | 12 | Doesn"t Contain    |
     | 13 | Is Alphanumeric    |
     | 14 | Is Base64          |
     | 15 | Is Between         |
@@ -211,7 +206,6 @@ Examples:
     | 34 | Not Test           |
     | 35 | Not XML            |
 	
-@ignore
 Scenario Outline: Small View Selecting Match Type from dropbox
 	Given I have Find Record Index Small view on design surface
 	And Infield is "[[rec().a]]"
@@ -236,9 +230,9 @@ Examples:
     | 7  | Starts With        | 123      |
     | 8  | Ends With          | 123      |
     | 9  | Contains           | 123      |
-    | 10 | Doesn't Start With | 123      |
-    | 11 | Doesn't End With   | 123      |
-    | 12 | Doesn't Contain    | 123      |
+    | 10 | Doesn"t Start With | 123      |
+    | 11 | Doesn"t End With   | 123      |
+    | 12 | Doesn"t Contain    | 123      |
     | 13 | Is Alphanumeric    | Disabled |
     | 14 | Is Base64          | Disabled |
     | 15 | Is Between         |          |
@@ -264,7 +258,6 @@ Examples:
 
 
 	
-@ignore
 Scenario: FRI is validating when I click on done with empty fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is ""
@@ -284,10 +277,9 @@ Scenario: FRI is validating when I click on done with empty fields
 	Then Validation message is thrown
 
 
-@ignore
 Scenario Outline: FRI large view is validating Invalid variables in InField
 	Given I have Find Record Index Large view on design surface
-	And Infield is '<Infields>'
+	And Infield is "<Infields>"
 	And Find Record Index large view as
 	| # | Match Type | Match    |
 	| 1 | =          | 124      |
@@ -301,8 +293,8 @@ Scenario Outline: FRI large view is validating Invalid variables in InField
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Val>'
-	And FRI small view is '<SmallView>'
+	Then Validation message is thrown "<Val>"
+	And FRI small view is "<SmallView>"
 Examples: 
      | No | InFields               | Val   | SmallView   |
      | 1  | ABC                    | True  | Not Visible |
@@ -323,7 +315,6 @@ Examples:
      | 16 | [[rec([[a]]).a]]       | False | Visible     |
      | 17 | [[a@]]                 | True  | Not Visible |
 
-@ignore
 Scenario Outline: FRI large view is validating Invalid variables in Match Fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -340,8 +331,8 @@ Scenario Outline: FRI large view is validating Invalid variables in Match Fields
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Val>'
-	And FRI small view is '<SmallView>'
+	Then Validation message is thrown "<Val>"
+	And FRI small view is "<SmallView>"
 Examples: 
      | No | Match                  | Val   | SmallView   |
      | 1  | ABC                    | False | Visible     |
@@ -362,7 +353,6 @@ Examples:
      | 16 | [[rec([[a]]).a]]       | False | Visible     |
      | 17 | [[a@]]                 | True  | Not Visible |
 
-@ignore
 Scenario: FRI large view deleting row
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -391,7 +381,6 @@ Scenario: FRI large view deleting row
 	| 3 | Choose... | Disabled |
 
 
-@ignore
 Scenario Outline: FRI large view is validating Invalid variables in Result Fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a]]"
@@ -401,11 +390,11 @@ Scenario Outline: FRI large view is validating Invalid variables in Result Field
 	| 2 | Choose...  | Disabled |
 	And Require All Matches To Be True is "Selected"
 	And Require All Fields To Match is "Unseleted"
-	And result is '<Result>'
+	And result is "<Result>"
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Val>'
-	And FRI small view is '<SmallView>'
+	Then Validation message is thrown "<Val>"
+	And FRI small view is "<SmallView>"
 Examples: 
      | No | Result                 | Val   | SmallView   |
      | 1  | ABC                    | False | Visible     |
@@ -428,7 +417,6 @@ Examples:
 
 
 
-@ignore
 Scenario: FRI is not validating when I close large view with incorrect fields
 	Given I have Find Record Index Large view on design surface
 	And Infield is "[[rec().a@]]"

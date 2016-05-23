@@ -78,22 +78,20 @@ namespace Warewolf.ToolsSpecs.Toolbox.Sharepoint
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I have a new Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
  testRunner.And("Sharepoint Server source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
+#line 10
  testRunner.And("Sharepoint List is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 11
  testRunner.And("Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 12
  testRunner.And("Refresh is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 13
  testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
+#line 14
  testRunner.When("I press New", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 16
+#line 15
  testRunner.Then("the sharepoint source window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -105,27 +103,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditAndExistingSharepointSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit and Existing sharepoint Source", ((string[])(null)));
-#line 18
+#line 17
 this.ScenarioSetup(scenarioInfo);
+#line 18
+ testRunner.Given("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
- testRunner.Given("I have a new Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
- testRunner.And("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
  testRunner.And("Sharepoint Server source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 20
  testRunner.And("Sharepoint List is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 21
  testRunner.And("Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 22
  testRunner.And("Refresh is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
+#line 23
  testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 24
  testRunner.When("SharepointTestServer is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 27
+#line 25
  testRunner.And("I press Edit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 26
  testRunner.Then("the SharepointTestServer Sharepoint source window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -137,29 +133,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RefreshSharepointList()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Refresh Sharepoint list", ((string[])(null)));
-#line 30
+#line 28
 this.ScenarioSetup(scenarioInfo);
-#line 31
-    testRunner.Given("I have a new Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
- testRunner.And("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 29
+ testRunner.Given("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 30
  testRunner.And("Sharepoint Server source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 31
  testRunner.And("Sharepoint List is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
+#line 32
  testRunner.And("Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 33
  testRunner.And("Refresh is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 34
  testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 35
  testRunner.When("SharepointTestServer is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
+#line 36
  testRunner.And("App is selected as the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 37
  testRunner.When("I click Refresh", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 41
+#line 38
  testRunner.Then("the Sharepoint Read Tool is refreshed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -171,25 +165,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertValuesToSharepointService()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert values to sharepoint service", ((string[])(null)));
-#line 43
+#line 40
 this.ScenarioSetup(scenarioInfo);
-#line 44
- testRunner.Given("I have a new Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
- testRunner.And("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 41
+ testRunner.Given("I drag Sharepoint Read Tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 42
  testRunner.And("Sharepoint Server source is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 43
  testRunner.And("Sharepoint List is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 44
  testRunner.And("Edit is Disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
+#line 45
  testRunner.And("Refresh is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 46
  testRunner.And("New is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 47
  testRunner.When("SharepointTestServer is selected as the data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 52
+#line 48
  testRunner.And("App is selected as the list", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -243,7 +235,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "App Modified By",
                         "[[appdata(*).AppModifiedBy]]"});
-#line 53
+#line 49
  testRunner.And("Sharepoint Read variables are", ((string)(null)), table1, "And ");
 #line hidden
             this.ScenarioCleanup();

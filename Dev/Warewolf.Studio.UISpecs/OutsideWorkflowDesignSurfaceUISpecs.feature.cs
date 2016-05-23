@@ -18,7 +18,7 @@ namespace Warewolf.Studio.UISpecs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class OutsideWorkflowDesignSurfaceUISpecsFeature
     {
         
@@ -71,45 +71,43 @@ namespace Warewolf.Studio.UISpecs
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Variable List Exists")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void VariableListExists()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Variable List Exists", new string[] {
-                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 8
+#line 7
 this.ScenarioSetup(scenarioInfo);
+#line 8
+ testRunner.Then("I \"Assert_VariableList_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 9
- testRunner.Then("I \'Assert_VariableList_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_DeleteButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 10
- testRunner.Then("I \'Assert_VariableList_DeleteButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_Recordset_ChildTextBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 11
- testRunner.Then("I \'Assert_VariableList_Recordset_ChildTextBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_RecordsetInput_CheckBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
- testRunner.Then("I \'Assert_VariableList_RecordsetInput_CheckBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_RecordsetInput_ChildCheckBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 13
- testRunner.Then("I \'Assert_VariableList_RecordsetInput_ChildCheckBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_RecordsetItem_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 14
- testRunner.Then("I \'Assert_VariableList_RecordsetItem_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_RecordsetOutput_CheckBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 15
- testRunner.Then("I \'Assert_VariableList_RecordsetOutput_CheckBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_RecordsetOutput_ChildCheckBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
- testRunner.Then("I \'Assert_VariableList_RecordsetOutput_ChildCheckBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_RecordsetTextBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 17
- testRunner.Then("I \'Assert_VariableList_RecordsetTextBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_SortButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 18
- testRunner.Then("I \'Assert_VariableList_SortButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_VariableInput_CheckBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 19
- testRunner.Then("I \'Assert_VariableList_VariableInput_CheckBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_VariableItem_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 20
- testRunner.Then("I \'Assert_VariableList_VariableItem_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_VariableOutput_CheckBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 21
- testRunner.Then("I \'Assert_VariableList_VariableOutput_CheckBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_VariableTextBox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 22
- testRunner.Then("I \'Assert_VariableList_VariableTextBox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 23
- testRunner.Then("I \'Assert_VariableList_DataInputTree_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_VariableList_DataInputTree_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -120,12 +118,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ToolboxExists()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Toolbox Exists", ((string[])(null)));
-#line 25
+#line 24
 this.ScenarioSetup(scenarioInfo);
+#line 25
+ testRunner.Then("I \"Assert_Toolbox_FilterTextbox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
- testRunner.Then("I \'Assert_Toolbox_FilterTextbox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 27
- testRunner.Then("I \'Assert_Toolbox_RefreshButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Toolbox_RefreshButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -136,12 +134,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExplorerExists()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Explorer Exists", ((string[])(null)));
-#line 29
+#line 28
 this.ScenarioSetup(scenarioInfo);
+#line 29
+ testRunner.Then("I \"Assert_Explorer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 30
- testRunner.Then("I \'Assert_Explorer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 31
- testRunner.Then("I \'Assert_Explorer_ServerName_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Explorer_ServerName_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -152,14 +150,14 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConnectControlExists()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connect Control Exists", ((string[])(null)));
-#line 33
+#line 32
 this.ScenarioSetup(scenarioInfo);
+#line 33
+ testRunner.Then("I \"Assert_Connect_Control_Exists_InExplorer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 34
- testRunner.Then("I \'Assert_Connect_Control_Exists_InExplorer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Connect_ConnectControl_Button_Exists_InExplorer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
- testRunner.Then("I \'Assert_Connect_ConnectControl_Button_Exists_InExplorer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 36
- testRunner.Then("I \'Assert_Explorer_Edit_Connect_Control_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Explorer_Edit_Connect_Control_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -172,24 +170,24 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Settings Ribbon Button", new string[] {
                         "ignore"});
-#line 39
+#line 38
 this.ScenarioSetup(scenarioInfo);
+#line 39
+ testRunner.Given("I \"Assert_Settings_Button_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
- testRunner.Given("I \'Assert_Settings_Button_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("I \"Click_Settings_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 41
- testRunner.When("I \'Click_Settings_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I \"Assert_Settings_LoggingTab_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 42
- testRunner.Then("I \'Assert_Settings_LoggingTab_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Settings_ResourcePermissions_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 43
- testRunner.Then("I \'Assert_Settings_ResourcePermissions_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Settings_SecurityTab_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 44
- testRunner.Then("I \'Assert_Settings_SecurityTab_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 45
- testRunner.Then("I \'Assert_Settings_ServerPermissions_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 51
- testRunner.Then("I \'Assert_MessageBox_No_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 55
- testRunner.When("I \'Click_MessageBox_No\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I \"Assert_Settings_ServerPermissions_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 50
+ testRunner.Then("I \"Assert_MessageBox_No_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 54
+ testRunner.When("I \"Click_MessageBox_No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -197,57 +195,55 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy Ribbon Button")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void DeployRibbonButton()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Ribbon Button", new string[] {
-                        "ignore"});
-#line 59
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Ribbon Button", ((string[])(null)));
+#line 57
 this.ScenarioSetup(scenarioInfo);
+#line 58
+ testRunner.Given("I \"Assert_Deploy_Ribbon_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 59
+ testRunner.When("I \"Click_Deploy_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 60
- testRunner.Given("I \'Assert_Deploy_Ribbon_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then("I \"Assert_Source_Server_Name_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 61
- testRunner.When("I \'Click_Deploy_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I \"Assert_Refresh_Button_Source_Server_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 62
- testRunner.Then("I \'Assert_Source_Server_Name_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Filter_Source_Server_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
- testRunner.Then("I \'Assert_Refresh_Button_Source_Server_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Connect_Control_DestinationServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 64
- testRunner.Then("I \'Assert_Filter_Source_Server_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Override_Count_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 65
- testRunner.Then("I \'Assert_Connect_Control_DestinationServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_NewResource_Count_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 66
- testRunner.Then("I \'Assert_Override_Count_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Source_Server_Edit_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 67
- testRunner.Then("I \'Assert_NewResource_Count_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Connect_Button_Source_Server_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 68
- testRunner.Then("I \'Assert_Source_Server_Edit_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Edit_Button_Destination_Server_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 69
- testRunner.Then("I \'Assert_Connect_Button_Source_Server_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Connect_button_Destination_Server_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 70
- testRunner.Then("I \'Assert_Edit_Button_Destination_Server_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Connect_Control_SourceServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 71
- testRunner.Then("I \'Assert_Connect_button_Destination_Server_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_ShowDependencies_Button_DestinationServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 72
- testRunner.Then("I \'Assert_Connect_Control_SourceServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_ServiceLabel_DestinationServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 73
- testRunner.Then("I \'Assert_ShowDependencies_Button_DestinationServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_ServicesCount_Label_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 74
- testRunner.Then("I \'Assert_ServiceLabel_DestinationServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SourceLabel_DestinationServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 75
- testRunner.Then("I \'Assert_ServicesCount_Label_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SourceCount_DestinationServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 76
- testRunner.Then("I \'Assert_SourceLabel_DestinationServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_NewResource_Label_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 77
- testRunner.Then("I \'Assert_SourceCount_DestinationServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Override_Label_DestinationServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 78
- testRunner.Then("I \'Assert_NewResource_Label_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DeployButton_DestinationServer_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 79
- testRunner.Then("I \'Assert_Override_Label_DestinationServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 80
- testRunner.Then("I \'Assert_DeployButton_DestinationServer_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 81
- testRunner.Then("I \'Assert_SuccessMessage_Label_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SuccessMessage_Label_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -260,16 +256,16 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Knowledge Base Ribbon Button", new string[] {
                         "ignore"});
-#line 84
+#line 82
 this.ScenarioSetup(scenarioInfo);
-#line 85
- testRunner.Given("I \'Assert_Knowledge_Base_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 86
- testRunner.When("I \'Click_Knowledge_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 93
- testRunner.Then("I \'Assert_MessageBox_No_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 97
- testRunner.When("I \'Click_MessageBox_No\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 83
+ testRunner.Given("I \"Assert_Knowledge_Base_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 84
+ testRunner.When("I \"Click_Knowledge_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 91
+ testRunner.Then("I \"Assert_MessageBox_No_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 95
+ testRunner.When("I \"Click_MessageBox_No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -280,12 +276,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LockMenuRibbonButton()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lock Menu Ribbon Button", ((string[])(null)));
-#line 100
+#line 98
 this.ScenarioSetup(scenarioInfo);
-#line 101
- testRunner.Given("I \'Assert_Lock_Button_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 102
- testRunner.When("I \'Click_Unlock_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 99
+ testRunner.Given("I \"Assert_Lock_Button_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 100
+ testRunner.When("I \"Click_Unlock_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -298,16 +294,16 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New Database Connector Ribbon Button", new string[] {
                         "ignore"});
-#line 106
+#line 104
 this.ScenarioSetup(scenarioInfo);
-#line 107
- testRunner.Given("I \'Assert_Database_Source_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 108
- testRunner.When("I \'Click_NewDatabaseSource_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
- testRunner.Then("I \'Assert_MessageBox_No_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 119
- testRunner.When("I \'Click_MessageBox_No\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 105
+ testRunner.Given("I \"Assert_Database_Source_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 106
+ testRunner.When("I \"Click_NewDatabaseSource_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 113
+ testRunner.Then("I \"Assert_MessageBox_No_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 117
+ testRunner.When("I \"Click_MessageBox_No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -320,16 +316,16 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New Plugin Connector Ribbon Button", new string[] {
                         "ignore"});
-#line 123
+#line 121
 this.ScenarioSetup(scenarioInfo);
-#line 124
- testRunner.Given("I \'Assert_Plugin_Source_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 125
- testRunner.When("I \'Click_NewPluginSource_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 132
- testRunner.Then("I \'Assert_MessageBox_No_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 136
- testRunner.When("I \'Click_MessageBox_No\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 122
+ testRunner.Given("I \"Assert_Plugin_Source_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 123
+ testRunner.When("I \"Click_NewPluginSource_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 130
+ testRunner.Then("I \"Assert_MessageBox_No_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 134
+ testRunner.When("I \"Click_MessageBox_No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -342,16 +338,16 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New Web Connector Ribbon Button", new string[] {
                         "ignore"});
-#line 140
+#line 138
 this.ScenarioSetup(scenarioInfo);
-#line 141
- testRunner.Given("I \'Assert_Web_Source_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 142
- testRunner.When("I \'Click_NewWebSource_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 149
- testRunner.Then("I \'Assert_MessageBox_No_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 153
- testRunner.When("I \'Click_MessageBox_No\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 139
+ testRunner.Given("I \"Assert_Web_Source_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 140
+ testRunner.When("I \"Click_NewWebSource_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 147
+ testRunner.Then("I \"Assert_MessageBox_No_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 151
+ testRunner.When("I \"Click_MessageBox_No\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -359,79 +355,77 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Scheduler Ribbon Button")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void SchedulerRibbonButton()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scheduler Ribbon Button", new string[] {
-                        "ignore"});
-#line 157
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scheduler Ribbon Button", ((string[])(null)));
+#line 154
 this.ScenarioSetup(scenarioInfo);
-#line 158
- testRunner.Given("I \'Assert_Scheduler_Button_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 159
- testRunner.When("I \'Click_Scheduler_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 160
- testRunner.Then("I \'Assert_Scheduler_CreateNewTask_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 165
- testRunner.When("I \'Click_Scheduler_Create_New_Task_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 166
- testRunner.Then("I \'Assert_Scheduler_DisabledRadioButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 171
- testRunner.When("I \'Click_Scheduler_Disable_Task_Radio_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 172
- testRunner.Then("I \'Assert_Scheduler_EditTrigger_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 177
- testRunner.When("I \'Click_Scheduler_EditTrigger_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
- testRunner.Then("I \'Assert_Scheduler_EnabledRadioButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 155
+ testRunner.Given("I \"Assert_Scheduler_Button_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 156
+ testRunner.When("I \"Click_Scheduler_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 157
+ testRunner.Then("I \"Assert_Scheduler_CreateNewTask_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 162
+ testRunner.When("I \"Click_Scheduler_Create_New_Task_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 163
+ testRunner.Then("I \"Assert_Scheduler_DisabledRadioButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 168
+ testRunner.When("I \"Click_Scheduler_Disable_Task_Radio_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 169
+ testRunner.Then("I \"Assert_Scheduler_EditTrigger_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 174
+ testRunner.When("I \"Click_Scheduler_EditTrigger_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 175
+ testRunner.Then("I \"Assert_Scheduler_EnabledRadioButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 180
+ testRunner.When("I \"Click_Scheduler_Enable_Task_Radio_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 181
+ testRunner.Then("I \"Assert_Scheduler_ErrorMessage_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 182
+ testRunner.Then("I \"Assert_Scheduler_HistoryInput_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 183
- testRunner.When("I \'Click_Scheduler_Enable_Task_Radio_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I \"Assert_Scheduler_HistoryLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 184
- testRunner.Then("I \'Assert_Scheduler_ErrorMessage_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_HistoryTable_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 185
- testRunner.Then("I \'Assert_Scheduler_HistoryInput_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_NameInput_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 186
- testRunner.Then("I \'Assert_Scheduler_HistoryLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_NameLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 187
- testRunner.Then("I \'Assert_Scheduler_HistoryTable_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_PasswordInput_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 188
- testRunner.Then("I \'Assert_Scheduler_NameInput_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_PasswordLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 189
- testRunner.Then("I \'Assert_Scheduler_NameLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 190
- testRunner.Then("I \'Assert_Scheduler_PasswordInput_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 191
- testRunner.Then("I \'Assert_Scheduler_PasswordLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 192
- testRunner.Then("I \'Assert_Scheduler_ResourcePicker_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 197
- testRunner.When("I \'Click_Scheduler_ResourcePicker\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 198
- testRunner.Then("I \'Assert_Scheduler_RunTask_Checkbox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 203
- testRunner.When("I \'Click_Scheduler_RunTask\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 204
- testRunner.Then("I \'Assert_Scheduler_DeleteButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_ResourcePicker_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 194
+ testRunner.When("I \"Click_Scheduler_ResourcePicker\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 195
+ testRunner.Then("I \"Assert_Scheduler_RunTask_Checkbox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 200
+ testRunner.When("I \"Click_Scheduler_RunTask\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 201
+ testRunner.Then("I \"Assert_Scheduler_DeleteButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 206
+ testRunner.When("I \"Click_Scheduler_Delete_Task\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 207
+ testRunner.Then("I \"Assert_Scheduler_Status_RadioButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 208
+ testRunner.Then("I \"Assert_Scheduler_StatusLabe_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 209
- testRunner.When("I \'Click_Scheduler_Delete_Task\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I \"Assert_Scheduler_TriggerLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 210
- testRunner.Then("I \'Assert_Scheduler_Status_RadioButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_TriggerValue_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 211
- testRunner.Then("I \'Assert_Scheduler_StatusLabe_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_UserAccountLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 212
- testRunner.Then("I \'Assert_Scheduler_TriggerLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_UsernameInput_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 213
- testRunner.Then("I \'Assert_Scheduler_TriggerValue_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_Usernamelabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 214
- testRunner.Then("I \'Assert_Scheduler_UserAccountLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_WorkflowInput_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 215
- testRunner.Then("I \'Assert_Scheduler_UsernameInput_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 216
- testRunner.Then("I \'Assert_Scheduler_Usernamelabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 217
- testRunner.Then("I \'Assert_Scheduler_WorkflowInput_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 218
- testRunner.Then("I \'Assert_Scheduler_WorkflowLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_Scheduler_WorkflowLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -439,39 +433,37 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug Ribbon Button")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DebugRibbonButton()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug Ribbon Button", new string[] {
-                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 222
+#line 218
 this.ScenarioSetup(scenarioInfo);
+#line 219
+ testRunner.When("I \"Click_Debug_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 220
+ testRunner.Then("I \"Assert_DebugInput_Window_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 221
+ testRunner.Then("I \"Assert_DebugInput_CancelButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 222
+ testRunner.Then("I \"Assert_DebugInput_RememberCheckbox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 223
- testRunner.When("I \'Click_Debug_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I \"Assert_DebugInput_ViewInBrowser_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 224
- testRunner.Then("I \'Assert_DebugInput_Window_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DebugInput_DebugButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 225
- testRunner.Then("I \'Assert_DebugInput_CancelButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DebugInput_InputData_Window_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 226
- testRunner.Then("I \'Assert_DebugInput_RememberCheckbox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DebugInput_InputData_Field_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 227
- testRunner.Then("I \'Assert_DebugInput_ViewInBrowser_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DebugInput_Xml_Tab_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 228
- testRunner.Then("I \'Assert_DebugInput_DebugButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DebugInput_Xml_Window_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 229
- testRunner.Then("I \'Assert_DebugInput_InputData_Window_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DebugInput_Json_Tab_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 230
- testRunner.Then("I \'Assert_DebugInput_InputData_Field_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 231
- testRunner.Then("I \'Assert_DebugInput_Xml_Tab_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 232
- testRunner.Then("I \'Assert_DebugInput_Xml_Window_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 233
- testRunner.Then("I \'Assert_DebugInput_Json_Tab_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 234
- testRunner.Then("I \'Assert_DebugInput_Json_Window_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_DebugInput_Json_Window_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -482,46 +474,46 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SaveDialog()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Save Dialog", ((string[])(null)));
-#line 236
+#line 232
 this.ScenarioSetup(scenarioInfo);
-#line 237
- testRunner.Given("I \'Assert_NewWorkFlow_RibbonButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 238
- testRunner.When("I \'Click_New_Workflow_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 233
+ testRunner.Given("I \"Assert_NewWorkFlow_RibbonButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 234
+ testRunner.When("I \"Click_New_Workflow_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 235
+ testRunner.Then("I \"Assert_StartNode_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 239
- testRunner.Then("I \'Assert_StartNode_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I \"Assert_Save_Button_Exists_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 240
+ testRunner.When("I \"Click_Save_Ribbon_Button\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 241
+ testRunner.Then("I \"Assert_SaveDialog_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 242
+ testRunner.Then("I \"Assert_SaveDialog_CancelButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 243
- testRunner.Given("I \'Assert_Save_Button_Exists_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then("I \"Assert_SaveDialog_ErrorLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 244
- testRunner.When("I \'Click_Save_Ribbon_Button\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I \"Assert_SaveDialog_ExplorerTree_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 245
- testRunner.Then("I \'Assert_SaveDialog_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_ExplorerTreeItem_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 246
- testRunner.Then("I \'Assert_SaveDialog_CancelButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_ExplorerView_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 247
- testRunner.Then("I \'Assert_SaveDialog_ErrorLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_FilterTextbox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 248
- testRunner.Then("I \'Assert_SaveDialog_ExplorerTree_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_NameLabel_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 249
- testRunner.Then("I \'Assert_SaveDialog_ExplorerTreeItem_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_RefreshButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 250
- testRunner.Then("I \'Assert_SaveDialog_ExplorerView_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_SaveButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 251
- testRunner.Then("I \'Assert_SaveDialog_FilterTextbox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_ServiceName_Textbox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 252
- testRunner.Then("I \'Assert_SaveDialog_NameLabel_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 253
- testRunner.Then("I \'Assert_SaveDialog_RefreshButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 254
- testRunner.Then("I \'Assert_SaveDialog_SaveButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 255
- testRunner.Then("I \'Assert_SaveDialog_ServiceName_Textbox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 256
- testRunner.Then("I \'Assert_SaveDialog_WorkspaceName_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 261
- testRunner.When("I \'Click_SaveDialog_CancelButton\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 262
- testRunner.Then("I \'Assert_StartNode_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I \"Assert_SaveDialog_WorkspaceName_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 257
+ testRunner.When("I \"Click_SaveDialog_CancelButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 258
+ testRunner.Then("I \"Assert_StartNode_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -529,29 +521,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug Output Window")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void DebugOutputWindow()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug Output Window", new string[] {
-                        "ignore"});
-#line 265
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug Output Window", ((string[])(null)));
+#line 260
 this.ScenarioSetup(scenarioInfo);
+#line 261
+ testRunner.Given("I \"DebugOutput_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 262
+ testRunner.Given("I \"DebugOutput_ExpandCollapseButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 263
+ testRunner.Given("I \"DebugOutput_FilterTextbox_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 264
+ testRunner.Given("I \"DebugOutput_ResultsTree_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 265
+ testRunner.Given("I \"DebugOutput_SettingsButton_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 266
- testRunner.Given("I \'DebugOutput_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 267
- testRunner.Given("I \'DebugOutput_ExpandCollapseButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 268
- testRunner.Given("I \'DebugOutput_FilterTextbox_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 269
- testRunner.Given("I \'DebugOutput_ResultsTree_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 270
- testRunner.Given("I \'DebugOutput_SettingsButton_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 271
- testRunner.When("I \'Click_ExpandAndStepIn_NestedWorkflow\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 277
- testRunner.When("I \'Click_Cell_Highlights_Workflow_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 283
- testRunner.When("I \'Click_Nested_Workflow_Name\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I \"Click_ExpandAndStepIn_NestedWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 272
+ testRunner.When("I \"Click_Cell_Highlights_Workflow_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 278
+ testRunner.When("I \"Click_Nested_Workflow_Name\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -559,17 +549,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Dragging Database Connector Onto Design Surface Should not be droppable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DraggingDatabaseConnectorOntoDesignSurfaceShouldNotBeDroppable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dragging Database Connector Onto Design Surface Should not be droppable", new string[] {
-                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 288
+#line 282
 this.ScenarioSetup(scenarioInfo);
-#line 290
- testRunner.When("I \'Drag_Database_Connector_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 284
+ testRunner.When("I \"Drag_Database_Connector_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -577,17 +565,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Dragging Plugin Connector Onto Design Surface Should not be droppable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DraggingPluginConnectorOntoDesignSurfaceShouldNotBeDroppable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dragging Plugin Connector Onto Design Surface Should not be droppable", new string[] {
-                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 295
+#line 288
 this.ScenarioSetup(scenarioInfo);
-#line 297
- testRunner.When("I \'Drag_Plugin_Connector_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 290
+ testRunner.When("I \"Drag_Plugin_Connector_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -595,17 +581,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Dragging Web Connector Onto Design Surface Should not be droppable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DraggingWebConnectorOntoDesignSurfaceShouldNotBeDroppable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dragging Web Connector Onto Design Surface Should not be droppable", new string[] {
-                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 302
+#line 294
 this.ScenarioSetup(scenarioInfo);
-#line 304
- testRunner.When("I \'Drag_Web_Connector_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 296
+ testRunner.When("I \"Drag_Web_Connector_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -613,17 +597,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Dragging Sharepoint Connector Onto Design Surface Should not be droppable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DraggingSharepointConnectorOntoDesignSurfaceShouldNotBeDroppable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dragging Sharepoint Connector Onto Design Surface Should not be droppable", new string[] {
-                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 309
+#line 300
 this.ScenarioSetup(scenarioInfo);
-#line 311
- testRunner.When("I \'Drag_Sharepoint_Source_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 302
+ testRunner.When("I \"Drag_Sharepoint_Source_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -631,35 +613,33 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Dragging Server Source Onto Design Surface Should not be droppable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("NeedsBlankWorkflow")]
         public virtual void DraggingServerSourceOntoDesignSurfaceShouldNotBeDroppable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Dragging Server Source Onto Design Surface Should not be droppable", new string[] {
-                        "ignore",
                         "NeedsBlankWorkflow"});
-#line 316
+#line 306
 this.ScenarioSetup(scenarioInfo);
-#line 318
- testRunner.When("I \'Drag_Server_Source_Onto_DesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 323
- testRunner.Given("I \'Assert_Debug_Input_Cancel_Button_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 324
- testRunner.When("I \'Click_Debug_Input_Dialog_Cancel\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 325
- testRunner.Then("I \'Assert_DebugInput_Window_Does_Not_Exist\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 330
- testRunner.When("I \'Click_Settings_Admin_ServerPermissions\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 336
- testRunner.When("I \'Click_Settings_Contribute_ResourcePermissions\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 342
- testRunner.When("I \'Click_Settings_Contribute_ServerPermissions\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 348
- testRunner.When("I \'Click_Settings_Execute_ResourcePermissions\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 354
- testRunner.When("I \'Click_Settings_ResourcePermissions_ResourcePicker\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 360
- testRunner.When("I \'Click_Settings_View_ResourcePermissions\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 308
+ testRunner.When("I \"Drag_Server_Source_Onto_DesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 313
+ testRunner.Given("I \"Assert_Debug_Input_Cancel_Button_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 314
+ testRunner.When("I \"Click_Debug_Input_Dialog_Cancel\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 315
+ testRunner.Then("I \"Assert_DebugInput_Window_Does_Not_Exist\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 320
+ testRunner.When("I \"Click_Settings_Admin_ServerPermissions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 326
+ testRunner.When("I \"Click_Settings_Contribute_ResourcePermissions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 332
+ testRunner.When("I \"Click_Settings_Contribute_ServerPermissions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 338
+ testRunner.When("I \"Click_Settings_Execute_ResourcePermissions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 344
+ testRunner.When("I \"Click_Settings_ResourcePermissions_ResourcePicker\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 350
+ testRunner.When("I \"Click_Settings_View_ResourcePermissions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -672,12 +652,12 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Right Click On Design Surface", new string[] {
                         "NeedsBlankWorkflow"});
-#line 364
+#line 354
 this.ScenarioSetup(scenarioInfo);
-#line 365
- testRunner.When("I \'Open_Context_Menu_OnDesignSurface\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 366
- testRunner.Then("I \'Assert_Generic_Context_Menu_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 355
+ testRunner.When("I \"Open_Context_Menu_OnDesignSurface\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 356
+ testRunner.Then("I \"Assert_Generic_Context_Menu_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -690,12 +670,12 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context Menu on New Workflow Tab", new string[] {
                         "NeedsBlankWorkflow"});
-#line 369
+#line 359
 this.ScenarioSetup(scenarioInfo);
-#line 370
- testRunner.When("I \'RightClick_New_Workflow_Tab\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 371
- testRunner.Then("I \'Assert_New_Workflow_Context_Menu_Exists\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 360
+ testRunner.When("I \"RightClick_New_Workflow_Tab\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 361
+ testRunner.Then("I \"Assert_New_Workflow_Context_Menu_Exists\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -703,17 +683,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Explorer")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void PinAndUnpinExplorer()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Explorer", new string[] {
-                        "ignore"});
-#line 374
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Explorer", ((string[])(null)));
+#line 363
 this.ScenarioSetup(scenarioInfo);
-#line 375
- testRunner.Given("I \'Click_Toggle_Unpin_Explorer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 376
- testRunner.Then("I \'Click_Toggle_Pin_Explorer\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 364
+ testRunner.Given("I \"Click_Toggle_Unpin_Explorer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 365
+ testRunner.Then("I \"Click_Toggle_Pin_Explorer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -721,17 +699,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Help")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void PinAndUnpinHelp()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Help", new string[] {
-                        "ignore"});
-#line 379
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Help", ((string[])(null)));
+#line 367
 this.ScenarioSetup(scenarioInfo);
-#line 380
- testRunner.Given("I \'Click_Toggle_Unpin_Documentor\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 381
- testRunner.Then("I \'Click_Toggle_Pin_Documentor\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 368
+ testRunner.Given("I \"Click_Toggle_Unpin_Documentor\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 369
+ testRunner.Then("I \"Click_Toggle_Pin_Documentor\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -739,17 +715,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Toolbox")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void PinAndUnpinToolbox()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Toolbox", new string[] {
-                        "ignore"});
-#line 384
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Toolbox", ((string[])(null)));
+#line 371
 this.ScenarioSetup(scenarioInfo);
-#line 385
- testRunner.Given("I \'Click_Toggle_Unpiin_Toolbox\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 386
- testRunner.Then("I \'Click_Toggle_Pin_Toolbox\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 372
+ testRunner.Given("I \"Click_Toggle_Unpiin_Toolbox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 373
+ testRunner.Then("I \"Click_Toggle_Pin_Toolbox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -757,17 +731,15 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin Debug Output")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void PinAndUnpinDebugOutput()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Debug Output", new string[] {
-                        "ignore"});
-#line 389
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin Debug Output", ((string[])(null)));
+#line 375
 this.ScenarioSetup(scenarioInfo);
-#line 390
- testRunner.Given("I \'Click_Toggle_Unpin_DebugOutput\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 391
- testRunner.Then("I \'Click_Toggle_Pin_DebugOutput\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 376
+ testRunner.Given("I \"Click_Toggle_Unpin_DebugOutput\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 377
+ testRunner.Then("I \"Click_Toggle_Pin_DebugOutput\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -775,17 +747,215 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Pin and unpin variable list")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void PinAndUnpinVariableList()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin variable list", new string[] {
-                        "ignore"});
-#line 394
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pin and unpin variable list", ((string[])(null)));
+#line 379
 this.ScenarioSetup(scenarioInfo);
-#line 395
- testRunner.Given("I \'Click_Toggle_Unpin_VariableList\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 396
- testRunner.Then("I \'Click_Toggle_Pin_VariableList\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 380
+ testRunner.Given("I \"Click_Toggle_Unpin_VariableList\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 381
+ testRunner.Then("I \"Click_Toggle_Pin_VariableList\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure unused variables do not appear in Debug Input window")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
+        public virtual void EnsureUnusedVariablesDoNotAppearInDebugInputWindow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure unused variables do not appear in Debug Input window", ((string[])(null)));
+#line 383
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Note",
+                        "Input",
+                        "Output",
+                        "IsUsed"});
+            table1.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "This is recordset",
+                        "",
+                        "YES",
+                        "YES"});
+            table1.AddRow(new string[] {
+                        "[[rec().b]]",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1.AddRow(new string[] {
+                        "[[mr()]]",
+                        "",
+                        "",
+                        "",
+                        "YES"});
+            table1.AddRow(new string[] {
+                        "[[Var]]",
+                        "",
+                        "YES",
+                        "",
+                        "YES"});
+            table1.AddRow(new string[] {
+                        "[[a]]",
+                        "",
+                        "",
+                        "",
+                        ""});
+            table1.AddRow(new string[] {
+                        "[[lr().a]]",
+                        "",
+                        "",
+                        "",
+                        ""});
+#line 384
+ testRunner.Given("I have variables as", ((string)(null)), table1, "Given ");
+#line 392
+ testRunner.When("I press \"F5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 393
+ testRunner.And("the Debug Input window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Note",
+                        "Input",
+                        "Output",
+                        "IsUsed"});
+            table2.AddRow(new string[] {
+                        "[[mr()]]",
+                        "",
+                        "",
+                        "",
+                        "YES"});
+            table2.AddRow(new string[] {
+                        "[[Var]]",
+                        "",
+                        "YES",
+                        "",
+                        "YES"});
+#line 394
+ testRunner.Then("the variables appear as", ((string)(null)), table2, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void EnsureShorcutKeysWork(string keys, string focus, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure shorcut keys work", exampleTags);
+#line 400
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Note",
+                        "Input",
+                        "Output",
+                        "IsUsed"});
+            table3.AddRow(new string[] {
+                        "[[var]]",
+                        "",
+                        "",
+                        "YES",
+                        "YES"});
+#line 401
+ testRunner.Given("I have variables as", ((string)(null)), table3, "Given ");
+#line 404
+ testRunner.And(string.Format("I press \"{0}\"", keys), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 405
+ testRunner.Then(string.Format("cursor focus is \"{0}\"", focus), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure shorcut keys work")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Enter")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Keys", "Enter")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Focus", "New blank line")]
+        public virtual void EnsureShorcutKeysWork_Enter()
+        {
+            this.EnsureShorcutKeysWork("Enter", "New blank line", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure shorcut keys work")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Keys", "Tab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Focus", "Input Checkbox")]
+        public virtual void EnsureShorcutKeysWork_Tab()
+        {
+            this.EnsureShorcutKeysWork("Tab", "Input Checkbox", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("versioning and mapping")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OutsideWorkflowDesignSurfaceUISpecs")]
+        public virtual void VersioningAndMapping()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("versioning and mapping", ((string[])(null)));
+#line 412
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Note",
+                        "Input",
+                        "Output",
+                        "IsUsed"});
+            table4.AddRow(new string[] {
+                        "[[a]]",
+                        "",
+                        "",
+                        "YES",
+                        ""});
+            table4.AddRow(new string[] {
+                        "[[b]]",
+                        "",
+                        "YES",
+                        "",
+                        ""});
+#line 413
+ testRunner.Given("I have variables as", ((string)(null)), table4, "Given ");
+#line 417
+ testRunner.When("I save workflow as \"test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 418
+ testRunner.And("create variable \"[[c]]\" equals \"\" as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 419
+ testRunner.And("I save \"Mapping\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 420
+ testRunner.And("\"Mapping\" is visible in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 421
+ testRunner.When("I right click \"Mapping\" and \"Show Version History\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 422
+ testRunner.Then("version history is visible in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 423
+ testRunner.And("I open \"v1\" of \"Mapping\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Note",
+                        "Input",
+                        "Output",
+                        "IsUsed"});
+            table5.AddRow(new string[] {
+                        "[[a]]",
+                        "",
+                        "",
+                        "YES",
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[b]]",
+                        "",
+                        "YES",
+                        "",
+                        ""});
+#line 424
+ testRunner.Then("the variables appear as", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

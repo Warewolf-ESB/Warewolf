@@ -5,13 +5,11 @@
 
 @Unzip 
 # COded UI TEST
-@ignore
 Scenario: Unzip tool Small View
        Given I have Unzip Small View on design surface
        Then Unzip small view has
        | Zip Name | Destination | Result |
        |          |             |        |
-@ignore
 Scenario: Unzip tool Large View
        Given I have Unzip Large View on design surface
        Then Unzip Large View has
@@ -23,13 +21,11 @@ Scenario: Unzip tool Large View
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-@ignore
 Scenario: Unzip tool Small View water marks
        Given I have Unzip Small View on design surface
        Then Unzip small view watermarks are
        | Zip Name        | Destination     | Result      |
        | [[PathToUnzip]] | [[UnzipToPath]] | [[Success]] |
-@ignore
 Scenario: Unzip tool Large View Water marks
        Given I have Unzip Large View on design surface
        Then Unzip Large View watermarks are
@@ -41,7 +37,6 @@ Scenario: Unzip tool Large View Water marks
        | [[Error().Message]]        | http://lcl:3142/services/err |    
        And End this workflow is "Unselected"
        And Done button is "Visible"
-@ignore
 Scenario: Unzip Large View is validating when clicking on done with blank fields
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
@@ -52,7 +47,6 @@ Scenario: Unzip Large View is validating when clicking on done with blank fields
        When I click "Done"
        Then Validation message is thrown
        And Unzip Small View is "Not Visible"
-@ignore
 Scenario: Unzip tool Large View to small view persisting data correctly
        Given I have Unzip Large View on design surface
        And Unzip Large View has
@@ -71,7 +65,6 @@ Scenario: Unzip tool Large View to small view persisting data correctly
        | Zip Name    | Destination | Result    |
        | C:\Test.zip | D:\         | [[Unzip]] |
 
-@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Unzip Large View on design surface
        When Unzip Large View has
@@ -95,7 +88,6 @@ Scenario: After correcting incorrect variable done button is closing large view
        | Zip Name | Destination | Result    |
        | C:\[[a]] | D:\         | [[Unzip]] |
 
-@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Unzip Large View on design surface
        And Unzip Large View has
@@ -115,16 +107,15 @@ Scenario: Close large view is closing large view without validating
        | Zip Name | Destination | Result    |
        | C:\[[a]  | D:\         | [[Unzip]] |
 
-@ignore
 Scenario Outline: Unzip Large View is validating incorrect source path
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name  | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | '<SPath>' |                 |                 | D:\         |               |               | [[Unzip]] |                 |
+       | "<SPath>" |                 |                 | D:\         |               |               | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -139,16 +130,15 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
-@ignore
 Scenario Outline: Unzip Large View is validating incorrect Destination path
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | C:/Test.txt |                 |                 | '<DPath>'   |               |               | [[Unzip]] |                 |
+       | C:/Test.txt |                 |                 | "<DPath>"   |               |               | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | DPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -164,16 +154,15 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Unzip Large View is validating incorrect variable in source username field
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | C:/Test.txt | '<Variable>'    | sas             | D:/         |               |               | [[Unzip]] |                 |
+       | C:/Test.txt | "<Variable>"    | sas             | D:/         |               |               | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -190,16 +179,15 @@ Examples:
 
 
 
-@ignore
 Scenario Outline: Unzip Large View is validating incorrect variable in Destination username field
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result    |Archive Password |
-       | C:/Test.txt |                 |                 | D:/         | '<Username>'  | abc           | [[Unzip]] |                 |
+       | C:/Test.txt |                 |                 | D:/         | "<Username>"  | abc           | [[Unzip]] |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -215,16 +203,15 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Unzip Large View is validating incorrect variable in Result field
        Given I have Unzip Large View on design surface
        And "Zip Name" is focused
        And Unzip Large View has
        | Zip Name    | Source Username | Source Password | Destination | Dest Username | Dest Password | Result     |Archive Password |
-       | C:/Test.txt |                 |                 | D:/         |               |               | '<Result>' |                 |
+       | C:/Test.txt |                 |                 | D:/         |               |               | "<Result>" |                 |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -235,7 +222,6 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
-@ignore
 Scenario Outline: Unzip On error fields incorrect variables are validating
        Given I have Unzip Large View on design surface
        And Unzip Large View with water marks has
@@ -244,11 +230,11 @@ Scenario Outline: Unzip On error fields incorrect variables are validating
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        And End this workflow is "Unselected"
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

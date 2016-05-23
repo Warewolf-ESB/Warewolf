@@ -140,25 +140,28 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             }
         }
 
+        [Then(@"the calculate ""(.*)"" should be ""(.*)""")]
+        public void ThenTheCalculateShouldBe(string p0, int p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
         [Then(@"the calculate result should be null")]
         public void ThenTheCalculateResultShouldBeNull()
         {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
-        [Given(@"I have the Example formula '(.*)'")]
+        [Given(@"I have the Example formula ""(.*)""")]
         public void GivenIHaveTheExampleFormula(string formula)
         {
             ScenarioContext.Current.Add("formula", formula);
-
         }
 
-
-        [Then(@"the example output = '(.*)'")]
+        [Then(@"the example output = ""(.*)""")]
         public void ThenTheExampleOutput(int p0)
         {
             ScenarioContext.Current.Pending();
         }
-
-
     }
 }

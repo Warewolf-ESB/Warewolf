@@ -118,6 +118,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data-DataSplit.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Database\GetWebConnector1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GetWebConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Database\MySqlConnector1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MySqlConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Database\OracleConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleConnector.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\FileAndFolder - Create.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -243,6 +258,18 @@
     <None Include="Tools\Data-DataSplit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data-DataSplit1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Database\GetWebConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>GetWebConnector1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Database\OracleConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OracleConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Database\MySqlConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MySqlConnector1.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\FileAndFolder - Create.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

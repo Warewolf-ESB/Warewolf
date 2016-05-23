@@ -171,9 +171,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read tool Large View Water marks", new string[] {
                         "ignore"});
-#line 32
-this.ScenarioSetup(scenarioInfo);
 #line 33
+this.ScenarioSetup(scenarioInfo);
+#line 34
        testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -186,9 +186,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 34
+#line 35
        testRunner.Then("Read Large View watermarks are", ((string)(null)), table5, "Then ");
-#line 37
+#line 38
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -197,9 +197,9 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[Error().Message]]",
                         "http://lcl:3142/services/err"});
-#line 38
+#line 39
        testRunner.And("On Error box consists", ((string)(null)), table6, "And ");
-#line 41
+#line 42
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -213,9 +213,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Removing Data in the field brings back water marks", new string[] {
                         "ignore"});
-#line 43
+#line 45
 this.ScenarioSetup(scenarioInfo);
-#line 44
+#line 46
        testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -228,7 +228,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderReadd]]"});
-#line 45
+#line 47
        testRunner.And("Read Large View has", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -237,9 +237,9 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "[[a]]",
                         "dsf"});
-#line 48
+#line 50
     testRunner.And("On Error box consists", ((string)(null)), table8, "And ");
-#line 51
+#line 53
     testRunner.When("I remove data in fields", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -252,7 +252,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[Username]]",
                         "",
                         "[[Success]]"});
-#line 52
+#line 54
     testRunner.Then("Read Large View watermarks are", ((string)(null)), table9, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -261,9 +261,9 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "[[Error().Message]]",
                         "http://lcl:3142/services/err"});
-#line 55
+#line 57
        testRunner.And("On Error box consists", ((string)(null)), table10, "And ");
-#line 58
+#line 60
        testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -277,11 +277,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Large View is validating when clicking on done with blank fields", new string[] {
                         "ignore"});
-#line 61
-this.ScenarioSetup(scenarioInfo);
-#line 62
-       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 63
+this.ScenarioSetup(scenarioInfo);
+#line 64
+       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 65
        testRunner.And("\"File Name\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -294,15 +294,15 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-#line 64
+#line 66
        testRunner.And("Read Large View has", ((string)(null)), table11, "And ");
-#line 67
-       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 69
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 71
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 72
        testRunner.And("Read Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -316,9 +316,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read tool Large View to small view persisting data correctly", new string[] {
                         "ignore"});
-#line 72
+#line 74
 this.ScenarioSetup(scenarioInfo);
-#line 73
+#line 75
        testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -331,7 +331,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderReadd]]"});
-#line 74
+#line 76
        testRunner.And("Read Large View has", ((string)(null)), table12, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -340,15 +340,15 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "",
                         ""});
-#line 77
+#line 79
        testRunner.And("On Error box consists", ((string)(null)), table13, "And ");
-#line 80
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
-       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 82
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
+       testRunner.When("I click \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 84
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 85
        testRunner.And("Read Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -357,7 +357,7 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "C:\\Test",
                         "[[FolderReadd]]"});
-#line 84
+#line 86
        testRunner.And("Read small view has", ((string)(null)), table14, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -371,9 +371,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("After correcting incorrect variable done button is closing large view", new string[] {
                         "ignore"});
-#line 89
+#line 91
 this.ScenarioSetup(scenarioInfo);
-#line 90
+#line 92
        testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -386,9 +386,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderReadd]]"});
-#line 91
+#line 93
        testRunner.When("Read Large View has", ((string)(null)), table15, "When ");
-#line 94
+#line 96
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -397,13 +397,13 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "",
                         ""});
-#line 95
+#line 97
        testRunner.And("On Error box consists", ((string)(null)), table16, "And ");
-#line 98
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 100
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 102
        testRunner.And("Read Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -416,13 +416,13 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderReadd]]"});
-#line 101
+#line 103
        testRunner.When("I edit Read Large View", ((string)(null)), table17, "When ");
-#line 104
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 105
-       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 106
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 107
+       testRunner.Then("Validation message is not thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 108
        testRunner.And("Read Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -431,7 +431,7 @@ this.ScenarioSetup(scenarioInfo);
             table18.AddRow(new string[] {
                         "C:\\[[a]]",
                         "[[FolderReadd]]"});
-#line 107
+#line 109
        testRunner.And("Read small view as", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -445,9 +445,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close large view is closing large view without validating", new string[] {
                         "ignore"});
-#line 112
+#line 114
 this.ScenarioSetup(scenarioInfo);
-#line 113
+#line 115
        testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -460,9 +460,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderReadd]]"});
-#line 114
+#line 116
        testRunner.And("Read Large View has", ((string)(null)), table19, "And ");
-#line 117
+#line 119
        testRunner.And("If it exists Overwrite is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -471,17 +471,17 @@ this.ScenarioSetup(scenarioInfo);
             table20.AddRow(new string[] {
                         "",
                         ""});
-#line 118
+#line 120
        testRunner.And("On Error box consists", ((string)(null)), table20, "And ");
-#line 121
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
-       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 123
-       testRunner.And("Read Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 124
-       testRunner.When("collapse \"Read\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+       testRunner.Then("Validation message is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 125
+       testRunner.And("Read Small View is \"Not Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 126
+       testRunner.When("collapse \"Read\" large view", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 127
        testRunner.Then("Read Small View is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -490,7 +490,7 @@ this.ScenarioSetup(scenarioInfo);
             table21.AddRow(new string[] {
                         "C:\\[[a2@]]",
                         "[[FolderReadd]]"});
-#line 126
+#line 128
        testRunner.And("Read small view as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -505,11 +505,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Large View is validating incorrect path", @__tags);
-#line 131
-this.ScenarioSetup(scenarioInfo);
-#line 132
-       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 133
+this.ScenarioSetup(scenarioInfo);
+#line 134
+       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 135
        testRunner.And("\"File Name\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -522,11 +522,11 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[FolderReadd]]"});
-#line 134
+#line 136
        testRunner.And("Read Large View has", ((string)(null)), table22, "And ");
-#line 137
+#line 139
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 138
+#line 140
        testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -684,11 +684,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Large View is validating incorrect variable in  username field", @__tags);
-#line 155
-this.ScenarioSetup(scenarioInfo);
-#line 156
-       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 157
+this.ScenarioSetup(scenarioInfo);
+#line 158
+       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 159
        testRunner.And("\"File Name\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -701,11 +701,11 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", variable),
                         "",
                         "[[FolderReadd]]"});
-#line 158
+#line 160
        testRunner.And("Read Large View has", ((string)(null)), table23, "And ");
-#line 161
+#line 163
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 162
+#line 164
        testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -863,11 +863,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Large View is validating incorrect variable in Result field", @__tags);
-#line 179
-this.ScenarioSetup(scenarioInfo);
-#line 180
-       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 181
+this.ScenarioSetup(scenarioInfo);
+#line 182
+       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 183
        testRunner.And("\"File Name\" is focused", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -880,11 +880,11 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         string.Format("{0}", result)});
-#line 182
+#line 184
        testRunner.And("Read Large View has", ((string)(null)), table24, "And ");
-#line 185
+#line 187
        testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 186
+#line 188
        testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -990,11 +990,11 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read On error fields incorrect variables are validating", @__tags);
-#line 198
-this.ScenarioSetup(scenarioInfo);
-#line 199
-       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 200
+this.ScenarioSetup(scenarioInfo);
+#line 201
+       testRunner.Given("I have Read Large View on design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 202
        testRunner.And("Read Large View with water marks has", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1007,7 +1007,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[Result]]"});
-#line 201
+#line 203
         testRunner.And("Read Large View has", ((string)(null)), table25, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1016,13 +1016,13 @@ this.ScenarioSetup(scenarioInfo);
             table26.AddRow(new string[] {
                         string.Format("\'{0}\'", variable),
                         string.Format("\'{0}\'", variable)});
-#line 204
+#line 206
        testRunner.And("On Error box consists", ((string)(null)), table26, "And ");
-#line 208
-       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
-       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 210
+       testRunner.And("Done button is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 211
+       testRunner.When("I click on \"Done\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 212
        testRunner.Then(string.Format("Validation message is thrown \'{0}\'", validation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

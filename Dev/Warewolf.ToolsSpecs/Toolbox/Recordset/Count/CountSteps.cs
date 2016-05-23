@@ -99,6 +99,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             }
         }
 
+        [Given(@"I have a complex type with this shape")]
+        public void GivenIHaveAComplexTypeWithThisShape()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
+
         [When(@"the count tool is executed")]
         public void WhenTheCountToolIsExecuted()
         {
