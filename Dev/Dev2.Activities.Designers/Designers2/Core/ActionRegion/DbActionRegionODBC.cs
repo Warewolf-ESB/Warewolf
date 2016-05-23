@@ -67,6 +67,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             IsEnabled = true;
             _modelItem = modelItem;
+            _commandText = _modelItem.GetProperty<string>("CommandText");
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -174,7 +175,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             get
             {
-                return _modelItem.GetProperty<string>("CommandText") ?? _commandText;
+                return _commandText ?? "";
             }
             set
             {

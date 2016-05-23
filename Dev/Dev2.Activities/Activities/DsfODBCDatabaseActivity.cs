@@ -19,6 +19,7 @@ namespace Dev2.Activities
         {
             Type = "ODBC Connector";
             DisplayName = "ODBC Connector";
+            CommandText = "";
         }
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)

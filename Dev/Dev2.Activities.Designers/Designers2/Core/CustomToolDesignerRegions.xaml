@@ -136,16 +136,16 @@
                 <ui:IntellisenseTextBox.DefaultText>
                     <TextBlock Text="[[Command]]" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
                 </ui:IntellisenseTextBox.DefaultText>
-                <!--<ui:IntellisenseTextBox.IntellisenseProvider>
+                <ui:IntellisenseTextBox.IntellisenseProvider>
                     <interfaceImplementors:CompositeIntellisenseProvider>
                         <interfaceImplementors:DefaultIntellisenseProvider />
                     </interfaceImplementors:CompositeIntellisenseProvider>
-                </ui:IntellisenseTextBox.IntellisenseProvider>-->
+                </ui:IntellisenseTextBox.IntellisenseProvider>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.ManageOdbcServiceActionsHelpText}" DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.CommandText"
-                                     SourcePropertyValue="{Binding  ModelItem.CommandText, UpdateSourceTrigger=PropertyChanged}"
+                                     SourcePropertyName="ActionRegion.CommandText"
+                                     SourcePropertyValue="{Binding  ActionRegion.CommandText, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
