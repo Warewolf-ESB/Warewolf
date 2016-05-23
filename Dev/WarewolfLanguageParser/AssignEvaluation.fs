@@ -159,6 +159,7 @@ and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignVa
                         |   ScalarExpression a -> AddToScalars env a (Seq.last x)
                         |   RecordSetExpression b ->    match b.Index with 
                                                         | Star -> AddToRecordSetFramedWithAtomList env b  x shouldUseLast update (Some value)
+                                                        | Last -> AddToRecordSetFramedWithAtomList env b  x true update (Some value)
                                                         | _ ->      try
                                                                         AddToRecordSetFramed env b x.[0]                  
                                                                     with
