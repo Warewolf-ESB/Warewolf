@@ -11,7 +11,6 @@ Scenario: Open new Dropbox Upload Tool
 	And Local File is Enabled
 	And Dropbox File is Enabled
 	When I Click New
-	Then the New Dropbox Source window is opened
 
 Scenario: Editing Dropbox Upload Tool
 	And I drag Upload Dropbox Tool onto the design surface

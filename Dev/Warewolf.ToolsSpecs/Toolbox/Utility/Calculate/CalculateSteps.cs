@@ -27,38 +27,72 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     {
         protected override void BuildDataList()
         {
+            BuildInternal(false);
+        }
+
+        private void BuildInternal(bool isAggregate)
+        {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if(ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             string formula;
             ScenarioContext.Current.TryGetValue("formula", out formula);
-
-            var calculate = new DsfCalculateActivity
+            if (isAggregate)
+            {
+                var calculate = new DsfAggregateCalculateActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVariable,
                     Expression = formula
                 };
-
-            TestStartNode = new FlowStep
+                TestStartNode = new FlowStep
                 {
                     Action = calculate
                 };
-            ScenarioContext.Current.Add("activity", calculate);
+                ScenarioContext.Current.Add("activity", calculate);
+            }
+            else
+            {
+                var calculate = new DsfCalculateActivity
+                {
+                    Result = resultVariable,
+                    Expression = formula
+                };
+                TestStartNode = new FlowStep
+                {
+                    Action = calculate
+                };
+                ScenarioContext.Current.Add("activity", calculate);
+            }
+            
         }
 
         [Given(@"I have the formula ""(.*)""")]
         public void GivenIHaveTheFormula(string formula)
         {
             ScenarioContext.Current.Add("formula", formula);
+        }
+
+        [When(@"the aggregate calculate tool is executed")]
+        public void WhenTheAggregateCalculateToolIsExecuted()
+        {
+            BuildInternal(true);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            ScenarioContext.Current.Add("result", result);
         }
 
         [When(@"the calculate tool is executed")]
@@ -140,28 +174,30 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             }
         }
 
-        [Then(@"the calculate ""(.*)"" should be ""(.*)""")]
-        public void ThenTheCalculateShouldBe(string p0, int p1)
-        {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
-        }
-
         [Then(@"the calculate result should be null")]
         public void ThenTheCalculateResultShouldBeNull()
         {
-            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
-        [Given(@"I have the Example formula ""(.*)""")]
+        [Given(@"I have the Example formula '(.*)'")]
         public void GivenIHaveTheExampleFormula(string formula)
         {
             ScenarioContext.Current.Add("formula", formula);
+
         }
 
-        [Then(@"the example output = ""(.*)""")]
+
+        [Then(@"the example output = '(.*)'")]
         public void ThenTheExampleOutput(int p0)
         {
             ScenarioContext.Current.Pending();
         }
+
+        [Given(@"calculate result as ""(.*)""")]
+        public void GivenCalculateResultAs(string p0)
+        {
+            ScenarioContext.Current.Add("resVar", p0);
+        }
+
     }
 }

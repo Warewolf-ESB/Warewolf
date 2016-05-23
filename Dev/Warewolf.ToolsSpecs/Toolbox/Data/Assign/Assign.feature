@@ -441,7 +441,7 @@ Scenario: Evaluating recursive variable in a group calculation
 	| # | Variable     | New Value                   |
 	| 1 | [[a]]    =   | 1                           |
 	| 2 | [[b]]    =   | a                           |
-	| 3 | [[Result]] = | SUM([[[[b]]]],1) = SUM(1,1) |
+	| 3 | [[Result]] = | SUM([[a]],1) = SUM(1,1) |
 	And the debug output as
 	| # |                      |
 	| 1 | [[a]]     =        1 |
@@ -456,10 +456,10 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	Then the value of "[[Result]]" equals "2"
 	And the execution has "NO" error
 	And the debug inputs as
-	| # | Variable         | New Value                               |
-	| 1 | [[rec(1).a]]   = | 1                                       |
-	| 2 | [[rec(1).b]]   = | rec(1).a                                |
-	| 3 | [[Result]] =     | [[[[rec(1).b]]]]+1 = 1+1 |
+	| # | Variable         | New Value            |
+	| 1 | [[rec(1).a]]   = | 1                    |
+	| 2 | [[rec(1).b]]   = | rec(1).a             |
+	| 3 | [[Result]] =     | [[rec(1).a]]+1 = 1+1 |
 	And the debug output as
 	| # |                         |
 	| 1 | [[rec(1).a]] = 1        |
@@ -787,12 +787,141 @@ Scenario Outline:  Assigning value to a complex type that is incorrectly formatt
 	
 
 
+Scenario: Assign a variable equal to a complex expression with scalar and recordset with star
+	Given I assign the value 1 to a variable "[[a]]"
+	And I assign the value 2 to a variable "[[b]]"
+	And I assign the value [[a]] to a variable "[[rec().a]]"
+	And I assign the value [[b]] to a variable "[[rec().a]]"
+	And I assign the value "Test[[rec(*).a]]EndTest" to a variable "[[Result]]"
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "Test2EndTest"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value                              |
+	| 1 | [[a]]          = | 1                                      |
+	| 2 | [[b]]          = | 2                                      |
+	| 3 | [[rec().a]]   =  | [[a]] = 1                              |
+	| 4 | [[rec().a]]   =  | [[b]] = 2                              |
+	| 5 | [[Result]] =     | Test[[rec(1).a]]EndTest = Test1EndTest |
+	|   |                  | Test[[rec(2).a]]EndTest = Test2EndTest |
+	And the debug output as
+	| # |                           |
+	| 1 | [[a]] = 1                 |
+	| 2 | [[b]] = 2                 |
+	| 3 | [[rec(1).a]] = 1          |
+	| 4 | [[rec(2).a]] = 2          |
+	| 5 | [[Result]] = Test2EndTest |
+
+Scenario: Assign all recordset values to all recordset complex
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value Hello to a variable "[[rs().val]]"
+	And I assign the value "Bye[[rec(*).set]]" to a variable "[[rs(*).val]]"
+	When the assign tool is executed
+	Then the value of "[[rs(1).val]]" equals "Bye10"
+	And the value of "[[rs(2).val]]" equals "Bye20"
+	And the value of "[[rs(3).val]]" equals "Bye30"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable              | New Value                 |
+	| 1 | [[rec(1).set]] =      | 10                        |
+	| 2 | [[rec(2).set]] =      | 20                        |
+	| 3 | [[rec(3).set]] =      | 30                        |
+	| 4 | [[rs().val]] =        | Hello                     |
+	| 5 | [[rs(1).val]] = Hello | Bye[[rec(1).set]] = Bye10 |
+	|   |                       | Bye[[rec(2).set]] = Bye20 |
+	|   |                       | Bye[[rec(3).set]] = Bye30 |
+	And the debug output as
+    | # |                       |
+    | 1 | [[rec(1).set]] = 10   |
+    | 2 | [[rec(2).set]] = 20   |
+    | 3 | [[rec(3).set]] = 30   |
+    | 4 | [[rs(1).val]] = Hello |
+    | 5 | [[rs(1).val]] = Bye10 |
+    |   | [[rs(2).val]] = Bye20 |
+    |   | [[rs(3).val]] = Bye30 |
+
+Scenario: Assign all recordset values to all recordset complex new recordset does not exist
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value "Bye[[rec(*).set]]" to a variable "[[rs().val]]"
+	When the assign tool is executed
+	Then the value of "[[rs(1).val]]" equals "Bye10"
+	And the value of "[[rs(2).val]]" equals "Bye20"
+	And the value of "[[rs(3).val]]" equals "Bye30"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value                 |
+	| 1 | [[rec(1).set]] = | 10                        |
+	| 2 | [[rec(2).set]] = | 20                        |
+	| 3 | [[rec(3).set]] = | 30                        |
+	| 4 | [[rs().val]] =   | Bye[[rec(1).set]] = Bye10 |
+	|   |                  | Bye[[rec(2).set]] = Bye20 |
+	|   |                  | Bye[[rec(3).set]] = Bye30 |
+	And the debug output as
+    | # |                       |
+    | 1 | [[rec(1).set]] = 10   |
+    | 2 | [[rec(2).set]] = 20   |
+    | 3 | [[rec(3).set]] = 30   |
+    | 4 | [[rs(3).val]] = Bye30 |
+
+Scenario: Assign a variable equal to a complex expression with scalar and recordset with star with calculate
+	Given I assign the value 1 to a variable "[[a]]"
+	And I assign the value 2 to a variable "[[b]]"
+	And I assign the value [[a]] to a variable "[[rec().a]]"
+	And I assign the value [[b]] to a variable "[[rec().a]]"
+	And I assign the value "=[[rec(*).a]]+10" to a variable "[[Result]]"
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "12"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable         | New Value              |
+	| 1 | [[a]]          = | 1                      |
+	| 2 | [[b]]          = | 2                      |
+	| 3 | [[rec().a]]   =  | [[a]] = 1              |
+	| 4 | [[rec().a]]   =  | [[b]] = 2              |
+	| 5 | [[Result]] =     | [[rec(1).a]]+10 = 1+10 |
+	|   |                  | [[rec(2).a]]+10 = 2+10  |
+	And the debug output as
+	| # |                  |
+	| 1 | [[a]] = 1        |
+	| 2 | [[b]] = 2        |
+	| 3 | [[rec(1).a]] = 1 |
+	| 4 | [[rec(2).a]] = 2 |
+	| 5 | [[Result]] = 12  |
 
 
-
-
-
-
+Scenario: Assign all recordset values to all recordset complex with calculation
+	Given I assign the value 10 to a variable "[[rec(1).set]]"	
+	And I assign the value 20 to a variable "[[rec(2).set]]"
+	And I assign the value 30 to a variable "[[rec(3).set]]"
+	And I assign the value Hello to a variable "[[rs().val]]"
+	And I assign the value "=[[rec(*).set]]*10" to a variable "[[rs(*).val]]"
+	When the assign tool is executed
+	Then the value of "[[rs(1).val]]" equals "100"
+	And the value of "[[rs(2).val]]" equals "200"
+	And the value of "[[rs(3).val]]" equals "300"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable              | New Value                 |
+	| 1 | [[rec(1).set]] =      | 10                        |
+	| 2 | [[rec(2).set]] =      | 20                        |
+	| 3 | [[rec(3).set]] =      | 30                        |
+	| 4 | [[rs().val]] =        | Hello                     |
+	| 5 | [[rs(1).val]] = Hello | [[rec(1).set]]*10 = 10*10 |
+	|   |                       | [[rec(2).set]]*10 = 20*10 |
+	|   |                       | [[rec(3).set]]*10 = 30*10 |
+	And the debug output as
+    | # |                       |
+    | 1 | [[rec(1).set]] = 10   |
+    | 2 | [[rec(2).set]] = 20   |
+    | 3 | [[rec(3).set]] = 30   |
+    | 4 | [[rs(1).val]] = Hello |
+    | 5 | [[rs(1).val]] = 100   |
+    |   | [[rs(2).val]] = 200   |
+    |   | [[rs(3).val]] = 300   |
 
 
 

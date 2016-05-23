@@ -331,6 +331,9 @@ namespace Warewolf.Studio.ViewModels
 
         void SaveConnection()
         {
+            Testing = true;
+            TestFailed = false;
+            TestPassed = false;
             if (_dbSource == null)
             {
                 RequestServiceNameViewModel.Wait();
@@ -380,6 +383,7 @@ namespace Warewolf.Studio.ViewModels
                 _updateManager.Save(toDbSource);
                 Item = toDbSource;
                 SetupHeaderTextFromExisting();
+                Reset();
             }
             catch(Exception ex)
             {

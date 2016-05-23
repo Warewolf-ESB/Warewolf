@@ -286,6 +286,26 @@ Scenario: Generate a Number between double min and double max with no decimals
 	|                     |
 	| [[result]] = Double |
 
+
+Scenario: Generate random using star notation
+	Given I have a type as "Letters"
+	And I have a a random variable "[[rand().num]]" equal to "5"
+	And I have a a random variable "[[rand().num]]" equal to "10"
+	And I have a a random variable "[[res().val]]" equal to "bob"
+	And I have a length as "[[rand(*).num]]"
+	And I have a random result variable as "[[res(*).val]]"
+	When the random tool is executed 
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| Random  | Length               |
+	| Letters | [[rand(1).num]] = 5  |
+	|         | [[rand(2).num]] = 10 |
+	And the debug output as 
+	|                     |
+	| [[res(1).val]] = String |
+	| [[res(2).val]] = String |
+
+@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Generate numbers using complex types
 	Given I have a type as "<Type>"

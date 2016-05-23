@@ -176,3 +176,20 @@ Scenario Outline: Enter a URL to download html with timeout specified too short
 	| url                                                   | timeoutSeconds |
 	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=150 | 10             |
 	| http://tst-ci-remote:3142/Public/Wait?WaitSeconds=15  | 10             |
+
+Scenario: Enter a recordset star input and output
+	Given I have a web request variable "[[urls().url]]" equal to "http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx"	
+	And I have a web request variable "[[urls().url]]" equal to "http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15"	
+	And I have a web request variable "[[results().res]]" equal to "res1"	
+	And I have the url "[[urls(*).url]]"	
+	And I have web request result as "[[results(*).res]]"
+	When the web request tool is executed 
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| URL                                                                     | Header |
+	| [[urls(1).url]] = http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx |        |
+	| [[urls(2).url]] = http://tst-ci-remote:3142/secure/Wait?WaitSeconds=15  |        |
+	And the debug output as 
+	|                                                                            |
+	| [[results(1).res]] = <string>value1</string>                               |
+	| [[results(2).res]] = <DataList><Result>Wait Successful</Result></DataList> |

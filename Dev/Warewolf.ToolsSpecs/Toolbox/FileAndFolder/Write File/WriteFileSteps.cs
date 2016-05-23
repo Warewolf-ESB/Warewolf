@@ -15,9 +15,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2;
 
 // ReSharper disable CheckNamespace
-namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
+namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 // ReSharper restore CheckNamespace
 {
     [Binding]

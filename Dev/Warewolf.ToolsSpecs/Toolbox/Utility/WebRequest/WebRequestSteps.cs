@@ -32,8 +32,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if(ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             string header;
@@ -44,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             ScenarioContext.Current.TryGetValue("timeoutSeconds", out timeout);
             var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVariable,
                     Url = url ?? "",
                     Headers = header ?? "",
                     TimeoutSeconds = String.IsNullOrEmpty(timeout) ? 100 : int.Parse(timeout),
@@ -111,6 +116,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 Assert.IsNotNull(actualValue, failureMessage);
                 Assert.IsTrue(actualValue.Contains(expectedResult), failureMessage);
             }
+        }
+
+        [Given(@"I have web request result as ""(.*)""")]
+        public void GivenIHaveWebRequestResultAs(string resultVar)
+        {
+            ScenarioContext.Current.Add("resVar", resultVar);
         }
 
 

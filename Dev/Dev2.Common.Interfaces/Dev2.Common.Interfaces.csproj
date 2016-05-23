@@ -204,7 +204,6 @@
     <Compile Include="IEmailAttachmentView.cs" />
     <Compile Include="IEmailAttachmentVm.cs" />
     <Compile Include="IEmailServiceSource.cs" />
-    <Compile Include="IEnvironment.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
@@ -229,6 +228,7 @@
     <Compile Include="IManageEmailSourceViewModel.cs" />
     <Compile Include="IManageExchangeSourceViewModel.cs" />
     <Compile Include="IManageNewServerViewModel.cs" />
+    <Compile Include="IManageOAuthSourceModel.cs" />
     <Compile Include="IManagePluginServiceInputViewModel.cs" />
     <Compile Include="IManagePluginSourceModel.cs" />
     <Compile Include="IManagePluginSourceViewModel.cs" />
@@ -261,6 +261,7 @@
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
     <Compile Include="Infrastructure\SharedModels\ISharepointFieldTo.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
+    <Compile Include="IOAuthSource.cs" />
     <Compile Include="IPasteView.cs" />
     <Compile Include="IPerformanceCountersByMachine.cs" />
     <Compile Include="IPerformanceCountersByResource.cs" />
@@ -409,7 +410,7 @@
     <Compile Include="Versioning\IVersionRepository.cs" />
     <Compile Include="Wrappers\IDirectory.cs" />
     <Compile Include="Wrappers\IDirectoryEntry.cs" />
-    <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />
+    <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />   
     <Compile Include="Wrappers\IFile.cs" />
     <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>
