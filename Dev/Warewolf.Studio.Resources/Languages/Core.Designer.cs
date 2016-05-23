@@ -2551,6 +2551,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit RabbitMQ Source.
+        /// </summary>
+        public static string EditRabbitMQSourceHelp {
+            get {
+                return ResourceManager.GetString("EditRabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the path to the attachments you want to send, separated by a semicolon ;
         ///
         ///Allowed:
@@ -4765,6 +4774,60 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Publish the test message.
+        /// </summary>
+        public static string ManagePublishTooltip {
+            get {
+                return ResourceManager.GetString("ManagePublishTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RabbitMQ server name.
+        /// </summary>
+        public static string ManageRabbitMQHostTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password for the RabbitMQ server.
+        /// </summary>
+        public static string ManageRabbitMQPasswordTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQPasswordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port used by the RabbitMQ server.
+        /// </summary>
+        public static string ManageRabbitMQPortTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQPortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name for the RabbitMQ server.
+        /// </summary>
+        public static string ManageRabbitMQUserNameTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQUserNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Virtual host for the RabbitMQ server.
+        /// </summary>
+        public static string ManageRabbitMQVirtualHostTooltip {
+            get {
+                return ResourceManager.GetString("ManageRabbitMQVirtualHostTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel this action.
         /// </summary>
         public static string ManageWebPasteCancelTooltip {
@@ -5521,6 +5584,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New RabbitMQ Source.
+        /// </summary>
+        public static string NewRabbitMQSourceHelp {
+            get {
+                return ResourceManager.GetString("NewRabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Remote Server....
         /// </summary>
         public static string NewServerLabel {
@@ -5844,6 +5916,230 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string QuickVariableVariableListToolTip {
             get {
                 return ResourceManager.GetString("QuickVariableVariableListToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue auto delete.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Make the queue auto delete.
+        /// </summary>
+        public static string RabbitMQHelpIsAutoDelete {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpIsAutoDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue durable.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Make the queue durable.
+        /// </summary>
+        public static string RabbitMQHelpIsDurable {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpIsDurable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue exclusive.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Make the queue exclusive.
+        /// </summary>
+        public static string RabbitMQHelpIsExclusive {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpIsExclusive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message goes in here.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpMessage {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a meaningful name for the queue.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpQueueName {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpQueueName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here.&lt;br /&gt;
+        ///        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string RabbitMQHelpResult {
+            get {
+                return ResourceManager.GetString("RabbitMQHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+        ///.
+        /// </summary>
+        public static string RabbitMQSourceHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Host name of the server you want to use for publishing messages..
+        /// </summary>
+        public static string RabbitMQSourceHostHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceHostHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New RabbitMQ Source.
+        /// </summary>
+        public static string RabbitMQSourceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Password for the RabbitMQ server..
+        /// </summary>
+        public static string RabbitMQSourcePasswordHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourcePasswordHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Port of the RabbitMQ server. Default value is 5672..
+        /// </summary>
+        public static string RabbitMQSourcePortHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourcePortHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The User Name for the RabbitMQ server..
+        /// </summary>
+        public static string RabbitMQSourceUserNameHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceUserNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Virtual Host of the RabbitMQ server. Default value is /..
+        /// </summary>
+        public static string RabbitMQSourceVirtualHostHelp {
+            get {
+                return ResourceManager.GetString("RabbitMQSourceVirtualHostHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue auto delete..
+        /// </summary>
+        public static string RabbitMQToolTipIsAutoDelete {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipIsAutoDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue durable..
+        /// </summary>
+        public static string RabbitMQToolTipIsDurable {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipIsDurable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make the queue exclusive..
+        /// </summary>
+        public static string RabbitMQToolTipIsExclusive {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipIsExclusive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The message goes in here..
+        /// </summary>
+        public static string RabbitMQToolTipMessage {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provide a meaningful name for the queue..
+        /// </summary>
+        public static string RabbitMQToolTipQueueName {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipQueueName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only variables go in here..
+        /// </summary>
+        public static string RabbitMQToolTipResult {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+        ///.
+        /// </summary>
+        public static string RabbitMQToolTipSource {
+            get {
+                return ResourceManager.GetString("RabbitMQToolTipSource", resourceCulture);
             }
         }
         
@@ -8662,6 +8958,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ViewInBrowserLabel {
             get {
                 return ResourceManager.GetString("ViewInBrowserLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Virtual Host.
+        /// </summary>
+        public static string VirtualHostLabel {
+            get {
+                return ResourceManager.GetString("VirtualHostLabel", resourceCulture);
             }
         }
         

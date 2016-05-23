@@ -1,8 +1,3 @@
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -10,6 +5,11 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Storage;
@@ -21,8 +21,8 @@ namespace Dev2.Activities
         private string _result;
         public new abstract string DisplayName { get; set; }
 
-
         #region Get Debug Inputs/Outputs
+
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -37,7 +37,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        #endregion Get Inputs/Outputs
+        #endregion Get Debug Inputs/Outputs
 
         #region GetForEachInputs/Outputs
 
@@ -54,9 +54,6 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             //Guid executionId = DataListExecutionID.Get(context);
@@ -93,15 +90,11 @@ namespace Dev2.Activities
                     AssignResult(dataObject, update);
                 }
 
-                allErrors.MergeErrors(errors);
-
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrWhiteSpace(Result))
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
                         if (!string.IsNullOrEmpty(Result))
                             AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                    }
                 }
                 allErrors.MergeErrors(errors);
             }
@@ -142,7 +135,6 @@ namespace Dev2.Activities
 
         protected abstract string PerformExecution(Dictionary<string, string> evaluatedValues);
 
-
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach (var update in updates)
@@ -174,7 +166,6 @@ namespace Dev2.Activities
             {
                 var variableValue = propertyInfo.GetValue(this) as string;
                 result.AddRange(GetForEachItems(variableValue));
-
             }
             return result;
         }
@@ -184,6 +175,6 @@ namespace Dev2.Activities
             return GetForEachItems(Result);
         }
 
-        #endregion
+        #endregion GetForEachInputs/Outputs
     }
 }

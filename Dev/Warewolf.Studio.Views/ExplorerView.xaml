@@ -635,7 +635,15 @@
                                                                    Source="{StaticResource EmailSourceImageLogo}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
-
+                                                    <ig:XamMenuItem Name="NewRabbitMQSource"
+                                                                    Command="{Binding Path=Data.NewCommand}"
+                                                                    CommandParameter="RabbitMQSource"
+                                                                    Header="New RabbitMQ Source"
+                                                                    Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Width="12" Height="12" Source="{StaticResource RabbitMqSource}" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDropboxSource"
                                                                     Command="{Binding Path=Data.NewCommand}"
                                                                     CommandParameter="DropboxSource"
@@ -957,6 +965,15 @@
                                                             <Image Width="12"
                                                                    Height="12"
                                                                    Source="{StaticResource EmailSourceImageLogo}" />
+                                                        </ig:XamMenuItem.Icon>
+                                                    </ig:XamMenuItem>
+                                                    <ig:XamMenuItem Name="NewRabbitMqSource"
+                                                                    Command="{Binding Path=Data.NewCommand}"
+                                                                    CommandParameter="RabbitMQSource"
+                                                                    Header="New RabbitMQ Source"
+                                                                    Visibility="{Binding Path=Data.CanCreateRabbitMQSource, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <ig:XamMenuItem.Icon>
+                                                            <Image Width="12" Height="12" Source="{StaticResource RabbitMqSource}" />
                                                         </ig:XamMenuItem.Icon>
                                                     </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewDropboxSource"

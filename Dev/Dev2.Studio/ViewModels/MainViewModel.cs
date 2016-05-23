@@ -744,6 +744,9 @@ namespace Dev2.Studio.ViewModels
                 case "OauthSource":
                     ShowEditResourceWizard(resourceModel);
                     break;
+                case "RabbitMQSource":
+                    EditRabbitMQSource(resourceModel);
+                    break;
                 case "Server":
                 case "Dev2Server":
                 case "ServerSource":
@@ -904,6 +907,28 @@ namespace Dev2.Studio.ViewModels
                 ResourceName = db.ResourceName,
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        private void EditRabbitMQSource(IContextualResourceModel resourceModel)
+        {
+            var source = new RabbitMQSource(resourceModel.WorkflowXaml.ToXElement());
+            var def = new RabbitMQServiceSourceDefinition()
+            {
+                ResourceID = source.ResourceID,
+                ResourceName = source.ResourceName,
+                ResourcePath = source.ResourcePath,
+                HostName = source.HostName,
+                Port = source.Port,
+                UserName = source.UserName,
+                Password = source.Password,
+                VirtualHost = source.VirtualHost
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.RabbitMQSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
@@ -1151,6 +1176,25 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var viewModel = new ManageRabbitMQSourceViewModel(new ManageRabbitMQSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this), selectedSource);
+            var vm = new SourceViewModel<IRabbitMQServiceSourceDefinition>(EventPublisher, viewModel, PopupProvider, new ManageRabbitMQSourceControl());
+
+            if (workSurfaceKey == null)
+            {
+                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+                workSurfaceKey.ResourceID = selectedSource.ResourceID;
+                workSurfaceKey.ServerID = ActiveServer.ServerID;
+            }
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
         public void EditResource(ISharepointServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var viewModel = new SharepointServerSourceViewModel(new SharepointServerSourceModel(ActiveServer.UpdateRepository, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker, null);
@@ -1220,6 +1264,10 @@ namespace Dev2.Studio.ViewModels
             else if (resourceType == "ExchangeSource")
             {
                 AddExchangeWorkSurface(saveViewModel);
+            }
+            else if (resourceType == "RabbitMQSource")
+            {
+                AddNewRabbitMQSourceSurface(saveViewModel);
             }
             else
             {
@@ -1309,7 +1357,14 @@ namespace Dev2.Studio.ViewModels
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
             key.ServerID = ActiveServer.ServerID;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IOAuthSource>(EventPublisher, new ManageOAuthSourceViewModel(new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name),saveViewModel), PopupProvider, new ManageOAuthSourceControl()));
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IOAuthSource>(EventPublisher, new ManageOAuthSourceViewModel(new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), saveViewModel), PopupProvider, new ManageOAuthSourceControl()));
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        private void AddNewRabbitMQSourceSurface(Task<IRequestServiceNameViewModel> saveViewModel)
+        {
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.RabbitMQSource) as WorkSurfaceKey, new SourceViewModel<IRabbitMQServiceSourceDefinition>(EventPublisher, new ManageRabbitMQSourceViewModel(new ManageRabbitMQSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this), saveViewModel), PopupProvider, new ManageRabbitMQSourceControl()));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
@@ -2101,11 +2156,11 @@ namespace Dev2.Studio.ViewModels
         }
 
         readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) =>
-            {
-                // ReSharper disable ConvertToLambdaExpression
-                return WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
-                // ReSharper restore ConvertToLambdaExpression
-            };
+        {
+            // ReSharper disable ConvertToLambdaExpression
+            return WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
+            // ReSharper restore ConvertToLambdaExpression
+        };
 
         private bool IsInOpeningState(IContextualResourceModel resource)
         {
