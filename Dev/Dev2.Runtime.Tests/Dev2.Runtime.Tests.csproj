@@ -175,6 +175,7 @@
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
+    <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />

@@ -265,7 +265,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData();
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
-                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.JSON);
+                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json);
                 if (workflowUri != null)
                 {
                     _workflowLink = workflowUri.ToString();
@@ -1757,11 +1757,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool dropOccured = true;
             SetLastDroppedPoint(e);
             DataObject = e.Data.GetData(typeof(ExplorerItemViewModel));
-            if (DataObject != null)
+            if (DataObject != null || e.Data != null)
             {
                 IsItemDragged.Instance.IsDragged = true;
             }
-
+            
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if (isWorkflow != null)
             {
@@ -1797,6 +1797,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ResourceModel.IsWorkflowSaved = false;
                     NotifyOfPropertyChange(() => DisplayName);
                 }
+            }
+            else
+            {
+                IsItemDragged.Instance.IsDragged = false;
             }
             _resourcePickerDialog = null;
 

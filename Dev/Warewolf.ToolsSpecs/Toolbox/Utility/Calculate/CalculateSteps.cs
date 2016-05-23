@@ -27,38 +27,72 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     {
         protected override void BuildDataList()
         {
+            BuildInternal(false);
+        }
+
+        private void BuildInternal(bool isAggregate)
+        {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if(ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             string formula;
             ScenarioContext.Current.TryGetValue("formula", out formula);
-
-            var calculate = new DsfCalculateActivity
+            if (isAggregate)
+            {
+                var calculate = new DsfAggregateCalculateActivity
                 {
-                    Result = ResultVariable,
+                    Result = resultVariable,
                     Expression = formula
                 };
-
-            TestStartNode = new FlowStep
+                TestStartNode = new FlowStep
                 {
                     Action = calculate
                 };
-            ScenarioContext.Current.Add("activity", calculate);
+                ScenarioContext.Current.Add("activity", calculate);
+            }
+            else
+            {
+                var calculate = new DsfCalculateActivity
+                {
+                    Result = resultVariable,
+                    Expression = formula
+                };
+                TestStartNode = new FlowStep
+                {
+                    Action = calculate
+                };
+                ScenarioContext.Current.Add("activity", calculate);
+            }
+            
         }
 
         [Given(@"I have the formula ""(.*)""")]
         public void GivenIHaveTheFormula(string formula)
         {
             ScenarioContext.Current.Add("formula", formula);
+        }
+
+        [When(@"the aggregate calculate tool is executed")]
+        public void WhenTheAggregateCalculateToolIsExecuted()
+        {
+            BuildInternal(true);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            ScenarioContext.Current.Add("result", result);
         }
 
         [When(@"the calculate tool is executed")]
@@ -159,6 +193,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"calculate result as ""(.*)""")]
+        public void GivenCalculateResultAs(string p0)
+        {
+            ScenarioContext.Current.Add("resVar", p0);
+        }
 
     }
 }

@@ -67,6 +67,8 @@ namespace Dev2.Common.Interfaces
         event Action<IPluginSource> PluginServiceSourceSaved;
 
         event Action<IEmailServiceSource> EmailServiceSourceSaved;
+
+        void Save(IOAuthSource sharePointServiceSource);
     }
 
     public delegate void ItemSaved();

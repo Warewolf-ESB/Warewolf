@@ -204,6 +204,11 @@ namespace Dev2.Common
         public const string CalculateTextConvertSuffix = "!~~calculation~!";
         public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
+        public const string AggregateCalculateTextConvertPrefix = "!~aggcalculation~!";
+        public const string AggregateCalculateTextConvertSuffix = "!~~aggcalculation~!";
+        public const string AggregateCalculateTextConvertFormat = AggregateCalculateTextConvertPrefix + "{0}" + AggregateCalculateTextConvertSuffix;
+
+
         // Website constants
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
@@ -479,8 +484,6 @@ WHERE   n.nspname = 'public'
         public static int MaxWorkflowsToExecute = 1010;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
-        public static string DropBoxApiKey = "l6vuufdy2psuyif";
-        public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
         public static string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
@@ -568,6 +571,7 @@ WHERE   n.nspname = 'public'
         public static string GlobalCounterName = "All";
         public static string Warewolf = "Warewolf";
         public static string WarewolfServices = "Warewolf Services";
+        public static string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

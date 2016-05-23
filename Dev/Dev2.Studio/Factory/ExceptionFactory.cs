@@ -18,6 +18,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Factory
@@ -129,7 +130,7 @@ namespace Dev2.Studio.Factory
         public static IExceptionViewModel CreateViewModel(Exception e, IEnvironmentModel environmentModel, ErrorSeverity isCritical = ErrorSeverity.Default)
         {
             // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
-            var vm = new ExceptionViewModel
+            var vm = new ExceptionViewModel(new AsyncWorker())
                 {
                     OutputText = CreateStringValue(e, null, true).ToString(),
                     StackTrace = e.StackTrace,

@@ -131,6 +131,32 @@ Scenario: Replace when undifined recordset index is input
 	| [[L]]       | XXXX | Parker       | The given variable is not present in the dictionary |
 
 
+Scenario: Using recordset star notation for input and result
+	Given I have a replace variable "[[words().word]]" equal to "Bob"
+	And I have a replace variable "[[words().word]]" equal to "Doro"
+	And I have a replace variable "[[words().word]]" equal to "Bill"
+	And I have a replace variable "[[rs().val]]" equal to "val1"
+	And I have a replace variable "[[rs().val]]" equal to "val2"
+	And I have a sentence "[[words(*).word]]"
+	And I want to find the characters "o"
+	And I want to replace them with "a"
+	And replace result is "[[rs(*).val]]"
+	When the replace tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as 
+	| In Field(s)              | Find | Replace With |
+	| [[words(1).word]] = Bob  |      |              |
+	| [[words(2).word]] = Doro |      |              |
+	| [[words(3).word]] = Bill | o    | a            |
+	And the debug output as 
+	|                          |                   |
+	| [[words(1).word]] = Bab  |                   |
+	| [[words(2).word]] = Dara |                   |
+	| [[words(3).word]] = Bill |                   |
+	|                          | [[rs(1).val]] = 1 |
+	|                          | [[rs(2).val]] = 2 |
+	|                          | [[rs(3).val]] = 0 |
+
 Scenario Outline:  Ensuring recordsets work as a Result
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
 	And I have a sentence "[[sentence]]"
@@ -141,7 +167,7 @@ Scenario Outline:  Ensuring recordsets work as a Result
 	And replace result is "<resultVar>"
 	When the replace tool is executed
 	Then the execution has "NO" error
-	And the result variable '<resultVar>' will be '<result>'
+	And the result variable "<resultVar>" will be "<result>"
 Examples: 
 | value         | replace | resultVar               | result | output                                                    |
 | [[text]]      | West    | [[rec().string]]        | 1      | [[sentence]] = Dear Mr West, We welcome you as a customer |
@@ -152,7 +178,6 @@ Examples:
 | [[text]]      | 12      | [[var]]                 | 1      | [[sentence]] = Dear Mr 12, We welcome you as a customer   |
 
 #Complex types WOLF-1042
-@ignore
 Scenario Outline: Replace values using complex types
 	Given I have a replace variable "<var>" equal to "<value>"
 	And I have a sentence "<var>"

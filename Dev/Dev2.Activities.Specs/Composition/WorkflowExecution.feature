@@ -1,6 +1,6 @@
 ﻿@WorkflowExecution
 Feature: WorkflowExecution
-	In order to execute a workflow on the server
+	In order to execute a workflow
 	As a Warewolf user
 	I want to be able to build workflows and execute them against the server
 	 
@@ -234,7 +234,7 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | 2 | [[rec(1).a]] = Warewolf |
 	   And the 'Assigntool3' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
 	  | # | Variable  | New Value               |
-	  | 1 | [[new]] = | [[[[test]]]] = Warewolf |
+	  | 1 | [[new]] = | [[rec(1).a]] = Warewolf |
 	  And the 'Assigntool3' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
 	  | # |                    |
 	  | 1 | [[new]] = Warewolf |
@@ -508,7 +508,7 @@ Scenario: Workflow with 2 Assign tools executing against the server
 	  | 3 | [[test]] = warewolf |
 	  And the 'tool2' in WorkFlow 'WorkflowWith2Assigntools' debug inputs as
 	  | # | Variable         | New Value                |
-	  | 1 | [[[[a]]]] = test | [[test]] = warewolf |
+	  | 1 | [[b]] = test | [[test]] = warewolf |
 
 Scenario: Workflow with 2 Assign tools by using recordsets in fields executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntoolswithrecordsets"
@@ -1363,11 +1363,19 @@ Scenario: Workflow with Assign and Calculate
 	  | 5 | [[Benz(1).a2]]  =  20 |
 	  | 6 | [[Benz(1).a3]]  =  30 |
 	  And the 'Calculate1' in WorkFlow 'WFAssign&Calculate' debug inputs as 
-      | fx =                                                          |
-      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10,20,30)+sum(1,2,3) |       
+      | fx =                                                |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10)+sum(1) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10)+sum(2) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10)+sum(3) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(20)+sum(1) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(20)+sum(2) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(20)+sum(3) |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(30)+sum(1) |       
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(30)+sum(2) |       
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(30)+sum(3) |       
       And the 'Calculate1' in Workflow 'WFAssign&Calculate' debug outputs as  
 	  |                 |
-	  | [[result]] = 66 |
+	  | [[result]] = 33 |
 
 Scenario: Workflow with Assign and ForEach
      Given I have a workflow "WFWithAssignForEach"
@@ -1640,45 +1648,6 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  | 14 | [[rec(50).n]] = aasdd222      |
 	  | 15 | [[rec(50).o]] = 22323asda     |
 		
-  
-
-
-
-
- Scenario: Workflow with Assign and Replace by using recordset star
- Given I have a workflow "workflowithAssignandreplaces"
-      And "workflowithAssignandreplaces" contains an Assign "Assignee" as
-      | variable    | value |
-      | [[rec().a]] | a     |
-      | [[rec().a]] | b     | 
-	  And "WorkflowWithAssignandReplaces" contains Replace "Rep" into "[[rec().a]]" as	
-	  | In Fields    | Find         | Replace With |
-	  | [[rec(*).a]] | [[rec(*).a]] | Warewolf     |
-	  When "workflowithAssignandreplaces" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Assignee' in WorkFlow 'workflowithAssignandreplaces' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | a         |
-	  | 2 | [[rec().a]] = | b         |
-	  And the 'Assignee' in Workflow 'workflowithAssignandreplaces' debug outputs as    
-	  | # |                  |
-	  | 1 | [[rec(1).a]] = a |
-	  | 2 | [[rec(2).a]] = b |
-	  And the 'Rep' in WorkFlow 'workflowithAssignandreplaces' debug inputs as 
-	  | In Field(s)      | Find             | Replace With |
-	  | [[rec(1).a]] = a |                  |              |
-	  | [[rec(2).a]] = b |                  |              |
-	  |                  | [[rec(1).a]] = a |              |
-	  |                  | [[rec(2).a]] = b |              |
-	  |                  |                  | Warewolf     |
-	  And the 'Rep' in Workflow 'workflowithAssignandreplaces' debug outputs as
-	  |                         |
-	  | [[rec(1).a]] = Warewolf |
-	  | [[rec(2).a]] = b        |
-	  | [[rec(1).a]] = Warewolf |
-	  | [[rec(2).a]] = Warewolf |
-	  | [[rec(3).a]] = 3        |
-
 Scenario: Workflow Assign and Find Record index tool with two variables in reult field expect error
       Given I have a workflow "WFWithAssignandFindRecordindexy"
 	  And "WFWithAssignandFindRecordindexy" contains an Assign "Record" as
@@ -1795,10 +1764,7 @@ Scenario Outline: Testing Format Numbers with two variables in Result
 	  Then the workflow execution has "AN" error	
 	  And the 'Fnumber' in WorkFlow 'Workflowforfn' debug inputs as 	
 	  | Number  | Rounding | Rounding Value | Decimals to show |
-	  | 123.568 | Up       | 2              | 2                |
-	  And the 'Fnumber' in Workflow 'Workflowforfn' debug outputs as 
-	  |                |
-	  | '<Variable>' = |
+	  | 123.568 | Up       | 2              | 2                |	  
 Examples: 
        | No | Variable               |
        | 1  | [[a]][[Result]]        |
@@ -2408,7 +2374,7 @@ Scenario: Workflow with Calculation using Star notation
 	  | variable      | value          |
 	  | [[rec().sum]] | =[[rs(*).a]]+1 |
 	  When "WorkflowWithAssignCalculationUsingStar" is executed
-	  Then the workflow execution has "AN" error
+	  Then the workflow execution has "NO" error
 	  And the 'Records' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
 	  | # | Variable      | New Value |
 	  | 1 | [[rs(1).a]] = | 19        |
@@ -2420,9 +2386,13 @@ Scenario: Workflow with Calculation using Star notation
 	  | 2 | [[rs(2).a]] =  20 |
 	  | 3 | [[rs(3).a]] =  40 |
 	   And the 'Calculation' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
-	  | # | Variable        | New Value |
+	  | # | Variable        | New Value            |
+	  | 1 | [[rec().sum]] = | [[rs(1).a]]+1 = 19+1 |
+	  |   |                 | [[rs(2).a]]+1 = 20+1 |
+	  |   |                 | [[rs(3).a]]+1 = 40+1 |
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
-	  | # |                   |
+	  | # |                     |
+	  | 1 | [[rec(3).sum]] = 41 |
 
 Scenario: Workflow with Assign Unique to check debug outputs
       Given I have a workflow "workflowithAssignUniquedebugoutputs"

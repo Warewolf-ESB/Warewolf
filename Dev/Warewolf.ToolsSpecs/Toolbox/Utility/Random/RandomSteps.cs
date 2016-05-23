@@ -35,7 +35,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var resultVariable = ResultVariable;
+            string resVar;
+            if (ScenarioContext.Current.TryGetValue("resVar", out resVar))
+            {
+                resultVariable = resVar;
+            }
+            variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
             enRandomType randomType;
@@ -50,8 +56,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             var dsfRandom = new DsfRandomActivity
                 {
                     RandomType = randomType,
-                    Result = ResultVariable
-                };
+                    Result = resultVariable
+            };
 
             if (!string.IsNullOrEmpty(length))
             {
@@ -167,6 +173,27 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             Assert.IsTrue(d >= from && d <= to);
         }
 
+        [Given(@"I have a a random variable ""(.*)"" equal to ""(.*)""")]
+        public void GivenIHaveAARandomVariableEqualTo(string variable, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            value = value.Replace('"', ' ').Trim();
+            variable = variable.Replace('"', ' ').Trim();
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, value));
+        }
+
+        [Given(@"I have a random result variable as ""(.*)""")]
+        public void GivenIHaveARandomResultVariableAs(string resultVar)
+        {
+            ScenarioContext.Current.Add("resVar", resultVar);
+        }
 
     }
 }

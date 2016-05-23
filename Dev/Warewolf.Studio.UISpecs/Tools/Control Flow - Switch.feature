@@ -5,7 +5,6 @@
 
 @Switch 
 #Coded UI Tests
-@ignore
 Scenario: Switch On Design Surface
 	Given I have Switch large view opened
 	And Variable to switch on "" is "Visible"
@@ -21,7 +20,6 @@ Scenario: Adding Switch Variable in Large View
 	Then Switch large view is closed
 	And Switch Small View is visible with display text as "[[a]]"
 
-@ignore
 Scenario: Change Display Text is updating in Small View
 	Given Switch Small View is visible with display text as "[[a]]"
 	When I open largeview 

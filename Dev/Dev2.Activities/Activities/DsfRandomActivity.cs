@@ -29,6 +29,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable FunctionComplexityOverflow
 
 namespace Dev2.Activities
 {
@@ -113,6 +115,7 @@ namespace Dev2.Activities
                     colItr.AddVariableToIterateOn(toItr);
 
                     Dev2Random dev2Random = new Dev2Random();
+                    var counter = 1;
                     while (colItr.HasMoreData())
                     {
                         int lengthNum = -1;
@@ -173,8 +176,9 @@ namespace Dev2.Activities
                         }
                         else
                         {
-                            env.Assign(Result, value, update);
+                            env.Assign(Result, value, update == 0 ? counter : update);
                         }
+                        counter++;
                     }
                 }
                 allErrors.MergeErrors(errors);
