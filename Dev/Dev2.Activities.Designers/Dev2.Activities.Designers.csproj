@@ -138,10 +138,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WarewolfLanguageParser, Version=0.0.5952.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -162,6 +158,16 @@
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\.Net DLL\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\AggregateCalculate.xaml.cs">
+      <DependentUpon>AggregateCalculate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\AggregateCalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\AggregateCalculate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\BaseConvert\BaseConvertDesignerViewModel.cs" />
@@ -225,9 +231,16 @@
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\DecisionCollectionViewModel.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
+    <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
+    <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
+    <Compile Include="Designers2\Core\Help\HelpTextResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpTextResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\ExchangeInputRegion.cs" />
@@ -953,6 +966,11 @@
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
+    <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ActivityResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
@@ -1038,6 +1056,10 @@
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Designers2\.Net DLL\DotNetDllDesigner.xaml">
@@ -1049,6 +1071,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\.Net DLL\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\AggregateCalculate\AggregateCalculate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\AggregateCalculate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\AggregateCalculate\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

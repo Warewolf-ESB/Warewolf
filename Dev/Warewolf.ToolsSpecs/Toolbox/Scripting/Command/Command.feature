@@ -67,27 +67,6 @@ Scenario: Execute cmd with negative recordset index
 	|               |
 	| [[result]] = |
 
-Scenario Outline: Execute a command that requires recordsets
-	Given I have this command script to execute '<variable>' with '<val>'
-	When the command tool is executed
-	Then the '<resultVariable>' of the command tool will be '<Result>'
-	And the execution has '<Error>' error
-	And the debug inputs as  
-	| variable   | Command |
-	| <variable> | <val>   |  
-	And the debug output as 
-	|                             |
-	| <resultVariable> = <result> |
-	Examples: 
-	| Variable                          | Val                | resultVariable               | Result                                                                                    | Error |
-	| [[rec().set]]                     | Echo a message     | [[rj().a]]                   | a message                                                                                 | No    |
-	| [[rec(*).set]]                    | Echo Press any key | [[rj(1).a]]                  | Press any key                                                                             | No    |
-	| [[rec([[int]]).set]], [[int]] = 1 | Echo a message     | [[rj(*).a]]                  | a message                                                                                 | No    |
-	| [[rec(1).set]]                    | Echo a message     | [[rj([[int]]).a]],[[int]] =3 | a message                                                                                 | No    |
-	| [[var]]                           | 444                | [[rj([[int]]).a]],[[int]] =3 | '444' is not recognized as an internal or external command,operable program or batch file | An    |
-	| [[v]]                             |                    | [[int]]                      | Empty script to execute                                                                   | An    |
-
-
 @ignore
 #Complex Types WOLF-1042
 Scenario Outline: Execute a command that requires complex types
@@ -116,3 +95,45 @@ Scenario: Execute a non existent variable cmd
 	When the command tool is executed
 	Then the result of the command tool will be ""
 	And the execution has "AN" error
+
+Scenario: Execute commands with star notation
+	Given I have a command variable "[[coms().command]]" equal to "bob"
+	And I have a command variable "[[coms().command]]" equal to "dora"
+	And I have a command variable "[[coms().command]]" equal to "bill"
+	And I have a command variable "[[results().res]]" equal to "res1"	
+	And I have a command result equal to "[[results(*).res]]"
+	And I have these command scripts to execute in a single execution run
+	| script                    |
+	| echo [[coms(*).command]] |
+	When the command tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| Command         |
+	| String = String |  
+	| String = String |  
+	| String = String |  
+	And the debug output as 
+	|                             |
+	| [[results(1).res]] = bob |
+	| [[results(2).res]] = dora |
+	| [[results(3).res]] = bill |
+
+Scenario: Execute commands with star notation to append
+	Given I have a command variable "[[coms().command]]" equal to "bob"
+	And I have a command variable "[[coms().command]]" equal to "dora"
+	And I have a command variable "[[coms().command]]" equal to "bill"
+	And I have a command variable "[[results().res]]" equal to "res1"	
+	And I have a command result equal to "[[results().res]]"
+	And I have these command scripts to execute in a single execution run
+	| script                    |
+	| echo [[coms(*).command]] |
+	When the command tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as  
+	| Command         |
+	| String = String |  
+	| String = String |  
+	| String = String |  
+	And the debug output as 
+	|                           |	
+	| [[results(4).res]] = bill |

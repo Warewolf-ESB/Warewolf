@@ -5,7 +5,6 @@
 
 
 Scenario: Open new Web Tool
-	Given I open New Workflow
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	And Delete Edit is Disabled
@@ -22,7 +21,6 @@ Scenario: Open new Web Tool
 	| Output | Output Alias |
 
 Scenario: Create Web Service with different methods
-	Given I open New Workflow
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	And Delete Edit is Disabled
@@ -49,8 +47,7 @@ Scenario: Create Web Service with different methods
 	
 
 
-Scenario: Adding parameters in request headers is updating variables 
-	Given I open New Workflow
+Scenario: Adding parameters in request headers is updating variables
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	When I Select "Dev2CountriesWebService" as a Delete web Source
@@ -82,7 +79,6 @@ Scenario: Adding parameters in request headers is updating variables
 	| Description | [[Description]] |
 
  Scenario: Editing Web Service
-	Given I open New Workflow
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	When I Select "Dev2CountriesWebService" as a Delete web Source
@@ -92,7 +88,6 @@ Scenario: Adding parameters in request headers is updating variables
 	Then the "Dev2CountriesWebService" Delete Source tab is opened
 
 Scenario: Changing Sources 
-	Given I open New Workflow
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	When I Select "WebHeloo" as a Delete web Source
@@ -120,10 +115,8 @@ Scenario: Changing Sources
 	And Delete Mappings is Disabled
 
 
-@ignore
 #wolf-1034
 Scenario: Web Connector Tool returns text
-	Given I open New Workflow
 	And I drag Web Delete Request Connector Tool onto the design surface
     And Delete New is Enabled
 	And Delete Edit is Enabled

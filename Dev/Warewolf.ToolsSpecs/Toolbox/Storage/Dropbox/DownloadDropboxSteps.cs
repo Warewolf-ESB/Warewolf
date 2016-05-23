@@ -7,11 +7,15 @@ using Dev2.Studio.Core.Interfaces;
 using Moq;
 using TechTalk.SpecFlow;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using Dev2.Activities.Designers2.DropBox2016.Download;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
@@ -29,9 +33,10 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
+            var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var sources = new List<OauthSource>()
             {
-                new OauthSource(){ResourceName = "Test Resource Name"}
+                new DropBoxSource(){ResourceName = "Test Resource Name"}
             };
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
@@ -43,8 +48,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
-
-            var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEnvironmentModel.Object, mockEventAggregator.Object);
+            var mock = new Mock<IResourceCatalog>();
+            mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
+            var downloadViewModel = new DropBoxDownloadViewModel(modelItem, mockEventAggregator.Object, dropBoxSourceManager.Object);
             ScenarioContext.Current.Add("downloadViewModel", downloadViewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
             ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
@@ -81,14 +87,14 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void GivenReadLocalFileIsEnabled()
         {
             var fromPath = GetViewModel().FromPath;
-            Assert.IsNotNull(fromPath);
+            
         }
 
         [Given(@"DropboxDownload File is Enabled")]
         public void GivenReadDropboxFileIsEnabled()
         {
             var dropBoxPath = GetViewModel().ToPath;
-            Assert.IsNotNull(dropBoxPath);
+        
         }
 
         [When(@"DropboxDownload I Click New")]
@@ -102,11 +108,11 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             if (sourceName == "Drop")
             {
-                var oauthSource = new OauthSource()
+                var oauthSource = new DropBoxSource()
                 {
                     ResourceName = "Drop",
-                    Key = "sourceKey",
-                    Secret = "fgklkgjfkngnf"
+                    AppKey = "sourceKey",
+                    AccessToken = "fgklkgjfkngnf"
                 };
                 GetViewModel().SelectedSource = oauthSource;
             }
@@ -125,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             Assert.AreEqual(oldSourceName, selectedSource.ResourceName);
             Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().FromPath));
             Assert.IsFalse(string.IsNullOrEmpty(GetViewModel().ToPath));
-            GetViewModel().SelectedSource = new OauthSource()
+            GetViewModel().SelectedSource = new DropBoxSource()
             {
                 ResourceName = newSourceName
             };

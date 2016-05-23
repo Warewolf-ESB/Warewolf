@@ -104,7 +104,7 @@ Scenario: Renaming Folder And Workflow Service
 	When I rename "localhost\Folder New\Resource 1" to "WorkFlow1"	
 	Then I should see the path "localhost\Folder New\WorkFlow1"
 	When I rename "localhost\Folder New\Resource 2" to "WorkFlow1"	
-	Then Conflict error message is occurs
+	Then Conflict error message occurs
 
 @Explorer
 Scenario: Searching resources by using filter
@@ -189,7 +189,7 @@ Scenario: Opening and Editing workflow from Explorer localhost
 	Given the explorer is visible
 	And I open "localhost" server
 	And I create the "localhost\Hello World" of type "WorkflowService" 
-	When I open 'Hello World' in "localhost"
+	When I open "Hello World" in "localhost"
 	And "Hello World" tab is opened
 
 @Explorer
@@ -198,7 +198,7 @@ Scenario: Opening and Editing workflow from Explorer Remote
 	And I connect to "Remote Connection Integration" server
 	And I open "Remote Connection Integration" server
 	And I create the "Remote Connection Integration\Hello World" of type "WorkflowService" 
-	When I open 'Hello World' in "Remote Connection Integration"
+	When I open "Hello World" in "Remote Connection Integration"
 	And "Hello World" tab is opened 
 	
 
@@ -218,7 +218,7 @@ Scenario: Renaming Folder And Workflow Service on a remote server
 	When I rename "Remote Connection Integration\Folder New\Resource 1" to "WorkFlow1"	
 	Then I should see the path "Remote Connection Integration\Folder New\WorkFlow1"
 	When I rename "Remote Connection Integration\Folder New\Resource 2" to "WorkFlow1"	
-	Then Conflict error message is occurs
+	Then Conflict error message occurs
 
 
 # coded ui in addition to this.
@@ -259,28 +259,24 @@ Scenario: Opening Versions in Explorer
   And I create the "localhost\Folder 1\Resource 1" of type "WorkflowService" 
   Then I should see the path "localhost\Folder 1\Resource 1"
   And I Setup  "3" Versions to be returned for "localhost\Folder 1\Resource 1"
- When I Show Version History for "localhost\Folder 1\Resource 1"
- Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
+  When I Show Version History for "localhost\Folder 1\Resource 1"
+  Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
   When I Make "localhost\Folder 1\Resource 1\v.1" the current version of "localhost\Folder 1\Resource 1" 
- Then I should see "4" versions with "View" Icons in "localhost\Folder 1\Resource 1"
- When I Delete Version "localhost\Folder 1\Resource 1\v.1"
- Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
+  Then I should see "4" versions with "View" Icons in "localhost\Folder 1\Resource 1"
+  When I Delete Version "localhost\Folder 1\Resource 1\v.1"
+  Then I should see "3" versions with "View" Icons in "localhost\Folder 1\Resource 1"
 
-
-@ignore 
 Scenario: Opening Dependencies Of All Services In Explorer
    Given the explorer is visible
-	When I open "Show Dependencies" of "WF1" in "Folder1"
-	Then "WF1 Dependents" is opened
-	When I open "Show Dependencies" of "WebServ1" in "Folder1"
-	Then "WebServ1 Dependents" is opened
-	When I open "Show Dependencies" of "DB Service1" in "Folder1"
-	Then "DB Service1 Dependents" is opened
-	When I open "Show Dependencies" of "PluginServ1" in "Folder1"
-	Then "PluginServ1 Dependents" is opened
+   When I Show Dependencies of "Folder1/WF1"
+   Then "WF1 Dependents" is opened
+   When I Show Dependencies of "Folder1/WebServ1"
+   Then "WebServ1 Dependents" is opened
+   When I Show Dependencies of "Folder1/DB Service1"
+   Then "DB Service1 Dependents" is opened
+   When I Show Dependencies of "Folder1/PluginServ1"
+   Then "PluginServ1 Dependents" is opened
 
-
-@ignore 
 Scenario: Disconnected from remote server
 	Given the explorer is visible
 	When I connect to "Remote Connection Integration" server
@@ -288,27 +284,24 @@ Scenario: Disconnected from remote server
 	Then I should see "10" folders
 	Then I should see the path "Remote Connection Integration\Folder 2"
 	When I select "Disconnect"
-	Then "Remote Connection Integration" is "Disconnected"
+	Then "Remote Connection Integration" is Disconnected
 	And "Localhost" is visible
-
-
-@ignore
+	
 Scenario: Debug from Explorer using play icon
 	Given the explorer is visible
 	Then I should see the path "Localhost\Dice Roll Example\Dice Roll" 
-	And I select "Debug" 
+	And I select "Debug"
 	Then "Dice Roll" is executed
 	And "Dice Roll" tab is opened
-	And there are "No" errors
+	And there are No errors
 	And the Debug output window is populated
-
-
+	
 #Wolf-1025
 Scenario: Moving Nested folders
 	Given the explorer is visible
 	Then I should see the path "Localhost\Dice Roll Example\Tests"
 	And I move "Localhost\Dice Roll Example\Tests" to "Localhost\Tests"
-	Then "Localhost\Tests" is visible in the Explorer
+	Then "Localhost\Tests" is visible
 
  #codedui
 #wolf-1155
@@ -316,32 +309,24 @@ Scenario: Conflicting file names
 	Given the explorer is visible
 	Then I should see the path "Localhost\Examples"
 	Then I should see the path "Localhost\Category"
-	And I create "New Folder" in "Localhost\Category" named "Examples"
+	And I create "Localhost\Category\Examples"
 	Then I should see the path "Localhost\Category\Examples"
 	And I move "Localhost\Examples" to "Localhost\Category"
 	Then "Localhost\Examples" is merged with "Localhost\Category\Examples"
-
-
-
+	
 Scenario: Server view permissions on a remote server
 	Given the explorer is visible
 	When I open the server "Remote Connection Integration" server and the permissions are "View"
-	Then the option to "View" is "Enabled" on server 'Remote Connection Integration'
-	And the option to "Debug" is "Disabled" on server 'Remote Connection Integration' 
-
-
-
-
+	Then the option to "View" is "Enabled" on server "Remote Connection Integration"
+	And the option to "Debug" is "Disabled" on server "Remote Connection Integration" 
+	
 Scenario: Server execute permissions on a remote server
 	Given the explorer is visible
 	When I open the server "Remote Connection Integration" server and the permissions are "View,Execute"
-	Then the option to "View" is "Enabled" on server 'Remote Connection Integration'
-	And the option to "Debug" is "Enabled" on server 'Remote Connection Integration'
-
-
-
+	Then the option to "View" is "Enabled" on server "Remote Connection Integration"
+	And the option to "Debug" is "Enabled" on server "Remote Connection Integration"
+	
  #codedui
-@ignore
 Scenario: Resource view permissions on a remote server
 	Given the explorer is visible
 	When I connect to "Remote Connection Integration" server
@@ -356,7 +341,6 @@ Scenario: Resource view permissions on a remote server
 	And the Debug output window is populated
 
 #WOLF-1393 Possibly done using Coded UI
-@ignore
 Scenario: Deleting Resource with the same name in different location on localhost Server
    Given the explorer is visible
    When I open "localhost" server
@@ -365,39 +349,22 @@ Scenario: Deleting Resource with the same name in different location on localhos
    Then I should see the path "localhost\Folder 1\PLuginS"
    And I should see the path "localhost\PLuginS"
    When I delete "localhost\Folder 1\PLuginS"
-   And I click "Refresh"
+   And I click Refresh
    Then I should not see the path "localhost\Folder 1\PLuginS"
 
-#Scenario: Copying resources directly into the resource folder
-#	Given the explorer is visible
-#	When I open "localhost" server
+Scenario: Copying resources directly into the resource folder
+	Given the explorer is visible
+	When I open "localhost" server
 
-#@ignore UI Spec
-#Scenario: Resource view permissions on a remote server prohibit resource from being used in workflow
-#	Given the explorer is visible
-#	When I connect to "Remote Connection Integration" server
-#	And I open "Remote Connection Integration" server
-#	And "Remote Connection Integration" permissions are "View"
-#	Then the option to "View" is "Enabled"
-#	And the option to "Debug" is "Disabled"
-#	Then I should see the path "Remote Connection Integration\workflow1"
-#	And "Remote Connection Integration\workflow1" permissions are "View"
-#	When I drag "Service tool" onto the design surface
-#	And the "Resource picker" window is opened
-#	Then "Remote Connection Integration\workflow1"  is "Collapsed"
-	
-
-# Below spec should be done as a UI test as it requires element that cannot be tested 
-#@ignore
-#Scenario: Resource view permissions on a remote server prohibit resource from being dragged in workflow
-#	Given the explorer is visible
-#	When I connect to "Remote Connection Integration" server
-#	And I open "Remote Connection Integration" server
-#	And "Remote Connection Integration" permissions are "View"
-#	Then the option to "View" is "Enabled"
-#	And the option to "Debug" is "Disabled"
-#	Then I should see the path "Remote Connection Integration\workflow1"
-#	And "Remote Connection Integration\workflow1" permissions are "View"
-#	When I drag "Remote Connection Integration\workflow1" onto the design surface
-#   And resource shows that it cannot be placed in the design surface
-#	Then "Remote Connection Integration\workflow1" is not visible on design surface
+Scenario: Resource view permissions on a remote server prohibit resource from being used in workflow
+	Given the explorer is visible
+	When I connect to "Remote Connection Integration" server
+	And I open "Remote Connection Integration" server
+	And "Remote Connection Integration" permissions are "View"
+	Then the option to "View" is "Enabled"
+	And the option to "Debug" is "Disabled"
+	Then I should see the path "Remote Connection Integration\workflow1"
+	And "Remote Connection Integration\workflow1" permissions are "View"
+	When I drag "Service tool" onto the design surface
+	And the "Resource picker" window is opened
+	Then "Remote Connection Integration\workflow1" is Collapsed

@@ -26,7 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     public class UnzipSteps : FileToolsBase
     {
         
-        [Given(@"zip credentials as '(.*)' and '(.*)'")]
+        [Given(@"zip credentials as ""(.*)"" and ""(.*)""")]
         public void GivenZipCredentialsAsAnd(string userName, string password)
         {
             ScenarioContext.Current.Add(CommonSteps.SourceUsernameHolder, userName.Replace('"', ' ').Trim());

@@ -27,7 +27,10 @@ namespace Warewolf.Studio.Core.Popup
                 Buttons=MessageBoxButton.YesNo,
                 Header = Resources.Languages.Core.GenericConfirmation,
                 Description = string.Format(Resources.Languages.Core.DeleteConfirmation, nameOfItemBeingDeleted),
-                Image = MessageBoxImage.Warning
+                Image = MessageBoxImage.Warning, 
+                IsInfo = true,
+                IsError = false,
+                IsQuestion = false
             };
         }
 

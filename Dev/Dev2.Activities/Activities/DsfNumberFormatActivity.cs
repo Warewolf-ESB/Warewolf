@@ -112,16 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var roundingDecimalPlaces = RoundingDecimalPlaces ?? string.Empty;
                 var decimalPlacesToShow = DecimalPlacesToShow ?? string.Empty;
 
-                if(dataObject.IsDebugMode())
-                {
-                    AddDebugInputItem(expression, "Number", dataObject.Environment, update);
-                    if(!String.IsNullOrEmpty(RoundingType))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(RoundingType, "Rounding"));
-                    }
-                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", dataObject.Environment, update);
-                    AddDebugInputItem(decimalPlacesToShow, "Decimals to show", dataObject.Environment, update);
-                }
+                AddDebugInputItems(dataObject, update, expression, roundingDecimalPlaces, decimalPlacesToShow);
                 var colItr = new WarewolfListIterator();
                 var expressionIterator = CreateDataListEvaluateIterator(expression, dataObject.Environment, update);
                 var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, dataObject.Environment, update);
@@ -132,7 +123,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Loop data ;)
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
-
+                var counter = 1;
                 while(colItr.HasMoreData())
                 {
                     int decimalPlacesToShowValue;
@@ -161,12 +152,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        UpdateResultRegions(dataObject.Environment, result, update);
-                        if(dataObject.IsDebugMode())
-                        {
-                            AddDebugOutputItem(new DebugItemStaticDataParams(result, Result, "", "="));
-                        }
+                        UpdateResultRegions(dataObject.Environment, result, update == 0 ? counter : update);
+                        counter++;                        
                     }
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    AddDebugOutputItem(new DebugEvalResult(Result, "",dataObject.Environment,update));
                 }
             }
             catch(Exception e)
@@ -192,6 +184,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+            }
+        }
+
+        private void AddDebugInputItems(IDSFDataObject dataObject, int update, string expression, string roundingDecimalPlaces, string decimalPlacesToShow)
+        {
+            if(dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(expression, "Number", dataObject.Environment, update);
+                if(!String.IsNullOrEmpty(RoundingType))
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(RoundingType, "Rounding"));
+                }
+                AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", dataObject.Environment, update);
+                AddDebugInputItem(decimalPlacesToShow, "Decimals to show", dataObject.Environment, update);
             }
         }
 

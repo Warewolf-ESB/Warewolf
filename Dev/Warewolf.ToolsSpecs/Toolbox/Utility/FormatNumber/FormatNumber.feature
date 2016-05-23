@@ -215,14 +215,13 @@ Scenario: Format number rounding with unknown scalar decimals value to show
 	|                   |
 	| [[result]] = 789 |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Format number using complex types 
-	Given I have a number '<Number>'
-	And I selected rounding '<Rounding>' to '<RoundingValue>' 
-	And I want to show '<Decimals>' decimals with value '<DecimalVal>'
+	Given I have a number "<Number>"
+	And I selected rounding "<Rounding>" to "<RoundingValue>" 
+	And I want to show "<Decimals>" decimals with value "<DecimalVal>"
 	When the format number is executed
-	Then the result '<result>' will be returned
+	Then the result "<result>" will be returned
 	And the execution has "<Error>" error
 	And the debug inputs as  
 	| Number   | Rounding   | RoundingValue   | Decimals to show |
@@ -239,13 +238,32 @@ Examples:
 Scenario: Format a variable with a null value
 	Given I have a formatnumber variable "[[int]]" equal to NULL
 	And I have a number "[[int]]"
-	And I want to show "2" decimals 
+	And I want to show 2 decimals decimals with value "2" 
 	When the format number is executed
 	Then the execution has "AN" error
 
 
 Scenario: Format a variable with a non existent value
 	Given I have a number "[[int]]"
-	And I want to show "2" decimals 
+	And I want to show 2 decimals decimals with value "2" 
 	When the format number is executed
 	Then the execution has "AN" error
+
+Scenario: Format number with record star notation
+	Given I have a formatnumber variable "[[format().num]]" equal to 788
+	Given I have a formatnumber variable "[[format().num]]" equal to "9.894564545645"
+	And I have a number "[[format(*).num]]"
+	And I have a formatnumber variable "[[res().val]]" equal to 2
+	And I selected rounding "Up" to "3"
+	And I want to show "4" decimals with value "4" 
+	And I have a formatnumber result is "[[res(*).val]]"
+	When the format number is executed
+    Then the execution has "NO" error
+	And the debug inputs as  
+	| Number                             | Rounding | Rounding Value | Decimals to show |
+	| [[format(1).num]] = 788            |          |                |                  |
+	| [[format(2).num]] = 9.894564545645 | Up       | 3              | 4                |
+	And the debug output as 
+	|                           |
+	| [[res(1).val]] = 788.0000 |
+	| [[res(2).val]] = 9.8950   |

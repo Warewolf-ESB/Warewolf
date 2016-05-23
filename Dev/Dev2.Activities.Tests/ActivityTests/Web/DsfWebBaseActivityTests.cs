@@ -213,20 +213,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void PushXmlIntoEnvironment_GivenNoDataObject_ShouldCatchObjectNullException()
-        {
-            //---------------Set up test pack-------------------
-            var deleteActivityFromBase = CreateWebDeleteActivityFromBase();
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(deleteActivityFromBase);
-            //---------------Execute Test ----------------------
-            deleteActivityFromBase.TestXmlIntoEnvironment(string.Empty, 1, null);
-            //---------------Test Result -----------------------
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenMockEnvironment_ShouldAddDebugInputItems()
         {
             //---------------Set up test pack-------------------
@@ -308,11 +294,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             string putData)
         {
             return ResponseFromWeb;
-        }
-
-        public void TestXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
-        {
-            PushXmlIntoEnvironment(input, update, dataObj);
         }
 
         #endregion

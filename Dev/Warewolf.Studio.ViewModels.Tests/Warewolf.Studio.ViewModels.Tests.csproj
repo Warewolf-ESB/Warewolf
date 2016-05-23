@@ -129,6 +129,7 @@
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
     <Compile Include="ManageNewServerSourceModelTests.cs" />
     <Compile Include="ManageNewServerViewModelTests.cs" />
+    <Compile Include="ManageOAuthSourceViewModelTests.cs" />
     <Compile Include="ManagePluginSourceModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModelTests.cs" />
     <Compile Include="ManageRabbitMqSourceModelTests.cs" />

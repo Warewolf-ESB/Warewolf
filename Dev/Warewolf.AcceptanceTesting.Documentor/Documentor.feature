@@ -3,7 +3,6 @@
 	As a Warewolf user
 	I want to be shown all aspects of item clicked
 
-@ignore
 Scenario: Context menu
 	Given the explorer is visible
 	And I right click on "Hello World" 

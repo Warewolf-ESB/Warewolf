@@ -297,7 +297,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 78
 this.ScenarioSetup(scenarioInfo);
 #line 79
- testRunner.Given("I have a findindex variable \"[[a]]\" equal to \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a Find Index variable \"[[a]]\" equal to \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
  testRunner.And("the sentence \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 81
@@ -393,7 +393,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 110
 this.ScenarioSetup(scenarioInfo);
 #line 111
- testRunner.Given("I have a findindex variable \"[[a]]\" equal to \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a Find Index variable \"[[a]]\" equal to \"blank\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 112
  testRunner.And("the sentence \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
@@ -719,7 +719,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 217
 this.ScenarioSetup(scenarioInfo);
 #line 218
- testRunner.Given("I have a findindex variable \"\" equal to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a Find Index variable \"\" equal to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 219
  testRunner.And("the sentence \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 220
@@ -745,8 +745,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 226
 this.ScenarioSetup(scenarioInfo);
 #line 227
- testRunner.Given("I have a findindex variable \"[[a]]\" equal to \"I have managed to spend time in rea" +
-                    "l innovation since I started using Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a Find Index variable \"[[a]]\" equal to \"I have managed to spend time in re" +
+                    "al innovation since I started using Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 228
  testRunner.And("the sentence \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
@@ -1209,7 +1209,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 340
 this.ScenarioSetup(scenarioInfo);
 #line 341
- testRunner.Given("I have a findindex variable \"[[a]]\" equal to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a Find Index variable \"[[a]]\" equal to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 342
  testRunner.And("the sentence \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 343

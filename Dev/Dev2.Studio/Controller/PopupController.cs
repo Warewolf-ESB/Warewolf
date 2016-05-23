@@ -39,7 +39,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult Show(IPopupMessage popupMessage)
         {
-            return Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, popupMessage.Image, popupMessage.DontShowAgainKey);
+            return Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, popupMessage.Image, popupMessage.DontShowAgainKey, popupMessage.IsDependenciesButtonVisible, popupMessage.IsError, popupMessage.IsInfo, popupMessage.IsQuestion);
         }
         
         public MessageBoxResult Show()

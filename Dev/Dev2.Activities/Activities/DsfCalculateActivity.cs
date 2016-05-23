@@ -104,10 +104,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 var inputIterator = new WarewolfIterator(warewolfEvalResult);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
+                var counter = 1;
                 while(warewolfListIterator.HasMoreData())
                 {
                     var result = warewolfListIterator.FetchNextValue(inputIterator);
-                    dataObject.Environment.Assign(Result, result, update);
+                    dataObject.Environment.Assign(Result, result, update == 0 ? counter : update);
+                    counter++;
                 }
 
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
@@ -149,7 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItem(IExecutionEnvironment environment,int update)
         {
-            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update));
+            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update,false,true));
         }
 
         private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)

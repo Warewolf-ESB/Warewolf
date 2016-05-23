@@ -234,7 +234,7 @@ Scenario Outline: Sort 2 columns backwards
 	And I sort a record "<input>"
 	And my sort order is "<direction>"
 	When the sort records tool is executed
-	Then the execution has '<error>' error
+	Then the execution has "<error>" error
 	Examples: 
 	| input                   | direction | error                                                               |
 	| [[rs(*).a]],[[rs(*).a]] | Backwards | Only recordsets that contain recordset columns can be sorted |
@@ -264,7 +264,6 @@ Scenario Outline: Sort recordset
 
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Sort recordset using complex types
 	Given I have the following recordset to sort
 	| rs           | value     |

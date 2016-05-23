@@ -47,6 +47,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         }
 
         [Given(@"I have a case convert variable ""(.*)"" with a value of ""(.*)""")]
+        [Given(@"I have a case convert variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveACaseConvertVariableWithAValueOf(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
@@ -67,9 +68,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             GivenIHaveACaseConvertVariableWithAValueOf(variable, value);
         }
 
-
         [Given(@"I convert a variable ""(.*)"" to ""(.*)""")]
-        [Given(@"I convert a variable '(.*)' to '(.*)'")]
+        [Given(@"I convert a variable ""(.*)"" to ""(.*)""")]
         public void GivenIConvertAVariableTo(string variable, string toCase)
         {
             List<Tuple<string, string>> caseConversion;

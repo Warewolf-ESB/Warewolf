@@ -236,7 +236,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><rec><val></val></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "10";
+            const string expected = "4";
             string error;
             string actual;
 
@@ -258,7 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val><val2>0</val2></rec><rec><val>3</val><val2>0</val2></rec><rec><val>4</val><val2>0</val2></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "20";
+            const string expected = "4";
             string error;
             string actual;
 

@@ -5,14 +5,12 @@
 
 @WebRequest
 # Coded Ui Test
-@ignore
 Scenario: Web Request Tool small view
 	Given I have Web Request small view on design surface
 	And I have URL ""
 	And result is ""
 	And Header is Not Visible
 	And Preview is not visible
-@ignore
 Scenario: Web Request Tool Large view
 	Given I have Web Request small view on design surface
 	When I open Web Request Large View
@@ -25,7 +23,6 @@ Scenario: Web Request Tool Large view
 	|                            |                       |
 	And End this workflow is "Unselected"
 	And Done button is "Visible"
-@ignore
 Scenario: Web Request Tool Large view is not throwing error for valid data
 	Given I have Web Request small view on design surface
 	When I open Web Request Large View
@@ -47,17 +44,16 @@ Scenario: Web Request Tool Large view is not throwing error for valid data
 	When I click on "Preview"
 	Then Validation message is not thrown
 
-@ignore
 Scenario Outline: Web Request Tool Large view is validating incorrect variables
 	Given I have Web Request small view on design surface
 	When I open Web Request Large View
-	Then I Enter URL '<URL>'
+	Then I Enter URL "<URL>"
 	And I Enter header ""
 	And I enter result is "[[Result]]"
 	And Preview button is "Enabled"	
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
    | No | URL                        | Validation |
    | 1  | http://[[site#]][[file!]]l | True       |
@@ -69,17 +65,16 @@ Examples:
    | 7  | [[[[rec().a]]              | True       |
 
 
-@ignore
 Scenario Outline: Web Request Tool Large view is validating incorrect variables in Header
 	Given I have Web Request small view on design surface
 	When I open Web Request Large View
 	Then I Enter URL "http://[[site]][[file]]"
-	And I Enter header '<Header>'
+	And I Enter header "<Header>"
 	And I enter result is "[[Result]]"
 	And Preview button is "Enabled"	
 	And Done button is "Visible"
 	When I click on "Done"
-	Then Validation message is thrown '<Validation>'
+	Then Validation message is thrown "<Validation>"
 Examples: 
    | No | URL                        | Validation |
    | 1  | http://[[site#]][[file!]]l | True       |

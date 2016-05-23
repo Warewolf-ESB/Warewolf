@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
@@ -55,6 +56,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             Model = model;
 
             SetupCommonProperties();
+            this.RunViewSetup();
         }
         Guid UniqueID { get { return GetProperty<Guid>(); } }
         private void SetupCommonProperties()
