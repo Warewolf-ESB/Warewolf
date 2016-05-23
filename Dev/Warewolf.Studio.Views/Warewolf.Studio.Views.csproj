@@ -178,6 +178,9 @@
     <Compile Include="ManagePluginSourceControl.xaml.cs">
       <DependentUpon>ManagePluginSourceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManageRabbitMQSourceControl.xaml.cs">
+      <DependentUpon>ManageRabbitMQSourceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManageServerControl.xaml.cs">
       <DependentUpon>ManageServerControl.xaml</DependentUpon>
     </Compile>
@@ -261,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManagePluginSourceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageRabbitMQSourceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

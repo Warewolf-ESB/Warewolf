@@ -117,11 +117,13 @@
         <ResourceDictionary Source="Images/warewolf_logo_white.xaml" />
         <ResourceDictionary Source="Images/warewolf_logo_black.xaml" />
 
+        <ResourceDictionary Source="Images/RabbitMQ.xaml" />
         <ResourceDictionary Source="Images/SharepointLogo.xaml" />
         <ResourceDictionary Source="Images/FileLogo.xaml" />
         <ResourceDictionary Source="Images/ViewFileLogo.xaml" />
         <ResourceDictionary Source="Images/EditFileLogo.xaml" />
         <ResourceDictionary Source="Images/Email-Source.xaml" />
+        <ResourceDictionary Source="Images/Utility-PublishRabbitMQ.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -138,6 +138,7 @@
     <Compile Include="ReverseIndexIterator.cs" />
     <Compile Include="Scalar.cs" />
     <Compile Include="ServiceModel\Connection.cs" />
+    <Compile Include="ServiceModel\RabbitMQSource.cs" />
     <Compile Include="ServiceModel\OauthSource.cs" />
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
     <Compile Include="ServiceModel\PluginSource.cs" />

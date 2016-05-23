@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
@@ -15,6 +11,10 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -22,11 +22,9 @@ namespace Warewolf.Studio.ServerProxyLayer
     {
         #region Implementation of IUpdateManager
 
-
         public UpdateProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection)
             : base(communicationControllerFactory, connection)
         {
-
         }
 
         /// <summary>
@@ -80,7 +78,6 @@ namespace Warewolf.Studio.ServerProxyLayer
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, workspaceId);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
-
         }
 
         /// <summary>
@@ -150,7 +147,6 @@ namespace Warewolf.Studio.ServerProxyLayer
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
-
         }
 
         /// <exception cref="WarewolfSaveException">Thrown when saving the Database service fails.</exception>
@@ -238,7 +234,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             {
                 if (output == null)
                 {
-                    throw new WarewolfTestException("No Test Response returned",null);
+                    throw new WarewolfTestException("No Test Response returned", null);
                 }
                 throw new WarewolfTestException("Unable to contact Server: " + output.TestMessage, null);
             }
@@ -367,7 +363,33 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSaveException(output.Message.ToString(), null);
         }
 
-        #endregion
+        public void SaveRabbitMQServiceSource(IRabbitMQServiceSourceDefinition model, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveRabbitMQServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(model));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        public string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMQServiceSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestRabbitMQServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMQServiceSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return output.Message.ToString();
+        }
+
+        #endregion Implementation of IUpdateManager
     }
 
     public class WarewolfSaveException : WarewolfException

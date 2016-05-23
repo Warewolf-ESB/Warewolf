@@ -127,6 +127,7 @@
     <Compile Include="Core\DbSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
+    <Compile Include="Core\RabbitMQServiceSourceDefinition.cs" />
     <Compile Include="Core\EmailServiceSourceDefinition.cs" />
     <Compile Include="Core\ExchangeSourceDefinition.cs" />
     <Compile Include="Core\Globals.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="ILocalPathManager.cs" />
     <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IManageDatabaseSourceViewModel.cs" />
+    <Compile Include="IManageRabbitMQSourceViewModel.cs" />
     <Compile Include="IManageEmailSourceViewModel.cs" />
     <Compile Include="IManageExchangeSourceViewModel.cs" />
     <Compile Include="IManageNewServerViewModel.cs" />
@@ -270,6 +272,7 @@
     <Compile Include="IPluginSource.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IQueryManager.cs" />
+    <Compile Include="IRabbitMQServiceSourceDefinition.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IResourceSource.cs" />
     <Compile Include="IServer.cs" />
@@ -307,6 +310,7 @@
     <Compile Include="PopupController\IPopupController.cs" />
     <Compile Include="PopupController\IPopupMessageBoxFactory.cs" />
     <Compile Include="PopupController\IPopupMessages.cs" />
+    <Compile Include="RabbitMQ\IRabbitMQSourceModel.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
     <Compile Include="SaveDialogue\IRequestServiceNameViewModel.cs" />

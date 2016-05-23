@@ -362,6 +362,12 @@ https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
   <data name="ManageDbServiceActionsTooltip" xml:space="preserve">
     <value>Select the procedure or function you want to perform on the database</value>
   </data>
+  <data name="ManageOdbcServiceActionsTooltip" xml:space="preserve">
+    <value>ManageOdbcServiceActionsTooltip</value>
+  </data>
+  <data name="ManageOdbcServiceActionsHelpText" xml:space="preserve">
+    <value>ManageOdbcServiceActionsHelpText</value>
+  </data>
   <data name="ManageDbServiceTestActionTooltip" xml:space="preserve">
     <value>Test the procedure or function</value>
   </data>
@@ -4556,5 +4562,136 @@ Data
   </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Returns the calculation result.</value>
+  </data>
+  <data name="EditRabbitMQSourceHelp" xml:space="preserve">
+    <value>Edit RabbitMQ Source</value>
+  </data>
+  <data name="NewRabbitMQSourceHelp" xml:space="preserve">
+    <value>New RabbitMQ Source</value>
+  </data>
+  <data name="RabbitMQSourceHelp" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+</value>
+  </data>
+  <data name="RabbitMQToolTipSource" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.&lt;br /&gt;
+</value>
+</data>
+  <data name="RabbitMQHelpQueueName" xml:space="preserve">
+    <value>Provide a meaningful name for the queue.&lt;br /&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="RabbitMQToolTipQueueName" xml:space="preserve">
+    <value>Provide a meaningful name for the queue.</value>
+  </data>
+  <data name="RabbitMQHelpIsDurable" xml:space="preserve">
+    <value>Make the queue durable.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Make the queue durable</value>
+  </data>
+  <data name="RabbitMQToolTipIsDurable" xml:space="preserve">
+    <value>Make the queue durable.</value>
+  </data>
+  <data name="RabbitMQHelpIsExclusive" xml:space="preserve">
+    <value>Make the queue exclusive.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Make the queue exclusive</value>
+  </data>
+  <data name="RabbitMQToolTipIsExclusive" xml:space="preserve">
+    <value>Make the queue exclusive.</value>
+  </data>
+  <data name="RabbitMQHelpIsAutoDelete" xml:space="preserve">
+    <value>Make the queue auto delete.&lt;br/&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Make the queue auto delete</value>
+  </data>
+  <data name="RabbitMQToolTipIsAutoDelete" xml:space="preserve">
+    <value>Make the queue auto delete.</value>
+  </data>
+  <data name="RabbitMQHelpMessage" xml:space="preserve">
+    <value>The message goes in here.&lt;br /&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="RabbitMQToolTipMessage" xml:space="preserve">
+    <value>The message goes in here.</value>
+  </data>
+  <data name="RabbitMQHelpResult" xml:space="preserve">
+    <value>Only variables go in here.&lt;br /&gt;
+        Returns Success or Failure depending on the success of the message publish.&lt;br /&gt;
+        &lt;br /&gt;
+
+        Allowed:
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="RabbitMQToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.</value>
+  </data>
+  <data name="ManageRabbitMQHostTooltip" xml:space="preserve">
+    <value>RabbitMQ server name</value>
+  </data>
+  <data name="ManageRabbitMQPortTooltip" xml:space="preserve">
+    <value>Port used by the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQUserNameTooltip" xml:space="preserve">
+    <value>User name for the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQPasswordTooltip" xml:space="preserve">
+    <value>Password for the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQVirtualHostTooltip" xml:space="preserve">
+    <value>Virtual host for the RabbitMQ server</value>
+  </data>
+  <data name="VirtualHostLabel" xml:space="preserve">
+    <value>Virtual Host</value>
+  </data>
+  <data name="ManagePublishTooltip" xml:space="preserve">
+    <value>Publish the test message</value>
+  </data>
+  <data name="RabbitMQSourceNewHeaderLabel" xml:space="preserve">
+    <value>New RabbitMQ Source</value>
+  </data>
+  <data name="RabbitMQSourceHostHelp" xml:space="preserve">
+    <value>The Host name of the server you want to use for publishing messages.</value>
+  </data>
+  <data name="RabbitMQSourcePortHelp" xml:space="preserve">
+    <value>The Port of the RabbitMQ server. Default value is 5672.</value>
+  </data>
+  <data name="RabbitMQSourceUserNameHelp" xml:space="preserve">
+    <value>The User Name for the RabbitMQ server.</value>
+  </data>
+  <data name="RabbitMQSourcePasswordHelp" xml:space="preserve">
+    <value>The Password for the RabbitMQ server.</value>
+  </data>
+  <data name="RabbitMQSourceVirtualHostHelp" xml:space="preserve">
+    <value>The Virtual Host of the RabbitMQ server. Default value is /.</value>
   </data>
 </root>

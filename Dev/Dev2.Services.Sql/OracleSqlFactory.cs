@@ -28,7 +28,7 @@ namespace Dev2.Services.Sql
             return new OracleCommand(commandText, connection as OracleConnection)
             {
                 CommandType = commandType,
-                CommandTimeout = (int) GlobalConstants.TransactionTimeout.TotalSeconds
+                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds
             };
         }
 
@@ -37,12 +37,12 @@ namespace Dev2.Services.Sql
             return GetOracleServerSchema(connection);
         }
 
-         DataTable GetOracleServerSchema(IDbConnection connection)
+        DataTable GetOracleServerSchema(IDbConnection connection)
         {
-            if(!(connection is OracleConnection)) 
+            if (!(connection is OracleConnection))
                 throw new Exception("Invalid Oracle connection");
 
-            return ((OracleConnection) connection).GetSchema();
+            return ((OracleConnection)connection).GetSchema();
         }
 
         public DataTable CreateTable(IDataReader reader, LoadOption overwriteChanges)
@@ -54,7 +54,7 @@ namespace Dev2.Services.Sql
 
         public DataSet FetchDataSet(IDbCommand command)
         {
-            if(!(command is OracleCommand))
+            if (!(command is OracleCommand))
                 throw new Exception("Invalid OracleCommand expected.");
             using (var dataSet = new DataSet())
             {
@@ -64,9 +64,6 @@ namespace Dev2.Services.Sql
                 }
                 return dataSet;
             }
-            
-            
-            
         }
 
         #endregion

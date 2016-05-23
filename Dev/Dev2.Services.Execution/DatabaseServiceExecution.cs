@@ -26,6 +26,7 @@ using Warewolf.Storage;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
 using Npgsql;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Services.Execution
 {
@@ -504,7 +505,10 @@ namespace Dev2.Services.Execution
             }
             return false;
         }
-
+        public string ODBCMethod(string command)
+        {
+            return ODBCParameterIterators(0, command);
+        }
         private static List<OdbcParameter> GetODBCParameters(ICollection<IServiceInput> methodParameters)
         {
             var sqlParameters = new List<OdbcParameter>();
