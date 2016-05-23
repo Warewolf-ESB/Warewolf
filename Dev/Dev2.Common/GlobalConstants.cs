@@ -40,7 +40,7 @@ namespace Dev2.Common
              * The event below allows warewolf to react to changes in regional settings by clearing the Culture cache.
              * The method below is not tested using integration tests because it is difficult to change regional settings without restarting explorer.exe
              * If a good way is found to do this, then please add integration tests. 
-             * Dont delete this method
+             * don't delete this method
              */
             SystemEvents.UserPreferenceChanged += (sender, args) =>
             {
@@ -203,6 +203,11 @@ namespace Dev2.Common
         public const string CalculateTextConvertPrefix = "!~calculation~!";
         public const string CalculateTextConvertSuffix = "!~~calculation~!";
         public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
+
+        public const string AggregateCalculateTextConvertPrefix = "!~aggcalculation~!";
+        public const string AggregateCalculateTextConvertSuffix = "!~~aggcalculation~!";
+        public const string AggregateCalculateTextConvertFormat = AggregateCalculateTextConvertPrefix + "{0}" + AggregateCalculateTextConvertSuffix;
+
 
         // Website constants
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
@@ -479,8 +484,7 @@ WHERE   n.nspname = 'public'
         public static int MaxWorkflowsToExecute = 1010;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
-        public static string DropBoxApiKey = "l6vuufdy2psuyif";
-        public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
+        public static string DropboxPathMalformdedException = "Dropbox path contains an invalid character";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
         public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
@@ -567,6 +571,7 @@ WHERE   n.nspname = 'public'
         public static string GlobalCounterName = "All";
         public static string Warewolf = "Warewolf";
         public static string WarewolfServices = "Warewolf Services";
+        public static string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

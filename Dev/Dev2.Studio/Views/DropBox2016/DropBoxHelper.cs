@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Core.Interfaces;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Views.DropBox2016
 {
@@ -43,7 +44,7 @@ namespace Dev2.Views.DropBox2016
         }
 
         [ExcludeFromCodeCoverage]
-        public void CloseAndSave(DropBoxSourceViewModel dropBoxSourceViewModel)
+        public void CloseAndSave(ManageOAuthSourceViewModel manageOAuthSourceViewModel)
         {
             DropBoxViewWindow.DialogResult = true;
             DropBoxViewWindow.Close();

@@ -27,9 +27,9 @@ namespace Dev2.Activities
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (env == null) return _debugInputs;
-            
+
             DebugItem debugItem = new DebugItem();
-           
+
             AddDebugItem(new DebugItemStaticDataParams("", "Put Data"), debugItem);
             AddDebugItem(new DebugEvalResult(PutData, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
@@ -57,7 +57,9 @@ namespace Dev2.Activities
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
             var webRequestResult = PerformWebPostRequest(head, query, url, putData);
-            PushXmlIntoEnvironment(webRequestResult, update, dataObject);
+            IWebXmlConvert webXmlConvert = new WebXmlConvert(OutputDescription, Outputs);
+            webXmlConvert.PushXmlIntoEnvironment(webRequestResult,update,dataObject);
+            //PushXmlIntoEnvironment(webRequestResult, update, dataObject);
         }
         public override HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
@@ -97,6 +99,6 @@ namespace Dev2.Activities
             return httpClient;
         }
 
-        
+
     }
 }

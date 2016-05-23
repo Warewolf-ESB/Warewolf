@@ -1,21 +1,20 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -32,7 +31,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        
         #region JavaScript
 
         #region Should execute valid javascript
@@ -40,7 +38,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         [TestMethod]
         public void ExecuteWithValidJavascriptExpectedCorrectResultReturned()
         {
-
             SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
                             @"return 1+1;", enScriptType.JavaScript);
 
@@ -52,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Javascript executed incorrectly");
             }
@@ -60,7 +57,6 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             {
                 Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
-            
         }
 
         [TestMethod]
@@ -76,7 +72,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Javascript with a variable executed incorrectly");
             }
@@ -99,7 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Javascript with datalist region executed incorrectly");
             }
@@ -122,7 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("8", actual, "Valid Javascript with datalist region executed incorrectly");
             }
@@ -135,7 +131,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         [TestMethod]
         public void ExecuteWithValidJavascriptWithRecordStarNotationDataListRegionsInScriptExpectedCorrectResultReturned()
         {
-            SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"var i = [[inputData(*).field1]] + 1;return i;", enScriptType.JavaScript);
+            SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"var i = '[[inputData(*).field1]]';return i;", enScriptType.JavaScript);
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -145,12 +141,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual("2", dataListItems[0], "Valid Javascript with datalist region executed incorrectly");
-                Assert.AreEqual("3", dataListItems[1], "Valid Javascript with datalist region executed incorrectly");
-                Assert.AreEqual("4", dataListItems[2], "Valid Javascript with datalist region executed incorrectly");
-                Assert.AreEqual("5", dataListItems[3], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("1", dataListItems[0], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("2", dataListItems[1], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("3", dataListItems[2], "Valid Javascript with datalist region executed incorrectly");
+                Assert.AreEqual("4", dataListItems[3], "Valid Javascript with datalist region executed incorrectly");
             }
             else
             {
@@ -171,7 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(string.Empty, dataListItems[0], "Valid Javascript with empty Recordset did not evaluate with blank");
             }
@@ -181,13 +177,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
         }
 
-        #endregion
+        #endregion Should execute valid javascript
 
-        #region Should not execute invalid javascript
-
-        #endregion
-
-        #endregion
+        #endregion JavaScript
 
         #region Ruby
 
@@ -206,7 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby executed incorrectly");
             }
@@ -229,7 +221,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby with a variable executed incorrectly");
             }
@@ -252,7 +244,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby with datalist region executed incorrectly");
             }
@@ -275,7 +267,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("8", actual, "Valid Ruby with datalist region executed incorrectly");
             }
@@ -288,7 +280,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         [TestMethod]
         public void ExecuteWithValidRubyWithRecordStarNotationDataListRegionsInScriptExpectedCorrectResultReturned()
         {
-            SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"i = [[inputData(*).field1]] + 1;return i;", enScriptType.Ruby);
+            SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"i = '[[inputData(*).field1]]';return i;", enScriptType.Ruby);
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -298,12 +290,12 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual("2", dataListItems[0], "Valid Ruby with datalist region executed incorrectly");
-                Assert.AreEqual("3", dataListItems[1], "Valid Ruby with datalist region executed incorrectly");
-                Assert.AreEqual("4", dataListItems[2], "Valid Ruby with datalist region executed incorrectly");
-                Assert.AreEqual("5", dataListItems[3], "Valid Ruby with datalist region executed incorrectly");
+                Assert.AreEqual("1", dataListItems[0], "Valid Rubyscript with datalist region executed incorrectly");
+                Assert.AreEqual("2", dataListItems[1], "Valid Rubyscript with datalist region executed incorrectly");
+                Assert.AreEqual("3", dataListItems[2], "Valid Rubyscript with datalist region executed incorrectly");
+                Assert.AreEqual("4", dataListItems[3], "Valid Rubyscript with datalist region executed incorrectly");
             }
             else
             {
@@ -324,7 +316,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(string.Empty, dataListItems[0], "Valid Ruby with empty Recordset did not evaluate with blank");
             }
@@ -348,7 +340,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby with empty Recordset did not evaluate without return keyword");
             }
@@ -358,26 +350,22 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
         }
 
-        #endregion
+        #endregion Should execute valid ruby script
 
-        #region Should not execute invalid ruby script
-
-        #endregion
-
-        #endregion
+        #endregion Ruby
 
         #region Python
 
         /*
          * NOTE : You will find python test in the integration project because of faulty threading ;)
-         * 
+         *
          */
 
-        #endregion
-        
+        #endregion Python
+
         #region Private Test Methods
 
-        void SetupArguments(string currentDl, string testData, string result, string script, enScriptType type)
+        private void SetupArguments(string currentDl, string testData, string result, string script, enScriptType type)
         {
             TestStartNode = new FlowStep
             {
@@ -389,6 +377,5 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         }
 
         #endregion Private Test Methods
-
     }
 }

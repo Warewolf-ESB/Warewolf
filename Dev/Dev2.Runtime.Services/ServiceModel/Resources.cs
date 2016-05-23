@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.Collections;
@@ -36,18 +35,18 @@ namespace Dev2.Runtime.ServiceModel
          */
         #region Static RootFolders/Elements
 
-        public static volatile Dictionary<ResourceType, string> RootFolders = new Dictionary<ResourceType, string>
+        public static volatile Dictionary<string, string> RootFolders = new Dictionary<string, string>
         {
-            { ResourceType.Unknown, "Resources" },
-            { ResourceType.Server, "Resources" },
-            { ResourceType.DbService, "Resources" },
-            { ResourceType.DbSource, "Resources" },
-            { ResourceType.PluginService, "Resources" },
-            { ResourceType.PluginSource, "Resources" },
-            { ResourceType.EmailSource, "Resources" },
-            { ResourceType.WebSource, "Resources" },
-            { ResourceType.WebService, "Resources" },
-            { ResourceType.WorkflowService, "Resources" },
+            { "Unknown", "Resources" },
+            { "Server", "Resources" },
+            { "DbService", "Resources" },
+            { "DbSource", "Resources" },
+            { "PluginService", "Resources" },
+            { "PluginSource", "Resources" },
+            { "EmailSource", "Resources" },
+            { "WebSource", "Resources" },
+            { "WebService", "Resources" },
+            { "WorkflowService", "Resources" },
         };
 
         #endregion
@@ -62,7 +61,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 dynamic argsObj = JObject.Parse(args);
                 string resourceTypeStr = argsObj.resourceType.Value;
-                result = Read(workspaceId, ParseResourceType(resourceTypeStr));
+                result = Read(workspaceId, resourceTypeStr);
             }
             catch(Exception ex)
             {
@@ -76,8 +75,8 @@ namespace Dev2.Runtime.ServiceModel
             var result = new ResourceList();
             try
             {
-                var resourceType = ParseResourceType(args);
-                if(resourceType == ResourceType.WorkflowService)
+                var resourceType = args;
+                if(resourceType == "WorkflowService")
                 {
                     result = Read(workspaceId, resourceType);
                 }
@@ -104,13 +103,13 @@ namespace Dev2.Runtime.ServiceModel
             args = args.Replace("root", "");
             var explorerItem = ServerExplorerRepository.Instance.Load(workspaceId);
             // ReSharper disable MaximumChainedReferences
-            var folders = explorerItem.Descendants().Where(item => item.ResourceType == ResourceType.Folder
+            var folders = explorerItem.Descendants().Where(item => item.ResourceType == "Folder"
                                         && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
                                             .Select(item => item.DisplayName);
             // ReSharper restore MaximumChainedReferences
             var paths = new SortedSet<string>(folders);
             // ReSharper disable MaximumChainedReferences
-            var resources = explorerItem.Descendants().Where(item => item.ResourceType > ResourceType.Unknown && item.ResourceType <= ResourceType.ServerSource
+            var resources = explorerItem.Descendants().Where(item => item.ResourceType.Contains("Source")
                                         && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
                                             .Select(item => item.DisplayName);
             // ReSharper restore MaximumChainedReferences
@@ -163,15 +162,15 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Read
 
-        public static ResourceList Read(Guid workspaceId, ResourceType resourceType)
+        public static ResourceList Read(Guid workspaceId, string resourceType)
         {
             var resources = new ResourceList();
             var explorerItem = ServerExplorerRepository.Instance.Load(resourceType, workspaceId);
             explorerItem.Descendants().ForEach(item =>
             {
-                if(item.ResourceType == resourceType)
+                if(item.ResourceType == resourceType.ToString())
                 {
-                    resources.Add(new Resource { ResourceID = item.ResourceId, ResourceType = resourceType, ResourceName = item.DisplayName, ResourcePath = item.ResourcePath });
+                    resources.Add(new Resource { ResourceID = item.ResourceId, ResourceType = resourceType.ToString(), ResourceName = item.DisplayName, ResourcePath = item.ResourcePath });
                 }
             });
             return resources;
@@ -180,11 +179,6 @@ namespace Dev2.Runtime.ServiceModel
         #endregion
 
         #region ReadXml
-
-        public static string ReadXml(Guid workspaceId, ResourceType resourceType, string resourceId)
-        {
-            return ReadXml(workspaceId, "Resources", resourceId);
-        }
 
         public static string ReadXml(Guid workspaceId, string directoryName, string resourceId)
         {
@@ -205,23 +199,13 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
 
+        public static string ReadXml(Guid workspaceId, string resourceId)
+        {
+            return ReadXml(workspaceId, null, resourceId);
+        }
         #endregion
 
         #region ReadResource
-
-        #endregion
-
-        #region ParseResourceType
-
-        internal static ResourceType ParseResourceType(string resourceTypeStr)
-        {
-            ResourceType resourceType;
-            if(!Enum.TryParse(resourceTypeStr, out resourceType))
-            {
-                resourceType = ResourceType.Unknown;
-            }
-            return resourceType;
-        }
 
         #endregion
 

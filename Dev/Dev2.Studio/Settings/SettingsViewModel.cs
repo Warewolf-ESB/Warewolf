@@ -17,7 +17,6 @@ using System.Windows.Forms;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 
@@ -650,11 +649,11 @@ namespace Dev2.Settings
             Errors = description;
         }
 
-        public ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
-                return ResourceType.Settings;
+                return "Settings";
             }
         }
         public string PerfmonHeader

@@ -4,7 +4,7 @@ Feature: Email Source
 	I want to save my Email source Settings
 	So that I can reuse them
 
-# Ensure New Email source tab is opened when click on 'New Email source' button.
+# Ensure New Email source tab is opened when click on "New Email source" button.
 # Ensure Title is saved and displayed correctly
 # Ensure From defaults to UserName
 # Ensure User is able to Edit saves From and To

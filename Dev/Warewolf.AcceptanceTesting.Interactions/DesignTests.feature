@@ -254,20 +254,20 @@ Scenario Outline: By Selecting each Debug Output is highlighting related tool or
    And I have "RemoteWorkflow" on "Unsaved 1"
    When I Debug "Unsaved 1"
    Then debug output is "Visible"
-   When I select '<Select>'
-   Then "Assign" on design is '<Assign>'
-   Then "Base Conversion" on design is '<Base Conversion>'
-   Then "Case Conversion" on design is '<Case Conversion>'
-   Then "Data Merge" on design is '<Data Merge>'
-   Then "Data Split" on design is '<Data Split>'
-   Then "Find Index" on design is '<Find Index>'
-   Then "Replace" on design is '<Replace>'
-   Then "Unique" on design is '<Unique>'
-   Then "Sort" on design is '<Sort>'
-   Then "Testsrv" on design is '<Testsrv>'
-   Then "Workflow" on design is '<Workflow>'
-   Then "Webservice" on design is '<Webservice>'
-   Then "RemoteWorkflow" on design is '<RemoteWorkflow>'
+   When I select "<Select>"
+   Then "Assign" on design is "<Assign>"
+   Then "Base Conversion" on design is "<Base Conversion>"
+   Then "Case Conversion" on design is "<Case Conversion>"
+   Then "Data Merge" on design is "<Data Merge>"
+   Then "Data Split" on design is "<Data Split>"
+   Then "Find Index" on design is "<Find Index>"
+   Then "Replace" on design is "<Replace>"
+   Then "Unique" on design is "<Unique>"
+   Then "Sort" on design is "<Sort>"
+   Then "Testsrv" on design is "<Testsrv>"
+   Then "Workflow" on design is "<Workflow>"
+   Then "Webservice" on design is "<Webservice>"
+   Then "RemoteWorkflow" on design is "<RemoteWorkflow>"
 Examples: 
      | Select                   | Assign        | Base Conversion | Case Conversion | Data Merge      | Data Split      | Find Index      | Replace         | Unique          | Sort            | Testsrv         | Workflow        | Webservice      | RemoteWorkflow  |
      | Step: Assign             | Highlight     | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted | Not Highlighted |

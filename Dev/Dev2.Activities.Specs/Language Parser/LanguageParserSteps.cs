@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Language_Parser
     [Binding]
     public class LanguageParserSteps
     {
-        [Given(@"I have text '(.*)' as input")]
+        [Given(@"I have text ""(.*)"" as input")]
         public void GivenIHaveTextAsInput(string variable)
         {
             ScenarioContext.Current.Add("variable", variable);
@@ -97,7 +97,7 @@ namespace Dev2.Activities.Specs.Language_Parser
             ScenarioContext.Current.Add("results", results);
         }
 
-        [Then(@"has error will be '(.*)'\.")]
+        [Then(@"has error will be ""(.*)""\.")]
         public void ThenHasErrorWillBe_(string error)
         {
             IList<IIntellisenseResult> results = ScenarioContext.Current.Get<IList<IIntellisenseResult>>("results");
@@ -106,7 +106,7 @@ namespace Dev2.Activities.Specs.Language_Parser
             Assert.AreEqual(expected, actual);
         }
 
-        [Then(@"the error message will be '(.*)'")]
+        [Then(@"the error message will be ""(.*)""")]
         public void ThenTheErrorMessageWillBe(string errorMessage)
         {
             var errorMessages = errorMessage.Split(new[] { "/n" }, StringSplitOptions.None).ToList();

@@ -14,7 +14,6 @@
 #6 Short cut Keys
 
 @TabControl
-@ignore
 Scenario: 1 Change Workflow And Close dialog Options
 	Given I have a New Workflow open
 	Then "New Workflow 1" tab is opened
@@ -177,8 +176,6 @@ Scenario: Closing unsaved Workflows
 	When "Save" is clicked
 	Then the save dialog is opened
 
-
-#Wolf-1115
 Scenario: Closing unsaved tab on remote server
 	Given I "Start" the studio
 	And selected Source Server is "Remote Intergration Connection"

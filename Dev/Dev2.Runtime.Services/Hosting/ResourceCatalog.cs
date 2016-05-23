@@ -25,6 +25,7 @@ using ChinhDo.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
@@ -220,7 +221,7 @@ namespace Dev2.Runtime.Hosting
 
         #region GetResource
 
-        public IResource GetResource(Guid workspaceID, string resourceName, ResourceType resourceType = ResourceType.Unknown, string version = null)
+        public IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null)
         {
             while(true)
             {
@@ -244,7 +245,7 @@ namespace Dev2.Runtime.Hosting
                         {
                             return false;
                         }
-                        return string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == ResourceType.Unknown || r.ResourceType == resourceType);
+                        return string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
                     });
                     if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                     {
@@ -379,12 +380,9 @@ namespace Dev2.Runtime.Hosting
                     guids.Add(guid);
                 }
             }
-            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
 
             var workspaceResources = GetResources(workspaceID);
-            var resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID)
-                                                            && resourceTypes.Contains(r.ResourceType));
-
+            var resources = GetResourcesBasedOnType(type, workspaceResources, r => guids.Contains(r.ResourceID));
             var result = ToPayload(resources);
             return result;
         }
@@ -397,11 +395,10 @@ namespace Dev2.Runtime.Hosting
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType)
         {
-            var resourceType = ResourceTypeConverter.ToResourceType(sourceType);
 
             var workspaceResources = GetResources(workspaceID);
-            var resources = workspaceResources.FindAll(r => r.ResourceType == resourceType);
-
+            var resources = workspaceResources.FindAll(r => r.ResourceType == sourceType.ToString());
+            
             IEnumerable result;
 
             switch(sourceType)
@@ -418,7 +415,7 @@ namespace Dev2.Runtime.Hosting
                     result = BuildSqlServerList(resources);
                     break;
 
-                case enSourceType.Plugin:
+                case enSourceType.PluginSource:
                     result = BuildPluginList(resources);
                     break;
 
@@ -450,10 +447,8 @@ namespace Dev2.Runtime.Hosting
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         public StringBuilder GetPayload(Guid workspaceID, enSourceType sourceType)
         {
-            var resourceType = ResourceTypeConverter.ToResourceType(sourceType);
-
             var workspaceResources = GetResources(workspaceID);
-            var resources = workspaceResources.FindAll(r => r.ResourceType == resourceType);
+            var resources = workspaceResources.FindAll(r => r.ResourceType == sourceType.ToString());
             var result = ToPayload(resources);
             return result;
         }
@@ -481,14 +476,10 @@ namespace Dev2.Runtime.Hosting
                 resourceName = string.Empty;
             }
 
-            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
 
             var workspaceResources = GetResources(workspaceID);
-            var resources = useContains
-                ? workspaceResources.FindAll(r => r.ResourceName.Contains(resourceName) && resourceTypes.Contains(r.ResourceType))
-                : workspaceResources.FindAll(r => r.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase)
-                                                && resourceTypes.Contains(r.ResourceType));
-
+            var resources = useContains ? GetResourcesBasedOnType(type, workspaceResources, r => r.ResourceName.Contains(resourceName))
+                                        :  GetResourcesBasedOnType(type, workspaceResources, r=> r.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
             var result = ToPayload(resources);
             return result;
         }
@@ -510,19 +501,37 @@ namespace Dev2.Runtime.Hosting
                 }
             }
             var workspaceResources = GetResources(workspaceId);
+            var resources = GetResourcesBasedOnType(type, workspaceResources, r => guids.Contains(r.ResourceID));
+
+            return resources.Cast<Resource>().ToList();
+        }
+
+        private static List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource,bool> func)
+        {
             List<IResource> resources;
-            if (string.IsNullOrEmpty(type))
+            if(string.IsNullOrEmpty(type))
             {
-                resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID));
+                resources = workspaceResources.FindAll(func.Invoke);
             }
             else
             {
-                var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
-                resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID)
-                                                                && resourceTypes.Contains(r.ResourceType));
+                switch(type)
+                {
+                    case "WorkflowService":
+                        resources = workspaceResources.FindAll(r => func.Invoke(r) && r.IsService);
+                        break;
+                    case "Source":
+                        resources = workspaceResources.FindAll(r => func.Invoke(r) && r.IsSource);
+                        break;
+                    case "ReservedService":
+                        resources = workspaceResources.FindAll(r => func.Invoke(r) && r.IsReservedService);
+                        break;
+                    default:
+                        resources = workspaceResources.FindAll(func.Invoke);
+                        break;
+                }
             }
-            
-            return resources.Cast<Resource>().ToList();
+            return resources;
         }
 
         public IList<Resource> GetResourceList(Guid workspaceId, string resourceName, string type, string userRoles, bool useContains = true)
@@ -537,13 +546,9 @@ namespace Dev2.Runtime.Hosting
                 resourceName = string.Empty;
             }
 
-            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
-
             var workspaceResources = GetResources(workspaceId);
-            var resources = useContains
-                ? workspaceResources.FindAll(r => r.ResourcePath.Contains(resourceName) && resourceTypes.Contains(r.ResourceType))
-                : workspaceResources.FindAll(r => r.ResourcePath.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase)
-                                                && resourceTypes.Contains(r.ResourceType));
+            var resources = useContains ? GetResourcesBasedOnType(type, workspaceResources, r => r.ResourcePath.Contains(resourceName))
+                                        : GetResourcesBasedOnType(type, workspaceResources, r => r.ResourcePath.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
 
             return resources.Cast<Resource>().ToList();
         }
@@ -825,12 +830,8 @@ namespace Dev2.Runtime.Hosting
                     throw new InvalidDataContractException("ResourceName or Type is missing from the request");
                 }
 
-                var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
-
                 var workspaceResources = GetResources(workspaceID);
-                var resources = workspaceResources.FindAll(r =>
-                    string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase)
-                    && resourceTypes.Contains(r.ResourceType));
+                var resources = GetResourcesBasedOnType(type, workspaceResources, r => string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
 
                 switch(resources.Count)
                 {
@@ -1109,7 +1110,7 @@ namespace Dev2.Runtime.Hosting
         }
         private IEnumerable BuildDropboxList(IEnumerable<IResource> resources)
         {
-            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new OauthSource(xe)).ToList();
+            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new DropBoxSource(xe)).ToList();
         }
         private IEnumerable BuildSharepointSourceList(IEnumerable<IResource> resources)
         {
@@ -1195,7 +1196,12 @@ namespace Dev2.Runtime.Hosting
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
         {
             var resourceContents = ResourceContents<T>(workspaceID, serviceID);
-            if(resourceContents == null || resourceContents.Length == 0) return null;
+            if(resourceContents == null || resourceContents.Length == 0)
+            {
+                var resource = GetResource(workspaceID, serviceID);
+                var content = GetResourceContents(resource);
+                return GetResource<T>(content);
+            }
             return GetResource<T>(resourceContents);
         }
 
@@ -1226,47 +1232,39 @@ namespace Dev2.Runtime.Hosting
         {
             var resource = GetResource(workspaceID, resourceName);
             var resourceContents = GetResourceContents(resource);
-            if(CheckType<T>(resource)) return null;
-            return resourceContents;
+            return CheckType<T>(resource) ? resourceContents : null;
         }
 
         StringBuilder ResourceContents<T>(Guid workspaceID, Guid resourceID) where T : Resource, new()
         {
             var resource = GetResource(workspaceID, resourceID);
             var resourceContents = GetResourceContents(resource);
-            if(CheckType<T>(resource)) return null;
-            return resourceContents;
+            return CheckType<T>(resource) ? resourceContents : null;
         }
 
         static bool CheckType<T>(IResource resource) where T : Resource, new()
         {
             if(resource != null)
             {
-                if(typeof(T) == typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
+                //This is for migration from pre-v1 to V1. Remove once V1 is released.
+                if (typeof(T) == typeof(DbService) && resource.ResourceType == "DbService")
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(DbService) && resource.ResourceType != ResourceType.DbService)
+                if (typeof(T) == typeof(PluginService) && resource.ResourceType == "PluginService")
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
+                if (typeof(T) == typeof(WebService) && resource.ResourceType == "WebService")
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
+
+                if (typeof(T) == typeof(Workflow) && resource.IsService)
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
-                {
-                    return true;
-                }
-                if(typeof(T) == typeof(WebService) && resource.ResourceType != ResourceType.WebService)
-                {
-                    return true;
-                }
-                if(typeof(T) == typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
+                if (typeof(IResourceSource).IsAssignableFrom(typeof(T)) && resource.IsSource)
                 {
                     return true;
                 }
@@ -1672,7 +1670,7 @@ namespace Dev2.Runtime.Hosting
         {
             var result = new StringBuilder();
 
-            if(resource.ResourceType == ResourceType.ReservedService)
+            if (resource.ResourceType == "ReservedService")
             {
                 result.AppendFormat("<Service Name=\"{0}\" ResourceType=\"{1}\" />", resource.ResourceName, resource.ResourceType);
             }
@@ -1694,7 +1692,7 @@ namespace Dev2.Runtime.Hosting
             var result = new StringBuilder();
             foreach(var resource in resources)
             {
-                if(resource.ResourceType == ResourceType.ReservedService)
+                if (resource.ResourceType == "ReservedService")
                 {
                     result.AppendFormat("<Service Name=\"{0}\" ResourceType=\"{1}\" />", resource.ResourceName, resource.ResourceType);
                 }
@@ -1718,7 +1716,7 @@ namespace Dev2.Runtime.Hosting
 
         void AddResourceAsDynamicServiceObject(List<DynamicServiceObjectBase> result, IResource resource)
         {
-            if(resource.ResourceType == ResourceType.ReservedService)
+            if (resource.ResourceType == "ReservedService")
             {
                 var managementResource = resource as ManagementServiceResource;
                 if(managementResource != null)
@@ -2128,6 +2126,14 @@ namespace Dev2.Runtime.Hosting
 
 
             return workspaceResources.ToList();
+
+        }
+
+        public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new()
+        {
+            var workspaceResources = GetResources(workspaceId);
+            var resourcesMatchingType = workspaceResources.Where(resource => typeof(T)==resource.GetType());
+            return resourcesMatchingType.ToList();
 
         }
 

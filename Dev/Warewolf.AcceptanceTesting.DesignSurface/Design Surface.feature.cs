@@ -153,7 +153,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 32
  testRunner.Then("\"Workflow not saved\" pop up is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
- testRunner.And("the validation message contains \"The workflow \'2\' that you are closing is not sav" +
+ testRunner.And("the validation message contains \"The workflow \"2\" that you are closing is not sav" +
                     "ed. Would you like to save the workflow?\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
  testRunner.And("\"close\" button is visible in \"Workflow not saved\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

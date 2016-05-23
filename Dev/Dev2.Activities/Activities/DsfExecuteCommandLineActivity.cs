@@ -128,7 +128,8 @@ namespace Dev2.Activities
                 var itr = new WarewolfIterator(dataObject.Environment.Eval(CommandFileName, update));
                 if(!allErrors.HasErrors())
                 {
-                    while(itr.HasMoreData())
+                    var counter = 1;
+                    while (itr.HasMoreData())
                     {
                         var val = itr.GetNextValue();
                         {
@@ -153,9 +154,10 @@ namespace Dev2.Activities
                             {
                                 if(dataObject.Environment != null)
                                 {
-                                    dataObject.Environment.Assign(region, readValue, update);
+                                    dataObject.Environment.Assign(region, readValue, update == 0 ? counter : update);
                                 }
                             }
+                            counter++;
                             errorReader.Close();
                         }
                     }

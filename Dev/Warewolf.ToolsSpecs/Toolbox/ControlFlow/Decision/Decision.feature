@@ -67,12 +67,12 @@
 ##decide if variable [[A]] Ends With variable [[B]] (False)
 ##decide if variable [[A]] Contains variable [[B]] (True)
 ##decide if variable [[A]] Contains variable [[B]] (False)
-##decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
-##ecide if variable [[A]] Doesn't Starts With variable [[B]] (False)
-##decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
-##decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
-##decide if variable [[A]] Doesn't Contains variable [[B]] (True)
-##decide if variable [[A]] Doesn't Contains variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Starts With variable [[B]] (True)
+##ecide if variable [[A]] Doesn"t Starts With variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Ends With variable [[B]] (True)
+##decide if variable [[A]] Doesn"t Ends With variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Contains variable [[B]] (True)
+##decide if variable [[A]] Doesn"t Contains variable [[B]] (False)
 ##decide if There Is An Error (True)	
 ##decide if There Is An Error (False)
 ##decide if There Is No Error (True)
@@ -627,23 +627,23 @@ Scenario: decide if variable [[A]] Not XML (False)
 	|         |
 	| NO     |
 
-#Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
-#	Given a decision variable "[[A]]" value "30"	
-#	And a decision variable "[[B]]" value "20"
-#	And a decision variable "[[C]]" value "40"	
-#	And check if "[[A]]" "IsBetween" "[[B]]" and "[[C]]"
-#	When the decision tool is executed
-#	Then the decision result should be "True"
-#	Then the execution has "NO" error
-#	Then the debug inputs as  
-#	|            | Statement | Require all decisions to be true |
-#	| [[A]] = 30 |           |                                  |
-#	| [[B]] = 20 |           |                                  |
-#	| [[C]] = 40 |           |                                  |
-#	|            | String    | YES                              |
-#	And the debug output as 
-#	|         |
-#	| YES    |
+Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
+	Given a decision variable "[[A]]" value "30"	
+	And a decision variable "[[B]]" value "20"
+	And a decision variable "[[C]]" value "40"	
+	And check if "[[A]]" "IsBetween" "[[B]]" and "[[C]]"
+	When the decision tool is executed
+	Then the decision result should be "True"
+	Then the execution has "NO" error
+	Then the debug inputs as  
+	|            | Statement | Require all decisions to be true |
+	| [[A]] = 30 |           |                                  |
+	| [[B]] = 20 |           |                                  |
+	| [[C]] = 40 |           |                                  |
+	|            | String    | YES                              |
+	And the debug output as 
+	|         |
+	| YES    |
 
 Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (True)
 	Given a decision variable "[[A]]" value "20"	
@@ -1018,7 +1018,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (False)
 	| NO |
 
 
-Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Starts With variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "country"
 	And is "[[A]]" "NotStartsWith" "[[B]]"	
@@ -1034,7 +1034,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
 	| YES |
 
 
-Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Starts With variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "South"
 	And is "[[A]]" "NotStartsWith" "[[B]]"	
@@ -1049,7 +1049,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
 	|    |
 	| NO |
 
-Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Ends With variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "continent"
 	And is "[[A]]" "NotEndsWith" "[[B]]"	
@@ -1064,7 +1064,7 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
 	|     |
 	| YES |
 
-Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Ends With variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "country"
 	And is "[[A]]" "NotEndsWith" "[[B]]"	
@@ -1079,7 +1079,7 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
 	|    |
 	| NO |
 
-Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Contains variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Nile"
 	And is "[[A]]" "NotContain" "[[B]]"	
@@ -1094,7 +1094,7 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
 	|     |
 	| YES |
 
-Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Contains variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Africa"
 	And is "[[A]]" "NotContain" "[[B]]"
@@ -1278,13 +1278,12 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	|       |
 	| NO |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Ensuring all complex type inputs work as expected
-	Given a decision variable '<variable1>' value '<Var1>'	
-	And a decision variable '<variable2>' value '<Var2>'
-	And check if '<variable1>' '<matchtype>' '<variable2>'
-	And Require all decisions to be true is '<Requirement>'
+	Given a decision variable "<variable1>" value "<Var1>"	
+	And a decision variable "<variable2>" value "<Var2>"
+	And is "<variable1>" "<matchtype>" "<variable2>"
+	And Require all decisions to be true is "<Requirement>"
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Examples: 
@@ -1312,8 +1311,8 @@ Scenario: validate that a variable is Null Positive
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Then the debug inputs as  
-       |       | Statement | Require all decisions to be true |
-       | [[A]] = [[A]]  | String    | YES                              |
+       |           | Statement | Require all decisions to be true |
+       | [[A]] =   | String    | YES                              |
     And the debug output as 
        |     |
        | YES |
@@ -1330,52 +1329,44 @@ Scenario: validate that a variable is not Null positive
        |     |
        | YES |
 
-@Ignore
+
 Scenario: validate that a variable is Blank positive
 	Given a decision variable "[[B]]" value ""
-	And decide if "[[B]]" "IsEqual" ""
+	And is "[[B]]" "IsEqual" ""	
 	When the decision tool is executed
 	Then the execution has "NO" error
 	 Then the debug inputs as  
-       |            | Statement | Require all decisions to be true |
-       | [[B]] =  | String    | YES                              |
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | YES                              |
     And the debug output as 
        |     |
        | YES |
 
-@Ignore
+
 Scenario: validate that a variable is Blank OR NULL positive 1
 	Given a decision variable "[[B]]" value ""
-	And decide if "[[B]]" "IsEqual" ""
 	And decide if "[[B]]" "IsNull"
+	And is "[[B]]" "IsEqual" ""	
 	And the decision mode is "OR"
 	When the decision tool is executed
 	Then the execution has "NO" error
 	 Then the debug inputs as  
-       |            | Statement | Require all decisions to be true |
-       | [[B]] =  | String    | YES                              |
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | NO                               |
     And the debug output as 
        |     |
        | YES |
 
-@Ignore
+
 Scenario: validate that a variable is Blank OR NULL positive 2
-	Given decide if "[[B]]" "IsEqual" ""
+	Given is "[[B]]" "IsEqual" ""	
 	And decide if "[[B]]" "IsNull"
 	And the decision mode is "OR"
 	When the decision tool is executed
 	Then the execution has "NO" error
 	 Then the debug inputs as  
-       |            | Statement | Require all decisions to be true |
-       | [[B]] =  | String    | YES                              |
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | NO                               |
     And the debug output as 
        |     |
        | YES |
-
-
-Scenario: Null throws an error
-	Given is "[[A]]" "IsEqual" "123   234"	
-	When the decision tool is executed
-	##Then the decision result should be "False"
-	Then the execution has "An" error
-	

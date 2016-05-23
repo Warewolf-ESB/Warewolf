@@ -158,7 +158,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             }
         }
 
-        [Given(@"I have a webservice with '(.*)' as a response")]
+        [Given(@"I have a webservice with ""(.*)"" as a response")]
         public void GivenIHaveAWebserviceWithAsAResponse(string responseFileName)
         {
             var service = new ServiceModel.Data.WebService();
@@ -167,7 +167,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             ScenarioContext.Current.Add("WebService", service);
         }
 
-        [When(@"I apply '(.*)' to the response")]
+        [When(@"I apply ""(.*)"" to the response")]
         public void WhenIApplyToTheResponse(string jsonPath)
         {
             var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
@@ -176,7 +176,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             webService.RequestResponse = webService.JsonPathResult;
         }
 
-        [Then(@"the mapping should be '(.*)'")]
+        [Then(@"the mapping should be ""(.*)""")]
         public void ThenTheMappingShouldBe(string resultingMapping)
         {
             var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");

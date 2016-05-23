@@ -12,7 +12,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.JSON;
@@ -84,7 +83,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void PluginServicesDeserializeServiceWithNullXmlExpectedReturnsNewPluginService()
         {
             var services = new PluginServicesMock();
-            var result = services.DeserializeService(null, ResourceType.PluginService);
+            var result = services.DeserializeService(null, "PluginService");
 
             Assert.AreEqual(result.ResourceID, Guid.Empty);
         }
@@ -95,7 +94,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var xml = XmlResource.Fetch("PluginService");
 
             var services = new PluginServicesMock();
-            var result = services.DeserializeService(xml, ResourceType.PluginService);
+            var result = services.DeserializeService(xml, "PluginService");
 
             PluginServiceTests.VerifyEmbeddedPluginService(result as PluginService);
         }
@@ -379,7 +378,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "DummyPluginService",
-                ResourceType = ResourceType.PluginService,
+                ResourceType = "PluginService",
                 ResourcePath = "Tests",
                 Namespace = type.FullName,
                 Method = method,
@@ -401,7 +400,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 AssemblyLocation = assembly.Location,
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dummy",
-                ResourceType = ResourceType.PluginSource,
+                ResourceType = "PluginSource",
                 ResourcePath = "Test",
             };
         }

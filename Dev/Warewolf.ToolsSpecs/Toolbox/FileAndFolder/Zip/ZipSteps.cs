@@ -21,13 +21,13 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
     [Binding]
     public class ZipSteps : FileToolsBase
     {
-        [Given(@"Archive Password as '(.*)'")]
+        [Given(@"Archive Password as ""(.*)""")]
         public void GivenArchivePasswordAs(string archivePassword)
         {
             ScenarioContext.Current.Add("archivePassword", archivePassword);
         }
 
-        [Given(@"the Compression as '(.*)'")]
+        [Given(@"the Compression as ""(.*)""")]
         public void GivenTheCompressionAs(string compressio)
         {
             ScenarioContext.Current.Add("compressio", compressio);

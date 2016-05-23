@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,12 +28,14 @@ using Newtonsoft.Json;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using WarewolfParserInterop;
+// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Data.Util
 {
     /// <summary>
     /// General DataList utility methods
     /// </summary>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class DataListUtil
     {
         #region Class Members
@@ -44,7 +47,7 @@ namespace Dev2.Data.Util
 
         private static readonly HashSet<string> SysTags = new HashSet<string>();
         const string AdlRoot = "ADL";
-      
+
         private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
         private static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>", 
                                                          "<Dev2XMLResult>", "</Dev2XMLResult>", 
@@ -63,7 +66,7 @@ namespace Dev2.Data.Util
         static DataListUtil()
         {
             // build system tags
-            foreach(Enum e in Enum.GetValues(typeof(enSystemTag)))
+            foreach (Enum e in Enum.GetValues(typeof(enSystemTag)))
             {
                 SysTags.Add(e.ToString());
             }
@@ -101,7 +104,7 @@ namespace Dev2.Data.Util
                                         expression.Replace(extractIndexRegionFromRecordset, "()");
         }
 
-        
+
         /// <summary>
         /// Replaces the index of a recordset with a blank index.
         /// </summary>
@@ -135,11 +138,20 @@ namespace Dev2.Data.Util
 
             newExpression = string.Empty;
 
-            if(expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
+            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
             {
-                if(expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
+                if (expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
                 {
                     newExpression = expression.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
+                    result = true;
+                }
+            }
+
+            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix))
+            {
+                if (expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix))
+                {
+                    newExpression = expression.Substring(GlobalConstants.AggregateCalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.AggregateCalculateTextConvertSuffix.Length + GlobalConstants.AggregateCalculateTextConvertPrefix.Length));
                     result = true;
                 }
             }
@@ -182,10 +194,10 @@ namespace Dev2.Data.Util
             string result = payload;
             string[] veryNaughtyTags = NaughtyTags;
 
-            if(!string.IsNullOrEmpty(payload))
+            if (!string.IsNullOrEmpty(payload))
             {
 
-                if(StripTags != null)
+                if (StripTags != null)
                 {
                     StripTags
                         .ToList()
@@ -195,7 +207,7 @@ namespace Dev2.Data.Util
                         });
                 }
 
-                if(veryNaughtyTags != null)
+                if (veryNaughtyTags != null)
                 {
                     result = CleanupNaughtyTags(veryNaughtyTags, result);
                 }
@@ -203,14 +215,14 @@ namespace Dev2.Data.Util
                 // we now need to remove non-valid chars from the stream
 
                 int start = result.IndexOf("<", StringComparison.Ordinal);
-                if(start >= 0)
+                if (start >= 0)
                 {
                     result = result.Substring(start);
                 }
 
-                if(result.Contains("<") && result.Contains(">"))
+                if (result.Contains("<") && result.Contains(">"))
                 {
-                    if(!IsXml(result))
+                    if (!IsXml(result))
                     {
                         // We need to replace DataList if present ;)
                         result = result.Replace("<DataList>", "").Replace("</DataList>", "");
@@ -236,7 +248,7 @@ namespace Dev2.Data.Util
 
             string result = GlobalConstants.SystemTagNamespace + "." + tag;
 
-            if(addBrackets)
+            if (addBrackets)
             {
                 result = OpeningSquareBrackets + result + ClosingSquareBrackets;
             }
@@ -255,7 +267,7 @@ namespace Dev2.Data.Util
 
             string result = GlobalConstants.SystemTagNamespace + "." + tag;
 
-            if(addBrackets)
+            if (addBrackets)
             {
                 result = OpeningSquareBrackets + result + ClosingSquareBrackets;
             }
@@ -277,10 +289,10 @@ namespace Dev2.Data.Util
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(payload);
             XmlNodeList nl = xDoc.GetElementsByTagName(tagName);
-            if(nl.Count > 0)
+            if (nl.Count > 0)
             {
                 var xmlAttributeCollection = nl[0].Attributes;
-                if(xmlAttributeCollection != null)
+                if (xmlAttributeCollection != null)
                 {
                     result = xmlAttributeCollection[attribute].Value;
                 }
@@ -289,12 +301,12 @@ namespace Dev2.Data.Util
             return result;
         }
 
-/*
-        public static string ExtractAttributeFromTagAndMakeRecordset(string payload, string tagName, string attribute)
-        {
-            return ExtractAttributeFromTagAndMakeRecordset(payload, tagName, new[] { attribute }, null);
-        }
-*/
+        /*
+                public static string ExtractAttributeFromTagAndMakeRecordset(string payload, string tagName, string attribute)
+                {
+                    return ExtractAttributeFromTagAndMakeRecordset(payload, tagName, new[] { attribute }, null);
+                }
+        */
 
         /// <summary>
         /// Used to detect the #text and #cdate-section 'nodes' returned by MS XML parser
@@ -332,7 +344,7 @@ namespace Dev2.Data.Util
             // Transfer System Tags
             bool result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
 
-            if(!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
+            if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
             {
                 tag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
                 result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
@@ -358,11 +370,11 @@ namespace Dev2.Data.Util
                 .ForEach(d =>
                 {
 
-                    if(d.IsRecordSet)
+                    if (d.IsRecordSet)
                     {
                         string tmp = string.Empty;
 
-                        if(rsMap.Keys.Contains(d.RecordSetName))
+                        if (rsMap.Keys.Contains(d.RecordSetName))
                         {
                             tmp = rsMap[d.RecordSetName];
                         }
@@ -412,12 +424,12 @@ namespace Dev2.Data.Util
             bool isInput = false;
             errors = new ErrorResultTO();
 
-            if(typeOf == enDev2ArgumentType.Input)
+            if (typeOf == enDev2ArgumentType.Input)
             {
                 isInput = true;
             }
 
-            if(defs == null || defs.Count == 0)
+            if (defs == null || defs.Count == 0)
             {
                 errors.AddError(string.Concat("could not locate any data of type [ ", typeOf, " ]"));
             }
@@ -443,7 +455,7 @@ namespace Dev2.Data.Util
 
             return result;
         }
-        
+
         /// <summary>
         /// Shapes the definitions to data list.
         /// </summary>
@@ -454,11 +466,11 @@ namespace Dev2.Data.Util
 
             try
             {
-            var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
-            IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
-            IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
-                CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env,update);
-                CreateScalarInputs(outerEnvironment, inputScalarList, env,update);
+                var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
+                IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
+                IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
+                CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
+                CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
             }
             finally
             {
@@ -469,7 +481,7 @@ namespace Dev2.Data.Util
 
         static void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env, int update)
         {
-            foreach(var recordSetDefinition in inputRecSets.RecordSets)
+            foreach (var recordSetDefinition in inputRecSets.RecordSets)
             {
                 var outPutRecSet = inputs.FirstOrDefault(definition => definition.IsRecordSet && ExtractRecordsetNameFromValue(definition.MapsTo) == recordSetDefinition.SetName);
                 if (outPutRecSet != null)
@@ -512,17 +524,17 @@ namespace Dev2.Data.Util
 
         static void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, ExecutionEnvironment env, int update)
         {
-            foreach(var dev2Definition in inputScalarList)
+            foreach (var dev2Definition in inputScalarList)
             {
                 if (!string.IsNullOrEmpty(dev2Definition.Name))
                 {
                     env.AssignDataShape("[[" + dev2Definition.Name + "]]");
                 }
-                if(!dev2Definition.IsRecordSet)
+                if (!dev2Definition.IsRecordSet)
                 {
                     if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                     {
-                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update,false);
+                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update, false);
                         if (warewolfEvalResult.IsWarewolfAtomListresult)
                         {
                             ScalarAtomList(warewolfEvalResult, env, dev2Definition);
@@ -539,7 +551,7 @@ namespace Dev2.Data.Util
         static void ScalarAtom(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
         {
             var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
-            if(data != null)
+            if (data != null)
             {
                 env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
             }
@@ -548,7 +560,7 @@ namespace Dev2.Data.Util
         static void ScalarAtomList(WarewolfDataEvaluationCommon.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
         {
             var data = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
-            if(data != null && data.Item.Any())
+            if (data != null && data.Item.Any())
             {
                 env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
             }
@@ -558,11 +570,11 @@ namespace Dev2.Data.Util
         {
             var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomResult;
 
-            if(dev2ColumnDefinition.IsRecordSet)
+            if (dev2ColumnDefinition.IsRecordSet)
             {
 
 
-                if(recsetResult != null)
+                if (recsetResult != null)
                 {
                     var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
 
@@ -577,7 +589,7 @@ namespace Dev2.Data.Util
 
             GetRecordsetIndexType(dev2ColumnDefinition.Value);
 
-            if(recsetResult != null)
+            if (recsetResult != null)
             {
                 var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
 
@@ -596,9 +608,9 @@ namespace Dev2.Data.Util
         {
             bool result = false;
 
-            if(!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
             {
-                if(value.Contains(RecordsetIndexOpeningBracket) && value.Contains(RecordsetIndexClosingBracket))
+                if (value.Contains(RecordsetIndexOpeningBracket) && value.Contains(RecordsetIndexClosingBracket))
                 {
                     result = true;
                 }
@@ -647,7 +659,7 @@ namespace Dev2.Data.Util
         {
             bool result = true;
 
-            if(expression == null)
+            if (expression == null)
             {
                 return false;
             }
@@ -656,7 +668,7 @@ namespace Dev2.Data.Util
             string[] closeParts = Regex.Split(expression, @"\]\]");
 
             //2013.05.31: Ashley lewis QA feedback on bug 9379 - count the number of opening and closing braces, they must both be more than one
-            if(expression.Contains(OpeningSquareBrackets) && expression.Contains(ClosingSquareBrackets) && openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
+            if (expression.Contains(OpeningSquareBrackets) && expression.Contains(ClosingSquareBrackets) && openParts.Length == closeParts.Length && openParts.Length > 2 && closeParts.Length > 2)
             {
                 result = false;
             }
@@ -671,7 +683,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ExtractRecordsetNameFromValue(string value)
         {
-            if(value == null)
+            if (value == null)
             {
                 return string.Empty;
             }
@@ -680,7 +692,7 @@ namespace Dev2.Data.Util
             string result = string.Empty;
 
             int openBracket = value.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-            if(openBracket > 0)
+            if (openBracket > 0)
             {
                 result = value.Substring(0, openBracket);
             }
@@ -698,14 +710,14 @@ namespace Dev2.Data.Util
             string result = string.Empty;
             value = StripBracketsFromValue(value);
             int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            if(dotIdx > 0)
+            if (dotIdx > 0)
             {
                 result = value.Substring(dotIdx + 1);
             }
 
             return result;
         }
-        
+
         /// <summary>
         /// Used to extract a field name from our recordset notation
         /// </summary>
@@ -715,10 +727,10 @@ namespace Dev2.Data.Util
         {
             string result = string.Empty;
             int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            int closeIdx = value.LastIndexOf("]]", StringComparison.Ordinal);
-            if(dotIdx > 0)
+            int closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
+            if (dotIdx > 0)
             {
-                result = value.Substring(dotIdx + 1,closeIdx-dotIdx-1);
+                result = value.Substring(dotIdx + 1, closeIdx - dotIdx - 1);
             }
 
             return result;
@@ -732,7 +744,7 @@ namespace Dev2.Data.Util
         public static string StripBracketsFromValue(string value)
         {
             string result = string.Empty;
-            if(value != null)
+            if (value != null)
             {
                 result = value.Replace(OpeningSquareBrackets, "").Replace(ClosingSquareBrackets, "");
             }
@@ -745,16 +757,16 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static string StripLeadingAndTrailingBracketsFromValue(string value)
+        private static string StripLeadingAndTrailingBracketsFromValue(string value)
         {
             string result = value;
 
-            if(result.StartsWith(OpeningSquareBrackets))
+            if (result.StartsWith(OpeningSquareBrackets))
             {
                 result = result.Substring(2, result.Length - 2);
             }
 
-            if(result.EndsWith(ClosingSquareBrackets))
+            if (result.EndsWith(ClosingSquareBrackets))
             {
                 result = result.Substring(0, result.Length - 2);
             }
@@ -779,7 +791,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static int IndexOfClosingTags(string value)
         {
-            if(string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return -1;
             }
@@ -796,7 +808,7 @@ namespace Dev2.Data.Util
         {
             string result;
 
-            if(!value.Contains(ClosingSquareBrackets))
+            if (!value.Contains(ClosingSquareBrackets))
             {
                 // missing both
                 result = !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets);
@@ -819,22 +831,22 @@ namespace Dev2.Data.Util
         {
             var inject = "()";
 
-            if(starNotation)
+            if (starNotation)
             {
                 inject = "(*)";
             }
 
             string result = StripBracketsFromValue(value);
 
-            if(result.EndsWith(RecordsetIndexOpeningBracket))
+            if (result.EndsWith(RecordsetIndexOpeningBracket))
             {
                 result = string.Concat(result, RecordsetIndexClosingBracket);
             }
-            else if(result.EndsWith(RecordsetIndexClosingBracket))
+            else if (result.EndsWith(RecordsetIndexClosingBracket))
             {
                 return result.Replace(RecordsetIndexClosingBracket, inject);
             }
-            else if(!result.EndsWith("()"))
+            else if (!result.EndsWith("()"))
             {
                 result = string.Concat(result, inject);
             }
@@ -851,10 +863,10 @@ namespace Dev2.Data.Util
             string result = string.Empty;
 
             int start = rs.IndexOf(RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-            if(start > 0)
+            if (start > 0)
             {
                 int end = rs.LastIndexOf(RecordsetIndexClosingBracket, StringComparison.Ordinal);
-                if(end < 0)
+                if (end < 0)
                 {
                     end = rs.Length;
                 }
@@ -874,7 +886,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool IsStarIndex(string rs)
         {
-            if(string.IsNullOrEmpty(rs))
+            if (string.IsNullOrEmpty(rs))
             {
                 return false;
             }
@@ -889,7 +901,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool IsRecordsetOpeningBrace(string value)
         {
-            if(string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return false;
             }
@@ -913,15 +925,15 @@ namespace Dev2.Data.Util
 
         public static bool ShouldEncrypt(string value)
         {
-            if(string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return false;
             }
-            if(IsFullyEvaluated(value))
+            if (IsFullyEvaluated(value))
             {
                 return false;
             }
-            if(value.CanBeDecrypted())
+            if (value.CanBeDecrypted())
             {
                 return false;
             }
@@ -956,11 +968,11 @@ namespace Dev2.Data.Util
         {
             enRecordsetIndexType result = enRecordsetIndexType.Error;
 
-            if(idx == "*")
+            if (idx == "*")
             {
                 result = enRecordsetIndexType.Star;
             }
-            else if(string.IsNullOrEmpty(idx))
+            else if (string.IsNullOrEmpty(idx))
             {
                 result = enRecordsetIndexType.Blank;
             }
@@ -974,7 +986,7 @@ namespace Dev2.Data.Util
                     // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                     result = enRecordsetIndexType.Numeric;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Error("DataListUtil", ex);
                 }
@@ -993,18 +1005,18 @@ namespace Dev2.Data.Util
             enRecordsetIndexType result = enRecordsetIndexType.Error;
 
             string idx = ExtractIndexRegionFromRecordset(expression);
-            if(idx == "*")
+            if (idx == "*")
             {
                 result = enRecordsetIndexType.Star;
             }
-            else if(string.IsNullOrEmpty(idx))
+            else if (string.IsNullOrEmpty(idx))
             {
                 result = enRecordsetIndexType.Blank;
             }
             else
             {
                 int convertIntTest;
-                if(Int32.TryParse(idx, out convertIntTest))
+                if (Int32.TryParse(idx, out convertIntTest))
                 {
                     result = enRecordsetIndexType.Numeric;
                 }
@@ -1046,36 +1058,36 @@ namespace Dev2.Data.Util
             isFragment = false;
             isHtml = false;
 
-            if(result)
+            if (result)
             {
-                using(TextReader tr = new StringReader(trimedData))
+                using (TextReader tr = new StringReader(trimedData))
                 {
-                    using(XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
+                    using (XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
                     {
 
                         try
                         {
                             long nodeCount = 0;
-                            while(reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
+                            while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
                             {
                                 nodeCount++;
 
-                                if(reader.NodeType != XmlNodeType.CDATA)
+                                if (reader.NodeType != XmlNodeType.CDATA)
                                 {
-                                    if(reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
+                                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
                                     {
                                         isHtml = true;
                                         result = false;
                                     }
 
-                                    if(reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
                                     {
                                         isFragment = true;
                                     }
                                 }
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             Dev2Logger.Error("DataListUtil", ex);
                             tr.Close();
@@ -1093,7 +1105,7 @@ namespace Dev2.Data.Util
         public static bool IsJson(string data)
         {
             var tmp = data.Trim();
-            if(tmp.StartsWith("{") && tmp.EndsWith("}"))
+            if (tmp.StartsWith("{") && tmp.EndsWith("}"))
             {
                 return true;
             }
@@ -1101,21 +1113,21 @@ namespace Dev2.Data.Util
             return false;
         }
 
-        public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors,int update)
+        public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors, int update)
         {
             IList<string> result = new List<string>();
             errors = new ErrorResultTO();
             try
             {
                 result = env.EvalAsListOfStrings(expression, update);
-                
+
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 errors.AddError(err.Message);
-               
+
             }
-            
+
 
             return result;
         }
@@ -1130,26 +1142,26 @@ namespace Dev2.Data.Util
             string trimedData = payload.Trim();
             var isXml = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
-            if(!isXml)
+            if (!isXml)
             {
                 // we need to adjust. there might be a silly encoding issue with first char!
-                if(trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')
+                if (trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')
                 {
                     trimedData = trimedData.Substring(1);
                 }
-                else if(trimedData.Length > 2 && trimedData[2] == '<' && trimedData[3] == '?')
+                else if (trimedData.Length > 2 && trimedData[2] == '<' && trimedData[3] == '?')
                 {
                     trimedData = trimedData.Substring(2);
                 }
-                else if(trimedData.Length > 3 && trimedData[3] == '<' && trimedData[4] == '?')
+                else if (trimedData.Length > 3 && trimedData[3] == '<' && trimedData[4] == '?')
                 {
                     trimedData = trimedData.Substring(3);
                 }
             }
             var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
-            if (trimedData.StartsWith(bomMarkUtf8,StringComparison.OrdinalIgnoreCase))
+            if (trimedData.StartsWith(bomMarkUtf8, StringComparison.OrdinalIgnoreCase))
                 trimedData = trimedData.Remove(0, bomMarkUtf8.Length);
-            trimedData= trimedData.Replace("\0", "");
+            trimedData = trimedData.Replace("\0", "");
             return trimedData;
         }
 
@@ -1163,17 +1175,17 @@ namespace Dev2.Data.Util
         {
             StringBuilder result = new StringBuilder();
 
-            foreach(IDev2Definition def in scalarList)
+            foreach (IDev2Definition def in scalarList)
             {
-                if(!isInput)
+                if (!isInput)
                 {
-                    if(IsEvaluated(def.RawValue))
+                    if (IsEvaluated(def.RawValue))
                     {
                         result.Append(string.Concat("<", def.Value, "></", def.Value, ">"));
                         result.Append(Environment.NewLine);
                     }
 
-                    if(!string.IsNullOrEmpty(def.Name))
+                    if (!string.IsNullOrEmpty(def.Name))
                     {
                         result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
                         result.Append(Environment.NewLine);
@@ -1181,7 +1193,7 @@ namespace Dev2.Data.Util
                 }
                 else
                 {
-                    if(!string.IsNullOrEmpty(def.Name))
+                    if (!string.IsNullOrEmpty(def.Name))
                     {
                         result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
                         result.Append(Environment.NewLine);
@@ -1189,7 +1201,7 @@ namespace Dev2.Data.Util
 
                     // we need to process the RawValue field incase it is not in the recordsets ;)
                     var rsName = ExtractRecordsetNameFromValue(def.Value);
-                    if(string.IsNullOrEmpty(rsName) && IsEvaluated(def.Value))
+                    if (string.IsNullOrEmpty(rsName) && IsEvaluated(def.Value))
                     {
                         var tmpValue = RemoveLanguageBrackets(def.Value);
                         result.Append(string.Concat("<", tmpValue, "></", tmpValue, ">"));
@@ -1212,29 +1224,29 @@ namespace Dev2.Data.Util
             bool foundOpen = false;
             string result = payload;
 
-            for(int i = 0; i < toRemove.Length; i++)
+            for (int i = 0; i < toRemove.Length; i++)
             {
                 string myTag = toRemove[i];
-                if(myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
+                if (myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
                 {
                     foundOpen = true;
                 }
-                else if(myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
+                else if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
                 {
                     // close tag
-                    if(foundOpen)
+                    if (foundOpen)
                     {
                         // remove data between
                         int loc = i - 1;
-                        if(loc >= 0)
+                        if (loc >= 0)
                         {
                             int start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
                             int end = result.IndexOf(myTag, StringComparison.Ordinal);
-                            if(start < end && start >= 0)
+                            if (start < end && start >= 0)
                             {
                                 string canidate = result.Substring(start, end - start + myTag.Length);
                                 string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                if(tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0)
+                                if (tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0)
                                 {
                                     // replace just the tags
                                     result = result.Replace(myTag, "").Replace(toRemove[loc], "");
@@ -1273,10 +1285,10 @@ namespace Dev2.Data.Util
             IList<IRecordSetDefinition> defs = recCol.RecordSets;
             HashSet<string> processedSetNames = new HashSet<string>();
 
-            foreach(IRecordSetDefinition tmp in defs)
+            foreach (IRecordSetDefinition tmp in defs)
             {
                 // get DL recordset Name
-                if(tmp.Columns.Count > 0)
+                if (tmp.Columns.Count > 0)
                 {
                     string setName = tmp.SetName;
                     result.Append(string.Concat("<", setName, ">"));
@@ -1285,13 +1297,13 @@ namespace Dev2.Data.Util
                     processedSetNames.Add(setName);
 
                     IList<IDev2Definition> cols = tmp.Columns;
-                    foreach(IDev2Definition tmpDef in cols)
+                    foreach (IDev2Definition tmpDef in cols)
                     {
-                        if(isInput)
+                        if (isInput)
                         {
                             var col = ExtractFieldNameFromValue(tmpDef.MapsTo);
 
-                            if(!string.IsNullOrEmpty(col))
+                            if (!string.IsNullOrEmpty(col))
                             {
                                 var toAppend = "\t<" + col + "></" + col + ">";
                                 result.Append(toAppend);
@@ -1303,7 +1315,7 @@ namespace Dev2.Data.Util
                             //Name
                             string tag = ExtractFieldNameFromValue(tmpDef.Name);
 
-                            if(string.IsNullOrEmpty(tag))
+                            if (string.IsNullOrEmpty(tag))
                             {
                                 //Name
                                 tag = tmpDef.Name;
@@ -1342,12 +1354,12 @@ namespace Dev2.Data.Util
         public static string ExtractInputDefinitionsFromServiceDefinition(string serviceDefintion)
         {
             string result = string.Empty;
-            if(!string.IsNullOrEmpty(serviceDefintion))
+            if (!string.IsNullOrEmpty(serviceDefintion))
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(serviceDefintion);
                 var selectSingleNode = xDoc.SelectSingleNode("//Inputs");
-                if(selectSingleNode != null)
+                if (selectSingleNode != null)
                 {
                     result = selectSingleNode.OuterXml;
                 }
@@ -1364,12 +1376,12 @@ namespace Dev2.Data.Util
         public static string ExtractOutputDefinitionsFromServiceDefinition(string serviceDefintion)
         {
             string result = string.Empty;
-            if(!string.IsNullOrEmpty(serviceDefintion))
+            if (!string.IsNullOrEmpty(serviceDefintion))
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(serviceDefintion);
                 var selectSingleNode = xDoc.SelectSingleNode("//Outputs");
-                if(selectSingleNode != null)
+                if (selectSingleNode != null)
                 {
                     result = selectSingleNode.OuterXml;
                 }
@@ -1410,25 +1422,25 @@ namespace Dev2.Data.Util
         /// <exception cref="System.ArgumentNullException">target</exception>
         public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer, string tokenPrefix = null, string tokenSuffix = null, bool removeEmptyEntries = true)
         {
-            if(target == null)
+            if (target == null)
             {
                 throw new ArgumentNullException("target");
             }
 
             target.Clear();
 
-            if(tokenizer == null)
+            if (tokenizer == null)
             {
                 return;
             }
 
-     
-            while(tokenizer.HasMoreOps())
+
+            while (tokenizer.HasMoreOps())
             {
                 var token = tokenizer.NextToken();
-                if(string.IsNullOrEmpty(token))
+                if (string.IsNullOrEmpty(token))
                 {
-                    if(!removeEmptyEntries)
+                    if (!removeEmptyEntries)
                     {
                         target.Add(new ObservablePair<string, string>(string.Empty, string.Empty));
                     }
@@ -1441,7 +1453,7 @@ namespace Dev2.Data.Util
                 }
             }
 
-            foreach(var observablePair in target)
+            foreach (var observablePair in target)
             {
                 observablePair.Key = observablePair.Key.Replace(" ", "");
             }
@@ -1462,7 +1474,7 @@ namespace Dev2.Data.Util
                         foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                         {
                             var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
-                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0,false);
+                            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0, false);
                             if (warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 var recsetResult = warewolfEvalResult as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult;
@@ -1540,7 +1552,7 @@ namespace Dev2.Data.Util
             }
             return fullRecSetName;
         }
-        
+
         public static string ReplaceRecordsetBlankWithStar(string fullRecSetName)
         {
             var blankIndex = fullRecSetName.IndexOf("().", StringComparison.Ordinal);
@@ -1549,8 +1561,8 @@ namespace Dev2.Data.Util
                 return fullRecSetName.Replace("().", string.Format("({0}).", "*"));
             }
             return fullRecSetName;
-        } 
-        
+        }
+
         public static string ReplaceRecordBlankWithStar(string fullRecSetName)
         {
             var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
@@ -1605,6 +1617,7 @@ namespace Dev2.Data.Util
 
         public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList)
         {
+            // ReSharper disable once IntroduceOptionalParameters.Global
             return GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
         }
 
@@ -1719,7 +1732,7 @@ namespace Dev2.Data.Util
                                                                             false, "", false));
                             }
                         }
-    }
+                    }
                     else if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         // scalar value, make it as such

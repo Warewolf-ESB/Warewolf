@@ -6,22 +6,14 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Storage;
-using WarewolfParserInterop;
 
 namespace Dev2.Activities
 {
@@ -68,60 +60,6 @@ namespace Dev2.Activities
             _debugInputs.Add(debugItem);
 
             return _debugInputs;
-        }
-
-        protected void PushXmlIntoEnvironment(string input, int update, IDSFDataObject dataObj)
-        {
-            if (OutputDescription == null)
-            {
-                dataObj.Environment.AddError("There are no outputs");
-                return;
-            }
-            int i = 0;
-            foreach (var serviceOutputMapping in Outputs)
-            {
-                OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedFrom);
-                i++;
-            }
-            if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
-            {
-                dataObj.Environment.Assign(Outputs.First().MappedTo, input, update);
-                return;
-            }
-            var formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-            try
-            {
-                if (string.IsNullOrEmpty(input))
-                {
-                    dataObj.Environment.AddError("No Web Response received");
-                }
-                else
-                {
-                    input = formater.Format(input).ToString();
-
-                    string toLoad = DataListUtil.StripCrap(input); // clean up the rubish ;)
-                    XmlDocument xDoc = new XmlDocument();
-                    toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
-                    xDoc.LoadXml(toLoad);
-
-                    if (xDoc.DocumentElement != null)
-                    {
-                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                        IDictionary<string, int> indexCache = new Dictionary<string, int>();
-                        var outputDefs =
-                            Outputs.Select(
-                                a =>
-                                    new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true,
-                                        a.MappedTo) as IDev2Definition).ToList();
-                        TryConvert(children, outputDefs, indexCache, update, dataObj);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                dataObj.Environment.AddError(e.Message);
-                Dev2Logger.Error(e.Message, e);
-            }
         }
 
         public virtual HttpClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
@@ -199,7 +137,7 @@ namespace Dev2.Activities
                     var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                     return message;
                 }
-                HttpContent httpContent = new StringContent(putData,Encoding.UTF8);
+                HttpContent httpContent = new StringContent(putData, Encoding.UTF8);
                 var contentType = headerValues.FirstOrDefault(value => value.Name.ToLower() == "Content-Type".ToLower());
                 if (contentType != null)
                 {
@@ -214,83 +152,6 @@ namespace Dev2.Activities
                 return resultAsString;
             }
             return null;
-        }
-
-        void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level = 0)
-        {
-            // spin through each element in the XML
-            foreach (XmlNode c in children)
-            {
-                // scalars and recordset fetch
-                if (level > 0)
-                {
-                    var c1 = c;
-                    var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
-                    var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
-                    if (dev2Definitions.Length != 0)
-                    {
-                        // fetch recordset index
-                        int fetchIdx;
-                        var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
-                        // process recordset
-                        var nl = c.ChildNodes;
-                        foreach (XmlNode subc in nl)
-                        {
-                            // Extract column being mapped to ;)
-                            foreach (var definition in dev2Definitions)
-                            {
-                                if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
-                                {
-                                    dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
-                                }
-                            }
-                        }
-                        // update this recordset index
-                        dataObj.Environment.CommitAssign();
-                        indexCache[c.Name] = ++idx;
-                    }
-                    else
-                    {
-                        var nameToMatch = c1.Name;
-                        var useValue = false;
-                        if (c.Name == GlobalConstants.NaughtyTextNode)
-                        {
-                            if (c1.ParentNode != null)
-                            {
-                                nameToMatch = c1.ParentNode.Name;
-                                useValue = true;
-                            }
-                        }
-                        var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == nameToMatch);
-                        if (scalarName != null)
-                        {
-                            var value = UnescapeRawXml(c1.InnerXml);
-                            if (useValue)
-                            {
-                                value = UnescapeRawXml(c1.Value);
-                            }
-                            dataObj.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(scalarName.MapsTo), value), update);
-                        }
-                    }
-                }
-                else
-                {
-                    if (level == 0)
-                    {
-                        // Only recurse if we're at the first level!!
-                        TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
-                    }
-                }
-            }
-        }
-
-        string UnescapeRawXml(string innerXml)
-        {
-            if (innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
-            {
-                return new StringBuilder(innerXml).Unescape().ToString();
-            }
-            return innerXml;
         }
     }
 }

@@ -4,34 +4,28 @@
 	I want to be to view files available on a dropbox account
 
 
-Scenario: Open new Dropbox Tool
-	Given I open New Workflow
-	And I drag Read list Dropbox Tool onto the design surface
-    And Read New is Enabled
-	And Read Edit is Disabled
-	And Read Dropbox File is Enabled
-	When I Click Read New
-	Then the New Dropbox Source window is opened
+Scenario: Open new Read Dropbox Tool
+	Given I drag Readlist Dropbox Tool onto the design surface
+    And Readlist New is Enabled
+	And Readlist Edit is Disabled
+	And Readlist Dropbox File is Enabled
+	When I Click Readlist New
 	
-Scenario: Editing Dropbox Tool
-	Given I open New Workflow
-	And I drag Read list Dropbox Tool onto the design surface
-    And Read New is Enabled
-	And Read Edit is Disabled
-	And Read Dropbox File is Enabled
-	When I Select "Drop" as the Read source
-	Then Read Edit is Enabled
-	When I click "Edit"
-	Then the Dropbox Source window is opened
+Scenario: Editing Read Dropbox Tool
+	Given I drag Readlist Dropbox Tool onto the design surface
+    And Readlist New is Enabled
+	And Readlist Edit is Disabled
+	And Readlist Dropbox File is Enabled
+	When I Select "Drop" as the Readlist source
+	Then Readlist Edit is Enabled
+	When I Readlist click Edit
 
-@ignore
-Scenario: Change Dropbox Source
-	Given I open New Workflow
-	And I drag Read Dropbox Tool onto the design surface
-    And Read New is Enabled
-	And Read Edit is Disabled
-	When I Select "Drop" as the Read source
-	Then Read Edit is Enabled
-	And I set Read Dropbox File equals "Home.txt"
-	When I change Read source from "Drop" to "BackupSource"
-	And Read Dropbox File equals ""
+Scenario: Change Read Dropbox Source
+	Given I drag Readlist Dropbox Tool onto the design surface
+    And Readlist New is Enabled
+	And Readlist Edit is Disabled
+	When I Select "Drop" as the Readlist source
+	Then Readlist Edit is Enabled
+	And I set Readlist Dropbox File equals "Home.txt"
+	When I change Readlist source from "Drop" to "BackupSource"
+	And Readlist Dropbox File equals ""

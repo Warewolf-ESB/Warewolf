@@ -13,7 +13,6 @@ using System;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -29,10 +28,10 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/PluginSources/Get
         public PluginSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
-            var result = new PluginSource { ResourceID = Guid.Empty, ResourceType = ResourceType.PluginSource };
+            var result = new PluginSource { ResourceID = Guid.Empty, ResourceType = "PluginSource" };
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, resourceId);
+                var xmlStr = Resources.ReadXml(workspaceId, "PluginSource", resourceId);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);

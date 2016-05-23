@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -157,21 +158,14 @@ namespace Dev2.Activities.Designers2.Core
         {
             try
             {
-                _viewmodel.OutputsRegion.RecordsetName = string.Empty;
                 _viewmodel.OutputsRegion.Outputs.Clear();
-                if(_recordsetList != null)
+                if (OutputArea != null)
                 {
+                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(OutputArea.Outputs);
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
                     if (recSet != null)
                     {
                         _viewmodel.OutputsRegion.RecordsetName = recSet.Name;
-                    }
-                }
-                if (OutputArea != null)
-                {
-                    foreach (var serviceOutputMapping in OutputArea.Outputs)
-                    {
-                        _viewmodel.OutputsRegion.Outputs.Add(serviceOutputMapping);
                     }
                 }
                 else

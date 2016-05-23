@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Dev2.Common.Interfaces.Data;
 
 namespace Warewolf.Studio.Core
 {
@@ -19,11 +18,10 @@ namespace Warewolf.Studio.Core
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
-            ResourceType resourceType;
-            if (Enum.TryParse(value.ToString(), out resourceType))
+            if (value != null)
             {
-                if (resourceType != ResourceType.Folder)
+                string resourceType = value.ToString();
+                if (resourceType != "Folder")
                 {
                     return Visibility.Visible;
                 }

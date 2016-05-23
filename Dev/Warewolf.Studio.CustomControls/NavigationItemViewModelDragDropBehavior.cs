@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Infragistics.Controls.Menus;
@@ -162,7 +161,9 @@ namespace Warewolf.Studio.CustomControls
                             }
                             if(hasPermissionToDrag)
                             {
-                                if(dragSourceDataContext.ResourceType <= ResourceType.WebService)
+                                //if (dragSourceDataContext.ResourceType <= "WebService")
+                                // FIX?
+                                if (dragSourceDataContext.ResourceType.Contains("Service") && dragSourceDataContext.ResourceType != "ReservedService")
                                 {
                                     dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityName);
                                     dragData.SetData(dragSourceDataContext);

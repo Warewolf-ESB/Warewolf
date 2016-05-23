@@ -10,7 +10,6 @@
 */
 
 using System;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
@@ -85,7 +84,7 @@ namespace Dev2.Core.Tests
             var comFactory = new Mock<ICommunicationControllerFactory>();
             var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
             var com = new Mock<ICommunicationController>();
-            var item = new ServerExplorerItem("", Guid.Empty, ResourceType.DbService, null, Permissions.Contribute, "f", "", "");
+            var item = new ServerExplorerItem("", Guid.Empty, "DbService", null, Permissions.Contribute, "f", "", "");
             comFactory.Setup(a => a.CreateController("AddFolderService")).Returns(com.Object).Verifiable();
             com.Setup(a => a.ExecuteCommand<IExplorerItem>(env.Object, Guid.Empty)).Returns(item).Verifiable();
 
@@ -110,7 +109,7 @@ namespace Dev2.Core.Tests
             var comFactory = new Mock<ICommunicationControllerFactory>();
             var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
             var com = new Mock<ICommunicationController>();
-            var item = new ServerExplorerItem("", Guid.Empty, ResourceType.DbService, null, Permissions.Contribute, "f", "", "");
+            var item = new ServerExplorerItem("", Guid.Empty, "DbService.", null, Permissions.Contribute, "f", "", "");
             comFactory.Setup(a => a.CreateController("RenameItemService")).Returns(com.Object).Verifiable();
             com.Setup(a => a.ExecuteCommand<IExplorerItem>(env.Object, Guid.Empty)).Returns(item).Verifiable();
 
@@ -137,7 +136,7 @@ namespace Dev2.Core.Tests
             var comFactory = new Mock<ICommunicationControllerFactory>();
             var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
             var com = new Mock<ICommunicationController>();
-            var item = new ServerExplorerItem("", Guid.Empty, ResourceType.DbService, null, Permissions.Contribute, "f", "", "");
+            var item = new ServerExplorerItem("", Guid.Empty, "DbService", null, Permissions.Contribute, "f", "", "");
             comFactory.Setup(a => a.CreateController("MoveItemService")).Returns(com.Object).Verifiable();
             com.Setup(a => a.ExecuteCommand<IExplorerItem>(env.Object, Guid.Empty)).Returns(item).Verifiable();
 
@@ -209,7 +208,7 @@ namespace Dev2.Core.Tests
             var comFactory = new Mock<ICommunicationControllerFactory>();
             var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
             var com = new Mock<ICommunicationController>();
-            var item = new ServerExplorerItem("", Guid.Empty, ResourceType.DbService, null, Permissions.Contribute, "f", "", "");
+            var item = new ServerExplorerItem("", Guid.Empty, "DbService", null, Permissions.Contribute, "f", "", "");
             comFactory.Setup(a => a.CreateController("DeleteItemService")).Returns(com.Object).Verifiable();
             com.Setup(a => a.ExecuteCommand<IExplorerItem>(env.Object, Guid.Empty)).Returns(item).Verifiable();
 

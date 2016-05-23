@@ -71,7 +71,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         //Juries - Removed, instead implement a collection changed handler, to only scroll to end when new items are added.
         void TreeviewScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            //This means the user has manipulated it and we dont want to scroll to end anymore
+            //This means the user has manipulated it and we don't want to scroll to end anymore
             if (_hasUserScrolled || AssociatedObject.SelectedItem != null)
             {
                 return;

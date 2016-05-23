@@ -355,11 +355,6 @@
     <Compile Include="Help\HelpControl.xaml.cs">
       <DependentUpon>HelpControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Help\HelpTextResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HelpTextResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="IApp.cs" />
     <Compile Include="CustomControls\Progress\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
@@ -435,12 +430,10 @@
       <DependentUpon>ReportsViewerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\DropBox2016\CookieHelper.cs" />
     <Compile Include="Views\DropBox2016\DropBoxHelper.cs" />
     <Compile Include="Views\DropBox2016\DropBoxSource.xaml.cs">
       <DependentUpon>DropBoxSource.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DropBox2016\DropBoxSourceViewModel.cs" />
     <Compile Include="Views\DropBox2016\IDropBoxHelper.cs" />
     <Compile Include="Views\Explorer\DragDropExtension.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
@@ -473,7 +466,6 @@
       <SubType>Code</SubType>
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Webs\Callbacks\DropBoxSourceSourceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\NetworkHelper.cs" />
     <Compile Include="Webs\Callbacks\ShowDependencyProvider.cs" />
@@ -779,11 +771,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -806,16 +793,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="Help\HelpTextResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1056,6 +1033,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>
       xcopy /Y /Q /R "$(TargetPath)" "C:\Development\DEV2 Studio Tests\BusinessDesignStudio.Unit.Tests\BusinessDesignStudio.Unit.Tests\Test References”

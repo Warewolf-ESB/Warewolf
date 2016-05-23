@@ -12,7 +12,6 @@
 using System;
 using System.Linq;
 using System.Windows;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Models;
 using Dev2.Studio.Core;
@@ -40,7 +39,7 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
             var formats = dataObject.GetFormats();
-            //If we didnt attach any data for the format - dont allow
+            //If we didnt attach any data for the format - don't allow
             if(!formats.Any())
             {
                 return false;
@@ -85,16 +84,16 @@ namespace Dev2.Studio.Views.Workflow
                 ExplorerItemModel explorerItemModel = objectData as ExplorerItemModel;
                 if(explorerItemModel != null)
                 {
-                    if(workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && explorerItemModel.ResourceType >= ResourceType.DbService)
+                    if(workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !explorerItemModel.IsService)
                     {
                         return true;
                     }
-                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.ResourceType == ResourceType.WorkflowService)
+                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.IsService)
                     {
                         //CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                         return true;
                     }
-                    if(explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.ResourceType <= ResourceType.WebService)
+                    if (explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.IsService && !explorerItemModel.IsSource)
                     {
                         return false;
                     }
@@ -104,18 +103,18 @@ namespace Dev2.Studio.Views.Workflow
                     var explorerItemViewModel = objectData as ExplorerItemViewModel;
                     if (explorerItemViewModel != null)
                     {
-                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && explorerItemViewModel.ResourceType >= ResourceType.DbService)
+                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
                         {
                             return true;
                         }
-                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.ResourceType == ResourceType.WorkflowService)
+                        if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.IsService)
                         {
                             //CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false);
                             return true;
                         }
                         var env = EnvironmentRepository.Instance.FindSingle(model => model.ID == explorerItemViewModel.Server.EnvironmentID);
                         var perms = env.AuthorizationService.GetResourcePermissions(explorerItemViewModel.ResourceId);
-                        if (perms >= Permissions.Execute && explorerItemViewModel.ResourceType <= ResourceType.WebService)
+                        if (perms >= Permissions.Execute && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
                         {
                             return false;
                         }

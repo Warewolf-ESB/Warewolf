@@ -3,22 +3,21 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using Dev2.Common.Interfaces.Data;
 using FontAwesome.WPF;
 
 namespace Warewolf.Studio.Core
 {
     public class ResourceTypeToIconConverter : IValueConverter
     {
-        ResourceDictionary _dict;
-        SolidColorBrush _brush;
+        readonly ResourceDictionary _dict;
+        readonly SolidColorBrush _brush;
 
         #region Implementation of IValueConverter
 
         public ResourceTypeToIconConverter()
         {
-            const string pathname = "/Warewolf.Studio.Themes.Luna;component/Images.xaml";
-            _dict = Application.LoadComponent(new Uri(pathname, System.UriKind.Relative)) as ResourceDictionary;
+            const string Pathname = "/Warewolf.Studio.Themes.Luna;component/Images.xaml";
+            _dict = Application.LoadComponent(new Uri(Pathname, UriKind.Relative)) as ResourceDictionary;
             
             _brush = new SolidColorBrush(Color.FromArgb(255, 51, 51, 51));
         }
@@ -32,48 +31,58 @@ namespace Warewolf.Studio.Core
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ResourceType resourceType;
-         
-            if (value != null && Enum.TryParse(value.ToString(), out resourceType))
+            if (value != null)
             {
-                switch (resourceType)
+                switch (value.ToString())
                 {
-                    case ResourceType.WorkflowService:
+                    case "WorkflowService":
                         return _dict[CustomMenuIcons.WorkflowService] as DrawingImage;
-                    case ResourceType.DbService:
+                    case "DbService":
                         return _dict[CustomMenuIcons.DbService] as DrawingImage;
-                    case ResourceType.PluginSource:
-                        return _dict[CustomMenuIcons.PluginSource] as DrawingImage;
-                    case ResourceType.EmailSource:
-                        return _dict[CustomMenuIcons.EmailSource] as DrawingImage;
-                    case ResourceType.ExchangeSource:
-                        return _dict[CustomMenuIcons.ExchangeSource] as DrawingImage;
-                    case ResourceType.WebService:
+                    case "WebService":
                         return _dict[CustomMenuIcons.WebService] as DrawingImage;
-                    case ResourceType.DbSource:
-                        return _dict[CustomMenuIcons.DbSource] as DrawingImage;
-                    case ResourceType.PluginService:
+                    case "PluginService":
                         return _dict[CustomMenuIcons.PluginService] as DrawingImage;
-                    case ResourceType.WebSource:
+
+                    case "PluginSource":
+                        return _dict[CustomMenuIcons.PluginSource] as DrawingImage;
+                    case "EmailSource":
+                        return _dict[CustomMenuIcons.EmailSource] as DrawingImage;
+                    case "ExchangeSource":
+                        return _dict[CustomMenuIcons.ExchangeSource] as DrawingImage;
+                    case "SqlDatabase":
+                        return _dict["MicrosoftSQLSource"] as DrawingImage;
+                    case "DbSource":
+                    case "Oracle":
+                    case "MySqlDatabase":
+                        return _dict[CustomMenuIcons.DbSource] as DrawingImage;
+                    case "PostgreSql":
+                        return _dict["PostgreSource"] as DrawingImage;
+                    case "ODBC":
+                        return _dict["OdbcSource"] as DrawingImage;
+                    case "WebSource":
                         return _dict[CustomMenuIcons.WebSource] as DrawingImage;
-                    case ResourceType.SharepointServerSource:
-                        return Application.Current.Resources["AddSharepointBlackLogo"];
-                    case ResourceType.ServerSource:
+                    case "SharepointServerSource":
+                        return Application.Current.Resources["SharepointSource"];
+                    case "ServerSource":
                         return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
-                    case ResourceType.Server:
-                        return _dict[CustomMenuIcons.Server] as DrawingImage;
-                    case ResourceType.StartPage:
+                    case "Server":
+                    case "Dev2Server":
+                        return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
+                    case "StartPage":
                         var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Home, _brush);
                         return imageSource;
-                    case ResourceType.OauthSource:
+                    case "OAuth":
+                    case "OauthSource":
+                    case "DropBoxSource":
                         return Application.Current.Resources["DropboxSource"];
-                    case ResourceType.Scheduler:
+                    case "Scheduler":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
-                    case ResourceType.Settings:
+                    case "Settings":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
-                    case ResourceType.DependencyViewer:
+                    case "DependencyViewer":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Sitemap, _brush);
-                    case ResourceType.DeployViewer:
+                    case "DeployViewer":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.PaperPlane, _brush);
                     default:
                         return _dict[CustomMenuIcons.Folder] as DrawingImage;

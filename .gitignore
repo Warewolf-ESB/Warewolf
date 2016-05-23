@@ -37,6 +37,6 @@ bin
 /Dev/TestResults/**
 /TestResults/**
 .sonarqube
-/Dev/Dev2.Activities.Specs/Composition/WorkflowExecution.feature.cs
-/Dev/Dev2.Activities.Specs/Composition
 /TestScripts/FullVersionString
+/Dev/AcceptanceTesting.sln.DotSettings
+/Dev/Warewolf.ToolsSpecs/Toolbox/LoopConstructs/ForEach/ForEach1.feature.cs
