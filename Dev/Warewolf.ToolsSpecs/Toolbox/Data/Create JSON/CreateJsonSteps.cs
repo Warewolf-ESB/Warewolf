@@ -42,7 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Create_JSON
             ScenarioContext.Current.Add("result", result);
         }
 
-        [Then(@"the value of ""(.*)"" should be '(.*)'")]
+        [Then(@"the value of ""(.*)"" should be ""(.*)""")]
         public void ThenTheValueOfShouldBe(string resultVariable, string expectedResult)
         {
             string error;

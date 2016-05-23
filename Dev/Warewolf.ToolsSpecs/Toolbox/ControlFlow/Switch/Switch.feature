@@ -35,7 +35,6 @@ Examples:
 | [[rec(*).a]] | 3   | [[rec(*).a]] = 3 |
 
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Ensure that an object evaluates to the value on the datalist
 	Given I need to switch on variable "<object>" with the value "<val>"		

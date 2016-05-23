@@ -60,21 +60,23 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             ScenarioContext.Current.Add("viewModel", viewModel);
             ScenarioContext.Current.Add("mockEnvironmentModel", mockEnvironmentModel);
             ScenarioContext.Current.Add("eventAggrMock", mockEventAggregator);
-
         }
 
         private static DropBoxFileListDesignerViewModel GetViewModel()
         {
             return ScenarioContext.Current.Get<DropBoxFileListDesignerViewModel>("viewModel");
         }
+
         private static Mock<IEnvironmentModel> GeEnvrionmentModel()
         {
             return ScenarioContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
         }
+
         private Mock<IEventAggregator> GetEventAggregator()
         {
             return ScenarioContext.Current.Get<Mock<IEventAggregator>>("eventAggrMock");
         }
+
         [Given(@"Readlist New is Enabled")]
         public void GivenReadNewIsEnabled()
         {
@@ -92,7 +94,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Given(@"Readlist Dropbox File is Enabled")]
         public void GivenReadDropboxFileIsEnabled()
         {
-            //Textbox control not available here
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
         [When(@"I Click Readlist New")]
@@ -100,6 +102,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             GetViewModel().NewSourceCommand.Execute(null);
         }
+
         [When(@"I Readlist click Edit")]
         public void WhenIReadlistClickEdit()
         {
@@ -173,6 +176,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             Assert.AreEqual(dropBoxFile, GetViewModel().ToPath);
         }
+
         [Then(@"I set Readlist Dropbox File equals ""(.*)""")]
         public void ThenISetDropboxFileEquals(string dropboxPath)
         {

@@ -5,16 +5,16 @@ Feature: Move
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
 	
 Scenario Outline: Move file at location
-	Given I have a source path '<source>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
     When the Move file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
@@ -57,14 +57,14 @@ Scenario Outline: Move file at location
 
 
 Scenario Outline: Move file at location Null
-	Given I have a source path '<source>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
     When the Move file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
@@ -76,17 +76,16 @@ Scenario Outline: Move file at location Null
 	   | 5  | Local to FTPS  | [[sourcePath]] | v:\movefile2.txt                                             | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved0.txt | integrationtester | I73573r0     | True     | [[result]] | Failure | AN           |                      |                           |
 	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                          | ""       | ""       | [[destPath]] | sftp://localhost/moved0.txt                      | dev2              | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
 	 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Move file at location using complex types
-	Given I have a source path '<source>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And result as "<resultVar>"
     When the Move file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
@@ -102,24 +101,24 @@ Scenario Outline: Move file at location using complex types
 
 
 #cenario Outline: Move file Validation
-#   Given I have a variable "[[a]]" with a value '<Val1>'
-#	Given I have a variable "[[b]]" with a value '<Val2>'
-#	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-#	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+#   Given I have a variable "[[a]]" with a value "<Val1>"
+#	Given I have a variable "[[b]]" with a value "<Val2>"
+#	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+#	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 #	Given I have a variable "[[index]]" with a value "1"
-#	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
-#	And source credentials as '<username>' and '<password>'
-#	And I have a destination path '<destination>' with value '<destinationLocation>'
-#   And destination credentials as '<destUsername>' and '<destPassword>'
-#	And overwrite is '<selected>'
-#	And result as '<resultVar>'
+#	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+#	And source credentials as "<username>" and "<password>"
+#	And I have a destination path "<destination>" with value "<destinationLocation>"
+#   And destination credentials as "<destUsername>" and "<destPassword>"
+#	And overwrite is "<selected>"
+#	And result as "<resultVar>"
 #	When validating the tool
-#	Then validation is '<ValidationResult>'
-#	And validation message is '<DesignValidation>'
+#	Then validation is "<ValidationResult>"
+#	And validation message is "<DesignValidation>"
 #   When the Move file tool is executed
-#	Then the result variable '<resultVar>' will be '<result>'
+#	Then the result variable "<resultVar>" will be "<result>"
 #	And the execution has "<errorOccured>" error
-#	And execution error message will be '<DesignValidation>'
+#	And execution error message will be "<DesignValidation>"
 #	And the debug inputs as
 #       | Source Path                         | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
 #       | <File or FOlder> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |
@@ -171,7 +170,7 @@ Scenario Outline: Move file at location using complex types
 #		| 41 | [[sourcePath]]                 |                   |                 | c:\movefile40.txt | ""                    | ""       | c:\copyfile0.txt               | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | Success | NO           | False            | ""                                                                            | ""                                                                              |
 #		| 42 | [[a&]]                         |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | File or Folder - Variable name [[a&]] contains invalid character(s)           | 1.File or Folder - Variable name [[a&]] contains invalid character(s)           |
 #		| 43 | [[rec(**).a]]                  |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | File or Folder - Recordset index (**) contains invalid character(s)           | 1.File or Folder - Recordset index (**) contains invalid character(s)           |
-#		| 44 | [[a]                           |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don't match | 1.File or Folder - Invalid expression: opening and closing brackets don't match |
+#		| 44 | [[a]                           |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don"t match | 1.File or Folder - Invalid expression: opening and closing brackets don"t match |
 #		| 45 | [[rec(a]]                      |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | File or Folder - Recordset name [[rec(a]] contains invalid character(s)       | 1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)       |
 #		| 46 | c(*()                          |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Please supply a valid File or Folder                                          | 1.Please supply a valid File or Folder                                          |
 #		| 47 | [[rec([[inde$x]]).a]]          |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | File or Folder - Variable name [[inde$x]]  contains invalid character(s)      | 1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)      |
@@ -179,7 +178,7 @@ Scenario Outline: Move file at location using complex types
 #		| 49 | ""                             |                   |                 |                   | ""                    | ""       | [[destPath]]                   | fC:\moved0.txt      | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | File or Folder cannot be empty or only white space                            | 1.File or Folder cannot be empty or only white space                            |
 #		| 50 | [[sourcePath]]                 |                   |                 | c:\copyfile41.txt | ""                    | ""       | [[a&]]                         | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Destination - Variable name [[a&]] contains invalid character(s)              | 1.Destination - Variable name [[a&]] contains invalid character(s)              |
 #		| 51 | [[sourcePath]]                 |                   |                 | c:\copyfile42.txt | ""                    | ""       | [[rec(**).a]]                  | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Destination - Recordset index (**) contains invalid character(s)              | 1.Destination - Recordset index (**) contains invalid character(s)              |
-#		| 52 | [[sourcePath]]                 |                   |                 | c:\copyfile43.txt | ""                    | ""       | [[a]                           | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Destination - Invalid expression: opening and closing brackets don't match    | 1.Destination - Invalid expression: opening and closing brackets don't match    |
+#		| 52 | [[sourcePath]]                 |                   |                 | c:\copyfile43.txt | ""                    | ""       | [[a]                           | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Destination - Invalid expression: opening and closing brackets don"t match    | 1.Destination - Invalid expression: opening and closing brackets don"t match    |
 #		| 53 | [[sourcePath]]                 |                   |                 | c:\copyfile44.txt | ""                    | ""       | [[rec(a]]                      | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Destination - Recordset name [[rec(a]] contains invalid character(s)          | 1.Destination - Recordset name [[rec(a]] contains invalid character(s)          |
 #		| 54 | [[sourcePath]]                 |                   |                 | c:\copyfile45.txt | ""                    | ""       | c(*()                          | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Please supply a valid File or Folder                                          | 1.Please supply a valid File or Folder                                          |
 #		| 55 | [[sourcePath]]                 |                   |                 | c:\copyfile46.txt | ""                    | ""       | [[rec([[inde$x]]).a]]          | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Destination - Variable name [[inde$x]]  contains invalid character(s)         | 1.Destination - Variable name [[inde$x]]  contains invalid character(s)         |
@@ -187,7 +186,7 @@ Scenario Outline: Move file at location using complex types
 #		| 57 | [[sourcePath]]                 |                   |                 | c:\copyfile48.txt | ""                    | ""       | ""                             | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Destination cannot be empty or only white space                               | 1.Destination cannot be empty or only white space                               |
 #		| 58 | [[sourcePath]]                 |                   |                 | c:\copyfile49.txt | [[a&]]                | String   | [[destPath]]                   | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Username - Variable name [[a&]] contains invalid character(s)                 | 1.Username - Variable name [[a&]] contains invalid character(s)                 |
 #		| 59 | [[sourcePath]]                 |                   |                 | c:\copyfile50.txt | [[rec(**).a]]         | String   | [[destPath]]                   | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Username - Recordset index (**) contains invalid character(s)                 | 1.Username - Recordset index (**) contains invalid character(s)                 |
-#		| 60 | [[sourcePath]]                 |                   |                 | c:\copyfile51.txt | [[a]                  | String   | [[destPath]]                   | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don't match       | 1.Username - Invalid expression: opening and closing brackets don't match       |
+#		| 60 | [[sourcePath]]                 |                   |                 | c:\copyfile51.txt | [[a]                  | String   | [[destPath]]                   | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match       | 1.Username - Invalid expression: opening and closing brackets don"t match       |
 #		| 61 | [[sourcePath]]                 |                   |                 | c:\copyfile52.txt | [[rec(a]]             | String   | [[destPath]]                   | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Username - Recordset name [[rec(a]] contains invalid character(s)             | 1.Username - Recordset name [[rec(a]] contains invalid character(s)             |
 #		| 62 | [[sourcePath]]                 |                   |                 | c:\copyfile53.txt | [[rec([[inde$x]]).a]] | String   | [[destPath]]                   | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Username - Variable name [[inde$x]]  contains invalid character(s)            | 1.Username - Variable name [[inde$x]]  contains invalid character(s)            |
 #		| 63 | [[sourcePath]]                 |                   |                 | c:\copyfile54.txt |                       | String   | [[destPath]]                   | C:\moved0.txt       | integrationtester | I73573r0     | True     | [[result]] | ""      | AN           | True             | Username cannot be empty or only white space                                  | 1.Username cannot be empty or only white space                                  |

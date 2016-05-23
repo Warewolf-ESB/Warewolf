@@ -6,7 +6,6 @@
 # layout of tool not ready
 
 Scenario: Open new Web Tool
-	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	And Post Edit is Disabled
@@ -15,7 +14,7 @@ Scenario: Open new Web Tool
 	And  Post Header appears as
 	| Header | Value |
 	And Post Edit is Enabled
-	And  Post Body is Enabled 
+	And Post Body is Enabled 
 	And Post Url is Visible
 	And Post Query is Enabled
 	And Post Generate Outputs is Enabled
@@ -23,7 +22,6 @@ Scenario: Open new Web Tool
 	| Output | Output Alias |
 
 Scenario: Create Web Service with different methods
-	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	And Post Edit is Disabled
@@ -31,27 +29,26 @@ Scenario: Create Web Service with different methods
 	Then Post Header is Enabled
 	And  Post Header appears as
 	| Header | Value |
-	And Body is Enabled 
+	And Post Body is Enabled
 	And Post Url is Visible
 	And Post Edit is Enabled
 	And Post Query is Enabled
 	And Post Generate Outputs is Enabled
 	When I click Post Generate Outputs
-	Then the Post Generate Outputs window is shown
+	Then Post the Generate Outputs window is shown
 	And Post Variables are Enabled
 	When Post Test Inputs is Successful
 	Then Post the response is loaded
 	When I click Post Done
 	Then Post Mapping is Enabled
-	And mapped outputs are
+	And Post mapped outputs are
 	| Output      | Output Alias    |
 	| CountryID   | [[CountryID]]   |
 	| Description | [[Description]] |
 	
 
 
-Scenario: Adding parameters in request headers is updating variables 
-	Given I open New Workflow
+Scenario: Adding parameters in request headers is updating variables
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	When I Select "Dev2CountriesWebService" as a Post web Source
@@ -77,13 +74,12 @@ Scenario: Adding parameters in request headers is updating variables
 	When Post Test Inputs is Successful
 	And I click Post Done
 	Then Post Mapping is Enabled
-    And mapped outputs are
+    And Post mapped outputs are
 	| Output      | Output Alias    |
 	| CountryID   | [[CountryID]]   |
 	| Description | [[Description]] |
 
  Scenario: Editing Web Service
-	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	When I Select "Dev2CountriesWebService" as a Post web Source
@@ -92,8 +88,7 @@ Scenario: Adding parameters in request headers is updating variables
 	When I click Post Edit
 	Then the "Dev2CountriesWebService" Post Source tab is opened
 
-Scenario: Changing Sources 
-	Given I open New Workflow
+Scenario: Changing Sources
 	And I drag Web Post Request Connector Tool onto the design surface
     And Post New is Enabled
 	When I Select "WebHeloo" as a Post web Source
@@ -121,23 +116,20 @@ Scenario: Changing Sources
 	And Post Mappings is Disabled
 
 
-
 #wolf-1034 re-opened worked as a connector not as a tool
-@ignore
 Scenario: Web Connector Tool returns text
-	Given I open New Workflow
 	And I drag Web Post Request Connector Tool onto the design surface
     And New is Enabled
 	And Edit is Enabled
-	When I Select "TestingReturnText" as a web Source
-	Then Header is Enabled
-	And  Url is Visible 
-	And Generate Outputs is Enabled
-	And I click Generate Outputs
-	Then the Generate Outputs window is shown
-	When Test Inputs is Successful
-	And I click Done
-	Then Mapping is Enabled
-	And mapped outputs are
+	When I Select "TestingReturnText" as a Post web Source
+	Then Post Header is Enabled
+	And Post Url is Visible 
+	And Post Generate Outputs is Enabled
+	And I click Post Generate Outputs
+	Then Post the Generate Outputs window is shown
+	When Post Test Inputs is Successful
+	And I click Post Done
+	Then Post Mapping is Enabled
+	And Post mapped outputs are
 	| Output   | Output Alias |
 	| Response | Response     |
