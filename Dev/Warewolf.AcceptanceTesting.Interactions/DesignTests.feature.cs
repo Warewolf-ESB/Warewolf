@@ -852,33 +852,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 256
    testRunner.Then("debug output is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 257
-   testRunner.When(string.Format("I select \'{0}\'", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When(string.Format("I select \"{0}\"", select), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 258
-   testRunner.Then(string.Format("\"Assign\" on design is \'{0}\'", assign), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Assign\" on design is \"{0}\"", assign), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 259
-   testRunner.Then(string.Format("\"Base Conversion\" on design is \'{0}\'", baseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Base Conversion\" on design is \"{0}\"", baseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 260
-   testRunner.Then(string.Format("\"Case Conversion\" on design is \'{0}\'", caseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Case Conversion\" on design is \"{0}\"", caseConversion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 261
-   testRunner.Then(string.Format("\"Data Merge\" on design is \'{0}\'", dataMerge), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Data Merge\" on design is \"{0}\"", dataMerge), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 262
-   testRunner.Then(string.Format("\"Data Split\" on design is \'{0}\'", dataSplit), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Data Split\" on design is \"{0}\"", dataSplit), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 263
-   testRunner.Then(string.Format("\"Find Index\" on design is \'{0}\'", findIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Find Index\" on design is \"{0}\"", findIndex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 264
-   testRunner.Then(string.Format("\"Replace\" on design is \'{0}\'", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Replace\" on design is \"{0}\"", replace), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 265
-   testRunner.Then(string.Format("\"Unique\" on design is \'{0}\'", unique), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Unique\" on design is \"{0}\"", unique), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 266
-   testRunner.Then(string.Format("\"Sort\" on design is \'{0}\'", sort), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Sort\" on design is \"{0}\"", sort), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 267
-   testRunner.Then(string.Format("\"Testsrv\" on design is \'{0}\'", testsrv), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Testsrv\" on design is \"{0}\"", testsrv), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 268
-   testRunner.Then(string.Format("\"Workflow\" on design is \'{0}\'", workflow), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Workflow\" on design is \"{0}\"", workflow), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 269
-   testRunner.Then(string.Format("\"Webservice\" on design is \'{0}\'", webservice), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"Webservice\" on design is \"{0}\"", webservice), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 270
-   testRunner.Then(string.Format("\"RemoteWorkflow\" on design is \'{0}\'", remoteWorkflow), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then(string.Format("\"RemoteWorkflow\" on design is \"{0}\"", remoteWorkflow), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

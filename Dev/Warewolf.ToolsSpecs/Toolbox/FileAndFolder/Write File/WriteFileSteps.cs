@@ -23,13 +23,13 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
     [Binding]
     public class WriteFileSteps : FileToolsBase
     {
-        [Given(@"Method is '(.*)'")]
+        [Given(@"Method is ""(.*)""")]
         public void GivenMethodIs(string method)
         {
             ScenarioContext.Current.Add("method", method);
         }
 
-        [Given(@"input contents as '(.*)'")]
+        [Given(@"input contents as ""(.*)""")]
         public void GivenInputContentsAs(string content)
         {
             ScenarioContext.Current.Add("content", content);
@@ -43,7 +43,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
             ScenarioContext.Current.Add("result", result);
         }
 
-        [Given(@"the input contents from a file '(.*)'")]
+        [Given(@"the input contents from a file ""(.*)""")]
         public void GivenTheInputContentsFromAFile(string fileName)
         {
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
@@ -52,7 +52,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File
             ScenarioContext.Current.Add("content", content);
         }
 
-        [Then(@"the output contents from a file '(.*)'")]
+        [Then(@"the output contents from a file ""(.*)""")]
         public void ThenTheOutputContentsFromAFile(string fileName)
         {
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",

@@ -106,6 +106,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             ScenarioContext.Current.Add("fieldsToSearch", fieldToSearch);
         }
 
+        [Given(@"the fields to search is ""(.*)""")]
         [Given(@"field to search is ""(.*)""")]
         public void GivenFieldToSearchIs(string fieldToSearch)
         {
@@ -244,6 +245,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                     Assert.AreEqual(expectedResult, actualValue);
                 }
             }
+        }
+
+        [Given(@"I have the following in field ""(.*)"" equals ""(.*)""")]
+        public void GivenIHaveTheFollowingInFieldEquals(string p0, string p1)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
     }
 }

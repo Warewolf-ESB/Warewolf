@@ -68,10 +68,10 @@ Scenario: Execute cmd with negative recordset index
 	| [[result]] = |
 
 Scenario Outline: Execute a command that requires recordsets
-	Given I have this command script to execute '<variable>' with '<val>'
+	Given I have this command script to execute "<variable>" with "<val>"
 	When the command tool is executed
-	Then the '<resultVariable>' of the command tool will be '<Result>'
-	And the execution has '<Error>' error
+	Then the result of the command tool will be "<Result>"
+	And the execution has "<Error>" error
 	And the debug inputs as  
 	| variable   | Command |
 	| <variable> | <val>   |  
@@ -84,17 +84,16 @@ Scenario Outline: Execute a command that requires recordsets
 	| [[rec(*).set]]                    | Echo Press any key | [[rj(1).a]]                  | Press any key                                                                             | No    |
 	| [[rec([[int]]).set]], [[int]] = 1 | Echo a message     | [[rj(*).a]]                  | a message                                                                                 | No    |
 	| [[rec(1).set]]                    | Echo a message     | [[rj([[int]]).a]],[[int]] =3 | a message                                                                                 | No    |
-	| [[var]]                           | 444                | [[rj([[int]]).a]],[[int]] =3 | '444' is not recognized as an internal or external command,operable program or batch file | An    |
+	| [[var]]                           | 444                | [[rj([[int]]).a]],[[int]] =3 | "444" is not recognized as an internal or external command,operable program or batch file | An    |
 	| [[v]]                             |                    | [[int]]                      | Empty script to execute                                                                   | An    |
 
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Execute a command that requires complex types
-	Given I have this command script to execute '<object>' with '<val>'
+	Given I have this command script to execute "<object>" with "<val>"
 	When the command tool is executed
-	Then the '<resultVariable>' of the command tool will be '<Result>'
-	And the execution has '<Error>' error
+	Then the result of the command tool will be "<Result>"
+	And the execution has "<Error>" error
 	And the debug inputs as  
 	| object   | Command |
 	| <object> | <val>   |  

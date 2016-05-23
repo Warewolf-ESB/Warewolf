@@ -24,14 +24,6 @@ namespace Warewolf.AcceptanceTesting.Deploy
     [Binding]
     public class DeployTabSteps
     {
-
-
-        [Given(@"I have deploy tab opened")]
-        public void GivenIHaveDeployTabOpened()
-        {
-
-        }
-
         [BeforeFeature("DeployTab")]
         public static void SetupForSystem()
         {
@@ -47,12 +39,6 @@ namespace Warewolf.AcceptanceTesting.Deploy
             var view = new DeployView { DataContext = vm };
             FeatureContext.Current["View"] = view;
             Core.Utils.ShowTheViewForTesting(view);
-            
-        }
-
-        [BeforeScenario]
-        public void Setup()
-        {
         }
 
         [AfterScenario]
@@ -92,7 +78,9 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             return new DeployStatsViewerViewModel(dest);
         }
+
         static bool _deployed;
+
         static Microsoft.Practices.Prism.PubSubEvents.IEventAggregator GetMockAggegator()
         {
             return new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object;
@@ -201,10 +189,12 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             Assert.IsTrue(GetView().SelectedServer.DisplayName.ToLower().Equals(p0.ToLower()));
         }
+
         DeployView GetView()
         {
             return (DeployView)FeatureContext.Current["View"];
         }
+
         static Mock<IPopupController> GetPopupFromContext()
         {
             return (Mock<IPopupController>)FeatureContext.Current["Popup"];
@@ -227,12 +217,12 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             GetView().SelectDestinationServer(d);
         }
+
         [Given(@"selected Destination Server is ""(.*)""")]
         public void GivenSelectedDestinationServerIs(string d)
         {
             Assert.IsTrue(GetView().SelectedDestinationServer.DisplayName.ToLower().Equals(d.ToLower()));
         }
-
 
         [Then(@"the validation message is ""(.*)""")]
         public void ThenTheValidationMessageIs(string message)
@@ -248,6 +238,7 @@ namespace Warewolf.AcceptanceTesting.Deploy
             Assert.AreEqual(p1, GetView().CanDeploy);
 
         }
+
         [When(@"I Select All Dependecies")]
         public void WhenISelectAllDependecies()
         {
@@ -267,7 +258,6 @@ namespace Warewolf.AcceptanceTesting.Deploy
         {
             GetView().SelectPath(p0);
         }
-
 
         [When(@"I check ""(.*)"" on Source Server")]
         public void WhenICheckOnSourceServer(string p0)
@@ -321,7 +311,6 @@ namespace Warewolf.AcceptanceTesting.Deploy
             GetView().ConnectDestinationServer();
         }
 
-
         [Given(@"I deploy")]
         [When(@"I deploy")]
         [Then(@"I deploy")]
@@ -342,7 +331,6 @@ namespace Warewolf.AcceptanceTesting.Deploy
             Assert.IsFalse(_deployed);
         }
 
-
         [Then(@"Resource exists in the destination server popup is shown")]
         public void ThenResourceExistsInTheDestinationServerPopupIsShown(Table table)
         {
@@ -355,7 +343,6 @@ namespace Warewolf.AcceptanceTesting.Deploy
                 Assert.IsTrue(exists,conflictItem.DestinationName+" failed");
             }
         }
-
 
         [Given(@"I cannot deploy to destination")]
         public void GivenICannotDeployToDestination()
@@ -390,29 +377,25 @@ namespace Warewolf.AcceptanceTesting.Deploy
                     ResourceID = Guid.Empty
                 }
             };
-//            var sourceServer = FeatureContext.Current.Get<Mock<IServer>>("localhost");
-//            sourceServer.Setup(server => server.Permissions).Returns();
         }
-
 
         [When(@"I click Cancel on Resource exists in the destination server popup")]
         public void WhenIClickCancelOnResourceExistsInTheDestinationServerPopup()
         {
             GetPopupFromContext().Setup(a => a.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.Cancel);
         }
+
         [When(@"I click OK on Resource exists in the destination server popup")]
         public void WhenIClickOKOnResourceExistsInTheDestinationServerPopup()
         {
             GetPopupFromContext().Setup(a => a.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.OK);
         }
+
         [Then(@"the User is prompted to ""(.*)"" one of the resources")]
         public void ThenTheUserIsPromptedToOneOfTheResources(string p0)
         {
             GetPopupFromContext().Verify(a => a.ShowDeployNameConflict(It.IsAny<string>()));
         }
-
-
-
 
         [Then(@"Services is ""(.*)""")]
         public void ThenServicesIs(string p0)
@@ -420,12 +403,12 @@ namespace Warewolf.AcceptanceTesting.Deploy
             Assert.AreEqual(GetView().Services, p0);
         }
 
-
         [Then(@"Sources is ""(.*)""")]
         public void ThenSourcesIs(string p0)
         {
             Assert.AreEqual(GetView().Sources, p0);
         }
+
         [Then(@"New Resource is ""(.*)""")]
         public void ThenNewResourceIs(string p0)
         {
@@ -446,13 +429,22 @@ namespace Warewolf.AcceptanceTesting.Deploy
             GetView().CheckVisibility(control, visibility);
         }
 
-
         [Then(@"Context Menu is ""(.*)""")]
-        public void ThenContextMenuIs(string p0)
+        public void ThenContextMenuIs(string visibility)
         {
-
+            GetView().CheckVisibility("Context Menu", visibility);
         }
 
+        [Given(@"I have deploy tab opened")]
+        public void GivenIHaveDeployTabOpened()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
 
+        [Then(@"a warning message appears ""(.*)""")]
+        public void ThenAWarningMessageAppears(string p0)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
+        }
     }
 }

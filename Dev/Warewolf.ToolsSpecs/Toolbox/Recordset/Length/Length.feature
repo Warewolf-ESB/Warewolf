@@ -4,7 +4,7 @@
 	I want a tool that takes a record set gives me its length
 
 Scenario: Length of a recordset with 3 rows
-	Given I get  the length from a recordset that looks like with this shape
+	Given I get the length from a recordset that looks like with this shape
 	| [[rs]]    |   |
 	| rs(1).row | 1 |
 	| rs(3).row | 2 |
@@ -22,9 +22,8 @@ Scenario: Length of a recordset with 3 rows
 	|                |
 	| [[result]] = 5 |
 
-
 Scenario: Length of a recordset with 8 rows
-	Given I get  the length from a recordset that looks like with this shape
+	Given I get the length from a recordset that looks like with this shape
 	| rs        |   |
 	| rs(1).row | 1 |
 	| rs(2).row | 2 |
@@ -52,11 +51,8 @@ Scenario: Length of a recordset with 8 rows
 	|                 |
 	| [[result]] = 8 |
 
-
-
-
 Scenario: Recordset length for coloumn
-	Given I get  the length from a recordset that looks like with this shape
+	Given I get the length from a recordset that looks like with this shape
 	| rs        |   |
 	| rs(1).row | 1 |
 	| rs(2).row | 2 |
@@ -75,7 +71,7 @@ Scenario: Recordset length for coloumn
 	|                |
 
 Scenario: Recordset length for coloumns invalid
-	Given I get  the length from a recordset that looks like with this shape
+	Given I get the length from a recordset that looks like with this shape
 	| rs        |   |
 	| rs().row  | 1 |
 	| rs().row  | 2 |
@@ -93,7 +89,7 @@ Scenario: Recordset length for coloumns invalid
 	|                |
 
 Scenario: Recordset length 
-	Given I get  the length from a recordset that looks like with this shape
+	Given I get the length from a recordset that looks like with this shape
 	| rs        |   |
 	| rs().row  | 1 |
 	| rs().row  | 2 |
@@ -120,7 +116,7 @@ Scenario: Recordset length
 	| [[result]] = 6 |
 
 Scenario: Recordset length for invalid recordset
-	Given I get  the length from a recordset that looks like with this shape
+	Given I get the length from a recordset that looks like with this shape
 	| rs        |   |
 	| rs(1).row | 1 |
 	| rs(2).row | 2 |
@@ -139,7 +135,7 @@ Scenario: Recordset length for invalid recordset
 	|                |
 
 Scenario Outline: Ensure Recordset length inputs work as expected 
-	Given I get  the length from a recordset that looks like with this shape
+	Given I get the length from a recordset that looks like with this shape
 	| rs        |   |
 	| rs().row  | 1 |
 	| rs().row  | 2 |
@@ -162,12 +158,9 @@ Examples:
 | [[rec([[int]])]] | ""   | AN    |                                                   | [[sdasd]]          | 3               |
 | [[c]]            | ""   | AN    | Scalar not allowed                                | [[d]]              | Failure         |
 
-
-
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Ensure the Complex type length inputs work as expected 
-	Given I get  the length from a object that looks like with this shape
+	Given I get the length from a object that looks like with this shape
 	| rs             |   |
 	| rs().row().set | 1 |
 	| rs().row().set | 2 |
@@ -179,7 +172,7 @@ Scenario Outline: Ensure the Complex type length inputs work as expected
 	And get length on record "<variable>"	
 	When the length tool is executed
 	Then the length result should be "<val>"
-	And the result variable '<result>' will be "<value>"
+	And the result variable "<result>" will be "<value>"
 	And the execution has "<Error>" error
 	And the debug inputs as "<message>"
 Examples: 
@@ -187,17 +180,9 @@ Examples:
 | [[rs(1).row().set]]        | 1   | No    |         | [[rec(1).row().val]]  | 1     |
 | [[rs(*).row([[int]]).set]] | 4   | No    |         | [[rec(1).row(3).val]] | 4     |
 
-
-
-
-
-
-
-
-
 Scenario: Length of an null recordset
-	Given I get  the length from a recordset that looks like with this shape
-	| rs ||
+	Given I get the length from a recordset that looks like with this shape
+	| rs           |      |
 	| [[rs().row]] | NULL |
 	And get length on record "[[rs()]]"	
 	When the length tool is executed

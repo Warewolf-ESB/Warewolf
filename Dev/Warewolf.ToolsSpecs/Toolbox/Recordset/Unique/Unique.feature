@@ -230,7 +230,7 @@ Scenario: Find unique records and assigning result to scalar must error
 	And the debug inputs as  
 	| #           |                    | Return Fields  |
 	| In Field(s) | [[rs(4).row]] = 30 | [[rs().row]] = |	
-	
+
 Scenario Outline: Invalid expressions
 Given I have the following duplicated recordset
 	| rs       | val |
@@ -238,8 +238,8 @@ Given I have the following duplicated recordset
 	| rs().row | 20  |
 	| rs().row | 20  |
 	| rs().row | 30  |
-	And I want to find unique in field '<InField>' with the return field '<Return>'
-	And The result variable is '<Result>' equals '<value>'
+	And I want to find unique in field "<InField>" with the return field "<Return>"
+	And The result variable is "<Result>" equals "<value>"
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
@@ -266,7 +266,7 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| rs().row | 20  | [[rec().set]] | Test      |
 	| rs().row | 20  | [[rec().set]] | Warehouse |
 	| rs().row | 30  | [[rec().set]] | Tuesday   |
-	And I want to find unique in field '<InField>' with the return field '<Return>'
+	And I want to find unique in field "<InField>" with the return field "<Return>"
 	And The result variable is "[[a]]"
 	When the unique tool is executed	
 	Then the unique result will be
@@ -286,7 +286,6 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| [[rec([[int]].set),[[int]] = 4 | [[rs([[int]]).row]],[[int]] = 2 |
 
 #Complex Types WOLF-1042
-@ignore
 Scenario: Find unique records in a complex type
 	Given I have the following duplicated recordset
 	| rs             | val |

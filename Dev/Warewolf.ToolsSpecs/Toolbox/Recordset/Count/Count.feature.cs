@@ -668,14 +668,8 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void EnsureTheCorrectValuesAreReturnedUsingComplexTypes(string debug, string output, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the correct values are returned using complex types", @__tags);
-#line 200
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the correct values are returned using complex types", exampleTags);
+#line 199
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -690,15 +684,15 @@ this.ScenarioSetup(scenarioInfo);
             table24.AddRow(new string[] {
                         "rs().row().set",
                         "3"});
-#line 201
+#line 200
  testRunner.Given("I have a complex type with this shape", ((string)(null)), table24, "Given ");
-#line 206
+#line 205
  testRunner.And("count on record \"[[rs().row()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
+#line 206
  testRunner.When("the count tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 208
+#line 207
  testRunner.Then("the result count should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 209
+#line 208
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -709,9 +703,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rs().row(2).set]] = 2"});
             table25.AddRow(new string[] {
                         "[[rs().row(3).set]] = 3"});
-#line 210
+#line 209
  testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
-#line 215
+#line 214
  testRunner.And(string.Format("the debug output as \"{0}\" with \"{1}\"", debug, output), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -720,7 +714,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the correct values are returned using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Count")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Debug", "[[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Output", "[[rec(1).a]] = 3")]

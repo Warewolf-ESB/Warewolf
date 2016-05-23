@@ -3,17 +3,7 @@
 	I want to save my Email source Settings
 	So that I can reuse them
 
-
-# Ensure user has an abitlity to create a Email Source in warewolf
-# Ensure New Email Source is opened when user clicks on New Email Source.
-# Ensure New Email Source 
-
-
-
-
 @EmailSource
-# Coded UI TESTS
-@ignore
 Scenario: Creating New Email Source Opened
 	Given I have New Email Source tab opened
 	And "Host Textbox" is focussed 
@@ -27,7 +17,6 @@ Scenario: Creating New Email Source Opened
 	And cancel is "Enabled"
 
 
-@ignore
 Scenario: Creating Email Source with valid credentials
 	Given I have New Email Source tab opened
 	And "Host Textbox" is focussed 
@@ -56,7 +45,6 @@ Scenario: Creating Email Source with valid credentials
 	Then Save Email Source is "Enabled"
 
 
-@ignore
 Scenario: Not allowing to save email source with test connection is unsuccessful
 	Given I have New Email Source tab opened
 	And "Host Textbox" is focussed 
@@ -83,6 +71,3 @@ Scenario: Not allowing to save email source with test connection is unsuccessful
 	And cancel is "Disabled"
 	When Test Connecton is "UnSuccessful"
 	Then Save Email Source is "Disabled"
-
-
-
