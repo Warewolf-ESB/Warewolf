@@ -106,5 +106,8 @@ namespace Dev2.Common.Interfaces
         IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values);
 
         List<IWindowsGroupPermission> FetchPermissions();
+
+        // ReSharper disable once InconsistentNaming
+        IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
     }
 }

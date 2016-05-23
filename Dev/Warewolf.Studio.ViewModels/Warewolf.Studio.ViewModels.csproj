@@ -150,7 +150,8 @@
     <Compile Include="IDockViewModel.cs" />
     <Compile Include="ManageDatabaseSourceModel.cs" />
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
-    <Compile Include="ManageDbServiceModel.cs" />
+    <Compile Include="ManageRabbitMQSourceViewModel.cs" />
+    <Compile Include="ManageRabbitMQSourceModel.cs" />
     <Compile Include="ManageEmailSourceModel.cs" />
     <Compile Include="ManageEmailSourceViewModel.cs" />
     <Compile Include="ManageExchangeSourceModel.cs" />

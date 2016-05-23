@@ -157,6 +157,7 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         WebSource,
         OauthSource,
         SharepointServerSource,
+        RabbitMQSource,
         ExchangeSource
     }
 

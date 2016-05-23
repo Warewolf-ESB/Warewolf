@@ -115,6 +115,10 @@
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -233,6 +237,11 @@
     <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
     <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
+    <Compile Include="Designers2\Core\Help\HelpTextResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpTextResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\ExchangeInputRegion.cs" />
@@ -323,6 +332,26 @@
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox2016\Upload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.xaml.cs">
+      <DependentUpon>RabbitMQConsumeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Consume\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.xaml.cs">
+      <DependentUpon>RabbitMQPublishDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Publish\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesignerViewModel.cs" />
@@ -938,6 +967,11 @@
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
     <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
     <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
+    <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpTextResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ActivityResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
@@ -1242,6 +1276,30 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
