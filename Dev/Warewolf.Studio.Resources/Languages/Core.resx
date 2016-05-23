@@ -362,6 +362,12 @@ https://www.dropbox.com/1/oauth2/redirect_receiver/</value>
   <data name="ManageDbServiceActionsTooltip" xml:space="preserve">
     <value>Select the procedure or function you want to perform on the database</value>
   </data>
+  <data name="ManageOdbcServiceActionsTooltip" xml:space="preserve">
+    <value>ManageOdbcServiceActionsTooltip</value>
+  </data>
+  <data name="ManageOdbcServiceActionsHelpText" xml:space="preserve">
+    <value>ManageOdbcServiceActionsHelpText</value>
+  </data>
   <data name="ManageDbServiceTestActionTooltip" xml:space="preserve">
     <value>Test the procedure or function</value>
   </data>

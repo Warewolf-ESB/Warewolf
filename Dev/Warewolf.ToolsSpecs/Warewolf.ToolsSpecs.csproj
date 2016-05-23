@@ -287,6 +287,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Toolbox\Resources\ODBC\ODBCConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ODBCConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\ODBC\ODBCServerConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleServerConnector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -555,6 +567,14 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Resources\ODBC\ODBCConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Oracle\OracleServerConnector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeleteWebConnectorTool.feature.cs</LastGenOutput>
@@ -757,6 +777,7 @@
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
