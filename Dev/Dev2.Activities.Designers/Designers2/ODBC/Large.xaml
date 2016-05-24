@@ -9,8 +9,8 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="380"
-                               Height="380"
+                               MinHeight="370"
+                               Height="370"
                                MaxWidth="Infinity"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
@@ -46,7 +46,6 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition>
                     <RowDefinition.Style>
