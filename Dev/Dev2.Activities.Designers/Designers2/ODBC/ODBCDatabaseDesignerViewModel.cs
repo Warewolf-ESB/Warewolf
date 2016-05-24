@@ -18,6 +18,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
@@ -74,6 +75,7 @@ namespace Dev2.Activities.Designers2.ODBC
             Model = model;
 
             SetupCommonProperties();
+            this.RunViewSetup();
         }
 
         Guid UniqueID { get { return GetProperty<Guid>(); } }
@@ -277,11 +279,12 @@ namespace Dev2.Activities.Designers2.ODBC
                 {
                     ErrorMessage(new Exception("Action cannot contain paramenters while generating outputs"), true);
                 }
-
                 else
                 {
                     ManageServiceInputViewModel.InputArea.Inputs = service.Inputs;
                     ManageServiceInputViewModel.Model = service;
+
+                    ManageServiceInputViewModel.OutputCountExpandAllowed = true;
 
                     GenerateOutputsVisible = true;
                     SetDisplayName(OutputDisplayName);
@@ -293,7 +296,6 @@ namespace Dev2.Activities.Designers2.ODBC
             }
         }
 
-
         private IErrorInfo NoError { get; set; }
         public string CommandText
         {
@@ -303,7 +305,6 @@ namespace Dev2.Activities.Designers2.ODBC
                 _commandText = value;
                 ToModel();
             }
-
         }
         public bool IsWorstErrorReadOnly
         {

@@ -19,7 +19,6 @@ namespace Dev2.Services.Sql
         private OracleConnection _connection;
         private IDbTransaction _transaction;
         private string _owner;
-
         private readonly bool _isTesting;
 
         public OracleServer(IDbFactory factory, IDbCommand command, IDbTransaction transaction)
@@ -29,7 +28,7 @@ namespace Dev2.Services.Sql
 
             var con = new OracleConnection()
             {
-                ConnectionString = "",
+                ConnectionString = ""
             };
 
             _isTesting = true;
@@ -70,8 +69,7 @@ namespace Dev2.Services.Sql
 
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
-                    using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                            _owner + "." + fullProcedureName))
+                    using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName))
                     {
                         try
                         {
@@ -143,7 +141,6 @@ namespace Dev2.Services.Sql
                     }
                 }
             }
-
             finally
             {
                 if (reader != null) reader.Close();
@@ -186,7 +183,6 @@ namespace Dev2.Services.Sql
             return FetchDataTable(_command);
         }
 
-
         #endregion
 
         #region FetchDataSet
@@ -208,8 +204,7 @@ namespace Dev2.Services.Sql
 
         #region FetchStoredProcedures
 
-        public void FetchStoredProcedures(
-            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
             bool continueOnProcessorException = false, string dbName = "")
         {
@@ -219,9 +214,6 @@ namespace Dev2.Services.Sql
             _owner = dbName;
             DataTable proceduresDataTable = GetSchema(_connection);
 
-
-
-
             // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
 
             foreach (DataRow row in proceduresDataTable.Rows)//Procedure 2
@@ -230,9 +222,7 @@ namespace Dev2.Services.Sql
 
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
-                    using (
-                        IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                           _owner + "." + fullProcedureName))
+                    using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName))
                     {
                         try
                         {
@@ -241,8 +231,6 @@ namespace Dev2.Services.Sql
                             var parameters = DbDataParameters(dbName, command, fullProcedureName, out isOut, out helpText);
 
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
-
-
                         }
                         catch (Exception)
                         {
@@ -254,8 +242,6 @@ namespace Dev2.Services.Sql
                     }
                 }
             }
-
-
         }
 
         public List<IDbDataParameter> DbDataParameters(string dbName, IDbCommand command, string fullProcedureName, out List<IDbDataParameter> isOut,
@@ -278,7 +264,6 @@ namespace Dev2.Services.Sql
                 {
                     helpText = GetHelpText(con, fullProcedureName);
                 }
-
             }
             catch (Exception e)
             {
