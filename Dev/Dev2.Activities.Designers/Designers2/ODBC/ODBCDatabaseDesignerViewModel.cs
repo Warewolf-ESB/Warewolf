@@ -258,7 +258,7 @@ namespace Dev2.Activities.Designers2.ODBC
             Properties = new List<KeyValuePair<string, string>>();
             AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
             AddProperty("Type :", Type);
-            AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.Name);
+            AddProperty("Procedure :", string.IsNullOrEmpty(CommandText) ? "" : CommandText);
         }
 
         void AddProperty(string key, string value)
@@ -303,6 +303,7 @@ namespace Dev2.Activities.Designers2.ODBC
             set
             {
                 _commandText = value;
+                InitializeProperties();
                 ToModel();
             }
         }
@@ -374,7 +375,18 @@ namespace Dev2.Activities.Designers2.ODBC
             {
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.ODBC) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegionOdbc(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion = new DbActionRegionOdbc(Model, ModelItem, SourceRegion)
+                {
+                    SourceChangedAction = () =>
+                    {
+                        OutputsRegion.IsEnabled = false;
+                    }
+                };
+                ActionRegion.SomethingChanged += (sender, args) =>
+                {
+                    CommandText = ((IODBCActionToolRegion<IDbAction>)ActionRegion).CommandText;
+                };
+                CommandText = ((IODBCActionToolRegion<IDbAction>)ActionRegion).CommandText;
                 regions.Add(ActionRegion);
                 InputArea = new DatabaseInputRegion(ModelItem, ActionRegion);
                 regions.Add(InputArea);
@@ -383,14 +395,6 @@ namespace Dev2.Activities.Designers2.ODBC
                 if (OutputsRegion.Outputs.Count > 0)
                 {
                     OutputsRegion.IsEnabled = true;
-                }
-                try
-                {
-                    CommandText = ActionRegion.SelectedAction.Name;
-                }
-                catch
-                {
-                    CommandText = "";
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);

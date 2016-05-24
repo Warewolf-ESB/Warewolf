@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
@@ -45,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Body = "Test Exchange email service source",
                 };
 
-                con.Send(con, testMessage);
+                con.Send(new ExchangeEmailSender(con), testMessage);
             }
             catch (Exception err)
             {

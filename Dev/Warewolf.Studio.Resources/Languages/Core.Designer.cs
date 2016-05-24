@@ -2988,6 +2988,21 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Exchange web service endpoint url to connect to your Exchange enviroment.
+        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+        ///e.g.&lt;br/&gt;
+        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
+        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;https://outlook.office365.com/EWS/Exchange.asmx&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;/table&gt;&lt;br/&gt;If the Autodiscover url is left empty, the Exchange service endpoint will be auto dicovered based on the user name.
+        /// </summary>
+        public static string ExchangeEmailSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("ExchangeEmailSourceHostNameHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the connection string properties of the selected connection.&lt;br&gt;
         ///&lt;br/&gt;
         ///Change the connection string from, say, a development database to a live database.&lt;br/&gt;
@@ -3024,6 +3039,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ExchangeSourceNewHeaderLabel {
             get {
                 return ResourceManager.GetString("ExchangeSourceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user name to authenticate against the exhange server.
+        /// </summary>
+        public static string ExchangeUserNameAuthenticationHelp {
+            get {
+                return ResourceManager.GetString("ExchangeUserNameAuthenticationHelp", resourceCulture);
             }
         }
         
@@ -4828,6 +4852,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter Endpoint Url.
+        /// </summary>
+        public static string ManageWcfEndpointTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfEndpointTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edits the selected source connection.
+        /// </summary>
+        public static string ManageWcfServiceEditSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceEditSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new connection to a Wcf Service.
+        /// </summary>
+        public static string ManageWcfServiceNewSourceTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceNewSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Source you want to use.
+        /// </summary>
+        public static string ManageWcfServiceSourcesTooltip {
+            get {
+                return ResourceManager.GetString("ManageWcfServiceSourcesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel this action.
         /// </summary>
         public static string ManageWebPasteCancelTooltip {
@@ -6521,6 +6581,28 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter local file or folder path in here.&lt;br/&gt;
+        ///        Download to local Example: C:\MyFolder\Help.&lt;br/&gt;
+        ///        Upload file to SharePoint Example: C:\MyFolder\Help\help.txt.&lt;br/&gt;
+        ///        &lt;br /&gt;
+        ///
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string ReadLocalHelpFolder {
+            get {
+                return ResourceManager.GetString("ReadLocalHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------&quot; + &quot;Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler..
         /// </summary>
         public static string RenameConflictDescription {
@@ -7960,11 +8042,117 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file download path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointDownloadHelpFolder {
+            get {
+                return ResourceManager.GetString("SharePointDownloadHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server download file path.
+        /// </summary>
+        public static string SharePointDownloadPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointDownloadPathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit the connection properties of the selected SharePoint Server..
         /// </summary>
         public static string SharepointEditServerHelp {
             get {
                 return ResourceManager.GetString("SharepointEditServerHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server file path.
+        /// </summary>
+        public static string SharePointFilePathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointFilePathToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file From path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointHelpCopyFrom {
+            get {
+                return ResourceManager.GetString("SharePointHelpCopyFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file To path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointHelpCopyTo {
+            get {
+                return ResourceManager.GetString("SharePointHelpCopyTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint file path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/Help.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]].&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointHelpDelete {
+            get {
+                return ResourceManager.GetString("SharePointHelpDelete", resourceCulture);
             }
         }
         
@@ -8030,6 +8218,40 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SharepointInsertToolTipResult {
             get {
                 return ResourceManager.GetString("SharepointInsertToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Read SharePoint folders and files. Enter SharePoint folder or file path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/HelpFolder/Help.&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/MyFile.txt&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointReadFolderHelpFolder {
+            get {
+                return ResourceManager.GetString("SharePointReadFolderHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server folder or
+        ///    file path
+        ///    .
+        /// </summary>
+        public static string SharePointReadFolderInputPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointReadFolderInputPathToolTip", resourceCulture);
             }
         }
         
@@ -8149,6 +8371,37 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SharepointToolTipToVariable {
             get {
                 return ResourceManager.GetString("SharepointToolTipToVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///        Enter SharePoint folder upload location path &lt;br /&gt;
+        ///        Example:&lt;br /&gt; 
+        ///        SharedFolder/HelpFolder/Help&lt;br /&gt;
+        ///        SharedFolder/HelpFolder/[[Scalar]]&lt;br /&gt;
+        ///        &lt;br /&gt;
+        ///        Allowed:&lt;br /&gt;
+        ///        Data   
+        ///        &lt;ol&gt;
+        ///            &lt;li&gt;[[Scalar]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;
+        ///            &lt;li&gt;[[Recordset().Field]]&lt;/li&gt;
+        ///        &lt;/ol&gt;.
+        /// </summary>
+        public static string SharePointUploadHelpFolder {
+            get {
+                return ResourceManager.GetString("SharePointUploadHelpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter SharePoint server upload folder path.
+        /// </summary>
+        public static string SharePointUploadPathToolTip {
+            get {
+                return ResourceManager.GetString("SharePointUploadPathToolTip", resourceCulture);
             }
         }
         
@@ -9006,6 +9259,60 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string WarewolfUrl {
             get {
                 return ResourceManager.GetString("WarewolfUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change the connection Endpoint properties of the selected Wcf Source&lt;br&gt;
+        ///&lt;br/&gt;
+        ///Change the Endpoint Url from, say, a development to a live environment.&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///&lt;a href=&quot;http://warewolf.io/knowledge-base/data-connectors&quot; target=&quot;_blank&quot;&gt;Read more in the Knowledgebase.&lt;/a&gt;.
+        /// </summary>
+        public static string WcfServiceEditSourceHelp {
+            get {
+                return ResourceManager.GetString("WcfServiceEditSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New WCF Service Source.
+        /// </summary>
+        public static string WcfServiceNewHeaderLabel {
+            get {
+                return ResourceManager.GetString("WcfServiceNewHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To create a new WCF source, click New..
+        /// </summary>
+        public static string WcfServiceNewSourceHelp {
+            get {
+                return ResourceManager.GetString("WcfServiceNewSourceHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the Wcf Source you want to use from previously setup sources..
+        /// </summary>
+        public static string WcfServiceSourcesHelp {
+            get {
+                return ResourceManager.GetString("WcfServiceSourcesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Wcf service endpoint url to connect to your web service.
+        ///&lt;style type=&quot;text/css&quot;&gt;#smtptable td{text-align:center;border:0px;}&lt;/style&gt;&lt;br/&gt;
+        ///e.g.&lt;br/&gt;
+        ///&lt;table border=&quot;1&quot; id=&quot;smtptable&quot;&gt;
+        ///&lt;tr align=&quot;center&quot;&gt;&lt;th&gt;Auto Dicover Url&lt;&gt;&lt;th/tr&gt;
+        ///&lt;tr&gt;&lt;td&gt;https://localhost:8085/LiveService/Method.svc&lt;/td&gt;&lt;/tr&gt; .
+        /// </summary>
+        public static string WcfSourceHostNameHelp {
+            get {
+                return ResourceManager.GetString("WcfSourceHostNameHelp", resourceCulture);
             }
         }
         

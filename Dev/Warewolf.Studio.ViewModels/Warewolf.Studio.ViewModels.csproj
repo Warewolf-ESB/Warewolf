@@ -134,7 +134,6 @@
     <Compile Include="DeployDestinationViewModel.cs" />
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
-    <Compile Include="ManageDbServiceModel.cs" />
     <Compile Include="ManageOAuthSourceModel.cs" />
     <Compile Include="ManageOAuthSourceViewModel.cs" />
     <Compile Include="EmailAttachmentModel.cs" />
@@ -162,6 +161,9 @@
     <Compile Include="ManagePluginServiceModel.cs" />
     <Compile Include="ManagePluginSourceModel.cs" />
     <Compile Include="ManagePluginSourceViewModel.cs" />
+    <Compile Include="ManageWcfServiceModel.cs" />
+    <Compile Include="ManageWcfSourceModel.cs" />
+    <Compile Include="ManageWcfSourceViewModel.cs" />
     <Compile Include="ManageWebServiceModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />
     <Compile Include="ManageWebserviceSourceViewModel.cs" />

@@ -389,6 +389,45 @@ namespace Warewolf.Studio.ServerProxyLayer
             return output.Message.ToString();
         }
 
+        public void SaveWcfSource(IWcfServerSource model, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveWcfServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(model));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+        }
+
+        public string TestWcfServiceSource(IWcfServerSource wcfServerSource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestWcfServiceSource");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(wcfServerSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return output.Message.ToString();
+        }
+
+        public string TestWcfService(IWcfService wcfService)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestWcfService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("wcfService", serialiser.SerializeToBuilder(wcfService));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfTestException("Unable to contact Server", null);
+            if (output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(), null);
+            return output.Message.ToString();
+        }
+
         #endregion Implementation of IUpdateManager
     }
 
