@@ -5,6 +5,7 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:sharepointListUpdate="clr-namespace:Dev2.Activities.Designers2.SharepointListUpdate"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
@@ -74,7 +75,7 @@
                       Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                      ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
+                      ToolTip="{x:Static help:HelpTextResources.SharepointToolTipServer}"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
                 <i:Interaction.Behaviors>
@@ -101,7 +102,7 @@
                       Margin="{StaticResource ControlBorderTopRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedList, Mode=TwoWay}"
-                      ToolTip="{x:Static languages:Core.SharepointToolTipList}"
+                      ToolTip="{x:Static help:HelpTextResources.SharepointToolTipList}"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
                 <i:Interaction.Behaviors>
@@ -139,7 +140,7 @@
                 </Grid.ColumnDefinitions>
                 <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                        Margin="0"
-                                       ItemsSource="{Binding ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Style="{StaticResource ActivityMapppingDataGridStyle}">
                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                     <DataGrid.Columns>
@@ -158,7 +159,7 @@
                                                             Margin="0,0,1,1"
                                                             TextWrapping="Wrap"
                                                             WrapInBrackets="False"
-                                                            ToolTip="{x:Static languages:Core.SharepointToolTipToVariable}"
+                                                            ToolTip="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
                                                             Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
@@ -295,7 +296,7 @@
                                           ItemsSource="{Binding DataContext.ListItems, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"                                          
                                           SelectedItem="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
                                           SelectedValue="{Binding InternalName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                          ToolTip="{x:Static languages:Core.SharepointToolTipFieldToFilterOn}">
+                                          ToolTip="{x:Static help:HelpTextResources.SharepointToolTipFieldToFilterOn}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.SharepointHelpFieldToMatchOn}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -324,7 +325,7 @@
                                           Margin="0,0,1,1"
                                           ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                           SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                          ToolTip="{x:Static languages:Core.FindToolTipLookForMatchType}">
+                                          ToolTip="{x:Static help:HelpTextResources.FindToolTipLookForMatchType}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.FindHelpLookForMatchType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -371,7 +372,7 @@
                                                             attachedProperties:FocusSetter.IsFocused="{Binding IsSearchCriteriaFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             Text="{Binding ValueToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                             Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                            ToolTip="{x:Static languages:Core.FindToolTipMatch}">
+                                                            ToolTip="{x:Static help:HelpTextResources.FindToolTipMatch}">
                                         <i:Interaction.Behaviors>
                                             <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -399,7 +400,7 @@
                       Grid.ColumnSpan="2"
                       Content="Require All Matches To Be True"
                       IsChecked="{Binding ModelItem.RequireAllCriteriaToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static languages:Core.FindToolTipRequireAllMatchesToBeTrue}"
+                      ToolTip="{x:Static help:HelpTextResources.FindToolTipRequireAllMatchesToBeTrue}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:Core.FindHelpRequireAllMatchesToBeTrue}" DataContext="{Binding}" />
@@ -419,7 +420,7 @@
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    ToolTip="{x:Static languages:Core.SharepointInsertToolTipResult}"
+                                    ToolTip="{x:Static help:HelpTextResources.SharepointInsertToolTipResult}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
                 <i:Interaction.Behaviors>

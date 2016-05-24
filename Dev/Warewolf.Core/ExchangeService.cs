@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Common.Interfaces.DB;
+﻿using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Exchange;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using System;
+using System.Collections.Generic;
 
 namespace Warewolf.Core
 {
@@ -19,6 +19,7 @@ namespace Warewolf.Core
         public IList<IServiceInput> Inputs { get; set; }
         public IList<IServiceOutputMapping> OutputMappings { get; set; }
         public Guid Id { get; set; }
+
         public bool Equals(ExchangeService other)
         {
             if (ReferenceEquals(null, other))

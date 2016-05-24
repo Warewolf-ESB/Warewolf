@@ -18,9 +18,10 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
-    public class QueryManagerProxy:ProxyBase, IQueryManager{
+    public class QueryManagerProxy : ProxyBase, IQueryManager
+    {
 
-        public QueryManagerProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection):base(communicationControllerFactory,connection)
+        public QueryManagerProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection) : base(communicationControllerFactory, connection)
         {
 
         }
@@ -66,7 +67,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <returns></returns>
         public StringBuilder FetchResourceXaml(Guid resourceId)
         {
-            var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService" );
+            var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService");
             comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
 
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, Connection.WorkspaceID);
@@ -82,7 +83,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
             var workspaceId = Connection.WorkspaceID;
-            var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, workspaceId);            
+            var result = await comsController.ExecuteCompressedCommandAsync<IExplorerItem>(Connection, workspaceId);
             return result;
         }
         #endregion
@@ -92,7 +93,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var comsController = CommunicationControllerFactory.CreateController("FetchToolsService");
 
             var workspaceId = Connection.WorkspaceID;
-            var result =  comsController.ExecuteCommand<IList<IToolDescriptor>>(Connection, workspaceId) ?? new List<IToolDescriptor>();
+            var result = comsController.ExecuteCommand<IList<IToolDescriptor>>(Connection, workspaceId) ?? new List<IToolDescriptor>();
             return result;
         }
 
@@ -174,9 +175,9 @@ namespace Warewolf.Studio.ServerProxyLayer
 
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
-            if (result==null || result.HasError)
+            if (result == null || result.HasError)
             {
-                if(result != null)
+                if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }
@@ -265,7 +266,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         public IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values)
         {
             var enumerable = values as Guid[] ?? values.ToArray();
-            if (!enumerable.Any() )
+            if (!enumerable.Any())
             {
                 return new List<Guid>();
             }
@@ -273,7 +274,7 @@ namespace Warewolf.Studio.ServerProxyLayer
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetDependanciesOnListService");
-            comsController.AddPayloadArgument("ResourceIds", serializer.SerializeToBuilder(enumerable.Select(a=>a.ToString()).ToList()));
+            comsController.AddPayloadArgument("ResourceIds", serializer.SerializeToBuilder(enumerable.Select(a => a.ToString()).ToList()));
             comsController.AddPayloadArgument("GetDependsOnMe", "false");
             var res = comsController.ExecuteCommand<List<string>>(Connection, GlobalConstants.ServerWorkspaceID).Where(a =>
             {
@@ -293,10 +294,10 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public List<IWindowsGroupPermission> FetchPermissions()
         {
- 
+
             var comsController = CommunicationControllerFactory.CreateController("FetchServerPermissions");
             var result = comsController.ExecuteCommand<PermissionsModifiedMemo>(Connection, GlobalConstants.ServerWorkspaceID);
-            return result.ModifiedPermissions.Cast< IWindowsGroupPermission>().ToList();
+            return result.ModifiedPermissions.Cast<IWindowsGroupPermission>().ToList();
         }
 
         public IList<IPluginSource> FetchPluginSources()
@@ -357,6 +358,43 @@ namespace Warewolf.Studio.ServerProxyLayer
             // ReSharper disable once InconsistentNaming
             List<IRabbitMQServiceSourceDefinition> rabbitMQServiceSources = serializer.Deserialize<List<IRabbitMQServiceSourceDefinition>>(result.Message.ToString());
             return rabbitMQServiceSources;
+        }
+
+        public IList<IWcfServerSource> FetchWcfSources()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FetchWcfSources");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException("Service does not exist", null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<List<IWcfServerSource>>(result.Message.ToString());
+        }
+
+        public IList<IWcfAction> WcfActions(IWcfServerSource WcfSource)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var comsController = CommunicationControllerFactory.CreateController("FetchWcfAction");
+            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(WcfSource));
+            var workspaceId = Connection.WorkspaceID;
+            var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (payload == null || payload.HasError)
+            {
+                if (payload != null)
+                {
+                    throw new WarewolfSupportServiceException(payload.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException("Service does not exist", null);
+            }
+
+            return serializer.Deserialize<IList<IWcfAction>>(payload.Message);
         }
     }
 }

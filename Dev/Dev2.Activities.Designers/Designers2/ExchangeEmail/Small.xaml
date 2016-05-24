@@ -6,9 +6,10 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.ExchangeEmail"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:designers2="clr-namespace:Dev2.Activities.Designers2"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -83,7 +84,7 @@
                                 Grid.Row="1"
                                 Margin="{StaticResource ControlBorderTop}"
                                 customControls:WatermarkTextBox.Watermark="Account or email address"
-                                ToolTip="{x:Static languages:Core.EmailToolTipTo}"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipTo}"
                                 Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -101,7 +102,7 @@
                                 customControls:WatermarkTextBox.Watermark="Message Subject"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipSubject}"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipSubject}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_subjecttxt_AutoID}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.EmailHelpSubject}" DataContext="{Binding}" />
@@ -116,7 +117,7 @@
         <TextBox Grid.Column="1"
                                 Grid.Row="3"
                                 customControls:WatermarkTextBox.Watermark="Email Content"
-                                ToolTip="{x:Static languages:Core.EmailToolTipBody}"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipBody}"
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 AcceptsReturn="True"
@@ -143,7 +144,7 @@
                                 Grid.Row="4"                               
                                 DefaultText="[[EmailSuccess]]"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static languages:Core.EmailToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipResult}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

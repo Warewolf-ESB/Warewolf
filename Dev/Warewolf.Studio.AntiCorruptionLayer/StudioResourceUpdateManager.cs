@@ -267,6 +267,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public event Action<ISharepointServerSource> SharePointServiceSourceSaved;
 
+        public event Action<IWcfServerSource> WcfSourceSaved;
+
         public string TestPluginService(IPluginService inputValues)
         {
             return UpdateManagerProxy.TestPluginService(inputValues);
@@ -279,6 +281,34 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 ItemSaved();
             }
+        }
+
+        public void Save(IWcfService toSource)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save(IWcfServerSource wcfSource)
+        {
+            UpdateManagerProxy.SaveWcfSource(wcfSource, GlobalConstants.ServerWorkspaceID);
+            if (WcfSourceSaved != null)
+            {
+                WcfSourceSaved(wcfSource);
+            }
+            if (ItemSaved != null)
+            {
+                ItemSaved();
+            }
+        }
+
+        public string TestWcfService(IWcfService inputValues)
+        {
+            return UpdateManagerProxy.TestWcfService(inputValues);
+        }
+
+        public string TestConnection(IWcfServerSource wcfServerSource)
+        {
+            return UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
         }
     }
 }

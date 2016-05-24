@@ -210,6 +210,11 @@
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileDownLoadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileMoveViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileUploadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointReadFolderViewModelTests.cs" />
     <Compile Include="Sharepoint\SharepointReadListTests.cs" />
     <Compile Include="Sharepoint\SharepointDesignerViewModelBaseTests.cs" />
     <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
@@ -222,6 +227,7 @@
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
     <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="WCFEndPoint\WcfEndPointViewModelTests.cs" />
     <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
     <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
     <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
@@ -292,6 +298,10 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{c52b12c2-6a1d-4c4f-a878-cf283662a226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>

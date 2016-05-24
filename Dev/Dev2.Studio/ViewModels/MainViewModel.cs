@@ -729,6 +729,9 @@ namespace Dev2.Studio.ViewModels
                 case "PluginSource":
                     EditPluginSource(resourceModel);
                     break;
+                case "WcfSource":
+                    EditWcfSource(resourceModel);
+                    break;
                 case "EmailSource":
                     EditEmailSource(resourceModel);
                     break;
@@ -929,6 +932,25 @@ namespace Dev2.Studio.ViewModels
                 VirtualHost = source.VirtualHost
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.RabbitMQSource);
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.ResourceID = resourceModel.ID;
+            workSurfaceKey.ServerID = resourceModel.ServerID;
+            EditResource(def, workSurfaceKey);
+        }
+
+        void EditWcfSource(IContextualResourceModel resourceModel)
+        {
+            var wcfsource = new WcfSource(resourceModel.WorkflowXaml.ToXElement());
+
+            var def = new WcfServiceSourceDefinition()
+            {
+                Id = wcfsource.Id,
+                Name = wcfsource.ResourceName,
+                Path = wcfsource.Path,
+                ResourceName = wcfsource.Name,
+                EndpointUrl = wcfsource.EndpointUrl
+            };
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WcfSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
@@ -1205,6 +1227,25 @@ namespace Dev2.Studio.ViewModels
                 workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
                 workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
                 workSurfaceKey.ResourceID = selectedSource.Id;
+                workSurfaceKey.ServerID = ActiveServer.ServerID;
+            }
+
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            OpeningWorkflowsHelper.AddWorkflow(key);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var wcfSourceViewModel = new ManageWcfSourceViewModel(new ManageWcfSourceModel(ActiveServer.UpdateRepository, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _asyncWorker, _activeEnvironment);
+            var vm = new SourceViewModel<IWcfServerSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageWcfSourceControl());
+
+            if (workSurfaceKey == null)
+            {
+                workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DbSource);
+                workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+                workSurfaceKey.ResourceID = selectedSource.ResourceID;
                 workSurfaceKey.ServerID = ActiveServer.ServerID;
             }
 
