@@ -5,7 +5,8 @@
 
 
 Scenario: Opening new Sharepoint Read Tool
-	Given I drag Sharepoint Read Tool onto the design surface 
+	Given I have a new Workflow
+	And I drag Sharepoint Read Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled
@@ -15,7 +16,8 @@ Scenario: Opening new Sharepoint Read Tool
 	Then the sharepoint source window is opened
 
 Scenario: Edit and Existing sharepoint Source
-	Given I drag Sharepoint Read Tool onto the design surface 
+	Given I have a new Workflow
+	And I drag Sharepoint Read Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled
@@ -26,7 +28,8 @@ Scenario: Edit and Existing sharepoint Source
 	Then the SharepointTestServer Sharepoint source window is opened
 
 Scenario: Refresh Sharepoint list
-	Given I drag Sharepoint Read Tool onto the design surface 
+    Given I have a new Workflow
+	And I drag Sharepoint Read Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled
@@ -38,7 +41,8 @@ Scenario: Refresh Sharepoint list
 	Then the Sharepoint Read Tool is refreshed
 
 Scenario: Insert values to sharepoint service
-	Given I drag Sharepoint Read Tool onto the design surface 
+	Given I have a new Workflow
+	And I drag Sharepoint Read Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled

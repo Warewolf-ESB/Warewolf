@@ -269,8 +269,14 @@
     <Compile Include="Activities\RabbitMQ\Publish\DsfPublishRabbitMQActivity.cs" />
     <Compile Include="Activities\IWebXmlConvert.cs" />
     <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointCopyFileActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointDeleteFileActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointDeleteListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointFileDownLoadActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointFileUploadActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointMoveFileActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointReadFolderItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUpdateListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUtils.cs" />
@@ -296,6 +302,7 @@
     <Compile Include="Activities\SqlBulkInsert\SqlBulkCopyWrapper.cs" />
     <Compile Include="Activities\SqlBulkInsert\SqlBulkInserter.cs" />
     <Compile Include="Activities\SqlBulkInsert\ISqlBulkCopy.cs" />
+    <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivity.cs" />
     <Compile Include="Activities\WebRequestDataDto.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
     <Compile Include="Activities\WebXmlConvert.cs" />

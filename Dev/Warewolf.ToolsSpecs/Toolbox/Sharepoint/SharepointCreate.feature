@@ -5,7 +5,8 @@
 
 
 Scenario: Opening new Sharepoint Create Tool
-	Given I drag Sharepoint Create Tool onto the design surface 
+	Given I have a new Workflow
+	And I drag Sharepoint Create Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled
@@ -14,8 +15,9 @@ Scenario: Opening new Sharepoint Create Tool
 	When I press New
 	Then the sharepoint source window is opened
 
-Scenario: Edit an Existing sharepoint Source
-	Given I drag Sharepoint Create Tool onto the design surface 
+Scenario: Edit and Existing sharepoint Source
+	Given I have a new Workflow
+	And I drag Sharepoint Create Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled
@@ -26,7 +28,8 @@ Scenario: Edit an Existing sharepoint Source
 	Then the SharepointTestServer Sharepoint source window is opened
 
 Scenario: Refresh Sharepoint list
-	Given I drag Sharepoint Create Tool onto the design surface 
+    Given I have a new Workflow
+	And I drag Sharepoint Create Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled
@@ -38,7 +41,8 @@ Scenario: Refresh Sharepoint list
 	Then the Sharepoint Create Tool is refreshed
 
 Scenario Outline: Insert values to sharepoint service
-	Given I drag Sharepoint Create Tool onto the design surface 
+	Given I have a new Workflow
+	And I drag Sharepoint Create Tool onto the design surface 
 	And Sharepoint Server source is Enabled
 	And Sharepoint List is Enabled
 	And Edit is Disabled

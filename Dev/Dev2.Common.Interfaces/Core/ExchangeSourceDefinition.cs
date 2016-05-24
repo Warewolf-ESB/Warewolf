@@ -1,6 +1,7 @@
-﻿using System;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using System;
+
 // ReSharper disable NonReadonlyMemberInGetHashCode
 // ReSharper disable MergeConditionalExpression
 
@@ -23,6 +24,7 @@ namespace Dev2.Common.Interfaces.Core
         public string Path { get; set; }
         public Guid Id { get; set; }
         public string ResourceName { get; set; }
+
         #region Equality members
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace Dev2.Common.Interfaces.Core
         }
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        /// Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
@@ -110,6 +112,6 @@ namespace Dev2.Common.Interfaces.Core
             return !Equals(left, right);
         }
 
-        #endregion
+        #endregion Equality members
     }
 }

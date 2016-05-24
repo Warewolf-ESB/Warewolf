@@ -6,8 +6,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.Source
@@ -69,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
             EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.Name);
-            Sources = sources.Where(source => source != null && source.ResourceType == type.ToString()).ToObservableCollection();
+            Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
             _modelItem = modelItem;
             SourceId = modelItem.GetProperty<Guid>("SourceId");
@@ -113,7 +115,8 @@ namespace Dev2.Activities.Designers2.Core.Source
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
         // ReSharper disable once UnassignedGetOnlyAutoProperty
-                public IList<string> Errors { get; set; }
+        public IList<string> Errors { get; set; }
+
         public IToolRegion CloneRegion()
         {
             return new ExchangeSourceRegion

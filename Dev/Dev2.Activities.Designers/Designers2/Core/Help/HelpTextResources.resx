@@ -3440,4 +3440,7 @@ Allowed:
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="ReadLocalFolderToolTipFolder" xml:space="preserve">
+    <value>Enter local file or folder path</value>
+  </data>
 </root>
