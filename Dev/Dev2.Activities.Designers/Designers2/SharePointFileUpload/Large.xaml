@@ -78,7 +78,7 @@
                       Margin="{StaticResource ControlBorderRight}"
                       IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                       SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                      ToolTip="{x:Static help:HelpTextResources.SharepointToolTipServer}"
+                      ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
                 <i:Interaction.Behaviors>
@@ -131,7 +131,7 @@
                                 WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.LocalInputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsInputPathFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ReadLocalFolderToolTipFolder}"
+                                ToolTip="{x:Static languages:Core.ReadLocalFolderToolTipFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directorytxt_AutoID}">
                 <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -157,7 +157,7 @@
                                 Margin="{StaticResource ActivityBorderTop}"
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{x:Static help:HelpTextResources.ReadFolderToolTipResult}"
+                                ToolTip="{x:Static languages:Core.ReadFolderToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>

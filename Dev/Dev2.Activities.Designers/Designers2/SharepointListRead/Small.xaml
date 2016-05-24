@@ -54,7 +54,7 @@
                   Margin="{StaticResource ControlBorderRight}"
                   IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                   SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
-                  ToolTip="{x:Static help:HelpTextResources.SharepointToolTipServer}"
+                  ToolTip="{x:Static languages:Core.SharepointToolTipServer}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
@@ -81,7 +81,7 @@
                   IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
                   DisplayMemberPath="FullName"
                   SelectedItem="{Binding SelectedList, Mode=TwoWay}"
-                  ToolTip="{x:Static help:HelpTextResources.SharepointToolTipList}"
+                  ToolTip="{x:Static languages:Core.SharepointToolTipList}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
@@ -159,7 +159,7 @@
                                                     MaxHeight="52"
                                                     Margin="0,0,1,1"
                                                     TextWrapping="NoWrap"
-                                                    ToolTip="{x:Static help:HelpTextResources.SharepointToolTipToVariable}"
+                                                    ToolTip="{x:Static languages:Core.SharepointToolTipToVariable}"
                                                     Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>

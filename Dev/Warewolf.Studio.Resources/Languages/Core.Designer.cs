@@ -6581,6 +6581,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter local file or folder path.
+        /// </summary>
+        public static string ReadLocalFolderToolTipFolder {
+            get {
+                return ResourceManager.GetString("ReadLocalFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///        Enter local file or folder path in here.&lt;br/&gt;
         ///        Download to local Example: C:\MyFolder\Help.&lt;br/&gt;

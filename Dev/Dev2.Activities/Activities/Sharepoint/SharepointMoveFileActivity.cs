@@ -177,17 +177,17 @@ namespace Dev2.Activities.Sharepoint
         {
             if (SharepointServerResourceId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(SharepointServerResourceId), @"Please select valid source");
+                throw new ArgumentNullException(SharepointServerResourceId.ToString(), @"Please select valid source");
             }
 
             if (string.IsNullOrEmpty(ServerInputPathFrom))
             {
-                throw new ArgumentNullException(nameof(ServerInputPathFrom), @"Server input path from is not set");
+                throw new ArgumentNullException(ServerInputPathFrom.ToString(), @"Server input path from is not set");
             }
 
             if (string.IsNullOrEmpty(ServerInputPathTo))
             {
-                throw new ArgumentNullException(nameof(ServerInputPathTo), @"Server input path to is not set");
+                throw new ArgumentNullException(ServerInputPathTo.ToString(), @"Server input path to is not set");
             }
         }
 
