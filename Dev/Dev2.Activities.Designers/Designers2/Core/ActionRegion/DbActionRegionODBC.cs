@@ -20,7 +20,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isEnabled;
 
         private Action _sourceChangedAction;
-        private Action _commandTextChangedAction;
         private IDbAction _selectedAction;
         private readonly IDbServiceModel _model;
         private ICollection<IDbAction> _actions;
@@ -64,7 +63,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
-            OnPropertyChanged(@"IsVisible");
+            OnPropertyChanged(@"IsEnabled");
         }
 
         public IDbAction SelectedAction
@@ -154,17 +153,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set
             {
                 _sourceChangedAction = value;
-            }
-        }
-        public Action CommandTextChangedAction
-        {
-            get
-            {
-                return _commandTextChangedAction ?? (() => { });
-            }
-            set
-            {
-                _commandTextChangedAction = value;
             }
         }
         public event SomethingChanged SomethingChanged;

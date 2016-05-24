@@ -115,7 +115,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
@@ -123,7 +123,7 @@
                                     Grid.Column="1"
                                     Grid.Row="0"
                                     ToolTip="{x:Static languages:Core.ManageOdbcServiceActionsTooltip}"
-                                    Height="80"
+                                    Height="Auto"
                                     MinLines="5"
                                     VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
@@ -257,7 +257,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Control Template="{StaticResource NewSelectionGrid}"/>
