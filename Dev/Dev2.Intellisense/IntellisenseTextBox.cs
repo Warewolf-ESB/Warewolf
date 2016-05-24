@@ -1239,9 +1239,10 @@ namespace Dev2.UI
 
                         string errorText = ttErrorBuilder.ToString();
                         _toolTip.Content = string.IsNullOrEmpty(errorText) ? _defaultToolTip : errorText;
-
-                        ToolTip = _toolTip;
-
+                        if (_defaultToolTip != null)
+                        {
+                            ToolTip = _toolTip;
+                        }
                         if(_forcedOpen)
                         {
                             _toolTip.IsOpen = _forcedOpen = false;

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
@@ -15,14 +13,14 @@ using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
-    public class DbActionRegionOdbc : IActionToolRegion<IDbAction>
+    public class DbActionRegionOdbc : IODBCActionToolRegion<IDbAction>
     {
         private readonly ModelItem _modelItem;
         private readonly ISourceToolRegion<IDbSource> _source;
         private bool _isEnabled;
 
-        readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
+        private Action _commandTextChangedAction;
         private IDbAction _selectedAction;
         private readonly IDbServiceModel _model;
         private ICollection<IDbAction> _actions;
@@ -49,25 +47,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             _source = source;
             _source.SomethingChanged += SourceOnSomethingChanged;
             Dependants = new List<IToolRegion>();
-            IsRefreshing = false;
-
-            if (!string.IsNullOrEmpty(CommandText))
-            {
-                IsActionEnabled = true;
-            }
-            RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
-            {
-                IsRefreshing = true;
-                if (_source.SelectedSource != null)
-                {
-                    Actions = model.GetActions(_source.SelectedSource);
-                }
-                IsRefreshing = false;
-            }, CanRefresh);
 
             IsEnabled = true;
             _modelItem = modelItem;
-            _commandText = _modelItem.GetProperty<string>("CommandText");
+            CommandText = _modelItem.GetProperty<string>("CommandText") ?? "";
+            IsActionEnabled = _source != null && _source.SelectedSource != null;
         }
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
@@ -75,27 +59,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             // ReSharper disable once ExplicitCallerInfoArgument
             if (_source != null && _source.SelectedSource != null)
             {
-                SelectedAction = null;
                 CommandText = String.Empty;
                 IsActionEnabled = true;
                 IsEnabled = true;
             }
             // ReSharper disable once ExplicitCallerInfoArgument
             OnPropertyChanged(@"IsVisible");
-        }
-
-        string ProcedureName
-        {
-            get { return _modelItem.GetProperty<string>("ProcedureName"); }
-            set
-            {
-                _modelItem.SetProperty("ProcedureName", value);
-            }
-        }
-
-        public bool CanRefresh()
-        {
-            return SelectedAction != null;
         }
 
         public IDbAction SelectedAction
@@ -106,44 +75,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                if (!Equals(value, _selectedAction) && _selectedAction != null)
-                {
-                    if (!String.IsNullOrEmpty(_selectedAction.Name))
-                        StorePreviousValues(_selectedAction.GetIdentifier());
-                }
-                var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                var region = outputs as OutputsRegion;
-                if (region != null)
-                {
-                    region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                    region.RecordsetName = String.Empty;
-
-                }
-                RestoreIfPrevious(value);
+                _selectedAction = value;
                 OnPropertyChanged();
             }
-        }
-
-        private void RestoreIfPrevious(IDbAction value)
-        {
-            if (IsAPreviousValue(value) && _selectedAction != null)
-            {
-                RestorePreviousValues(value);
-                SetSelectedAction(value);
-            }
-            else
-            {
-                SetSelectedAction(value);
-                SourceChangedAction();
-                OnSomethingChanged(this);
-            }
-            var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
-            if (delegateCommand != null)
-            {
-                delegateCommand.RaiseCanExecuteChanged();
-            }
-
-            _selectedAction = value;
         }
 
         public ICollection<IDbAction> Actions
@@ -181,7 +115,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 IsGenerateOutputsEnabled = !string.IsNullOrWhiteSpace(value);
                 _commandText = value;
-                _modelItem.SetProperty("CommandText", value);
+                _modelItem.SetProperty("CommandText", value);                
+                OnSomethingChanged(this);
                 OnPropertyChanged();
             }
         }
@@ -219,6 +154,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set
             {
                 _sourceChangedAction = value;
+            }
+        }
+        public Action CommandTextChangedAction
+        {
+            get
+            {
+                return _commandTextChangedAction ?? (() => { });
+            }
+            set
+            {
+                _commandTextChangedAction = value;
             }
         }
         public event SomethingChanged SomethingChanged;
@@ -270,37 +216,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #endregion
 
         #region Implementation of IActionToolRegion<IDbAction>
-
-        private void SetSelectedAction(IDbAction value)
-        {
-            if (value != null)
-            {
-                _selectedAction = value;
-                SavedAction = value;
-                ProcedureName = value.Name;
-            }
-
-            OnPropertyChanged("SelectedAction");
-        }
-        private void StorePreviousValues(string name)
-        {
-            _previousRegions.Remove(name);
-            _previousRegions[name] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
-        }
-
-        private void RestorePreviousValues(IDbAction value)
-        {
-            var toRestore = _previousRegions[value.Name];
-            foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
-            {
-                toolRegion.Item1.RestoreRegion(toolRegion.Item2);
-            }
-        }
-
-        private bool IsAPreviousValue(IDbAction value)
-        {
-            return _previousRegions.Keys.Any(a => a == value.Name);
-        }
 
         public IList<string> Errors
         {
