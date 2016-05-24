@@ -10,7 +10,6 @@
 */
 
 using System;
-using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -29,9 +28,56 @@ namespace Dev2.Runtime.Hosting
             Service = service;
             ResourceID = service.ID == Guid.Empty ? Guid.NewGuid() : service.ID;
             ResourceName = service.Name;
-            ResourceType = ResourceType.ReservedService;
+            ResourceType = "ReservedService";
             ResourcePath = service.Name;
             DataList = service.DataListSpecification;
         }
+
+        #region Overrides of Resource
+
+        public override bool IsSource
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsReservedService
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool IsServer
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

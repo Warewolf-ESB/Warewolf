@@ -15,7 +15,6 @@ using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -65,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var itemToMove = ServerExplorerRepo.Find(Guid.Parse(itemToBeRenamed.ToString())) ?? ServerExplorerRepo.Find(a => a.ResourcePath == itemToBeRenamedPath.ToString());
                 Dev2Logger.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToBeRenamed, newPath));
                 item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);
-                if(item.Status==ExecStatus.Success && itemToMove.ResourceType==ResourceType.Folder)
+                if(item.Status==ExecStatus.Success && itemToMove.ResourceType=="Folder")
                 {
                     if (Directory.Exists(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath)))
                           Directory.Delete(ServerExplorerRepository.DirectoryStructureFromPath(itemToMove.ResourcePath),true);

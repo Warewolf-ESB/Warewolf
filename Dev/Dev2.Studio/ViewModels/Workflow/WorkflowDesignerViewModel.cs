@@ -265,7 +265,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData();
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
-                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.JSON);
+                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.Json);
                 if (workflowUri != null)
                 {
                     _workflowLink = workflowUri.ToString();
@@ -453,7 +453,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         // ReSharper restore ExcessiveIndentation
         // ReSharper restore MethodTooLong
         {
-            for (int i = 0; i < addedItems.Count(); i++)
+            for (int i = 0; i < addedItems.Count; i++)
             {
                 var mi = addedItems.ToList()[i];
 
@@ -653,7 +653,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
-            FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         protected void InitializeFlowDecision(ModelItem mi)
@@ -662,7 +663,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
-            FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         public void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
@@ -848,11 +850,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var property = flowNode.Properties[propertyName];
                 if (property != null)
                 {
-                    var activity = property.ComputedValue;
-                    if (activity != null)
+                    if (!string.IsNullOrEmpty(_expressionString))
                     {
-                        workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
+                        workflowFields = GetDecisionElements(_expressionString, DataListSingleton.ActiveDataList);
                     }
+                    else
+                    {
+                        var activity = property.ComputedValue;
+                        if (activity != null)
+                        {
+                            workflowFields = GetDecisionElements((activity as dynamic).ExpressionText, DataListSingleton.ActiveDataList);
+                        }
+                    }                    
                 }
                 else
                 {
@@ -1578,7 +1587,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Adds the missing with no pop up and find unused data list items.
         /// </summary>
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
-        {           
+        {    
+               
         }
 
         /// <summary>
@@ -1705,13 +1715,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     // Handle Switch Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowSwitch<string>))
                     {
-                        FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                     }
 
                     //// Handle Decision Edits
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowDecision))
                     {
-                        FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
+                        AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                     }
                 }
 
@@ -1751,11 +1763,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool dropOccured = true;
             SetLastDroppedPoint(e);
             DataObject = e.Data.GetData(typeof(ExplorerItemViewModel));
-            if (DataObject != null)
+            if (DataObject != null || e.Data != null)
             {
                 IsItemDragged.Instance.IsDragged = true;
             }
-
+            
             var isWorkflow = e.Data.GetData("WorkflowItemTypeNameFormat") as string;
             if (isWorkflow != null)
             {
@@ -1791,6 +1803,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ResourceModel.IsWorkflowSaved = false;
                     NotifyOfPropertyChange(() => DisplayName);
                 }
+            }
+            else
+            {
+                IsItemDragged.Instance.IsDragged = false;
             }
             _resourcePickerDialog = null;
 
@@ -1831,6 +1847,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _firstWorkflowChange;
         IAsyncWorker _asyncWorker;
         private readonly IExternalProcessExecutor _executor;
+        private string _expressionString;
 
         /// <summary>
         /// Models the service model changed.

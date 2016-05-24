@@ -1151,8 +1151,35 @@ namespace Dev2.UI
 
 
 
-                        ToolTip = _toolTip;
+                        if(text.Contains("[[") && text.Contains("]]"))
+                        {
+                            if(FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
+                            {
+                                if(!(text.Contains("(") && text.Contains(")")))
+                                {
+                                    hasError = true;
+                                    ttErrorBuilder.AppendLine("Scalar is not allowed");
+                                }
+                            }
+                            else if(FilterType == enIntellisensePartType.ScalarsOnly)
+                            {
+                                if(text.Contains("(") && text.Contains(")"))
+                                {
+                                    hasError = true;
+                                    ttErrorBuilder.AppendLine("Recordset is not allowed");
+                                }
+                            }
+                        }
 
+                        _lastResultHasError = hasError;
+                        _fromPopup = false;
+
+                        string errorText = ttErrorBuilder.ToString();
+                        _toolTip.Content = string.IsNullOrEmpty(errorText) ? _defaultToolTip : errorText;
+                        if (_defaultToolTip != null)
+                        {
+                            ToolTip = _toolTip;
+                        }
                         if (_forcedOpen)
                         {
                             _toolTip.IsOpen = _forcedOpen = false;

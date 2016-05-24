@@ -93,7 +93,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table1.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -133,7 +133,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table3.AddRow(new string[] {
                         "[[A]] = @",
                         "String",
@@ -173,7 +173,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table5.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -213,7 +213,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table7.AddRow(new string[] {
                         "[[A]] = 011110",
                         "String",
@@ -253,7 +253,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table9.AddRow(new string[] {
                         "[[A]] = 011110",
                         "String",
@@ -293,7 +293,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table11.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -333,7 +333,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table13.AddRow(new string[] {
                         "[[A]] = 2010-01-10",
                         "String",
@@ -373,7 +373,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table15.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "String",
@@ -413,7 +413,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table17.AddRow(new string[] {
                         "[[A]] = testmail@freemail.net",
                         "String",
@@ -453,7 +453,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table19.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "String",
@@ -493,7 +493,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table21.AddRow(new string[] {
                         "[[A]] = 1E",
                         "String",
@@ -533,7 +533,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table23.AddRow(new string[] {
                         "[[A]] = KLM",
                         "String",
@@ -573,7 +573,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table25.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -613,7 +613,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table27.AddRow(new string[] {
                         "[[A]] = 3R",
                         "String",
@@ -653,7 +653,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table29.AddRow(new string[] {
                         "[[A]] = tshepo.ntlhokoa@dev2.co.za",
                         "String",
@@ -693,7 +693,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table31.AddRow(new string[] {
                         "[[A]] = 787877787",
                         "String",
@@ -733,7 +733,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table33.AddRow(new string[] {
                         "[[A]] = Hello Africa",
                         "String",
@@ -773,7 +773,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table35.AddRow(new string[] {
                         "[[A]] = 3000",
                         "String",
@@ -813,7 +813,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table37.AddRow(new string[] {
                         "[[A]] = <A></A>",
                         "String",
@@ -853,7 +853,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table39.AddRow(new string[] {
                         "[[A]] = @",
                         "String",
@@ -893,7 +893,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table41.AddRow(new string[] {
                         "[[A]] = @#$",
                         "String",
@@ -933,7 +933,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table43.AddRow(new string[] {
                         "[[A]] = Hello",
                         "String",
@@ -973,7 +973,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table45.AddRow(new string[] {
                         "[[A]] = 011110",
                         "String",
@@ -1013,7 +1013,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table47.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -1053,7 +1053,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table49.AddRow(new string[] {
                         "[[A]] = dHNoZXBv",
                         "String",
@@ -1093,7 +1093,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table51.AddRow(new string[] {
                         "[[A]] = 0111100",
                         "String",
@@ -1133,7 +1133,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table53.AddRow(new string[] {
                         "[[A]] = Gracious",
                         "String",
@@ -1173,7 +1173,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table55.AddRow(new string[] {
                         "[[A]] = 2010-01-10",
                         "String",
@@ -1213,7 +1213,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table57.AddRow(new string[] {
                         "[[A]] = Graciuos",
                         "String",
@@ -1253,7 +1253,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table59.AddRow(new string[] {
                         "[[A]] = testmail@freemail.com",
                         "String",
@@ -1293,7 +1293,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table61.AddRow(new string[] {
                         "[[A]] = 0111000",
                         "String",
@@ -1333,7 +1333,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table63.AddRow(new string[] {
                         "[[A]] = 1E",
                         "String",
@@ -1373,7 +1373,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table65.AddRow(new string[] {
                         "[[A]] = Red sox",
                         "String",
@@ -1413,7 +1413,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table67.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -1453,7 +1453,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table69.AddRow(new string[] {
                         "[[A]] = 6",
                         "String",
@@ -1493,7 +1493,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table71.AddRow(new string[] {
                         "[[A]] = tshepo.ntlhokoa@dev2.co.za",
                         "String",
@@ -1533,7 +1533,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table73.AddRow(new string[] {
                         "[[A]] = 30",
                         "String",
@@ -1573,7 +1573,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table75.AddRow(new string[] {
                         "[[A]] = Gracious",
                         "String",
@@ -1613,7 +1613,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table77.AddRow(new string[] {
                         "[[A]] = A A",
                         "String",
@@ -1653,7 +1653,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
             table79.AddRow(new string[] {
                         "[[A]] = <A></A>",
                         "String",
@@ -1667,6 +1667,62 @@ this.ScenarioSetup(scenarioInfo);
                         "NO"});
 #line 626
  testRunner.And("the debug output as", ((string)(null)), table80, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void DecideIfVariableAIsBetweenVariableBAndCTrue()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)", ((string[])(null)));
+#line 630
+this.ScenarioSetup(scenarioInfo);
+#line 631
+ testRunner.Given("a decision variable \"[[A]]\" value \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 632
+ testRunner.And("a decision variable \"[[B]]\" value \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 633
+ testRunner.And("a decision variable \"[[C]]\" value \"40\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 634
+ testRunner.And("check if \"[[A]]\" \"IsBetween\" \"[[B]]\" and \"[[C]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 635
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 636
+ testRunner.Then("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 637
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require all decisions to be true"});
+            table81.AddRow(new string[] {
+                        "[[A]] = 30",
+                        "",
+                        ""});
+            table81.AddRow(new string[] {
+                        "[[B]] = 20",
+                        "",
+                        ""});
+            table81.AddRow(new string[] {
+                        "[[C]] = 40",
+                        "",
+                        ""});
+            table81.AddRow(new string[] {
+                        "",
+                        "String",
+                        "YES"});
+#line 638
+ testRunner.Then("the debug inputs as", ((string)(null)), table81, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table82.AddRow(new string[] {
+                        "YES"});
+#line 644
+ testRunner.And("the debug output as", ((string)(null)), table82, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1694,35 +1750,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 655
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table81.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table83.AddRow(new string[] {
                         "[[A]] = 20",
                         "",
                         ""});
-            table81.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "[[B]] = 30",
                         "",
                         ""});
-            table81.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "[[C]] = 40",
                         "",
                         ""});
-            table81.AddRow(new string[] {
+            table83.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 656
- testRunner.Then("the debug inputs as", ((string)(null)), table81, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table83, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table82.AddRow(new string[] {
+            table84.AddRow(new string[] {
                         "YES"});
 #line 662
- testRunner.And("the debug output as", ((string)(null)), table82, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table84, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1750,35 +1806,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 673
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table83.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table85.AddRow(new string[] {
                         "[[A]] = 20",
                         "",
                         ""});
-            table83.AddRow(new string[] {
+            table85.AddRow(new string[] {
                         "[[B]] = 30",
                         "",
                         ""});
-            table83.AddRow(new string[] {
+            table85.AddRow(new string[] {
                         "[[C]] = 40",
                         "",
                         ""});
-            table83.AddRow(new string[] {
+            table85.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 674
- testRunner.Then("the debug inputs as", ((string)(null)), table83, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table85, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table84.AddRow(new string[] {
+            table86.AddRow(new string[] {
                         "NO"});
 #line 680
- testRunner.And("the debug output as", ((string)(null)), table84, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table86, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1806,35 +1862,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 691
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table85.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table87.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table85.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "[[B]] = 20",
                         "",
                         ""});
-            table85.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "[[C]] = 40",
                         "",
                         ""});
-            table85.AddRow(new string[] {
+            table87.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 692
- testRunner.Then("the debug inputs as", ((string)(null)), table85, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table87, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table86.AddRow(new string[] {
+            table88.AddRow(new string[] {
                         "NO"});
 #line 698
- testRunner.And("the debug output as", ((string)(null)), table86, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table88, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1868,35 +1924,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 711
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table87.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table89.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table87.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[B]] = 30",
                         "",
                         ""});
-            table87.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "[[C]] = 30",
                         "",
                         ""});
-            table87.AddRow(new string[] {
+            table89.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 712
- testRunner.Then("the debug inputs as", ((string)(null)), table87, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table89, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table88.AddRow(new string[] {
+            table90.AddRow(new string[] {
                         "YES"});
 #line 718
- testRunner.And("the debug output as", ((string)(null)), table88, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table90, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1928,35 +1984,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 731
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table89.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table91.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table89.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[B]] = 30",
                         "",
                         ""});
-            table89.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "[[C]] = 31",
                         "",
                         ""});
-            table89.AddRow(new string[] {
+            table91.AddRow(new string[] {
                         "",
                         "String",
                         "NO"});
 #line 732
- testRunner.Then("the debug inputs as", ((string)(null)), table89, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table91, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table90.AddRow(new string[] {
+            table92.AddRow(new string[] {
                         "YES"});
 #line 738
- testRunner.And("the debug output as", ((string)(null)), table90, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table92, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1982,27 +2038,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 748
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table91.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table93.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table91.AddRow(new string[] {
+            table93.AddRow(new string[] {
                         "[[B]] = 30",
                         "String",
                         "YES"});
 #line 749
- testRunner.Then("the debug inputs as", ((string)(null)), table91, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table93, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table92.AddRow(new string[] {
+            table94.AddRow(new string[] {
                         "YES"});
 #line 753
- testRunner.And("the debug output as", ((string)(null)), table92, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table94, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2028,27 +2084,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 763
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table93.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table95.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table93.AddRow(new string[] {
+            table95.AddRow(new string[] {
                         "[[B]] = 40",
                         "String",
                         "YES"});
 #line 764
- testRunner.Then("the debug inputs as", ((string)(null)), table93, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table95, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table94.AddRow(new string[] {
+            table96.AddRow(new string[] {
                         "NO"});
 #line 768
- testRunner.And("the debug output as", ((string)(null)), table94, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table96, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2074,27 +2130,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 779
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table95.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table97.AddRow(new string[] {
                         "[[A]] = 40",
                         "",
                         ""});
-            table95.AddRow(new string[] {
+            table97.AddRow(new string[] {
                         "[[B]] = 30",
                         "String",
                         "YES"});
 #line 780
- testRunner.Then("the debug inputs as", ((string)(null)), table95, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table97, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table96.AddRow(new string[] {
+            table98.AddRow(new string[] {
                         "YES"});
 #line 784
- testRunner.And("the debug output as", ((string)(null)), table96, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table98, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2120,27 +2176,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 794
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table97.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table99.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table97.AddRow(new string[] {
+            table99.AddRow(new string[] {
                         "[[B]] = 40",
                         "String",
                         "YES"});
 #line 795
- testRunner.Then("the debug inputs as", ((string)(null)), table97, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table99, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table98.AddRow(new string[] {
+            table100.AddRow(new string[] {
                         "NO"});
 #line 799
- testRunner.And("the debug output as", ((string)(null)), table98, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table100, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2166,27 +2222,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 809
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table99.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table101.AddRow(new string[] {
                         "[[A]] = 20",
                         "",
                         ""});
-            table99.AddRow(new string[] {
+            table101.AddRow(new string[] {
                         "[[B]] = 30",
                         "String",
                         "YES"});
 #line 810
- testRunner.Then("the debug inputs as", ((string)(null)), table99, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table101, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table100.AddRow(new string[] {
+            table102.AddRow(new string[] {
                         "YES"});
 #line 814
- testRunner.And("the debug output as", ((string)(null)), table100, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table102, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2212,27 +2268,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 825
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table101.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table103.AddRow(new string[] {
                         "[[A]] = 70",
                         "",
                         ""});
-            table101.AddRow(new string[] {
+            table103.AddRow(new string[] {
                         "[[B]] = 40",
                         "String",
                         "YES"});
 #line 826
- testRunner.Then("the debug inputs as", ((string)(null)), table101, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table103, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table102.AddRow(new string[] {
+            table104.AddRow(new string[] {
                         "NO"});
 #line 830
- testRunner.And("the debug output as", ((string)(null)), table102, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table104, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2258,27 +2314,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 840
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table103.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table105.AddRow(new string[] {
                         "[[A]] = 38",
                         "",
                         ""});
-            table103.AddRow(new string[] {
+            table105.AddRow(new string[] {
                         "[[B]] = 30",
                         "String",
                         "YES"});
 #line 841
- testRunner.Then("the debug inputs as", ((string)(null)), table103, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table105, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table104.AddRow(new string[] {
+            table106.AddRow(new string[] {
                         "YES"});
 #line 845
- testRunner.And("the debug output as", ((string)(null)), table104, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table106, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2304,27 +2360,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 856
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table105.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table107.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table105.AddRow(new string[] {
+            table107.AddRow(new string[] {
                         "[[B]] = 30",
                         "String",
                         "YES"});
 #line 857
- testRunner.Then("the debug inputs as", ((string)(null)), table105, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table107, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table106 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table106.AddRow(new string[] {
+            table108.AddRow(new string[] {
                         "NO"});
 #line 861
- testRunner.And("the debug output as", ((string)(null)), table106, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table108, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2350,27 +2406,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 871
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table107.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table109.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table107.AddRow(new string[] {
+            table109.AddRow(new string[] {
                         "[[B]] = 30",
                         "String",
                         "YES"});
 #line 872
- testRunner.Then("the debug inputs as", ((string)(null)), table107, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table109, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table108 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table108.AddRow(new string[] {
+            table110.AddRow(new string[] {
                         "YES"});
 #line 876
- testRunner.And("the debug output as", ((string)(null)), table108, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table110, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2396,27 +2452,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 886
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table109 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table109.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table111.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table109.AddRow(new string[] {
+            table111.AddRow(new string[] {
                         "[[B]] = 40",
                         "String",
                         "YES"});
 #line 887
- testRunner.Then("the debug inputs as", ((string)(null)), table109, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table111, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table110 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table110.AddRow(new string[] {
+            table112.AddRow(new string[] {
                         "NO"});
 #line 891
- testRunner.And("the debug output as", ((string)(null)), table110, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table112, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2442,27 +2498,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 901
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table111 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table111.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table113.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table111.AddRow(new string[] {
+            table113.AddRow(new string[] {
                         "[[B]] = 30",
                         "String",
                         "YES"});
 #line 902
- testRunner.Then("the debug inputs as", ((string)(null)), table111, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table113, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table112 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table112.AddRow(new string[] {
+            table114.AddRow(new string[] {
                         "YES"});
 #line 906
- testRunner.And("the debug output as", ((string)(null)), table112, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table114, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2488,27 +2544,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 916
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table113 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table113.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table115.AddRow(new string[] {
                         "[[A]] = 60",
                         "",
                         ""});
-            table113.AddRow(new string[] {
+            table115.AddRow(new string[] {
                         "[[B]] = 40",
                         "String",
                         "YES"});
 #line 917
- testRunner.Then("the debug inputs as", ((string)(null)), table113, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table115, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table114 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table114.AddRow(new string[] {
+            table116.AddRow(new string[] {
                         "NO"});
 #line 921
- testRunner.And("the debug output as", ((string)(null)), table114, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table116, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2534,27 +2590,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 932
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table115 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table115.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table117.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "",
                         ""});
-            table115.AddRow(new string[] {
+            table117.AddRow(new string[] {
                         "[[B]] = Hello",
                         "String",
                         "YES"});
 #line 933
- testRunner.Then("the debug inputs as", ((string)(null)), table115, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table117, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table116 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table116.AddRow(new string[] {
+            table118.AddRow(new string[] {
                         "YES"});
 #line 937
- testRunner.And("the debug output as", ((string)(null)), table116, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table118, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2580,27 +2636,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 948
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table117 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table117.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table119.AddRow(new string[] {
                         "[[A]] = Hello Africa",
                         "",
                         ""});
-            table117.AddRow(new string[] {
+            table119.AddRow(new string[] {
                         "[[B]] = World",
                         "String",
                         "YES"});
 #line 949
- testRunner.Then("the debug inputs as", ((string)(null)), table117, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table119, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table118 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table118.AddRow(new string[] {
+            table120.AddRow(new string[] {
                         "NO"});
 #line 953
- testRunner.And("the debug output as", ((string)(null)), table118, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table120, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2626,27 +2682,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 964
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table119 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table119.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table121.AddRow(new string[] {
                         "[[A]] = Hello Africa",
                         "",
                         ""});
-            table119.AddRow(new string[] {
+            table121.AddRow(new string[] {
                         "[[B]] = Africa",
                         "String",
                         "YES"});
 #line 965
- testRunner.Then("the debug inputs as", ((string)(null)), table119, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table121, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table120 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table120.AddRow(new string[] {
+            table122.AddRow(new string[] {
                         "YES"});
 #line 969
- testRunner.And("the debug output as", ((string)(null)), table120, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table122, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2672,27 +2728,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 979
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table121 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table121.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table123.AddRow(new string[] {
                         "[[A]] = Hello World",
                         "",
                         ""});
-            table121.AddRow(new string[] {
+            table123.AddRow(new string[] {
                         "[[B]] = Africa",
                         "String",
                         "YES"});
 #line 980
- testRunner.Then("the debug inputs as", ((string)(null)), table121, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table123, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table122 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table122.AddRow(new string[] {
+            table124.AddRow(new string[] {
                         "NO"});
 #line 984
- testRunner.And("the debug output as", ((string)(null)), table122, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table124, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2718,27 +2774,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 995
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table123 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table123.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table125.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table123.AddRow(new string[] {
+            table125.AddRow(new string[] {
                         "[[B]] = fantastic",
                         "String",
                         "YES"});
 #line 996
- testRunner.Then("the debug inputs as", ((string)(null)), table123, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table125, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table124 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table124.AddRow(new string[] {
+            table126.AddRow(new string[] {
                         "YES"});
 #line 1000
- testRunner.And("the debug output as", ((string)(null)), table124, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table126, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2764,37 +2820,37 @@ this.ScenarioSetup(scenarioInfo);
 #line 1011
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table125 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table125.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table127.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table125.AddRow(new string[] {
+            table127.AddRow(new string[] {
                         "[[B]] = terrible",
                         "String",
                         "YES"});
 #line 1012
- testRunner.Then("the debug inputs as", ((string)(null)), table125, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table127, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table126 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table126.AddRow(new string[] {
+            table128.AddRow(new string[] {
                         "NO"});
 #line 1016
- testRunner.And("the debug output as", ((string)(null)), table126, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table128, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\'t Starts With variable [[B]] (True)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\"t Starts With variable [[B]] (True)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
         public virtual void DecideIfVariableADoesnTStartsWithVariableBTrue()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\'t Starts With variable [[B]] (True)", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\"t Starts With variable [[B]] (True)", ((string[])(null)));
 #line 1021
 this.ScenarioSetup(scenarioInfo);
 #line 1022
@@ -2810,37 +2866,37 @@ this.ScenarioSetup(scenarioInfo);
 #line 1027
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table127 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table127.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table129.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table127.AddRow(new string[] {
+            table129.AddRow(new string[] {
                         "[[B]] = country",
                         "String",
                         "YES"});
 #line 1028
- testRunner.Then("the debug inputs as", ((string)(null)), table127, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table129, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table128 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table128.AddRow(new string[] {
+            table130.AddRow(new string[] {
                         "YES"});
 #line 1032
- testRunner.And("the debug output as", ((string)(null)), table128, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table130, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\'t Starts With variable [[B]] (False)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\"t Starts With variable [[B]] (False)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
         public virtual void DecideIfVariableADoesnTStartsWithVariableBFalse()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\'t Starts With variable [[B]] (False)", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\"t Starts With variable [[B]] (False)", ((string[])(null)));
 #line 1037
 this.ScenarioSetup(scenarioInfo);
 #line 1038
@@ -2856,37 +2912,37 @@ this.ScenarioSetup(scenarioInfo);
 #line 1043
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table129 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table129.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table131.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table129.AddRow(new string[] {
+            table131.AddRow(new string[] {
                         "[[B]] = South",
                         "String",
                         "YES"});
 #line 1044
- testRunner.Then("the debug inputs as", ((string)(null)), table129, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table131, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table130 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table132 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table130.AddRow(new string[] {
+            table132.AddRow(new string[] {
                         "NO"});
 #line 1048
- testRunner.And("the debug output as", ((string)(null)), table130, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table132, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\'t Ends With variable [[B]] (True)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\"t Ends With variable [[B]] (True)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
         public virtual void DecideIfVariableADoesnTEndsWithVariableBTrue()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\'t Ends With variable [[B]] (True)", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\"t Ends With variable [[B]] (True)", ((string[])(null)));
 #line 1052
 this.ScenarioSetup(scenarioInfo);
 #line 1053
@@ -2902,37 +2958,37 @@ this.ScenarioSetup(scenarioInfo);
 #line 1058
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table131 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table131.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table133.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table131.AddRow(new string[] {
+            table133.AddRow(new string[] {
                         "[[B]] = continent",
                         "String",
                         "YES"});
 #line 1059
- testRunner.Then("the debug inputs as", ((string)(null)), table131, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table133, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table132 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table132.AddRow(new string[] {
+            table134.AddRow(new string[] {
                         "YES"});
 #line 1063
- testRunner.And("the debug output as", ((string)(null)), table132, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table134, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\'t Ends With variable [[B]] (False)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\"t Ends With variable [[B]] (False)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
         public virtual void DecideIfVariableADoesnTEndsWithVariableBFalse()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\'t Ends With variable [[B]] (False)", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\"t Ends With variable [[B]] (False)", ((string[])(null)));
 #line 1067
 this.ScenarioSetup(scenarioInfo);
 #line 1068
@@ -2948,37 +3004,37 @@ this.ScenarioSetup(scenarioInfo);
 #line 1073
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table133 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table133.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table135.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table133.AddRow(new string[] {
+            table135.AddRow(new string[] {
                         "[[B]] = country",
                         "String",
                         "YES"});
 #line 1074
- testRunner.Then("the debug inputs as", ((string)(null)), table133, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table135, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table134 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table134.AddRow(new string[] {
+            table136.AddRow(new string[] {
                         "NO"});
 #line 1078
- testRunner.And("the debug output as", ((string)(null)), table134, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table136, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\'t Contains variable [[B]] (True)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\"t Contains variable [[B]] (True)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
         public virtual void DecideIfVariableADoesnTContainsVariableBTrue()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\'t Contains variable [[B]] (True)", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\"t Contains variable [[B]] (True)", ((string[])(null)));
 #line 1082
 this.ScenarioSetup(scenarioInfo);
 #line 1083
@@ -2994,37 +3050,37 @@ this.ScenarioSetup(scenarioInfo);
 #line 1088
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table135 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table135.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table137.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table135.AddRow(new string[] {
+            table137.AddRow(new string[] {
                         "[[B]] = Nile",
                         "String",
                         "YES"});
 #line 1089
- testRunner.Then("the debug inputs as", ((string)(null)), table135, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table137, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table136 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table138 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table136.AddRow(new string[] {
+            table138.AddRow(new string[] {
                         "YES"});
 #line 1093
- testRunner.And("the debug output as", ((string)(null)), table136, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table138, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\'t Contains variable [[B]] (False)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if variable [[A]] Doesn\"t Contains variable [[B]] (False)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
         public virtual void DecideIfVariableADoesnTContainsVariableBFalse()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\'t Contains variable [[B]] (False)", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if variable [[A]] Doesn\"t Contains variable [[B]] (False)", ((string[])(null)));
 #line 1097
 this.ScenarioSetup(scenarioInfo);
 #line 1098
@@ -3040,27 +3096,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 1103
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table137 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table139 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table137.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table139.AddRow(new string[] {
                         "[[A]] = South Africa is a fantastic country",
                         "",
                         ""});
-            table137.AddRow(new string[] {
+            table139.AddRow(new string[] {
                         "[[B]] = Africa",
                         "String",
                         "YES"});
 #line 1104
- testRunner.Then("the debug inputs as", ((string)(null)), table137, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table139, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table138 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table140 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table138.AddRow(new string[] {
+            table140.AddRow(new string[] {
                         "NO"});
 #line 1108
- testRunner.And("the debug output as", ((string)(null)), table138, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table140, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3083,23 +3139,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1117
  testRunner.Then("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table139 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table141 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table139.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table141.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 1118
- testRunner.Then("the debug inputs as", ((string)(null)), table139, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table141, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table140 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table142 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table140.AddRow(new string[] {
+            table142.AddRow(new string[] {
                         "YES"});
 #line 1121
- testRunner.And("the debug output as", ((string)(null)), table140, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table142, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3121,23 +3177,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1129
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table141 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table143 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table141.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table143.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 1130
- testRunner.Then("the debug inputs as", ((string)(null)), table141, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table143, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table142 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table144 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table142.AddRow(new string[] {
+            table144.AddRow(new string[] {
                         "NO"});
 #line 1133
- testRunner.And("the debug output as", ((string)(null)), table142, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table144, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3159,23 +3215,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1141
  testRunner.Then("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table143 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table145 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table143.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table145.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 1142
- testRunner.Then("the debug inputs as", ((string)(null)), table143, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table145, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table144 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table146 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table144.AddRow(new string[] {
+            table146.AddRow(new string[] {
                         "YES"});
 #line 1145
- testRunner.And("the debug output as", ((string)(null)), table144, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table146, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3200,23 +3256,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1154
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table145 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table147 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table145.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table147.AddRow(new string[] {
                         "",
                         "String",
                         "YES"});
 #line 1155
- testRunner.Then("the debug inputs as", ((string)(null)), table145, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table147, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table146 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table148 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table146.AddRow(new string[] {
+            table148.AddRow(new string[] {
                         "NO"});
 #line 1158
- testRunner.And("the debug output as", ((string)(null)), table146, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table148, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3240,23 +3296,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1167
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table147 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table149 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table147.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table149.AddRow(new string[] {
                         "[[A]] = 123 234",
                         "String",
                         "YES"});
 #line 1168
- testRunner.Then("the debug inputs as", ((string)(null)), table147, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table149, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table148 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table150 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table148.AddRow(new string[] {
+            table150.AddRow(new string[] {
                         "NO"});
 #line 1171
- testRunner.And("the debug output as", ((string)(null)), table148, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table150, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3280,23 +3336,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1180
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table149 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table151 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table149.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table151.AddRow(new string[] {
                         "[[rec().a]] = 1",
                         "String",
                         "YES"});
 #line 1181
- testRunner.Then("the debug inputs as", ((string)(null)), table149, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table151, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table150 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table150.AddRow(new string[] {
+            table152.AddRow(new string[] {
                         "YES"});
 #line 1184
- testRunner.And("the debug output as", ((string)(null)), table150, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table152, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3320,12 +3376,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 1194
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table151 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table151.AddRow(new string[] {
+            table153.AddRow(new string[] {
                         "NO"});
 #line 1195
- testRunner.And("the debug output as", ((string)(null)), table151, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table153, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3349,12 +3405,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 1204
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table152.AddRow(new string[] {
+            table154.AddRow(new string[] {
                         "NO"});
 #line 1205
- testRunner.And("the debug output as", ((string)(null)), table152, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table154, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3378,19 +3434,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 1214
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
+                        "Require all decisions to be true"});
 #line 1215
- testRunner.Then("the debug inputs as", ((string)(null)), table153, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table155, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table154.AddRow(new string[] {
+            table156.AddRow(new string[] {
                         "NO"});
 #line 1217
- testRunner.And("the debug output as", ((string)(null)), table154, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table156, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3416,23 +3472,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1228
        testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table155.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table157.AddRow(new string[] {
                         "[[[[A]]]] =",
                         "String",
                         "YES"});
 #line 1229
-       testRunner.Then("the debug inputs as", ((string)(null)), table155, "Then ");
+       testRunner.Then("the debug inputs as", ((string)(null)), table157, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table156.AddRow(new string[] {
+            table158.AddRow(new string[] {
                         "NO"});
 #line 1232
-       testRunner.And("the debug output as", ((string)(null)), table156, "And ");
+       testRunner.And("the debug output as", ((string)(null)), table158, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3458,23 +3514,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 1242
        testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table157.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table159.AddRow(new string[] {
                         "[[[[A]]]] = 1",
                         "String",
                         "YES"});
 #line 1243
-       testRunner.Then("the debug inputs as", ((string)(null)), table157, "Then ");
+       testRunner.Then("the debug inputs as", ((string)(null)), table159, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table158.AddRow(new string[] {
+            table160.AddRow(new string[] {
                         "YES"});
 #line 1246
-       testRunner.And("the debug output as", ((string)(null)), table158, "And ");
+       testRunner.And("the debug output as", ((string)(null)), table160, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3493,7 +3549,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1255
  testRunner.And(string.Format("check if \"{0}\" \"IsBetween\" \"{1}\" and \"{2}\"", variable1, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1256
- testRunner.And(string.Format("Require All decisions to be True is \"{0}\"", requirement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Require all decisions to be true is \"{0}\"", requirement), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1257
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1258
@@ -3568,53 +3624,47 @@ this.ScenarioSetup(scenarioInfo);
 #line 1272
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table161 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table159.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table161.AddRow(new string[] {
                         "[[A]] = 30",
                         "",
                         ""});
-            table159.AddRow(new string[] {
+            table161.AddRow(new string[] {
                         "[[B]] = \\",
                         "String",
                         "YES"});
 #line 1273
- testRunner.Then("the debug inputs as", ((string)(null)), table159, "Then ");
+ testRunner.Then("the debug inputs as", ((string)(null)), table161, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table162 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table160.AddRow(new string[] {
+            table162.AddRow(new string[] {
                         "NO"});
 #line 1277
- testRunner.And("the debug output as", ((string)(null)), table160, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table162, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         public virtual void EnsuringAllComplexTypeInputsWorkAsExpected(string variable1, string var1, string variable2, string var2, string matchType, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensuring all complex type inputs work as expected", @__tags);
-#line 1283
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensuring all complex type inputs work as expected", exampleTags);
+#line 1282
 this.ScenarioSetup(scenarioInfo);
+#line 1283
+ testRunner.Given(string.Format("a decision variable \"{0}\" value \"{1}\"", variable1, var1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1284
- testRunner.Given(string.Format("a decision variable \'{0}\' value \'{1}\'", variable1, var1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And(string.Format("a decision variable \"{0}\" value \"{1}\"", variable2, var2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1285
- testRunner.And(string.Format("a decision variable \'{0}\' value \'{1}\'", variable2, var2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("is \"{0}\" \"<matchtype>\" \"{1}\"", variable1, variable2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1286
- testRunner.And(string.Format("check if \'{0}\' \'<matchtype>\' \'{1}\'", variable1, variable2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Require all decisions to be true is \"<Requirement>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1287
- testRunner.And("Require All decisions to be True is \'<Requirement>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1288
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1289
+#line 1288
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -3623,7 +3673,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all complex type inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[granparent(1).parent(2).childrenName")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "Lee")]
@@ -3638,7 +3687,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all complex type inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[granparent().parent().Numchildren")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "10")]
@@ -3653,7 +3701,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all complex type inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[granparent(*).parent(*).Numchildren")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "27")]
@@ -3668,7 +3715,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensuring all complex type inputs work as expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:variable1", "[[granparent([[int]]).parent(*).Numchildren")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Var1", "20")]
@@ -3686,34 +3732,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidateThatAVariableIsNullNegative()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Null negative", ((string[])(null)));
-#line 1298
+#line 1297
 this.ScenarioSetup(scenarioInfo);
-#line 1299
+#line 1298
  testRunner.Given("a decision variable \"[[A]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1300
+#line 1299
  testRunner.And("decide if \"[[A]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1301
+#line 1300
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1302
+#line 1301
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table161 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table161.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table163.AddRow(new string[] {
                         "[[A]] = 1",
                         "String",
                         "YES"});
-#line 1303
- testRunner.Then("the debug inputs as", ((string)(null)), table161, "Then ");
+#line 1302
+ testRunner.Then("the debug inputs as", ((string)(null)), table163, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table162 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table164 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table162.AddRow(new string[] {
+            table164.AddRow(new string[] {
                         "NO"});
-#line 1306
-    testRunner.And("the debug output as", ((string)(null)), table162, "And ");
+#line 1305
+    testRunner.And("the debug output as", ((string)(null)), table164, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3724,32 +3770,32 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidateThatAVariableIsNullPositive()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Null Positive", ((string[])(null)));
-#line 1310
+#line 1309
 this.ScenarioSetup(scenarioInfo);
-#line 1311
+#line 1310
  testRunner.Given("decide if \"[[A]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1312
+#line 1311
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1313
+#line 1312
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table163 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table163.AddRow(new string[] {
-                        "[[A]] = [[A]]",
+                        "Require all decisions to be true"});
+            table165.AddRow(new string[] {
+                        "[[A]] =",
                         "String",
                         "YES"});
-#line 1314
- testRunner.Then("the debug inputs as", ((string)(null)), table163, "Then ");
+#line 1313
+ testRunner.Then("the debug inputs as", ((string)(null)), table165, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table164 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table166 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table164.AddRow(new string[] {
+            table166.AddRow(new string[] {
                         "YES"});
-#line 1317
-    testRunner.And("the debug output as", ((string)(null)), table164, "And ");
+#line 1316
+    testRunner.And("the debug output as", ((string)(null)), table166, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3760,52 +3806,154 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidateThatAVariableIsNotNullPositive()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is not Null positive", ((string[])(null)));
-#line 1321
+#line 1320
 this.ScenarioSetup(scenarioInfo);
-#line 1322
+#line 1321
  testRunner.Given("a decision variable \"[[B]]\" value \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1323
+#line 1322
  testRunner.And("decide if \"[[B]]\" \"IsNotNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1324
+#line 1323
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1325
+#line 1324
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table165 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table167 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
-                        "Require All decisions to be True"});
-            table165.AddRow(new string[] {
+                        "Require all decisions to be true"});
+            table167.AddRow(new string[] {
                         "[[B]] = 10",
                         "String",
                         "YES"});
-#line 1326
-  testRunner.Then("the debug inputs as", ((string)(null)), table165, "Then ");
+#line 1325
+  testRunner.Then("the debug inputs as", ((string)(null)), table167, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table166 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table168 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table166.AddRow(new string[] {
+            table168.AddRow(new string[] {
                         "YES"});
-#line 1329
-    testRunner.And("the debug output as", ((string)(null)), table166, "And ");
+#line 1328
+    testRunner.And("the debug output as", ((string)(null)), table168, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Null throws an error")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is Blank positive")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
-        public virtual void NullThrowsAnError()
+        public virtual void ValidateThatAVariableIsBlankPositive()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Null throws an error", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Blank positive", ((string[])(null)));
 #line 1333
 this.ScenarioSetup(scenarioInfo);
 #line 1334
- testRunner.Given("is \"[[A]]\" \"IsEqual\" \"123   234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a decision variable \"[[B]]\" value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 1335
+ testRunner.And("is \"[[B]]\" \"IsEqual\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1336
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1337
- testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table169 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require all decisions to be true"});
+            table169.AddRow(new string[] {
+                        "[[B]] =",
+                        "String",
+                        "YES"});
+#line 1338
+  testRunner.Then("the debug inputs as", ((string)(null)), table169, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table170 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table170.AddRow(new string[] {
+                        "YES"});
+#line 1341
+    testRunner.And("the debug output as", ((string)(null)), table170, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is Blank OR NULL positive 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void ValidateThatAVariableIsBlankORNULLPositive1()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Blank OR NULL positive 1", ((string[])(null)));
+#line 1346
+this.ScenarioSetup(scenarioInfo);
+#line 1347
+ testRunner.Given("a decision variable \"[[B]]\" value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1348
+ testRunner.And("decide if \"[[B]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1349
+ testRunner.And("is \"[[B]]\" \"IsEqual\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1350
+ testRunner.And("the decision mode is \"OR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1351
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1352
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table171 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require all decisions to be true"});
+            table171.AddRow(new string[] {
+                        "[[B]] =",
+                        "String",
+                        "NO"});
+#line 1353
+  testRunner.Then("the debug inputs as", ((string)(null)), table171, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table172 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table172.AddRow(new string[] {
+                        "YES"});
+#line 1356
+    testRunner.And("the debug output as", ((string)(null)), table172, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("validate that a variable is Blank OR NULL positive 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void ValidateThatAVariableIsBlankORNULLPositive2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validate that a variable is Blank OR NULL positive 2", ((string[])(null)));
+#line 1361
+this.ScenarioSetup(scenarioInfo);
+#line 1362
+ testRunner.Given("is \"[[B]]\" \"IsEqual\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1363
+ testRunner.And("decide if \"[[B]]\" \"IsNull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1364
+ testRunner.And("the decision mode is \"OR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1365
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1366
+ testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table173 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require all decisions to be true"});
+            table173.AddRow(new string[] {
+                        "[[B]] =",
+                        "String",
+                        "NO"});
+#line 1367
+  testRunner.Then("the debug inputs as", ((string)(null)), table173, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table174 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table174.AddRow(new string[] {
+                        "YES"});
+#line 1370
+    testRunner.And("the debug output as", ((string)(null)), table174, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

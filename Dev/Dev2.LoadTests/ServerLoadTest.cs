@@ -13,6 +13,7 @@ using System;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Integration.Tests.Load_Tests
 {
     /// <summary>
@@ -21,10 +22,9 @@ namespace Dev2.Integration.Tests.Load_Tests
     [TestClass]
     public class ServerLoadTest
     {
-        const double _ticksPerSec = 10000000;
+        const double TicksPerSec = 10000000;
 
         [TestMethod]
-        [Ignore]
         public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
         {
             string path = ServerSettings.WebserverURI + "Load Test Resources/LargeDataTest";
@@ -32,7 +32,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             DateTime start = DateTime.Now;
             string result = TestHelper.PostDataToWebserver(path);
             DateTime end = DateTime.Now;
-            double duration = (end.Ticks - start.Ticks) / _ticksPerSec;
+            double duration = (end.Ticks - start.Ticks) / TicksPerSec;
 
             const string exp = "<myPrimes index=\"1\"><value>Result</value></myPrimes>"; // Last value in the file
 
@@ -61,7 +61,7 @@ namespace Dev2.Integration.Tests.Load_Tests
             DateTime end = DateTime.Now;
 
 
-            double duration = (end.Ticks - start.Ticks) / _ticksPerSec;
+            double duration = (end.Ticks - start.Ticks) / TicksPerSec;
 
             Console.WriteLine(@"Took " + duration);
             if(duration <= 300.0)

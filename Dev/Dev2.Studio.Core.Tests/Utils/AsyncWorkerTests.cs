@@ -22,7 +22,7 @@ namespace Dev2.Core.Tests.Utils
     // ReSharper disable InconsistentNaming
     public class AsyncWorkerTests
     {
-        [TestMethod, Ignore]
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AsyncWorker_Start")]
         public async Task AsyncWorker_Start_BackgroundWorkerDoesNotThrowAnException_ForegroundWorkIsCalled()
@@ -47,7 +47,7 @@ namespace Dev2.Core.Tests.Utils
             Assert.IsFalse(onerrorWorkIsCalled);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AsyncWorker_Start")]
         public async Task AsyncWorker_Start_BackgroundWorkerThrowAnException_ErrorWorkIsCalled()

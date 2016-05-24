@@ -12,7 +12,6 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 
 // ReSharper disable CheckNamespace
@@ -40,11 +39,11 @@ namespace Dev2.Studio.AppResources.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var userPermissions = values[0] as Permissions?;
-            var resourceType = values[1] as ResourceType?;
-            if(resourceType != null && resourceType <= ResourceType.Folder)
-            {
-                return true;
-            }
+            var resourceType = values[1].ToString();
+            //if(resourceType <= ResourceType.Folder)
+            //{
+            //    return true;
+            //}
             if(!userPermissions.HasValue)
             {
                 return DefaultValue;

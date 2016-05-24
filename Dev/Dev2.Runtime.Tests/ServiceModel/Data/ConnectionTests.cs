@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Xml.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -38,7 +37,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             const string address = "http://localhost:3142/dsf";
             var conn = new Connection
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
                 Address = address
             };
 
@@ -62,7 +61,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             const string expected = address + "dsf";
             var conn = new Connection
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
                 Address = address
             };
 
@@ -84,7 +83,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             const string expected = address + "/dsf";
             var conn = new Connection
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
                 Address = address
             };
 
@@ -138,7 +137,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             var conn = new Connection
             {
-                ResourceType = ResourceType.Server,
+                ResourceType = "Server",
                 Address = address
             };
             var connections = new ConnectionsMock(connectToServerResult);
@@ -458,7 +457,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         private Connection SetupDefaultConnection()
         {
-            Connection testConnection = new Connection { Address = "http://someAddressIMadeUpToTest:7654/Server", AuthenticationType = AuthenticationType.Windows, Password = "secret", ResourceID = Guid.NewGuid(), ResourceName = "TestResourceIMadeUp", ResourcePath = @"host\Server", ResourceType = ResourceType.Server, UserName = @"Domain\User", WebServerPort = 8080 };
+            Connection testConnection = new Connection { Address = "http://someAddressIMadeUpToTest:7654/Server", AuthenticationType = AuthenticationType.Windows, Password = "secret", ResourceID = Guid.NewGuid(), ResourceName = "TestResourceIMadeUp", ResourcePath = @"host\Server", ResourceType = "Server", UserName = @"Domain\User", WebServerPort = 8080 };
 
             return testConnection;
         }

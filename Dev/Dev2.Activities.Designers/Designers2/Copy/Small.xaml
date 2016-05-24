@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Copy"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                                xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
@@ -46,7 +46,7 @@
                                 DefaultText="[[PathToCopy]]"
                                 FilterType="All"
                                 WrapInBrackets="False"
-                                ToolTip="{x:Static help:HelpTextResources.CopyToolTipFileFolder}"
+                                ToolTip="{x:Static languages:Core.CopyToolTipFileFolder}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.InputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
@@ -73,7 +73,7 @@
                                  WrapInBrackets="False" 
                                  Margin="{StaticResource ControlBorderTop}"
                                  Text="{Binding Path=ModelItem.OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 ToolTip="{x:Static help:HelpTextResources.CopyToolTipDestination}"
+                                 ToolTip="{x:Static languages:Core.CopyToolTipDestination}"
                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Destinationtxt_AutoID}">
             <ui:IntellisenseTextBox.IntellisenseProvider>
@@ -97,7 +97,7 @@
                                 DefaultText="[[Success]]"
                                 FilterType="All" 
                                 WrapInBrackets="True" 
-                                ToolTip="{x:Static help:HelpTextResources.CopyToolTipResult}"
+                                ToolTip="{x:Static languages:Core.CopyToolTipResult}"
                                 Margin="{StaticResource ControlBorderTop}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

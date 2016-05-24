@@ -10,9 +10,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Studio.Core.Activities.Services;
-
-
+// ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers2.ODBC
 {
     public partial class ODBCDatabaseDesigner
@@ -24,10 +22,8 @@ namespace Dev2.Activities.Designers2.ODBC
 
         protected override ODBCDatabaseDesignerViewModel CreateViewModel()
         {
-            var designerManagementService = Context.Services.GetService<IDesignerManagementService>();
-            return new ODBCDatabaseDesignerViewModel(ModelItem, designerManagementService.GetRootResourceModel());
+            return new ODBCDatabaseDesignerViewModel(ModelItem);
         }
-
     }
 }
 

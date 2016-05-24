@@ -9,7 +9,6 @@ using Dev2;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Interfaces;
@@ -64,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator)
-            : base(ResourceType.ExchangeSource)
+            : base("ExchangeSource")
         {
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
@@ -77,7 +76,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ManageExchangeSourceViewModel()
-            : base(ResourceType.ExchangeSource)
+            : base("ExchangeSource")
         {
 
         }
@@ -390,7 +389,7 @@ namespace Warewolf.Studio.ViewModels
                 Timeout = Timeout,
                 EmailTo = EmailTo,
                 ResourceName = Name,
-                ResourceType = ResourceType.ExchangeSource,
+                ResourceType = "ExchangeSource",
                 Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
                 ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
             };
@@ -407,7 +406,7 @@ namespace Warewolf.Studio.ViewModels
                     Timeout = Timeout,
                     EmailTo = EmailTo,
                     ResourceName = Name,
-                    ResourceType = ResourceType.ExchangeSource,
+                    ResourceType = "ExchangeSource",
                     Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
                     ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
                 }
@@ -419,7 +418,7 @@ namespace Warewolf.Studio.ViewModels
                 _emailServiceSource.UserName = UserName;
                 _emailServiceSource.Password = Password;
                 _emailServiceSource.Timeout = Timeout;
-                _emailServiceSource.ResourceType = ResourceType.ExchangeSource;
+                _emailServiceSource.ResourceType = "ExchangeSource";
                 _emailServiceSource.Name = Name;
                 return _emailServiceSource;
 
@@ -440,7 +439,7 @@ namespace Warewolf.Studio.ViewModels
                 UserName = UserName,
                 Timeout = Timeout,
                 EmailTo = EmailTo,
-                ResourceType = ResourceType.ExchangeSource,
+                ResourceType = "ExchangeSource",
                 ResourceName = ResourceName,
                 Id = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,
                 ResourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID,

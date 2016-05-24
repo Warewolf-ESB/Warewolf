@@ -112,7 +112,10 @@ namespace Dev2.Activities
                 {
                     throw new Exception("invalid selected fields");
                 }
-
+                if(toresultfields.Any(ExecutionEnvironment.IsScalar))
+                {
+                    throw new Exception("'Result' cannot be a scalar. Please use a recordset instead.");
+                }
                 dataObject.Environment.AssignUnique(fromFields, fromResultFieldresultfields, toresultfields, update);
             }
             catch(Exception e)
@@ -195,25 +198,6 @@ namespace Dev2.Activities
             }
 
         }
-
-        //static void UpdateStarNotationColumns(DebugItem itemToAdd)
-        //{
-        //    var groups = itemToAdd.ResultsList.Where(a => DataListUtil.IsValueRecordset(a.Variable) && String.IsNullOrEmpty(a.GroupName)).GroupBy(a => DataListUtil.ExtractRecordsetNameFromValue(a.Variable) + DataListUtil.ExtractFieldNameFromValue(a.Variable));
-
-        //    var maxId = itemToAdd.ResultsList.Count > 0 ? itemToAdd.ResultsList.Max(a => a.GroupIndex) : 0;
-        //    foreach(var g in groups)
-        //    {
-
-        //        foreach(var res in g)
-        //        {
-        //            maxId++;
-        //            res.GroupIndex = maxId;
-        //            res.GroupName = "[[" + DataListUtil.ExtractRecordsetNameFromValue(res.Variable) + "()." + DataListUtil.ExtractFieldNameFromValue(res.Variable) + "]]";
-        //        }
-        //    }
-        //}
-
-
 
         public override enFindMissingType GetFindMissingType()
         {

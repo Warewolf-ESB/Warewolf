@@ -1,5 +1,4 @@
-﻿@ignore
-Feature: OracleServerConnector
+﻿Feature: OracleServerConnector
 	In order to manage my database services
 	As a Warewolf User
 	I want to be shown the database service setup

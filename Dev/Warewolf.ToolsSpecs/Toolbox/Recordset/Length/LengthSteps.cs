@@ -21,35 +21,18 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 using WarewolfParserInterop;
+// ReSharper disable NotAccessedVariable
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
 {
     [Binding]
     public class LengthSteps : RecordSetBases
     {
-        //protected override void BuildDataList()
-        //{
-        //    List<Tuple<string, string>> variableList;
-        //    ScenarioContext.Current.TryGetValue("variableList", out variableList);
-
-        //    if(variableList == null)
-        //    {
-        //        variableList = new List<Tuple<string, string>>();
-        //        ScenarioContext.Current.Add("variableList", variableList);
-        //    }
-
-        //    variableList.Add(new Tuple<string, string>(ResultVariable, ""));
-        //    BuildShapeAndTestData();
-
-
-        //}
-
         protected override void BuildDataList()
         {
             var shape = new XElement("root");
             var data = new XElement("root");
 
-            // ReSharper disable NotAccessedVariable
             int row = 0;
             dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -70,7 +53,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
                                 DataObject.Environment.AssignWithFrame(new AssignValue(  DataListUtil.AddBracketsToValueIfNotExist(variable.Item1), value), 0);
                             }
                         }
-                        //Build(variable, shape, data, row);
                         row++;
                     }
                 DataObject.Environment.CommitAssign();
@@ -96,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
             TestData = data.ToString();
         }
 
-        [Given(@"I get  the length from a recordset that looks like with this shape")]
+        [Given(@"I get the length from a recordset that looks like with this shape")]
         public void GivenIGetTheLengthFromARecordsetThatLooksLikeWithThisShape(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
@@ -128,6 +110,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Length
                 }
                 variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
+        }
+
+        [Given(@"I get the length from a object that looks like with this shape")]
+        public void GivenIGetTheLengthFromAObjectThatLooksLikeWithThisShape()
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
 
         [Given(@"get length on record ""(.*)""")]

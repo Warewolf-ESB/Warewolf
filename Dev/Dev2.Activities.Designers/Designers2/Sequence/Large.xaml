@@ -9,17 +9,17 @@
                                xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
                                xmlns:presentation="clr-namespace:System.Activities.Core.Presentation"
                                xmlns:sa="http://schemas.microsoft.com/netfx/2009/xaml/activities"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                MinWidth="200"
                                MinHeight="188"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"
                                mc:Ignorable="d"
                                d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
-                               ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}">
+                               ToolTip="{x:Static languages:Core.SequenceTooltipSequence}">
 
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
@@ -39,7 +39,7 @@
                                         x:Name="ActivitiesPresenter"
                                         AllowedItemType="{x:Type sa:Activity}"
                                         HintText="AddMode New Activity"
-                                        ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}"
+                                        ToolTip="{x:Static languages:Core.SequenceTooltipSequence}"
                                         IsDefaultContainer="true">
                 <sap:WorkflowItemsPresenter.CommandBindings>
                     <CommandBinding Command="Copy" Executed="CopyCommandExecuted"
@@ -74,7 +74,7 @@
                     </ItemsPanelTemplate>
                 </sap:WorkflowItemsPresenter.ItemsPanel>
                 <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSequence}" DataContext="{Binding}" />
+                    <core1:HelpSetter Text="{x:Static languages:Core.SequenceHelpSequence}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="UI_{0}_ActivitiesPresenter_AutoID">

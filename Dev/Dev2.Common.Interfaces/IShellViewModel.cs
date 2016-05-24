@@ -18,7 +18,9 @@ namespace Dev2.Common.Interfaces
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
 
-        void NewResource(string resourceType,string resourcePath);
+        void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
+
+        void NewResource(string resourceType, string resourcePath);
 
         string OpenPasteWindow(string current);
 
@@ -40,11 +42,11 @@ namespace Dev2.Common.Interfaces
 
         void ShowDependencies(Guid resourceId, IServer server);
 
-        void ShowDependencies(Guid resourceId,bool dependsOnMe);
+        void ShowDependencies(Guid resourceId, bool dependsOnMe);
 
-        void DeployResources(Guid sourceEnvironmentId,Guid destinationEnvironmentId,IList<Guid> resources  );
+        void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources);
 
-        void AddDeploySurface(IEnumerable<IExplorerTreeItem> items );
+        void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
 
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
 

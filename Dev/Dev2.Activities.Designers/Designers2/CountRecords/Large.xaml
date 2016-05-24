@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.CountRecords"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -54,7 +54,7 @@
                                 Grid.Row="0"
                                 DefaultText="[[Recordset()]]"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static help:HelpTextResources.CountToolTipRecordset}"
+                                ToolTip="{x:Static languages:Core.CountToolTipRecordset}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=RecordsetNameValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
@@ -74,7 +74,7 @@
                                 Grid.Column="1"
                                 Margin="{StaticResource ControlBorderTop}"
                                 DefaultText="[[Count]]"
-                                ToolTip="{x:Static help:HelpTextResources.CountToolTipResult}"
+                                ToolTip="{x:Static languages:Core.CountToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

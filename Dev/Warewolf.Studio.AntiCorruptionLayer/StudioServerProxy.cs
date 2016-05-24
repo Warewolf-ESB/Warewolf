@@ -6,7 +6,6 @@ using System.Windows;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
@@ -68,7 +67,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool Rename(IExplorerItemViewModel vm, string newName)
         {
-            if (vm.ResourceType == ResourceType.Folder)
+            if (vm.ResourceType == "Folder")
                 UpdateManagerProxy.RenameFolder(vm.ResourcePath, newName, vm.ResourceId);
             else
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
@@ -87,7 +86,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
                 var graphGenerator = new DependencyGraphGenerator();
-                if (explorerItemViewModel.ResourceType != ResourceType.Version && explorerItemViewModel.ResourceType != ResourceType.Folder)
+
+                if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
                 {
                     var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
                     _popupController = CustomContainer.Get<IPopupController>();
@@ -100,11 +100,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                         return false;
                     }
                 }
-                if (explorerItemViewModel.ResourceType == ResourceType.Version)
+                if (explorerItemViewModel.ResourceType == "Version")
                 {
                     VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
                 }
-                else if (explorerItemViewModel.ResourceType == ResourceType.Folder)
+                else if (explorerItemViewModel.ResourceType == "Folder")
                 {
                     if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
                     {

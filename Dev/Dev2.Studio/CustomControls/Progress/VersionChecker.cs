@@ -28,7 +28,6 @@ namespace Dev2.Studio.Core.Helpers
         bool _isDone;
         Version _latest;
         Version _current;
-        private string _latestVersionCheckSum;
 
         public VersionChecker()
             : this(new WarewolfWebClient(new WebClient()), VersionInfo.FetchVersionInfoAsVersion)
@@ -80,16 +79,7 @@ namespace Dev2.Studio.Core.Helpers
                 return StringResources.Warewolf_Homepage_Start;
             }
         }
-
-        public string LatestVersionCheckSum
-        {
-            get
-            {
-                Check();
-                return _latestVersionCheckSum;
-            }
-
-        }
+       
         public string CommunityPageUri
         {
             get
@@ -118,27 +108,13 @@ namespace Dev2.Studio.Core.Helpers
 
         #region Check
 
-        protected virtual void Check()
+        protected void Check()
         {
             if(!_isDone)
             {
                 _isDone = true;
                 _latest = GetLatestVersion();
                 _current = GetCurrentVersion();
-                _latestVersionCheckSum = GetLatestVersionCheckSum();
-            }
-        }
-
-        private string GetLatestVersionCheckSum()
-        {
-            try
-            {
-                return _webClient.DownloadString(InstallerResources.WarewolfChecksum);
-
-            }
-            catch
-            {
-                return null;
             }
         }
 

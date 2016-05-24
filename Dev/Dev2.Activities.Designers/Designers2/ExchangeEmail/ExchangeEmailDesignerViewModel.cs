@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Threading;
@@ -178,7 +177,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
 
-            SourceRegion = new ExchangeSourceRegion(Model,ModelItem, ResourceType.ExchangeSource);
+            SourceRegion = new ExchangeSourceRegion(Model,ModelItem, "ExchangeSource");
             regions.Add(SourceRegion);
 
             return regions;

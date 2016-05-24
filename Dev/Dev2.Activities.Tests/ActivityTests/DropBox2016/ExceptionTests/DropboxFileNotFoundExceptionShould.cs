@@ -64,4 +64,34 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
             
         }
     }
+    
+    [TestClass]
+    public class DropboxFileMalformdedExceptionTests
+    {
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Construct_GivenMessege_ShouldNotBeNull()
+        {
+            //---------------Set up test pack-------------------
+            var dropboxFileMalformdedException = new DropboxFileMalformdedException();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dropboxFileMalformdedException);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Construct_GivenMessege_ShouldHaveMessegeSet()
+        {
+            //---------------Set up test pack-------------------
+            var value = new DropboxFileMalformdedException();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(value);
+            //---------------Execute Test ----------------------
+            var message = value.Message;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(GlobalConstants.DropboxPathMalformdedException, message);
+            
+        }
+    }
 }

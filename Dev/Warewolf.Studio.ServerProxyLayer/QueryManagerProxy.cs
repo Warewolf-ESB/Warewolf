@@ -338,5 +338,25 @@ namespace Warewolf.Studio.ServerProxyLayer
 
             return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
         }
+
+        public IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FetchRabbitMQServiceSources");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if (result == null || result.HasError)
+            {
+                if (result != null)
+                {
+                    throw new WarewolfSupportServiceException(result.Message.ToString(), null);
+                }
+                throw new WarewolfSupportServiceException("Service does not exist", null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            // ReSharper disable once InconsistentNaming
+            List<IRabbitMQServiceSourceDefinition> rabbitMQServiceSources = serializer.Deserialize<List<IRabbitMQServiceSourceDefinition>>(result.Message.ToString());
+            return rabbitMQServiceSources;
+        }
     }
 }

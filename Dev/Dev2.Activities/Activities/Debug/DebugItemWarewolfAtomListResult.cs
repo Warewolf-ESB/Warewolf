@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -14,6 +15,7 @@ namespace Dev2.Activities.Debug
         readonly CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult _warewolfAtomListresult;
         readonly string _labelText;
         readonly string _operand;
+        private readonly bool _isCalculate;
         readonly string _variable;
         readonly DebugItemResultType _type;
         readonly string _rightLabel;
@@ -22,10 +24,11 @@ namespace Dev2.Activities.Debug
         readonly string _assignedToVariableName;
         readonly string _newValue;
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+        public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, WarewolfDataEvaluationCommon.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate = false)
         {
             _labelText = "";
             _operand = operand;
+            _isCalculate = isCalculate;
             _variable = variable;
             _type = DebugItemResultType.Variable;
             _rightLabel = rightLabelText;
@@ -35,10 +38,11 @@ namespace Dev2.Activities.Debug
             _assignedToVariableName = assignedToVariableName;
         }
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+        public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate=false)
         {
             _labelText = "";
             _operand = operand;
+            _isCalculate = isCalculate;
             _variable = variable;
             _type = DebugItemResultType.Variable;
             _rightLabel = rightLabelText;
@@ -130,6 +134,10 @@ namespace Dev2.Activities.Debug
                         {
                             debugOperator = String.IsNullOrEmpty(item)?"": "=";
                             debugType = DebugItemResultType.Variable;
+                            if (_isCalculate)
+                            {
+                                displayExpression = groupName ?? displayExpression;
+                            }
                         }
                         else
                         {
@@ -198,7 +206,17 @@ namespace Dev2.Activities.Debug
                                 {
                                     grpIdx++;
                                     groupName = rawExpression;
-                                    displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_assignedToVariableName), DataListUtil.ExtractFieldNameFromValue(_assignedToVariableName), grpIdx.ToString()));
+                                    Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
+                                    var vals = dataLanguageParser.ParseForActivityDataItems(_assignedToVariableName);
+                                    if (vals != null)
+                                    {
+                                        foreach(var val in vals)
+                                        {
+                                            var repVal = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(val), DataListUtil.ExtractFieldNameFromValue(val), grpIdx.ToString());
+                                            displayExpression = _assignedToVariableName.Replace(val, repVal);
+                                        }
+                                    }
+                                    
                                 }
                                 else
                                 {
@@ -222,6 +240,10 @@ namespace Dev2.Activities.Debug
                                 {
                                     debugOperator = "=";
                                     debugType = DebugItemResultType.Variable;
+                                    if (_isCalculate)
+                                    {
+                                        displayExpression = groupName ?? displayExpression;
+                                    }
                                 }
                                 else
                                 {
@@ -305,6 +327,10 @@ namespace Dev2.Activities.Debug
                         {
                             debugOperator = "=";
                             debugType = DebugItemResultType.Variable;
+                            if (_isCalculate)
+                            {
+                                displayExpression = groupName ?? displayExpression;
+                            }
                         }
                         else
                         {

@@ -576,7 +576,7 @@ namespace Dev2
                 TerminateGcManager();
             }
 
-            Write(string.Format("Existing with exitcode {0}", result));
+            Write(string.Format("Exiting with exitcode {0}", result));
 
             return result;
         }
@@ -1357,11 +1357,7 @@ namespace Dev2
 
                 foreach(KeyValuePair<string, string> argument in arguments)
                 {
-                    if(argument.Key.Equals("endpointAddress", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        continue;
-                    }
-
+                    
                     if(argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
                     {
                         webServerPort = argument.Value;
@@ -1782,7 +1778,7 @@ namespace Dev2
             for (int index = resources.Count - 1; index >= 0; index--)
             {
                 var resource = resources[index];
-                if (resource.ResourceType == ResourceType.DbService || resource.ResourceType == ResourceType.PluginService || resource.ResourceType == ResourceType.WebService)
+                if (resource.ResourceType == "DbService" || resource.ResourceType == "PluginService" || resource.ResourceType == "WebService")
                 {
 #if !DEBUG
                     ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceType.ToString());

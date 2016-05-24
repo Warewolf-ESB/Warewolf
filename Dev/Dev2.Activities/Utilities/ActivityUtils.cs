@@ -130,7 +130,7 @@ namespace Dev2.Utilities
             {
                 ResourceID = dbActivity.ResourceID,
                 SourceId = source.ResourceID,
-                ProcedureName = service.Method.ExecuteAction,
+                CommandText = service.Method.ExecuteAction,
                 Inputs = TranslateInputMappingToInputs(dbActivity.InputMapping),
                 Outputs = TranslateOutputMappingToOutputs(dbActivity.OutputMapping),
                 ToolboxFriendlyName = dbActivity.ToolboxFriendlyName,

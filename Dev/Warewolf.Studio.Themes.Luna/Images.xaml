@@ -117,22 +117,13 @@
         <ResourceDictionary Source="Images/warewolf_logo_white.xaml" />
         <ResourceDictionary Source="Images/warewolf_logo_black.xaml" />
 
-        <ResourceDictionary Source="Images/SelectApply.xaml" />
-        <ResourceDictionary Source="Images/AssignObject.xaml" />
-        <ResourceDictionary Source="Images/DatabaseLogo.xaml" />
-        <ResourceDictionary Source="Images/PluginLogo.xaml" />
-        <ResourceDictionary Source="Images/WebLogo.xaml" />
-        <ResourceDictionary Source="Images/AddDatabaseLogo.xaml" />
-        <ResourceDictionary Source="Images/AddPluginLogo.xaml" />
-        <ResourceDictionary Source="Images/AddWebLogo.xaml" />
+        <ResourceDictionary Source="Images/RabbitMQ.xaml" />
         <ResourceDictionary Source="Images/SharepointLogo.xaml" />
-        <ResourceDictionary Source="Images/AddSharepointLogo.xaml" />
-        <ResourceDictionary Source="Images/DotNetLogo.xaml" />
-        <ResourceDictionary Source="Images/AddDotNetLogo.xaml" />
         <ResourceDictionary Source="Images/FileLogo.xaml" />
         <ResourceDictionary Source="Images/ViewFileLogo.xaml" />
         <ResourceDictionary Source="Images/EditFileLogo.xaml" />
         <ResourceDictionary Source="Images/Email-Source.xaml" />
+        <ResourceDictionary Source="Images/Utility-PublishRabbitMQ.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

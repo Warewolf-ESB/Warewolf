@@ -9,13 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Core.Tests
 {
     [TestClass]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class DependencyGraphGeneratorTest
     {
         [TestMethod]
@@ -58,7 +61,7 @@ namespace Dev2.Core.Tests
   <node id=""MyLocalWF"" x="""" y="""" broken=""false""></node>
 </graphz>";
             var data = new StringBuilder(graphData);
-            var expected = "Dependency information is malformed";
+            const string expected = "Dependency information is malformed";
             var dependencyGraphGenerator = new DependencyGraphGenerator();
 
             //------------Execute Test---------------------------
@@ -75,7 +78,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var data = new StringBuilder();
-            var expected = "Dependency information could not be retrieved";
+            const string expected = "Dependency information could not be retrieved";
             var dependencyGraphGenerator = new DependencyGraphGenerator();
 
             //------------Execute Test---------------------------

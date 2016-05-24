@@ -20,7 +20,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel;
@@ -64,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
         public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IEnvironmentModel environment)
-            : base(ResourceType.SharepointServerSource)
+            : base("SharepointServerSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("updateManager", updateManager);
@@ -629,7 +628,7 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        public new void Dispose()
         {
             Dispose(true);
 

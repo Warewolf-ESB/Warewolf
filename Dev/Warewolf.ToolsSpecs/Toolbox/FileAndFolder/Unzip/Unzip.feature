@@ -5,17 +5,17 @@ Feature: Unzip
 	I want a tool that will Unzip File(s) or Folder(s) at a given location
 	
 Scenario Outline: Unzip file at location
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And zip credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And zip credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
     When the Unzip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  | Archive Password |
@@ -55,25 +55,25 @@ Scenario Outline: Unzip file at location
 
 
 Scenario Outline: Unzip file validation
-    Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+    Given I have a variable "[[a]]" with a value "<Val1>"
+	Given I have a variable "[[b]]" with a value "<Val2>"
+	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
-	And zip credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-    And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'
-	And Archive Password as '<archivepassword>'
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	And zip credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And result as "<resultVar>"
+	And Archive Password as "<archivepassword>"
 	When validating the tool
-	Then validation is '<ValidationResult>'
-	And validation message is '<DesignValidation>'
+	Then validation is "<ValidationResult>"
+	And validation message is "<DesignValidation>"
     When the Unzip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	And execution error message will be '<DesignValidation>'
+	And execution error message will be "<DesignValidation>"
 	And the debug inputs as
         | Source Path                         | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
         | <File or FOlder> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |
@@ -125,7 +125,7 @@ Scenario Outline: Unzip file validation
 		| 40 | [[sourcePath]]                 | ""            | ""          | c:\test49.zip     | ""                    | ""       | c:\copyfile0.txt             | c:\ZIP49            | integrationtester | I73573r0     | True     | [[result]]             | ""              | Success | NO           | False            | ""                                                                            | ""                                                                                    |
 		| 41 | [[a&]]                         | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP50            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | File or Folder - Variable name [[a&]] contains invalid character(s)           | 1.File or Folder - Variable name [[a&]] contains invalid character(s)                 |
 		| 42 | [[rec(**).a]]                  | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP51            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | File or Folder - Recordset index (**) contains invalid character(s)           | 1.File or Folder - Recordset index (**) contains invalid character(s)                 |
-		| 43 | [[a]                           | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP52            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don't match | 1.File or Folder - Invalid expression: opening and closing brackets don't match       |
+		| 43 | [[a]                           | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP52            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | File or Folder - Invalid expression: opening and closing brackets don"t match | 1.File or Folder - Invalid expression: opening and closing brackets don"t match       |
 		| 44 | [[rec(a]]                      | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP53            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | File or Folder - Recordset name [[rec(a]] contains invalid character(s)       | 1.File or Folder - Recordset name [[rec(a]] contains invalid character(s)             |
 		| 45 | c(*()                          | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP54            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Please supply a valid File or Folder                                          | 1.Please supply a valid File or Folder                                                |
 		| 46 | [[rec([[inde$x]]).a]]          | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP55            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | File or Folder - Variable name [[inde$x]]  contains invalid character(s)      | 1.File or Folder - Variable name [[inde$x]]  contains invalid character(s)            |
@@ -133,7 +133,7 @@ Scenario Outline: Unzip file validation
 		| 48 | ""                             | ""            | ""          |                   | ""                    | ""       | [[destPath]]                 | c:\ZIP57            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | File or Folder cannot be empty or only white space                            | 1.File or Folder cannot be empty or only white space                                  |
 		| 49 | [[sourcePath]]                 | ""            | ""          | c:\copyfile50.txt | ""                    | ""       | [[a&]]                       | c:\ZIP58            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Destination - Variable name [[a&]] contains invalid character(s)              | 1.Destination - Variable name [[a&]] contains invalid character(s)                    |
 		| 50 | [[sourcePath]]                 | ""            | ""          | c:\copyfile51.txt | ""                    | ""       | [[rec(**).a]]                | c:\ZIP59            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Destination - Recordset index (**) contains invalid character(s)              | 1.Destination - Recordset index (**) contains invalid character(s)                    |
-		| 51 | [[sourcePath]]                 | ""            | ""          | c:\copyfile52.txt | ""                    | ""       | [[a]                         | c:\ZIP60            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Destination - Invalid expression: opening and closing brackets don't match    | 1.Destination - Invalid expression: opening and closing brackets don't match          |
+		| 51 | [[sourcePath]]                 | ""            | ""          | c:\copyfile52.txt | ""                    | ""       | [[a]                         | c:\ZIP60            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Destination - Invalid expression: opening and closing brackets don"t match    | 1.Destination - Invalid expression: opening and closing brackets don"t match          |
 		| 52 | [[sourcePath]]                 | ""            | ""          | c:\copyfile53.txt | ""                    | ""       | [[rec(a]]                    | c:\ZIP61            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Destination - Recordset name [[rec(a]] contains invalid character(s)          | 1.Destination - Recordset name [[rec(a]] contains invalid character(s)                |
 		| 53 | [[sourcePath]]                 | ""            | ""          | c:\copyfile54.txt | ""                    | ""       | c(*()                        | c:\ZIP62            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Please supply a valid File or Folder                                          | 1.Please supply a valid File or Folder                                                |
 		| 54 | [[sourcePath]]                 | ""            | ""          | c:\copyfile55.txt | ""                    | ""       | [[rec([[inde$x]]).a]]        | c:\ZIP63            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Destination - Variable name [[inde$x]]  contains invalid character(s)         | 1.Destination - Variable name [[inde$x]]  contains invalid character(s)               |
@@ -141,20 +141,20 @@ Scenario Outline: Unzip file validation
 		| 56 | [[sourcePath]]                 | ""            | ""          | c:\copyfile57.txt | ""                    | ""       | ""                           | c:\ZIP65            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Destination cannot be empty or only white space                               | 1.Destination cannot be empty or only white space                                     |
 		| 57 | [[sourcePath]]                 | ""            | ""          | c:\copyfile58.txt | [[a&]]                | String   | [[destPath]]                 | c:\ZIP66            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Variable name [[a&]] contains invalid character(s)                 | 1.Username - Variable name [[a&]] contains invalid character(s)                       |
 		| 58 | [[sourcePath]]                 | ""            | ""          | c:\copyfile59.txt | [[rec(**).a]]         | String   | [[destPath]]                 | c:\ZIP67            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Recordset index (**) contains invalid character(s)                 | 1.Username - Recordset index (**) contains invalid character(s)                       |
-		| 59 | [[sourcePath]]                 | ""            | ""          | c:\copyfile60.txt | [[a]                  | String   | [[destPath]]                 | c:\ZIP68            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don't match       | 1.Username - Invalid expression: opening and closing brackets don't match             |
+		| 59 | [[sourcePath]]                 | ""            | ""          | c:\copyfile60.txt | [[a]                  | String   | [[destPath]]                 | c:\ZIP68            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match       | 1.Username - Invalid expression: opening and closing brackets don"t match             |
 		| 60 | [[sourcePath]]                 | ""            | ""          | c:\copyfile61.txt | [[rec(a]]             | String   | [[destPath]]                 | c:\ZIP69            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Recordset name [[rec(a]] contains invalid character(s)             | 1.Username - Recordset name [[rec(a]] contains invalid character(s)                   |
 		| 61 | [[sourcePath]]                 | ""            | ""          | c:\copyfile62.txt | [[rec([[inde$x]]).a]] | String   | [[destPath]]                 | c:\ZIP70            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Variable name [[inde$x]]  contains invalid character(s)            | 1.Username - Variable name [[inde$x]]  contains invalid character(s)                  |
 		| 62 | [[sourcePath]]                 | ""            | ""          | c:\copyfile63.txt |                       | String   | [[destPath]]                 | c:\ZIP71            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username cannot be empty or only white space                                  | 1.Username cannot be empty or only white space                                        |
 		| 63 | [[sourcePath]]                 | ""            | ""          | c:\copyfile64.txt | [[a&]]                | String   | [[destPath]]                 | c:\ZIP72            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Variable name [[a&]] contains invalid character(s)                 | 1.Destination Username - Variable name [[a&]] contains invalid character(s)           |
 		| 64 | [[sourcePath]]                 | ""            | ""          | c:\copyfile65.txt | [[rec(**).a]]         | String   | [[destPath]]                 | c:\ZIP73            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Recordset index (**) contains invalid character(s)                 | 1.Destination Username - Recordset index (**) contains invalid character(s)           |
-		| 65 | [[sourcePath]]                 | ""            | ""          | c:\copyfile66.txt | [[a]                  | String   | [[destPath]]                 | c:\ZIP74            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don't match       | 1.Destination Username - Invalid expression: opening and closing brackets don't match |
+		| 65 | [[sourcePath]]                 | ""            | ""          | c:\copyfile66.txt | [[a]                  | String   | [[destPath]]                 | c:\ZIP74            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match       | 1.Destination Username - Invalid expression: opening and closing brackets don"t match |
 		| 66 | [[sourcePath]]                 | ""            | ""          | c:\copyfile67.txt | [[rec(a]]             | String   | [[destPath]]                 | c:\ZIP75            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Recordset name [[rec(a]] contains invalid character(s)             | 1.Destination Username - Recordset name [[rec(a]] contains invalid character(s)       |
 		| 67 | [[sourcePath]]                 | ""            | ""          | c:\copyfile68.txt | [[rec([[inde$x]]).a]] | String   | [[destPath]]                 | c:\ZIP76            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username - Variable name [[inde$x]]  contains invalid character(s)            | 1.Destination Username - Variable name [[inde$x]]  contains invalid character(s)      |
 		| 68 | [[sourcePath]]                 | ""            | ""          | c:\copyfile69.txt | ""                    | String   | [[destPath]]                 | c:\ZIP77            | integrationtester | I73573r0     | True     | [[result]]             | ""              | ""      | AN           | True             | Username cannot be empty or only white space                                  | 1.Destination Username cannot be empty or only white space                            |
 		| 69 | [[sourcePath]]                 | ""            | ""          | c:\copyfile70.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP78            | integrationtester | I73573r0     | True     | [[result]][[a]]        | ""              | ""      | AN           | True             | The result field only allows a single result                                  | 1.The result field only allows a single result                                        |
-		| 70 | [[sourcePath]]                 | ""            | ""          | c:\copyfile71.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP79            | integrationtester | I73573r0     | True     | [[a]]*]]               | ""              | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don't match         | 1.Result - Invalid expression: opening and closing brackets don't match               |
+		| 70 | [[sourcePath]]                 | ""            | ""          | c:\copyfile71.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP79            | integrationtester | I73573r0     | True     | [[a]]*]]               | ""              | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match         | 1.Result - Invalid expression: opening and closing brackets don"t match               |
 		| 71 | [[sourcePath]]                 | ""            | ""          | c:\copyfile72.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP80            | integrationtester | I73573r0     | True     | [[var@]]               | ""              | ""      | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                 | 1.Result - Variable name [[var@]] contains invalid character(s)                       |
-		| 72 | [[sourcePath]]                 | ""            | ""          | c:\copyfile73.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP81            | integrationtester | I73573r0     | True     | [[var]]00]]            | ""              | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don't match         | 1.Result - Invalid expression: opening and closing brackets don't match               |
+		| 72 | [[sourcePath]]                 | ""            | ""          | c:\copyfile73.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP81            | integrationtester | I73573r0     | True     | [[var]]00]]            | ""              | ""      | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match         | 1.Result - Invalid expression: opening and closing brackets don"t match               |
 		| 73 | [[sourcePath]]                 | ""            | ""          | c:\copyfile74.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP82            | integrationtester | I73573r0     | True     | [[(1var)]]             | ""              | ""      | AN           | True             | Result - Variable name [[1var]] contains invalid character(s)                 | 1.Result - Variable name [[1var]] contains invalid character(s)                       |
 		| 74 | [[sourcePath]]                 | ""            | ""          | c:\copyfile75.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP83            | integrationtester | I73573r0     | True     | [[var[[a]]]]           | ""              | ""      | AN           | True             | Result - Invalid Region [[var[[a]]]]                                          | 1.Result - Invalid Region [[var[[a]]]]                                                |
 		| 75 | [[sourcePath]]                 | ""            | ""          | c:\copyfile76.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP84            | integrationtester | I73573r0     | True     | [[var.a]]              | ""              | ""      | AN           | True             | Result - Variable name [[var.a]]contains invalid character(s)                 | 1.Result - Variable name [[var.a]] contains invalid character(s)                      |
@@ -165,18 +165,17 @@ Scenario Outline: Unzip file validation
 		| 80 | [[sourcePath]]                 | ""            | ""          | c:\copyfile81.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP89            | integrationtester | I73573r0     | True     | [[rec"()".a]]          | ""              | ""      | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)             | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                   |
 		| 81 | [[sourcePath]]                 | ""            | ""          | c:\copyfile82.txt | ""                    | ""       | [[destPath]]                 | c:\ZIP90            | integrationtester | I73573r0     | True     | [[rec([[[[b]]]]).a]]   | ""              | ""      | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                  | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                        |
 																													
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Unzip file at location using complex types
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And zip credentials as '<username>' and '<password>'
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And zip credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
     When the Unzip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password |

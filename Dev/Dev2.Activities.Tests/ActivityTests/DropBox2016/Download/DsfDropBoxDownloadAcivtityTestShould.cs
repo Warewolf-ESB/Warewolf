@@ -8,7 +8,9 @@ using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dropbox.Api;
@@ -18,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 // ReSharper disable InconsistentNaming
+// ReSharper disable UnusedVariable
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
@@ -116,7 +119,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Execute Test ----------------------
             var debugInputs = dropBoxDownloadActivity.GetDebugInputs(CreateExecutionEnvironment(), 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count());
+            Assert.AreEqual(1, debugInputs.Count());
         }
 
         [TestMethod]
@@ -131,7 +134,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Execute Test ----------------------
             var debugInputs = dropBoxDownloadActivity.GetDebugInputs(CreateExecutionEnvironment(), 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count());
+            Assert.AreEqual(1, debugInputs.Count());
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -147,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Execute Test ----------------------
             var debugInputs = dropBoxDownloadActivity.GetDebugInputs(environment, 0);
             //---------------Test Result -----------------------
-            Assert.AreEqual(0, debugInputs.Count());
+            Assert.AreEqual(1, debugInputs.Count());
         }
 
         [TestMethod]
@@ -507,12 +510,41 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             //---------------Test Result -----------------------
             Assert.AreEqual(activity.LocalPathManager, activity.GetLocalPathManager());
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetDebugInputs_GivenValues_ShouldAddDebugInputs()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(TestConstant.DropboxClientInstance.Value))
+                .Returns(new DropboxUploadSuccessResult(TestConstant.FileMetadataInstance.Value));
+            var dropBoxDownloadActivityMock = new DsfDropBoxDownloadActivityMock() { FromPath = "File.txt", ToPath = "Test.a" };
+            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            dropBoxDownloadActivityMock.SelectedSource =
+                new DropBoxSource
+                {
+                    AccessToken = "Test"
+                };
+            dropBoxDownloadActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            dropBoxDownloadActivityMock.OverwriteFile = true;
+            dropBoxDownloadActivityMock.ToPath = @"C\test.tst";
+            dropBoxDownloadActivityMock.FromPath = @"C\test.tst";
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var mockExecutionEnv = new Mock<IExecutionEnvironment>();
+            List<DebugItem> debugInputs = dropBoxDownloadActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, debugInputs.Count());
+        }
     }
 
     public class DsfDropBoxDownloadActivityMockForFiles : DsfDropBoxDownloadActivity
     {
         public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)
         {
+            // ReSharper disable once RedundantBaseQualifier
             var perfomBaseExecution = base.PerformExecution(dictionaryValues);
             return perfomBaseExecution;
         }

@@ -131,23 +131,22 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             splitCollection.Add(dto);
         }
 
-        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)""")]
+        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" without escaping")]
         public void GivenAssignToVariableSplitTypeAtAndInclude(string variable, string splitType, string splitAt, string include)
         {
             var included = include.ToLower() == "selected";
             AddVariables(variable, splitType, splitAt, included);
         }
 
-        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape '(.*)'")]
-        [Given(@"assign to variable '(.*)' split type ""(.*)"" at '(.*)' and Include '(.*)' and Escape '(.*)'")]
+        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape ""(.*)""")]
+        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape ""(.*)""")]
         public void GivenAssignToVariableSplitTypeAtAndIncludeAndEscape(string variable, string splitType, string splitAt, string include, string escape)
         {
             var included = include.ToLower() == "selected";
             AddVariables(variable, splitType, splitAt, included, escape);
-
         }
 
-         [Given(@"I have a variable ""(.*)"" with a value ""(.*)""")]
+        [Given(@"I have a variable ""(.*)"" with a value ""(.*)""")]
         public void GivenIHaveAVariableWithAValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
@@ -159,7 +158,26 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 ScenarioContext.Current.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, value.ToString(CultureInfo.InvariantCulture)));
-
+        }
+        
+        [Then(@"the split recordset ""(.*)"" will be")]
+        public void ThenTheSplitRecordsetWillBe(string variable, Table table)
+        {
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            List<TableRow> tableRows = table.Rows.ToList();
+            var recordSets = result.Environment.Eval(variable, 0);
+            if (recordSets.IsWarewolfAtomListresult)
+            {
+                // ReSharper disable PossibleNullReferenceException
+                var recordSetValues = (recordSets as WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
+                // ReSharper restore PossibleNullReferenceException
+                Assert.AreEqual<int>(tableRows.Count, recordSetValues.Count);
+                
+                for (int i = 0; i < tableRows.Count; i++)
+                {
+                    Assert.AreEqual<string>(tableRows[i][1], ExecutionEnvironment.WarewolfAtomToString(recordSetValues[i]).Trim());
+                }
+            }
         }
 
          [Then(@"the split recordset ""(.*)"" will be")]

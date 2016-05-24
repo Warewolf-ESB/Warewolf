@@ -217,12 +217,12 @@ namespace Warewolf.AcceptanceTesting.Variables
             }
         }
 
-
         [When(@"I clear the filter")]
+        [When(@"I press the clear filter button")]
         public void WhenIClearTheFilter()
         {
             var variableListViewModel = Utils.GetView<DataListViewModel>();
-            //variableListViewModel.ClearFilter();
+            variableListViewModel.SearchText = string.Empty;
         }
 
         [When(@"I click ""(.*)""")]
@@ -232,7 +232,6 @@ namespace Warewolf.AcceptanceTesting.Variables
             var sourceControl = ScenarioContext.Current.Get<DataListView>(Utils.ViewNameKey);
             sourceControl.ExecuteCommand(command);
         }
-
 
         [When(@"I Sort the variables")]
         public void WhenISortTheVariables()

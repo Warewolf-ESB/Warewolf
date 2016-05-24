@@ -31,6 +31,6 @@
     </sap:ActivityDesigner.Resources>
 
     <sap:ActivityDesigner.Icon>
-        <Binding Source="{StaticResource MySqlIcon}"/>
+        <Binding Source="{StaticResource MySqlDefaultDatabaseIcon}"/>
     </sap:ActivityDesigner.Icon>
 </core:ActivityDesigner>
