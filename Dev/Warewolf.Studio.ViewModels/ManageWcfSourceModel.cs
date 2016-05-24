@@ -4,22 +4,22 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageWcfSourceModel : IWcfSourceModel
     {
-        public IStudioUpdateManager UpdateRepository { get; }
+        readonly IStudioUpdateManager _updateRepository;
 
         // ReSharper disable once UnusedParameter.Local
         public ManageWcfSourceModel(IStudioUpdateManager updateRepository, string serverName)
         {
-            UpdateRepository = updateRepository;
+            _updateRepository = updateRepository;
         }
 
         public void TestConnection(IWcfServerSource resource)
         {
-            UpdateRepository.TestConnection(resource);
+            _updateRepository.TestConnection(resource);
         }
 
         public void Save(IWcfServerSource resource)
         {
-            UpdateRepository.Save(resource);
+            _updateRepository.Save(resource);
         }
 
         public string ServerName { get; set; }
