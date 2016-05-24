@@ -5,7 +5,6 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.Oracle"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:oracle="clr-namespace:Dev2.Activities.Designers2.Oracle"
                                MinWidth="350"
@@ -70,7 +69,7 @@
 
             <Control x:Name="InputsControl" Grid.Row="1" Template="{StaticResource NewInputsGrid}"/>
 
-            <Control x:Name="OutputsControl" Grid.Row="2" Template="{StaticResource NewOutputsGrid}"/>
+            <Control x:Name="OutputsControl" Grid.Row="2" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
 
             <Grid x:Name="ErrorGrid"
                       Grid.Row="3"

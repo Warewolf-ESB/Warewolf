@@ -122,15 +122,15 @@
             <ui:IntellisenseTextBox x:Name="ActionsComboBox"
                                     Grid.Column="1"
                                     Grid.Row="0"
-                                    IsEnabled="{Binding ActionRegion.IsActionEnabled}"
+                                    ToolTip="{x:Static languages:Core.ManageOdbcServiceActionsTooltip}"
                                     Height="80"
                                     MinLines="5"
                                     VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
-                                    FilterType="All"
+                                    FilterType="All"                                    
                                     WrapInBrackets="False"
                                     Text="{Binding ActionRegion.CommandText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static languages:Core.ManageOdbcServiceActionsTooltip}"
+                                    IsEnabled="{Binding ActionRegion.IsActionEnabled}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
                 <ui:IntellisenseTextBox.DefaultText>
