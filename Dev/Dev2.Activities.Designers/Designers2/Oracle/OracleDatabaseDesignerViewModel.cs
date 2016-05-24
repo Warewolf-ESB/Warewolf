@@ -18,7 +18,6 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
-using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Interfaces;
@@ -71,7 +70,6 @@ namespace Dev2.Activities.Designers2.Oracle
             Model = model;
 
             SetupCommonProperties();
-            this.RunViewSetup();
         }
 
         // ReSharper disable once ConvertPropertyToExpressionBody
@@ -277,6 +275,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
                 ManageServiceInputViewModel.IsGenerateInputsEmptyRows = service.Inputs.Count < 1;
                 ManageServiceInputViewModel.InputCountExpandAllowed = service.Inputs.Count > 5;
+                ManageServiceInputViewModel.OutputCountExpandAllowed = true;
                 GenerateOutputsVisible = true;
                 SetDisplayName(OutputDisplayName);
             }

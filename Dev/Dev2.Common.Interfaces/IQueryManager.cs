@@ -36,7 +36,7 @@ namespace Dev2.Common.Interfaces
         /// <param name="resourceId"></param>
         /// <returns></returns>
         StringBuilder FetchResourceXaml(Guid resourceId);
-       
+
 
         /// <summary>
         /// Loads the Tree.
@@ -109,5 +109,9 @@ namespace Dev2.Common.Interfaces
 
         // ReSharper disable once InconsistentNaming
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
+
+        IList<IWcfServerSource> FetchWcfSources();
+
+        IList<IWcfAction> WcfActions(IWcfServerSource source);
     }
 }

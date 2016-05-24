@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
@@ -29,7 +28,6 @@ namespace Dev2.Activities.Designers2.SharepointListCreate
         public SharepointListCreateDesignerViewModel(ModelItem modelItem)
             : base(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator,true)
         {
-            this.RunViewSetup();
         }
 
         public override string CollectionName { get { return "FilterCriteria"; } }

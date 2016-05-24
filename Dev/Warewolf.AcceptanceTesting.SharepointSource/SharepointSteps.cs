@@ -60,6 +60,13 @@ namespace Warewolf.AcceptanceTesting.SharepointSource
             Assert.IsNotNull(manageSharepointServerSource.DataContext); 
         }
 
+        [Then(@"""(.*)"" tab is opened")]
+        public void ThenTabIsOpened(string headerText)
+        {
+            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
+            Assert.AreEqual(headerText, viewModel.Header);
+        }
+
         [Then(@"title is ""(.*)""")]
         public void ThenTitleIs(string title)
         {
@@ -315,14 +322,8 @@ namespace Warewolf.AcceptanceTesting.SharepointSource
             FeatureContext.Current.Add("viewModel", viewModel);
             FeatureContext.Current.Remove("externalProcessExecutor");
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+
         }
 
-        [Given(@"""(.*)"" tab is opened")]
-        [Then(@"""(.*)"" tab is opened")]
-        public void ThenTabIsOpened(string headerText)
-        {
-            var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
-            Assert.AreEqual(headerText, viewModel.Header);
-        }
     }
 }

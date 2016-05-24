@@ -399,6 +399,48 @@ namespace Dev2.Runtime.ServiceModel
             return outputDescription.ToRecordsetList(webService.Recordsets);
         }
 
+        public virtual RecordsetList FetchRecordset(WcfService wcfService)
+        {
+            if (wcfService == null)
+            {
+                throw new ArgumentNullException("wcfService");
+            }
+            var broker = new WcfSource();
+            var outputDescription = broker.ExecuteMethod(wcfService);
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
+            var recSet = outputDescription.ToRecordsetList(wcfService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            if (recSet != null)
+            {
+                foreach (var recordset in recSet)
+                {
+                    foreach (var field in recordset.Fields)
+                    {
+                        if (String.IsNullOrEmpty(field.Name))
+                        {
+                            continue;
+                        }
+                        var path = field.Path;
+                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
+
+                        var value = string.Empty;
+                        if (!string.IsNullOrEmpty(field.Alias))
+                        {
+                            value = string.IsNullOrEmpty(rsAlias)
+                                        ? string.Format("[[{0}]]", field.Alias)
+                                        : string.Format("[[{0}().{1}]]", rsAlias, field.Alias);
+                        }
+
+                        if (path != null)
+                        {
+                            path.OutputExpression = value;
+                            dataSourceShape.Paths.Add(path);
+                        }
+                    }
+                }
+            }
+            return recSet;
+        }
+
         #endregion
 
         #region FetchMethods
@@ -484,5 +526,23 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        #region WcfTest
+
+        public RecordsetList WcfTest(WcfService args, Guid workspaceId, Guid dataListId)
+        {
+            try
+            {
+                var service = args;
+
+                return FetchRecordset(service);
+            }
+            catch (Exception ex)
+            {
+                RaiseError(ex);
+                return new RecordsetList { new Recordset { HasErrors = true, ErrorMessage = ex.Message } };
+            }
+        }
+
+        #endregion WcfTest
     }
 }

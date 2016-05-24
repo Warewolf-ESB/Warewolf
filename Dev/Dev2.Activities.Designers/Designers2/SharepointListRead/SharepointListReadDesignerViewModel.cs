@@ -11,7 +11,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
-using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
 using Dev2.Services.Events;
@@ -27,7 +26,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         public SharepointListReadDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment)
         {
-            this.RunViewSetup();
         }
 
         public SharepointListReadDesignerViewModel(ModelItem modelItem,IAsyncWorker asyncWorker,IEnvironmentModel envModel)

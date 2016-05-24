@@ -4126,6 +4126,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter local file or folder path.
+        /// </summary>
+        internal static string ReadLocalFolderToolTipFolder {
+            get {
+                return ResourceManager.GetString("ReadLocalFolderToolTipFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]].
         /// </summary>
         internal static string RecordsLengthHelpRecordset {

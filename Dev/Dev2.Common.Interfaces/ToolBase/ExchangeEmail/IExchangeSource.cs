@@ -1,5 +1,5 @@
-﻿using System;
-using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿using Dev2.Common.Interfaces.Core.DynamicServices;
+using System;
 
 namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
 {

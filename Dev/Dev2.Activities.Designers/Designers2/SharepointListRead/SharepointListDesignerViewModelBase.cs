@@ -2,9 +2,7 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Xml;
 using Caliburn.Micro;
@@ -26,7 +24,7 @@ using Dev2.TO;
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
-    public abstract class SharepointListDesignerViewModelBase : ActivityCollectionDesignerViewModel<SharepointSearchTo>,INotifyPropertyChanged        
+    public abstract class SharepointListDesignerViewModelBase : ActivityCollectionDesignerViewModel<SharepointSearchTo>        
     {
         readonly IEventAggregator _eventPublisher;
         readonly bool _loadOnlyEditableFields;
@@ -74,7 +72,35 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             });
             
             RefreshSharepointSources(true);
-            
+            _isFileTool = false;
+
+        }
+
+        protected SharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+            : base(modelItem)
+        {
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+            VerifyArgument.IsNotNull("environmentModel", environmentModel);
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            _asyncWorker = asyncWorker;
+            _environmentModel = environmentModel;
+            AddTitleBarLargeToggle();
+            _eventPublisher = eventPublisher;
+            ShowExampleWorkflowLink = Visibility.Collapsed;
+
+            SharepointServers = new ObservableCollection<SharepointSource>();
+            Lists = new ObservableCollection<SharepointListTo>();
+
+            EditSharepointServerCommand = new RelayCommand(o => EditSharepointSource(), o => IsSharepointServerSelected);
+
+            RefreshListsCommand = new RelayCommand(o =>
+            {
+                RefreshSharepointSourcesForFileActions();
+            });
+
+            RefreshSharepointSourcesForFileActions(true);
+            _isFileTool = true;
+
         }
         public static readonly DependencyProperty IsSelectedSharepointServerFocusedProperty =
            DependencyProperty.Register("IsSelectedSharepointServerFocused", typeof(bool), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(false));
@@ -88,7 +114,8 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             DependencyProperty.Register("SelectedList", typeof(SharepointListTo), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(null, OnSelectedListChanged));
         public static readonly DependencyProperty ListItemsProperty =
             DependencyProperty.Register("ListItems", typeof(List<SharepointReadListTo>), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(new List<SharepointReadListTo>()));
-        private List<SharepointReadListTo> _readListItems;
+
+        private bool _isFileTool;
         public bool IsSelectedSharepointServerFocused { get { return (bool)GetValue(IsSelectedSharepointServerFocusedProperty); } set { SetValue(IsSelectedSharepointServerFocusedProperty, value); } }
         public bool IsSelectedListFocused { get { return (bool)GetValue(IsSelectedListFocusedProperty); } set { SetValue(IsSelectedListFocusedProperty, value); } }
         public SharepointSource SelectedSharepointServer
@@ -130,21 +157,19 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 RefreshListsCommand.RaiseCanExecuteChanged();
             }
         }
-        public List<SharepointReadListTo> ReadListItems
+        List<SharepointReadListTo> ReadListItems
         {
             get
             {
-                return _readListItems ?? GetProperty<List<SharepointReadListTo>>();
+                return GetProperty<List<SharepointReadListTo>>();
             }
             set
             {
                 if (!_isInitializing)
                 {
-                    _readListItems = value;
                     SetProperty(value);                    
                 }
                 ListItems = value;
-                OnPropertyChanged();
             }
         }
         public List<SharepointReadListTo> ListItems
@@ -155,8 +180,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             }
             set
             {
-                SetValue(ListItemsProperty, value);            
-                OnPropertyChanged();
+
+                SetValue(ListItemsProperty, value);
+
             }
         }
         string SharepointList
@@ -200,6 +226,22 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                         }
                     });
                 });
+            });
+        }
+
+         protected void RefreshSharepointSourcesForFileActions(bool isInitializing = false)
+        {
+            IsRefreshing = true;
+            if (isInitializing)
+            {
+                _isInitializing = true;
+            }
+
+            LoadSharepointServerSources(() =>
+            {
+                SetSelectedSharepointServer(SelectedSharepointServer);
+                IsRefreshing = false;
+                _isInitializing = false;
             });
         }
 
@@ -247,7 +289,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                         Lists.Add(listTo);
                     }
                 }
-                if (continueWith != null && Lists.Count!=0)
+                if (continueWith != null)
                 {
                     continueWith();
                 }
@@ -321,6 +363,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         protected void OnSharepointServerChanged()
         {
+            if(_isFileTool) return;
             if (SelectedSharepointServer == NewSharepointSource)
             {
                 CreateSharepointServerSource();
@@ -359,6 +402,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             if (SelectedList != null)
             {
                 IsRefreshing = true;
+                Lists.Remove(SelectSharepointList);
                 SharepointList = SelectedList.FullName;
                 LoadListFields(true,() => { IsRefreshing = false; });
             }
@@ -498,17 +542,6 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             if (dto == null)
             {
                 yield break;
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if(handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
