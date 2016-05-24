@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using Dev2.Activities.Designers2.SharepointListUpdate;
 using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Common.Interfaces.ToolBase
 {
@@ -12,5 +13,10 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsRefreshing { get; set; }
         event SomethingChanged SomethingChanged;
         double LabelWidth { get; set; }
+    }
+
+    public interface IODBCActionToolRegion<T> : IActionToolRegion<T>
+    {
+        string CommandText { get; set; }
     }
 }

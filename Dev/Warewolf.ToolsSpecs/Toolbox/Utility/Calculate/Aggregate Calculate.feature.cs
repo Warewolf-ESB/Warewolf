@@ -2657,6 +2657,129 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Aggregate all recordset values to all recordset complex with calculation multiple" +
+            " recordset star")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Aggregate Calculate")]
+        public virtual void AggregateAllRecordsetValuesToAllRecordsetComplexWithCalculationMultipleRecordsetStar()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Aggregate all recordset values to all recordset complex with calculation multiple" +
+                    " recordset star", ((string[])(null)));
+#line 430
+this.ScenarioSetup(scenarioInfo);
+#line 431
+ testRunner.Given("I have a calculate variable \"[[rec(1).set]]\" equal to \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 432
+ testRunner.And("I have a calculate variable \"[[rec(2).set]]\" equal to \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 433
+ testRunner.And("I have a calculate variable \"[[rec(3).set]]\" equal to \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 434
+ testRunner.And("I have a calculate variable \"[[rec(1).val]]\" equal to \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 435
+ testRunner.And("I have a calculate variable \"[[rec(2).val]]\" equal to \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 436
+ testRunner.And("I have a calculate variable \"[[rec(3).val]]\" equal to \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 437
+ testRunner.And("I have the formula \"[[rec(*).set]]*[[rec(*).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 438
+ testRunner.And("calculate result as \"[[rec(*).total]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 439
+ testRunner.When("the aggregate calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 440
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        "fx ="});
+            table34.AddRow(new string[] {
+                        "[[rec(*).set]]*[[rec(*).val]] = 10,20,30*10,20,30"});
+#line 441
+ testRunner.And("the debug inputs as", ((string)(null)), table34, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Aggregate all recordset values to all recordset complex with calculation multiple" +
+            " recordset star addition")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Aggregate Calculate")]
+        public virtual void AggregateAllRecordsetValuesToAllRecordsetComplexWithCalculationMultipleRecordsetStarAddition()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Aggregate all recordset values to all recordset complex with calculation multiple" +
+                    " recordset star addition", ((string[])(null)));
+#line 445
+this.ScenarioSetup(scenarioInfo);
+#line 446
+ testRunner.Given("I have a calculate variable \"[[rec(1).set]]\" equal to \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 447
+ testRunner.And("I have a calculate variable \"[[rec(2).set]]\" equal to \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 448
+ testRunner.And("I have a calculate variable \"[[rec(3).set]]\" equal to \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 449
+ testRunner.And("I have a calculate variable \"[[rec(1).val]]\" equal to \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 450
+ testRunner.And("I have a calculate variable \"[[rec(2).val]]\" equal to \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 451
+ testRunner.And("I have a calculate variable \"[[rec(3).val]]\" equal to \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 452
+ testRunner.And("I have the formula \"[[rec(*).set]]+[[rec(*).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 453
+ testRunner.And("calculate result as \"[[rec(*).total]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 454
+ testRunner.When("the aggregate calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 455
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
+                        "fx ="});
+            table35.AddRow(new string[] {
+                        "[[rec(*).set]]*[[rec(*).val]] = 10,20,30+10,20,30"});
+#line 456
+ testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Aggregate all recordset values to all recordset complex with calculation multiple" +
+            " recordset star addition to scalar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Aggregate Calculate")]
+        public virtual void AggregateAllRecordsetValuesToAllRecordsetComplexWithCalculationMultipleRecordsetStarAdditionToScalar()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Aggregate all recordset values to all recordset complex with calculation multiple" +
+                    " recordset star addition to scalar", ((string[])(null)));
+#line 461
+this.ScenarioSetup(scenarioInfo);
+#line 462
+ testRunner.Given("I have a calculate variable \"[[rec(1).set]]\" equal to \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 463
+ testRunner.And("I have a calculate variable \"[[rec(2).set]]\" equal to \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 464
+ testRunner.And("I have a calculate variable \"[[rec(3).set]]\" equal to \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 465
+ testRunner.And("I have a calculate variable \"[[rec(1).val]]\" equal to \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 466
+ testRunner.And("I have a calculate variable \"[[rec(2).val]]\" equal to \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 467
+ testRunner.And("I have a calculate variable \"[[rec(3).val]]\" equal to \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 468
+ testRunner.And("I have the formula \"[[rec(*).set]]+[[rec(*).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 469
+ testRunner.And("calculate result as \"[[total]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 470
+ testRunner.When("the aggregate calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 471
+ testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
+                        "fx ="});
+            table36.AddRow(new string[] {
+                        "[[rec(*).set]]*[[rec(*).val]] = 10,20,30+10,20,30"});
+#line 472
+ testRunner.And("the debug inputs as", ((string)(null)), table36, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
         public virtual void CalculateUsingComplexTypesInputInAnAgregateFunctionLikeSUM(string no, string fx, string result, string value, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -2666,32 +2789,32 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate using complex types () input in an agregate function like SUM", @__tags);
-#line 431
+#line 479
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
                         "var().int().value",
                         "value"});
-            table34.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "var().int().value",
                         "1"});
-            table34.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "var().int().value",
                         "2"});
-            table34.AddRow(new string[] {
+            table37.AddRow(new string[] {
                         "var().int().value",
                         "3"});
-#line 432
- testRunner.Given("I have a calculate variable \"[[var().int().value]]\" equal to", ((string)(null)), table34, "Given ");
-#line 437
+#line 480
+ testRunner.Given("I have a calculate variable \"[[var().int().value]]\" equal to", ((string)(null)), table37, "Given ");
+#line 485
  testRunner.And(string.Format("I have the formula \"{0}\"", fx), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 438
+#line 486
  testRunner.When("the aggregate calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 439
+#line 487
  testRunner.Then("the calculate result should be \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 440
+#line 488
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 441
+#line 489
  testRunner.Then(string.Format("the calculate \"{0}\" should be \"{1}\"", result, value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

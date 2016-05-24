@@ -221,6 +221,7 @@
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\WcfActionRegion.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerDecisionViewModel.cs" />

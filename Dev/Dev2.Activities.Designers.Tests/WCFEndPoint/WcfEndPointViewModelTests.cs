@@ -13,7 +13,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-using Warewolf.Studio.ViewModels;
 using Warewolf.Testing;
 using Dev2.Common.Interfaces.Core;
 
@@ -31,15 +30,6 @@ namespace Dev2.Activities.Designers.Tests.WCFEndPoint
             var wcfActivity = new DsfWcfEndPointActivity();
 
             return ModelItemUtils.CreateModelItem(wcfActivity);
-        }
-
-        public IWcfServiceModel ServiceModel()
-        {
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
-            CustomContainer.Register(mockShellViewModel.Object);
-
-            return new ManageWcfServiceModel(new Mock<IStudioUpdateManager>().Object,new Mock<IQueryManager>().Object, mockShellViewModel.Object,new Mock<IServer>().Object);
         }
 
         private static readonly Guid Id = Guid.NewGuid();

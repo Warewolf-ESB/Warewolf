@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming

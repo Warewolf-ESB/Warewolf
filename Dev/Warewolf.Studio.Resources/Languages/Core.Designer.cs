@@ -4717,6 +4717,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ManageOdbcServiceActionsHelpText.
+        /// </summary>
+        public static string ManageOdbcServiceActionsHelpText {
+            get {
+                return ResourceManager.GetString("ManageOdbcServiceActionsHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManageOdbcServiceActionsTooltip.
+        /// </summary>
+        public static string ManageOdbcServiceActionsTooltip {
+            get {
+                return ResourceManager.GetString("ManageOdbcServiceActionsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edits the selected plugin source connection.
         /// </summary>
         public static string ManagePluginServiceEditSourceTooltip {
