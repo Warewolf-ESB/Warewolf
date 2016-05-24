@@ -294,7 +294,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
            var vm =FeatureContext.Current.Get<IExplorerViewModel>(Utils.ViewModelNameKey);
            var env =p0.Substring(0,p0.IndexOf("\\", StringComparison.Ordinal));
            var environment = vm.Environments.FirstOrDefault(a => a.DisplayName == env);
-           Assert.IsTrue( environment.AsList().Any(a=>a.ResourcePath==  p0.Substring(p0.IndexOf("\\", StringComparison.Ordinal)+1)));
+           Assert.IsTrue( environment != null && environment.AsList().Any(a=>a.ResourcePath==  p0.Substring(p0.IndexOf("\\", StringComparison.Ordinal)+1)));
         }
 
         [Then(@"I should not see the path ""(.*)""")]

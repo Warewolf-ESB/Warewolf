@@ -426,6 +426,54 @@ Scenario: Calculate using variables with a no existent value
 	| SUM([[a]],[[b]]) =  |
 
 
+
+Scenario: Aggregate all recordset values to all recordset complex with calculation multiple recordset star
+	Given I have a calculate variable "[[rec(1).set]]" equal to "10"
+	And I have a calculate variable "[[rec(2).set]]" equal to "20"
+	And I have a calculate variable "[[rec(3).set]]" equal to "30"
+	And I have a calculate variable "[[rec(1).val]]" equal to "10"
+	And I have a calculate variable "[[rec(2).val]]" equal to "20"
+	And I have a calculate variable "[[rec(3).val]]" equal to "30"
+	And I have the formula "[[rec(*).set]]*[[rec(*).val]]"
+	And calculate result as "[[rec(*).total]]"
+	When the aggregate calculate tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	| fx =                                              |
+	| [[rec(*).set]]*[[rec(*).val]] = 10,20,30*10,20,30 |		
+
+Scenario: Aggregate all recordset values to all recordset complex with calculation multiple recordset star addition
+	Given I have a calculate variable "[[rec(1).set]]" equal to "10"
+	And I have a calculate variable "[[rec(2).set]]" equal to "20"
+	And I have a calculate variable "[[rec(3).set]]" equal to "30"
+	And I have a calculate variable "[[rec(1).val]]" equal to "10"
+	And I have a calculate variable "[[rec(2).val]]" equal to "20"
+	And I have a calculate variable "[[rec(3).val]]" equal to "30"
+	And I have the formula "[[rec(*).set]]+[[rec(*).val]]"
+	And calculate result as "[[rec(*).total]]"
+	When the aggregate calculate tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	| fx =                                              |
+	| [[rec(*).set]]*[[rec(*).val]] = 10,20,30+10,20,30 |		
+	
+
+Scenario: Aggregate all recordset values to all recordset complex with calculation multiple recordset star addition to scalar
+	Given I have a calculate variable "[[rec(1).set]]" equal to "10"
+	And I have a calculate variable "[[rec(2).set]]" equal to "20"
+	And I have a calculate variable "[[rec(3).set]]" equal to "30"
+	And I have a calculate variable "[[rec(1).val]]" equal to "10"
+	And I have a calculate variable "[[rec(2).val]]" equal to "20"
+	And I have a calculate variable "[[rec(3).val]]" equal to "30"
+	And I have the formula "[[rec(*).set]]+[[rec(*).val]]"
+	And calculate result as "[[total]]"
+	When the aggregate calculate tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as
+	| fx =                                              |
+	| [[rec(*).set]]*[[rec(*).val]] = 10,20,30+10,20,30 |			    
+
+
 #Complex Types WOLF-1042
 @ignore
 Scenario Outline: Calculate using complex types () input in an agregate function like SUM

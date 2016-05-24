@@ -10,11 +10,11 @@
                     xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                     xmlns:core1="clr-namespace:Dev2.Activities.Designers2.Core"
                     xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                    
                     xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
                     xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
+                    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
@@ -103,6 +103,63 @@
                                                         Width="25"
                                                         Height="25"
                                                         Visibility="{Binding ActionRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="NewOdbcActionGrid">
+        <Grid x:Name="ActionsGrid" Margin="{StaticResource ControlBorderTop}" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ActionRegion.LabelWidth}"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
+            <ui:IntellisenseTextBox x:Name="ActionsComboBox"
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    ToolTip="{x:Static languages:Core.ManageOdbcServiceActionsTooltip}"
+                                    Height="Auto"
+                                    MinLines="5"
+                                    VerticalContentAlignment="Top"
+                                    VerticalScrollBarVisibility="Auto"
+                                    FilterType="All"                                    
+                                    WrapInBrackets="False"
+                                    Text="{Binding ActionRegion.CommandText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{Binding ActionRegion.IsActionEnabled}"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FileOrFoldertxt_AutoID}">
+                <ui:IntellisenseTextBox.DefaultText>
+                    <TextBlock Text="[[Command]]" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
+                </ui:IntellisenseTextBox.DefaultText>
+                <ui:IntellisenseTextBox.IntellisenseProvider>
+                    <interfaceImplementors:CompositeIntellisenseProvider>
+                        <interfaceImplementors:DefaultIntellisenseProvider />
+                    </interfaceImplementors:CompositeIntellisenseProvider>
+                </ui:IntellisenseTextBox.IntellisenseProvider>
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.ManageOdbcServiceActionsHelpText}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                     SourcePropertyName="ActionRegion.CommandText"
+                                     SourcePropertyValue="{Binding  ActionRegion.CommandText, UpdateSourceTrigger=PropertyChanged}"
+                                     Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+            <Button x:Name="TestInputButton"
+                    Grid.Row="1" 
+                    Grid.Column="1"
+                    Content="Generate Outputs"
+                    Width="Auto" 
+                    IsEnabled="{Binding ActionRegion.IsGenerateOutputsEnabled}"
+                    Margin="{StaticResource ControlBorderTop}"
+                    ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
+                    HorizontalAlignment="Right"
+                    Command="{Binding Path=TestInputCommand, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:Core.InputGenerateOutputsDefaultHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewDotNetActionGrid">
@@ -195,6 +252,18 @@
             <Control Template="{StaticResource NewSelectionGrid}"/>
 
             <Control Template="{StaticResource NewActionGrid}" Grid.Row="1"/>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="NewOdbcSelectionActionGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewSelectionGrid}"/>
+
+            <Control Template="{StaticResource NewOdbcActionGrid}" Grid.Row="1"/>
         </Grid>
     </ControlTemplate>
     <ControlTemplate x:Key="NewSelectionNamespaceGrid">

@@ -156,6 +156,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
+                    if (maAct.CommandText != null)
+                    {
+                        results.Add(maAct.CommandText);
+                    }
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
