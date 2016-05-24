@@ -5,7 +5,9 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.ODBC"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="250"
+                               MaxWidth="250"
                                mc:Ignorable="d"
                                d:DesignWidth="250"
                                d:DataContext="{d:DesignInstance local:ODBCDatabaseDesignerViewModel}">
@@ -13,7 +15,7 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
@@ -24,9 +26,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Grid.Column="0"
-                      Grid.IsSharedSizeScope="True"
-                      ItemsSource="{Binding Path=Properties}">
+        <ItemsControl Grid.Column="0" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Path=Properties}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,-4,0,-4">
@@ -34,19 +34,16 @@
                             <ColumnDefinition SharedSizeGroup="A" />
                             <ColumnDefinition SharedSizeGroup="B" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Grid.Column="1" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="0" Margin="0,0,-2,0" TextTrimming="CharacterEllipsis" Text="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <ContentControl Grid.Column="1"
-                        VerticalAlignment="Bottom"
-                        HorizontalAlignment="Right">
+        <ContentControl Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <ContentControl.ToolTip>
-                <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}"
-                              ItemTemplate="{StaticResource ErrorListTemplate}" />
+                <ItemsControl ItemsSource="{Binding Path=DesignValidationErrors}" ItemTemplate="{StaticResource ErrorListTemplate}" />
             </ContentControl.ToolTip>
             <Grid>
                 <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"

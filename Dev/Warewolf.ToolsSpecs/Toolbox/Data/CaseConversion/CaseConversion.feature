@@ -201,7 +201,6 @@ Scenario: Convert a recordset * to Upper
 Scenario: Convert an empty recordset * to Upper
 	Given I convert a variable "[[rs(*).row]]" to "UPPER"
 	When the case conversion tool is executed
-
 	Then the execution has "AN" error
 
 
@@ -259,10 +258,9 @@ Examples:
 	| 4  | TITLE CASE |
 
 
-#Bug 12178
 Scenario Outline: Error messages when convert a Invalid variable
 	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
-	And I convert a variable '<Variable>' to '<To>'	
+	And I convert a variable "<Variable>" to "<To>"	
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
@@ -275,7 +273,7 @@ Examples:
 	| 1  | [[my(-1).var]]                            | UPPER | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
 	| 2  | [[var  ]]                                 | UPPER | Variable name [[var  ]] contains invalid character(s)                                                                                                                                                                                                   |
 	| 3  | [[my(%).var]]                             | UPPER | Recordset index (q) contains invalid character(s)                                                                                                                                                                                                       |
-	| 4  | [[rec'()'.a]]                             | UPPER | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+	| 4  | [[rec"()".a]]                             | UPPER | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 5  | [[rec"()".a]]                             | UPPER | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
 	| 6  | [[rec".a]]                                | UPPER | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 7  | [[rec.a]]                                 | UPPER | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
@@ -302,20 +300,6 @@ Examples:
 	| 28 | [[rec()                                   | UPPER | Recordset variable that needs a field name(s)                                                                                                                                                                                                           |
 
 
-
-#Scenario: Convert a invalid variable valid text
-#	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
-#	And I convert a variable "[rec().a]]=]]" to "UPPER"		
-#	When the case conversion tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| # | Convert       | To    |
-#	| 1 | [rec().a]]=]] | UPPER |
-#	And the debug output as  
-#	| # |               |
-#	| 1 | [rec().a]]=]] |
-
-
 	Scenario: Convert a Variable That Does Not Exist
 	Given I convert a variable "[[var]]" to "lower"		
 	When the case conversion tool is executed
@@ -327,13 +311,12 @@ Scenario: Convert a Variable That is NULL
 	When the case conversion tool is executed
 	Then the execution has "No" error
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Convert a sentence to uppercase using complex types
-	Given I have a case convert variable '<variable>' with a value of '<value>'
-	And I convert a variable '<variable>' to '<To>'	
+	Given I have a case convert variable "<variable>" with a value of "<value>"
+	And I convert a variable "<variable>" to "<To>"	
 	When the case conversion tool is executed
-	Then the sentence will be '<result>'
+	Then the sentence will be "<result>"
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # | Convert              | To   |

@@ -6,12 +6,12 @@ Feature: Read File
 
 
 Scenario Outline: Read File at location
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And result as "<resultVar>"
 	When the read file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password | Private Key File       |
@@ -30,41 +30,41 @@ Scenario Outline: Read File at location
 	| 7  | SFTP PK    | [[path]] | sftp://localhost/filetoread1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |C:\\Temp\\key.opk    |
 
 Scenario Outline: Read File at locationNull
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And result as "<resultVar>"
 	When the read file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
 	| NO | Name       | source   | sourceLocation                                                       | username                     | password | resultVar  | result | errorOccured |sourcePrivateKeyFile |
 	| 1  | Local      | [[path]] | NULL                                                                 | ""                           | ""       | [[result]] | Error  | AN           |                     |
-#	| 2  | UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                     |
-#	| 3  | UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                     |
-#	| 4  | FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                           | ""       | [[result]] | Guid   | NO           |                     |
-#	| 5  | FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |                     |
-#	| 6  | SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                     |
-#	| 7  | SFTP PK    | [[path]] | sftp://localhost/filetoread1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |C:\\Temp\\key.opk    |
+	| 2  | UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |                     |
+	| 3  | UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |                     |
+	| 4  | FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                           | ""       | [[result]] | Guid   | NO           |                     |
+	| 5  | FTPS       | [[path]] | ftps://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |                     |
+	| 6  | SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |                     |
+	| 7  | SFTP PK    | [[path]] | sftp://localhost/filetoread1.txt                                     | dev2                         | Q/ulw&]  | [[result]] | Guid   | NO           |C:\\Temp\\key.opk    |
 
 
 
 	
 Scenario Outline: Read File validation
-    Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
+    Given I have a variable "[[a]]" with a value "<Val1>"
+	Given I have a variable "[[b]]" with a value "<Val2>"
+	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
+	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When validating the tool
-	Then validation is '<ValidationResult>'
-	And validation message is '<DesignValidation>'
+	Then validation is "<ValidationResult>"
+	And validation message is "<DesignValidation>"
     When the read file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
-	And execution error message will be '<DesignValidation>'
+	And execution error message will be "<DesignValidation>"
 	And the debug inputs as
          | Input Path                          | Username   | Password |
          | <File or Folder> = <sourceLocation> | <username> | String   |
@@ -100,11 +100,11 @@ Scenario Outline: Read File validation
 		| 25 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | [[a]]\[[b]]           | String   | [[result]]             | ""     | AN           | False            | ""                                                                                                                                                                                                                        | 1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]                                                                                                                                                                  |
 		| 26 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | [[rec([[index]]).a]]  | String   | [[result]]             | ""     | AN           | False            | ""                                                                                                                                                                                                                        | 1.No Value assigned for [[index]]                                                                                                                                                                                              |
 		| 27 | Local Files | [[sourcePath]].txt             |                   |                 | c:\filetoread.txt | [[rec([[index&]]).a]] | String   | [[result]]             | ""     | AN           | True             | Username - Recordset name [[indexx&]] contains invalid character(s)                                                                                                                                                       | Username - Recordset name [[indexx&]] contains invalid character(s)                                                                                                                                                            |
-		| 28 | Local Files | [[sourcePath]].txt             |                   |                 | c:\filetoread.txt | [[a]]*]]              | String   | [[result]]             | ""     | AN           | True             | Username - Invalid expression: opening and closing brackets don't match                                                                                                                                                   | 1.Username - Invalid expression: opening and closing brackets don't match                                                                                                                                                      |
+		| 28 | Local Files | [[sourcePath]].txt             |                   |                 | c:\filetoread.txt | [[a]]*]]              | String   | [[result]]             | ""     | AN           | True             | Username - Invalid expression: opening and closing brackets don"t match                                                                                                                                                   | 1.Username - Invalid expression: opening and closing brackets don"t match                                                                                                                                                      |
 		| 29 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[result]][[a]]        | ""     | AN           | True             | The result field only allows a single result                                                                                                                                                                              | 1.The result field only allows a single result                                                                                                                                                                                 |
-		| 30 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[a]]*]]               | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                     | 1.Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                        |
+		| 30 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[a]]*]]               | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                     | 1.Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                        |
 		| 31 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[var@]]               | ""     | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                             | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                                |
-		| 32 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[var]]00]]            | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                     | 1.Result - Invalid expression: opening and closing brackets don't match                                                                                                                                                        |
+		| 32 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[var]]00]]            | ""     | AN           | True             | Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                     | 1.Result - Invalid expression: opening and closing brackets don"t match                                                                                                                                                        |
 		| 33 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[(1var)]]             | ""     | AN           | True             | Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                             | 1.Result - Variable name [[var@]] contains invalid character(s)                                                                                                                                                                |
 		| 34 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[var[[a]]]]           | ""     | AN           | True             | Result - Invalid Region [[var[[a]]]]                                                                                                                                                                                      | 1.Result - Invalid Region [[var[[a]]]]                                                                                                                                                                                         |
 		| 35 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[var.a]]              | ""     | AN           | True             | Result - Variable name [[var.a]]contains invalid character(s)                                                                                                                                                             | 1.Result - Variable name [[var.a]] contains invalid character(s)                                                                                                                                                               |
@@ -114,19 +114,19 @@ Scenario Outline: Read File validation
 		| 39 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[rec(@).a]]           | ""     | AN           | True             | Result - Recordset index [[@]] contains invalid character(s)                                                                                                                                                              | 1.Result - Recordset index [[@]] contains invalid character(s)                                                                                                                                                                 |
 		| 40 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[rec"()".a]]          | ""     | AN           | True             | Result - Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                         | 1.Result - Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                            |
 		| 41 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | ""                    | ""       | [[rec([[[[b]]]]).a]]   | ""     | AN           | True             | Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                                                                                                              | 1.Result - Invalid Region [[rec([[[[b]]]]).a]]                                                                                                                                                                                 |
-		| 42 | Local Files | [[a]                           |                   |                 |                   | ""                    | ""       | [[result]]             | ""     | AN           | True             | File Name - Invalid expression: opening and closing brackets don't match                                                                                                                                                  | 1.Directory - Invalid expression: opening and closing brackets don't match                                                                                                                                                     |
+		| 42 | Local Files | [[a]                           |                   |                 |                   | ""                    | ""       | [[result]]             | ""     | AN           | True             | File Name - Invalid expression: opening and closing brackets don"t match                                                                                                                                                  | 1.Directory - Invalid expression: opening and closing brackets don"t match                                                                                                                                                     |
 		| 43 | Local Files | [[rec]                         |                   |                 |                   | ""                    | ""       | [[result]]             | ""     | AN           | True             | File Name - [[rec]] does not exist in your variable list                                                                                                                                                                  | 1.Directory - [[rec]] does not exist in your variable list                                                                                                                                                                     |
 		| 44 | Local Files | [[sourcePath]]                 |                   |                 | c:\filetoread.txt | Test                  | ""       | [[result]]             | ""     | AN           | True             | Password cannot be empty or only white space                                                                                                                                                                              | 1.Password cannot be empty or only white space                                                                                                                                                                                 |
 		| 45 | Local Files | A                              |                   |                 | ""                | Test                  | ""       | [[result]]             | ""     | AN           | True             | Please supply valid File Name                                                                                                                                                                                             | 1.Please supply valid File Name                                                                                                                                                                                                |
 		| 46 | Local Files | [[var@]]                       |                   |                 |                   | [[var@]]              | ""       | [[var@]]               | ""     | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s)                                                                                             | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s)                                                                                               |
-		| 47 | Local Files | C#$%#$]]                       |                   |                 |                   | C#$%#$]]              | ""       | C#$%#$]]               | ""     | AN           | True             | File Name - Invalid expression: opening and closing brackets don't match  Username - Invalid expression: opening and closing brackets don't match   Result - Invalid expression: opening and closing brackets don't match | 1.File Name - Invalid expression: opening and closing brackets don't match 2.Username - Invalid expression: opening and closing brackets don't match   3.Result - Invalid expression: opening and closing brackets don't match |                                                      
+		| 47 | Local Files | C#$%#$]]                       |                   |                 |                   | C#$%#$]]              | ""       | C#$%#$]]               | ""     | AN           | True             | File Name - Invalid expression: opening and closing brackets don"t match  Username - Invalid expression: opening and closing brackets don"t match   Result - Invalid expression: opening and closing brackets don"t match | 1.File Name - Invalid expression: opening and closing brackets don"t match 2.Username - Invalid expression: opening and closing brackets don"t match   3.Result - Invalid expression: opening and closing brackets don"t match |                                                      
 
 Scenario Outline: Read File at location using incorrect directory
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When the read file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password |
@@ -140,14 +140,13 @@ Scenario Outline: Read File at location using incorrect directory
 	| 2  | UNC        | [[variable]] | ""             | ""                           | ""       | [[result]] |        | AN           |
 	| 3  | UNC Secure | 45454        | 45454          | dev2.local\IntegrationTester | I73573r0 | [[result]] |        | AN           |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Read File at location using complex types
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>'
-	And result as '<resultVar>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And result as "<resultVar>"
 	When the read file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Input Path                  | Username   | Password |

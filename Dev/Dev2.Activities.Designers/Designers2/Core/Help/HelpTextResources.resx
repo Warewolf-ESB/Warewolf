@@ -2434,6 +2434,18 @@ Allowed:
   <data name="FindToolTipRequireAllMatchesToBeTrue" xml:space="preserve">
     <value>Will only return rows that match all of the criteria if selected.</value>
   </data>
+  <data name="DecisionFalseArmTooltip" xml:space="preserve">
+    <value>The text on the flow arm for readability</value>
+  </data>
+  <data name="DecisionTrueArmTooltip" xml:space="preserve">
+    <value>The text on the flow arm for readability</value>
+  </data>
+  <data name="DecisionDisplayTextTooltip" xml:space="preserve">
+    <value>The text on the decision to help understand its purpose</value>
+  </data>
+
+
+
   <data name="FindToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the indexes of the successful matches.
@@ -3366,5 +3378,81 @@ If you put an = as the first character, it will turn into a calculation e.g. =[[
 
 Allowed:
 Data</value>
+  </data>
+  <data name="RabbitMQToolTipSource" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.</value>
+  </data>
+  <data name="RabbitMQSourceHelp" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.
+
+Allowed:
+Select a preconfigured RabbitMQ source or add a new one.</value>
+  </data>
+  <data name="RabbitMQToolTipQueueName" xml:space="preserve">
+    <value>Provide a meaningful name for the queue.</value>
+  </data>
+  <data name="RabbitMQHelpQueueName" xml:space="preserve">
+    <value>Provide a meaningful name for the queue.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RabbitMQToolTipIsDurable" xml:space="preserve">
+    <value>Make the queue durable.</value>
+  </data>
+  <data name="RabbitMQHelpIsDurable" xml:space="preserve">
+    <value>Make the queue durable.
+
+Allowed:
+Make the queue durable.</value>
+  </data>
+  <data name="RabbitMQToolTipIsExclusive" xml:space="preserve">
+    <value>Make the queue exclusive.</value>
+  </data>
+  <data name="RabbitMQHelpIsExclusive" xml:space="preserve">
+    <value>Make the queue exclusive.
+
+Allowed:
+Make the queue exclusive.</value>
+  </data>
+  <data name="RabbitMQToolTipIsAutoDelete" xml:space="preserve">
+    <value>Make the queue auto delete.</value>
+  </data>
+  <data name="RabbitMQHelpIsAutoDelete" xml:space="preserve">
+    <value>Make the queue auto delete.
+
+Allowed:
+Make the queue auto delete.</value>
+  </data>
+  <data name="RabbitMQToolTipMessage" xml:space="preserve">
+    <value>The message goes in here.</value>
+  </data>
+  <data name="RabbitMQHelpMessage" xml:space="preserve">
+    <value>The message goes in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RabbitMQToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the message publish.</value>
+  </data>
+  <data name="RabbitMQHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the message publish.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
 </root>

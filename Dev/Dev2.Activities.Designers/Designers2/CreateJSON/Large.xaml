@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:local="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
@@ -81,7 +81,7 @@
                                                     Text="{Binding DestinationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     Margin="0,0,1,1"
-                                                    ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipName}">
+                                                    ToolTip="{x:Static languages:Core.CreateJSONToolTipName}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.CreateJSONHelpName}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
@@ -120,7 +120,7 @@
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsSourceNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                     Margin="0,0,1,1"
-                                                    ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipInput}">
+                                                    ToolTip="{x:Static languages:Core.CreateJSONToolTipInput}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Core.CreateJSONHelpInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
@@ -154,7 +154,7 @@
                                     WrapInBrackets="True"
                                     DefaultText="[[JSON]]"
                                     Text="{Binding Path=ModelItem.JsonString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static help:HelpTextResources.CreateJSONToolTipResult}"
+                                    ToolTip="{x:Static languages:Core.CreateJSONToolTipResult}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
                 <i:Interaction.Behaviors>

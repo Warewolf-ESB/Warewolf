@@ -45,7 +45,7 @@ namespace Dev2.Data.ServiceModel
                     break;
 
                 case TypeSource:
-                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource,ResourceType.OauthSource,ResourceType.SharepointServerSource, ResourceType.ServerSource, ResourceType.DropboxSource,ResourceType.ExchangeSource  };
+                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource,ResourceType.OauthSource,ResourceType.SharepointServerSource, ResourceType.ServerSource, ResourceType.DropboxSource, ResourceType.ExchangeSource, ResourceType.RabbitMQSource  };
                     break;
 
                 case TypeReservedService:
@@ -93,6 +93,7 @@ namespace Dev2.Data.ServiceModel
                 case ResourceType.SharepointServerSource:
                 case ResourceType.OauthSource:
                 case ResourceType.DropboxSource:
+                case ResourceType.RabbitMQSource:
                 case ResourceType.ExchangeSource:
                     return TypeSource;
 

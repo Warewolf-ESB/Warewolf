@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using Caliburn.Micro;
-using Dev2.Activities.Designers2.ODBC;
+﻿using Dev2.Activities.Designers2.ODBC;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -13,9 +6,14 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Linq;
+using System.Linq.Expressions;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 
@@ -49,20 +47,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             {
                 Name = "GreenPoint",
                 Type = enSourceType.ODBC
-
-
             };
 
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockServiceInputViewModel.SetupAllProperties();
-            var ODBCServerDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem, new Mock<IContextualResourceModel>().Object,
-                                                                                        mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker(), mockServiceInputViewModel.Object, mockDbServiceModel.Object);
+            var ODBCServerDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem);
+
 
             ScenarioContext.Current.Add("viewModel", ODBCServerDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
+
         [Given(@"I open workflow with ODBC connector")]
         public void GivenIOpenWolf()
         {
@@ -76,7 +73,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var odbcServerActivity = new DsfODBCDatabaseActivity
             {
                 SourceId = sourceId,
-                ProcedureName = "dbo.Pr_CitiesGetCountries",
+                CommandText = "dbo.Pr_CitiesGetCountries",
                 Inputs = inputs,
                 Outputs = outputs
             };
@@ -116,20 +113,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
-            var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem, new Mock<IContextualResourceModel>().Object,
-                                                                                        mockEnvironmentRepo.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker(), mockServiceInputViewModel.Object, mockDbServiceModel.Object);
+            var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem);
 
             ScenarioContext.Current.Add("viewModel", odbcDatabaseDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
-     
 
         [Given(@"Source iz Enable")]
         public void GivenSourceIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.SourceVisible);
+            Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
         }
         private static ODBCDatabaseDesignerViewModel GetViewModel()
         {
@@ -146,12 +141,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
-      
         [Given(@"Action iz Disable")]
         public void GivenActionIsDisabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsFalse(viewModel.ActionVisible);
+            Assert.IsFalse(viewModel.ActionRegion.IsEnabled);
         }
 
         [Given(@"Inputs iz Disable")]
@@ -160,7 +154,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenInputsIsDisabled()
         {
             var viewModel = GetViewModel();
-            var hasNoInputs = viewModel.Inputs == null || viewModel.Inputs.Count == 0 || !viewModel.InputsVisible;
+            var hasNoInputs = viewModel.InputArea == null || viewModel.InputArea.Inputs.Count == 0 || !viewModel.InputArea.IsEnabled;
             Assert.IsTrue(hasNoInputs);
         }
 
@@ -170,52 +164,52 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenOutputsIsDisabled()
         {
             var viewModel = GetViewModel();
-            var hasNoOutputs = viewModel.Outputs == null || viewModel.Outputs.Count == 0 || !viewModel.OutputsVisible;
+            var hasNoOutputs = viewModel.OutputsRegion == null || viewModel.OutputsRegion.Outputs.Count == 0 || !viewModel.OutputsRegion.IsEnabled;
             Assert.IsTrue(hasNoOutputs);
         }
+
         [When(@"Action iz changed to ""(.*)""")]
         public void WhenActionIsChangedFromTo(string procName)
         {
             if (procName == "dbo.ImportOrder")
             {
                 _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") };
-                GetViewModel().SelectedProcedure = _importOrderAction;
+                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
             }
         }
+
         [When(@"Recordset Name iz changed from to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
-            GetViewModel().RecordsetName = recSetName;
+            GetViewModel().OutputsRegion.RecordsetName = recSetName;
         }
+
         [Given(@"Action iz ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
-           
-            var selectedProcedure = GetViewModel().MyCommand;
+            var selectedProcedure = GetViewModel().CommandText;
             Assert.IsNotNull(selectedProcedure);
-            Assert.AreEqual<string>(actionName, selectedProcedure);
-
+            Assert.AreEqual(actionName, selectedProcedure);
         }
+
         [Given(@"Action iz Enable")]
         [Then(@"Action iz Enable")]
         [When(@"Action iz Enable")]
         public void ThenActionIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.ActionVisible);
+            Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
         }
-      
+
         [Given(@"Inputs iz Enable")]
         [When(@"Inputs iz Enable")]
         [Then(@"Inputs iz Enable")]
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
-            var hasInputs = viewModel.Inputs != null || viewModel.InputsVisible;
+            var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsEnabled;
             Assert.IsTrue(hasInputs);
         }
-
-
 
         [Then(@"Mapping iz Enable")]
         [Given(@"Mapping iz Enable")]
@@ -223,14 +217,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             ScenarioContext.Current.Pending();
         }
+
         [Given(@"Validate iz Enable")]
         [When(@"Validate iz Enable")]
         [Then(@"Validate iz Enable")]
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
-            Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
+            Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
         }
+
         [When(@"Inputs appears az")]
         [Then(@"Inputs appears az")]
         [Given(@"Inputs appears az")]
@@ -242,22 +238,17 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             {
                 var inputValue = row["Input"];
                 var value = row["Value"];
-                var serviceInputs = viewModel.Inputs.ToList();
+                var serviceInputs = viewModel.InputArea.Inputs.ToList();
                 if (serviceInputs.Count > 0)
                 {
                     var serviceInput = serviceInputs[rowNum];
 
-                    Assert.AreEqual<string>(inputValue, serviceInput.Name);
-                    Assert.AreEqual<string>(value, serviceInput.Value);
+                    Assert.AreEqual(inputValue, serviceInput.Name);
+                    Assert.AreEqual(value, serviceInput.Value);
                 }
                 rowNum++;
             }
         }
-
-
-
-
-
 
         [When(@"I Selected ""(.*)"" az Source")]
         public void WhenISelectAsSource(string sourceName)
@@ -268,7 +259,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 _importOrderAction.Name = "Command";
                 _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("EID", "") };
                 GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-                GetViewModel().SelectedSource = _greenPointSource;
+                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
         }
 
@@ -281,7 +272,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 _importOrderAction.Name = "Command";
                 _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
                 GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-                GetViewModel().SelectedSource = _testingDbSource;
+                GetViewModel().SourceRegion.SelectedSource = _testingDbSource;
             }
         }
 
@@ -294,15 +285,11 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 dataTable.Columns.Add(new DataColumn("Column1"));
                 dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
                 GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().SelectedProcedure = _importOrderAction;
-                GetViewModel().MyCommand = actionName;
+                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+                GetViewModel().CommandText = actionName;
             }
         }
 
-
-
-
-      
         [When(@"I click Tezt")]
         public void WhenIClickTest()
         {
@@ -316,8 +303,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
-
-
 
         [When(@"""(.*)"" is selected az the data source")]
         public void WhenIsSelectedAsTheDataSource(string p0)
@@ -334,7 +319,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [When(@"I click Validatt")]
         public void WhenIClickValidate()
         {
-            GetViewModel().TestInputCommand.Execute(null);
+            GetViewModel().TestInputCommand.Execute();
         }
 
         [Then(@"Test Inputs appears az")]
@@ -352,7 +337,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-
         [Then(@"Test Connector and Calculate Outputz outputs appear az")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
@@ -364,7 +348,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var rows = viewModel.ManageServiceInputViewModel.TestResults.Rows;
                 var dataRow = rows[rowIdx];
                 var dataRowValue = dataRow[0].ToString();
-                Assert.AreEqual<string>(outputValue, dataRowValue);
+                Assert.AreEqual(outputValue, dataRowValue);
                 rowIdx++;
             }
         }
@@ -372,7 +356,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Outputs appears az")]
         public void ThenOutputsAppearAs(Table table)
         {
-            var outputMappings = GetViewModel().Outputs;
+            var outputMappings = GetViewModel().OutputsRegion.Outputs;
             Assert.IsNotNull(outputMappings);
             var rowIdx = 0;
             foreach (var tableRow in table.Rows)
@@ -380,8 +364,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var mappedFrom = tableRow["Mapped From"];
                 var mappedTo = tableRow["Mapped To"];
                 var outputMapping = outputMappings.ToList()[rowIdx];
-                Assert.AreEqual<string>(mappedFrom, outputMapping.MappedFrom);
-                Assert.AreEqual<string>(mappedTo, outputMapping.MappedTo);
+                Assert.AreEqual(mappedFrom, outputMapping.MappedFrom);
+                Assert.AreEqual(mappedTo, outputMapping.MappedTo);
                 rowIdx++;
             }
         }
@@ -389,27 +373,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Recordset Name equal ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            Assert.AreEqual<string>(recsetName, GetViewModel().RecordsetName);
+            Assert.AreEqual(recsetName, GetViewModel().OutputsRegion.RecordsetName);
         }
-
 
         [When(@"Source iz changed to ""(.*)""")]
         public void WhenSourceIsChangedFromTo(string sourceName)
         {
             if (sourceName == "GreenPoint")
             {
-                GetViewModel().SelectedSource = _greenPointSource;
+                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
             }
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

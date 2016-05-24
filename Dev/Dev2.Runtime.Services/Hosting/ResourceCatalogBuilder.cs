@@ -20,7 +20,9 @@ using System.Xml.Linq;
 using ChinhDo.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -108,11 +110,19 @@ namespace Dev2.Runtime.Hosting
                 }
 
                 // Use the parallel task library to process file system ;)
+              
+                var resourceBaseType = typeof(IResourceSource);
+                var types = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(s => s.GetTypes())
+                    .Where(p => resourceBaseType.IsAssignableFrom(p));
+                var connectionTypeName = typeof(Connection).Name;
+                var dropBoxSourceName = typeof(DropBoxSource).Name;
+                var dbType = typeof(DbSource).Name;
+                var allTypes = types as IList<Type> ?? types.ToList();
                 streams.ForEach(currentItem =>
                 {
 
                     XElement xml = null;
-
                     try
                     {
                         xml = XElement.Load(currentItem.FileStream);
@@ -127,11 +137,47 @@ namespace Dev2.Runtime.Hosting
                     var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
                     {
-                        var resource = new Resource(xml)
+                        //TODO: Remove this after V1 is released. All will be updated.
+                        #region old typing to be removed after V1
+                        var typeName = xml.AttributeSafe("Type");
+                        if (typeName == "Unknown")
                         {
-                            FilePath = currentItem.FilePath
-                        };
+                            var servertype = xml.AttributeSafe("ResourceType");
+                            if (servertype != null && servertype == dbType)
+                            {
+                                xml.SetAttributeValue("Type", dbType);
+                                typeName = dbType;
+                            }
+                        }
+                        
+                        if (typeName == "Dev2Server" || typeName == "Server" || typeName == "ServerSource")
+                        {
+                            xml.SetAttributeValue("Type",connectionTypeName);
+                            typeName = connectionTypeName;
+                        }
 
+                        if (typeName == "OauthSource")
+                        {
+                            xml.SetAttributeValue("Type", dropBoxSourceName);
+                            typeName = dropBoxSourceName;
+                        }
+                        #endregion
+
+                        Type type = null;
+                        if (allTypes.Count != 0)
+                        {
+                            type=allTypes.FirstOrDefault(type1 => type1.Name == typeName);
+                        }
+                        Resource resource;
+                        if (type != null)
+                        {
+                            resource = (Resource)Activator.CreateInstance(type, xml);
+                        }
+                        else
+                        {
+                            resource = new Resource(xml);
+                        }
+                        resource.FilePath = currentItem.FilePath;
                         //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
                         if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
                         {

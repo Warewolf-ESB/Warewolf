@@ -105,9 +105,6 @@ Scenario: Refresh New Plugin Source GAC
 	When I refresh the filter
 	And GAC only has one option in the tree
 
-
-#Wolf-1001
-
 Scenario: load all dependancies after filter cleared 
 	Given I open New Plugin Source
 	When I open "GAC"

@@ -67,12 +67,12 @@
 ##decide if variable [[A]] Ends With variable [[B]] (False)
 ##decide if variable [[A]] Contains variable [[B]] (True)
 ##decide if variable [[A]] Contains variable [[B]] (False)
-##decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
-##ecide if variable [[A]] Doesn't Starts With variable [[B]] (False)
-##decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
-##decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
-##decide if variable [[A]] Doesn't Contains variable [[B]] (True)
-##decide if variable [[A]] Doesn't Contains variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Starts With variable [[B]] (True)
+##ecide if variable [[A]] Doesn"t Starts With variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Ends With variable [[B]] (True)
+##decide if variable [[A]] Doesn"t Ends With variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Contains variable [[B]] (True)
+##decide if variable [[A]] Doesn"t Contains variable [[B]] (False)
 ##decide if There Is An Error (True)	
 ##decide if There Is An Error (False)
 ##decide if There Is No Error (True)
@@ -94,7 +94,7 @@ Scenario: Decide if variable [[A]] is alphanumeric (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -108,7 +108,7 @@ Scenario: decide if variable [[A]] is alphanumeric (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|           | Statement | Require All decisions to be True |
+	|           | Statement | Require all decisions to be true |
 	| [[A]] = @ | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -122,7 +122,7 @@ Scenario: decide if variable [[A]] is Base64 (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -135,7 +135,7 @@ Scenario: decide if variable [[A]] is Base64 (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                | Statement | Require All decisions to be True |
+	|                | Statement | Require all decisions to be true |
 	| [[A]] = 011110 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -148,7 +148,7 @@ Scenario: decide if variable [[A]] is Binary (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                | Statement | Require All decisions to be True |
+	|                | Statement | Require all decisions to be true |
 	| [[A]] = 011110 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -162,7 +162,7 @@ Scenario: decide if variable [[A]] is Binary (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -176,7 +176,7 @@ Scenario: decide if variable [[A]] is a Date (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                    | Statement | Require All decisions to be True |
+	|                    | Statement | Require all decisions to be true |
 	| [[A]] = 2010-01-10 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -190,7 +190,7 @@ Scenario: decide if variable [[A]] is a Date (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                     | Statement | Require All decisions to be True |
+	|                     | Statement | Require all decisions to be true |
 	| [[A]] = Hello World | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -203,7 +203,7 @@ Scenario: decide if variable [[A]] is an Email (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                               | Statement | Require All decisions to be True |
+	|                               | Statement | Require all decisions to be true |
 	| [[A]] = testmail@freemail.net | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -216,7 +216,7 @@ Scenario: decide if variable [[A]] is an Email (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                     | Statement | Require All decisions to be True |
+	|                     | Statement | Require all decisions to be true |
 	| [[A]] = Hello World | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -229,7 +229,7 @@ Scenario: decide if variable [[A]] is Hex (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 1E | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -242,7 +242,7 @@ Scenario: decide if variable [[A]] is Hex (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
     Then the debug inputs as  
-	|             | Statement | Require All decisions to be True |
+	|             | Statement | Require all decisions to be true |
 	| [[A]] = KLM | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -256,7 +256,7 @@ Scenario: decide if variable [[A]] is Numeric (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -270,7 +270,7 @@ Scenario: decide if variable [[A]] is Numeric (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
    Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 3R | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -284,7 +284,7 @@ Scenario: decide if variable [[A]] is Regex (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                    | Statement | Require All decisions to be True |
+	|                                    | Statement | Require all decisions to be true |
 	| [[A]] = tshepo.ntlhokoa@dev2.co.za | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -298,7 +298,7 @@ Scenario: decide if variable [[A]] is Regex (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                   | Statement | Require All decisions to be True |
+	|                   | Statement | Require all decisions to be true |
 	| [[A]] = 787877787 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -313,7 +313,7 @@ Scenario: decide if variable [[A]] is Text (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                      | Statement | Require All decisions to be True |
+	|                      | Statement | Require all decisions to be true |
 	| [[A]] = Hello Africa | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -326,7 +326,7 @@ Scenario: decide if variable [[A]] is Text (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|              | Statement | Require All decisions to be True |
+	|              | Statement | Require all decisions to be true |
 	| [[A]] = 3000 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -339,7 +339,7 @@ Scenario: decide if variable [[A]] Is XML (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                 | Statement | Require All decisions to be True |
+	|                 | Statement | Require all decisions to be true |
 	| [[A]] = <A></A> | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -352,7 +352,7 @@ Scenario: decide if variable [[A]] Is XML (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|           | Statement | Require All decisions to be True |
+	|           | Statement | Require all decisions to be true |
 	| [[A]] = @ | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -365,7 +365,7 @@ Scenario: decide if variable [[A]] Not Alphanumeric (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|             | Statement | Require All decisions to be True |
+	|             | Statement | Require all decisions to be true |
 	| [[A]] = @#$ | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -378,7 +378,7 @@ Scenario: decide if variable [[A]] Not Alphanumeric (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|               | Statement | Require All decisions to be True |
+	|               | Statement | Require all decisions to be true |
 	| [[A]] = Hello | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -391,7 +391,7 @@ Scenario: decide if variable [[A]] Not Base64 (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                | Statement | Require All decisions to be True |
+	|                | Statement | Require all decisions to be true |
 	| [[A]] = 011110 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -405,7 +405,7 @@ Scenario: decide if variable [[A]] Not Base64 (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -418,7 +418,7 @@ Scenario: decide if variable [[A]] Not Binary (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[A]] = dHNoZXBv | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -431,7 +431,7 @@ Scenario: decide if variable [[A]] Not Binary (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                 | Statement | Require All decisions to be True |
+	|                 | Statement | Require all decisions to be true |
 	| [[A]] = 0111100 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -444,7 +444,7 @@ Scenario: decide if variable [[A]] Not Date (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[A]] = Gracious | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -457,7 +457,7 @@ Scenario: decide if variable [[A]] Not Date (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                    | Statement | Require All decisions to be True |
+	|                    | Statement | Require all decisions to be true |
 	| [[A]] = 2010-01-10 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -471,7 +471,7 @@ Scenario: decide if variable [[A]] Not Email (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[A]] = Graciuos | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -485,7 +485,7 @@ Scenario: decide if variable [[A]] Not Email (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                               | Statement | Require All decisions to be True |
+	|                               | Statement | Require all decisions to be true |
 	| [[A]] = testmail@freemail.com | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -499,7 +499,7 @@ Scenario: decide if variable [[A]] Not Hex (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                 | Statement | Require All decisions to be True |
+	|                 | Statement | Require all decisions to be true |
 	| [[A]] = 0111000 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -513,7 +513,7 @@ Scenario: decide if variable [[A]] Not Hex (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 1E | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -527,7 +527,7 @@ Scenario: decide if variable [[A]] Not Numeric (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                 | Statement | Require All decisions to be True |
+	|                 | Statement | Require all decisions to be true |
 	| [[A]] = Red sox | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -540,7 +540,7 @@ Scenario: decide if variable [[A]] Not Numeric (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -553,7 +553,7 @@ Scenario: decide if variable [[A]] Not Regex (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|           | Statement | Require All decisions to be True |
+	|           | Statement | Require all decisions to be true |
 	| [[A]] = 6 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -566,7 +566,7 @@ Scenario: decide if variable [[A]] Not Regex (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                    | Statement | Require All decisions to be True |
+	|                                    | Statement | Require all decisions to be true |
 	| [[A]] = tshepo.ntlhokoa@dev2.co.za | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -579,7 +579,7 @@ Scenario: decide if variable [[A]] Not Text (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|           | Statement | Require All decisions to be True |
+	|           | Statement | Require all decisions to be true |
 	| [[A]] = 30 | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -593,7 +593,7 @@ Scenario: decide if variable [[A]] Not Text (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[A]] = Gracious | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -607,7 +607,7 @@ Scenario: decide if variable [[A]] Not XML (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|             | Statement | Require All decisions to be True |
+	|             | Statement | Require all decisions to be true |
 	| [[A]] = A A | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -621,29 +621,29 @@ Scenario: decide if variable [[A]] Not XML (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                 | Statement | Require All decisions to be True |
+	|                 | Statement | Require all decisions to be true |
 	| [[A]] = <A></A> | String    | YES                              |
 	And the debug output as 
 	|         |
 	| NO     |
 
-#Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
-#	Given a decision variable "[[A]]" value "30"	
-#	And a decision variable "[[B]]" value "20"
-#	And a decision variable "[[C]]" value "40"	
-#	And check if "[[A]]" "IsBetween" "[[B]]" and "[[C]]"
-#	When the decision tool is executed
-#	Then the decision result should be "True"
-#	Then the execution has "NO" error
-#	Then the debug inputs as  
-#	|            | Statement | Require All decisions to be True |
-#	| [[A]] = 30 |           |                                  |
-#	| [[B]] = 20 |           |                                  |
-#	| [[C]] = 40 |           |                                  |
-#	|            | String    | YES                              |
-#	And the debug output as 
-#	|         |
-#	| YES    |
+Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (True)
+	Given a decision variable "[[A]]" value "30"	
+	And a decision variable "[[B]]" value "20"
+	And a decision variable "[[C]]" value "40"	
+	And check if "[[A]]" "IsBetween" "[[B]]" and "[[C]]"
+	When the decision tool is executed
+	Then the decision result should be "True"
+	Then the execution has "NO" error
+	Then the debug inputs as  
+	|            | Statement | Require all decisions to be true |
+	| [[A]] = 30 |           |                                  |
+	| [[B]] = 20 |           |                                  |
+	| [[C]] = 40 |           |                                  |
+	|            | String    | YES                              |
+	And the debug output as 
+	|         |
+	| YES    |
 
 Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (True)
 	Given a decision variable "[[A]]" value "20"	
@@ -654,7 +654,7 @@ Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (True
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 20 |           |                                  |
 	| [[B]] = 30 |           |                                  |
 	| [[C]] = 40 |           |                                  |
@@ -672,7 +672,7 @@ Scenario: decide if variable [[A]] Is Between variable [[B]] and [[C]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 20 |           |                                  |
 	| [[B]] = 30 |           |                                  |
 	| [[C]] = 40 |           |                                  |
@@ -690,7 +690,7 @@ Scenario: decide if variable [[A]] Is Not Between variable [[B]] and [[C]] (Fals
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 20 |           |                                  |
 	| [[C]] = 40 |           |                                  |
@@ -710,7 +710,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] and [[B]] equals [[C]] 
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 |           |                                  |
 	| [[C]] = 30 |           |                                  |
@@ -730,7 +730,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] and [[B]] equals [[C]] 
 	Then the decision result should be "true"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 |           |                                  |
 	| [[C]] = 31 |           |                                  |
@@ -747,7 +747,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
@@ -762,7 +762,7 @@ Scenario: decide if variable [[A]] equals variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
@@ -778,7 +778,7 @@ Scenario: decide if variable [[A]] greater than variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 40 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
@@ -793,7 +793,7 @@ Scenario: decide if variable [[A]] greater than variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
@@ -808,7 +808,7 @@ Scenario: decide if variable [[A]] less than variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 20 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
@@ -824,7 +824,7 @@ Scenario: decide if variable [[A]] less than variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 70 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
@@ -839,7 +839,7 @@ Scenario: decide if variable [[A]] not equals variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 38 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
@@ -855,7 +855,7 @@ Scenario: decide if variable [[A]] not equals variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
@@ -870,7 +870,7 @@ Scenario: decide if variable [[A]] not equals variable [[B]] (False)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
@@ -885,7 +885,7 @@ Scenario: decide if variable [[A]] equal or greater than variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error	
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
@@ -900,7 +900,7 @@ Scenario: decide if variable [[A]] equal or less than variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = 30 | String    | YES                              |
 	And the debug output as 
@@ -915,7 +915,7 @@ Scenario: decide if variable [[A]] equal or less than variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 60 |           |                                  |
 	| [[B]] = 40 | String    | YES                              |
 	And the debug output as 
@@ -931,7 +931,7 @@ Scenario: decide if variable [[A]] Starts With variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                     | Statement | Require All decisions to be True |
+	|                     | Statement | Require all decisions to be true |
 	| [[A]] = Hello World |           |                                  |
 	| [[B]] = Hello       | String    | YES                              |
 	And the debug output as 
@@ -947,7 +947,7 @@ Scenario: decide if variable [[A]] Starts With variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                      | Statement | Require All decisions to be True |
+	|                      | Statement | Require all decisions to be true |
 	| [[A]] = Hello Africa |           |                                  |
 	| [[B]] = World        | String    | YES                              |
 	And the debug output as 
@@ -963,7 +963,7 @@ Scenario: decide if variable [[A]] Ends With variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                      | Statement | Require All decisions to be True |
+	|                      | Statement | Require all decisions to be true |
 	| [[A]] = Hello Africa |           |                                  |
 	| [[B]] = Africa       | String    | YES                              |
 	And the debug output as 
@@ -978,7 +978,7 @@ Scenario: decide if variable [[A]] Ends With variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                     | Statement | Require All decisions to be True |
+	|                     | Statement | Require all decisions to be true |
 	| [[A]] = Hello World |           |                                  |
 	| [[B]] = Africa      | String    | YES                              |
 	And the debug output as 
@@ -994,7 +994,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = fantastic                           | String    | YES                              |
 	And the debug output as 
@@ -1010,7 +1010,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = terrible                            | String    | YES                              |
 	And the debug output as 
@@ -1018,7 +1018,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (False)
 	| NO |
 
 
-Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Starts With variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "country"
 	And is "[[A]]" "NotStartsWith" "[[B]]"	
@@ -1026,7 +1026,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = country                             | String    | YES                              |
 	And the debug output as 
@@ -1034,7 +1034,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
 	| YES |
 
 
-Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Starts With variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "South"
 	And is "[[A]]" "NotStartsWith" "[[B]]"	
@@ -1042,14 +1042,14 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = South                               | String    | YES                              |
 	And the debug output as 
 	|    |
 	| NO |
 
-Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Ends With variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "continent"
 	And is "[[A]]" "NotEndsWith" "[[B]]"	
@@ -1057,14 +1057,14 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = continent                           | String    | YES                              |
 	And the debug output as 
 	|     |
 	| YES |
 
-Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Ends With variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "country"
 	And is "[[A]]" "NotEndsWith" "[[B]]"	
@@ -1072,14 +1072,14 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = country                             | String    | YES                              |
 	And the debug output as 
 	|    |
 	| NO |
 
-Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Contains variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Nile"
 	And is "[[A]]" "NotContain" "[[B]]"	
@@ -1087,14 +1087,14 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = Nile                                | String    | YES                              |
 	And the debug output as 
 	|     |
 	| YES |
 
-Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Contains variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Africa"
 	And is "[[A]]" "NotContain" "[[B]]"
@@ -1102,7 +1102,7 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                                             | Statement | Require All decisions to be True |
+	|                                             | Statement | Require all decisions to be true |
 	| [[A]] = South Africa is a fantastic country |           |                                  |
 	| [[B]] = Africa                              | String    | YES                              |
 	And the debug output as 
@@ -1116,7 +1116,7 @@ Scenario: decide if There Is An Error (True)
 	When the decision tool is executed
 	Then the decision result should be "True"
 	Then the debug inputs as  
-	|  | Statement | Require All decisions to be True |
+	|  | Statement | Require all decisions to be true |
 	|  | String    | YES                              |
 	And the debug output as 
 	|     |
@@ -1128,7 +1128,7 @@ Scenario: decide if There Is An Error (False)
 	When the decision tool is executed
 	Then the decision result should be "False"
 	Then the debug inputs as  
-	|  | Statement | Require All decisions to be True |
+	|  | Statement | Require all decisions to be true |
 	|  | String    | YES                              |
 	And the debug output as 
 	|    |
@@ -1140,7 +1140,7 @@ Scenario: decide if There Is No Error (True)
 	When the decision tool is executed
 	Then the decision result should be "True"
 	Then the debug inputs as  
-	|  | Statement | Require All decisions to be True |
+	|  | Statement | Require all decisions to be true |
 	|  | String    | YES                              |
 	And the debug output as 
 	|         |
@@ -1153,7 +1153,7 @@ Scenario: decide if There Is No Error (False)
 	Then the decision result should be "False"
 	Then the execution has "AN" error
 	Then the debug inputs as  
-	|  | Statement | Require All decisions to be True |
+	|  | Statement | Require all decisions to be true |
 	|  | String    | YES                              |
 	And the debug output as 
 	|    |
@@ -1166,7 +1166,7 @@ Scenario: decide if text with space is equal to same text with extra space (Fals
 	Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                 | Statement | Require All decisions to be True |
+	|                 | Statement | Require all decisions to be true |
 	| [[A]] = 123 234 | String    | YES                              |
 	And the debug output as 
 	|    |
@@ -1179,7 +1179,7 @@ Scenario: Decision using recordset append notation
 	Then the decision result should be "True"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|                  | Statement | Require All decisions to be True |
+	|                  | Statement | Require all decisions to be true |
 	| [[rec().a]] = 1 | String    | YES                              |
 	And the debug output as 
 	|     |
@@ -1213,7 +1213,7 @@ Scenario: Executing Decision with recordset contains spcl character as index
 	Then the decision result should be "False"
 	Then the execution has "AN" error
 	Then the debug inputs as  
-	|                | Statement | Require All decisions to be True |
+	|                | Statement | Require all decisions to be true |
 	And the debug output as 
 	|    |
 	| NO |
@@ -1227,7 +1227,7 @@ Scenario: Runtime invalid recordset variable negative test
        Then the decision result should be "False"
        Then the execution has "AN" error
        Then the debug inputs as  
-       |             | Statement | Require All decisions to be True |
+       |             | Statement | Require all decisions to be true |
        | [[[[A]]]] = | String    | YES                              |
        And the debug output as 
        |    |
@@ -1241,7 +1241,7 @@ Scenario: Runtime invalid recordset variable positve test
        Then the decision result should be "True"
        Then the execution has "NO" error
        Then the debug inputs as  
-       |               | Statement | Require All decisions to be True |
+       |               | Statement | Require all decisions to be true |
        | [[[[A]]]] = 1 | String    | YES                              |
        And the debug output as 
        |     |
@@ -1253,7 +1253,7 @@ Scenario Outline: Ensuring all inputs work as expected
 	And a decision variable "<variable2>" value "<Var2>"
 	And a decision variable "<variable3>" value "<Var3>"	
 	And check if "<variable1>" "IsBetween" "<variable2>" and "<variable3>"
-	And Require All decisions to be True is "<Requirement>"
+	And Require all decisions to be true is "<Requirement>"
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Examples: 
@@ -1271,20 +1271,19 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	#Then the decision result should be "False"
 	Then the execution has "NO" error
 	Then the debug inputs as  
-	|            | Statement | Require All decisions to be True |
+	|            | Statement | Require all decisions to be true |
 	| [[A]] = 30 |           |                                  |
 	| [[B]] = \ | String    | YES                              |
 	And the debug output as 
 	|       |
 	| NO |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Ensuring all complex type inputs work as expected
-	Given a decision variable '<variable1>' value '<Var1>'	
-	And a decision variable '<variable2>' value '<Var2>'
-	And check if '<variable1>' '<matchtype>' '<variable2>'
-	And Require All decisions to be True is '<Requirement>'
+	Given a decision variable "<variable1>" value "<Var1>"	
+	And a decision variable "<variable2>" value "<Var2>"
+	And is "<variable1>" "<matchtype>" "<variable2>"
+	And Require all decisions to be true is "<Requirement>"
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Examples: 
@@ -1301,7 +1300,7 @@ Scenario: validate that a variable is Null negative
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Then the debug inputs as  
-       |           | Statement | Require All decisions to be True |
+       |           | Statement | Require all decisions to be true |
        | [[A]] = 1 | String    | YES                              |
     And the debug output as 
        |     |
@@ -1312,27 +1311,62 @@ Scenario: validate that a variable is Null Positive
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Then the debug inputs as  
-       |       | Statement | Require All decisions to be True |
-       | [[A]] = [[A]]  | String    | YES                              |
+       |           | Statement | Require all decisions to be true |
+       | [[A]] =   | String    | YES                              |
     And the debug output as 
        |     |
        | YES |
-
+	   
 Scenario: validate that a variable is not Null positive
 	Given a decision variable "[[B]]" value "10"
 	And decide if "[[B]]" "IsNotNull" 
 	When the decision tool is executed
 	Then the execution has "NO" error
 	 Then the debug inputs as  
-       |            | Statement | Require All decisions to be True |
+       |            | Statement | Require all decisions to be true |
        | [[B]] = 10 | String    | YES                              |
     And the debug output as 
        |     |
        | YES |
 
-Scenario: Null throws an error
-	Given is "[[A]]" "IsEqual" "123   234"	
+
+Scenario: validate that a variable is Blank positive
+	Given a decision variable "[[B]]" value ""
+	And is "[[B]]" "IsEqual" ""	
 	When the decision tool is executed
-	##Then the decision result should be "False"
-	Then the execution has "An" error
-	
+	Then the execution has "NO" error
+	 Then the debug inputs as  
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | YES                              |
+    And the debug output as 
+       |     |
+       | YES |
+
+
+Scenario: validate that a variable is Blank OR NULL positive 1
+	Given a decision variable "[[B]]" value ""
+	And decide if "[[B]]" "IsNull"
+	And is "[[B]]" "IsEqual" ""	
+	And the decision mode is "OR"
+	When the decision tool is executed
+	Then the execution has "NO" error
+	 Then the debug inputs as  
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | NO                               |
+    And the debug output as 
+       |     |
+       | YES |
+
+
+Scenario: validate that a variable is Blank OR NULL positive 2
+	Given is "[[B]]" "IsEqual" ""	
+	And decide if "[[B]]" "IsNull"
+	And the decision mode is "OR"
+	When the decision tool is executed
+	Then the execution has "NO" error
+	 Then the debug inputs as  
+       |         | Statement | Require all decisions to be true |
+       | [[B]] = | String    | NO                               |
+    And the debug output as 
+       |     |
+       | YES |

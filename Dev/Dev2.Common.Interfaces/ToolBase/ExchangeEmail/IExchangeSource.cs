@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
 {
@@ -12,7 +11,7 @@ namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
         string UserName { get; set; }
         string Password { get; set; }
         enSourceType Type { get; set; }
-        ResourceType ResourceType { get; set; }
+        string ResourceType { get; set; }
         string Path { get; set; }
         int Timeout { get; set; }
     }

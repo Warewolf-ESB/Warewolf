@@ -6,37 +6,36 @@ namespace Warewolf.Studio.Core
     {
         private enum MenuIcons
         {
-            Unknown = 0,
-            WorkflowService = 1,
-            DbService = 2,
-            Version = 3,
-            PluginService = 4,
-            WebService = 8,
-            DbSource = 16,
-            PluginSource = 32,
-            WebSource = 64,
-            EmailSource = 128,
-            OauthSource = 256,
-            ServerSource = 512,
-            Folder = 1024,
-            Server = 2048,
-            ReservedService = 4096,
-            Message = 3069,
-            Spacer = 99,
-            Execute = 98,
-            View = 97,
-            StartPage = 16384,
+            Unknown,
+            WorkflowService,
+            DbService,
+            Version,
+            PluginService,
+            WebService,
+            DbSource,
+            PluginSource,
+            WebSource,
+            EmailSource,
+            OauthSource,
+            ServerSource,
+            Folder,
+            Server,
+            ReservedService,
+            Message,
+            Spacer,
+            Execute,
+            View,
+            StartPage,
+            RabbitMqSource,
             ExchangeSource
-
-
         }
 
         private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
         {
             {MenuIcons.WorkflowService, "Explorer-WorkflowService"},
-            {MenuIcons.DbService, "MicrosoftSQLIcon"},
-            {MenuIcons.PluginService, "DotNetDllIcon"},
-            {MenuIcons.WebService, "WebMethodsIcon"},
+            {MenuIcons.DbService, "Database"},
+            {MenuIcons.PluginService, "DotNetDll"},
+            {MenuIcons.WebService, "WebMethods"},
             {MenuIcons.Folder, "Explorer-Spacer"},
             {MenuIcons.Spacer, "Explorer-Spacer"},
             {MenuIcons.View, "Explorer-Permission-Disbled"},
@@ -45,8 +44,9 @@ namespace Warewolf.Studio.Core
             {MenuIcons.WebSource, "WebMethodsSource"},
             {MenuIcons.PluginSource, "DotNetDllSource"},
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
-            {MenuIcons.ExchangeSource, "EmailSourceImageLogo"},
-            {MenuIcons.DbSource, "MicrosoftSQLSource"},
+            {MenuIcons.ExchangeSource, "ExchangeSource"},
+            {MenuIcons.RabbitMqSource, "RabbitMqSource"},
+            {MenuIcons.DbSource, "DatabaseSource"},
             {MenuIcons.ServerSource, "System-Logo-Create"},
             {MenuIcons.Server, "System-Logo"},
             {MenuIcons.StartPage, "Fa-Home"}
@@ -164,6 +164,14 @@ namespace Warewolf.Studio.Core
             }
         }
 
+        public static string RabbitMqSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.RabbitMqSource];
+            }
+        }
+        
         public static string WebSource
         {
             get

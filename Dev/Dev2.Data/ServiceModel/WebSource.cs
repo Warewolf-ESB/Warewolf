@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 // ReSharper restore CheckNamespace
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
-    public class WebSource : Resource, IDisposable
+    public class WebSource : Resource, IDisposable,IResourceSource
     {
         bool _disposed;
 
@@ -56,14 +56,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.WebSource;
+            ResourceType = "WebSource";
             AuthenticationType = AuthenticationType.Anonymous;
         }
 
         public WebSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.WebSource;
+            ResourceType = "WebSource";
             AuthenticationType = AuthenticationType.Anonymous;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -112,11 +112,54 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             result.Add(
                 new XAttribute("ConnectionString", DpapiWrapper.Encrypt(connectionString.EscapeString())),
-                new XAttribute("Type", ResourceType),
+                new XAttribute("Type", GetType().Name),
                 new XElement("TypeOf", ResourceType)
                 );
 
             return result;
+        }
+
+        public override bool IsSource
+        {
+            get
+            {
+                return true;
+            }
+        }
+        public override bool IsService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsFolder
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsReservedService
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsServer
+        {
+            get
+            {
+                return false;
+            }
+        }
+        public override bool IsResourceVersion
+        {
+            get
+            {
+                return false;
+            }
         }
 
         #endregion

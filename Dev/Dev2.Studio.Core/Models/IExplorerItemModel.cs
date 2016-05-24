@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dev2.AppResources.Repositories;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
@@ -84,7 +83,7 @@ namespace Dev2.Models
         /// <summary>
         /// Type
         /// </summary>
-        ResourceType ResourceType { get; set; }
+        string ResourceType { get; set; }
 
         /// <summary>
         /// Children
@@ -440,5 +439,12 @@ namespace Dev2.Models
         /// Get the resource path without name
         /// </summary>
         string ResourcePathWithoutName { get; }
+
+        bool IsSource { get; set; }
+        bool IsService { get; set; }
+        bool IsFolder { get; set; }
+        bool IsReservedService { get; set; }
+        bool IsServer { get; set; }
+        bool IsResourceVersion { get; set; }
     }
 }

@@ -18,6 +18,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
+using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Activities.Designers2.Core.InputRegion;
 using Dev2.Activities.Designers2.Core.NamespaceRegion;
 using Dev2.Activities.Designers2.Core.Source;
@@ -69,6 +70,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             Model = model;
 
             SetupCommonProperties();
+            this.RunViewSetup();
         }
 
         Guid UniqueID { get { return GetProperty<Guid>(); } }
@@ -373,6 +375,13 @@ namespace Dev2.Activities.Designers2.Net_DLL
                         }
                     }
                 } };
+                NamespaceRegion.SomethingChanged += (sender, args) =>
+                {
+                    if (args.Errors != null)
+                        Errors =
+                            args.Errors.Select(e => new ActionableErrorInfo {ErrorType = ErrorType.Critical, Message = e} as IActionableErrorInfo)
+                                .ToList();
+                };
                 regions.Add(NamespaceRegion);
                 ActionRegion = new DotNetActionRegion(Model, ModelItem, SourceRegion, NamespaceRegion) { SourceChangedAction = () =>
                 {

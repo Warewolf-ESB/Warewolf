@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.FindRecordsMultipleCriteria"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
@@ -57,7 +57,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 IsUndoEnabled="True"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.FindToolTipInFields}">
+                                ToolTip="{x:Static languages:Core.FindToolTipInFields}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.FindHelpInFields}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -93,7 +93,7 @@
                                       Margin="0,0,1,1"
                                       ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.FindToolTipLookForMatchType}">
+                                      ToolTip="{x:Static languages:Core.FindToolTipLookForMatchType}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -145,7 +145,7 @@
                                                         IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static help:HelpTextResources.FindToolTipMatch}">
+                                                        ToolTip="{x:Static languages:Core.FindToolTipMatch}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.FindHelpMatch}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
@@ -176,7 +176,7 @@
                                                         Text="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static help:HelpTextResources.FindToolTipFrom}">
+                                                        ToolTip="{x:Static languages:Core.FindToolTipFrom}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.FindHelpFrom}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
@@ -207,7 +207,7 @@
                                                         Text="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static help:HelpTextResources.FindToolTipTo}">
+                                                        ToolTip="{x:Static languages:Core.FindToolTipTo}">
                                     <i:Interaction.Behaviors>
                                         <core1:HelpSetter Text="{x:Static languages:Core.FindHelpTo}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
@@ -241,7 +241,7 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.FindToolTipResult}">
+                                ToolTip="{x:Static languages:Core.FindToolTipResult}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.FindHelpResult}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"

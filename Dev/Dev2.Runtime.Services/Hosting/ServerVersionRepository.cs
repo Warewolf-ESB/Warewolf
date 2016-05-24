@@ -131,9 +131,10 @@ namespace Dev2.Runtime.Hosting
 
         IExplorerItem CreateVersionFromFilePath(string path, IResource resource)
         {
-            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, ResourceType.Version, new List<IExplorerItem>(), Permissions.View, resource.ResourcePath, "", "")
+            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, "Version", new List<IExplorerItem>(), Permissions.View, resource.ResourcePath, "", "")
                 {
-                    VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID)
+                    VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID),
+                    IsResourceVersion = true
                 };
         }
 
@@ -176,7 +177,7 @@ namespace Dev2.Runtime.Hosting
             UpdateCategoryIfRenamed(res, oldResource, xml);
             StoreAndDeleteCurrentIfRenamed(res, oldResource);
             UpdateVersionInfoIfNotExists(resourceId, xml, res);
-            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(),null,"Rollback","Unknown");
+            _catalogue.SaveResource(Guid.Empty, xml.ToStringBuilder(),null,"Rollback","WorkflowService");
             if (oldResource.ResourceName != res.ResourceName)
                 _catalogue.GetResource(Guid.Empty, res.ResourceID).ResourceName = oldResource.ResourceName; 
             return new RollbackResult{DisplayName = oldResource.ResourceName, VersionHistory = GetVersions(resourceId)};
@@ -201,7 +202,7 @@ namespace Dev2.Runtime.Hosting
             if(res.ResourceName != oldResource.ResourceName)
             {
                 StoreVersion(res, "unknown", "Rollback", Guid.Empty);
-                _catalogue.DeleteResource(Guid.Empty, res.ResourceName, res.ResourceType.ToString(), null, false);
+                _catalogue.DeleteResource(Guid.Empty, res.ResourceName, res.ResourceType, null, false);
             }
         }
 

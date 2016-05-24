@@ -54,7 +54,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             ScenarioContext.Current.Add("activity", xPath);
         }
 
-        [Given(@"I have this xml '(.*)'")]
+        [Given(@"I have this xml ""(.*)""")]
         public void GivenIHaveThisXml(string xmlData)
         {
             ScenarioContext.Current.Add("xmlData", xmlData);
@@ -65,7 +65,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         {
             ScenarioContext.Current.Add("xmlData", variable);
         }
-
 
         [Given(@"I have a variable ""(.*)"" output with xpath ""(.*)""")]
         public void GivenIHaveAVariableOutputWithXpath(string variable, string xpath)
@@ -90,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             }
         }
 
-        [Given(@"I have this xml '(.*)' in a variable ""(.*)""")]
+        [Given(@"I have this xml ""(.*)"" in a variable ""(.*)""")]
         public void GivenIHaveThisXmlInAVariable(string xml, string variable)
         {
             List<Tuple<string, string>> variableList;
@@ -148,6 +147,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             {
                 Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
             }
+        }
+
+        [Given(@"The path variable is ""(.*)"" equals ""(.*)""(.*)""(.*)""")]
+        public void GivenThePathVariableIsEquals(string p0, string p1, int p2, string p3)
+        {
+            throw new NotImplementedException("This step definition is not yet implemented and is required for this test to pass. - Ashley");
         }
     }
 }

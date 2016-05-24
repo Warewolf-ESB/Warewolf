@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.FormatNumber"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
@@ -47,7 +47,7 @@
                                 Grid.ColumnSpan="2"
                                 DefaultText="Whole or decimal"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipNumber}"
+                                ToolTip="{x:Static languages:Core.FormatNumberToolTipNumber}"
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -71,7 +71,7 @@
                    Width="Auto"
                    attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                    SelectedValue="{Binding SelectedRoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                   ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipRoundType}">
+                   ToolTip="{x:Static languages:Core.FormatNumberToolTipRoundType}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpRoundType}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -92,7 +92,7 @@
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 IsEnabled="{Binding ModelItem.RoundingType, Mode=OneWay, Converter={StaticResource EnumToBoolConverterenRoundingType}}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Rounding_Inputtxt_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipRoundvalue}">
+                                ToolTip="{x:Static languages:Core.FormatNumberToolTipRoundvalue}">
             <i:Interaction.Behaviors>
                 <core1:HelpSetter Text="{x:Static languages:Core.FormatNumberHelpRoundValue}" DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
@@ -107,7 +107,7 @@
                                 Grid.Row="2"
                                 FilterType="All"
                                 Margin="{StaticResource ControlBorderTop}"
-                                ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipDecimalsToShow}"
+                                ToolTip="{x:Static languages:Core.FormatNumberToolTipDecimalsToShow}"
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.DecimalPlacesToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -128,7 +128,7 @@
                                 Margin="{StaticResource ControlBorderTop}"
                                 DefaultText="[[Result]]"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipResult}"
+                                ToolTip="{x:Static languages:Core.FormatNumberToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

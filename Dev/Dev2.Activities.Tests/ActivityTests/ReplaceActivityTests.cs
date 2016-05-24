@@ -74,7 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]],[[Customers(*).FirstName]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"3";
+            const string expected = @"2";
             string actual;
 
             string error;
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(*).field1]], [[Customers(*).FirstName]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"3";
+            const string expected = @"2";
             string actual;
             string error;
 
@@ -212,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[recset1(1).field1]],[[Customers(2).FirstName]]", "Barney", "Wallis", "[[res]]", false);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"2";
+            const string expected = @"1";
             string actual;
             string error;
             GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);

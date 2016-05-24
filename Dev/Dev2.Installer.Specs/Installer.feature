@@ -3,8 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-##@ignore
-##Scenario: Ensure Downloaded and install works
+####Scenario: Ensure Downloaded and install works
 ##	Given I enter "https://warewolf.s3.amazonaws.com/Archive/Warewolf-0.4.6.23279.exe" in Browser 
 ##	When i run the url
 ##	Then the "Warewolf-0.4.6.23279.exe" download should begin

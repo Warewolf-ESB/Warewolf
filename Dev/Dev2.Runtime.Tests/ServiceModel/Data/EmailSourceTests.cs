@@ -13,7 +13,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
@@ -33,7 +32,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             //Initialize test resource, save then change path
             string uniquePathText = Guid.NewGuid().ToString() + "\\test email source";
-            var testResource = new Resource { ResourceName = "test email source", ResourcePath = "initialpath\\test email source", ResourceType = ResourceType.EmailSource, ResourceID = Guid.NewGuid() };
+            var testResource = new Resource { ResourceName = "test email source", ResourcePath = "initialpath\\test email source", ResourceType = "EmailSource", ResourceID = Guid.NewGuid() };
             new EmailSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;
 
@@ -41,7 +40,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             new EmailSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
 
             //Assert resource saved
-            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, ResourceType.EmailSource, testResource.ResourceID.ToString());
+            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, testResource.ResourceID.ToString());
             const string PathStartText = "<Category>";
             int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
             if(start > 0)
@@ -66,7 +65,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         {
             var source = new EmailSource();
             Assert.AreEqual(Guid.Empty, source.ResourceID);
-            Assert.AreEqual(ResourceType.EmailSource, source.ResourceType);
+            Assert.AreEqual("EmailSource", source.ResourceType);
             Assert.AreEqual(EmailSource.DefaultTimeout, source.Timeout);
             Assert.AreEqual(EmailSource.DefaultPort, source.Port);
         }
@@ -85,7 +84,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var source = new EmailSource(xml);
             Assert.AreNotEqual(Guid.Empty, source.ResourceID);
             Assert.IsTrue(source.IsUpgraded);
-            Assert.AreEqual(ResourceType.EmailSource, source.ResourceType);
+            Assert.AreEqual("EmailSource", source.ResourceType);
             Assert.AreEqual(EmailSource.DefaultTimeout, source.Timeout);
             Assert.AreEqual(EmailSource.DefaultPort, source.Port);
         }
@@ -98,7 +97,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             var source = new EmailSource(xml);
             Assert.AreEqual(Guid.Parse("bf810e43-3633-4638-9d0a-56473ef54151"), source.ResourceID);
-            Assert.AreEqual(ResourceType.EmailSource, source.ResourceType);
+            Assert.AreEqual("EmailSource", source.ResourceType);
             Assert.AreEqual("smtp.gmail.com", source.Host);
             Assert.AreEqual(465, source.Port);
             Assert.AreEqual(true, source.EnableSsl);
@@ -114,7 +113,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             var source = new EmailSource(xml);
             Assert.AreEqual(Guid.Parse("bf810e43-3633-4638-9d0a-56473ef54151"), source.ResourceID);
-            Assert.AreEqual(ResourceType.EmailSource, source.ResourceType);
+            Assert.AreEqual("EmailSource", source.ResourceType);
             Assert.AreEqual("smtp.gmail.com", source.Host);
             Assert.AreEqual(EmailSource.DefaultPort, source.Port);
             Assert.AreEqual(false, source.EnableSsl);

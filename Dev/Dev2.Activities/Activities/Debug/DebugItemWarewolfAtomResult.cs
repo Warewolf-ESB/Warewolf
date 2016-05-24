@@ -16,14 +16,6 @@ namespace Dev2.Activities.Debug
         readonly string _assignFromVariable;
         readonly DebugItemResultType _type;
 
-        public DebugItemWarewolfAtomResult(string value, string leftLabel)
-        {
-            _value = value;
-            _leftLabel = leftLabel;
-            _type = DebugItemResultType.Value;
-            _operand = "";
-        }
-
         public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel)
         {
             _value = value;

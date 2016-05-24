@@ -13,7 +13,6 @@ using System.Activities.Presentation;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
@@ -150,7 +149,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                             }
                             if(hasPermissionToDrag)
                             {
-                                if(dragSourceDataContext.ResourceType <= ResourceType.WebService)
+                                if(dragSourceDataContext.IsService)
                                 {
                                     dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityName);
                                     dragData.SetData(dragSourceDataContext);

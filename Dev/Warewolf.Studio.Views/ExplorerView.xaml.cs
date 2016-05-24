@@ -2,11 +2,11 @@
 using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -223,12 +223,12 @@ namespace Warewolf.Studio.Views
                             CancelDrag = true;
                             return;
                         }
-                        if ((source.ResourceType == ResourceType.ServerSource || source.ResourceType == ResourceType.Server) && string.IsNullOrWhiteSpace(source.ResourcePath))
+                        if ((source.ResourceType == "ServerSource" || source.IsServer) && string.IsNullOrWhiteSpace(source.ResourcePath))
                         {
                             CancelDrag = true;
                             return;
                         }
-                        if (source.ResourceType == ResourceType.DbService || source.ResourceType == ResourceType.PluginService || source.ResourceType == ResourceType.WebService)
+                        if (source.ResourceType == "DbService" || source.ResourceType == "PluginService" || source.ResourceType == "WebService")
                         {
                             CancelDrag = true;
                             return;
@@ -290,7 +290,6 @@ namespace Warewolf.Studio.Views
                     {
                         try
                         {
-                            //e.MoveCursorTemplate = Application.Current.FindResource("DragTemplate") as DataTemplate;
                             DragDropManager.EndDrag(true);
                         }
                         catch
@@ -300,7 +299,6 @@ namespace Warewolf.Studio.Views
                     }
                     _dragData = dragData;
                     Mouse.SetCursor(grabbingCursor);
-                    //e.DragTemplate = Application.Current.FindResource("DragTemplate") as DataTemplate;
                     DragDrop.DoDragDrop(e.DragSource, dragData, DragDropEffects.Copy);
                 }
             }
@@ -321,6 +319,12 @@ namespace Warewolf.Studio.Views
 
             if (drag != null && drop != null && drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null && Mouse.LeftButton == MouseButtonState.Released)
             {
+                if (Equals(drag.Node.Manager.ParentNode, drop.Node))
+                {
+                    CancelDrag = true;
+                    Reset(drop);
+                    return;
+                }
                 var destination = drop.Node.Data as IExplorerItemViewModel;
                 var source = drag.Node.Data as IExplorerItemViewModel;
 
@@ -333,7 +337,8 @@ namespace Warewolf.Studio.Views
                         CancelDrag = true;
                         return;
                     }
-                    if (((source.ResourceType == ResourceType.ServerSource || source.ResourceType == ResourceType.Server) && string.IsNullOrWhiteSpace(source.ResourcePath))
+
+                    if (((source.ResourceType == "ServerSource" || source.IsServer) && string.IsNullOrWhiteSpace(source.ResourcePath))
                         || !destination.CanDrop || !source.CanDrag)
                     {
                         CancelDrag = true;
@@ -359,7 +364,7 @@ namespace Warewolf.Studio.Views
                                     {
                                         exp.AllowDrag = true;
                                     }
-                                });
+                                }, TaskScheduler.FromCurrentSynchronizationContext());
                             }
                         }
                         else
@@ -371,7 +376,7 @@ namespace Warewolf.Studio.Views
                                 {
                                     exp.AllowDrag = true;
                                 }
-                            });
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
                         }
                     }
                 }
@@ -415,7 +420,7 @@ namespace Warewolf.Studio.Views
                                             {
                                                 exp.AllowDrag = true;
                                             }
-                                        });
+                                        }, TaskScheduler.FromCurrentSynchronizationContext());
                                     }
                                 }
                                 else
@@ -427,7 +432,7 @@ namespace Warewolf.Studio.Views
                                         {
                                             exp.AllowDrag = true;
                                         }
-                                    });
+                                    }, TaskScheduler.FromCurrentSynchronizationContext());
                                 }
                             }
                         }
@@ -482,19 +487,17 @@ namespace Warewolf.Studio.Views
                 }
                 CancelDrag = false;
 
-                if (((dataContext.ResourceType == ResourceType.ServerSource || dataContext.ResourceType == ResourceType.Server) && 
+                if (((dataContext.ResourceType == "ServerSource" || dataContext.IsServer) && 
                         string.IsNullOrWhiteSpace(dataContext.ResourcePath)) || dataContext.IsRenaming)
                 {
                     Mouse.SetCursor(Cursors.No);
-                    // e.DragTemplate = Application.Current.FindResource("DragTemplate") as DataTemplate;
                     return;
                 }
-                if (dataContext.ResourceType == ResourceType.DbService ||dataContext.ResourceType == ResourceType.PluginService || dataContext.ResourceType == ResourceType.WebService)
+                if (dataContext.ResourceType == "DbService" || dataContext.ResourceType == "PluginService" || dataContext.ResourceType == "WebService")
                 {
                     Mouse.SetCursor(Cursors.No);
                     return;
                 }
-                // e.DragTemplate = Application.Current.FindResource("DragTemplate") as DataTemplate;
                 var dragData = new DataObject();
 
                 var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == dataContext.Server.EnvironmentID);
@@ -507,7 +510,8 @@ namespace Warewolf.Studio.Views
                 }
                 if (hasPermissionToDrag)
                 {
-                    if (dataContext.ResourceType <= ResourceType.WebService)
+                    if (dataContext.IsService && dataContext.ResourceType != "Version"
+                        && !dataContext.IsReservedService && dataContext.ResourceType != "Unknown")
                     {
                         dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dataContext.ActivityName);
                         dragData.SetData(dataContext);

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -88,12 +87,12 @@ namespace Dev2.ViewModels
         }
 
         // ReSharper disable once UnusedMember.Global
-        public ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
 
-                return ResourceType.DeployViewer;
+                return "DeployViewer";
             }
         }
 

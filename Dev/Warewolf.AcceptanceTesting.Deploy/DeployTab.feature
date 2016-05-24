@@ -208,7 +208,6 @@ Scenario: Warning message no longer appears
 	 Then deploy is successfull
 	 And the validation message is "1 Resource Deployed Successfully."
 
-#wolf-329
 Scenario: Renaming resource after deploying and re-deploy
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -219,7 +218,6 @@ Scenario: Renaming resource after deploying and re-deploy
 	 Then Override is "1"
 
 #wolf-117
-@ignore
 Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -243,7 +241,6 @@ Scenario: Select All resources to deploy
 	Then "All" the resources are checked
 	And "Deploy" is "Enabled"
 
-#Wolf-1210
 Scenario: Deploy Based on permission Deploy To
      Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -263,16 +260,6 @@ Scenario: Deploy Based on permission Deploy From
 	 And I select "Examples\bob" from Source Server
      When selected Destination Server is "Remote"
 	 And destination is connected
-
-#Wolf-1274
-@ignore
-Scenario: Deploying restricted workflows
-	Given I have deploy tab opened
-	When I select "Hello World" from Source Server
-	And "Hello World" has permission to "View" only
-	When selected Destination Server is "Sandbox-dev2"
-	Then "Deploy" is "Disabled"
-	And the validation message is "Cannot Deploy Hello World as it does not have contribute permissions." 
 
 ###REQUIREMENTS Check to see what needs to be included
 
@@ -296,8 +283,8 @@ Scenario: Deploying restricted workflows
 #Ensure user is able to filter resources in Destination side.
 #Ensure Filter clear option on both server and destination side is clearing filter box.
 #Ensure when user mouse right click on any resource in source side then Select All Dependencies option is available in context menu.
-#Ensure when user selects 'Select All Dependencies' on right click context menu on a selected resource then dependecies are selected.
-#Ensure when user selects 'Select all dependencies' by using mouse right click on a unselected resource then dependencies and resource will be selected.
+#Ensure when user selects "Select All Dependencies" on right click context menu on a selected resource then dependecies are selected.
+#Ensure when user selects "Select all dependencies" by using mouse right click on a unselected resource then dependencies and resource will be selected.
 #Ensure While deploying a service without dependencies then popup message should appear 
 #Ensure when user is deploying conflicting resources then conflict message is thrown. 
 #Ensure user is able to see Deploy summary in deploy tab

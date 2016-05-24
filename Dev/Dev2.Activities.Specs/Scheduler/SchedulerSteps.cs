@@ -202,7 +202,7 @@ namespace Dev2.Activities.Specs.Scheduler
             ScenarioContext.Current["HistoryCount"] = history;
         }
 
-        [Then(@"the history debug output for '(.*)' for row ""(.*)"" is")]
+        [Then(@"the history debug output for ""(.*)"" for row ""(.*)"" is")]
         public void ThenTheHistoryDebugOutputForForRowIs(string p0, int p1, Table table)
         {
             IList<IResourceHistory> resources = ScenarioContext.Current["History"] as IList<IResourceHistory>;

@@ -69,6 +69,49 @@ let toJOArray (obj : JToken) =
     | :? JArray as x -> x
     | _ -> failwith "expected jObject but got something else"
 
+and EvalMultiAssignOp  (env:WarewolfEnvironment) (update:int)  (value :IAssignValue ) =
+    let l = WarewolfDataEvaluationCommon.parseLanguageExpression value.Name update
+    let left = match l with 
+                    |ComplexExpression a -> if List.exists (fun a -> match a with
+                                                                            | ScalarExpression a -> true
+                                                                            | RecordSetExpression a -> true
+                                                                            | _->false) a then    l  else LanguageExpression.WarewolfAtomAtomExpression  (languageExpressionToString l|> DataString )                         
+                    | _-> l
+    let rightParse = if value.Value=null then LanguageExpression.WarewolfAtomAtomExpression Nothing
+                     else WarewolfDataEvaluationCommon.parseLanguageExpression value.Value  update
+    
+    let right = if value.Value=null then WarewolfAtomResult Nothing
+                else WarewolfDataEvaluationCommon.eval env update value.Value 
+    let shouldUseLast =  match rightParse with
+                            | RecordSetExpression a ->
+                                        match a.Index with
+                                            | IntIndex a-> true
+                                            | Star -> false
+                                            | Last -> true
+                                            | _-> true                            
+                            | _->false                  
+    match right with 
+                | WarewolfAtomResult x -> 
+                            match left with 
+                            |   ScalarExpression a -> AddToScalars env a x
+                            |   RecordSetExpression b -> AddToRecordSetFramed env b x
+                            |   WarewolfAtomAtomExpression a -> failwith (sprintf "invalid variable assigned to%s" value.Name)
+                            |   _ -> let expression = (evalToExpression env update value.Name)
+                                     if System.String.IsNullOrEmpty(  expression) || ( expression) = "[[]]" || ( expression) = value.Name then
+                                        env
+                                     else
+                                        EvalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(  expression , value.Value))
+                | WarewolfAtomListresult x -> 
+                        match left with 
+                        |   ScalarExpression a -> AddToScalars env a (Seq.last x)
+                        |   RecordSetExpression b ->    match b.Index with 
+                                                        | Star -> AddToRecordSetFramedWithAtomList env b  x shouldUseLast update (Some value)
+                                                        | Last -> AddToRecordSetFramedWithAtomList env b  x true update (Some value)
+                                                        | _ ->      try
+                                                                        AddToRecordSetFramed env b x.[0]                  
+                                                                    with
+                                                                        | :? Dev2.Common.Common.NullValueInVariableException as ex -> raise( new  Dev2.Common.Common.NullValueInVariableException("The expression result is  null", value.Value ) )    // added 0 here!
+ 
 let addValueToJArray (arr : JArray) (ind : int) (value : JToken) = 
     let index = ind - 1
     if (ind > arr.Count) then 

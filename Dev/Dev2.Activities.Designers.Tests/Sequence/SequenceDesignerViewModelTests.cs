@@ -20,7 +20,6 @@ using Castle.DynamicProxy.Generators;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Environments;
 using Dev2.Models;
 using Dev2.Studio.Core;
@@ -256,7 +255,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
@@ -275,7 +274,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
@@ -294,7 +293,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]
@@ -466,7 +465,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
             SetupEnvironmentRepo(Guid.Empty);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = ResourceType.DbService, EnvironmentId = Guid.Empty });
+            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = "DbService", EnvironmentId = Guid.Empty });
             //------------Execute Test---------------------------
             bool added = sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------

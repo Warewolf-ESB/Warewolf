@@ -1,35 +1,32 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Microsoft.CSharp.RuntimeBinder;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
-using WarewolfParserInterop;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities
@@ -40,10 +37,6 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("Scripting-JavaScript", "Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfScriptingActivity : DsfActivityAbstract<string>
     {
-        #region Fields
-
-        #endregion
-
         #region Properties
 
         [Inputs("ScriptType")]
@@ -57,7 +50,7 @@ namespace Dev2.Activities
         [Outputs("Result")]
         public new string Result { get; set; }
 
-        #endregion
+        #endregion Properties
 
         #region Ctor
 
@@ -68,12 +61,12 @@ namespace Dev2.Activities
             Result = string.Empty;
         }
 
-        #endregion
+        #endregion Ctor
 
         #region Overrides of DsfNativeActivity<string>
 
         /// <summary>
-        /// When overridden runs the activity's execution logic 
+        /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
@@ -85,7 +78,6 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -93,9 +85,9 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                if(!errors.HasErrors())
+                if (!errors.HasErrors())
                 {
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         var language = ScriptType.GetDescription();
                         AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
@@ -112,7 +104,7 @@ namespace Dev2.Activities
                         innerIterator.AddVariableToIterateOn(inIterator);
                         innerListOfIters.Add(inIterator);
                     }
-                    var atomList = new List<DataStorage.WarewolfAtom>();
+                    var atomList = new List<DataASTMutable.WarewolfAtom>();
                     while (innerIterator.HasMoreData())
                     {
                         var stringToUse = "";
@@ -120,42 +112,41 @@ namespace Dev2.Activities
                         {
                             stringToUse += warewolfIterator.GetNextValue();
                         }
-                        atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
-                    }
-                    var finalString = string.Join("", atomList);
-                    var inputListResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing, atomList));
-                    if (DataListUtil.IsFullyEvaluated(finalString))
-                    {
-                        inputListResult = dataObject.Environment.Eval(finalString, update);
+                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
                     }
 
                     allErrors.MergeErrors(errors);
 
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         return;
                     }
-                    var scriptItr = new WarewolfIterator(inputListResult);
-                    while(scriptItr.HasMoreData())
+
+                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update));
+
+                    while (scriptItr.HasMoreData())
                     {
                         var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
                         var value = engine.Execute(scriptItr.GetNextValue());
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             env.Assign(region, value, update);
-                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                                AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
+                                if (!string.IsNullOrEmpty(region))
+                                {
+                                    AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
+                                }
                             }
                         }
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if(e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
+                if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
                 {
                     allErrors.AddError("There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result");
                 }
@@ -167,16 +158,16 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
@@ -188,10 +179,9 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            foreach(Tuple<string, string> t in updates)
+            foreach (Tuple<string, string> t in updates)
             {
-
-                if(t.Item1 == Script)
+                if (t.Item1 == Script)
                 {
                     Script = t.Item2;
                 }
@@ -200,27 +190,23 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
                 var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
-                if(itemUpdate != null)
+                if (itemUpdate != null)
                 {
                     Result = itemUpdate.Item2;
                 }
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
-        #endregion
+        #endregion Overrides of DsfNativeActivity<string>
 
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -229,14 +215,14 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
         }
 
-        #endregion Get Inputs/Outputs
+        #endregion Get Debug Inputs/Outputs
 
         #region GetForEachInputs/Outputs
 
@@ -250,7 +236,6 @@ namespace Dev2.Activities
             return GetForEachItems(Result);
         }
 
-        #endregion
+        #endregion GetForEachInputs/Outputs
     }
 }
-

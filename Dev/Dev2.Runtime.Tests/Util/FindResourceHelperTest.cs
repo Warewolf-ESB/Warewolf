@@ -96,7 +96,7 @@ namespace Dev2.Tests.Runtime.Util
                 IsValid = true,
                 ResourcePath = "Category",
                 ResourceName = "Workflow",
-                ResourceType = ResourceType.WorkflowService,
+                ResourceType = "WorkflowService",
                 Errors = theErrors,
                 VersionInfo = new VersionInfo(DateTime.Now,"","u","1",id,Guid.NewGuid())
             };
@@ -117,7 +117,7 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual("abc", result.DataList);
             Assert.AreEqual("Category", result.ResourceCategory);
             Assert.AreEqual("Workflow", result.ResourceName);
-            Assert.AreEqual(ResourceType.WorkflowService, result.ResourceType);
+            Assert.AreEqual("WorkflowService", result.ResourceType);
             Assert.AreEqual(errorString, resultErrorString);
             Assert.AreEqual("inputs", result.Inputs);
             Assert.AreEqual("outputs", result.Outputs);

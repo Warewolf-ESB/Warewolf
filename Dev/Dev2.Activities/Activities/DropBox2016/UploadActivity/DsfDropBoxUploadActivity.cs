@@ -1,20 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
-using Dev2.Activities.DropBox2016.Result;
+﻿using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.ServiceModel;
 using Dev2.Util;
 using Dropbox.Api;
 using Dropbox.Api.Files;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using Dev2.Activities.Debug;
+using Dev2.Diagnostics;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
+using Warewolf.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
-    //[ToolDescriptorInfo("Dropbox", "Dropbox Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxUploadActivity : DsfBaseActivity
     {
         private DropboxClient _client;
@@ -33,14 +39,17 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public OauthSource SelectedSource { get; set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
+
         public bool OverWriteMode
         {
             get
@@ -49,10 +58,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             set
             {
-                _addMode = false;
+                _addMode = !value;
                 _overWriteMode = value;
             }
         }
+
         public bool AddMode
         {
             get
@@ -61,10 +71,11 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             set
             {
-                _overWriteMode = false;
+                _overWriteMode = !value;
                 _addMode = value;
             }
         }
+
         // ReSharper disable once MemberCanBeProtected.Global
 
         [ExcludeFromCodeCoverage]
@@ -72,14 +83,13 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             if (_client != null)
             {
-
                 return _client;
             }
             var httpClient = new HttpClient(new WebRequestHandler { ReadWriteTimeout = 10 * 1000 })
             {
                 Timeout = TimeSpan.FromMinutes(20)
             };
-            _client = new DropboxClient(SelectedSource.Secret, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
+            _client = new DropboxClient(SelectedSource.AccessToken, new DropboxClientConfig(GlobalConstants.UserAgentString) { HttpClient = httpClient });
             return _client;
         }
 
@@ -107,10 +117,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             base.ExecuteTool(dataObject, update);
         }
 
-        #endregion
+        #endregion Overrides of DsfBaseActivity
 
         [ExcludeFromCodeCoverage]
-        //All units used here has been unit tested seperately 
+        //All units used here has been unit tested seperately
         protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var writeMode = GetWriteMode();
@@ -135,7 +145,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         public override string DisplayName { get; set; }
 
-        #endregion
+        #endregion Overrides of DsfActivity
 
         public WriteMode GetWriteMode()
         {
@@ -143,6 +153,31 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 return WriteMode.Overwrite.Instance;
             return WriteMode.Add.Instance;
         }
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            if (env == null)
+            {
+                return new List<DebugItem>();
+            }
+            base.GetDebugInputs(env, update);
+
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "OverWrite"), debugItem);
+            string value = OverWriteMode ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Add"), debugItem);
+            value = AddMode ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+           
+            return _debugInputs;
+
+        }
     }
-        #endregion
+
+        #endregion Overrides of DsfActivity
 }

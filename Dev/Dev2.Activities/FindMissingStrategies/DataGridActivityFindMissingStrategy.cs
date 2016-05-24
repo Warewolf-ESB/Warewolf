@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Activities;
-using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Utilities;
@@ -157,6 +156,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
+                    if (maAct.CommandText != null)
+                    {
+                        results.Add(maAct.CommandText);
+                    }
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
@@ -265,6 +268,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         results.Add(maAct.QueryString);
                     }
+                    if (maAct.PutData != null)
+                    {
+                        results.Add(maAct.PutData);
+                    }
                     if (maAct.Headers != null)
                     {
                         foreach(var nameValue in maAct.Headers)
@@ -283,20 +290,32 @@ namespace Dev2.FindMissingStrategies
                         results.Add(maAct.OnErrorWorkflow);
                     }
                 }
-            } 
-            else if (activityType == typeof(DsfDropBoxUploadActivity))
+            }
+            else if (activityType == typeof(DsfWebGetActivity))
             {
-                var maAct = activity as DsfDropBoxUploadActivity;
+                var maAct = activity as DsfWebGetActivity;
                 if (maAct != null)
                 {
-                  /*  if (maAct.Inputs != null)
+                    if (maAct.Inputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Inputs));
                     }
                     if (maAct.Outputs != null)
                     {
                         results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }**/
+                    }
+                    if (maAct.QueryString != null)
+                    {
+                        results.Add(maAct.QueryString);
+                    }
+                    if (maAct.Headers != null)
+                    {
+                        foreach (var nameValue in maAct.Headers)
+                        {
+                            results.Add(nameValue.Name);
+                            results.Add(nameValue.Value);
+                        }
+                    }
                     if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                     {
                         results.Add(maAct.OnErrorVariable);
@@ -308,6 +327,23 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
+            else if (activityType == typeof(DsfDotNetDllActivity))
+            {
+                var maAct = activity as DsfDotNetDllActivity;
+                if (maAct != null)
+                {
+                    if (maAct.Inputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Inputs));
+                    }
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }                    
+                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                    {
+                        results.Add(maAct.OnErrorVariable);
+                    }
             else if (activityType == typeof(DsfMultiAssignObjectActivity))
             {
                 DsfMultiAssignObjectActivity maAct = activity as DsfMultiAssignObjectActivity;
@@ -317,6 +353,12 @@ namespace Dev2.FindMissingStrategies
                 }
             }
 
+                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                    {
+                        results.Add(maAct.OnErrorWorkflow);
+                    }
+                }
+            }           
             return results;
         }
 

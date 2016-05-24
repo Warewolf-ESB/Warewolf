@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dev2.Studio.Core {
+namespace Dev2 {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Dev2.Studio.Core {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.Studio.Core.ResolveExampleResource", typeof(ResolveExampleResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.ResolveExampleResource", typeof(ResolveExampleResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

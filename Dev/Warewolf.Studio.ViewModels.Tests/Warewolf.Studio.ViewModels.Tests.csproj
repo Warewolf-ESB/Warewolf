@@ -125,11 +125,14 @@
     <Compile Include="ManageDatabaseSourceModelTests.cs" />
     <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
     <Compile Include="ManageEmailSourceModelTests.cs" />
+    <Compile Include="ManageRabbitMQSourceViewModelTests.cs" />
     <Compile Include="ManageEmailSourceViewModelTest.cs" />
     <Compile Include="ManageNewServerSourceModelTests.cs" />
     <Compile Include="ManageNewServerViewModelTests.cs" />
+    <Compile Include="ManageOAuthSourceViewModelTests.cs" />
     <Compile Include="ManagePluginSourceModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModelTests.cs" />
+    <Compile Include="ManageRabbitMqSourceModelTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
     <Compile Include="MessageBoxViewModelTests.cs" />
@@ -209,6 +212,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

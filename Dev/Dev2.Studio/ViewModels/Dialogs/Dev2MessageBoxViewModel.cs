@@ -442,6 +442,10 @@ namespace Dev2.Studio.ViewModels.Dialogs
             {
                 DataContext = msgBoxViewModel
             };
+            msgBoxViewModel.IsError = isError;
+            msgBoxViewModel.IsInfo = isInfo;
+            msgBoxViewModel.IsQuestion = isQuestion;
+            msgBoxViewModel.IsDependenciesButtonVisible = isDependenciesButtonVisible;
             msgBoxView.ShowDialog();
 
             return msgBoxViewModel.Result;

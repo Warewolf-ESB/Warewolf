@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -115,7 +114,7 @@ namespace Warewolf.Studio.ViewModels
                 var parentNames = new List<string>();
                 while (parent != null)
                 {
-                    if (parent.ResourceType != ResourceType.ServerSource)
+                    if (parent.ResourceType != "ServerSource")
                     {
                         parentNames.Add(parent.ResourceName);
                     }
@@ -130,7 +129,7 @@ namespace Warewolf.Studio.ViewModels
                         path = path + "\\" + parentName;
                     }
                 }
-                if (selectedItem.ResourceType == ResourceType.Folder)
+                if (selectedItem.ResourceType == "Folder")
                 {
                     path = path + "\\" + selectedItem.ResourceName;
                 }
@@ -227,14 +226,14 @@ namespace Warewolf.Studio.ViewModels
             if (SingleEnvironmentExplorerViewModel != null)
             {
                 var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-                if (explorerTreeItem != null && explorerTreeItem.ResourceType == ResourceType.Folder)
+                if (explorerTreeItem != null && explorerTreeItem.ResourceType == "Folder")
                 {
-                    return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                    return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != "Folder");
                 }
                 if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
                 {
                     var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
-                    return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != ResourceType.Folder);
+                    return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != "Folder");
                 }
             }
             return false;

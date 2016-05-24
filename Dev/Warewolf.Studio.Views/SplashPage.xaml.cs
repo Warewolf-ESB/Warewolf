@@ -44,19 +44,11 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        void SplashPage_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (_isDialog)
-            {
-                RemoveBlackOutEffect();
-            }
-            CloseSplash();
-        }
-
         public void CloseSplash()
         {
             if (_isDialog)
             {
+                RemoveBlackOutEffect();
                 Close();
             }
             else

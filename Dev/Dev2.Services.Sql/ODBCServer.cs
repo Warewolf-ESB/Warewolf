@@ -14,6 +14,7 @@ using System.Data.Common;
 using System.Data.Odbc;
 using Dev2.Common.Interfaces.Services.Sql;
 using Microsoft.Win32;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Services.Sql
 {
@@ -24,7 +25,7 @@ namespace Dev2.Services.Sql
         private IDbTransaction _transaction;
         private bool _disposed;
         private IDbCommand _command;
-
+        private readonly bool Testing;
 
         public ODBCServer(IDbFactory dbFactory)
         {
@@ -34,20 +35,42 @@ namespace Dev2.Services.Sql
         {
             _factory = new ODBCFactory();
         }
+
+        public ODBCServer(IDbFactory factory, IDbCommand command, IDbTransaction transaction)
+        {
+            _factory = factory;
+            Testing = true;
+            _command = command;
+            _transaction = transaction;
+        }
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
             _connection = (OdbcConnection)_factory.CreateConnection(connectionString);
 
             VerifyArgument.IsNotNull("commandText", commandText);
-            if (commandText.ToLower().StartsWith("select "))
+
+            return ReturnConnection(commandType, commandText);
+        }
+
+        public bool ReturnConnection(CommandType commandType, string commandText)
+        {
+            commandType = SetCommandType(commandText, commandType);
+            _command = _factory.CreateCommand(_connection, commandType, commandText);
+            if (!Testing)
+            {
+                _connection.Open();
+            }
+
+            return true;
+        }
+
+        public CommandType SetCommandType(string commandText, CommandType commandType)
+        {
+            if (commandText.ToLower().StartsWith("select ") || commandText.ToLower().StartsWith("update ") || commandText.ToLower().StartsWith("delete "))
             {
                 commandType = CommandType.Text;
             }
-
-            _command = _factory.CreateCommand(_connection, commandType, commandText);
-
-            _connection.Open();
-            return true;
+            return commandType;
         }
         public string ConnectionString
         {
@@ -56,7 +79,14 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected
         {
-            get { return _connection != null && _connection.State == ConnectionState.Open; }
+            get
+            {
+                if (Testing)
+                {
+                    return true;
+                }
+                return _connection != null && _connection.State == ConnectionState.Open;
+            }
         }
 
         public void BeginTransaction()
@@ -69,15 +99,22 @@ namespace Dev2.Services.Sql
 
         public bool Connect(string connectionString)
         {
+            if (!Testing)
+            {
+                _connection = (OdbcConnection)_factory.CreateConnection(connectionString);
+                _connection.Open();
+            }
 
-            _connection = (OdbcConnection)_factory.CreateConnection(connectionString);
-            _connection.Open();
             return true;
         }
 
         public IDbCommand CreateCommand()
         {
             VerifyConnection();
+            if (Testing)
+            {
+                return null;
+            }
             IDbCommand command = _connection.CreateCommand();
             command.Transaction = _transaction;
             return command;
@@ -160,44 +197,41 @@ namespace Dev2.Services.Sql
         }
         public DataTable FetchDataTable()
         {
-
-
+            VerifyConnection();
             return ExecuteReader(_command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataReader, T> handler)
+
+        public static T ExecuteReaader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataReader, T> handler)
         {
             try
             {
-                if (command.CommandType == CommandType.StoredProcedure)
+                using (IDataReader reader = command.ExecuteReader(commandBehavior))
                 {
-                    command.CommandType = CommandType.Text;
-
-                    using (IDataReader reader = command.ExecuteReader(commandBehavior))
-                    {
-                        return handler(reader);
-                    }
-                }
-                else
-                {
-                    using (IDataReader reader = command.ExecuteReader(commandBehavior))
-                    {
-                        return handler(reader);
-                    }
+                    return handler(reader);
                 }
             }
             catch (DbException e)
             {
                 if (e.Message.Contains("There is no text for object "))
                 {
-                    var exceptionDataTable = new DataTable("Error");
+                    DataTable exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
                     exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
                     return handler(new DataTableReader(exceptionDataTable));
                 }
                 throw;
             }
+        }
+
+
+        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataReader, T> handler)
+        {
+            if (command.CommandType == CommandType.StoredProcedure)
+            {
+                command.CommandType = CommandType.Text;
+            }
+            return ExecuteReaader(command, commandBehavior, handler);
         }
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
@@ -220,11 +254,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-
-
         #region helper methods
-
-
 
         public List<string> GetDSN()
         {
@@ -255,10 +285,6 @@ namespace Dev2.Services.Sql
             }
         }
 
-
-
         #endregion
     }
-
-
 }

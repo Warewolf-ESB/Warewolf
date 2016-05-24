@@ -29,7 +29,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-    [Ignore]
     public class ExecuteCommandLineTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -393,9 +392,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
-
         [TestMethod]
-        [Ignore] //Silly server issues
         public void OnExecuteWhereOutputToRecordWithStarIndexWithConsoleOutputsExpectOutputForResultOverwriteToRecordsets()
         {
             //------------Setup for test--------------------------

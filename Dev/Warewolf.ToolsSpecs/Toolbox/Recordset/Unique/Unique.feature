@@ -216,9 +216,7 @@ Scenario: Executing Unique record tool with empty In Return and Result Field
 	And the debug output as 
 	|  |  |
 
-#This Test Scenario should be passed after the bug 11994 is fixed
-@ignore
-Scenario: Find unique records and assigning result in two variables
+Scenario: Find unique records and assigning result to scalar must error
 	Given I have the following duplicated recordset
 	| rs       | val |
 	| rs().row | 10  |
@@ -226,21 +224,12 @@ Scenario: Find unique records and assigning result in two variables
 	| rs().row | 20  |
 	| rs().row | 30  |
 	And I want to find unique in field "[[rs().row]]" with the return field "[[rs().row]]"
-	And The result variable is "[[a]],[[b]]"
+	And The result variable is "[[a]]"
 	When the unique tool is executed	
-	Then the unique result will be
-	| rec          | unique |
-	| rec().row | 10     |
-	| rec().row | 20     |
-	| rec().row | 30     |
-	And the execution has "NO" error
+	Then the execution has "AN" error
 	And the debug inputs as  
 	| #           |                    | Return Fields  |
 	| In Field(s) | [[rs(4).row]] = 30 | [[rs().row]] = |	
-	And the debug output as 
-	| # |                  |
-	| 1 | [[a]] = 10,20,30 |
-	| 2 | [[b]] = 10,20,30 |
 
 Scenario Outline: Invalid expressions
 Given I have the following duplicated recordset
@@ -249,8 +238,8 @@ Given I have the following duplicated recordset
 	| rs().row | 20  |
 	| rs().row | 20  |
 	| rs().row | 30  |
-	And I want to find unique in field '<InField>' with the return field '<Return>'
-	And The result variable is '<Result>' equals '<value>'
+	And I want to find unique in field "<InField>" with the return field "<Return>"
+	And The result variable is "<Result>" equals "<value>"
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
@@ -277,7 +266,7 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| rs().row | 20  | [[rec().set]] | Test      |
 	| rs().row | 20  | [[rec().set]] | Warehouse |
 	| rs().row | 30  | [[rec().set]] | Tuesday   |
-	And I want to find unique in field '<InField>' with the return field '<Return>'
+	And I want to find unique in field "<InField>" with the return field "<Return>"
 	And The result variable is "[[a]]"
 	When the unique tool is executed	
 	Then the unique result will be
@@ -297,7 +286,6 @@ Scenario Outline: Ensure recordsets with scalar values work
 	| [[rec([[int]].set),[[int]] = 4 | [[rs([[int]]).row]],[[int]] = 2 |
 
 #Complex Types WOLF-1042
-@ignore
 Scenario: Find unique records in a complex type
 	Given I have the following duplicated recordset
 	| rs             | val |
@@ -337,28 +325,3 @@ Scenario: Executing Unique record tool with non existent recordset
 	And The result variable is "[[rs().val]]"
 	When the unique tool is executed	
 	Then the execution has "AN" error	
-
-##This Test Scenario should be passed after the bug 11994 is fixed
-#Scenario: Find unique records and assigning result in two variables
-#	Given I have the following duplicated recordset
-#	| rs       | val |
-#	| rs().row | 10  |
-#	| rs().row | 20  |
-#	| rs().row | 20  |
-#	| rs().row | 30  |
-#	And I want to find unique in field "[[rs().row]]" with the return field "[[rs().row]]"
-#	And The result variable is "[[a]],[[b]]"
-#	When the unique tool is executed	
-#	Then the unique result will be
-#	| rec          | unique |
-#	| rec().unique | 10     |
-#	| rec().unique | 20     |
-#	| rec().unique | 30     |
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| #           |                    | Return Fields  |
-#	| In Field(s) | [[rs(4).row]] = 30 | [[rs().row]] = |	
-#	And the debug output as 
-#	| # |                  |
-#	| 1 | [[a]] = 10,20,30 |
-#	| 2 | [[b]] = 10,20,30 |

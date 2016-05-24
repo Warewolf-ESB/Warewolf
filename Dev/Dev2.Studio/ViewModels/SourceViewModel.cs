@@ -2,13 +2,11 @@ using System;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
-using Dev2.Studio.Core;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -77,7 +75,7 @@ namespace Dev2.ViewModels
 
 
 // ReSharper disable once UnusedMember.Global
-        public ResourceType ResourceType
+        public string ResourceType
         {
             get
             {
@@ -85,10 +83,10 @@ namespace Dev2.ViewModels
                 {
                     if(ViewModel.Image != null)
                     {
-                        return ViewModel.Image.Value;
+                        return ViewModel.Image;
                     }
                 }
-                return ResourceType.Unknown;
+                return "Unknown";
             }
         }
 

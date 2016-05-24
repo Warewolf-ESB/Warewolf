@@ -1017,7 +1017,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 334
 this.ScenarioSetup(scenarioInfo);
 #line 335
- testRunner.Given("I have the script to execute \'<script>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the script to execute \"<script>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 336
  testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 337
@@ -1051,12 +1051,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "88")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Script", "88")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "There was an error when returning a value from your script, remember to use the \'" +
-            "Return\' keyword when returning the result")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ErrorOccured", "There was an error when returning a value from your script, remember to use the \"" +
+            "Return\" keyword when returning the result")]
         public virtual void ExcuteJavascriptWithIncorrectValues_88()
         {
-            this.ExcuteJavascriptWithIncorrectValues("88", "There was an error when returning a value from your script, remember to use the \'" +
-                    "Return\' keyword when returning the result", ((string[])(null)));
+            this.ExcuteJavascriptWithIncorrectValues("88", "There was an error when returning a value from your script, remember to use the \"" +
+                    "Return\" keyword when returning the result", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -1076,7 +1076,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 351
 this.ScenarioSetup(scenarioInfo);
 #line 352
- testRunner.Given(string.Format("I have the script to execute \'<script>\' equals to \'{0}\'", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have the script to execute \"<script>\" equals to \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 353
  testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 354
@@ -1170,22 +1170,16 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void ExecuteJavascriptUsingComplexTypes(string script, string val, string result, string resultVal, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript using complex types", @__tags);
-#line 372
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript using complex types", exampleTags);
+#line 371
 this.ScenarioSetup(scenarioInfo);
+#line 372
+ testRunner.Given(string.Format("I have the script to execute \"<script>\" equals to \"{0}\"", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 373
- testRunner.Given(string.Format("I have the script to execute \'<script>\' equals to \'{0}\'", val), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 374
  testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 375
+#line 374
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 376
+#line 375
  testRunner.Then("the execution has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1194,14 +1188,14 @@ this.ScenarioSetup(scenarioInfo);
             table53.AddRow(new string[] {
                         "JavaScript",
                         "<script>"});
-#line 377
+#line 376
  testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table54.AddRow(new string[] {
                         string.Format("{0} = {1}", result, resultVal)});
-#line 380
+#line 379
  testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1210,7 +1204,6 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Javascript using complex types")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "[[rec().row(*).value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Script", "[[rec().row(*).value]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:val", "return \"a message\";")]
@@ -1227,19 +1220,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteJavaScriptWithANullVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute JavaScript with a null variable", ((string[])(null)));
-#line 388
+#line 387
 this.ScenarioSetup(scenarioInfo);
-#line 389
+#line 388
  testRunner.Given("I have a script variable \"[[val1]]\" with this value \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 390
+#line 389
  testRunner.Given("I have a script variable \"[[val2]]\" with this value \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 391
+#line 390
  testRunner.And("I have this script to execute \"[[val2]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
+#line 391
  testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 393
+#line 392
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 394
+#line 393
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1251,15 +1244,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteJavaScriptWithANonExistentVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute JavaScript with a non existent variable", ((string[])(null)));
-#line 397
+#line 396
  this.ScenarioSetup(scenarioInfo);
-#line 398
+#line 397
  testRunner.Given("I have this script to execute \"[[val2]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 399
+#line 398
  testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 400
+#line 399
  testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 401
+#line 400
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

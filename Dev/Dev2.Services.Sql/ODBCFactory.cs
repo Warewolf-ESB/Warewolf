@@ -9,6 +9,7 @@ using Warewolf.Security.Encryption;
 namespace Dev2.Services.Sql
 {
     [ExcludeFromCodeCoverage]
+    // ReSharper disable once InconsistentNaming
     internal class ODBCFactory : IDbFactory
     {
         #region Implementation of IDbFactory
@@ -64,9 +65,6 @@ namespace Dev2.Services.Sql
                 }
                 return dataSet;
             }
-
-
-
         }
 
         #endregion

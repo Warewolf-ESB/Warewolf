@@ -77,12 +77,12 @@ namespace Dev2.Studio.Controller
         ///     Configures the decision expression.
         ///     Travis.Frisinger - Developed for new Decision Wizard
         /// </summary>
-        public static void ConfigureDecisionExpression(ConfigureDecisionExpressionMessage args)
+        public static string ConfigureDecisionExpression(ConfigureDecisionExpressionMessage args)
         {
             var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew);
             if (condition == null)
             {
-                return;
+                return null;
             }
 
             var expression = condition.Properties[GlobalConstants.ExpressionPropertyText];
@@ -99,27 +99,29 @@ namespace Dev2.Studio.Controller
 
                     if (dds == null)
                     {
-                        return;
+                        return null;
                     }
 
                     ActivityHelper.SetArmTextDefaults(dds);
-                    ActivityHelper.InjectExpression(dds, expression);
+                    var expr = ActivityHelper.InjectExpression(dds, expression);
                     ActivityHelper.SetArmText(args.ModelItem, dds);
                     ActivityHelper.SetDisplayName(args.ModelItem, dds); // PBI 9220 - 2013.04.29 - TWR
+                    return expr;
                 }
                 catch
                 {
                     //
                 }
             }
+            return null;
         }
 
-        public static void ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args)
+        public static string ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args)
         {
             var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew);
             if (expression == null)
             {
-                return;
+                return null;
             }
             var expressionText = expression.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
             var modelProperty = args.ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];
@@ -136,9 +138,11 @@ namespace Dev2.Studio.Controller
             {
                 try
                 {
-                    var resultSwitch = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-                    ActivityHelper.InjectExpression(resultSwitch, expressionText);
+                    var modelData = _callBackHandler.ModelData;
+                    var resultSwitch = JsonConvert.DeserializeObject<Dev2Switch>(modelData);
+                    var expr = ActivityHelper.InjectExpression(resultSwitch, expressionText);
                     ActivityHelper.SetDisplayName(args.ModelItem, resultSwitch); // MUST use args.ModelItem otherwise it won't be visible!
+                    return expr;
                 }
                 catch
                 {
@@ -147,6 +151,7 @@ namespace Dev2.Studio.Controller
                                           MessageBoxImage.Error, null, false, true, false, false);
                 }
             }
+            return null;
         }
 
         static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)

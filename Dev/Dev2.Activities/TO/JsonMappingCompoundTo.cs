@@ -324,7 +324,7 @@ namespace Dev2.TO
                     if (complex.Item
                         .Any(x => x.IsRecordSetNameExpression))
                     {
-                        return "Cannot specify a Recordset as part of a comma seperated list of expressions";
+                        return "Cannot specify a Recordset as part of a comma saperated list of expressions";
                     }
                     if (complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1 ||
@@ -339,7 +339,7 @@ namespace Dev2.TO
                            .Aggregate((a, b) => a && b))
                     // ReSharper restore MaximumChainedReferences
                     {
-                        return "Problem with input: expressions must be comma seperated";
+                        return "Problem with input: expressions must be comma separated";
                     }
                 }
                 else if (!parsed.IsRecordSetNameExpression &&
