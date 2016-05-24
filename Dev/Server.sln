@@ -123,7 +123,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{5884B8
 		TestScripts\Server\Startup.bat = TestScripts\Server\Startup.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics.Test", "Dev2.Diagnostics.Test\Dev2.Diagnostics.Test.csproj", "{BF41B889-B0EE-436C-9511-5943C77582E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics.Tests", "Dev2.Diagnostics.Tests\Dev2.Diagnostics.Tests.csproj", "{BF41B889-B0EE-436C-9511-5943C77582E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{4FA3DA53-7B62-4B79-AA5A-9E616B4B0936}"
 	ProjectSection(SolutionItems) = preProject
