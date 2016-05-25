@@ -18,9 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Dev2.Activities.Debug;
+using Dev2.Diagnostics;
 using RabbitMQ.Client.Events;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
+using Warewolf.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -33,6 +36,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
     [ToolDescriptorInfo("RabbitMq", "RabbitMQ Consume", ToolType.Native, "406ea660-64cf-4c82-b6f0-42d48172a799", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity
     {
+        public string _response;
         #region Ctor
 
         public DsfConsumeRabbitMQActivity()
@@ -46,6 +50,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
         [Inputs("Queue Name")]
         [FindMissing]
         public string QueueName { get; set; }
+                
+        [FindMissing]
+        public string Response { get; set; }
         
         [FindMissing]
         public ushort? Prefetch { get; set; }
@@ -91,7 +98,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     return "Failure: Source has been deleted.";
                 }
 
-                string queueName, consumed;
+                string queueName;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName))
                 {
                     return "Failure: Queue Name is required.";
@@ -107,37 +114,53 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     using (Channel = Connection.CreateModel())
                     {
                         Channel.BasicQos(0, Prefetch == null ? (ushort)1 : Prefetch.GetValueOrDefault(), false);
-                        //Channel.BasicQos(0,1,false);
-                        Consumer = new QueueingBasicConsumer(Channel);
-                        try
+                        if (ReQueue)
                         {
-                            Channel.BasicConsume(queue: queueName,
-                            noAck: false,
-                            consumer: Consumer);
-                        }
-                        catch (Exception)
-                        {
-                            throw new Exception(string.Format("Queue '{0}' not found", queueName));
-                        }                        
-                        
-                        if(!ReQueue)
-                        {
-                            BasicDeliverEventArgs basicDeliverEventArgs;
-                            Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
-                            if(basicDeliverEventArgs == null)
-                            {                                
-                                throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
+                            BasicGetResult response;
+                            try
+                            {
+                                response = Channel.BasicGet(queueName, false);
                             }
-                            var body = basicDeliverEventArgs.Body;
-                            consumed = Encoding.Default.GetString(body);
-                            Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
+                            catch (Exception)
+                            {
+                                throw new Exception(string.Format("Queue '{0}' not found", queueName));
+                            }
+
+                            if (response == null)
+                                throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
+                            _response = Encoding.Default.GetString(response.Body);
                         }
                         else
-                            consumed = "Message Consumed";
+                        {
+                            Consumer = new QueueingBasicConsumer(Channel);
+                            try
+                            {
+                                Channel.BasicConsume(queue: queueName,
+                                noAck: false,
+                                consumer: Consumer);
+                            }
+                            catch (Exception)
+                            {
+                                throw new Exception(string.Format("Queue '{0}' not found", queueName));
+                            }
+
+                            if (!ReQueue)
+                            {
+                                BasicDeliverEventArgs basicDeliverEventArgs;
+                                Consumer.Queue.Dequeue(5000, out basicDeliverEventArgs);
+                                if (basicDeliverEventArgs == null)
+                                {
+                                    throw new Exception(string.Format("Nothing in the Queue : {0}", queueName));
+                                }
+                                var body = basicDeliverEventArgs.Body;
+                                _response = Encoding.Default.GetString(body);
+                                Channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
+                            }
+                        }
                     }
                 }
                 Dev2Logger.Debug(String.Format("Message consumed from queue {0}", queueName));
-                return consumed;
+                return "Success";
             }
             catch (Exception ex)
             {
@@ -145,8 +168,58 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 throw new Exception(ex.GetAllMessages());
             }
         }
-        
 
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
+        {
+            if (env == null)
+            {
+                return new List<DebugItem>();
+            }            
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Requeue"), debugItem);
+            string value = ReQueue ? "True" : "False";
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "Prefetch"), debugItem);
+            value = Prefetch == null ? "1" : Prefetch.Value.ToString();            
+            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "QueueName"), debugItem);            
+            AddDebugItem(new DebugEvalResult(QueueName, "", env, update), debugItem);
+            _debugInputs.Add(debugItem);
+
+            return _debugInputs;
+        }
+
+        #region Overrides of DsfBaseActivity
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        {
+            base.GetDebugOutputs(dataList, update);
+
+            if(dataList == null)
+                return new List<DebugItem>();
+
+            DebugItem debugItem = new DebugItem();
+            AddDebugItem(new DebugEvalResult(Response, "", dataList, update), debugItem);
+            _debugOutputs.Add(debugItem);
+
+            return _debugOutputs;
+        }
+
+        #endregion
+
+        protected override void AssignResult(IDSFDataObject dataObject, int update)
+        {
+            if (!string.IsNullOrEmpty(Response))
+            {
+                dataObject.Environment.Assign(Response, _response, update);
+            }
+        }
         #endregion Overrides of DsfBaseActivity
     }
 }
