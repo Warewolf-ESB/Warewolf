@@ -7,7 +7,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.WCFEndPoint;
 using Dev2.Activities.WcfEndPoint;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

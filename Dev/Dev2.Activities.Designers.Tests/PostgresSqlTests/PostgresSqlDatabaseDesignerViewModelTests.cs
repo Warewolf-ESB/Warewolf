@@ -68,8 +68,8 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             model.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(model.Errors.Count, 2);
-            Assert.AreEqual(model.DesignValidationErrors.Count, 2);
+            Assert.AreEqual(1, model.Errors.Count);
+            Assert.AreEqual(2, model.DesignValidationErrors.Count);
         }
 
         [TestMethod]
