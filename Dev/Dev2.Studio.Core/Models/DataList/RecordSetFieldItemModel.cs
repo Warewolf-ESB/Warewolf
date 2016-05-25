@@ -39,22 +39,52 @@ namespace Dev2.Studio.Core.Models.DataList
             Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))
             {
-                name = DataListUtil.ExtractFieldNameFromValue(name);
-                if (!string.IsNullOrEmpty(name))
+                var fieldName = DataListUtil.ExtractFieldNameFromValue(name);
+                var recName = DataListUtil.ExtractRecordsetNameFromValue(name);
+                if (!string.IsNullOrEmpty(recName))
                 {
-                    var intellisenseResult = parser.ValidateName(name, "Recordset");
+                    var intellisenseResult = parser.ValidateName(recName, "Recordset");
                     if (intellisenseResult != null)
                     {
                         SetError(intellisenseResult.Message);
                     }
                     else
                     {
-                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                        if (
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue,
+                                StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable,
+                                StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset,
+                                StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet,
+                                StringComparison.InvariantCulture))
                         {
                             RemoveError();
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(fieldName))
+                {
+                    var intellisenseResult = parser.ValidateName(fieldName, "Recordset field");
+                    if (intellisenseResult != null)
+                    {
+                        SetError(intellisenseResult.Message);
+                    }
+                    else
+                    {
+                        if (
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue,
+                                StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable,
+                                StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset,
+                                StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet,
+                                StringComparison.InvariantCulture))
+                        {
+                            RemoveError();
+                            name = fieldName;
                         }
                     }
                 }

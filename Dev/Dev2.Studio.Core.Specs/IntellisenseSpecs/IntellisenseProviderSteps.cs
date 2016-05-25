@@ -39,8 +39,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [Given(@"I have the following variable list '(.*)'")]
         public void GivenIHaveTheFollowingVariableList(string variableList)
         {
-            const string Root = "<DataList>##</DataList>";
-            var datalist = Root.Replace("##", variableList);
+            const string root = "<DataList>##</DataList>";
+            var datalist = root.Replace("##", variableList);
             ScenarioContext.Current.Add("dataList", datalist);
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();

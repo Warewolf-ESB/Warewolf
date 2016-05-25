@@ -747,7 +747,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if (!string.IsNullOrEmpty(listItemModel.Name))
                     {
-                        var rec = "[[" + listItemModel.Name + "]]";
+                        var rec = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(dataListItemModel.DisplayName, listItemModel.DisplayName, ""));
                         if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
                         {
                             accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
