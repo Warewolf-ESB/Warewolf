@@ -104,7 +104,7 @@ namespace Dev2.Activities
                         innerIterator.AddVariableToIterateOn(inIterator);
                         innerListOfIters.Add(inIterator);
                     }
-                    var atomList = new List<DataASTMutable.WarewolfAtom>();
+                    var atomList = new List<DataStorage.WarewolfAtom>();
                     while (innerIterator.HasMoreData())
                     {
                         var stringToUse = "";
@@ -112,7 +112,7 @@ namespace Dev2.Activities
                         {
                             stringToUse += warewolfIterator.GetNextValue();
                         }
-                        atomList.Add(DataASTMutable.WarewolfAtom.NewDataString(stringToUse));
+                        atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
                     }
 
                     allErrors.MergeErrors(errors);

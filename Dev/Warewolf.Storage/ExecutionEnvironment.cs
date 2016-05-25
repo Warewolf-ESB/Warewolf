@@ -66,7 +66,7 @@ namespace Warewolf.Storage
 
         public void AddToJsonObjects(string name, JContainer jContainer)
         {
-            _env = AssignEvaluation.addToJsonObjects(_env, name, jContainer);
+            _env = WarewolfDataEvaluationCommon.addToJsonObjects(_env, name, jContainer);
         }
 
         public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)

@@ -16,6 +16,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2;
+using Dev2.Activities.Specs.BaseTypes;
 
 // ReSharper disable CheckNamespace
 namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File

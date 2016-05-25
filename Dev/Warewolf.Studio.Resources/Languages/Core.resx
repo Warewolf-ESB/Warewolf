@@ -4563,6 +4563,51 @@ Data
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Returns the calculation result.</value>
   </data>
+  <data name="AssignObjectHelpVariable" xml:space="preserve">
+    <value>Only json objects go in here.
+To assign a value to a json object, put the json object here.
+
+Allowed:
+</value>
+  </data>
+  <data name="AssignObjectHelpNewValue" xml:space="preserve">
+    <value>Any json object and/or data goes in here.
+To assign a value to a json object, put the value in here.
+If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]
+
+Allowed:
+Data</value>
+  </data>
+  <data name="SelectAndApplyDataSourceToolTip" xml:space="preserve">
+    <value>Only json objects go in here.
+To assign a value to a json object, put the json object here.
+
+Allowed:
+</value>
+  </data>
+  <data name="SelectAndApplyDataSourceHelpText" xml:space="preserve">
+    <value>Any json object and/or data goes in here.
+To assign a value to a json object, put the value in here.
+If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]
+
+Allowed:
+Data</value>
+  </data>
+  <data name="SelectAndApplyAliasToolTip" xml:space="preserve">
+    <value>Only json objects go in here.
+To assign a value to a json object, put the json object here.
+
+Allowed:
+</value>
+  </data>
+  <data name="SelectAndApplyAliasHelpText" xml:space="preserve">
+    <value>Any json object and/or data goes in here.
+To assign a value to a json object, put the value in here.
+If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]
+
+Allowed:
+Data</value>
+  </data>
   <data name="EditRabbitMQSourceHelp" xml:space="preserve">
     <value>Edit RabbitMQ Source</value>
   </data>

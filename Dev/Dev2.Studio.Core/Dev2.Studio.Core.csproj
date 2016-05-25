@@ -302,7 +302,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="CustomControls\CachingContentHost.cs" />
-    <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
     <Compile Include="DataList\DataMappingViewModelFactory.cs" />
@@ -573,17 +572,9 @@
       <Project>{335E9126-30E1-4D23-B642-5D6BF82E2C09}</Project>
       <Name>Dev2.SignalR.Wrappers.New</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.SignalR.Wrappers.Old\Dev2.SignalR.Wrappers.Old.csproj">
-      <Project>{ca1ec490-5138-4714-8188-15d4bf6334da}</Project>
-      <Name>Dev2.SignalR.Wrappers.Old</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
       <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
       <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
-      <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
-      <Name>Dev2.UndoFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>

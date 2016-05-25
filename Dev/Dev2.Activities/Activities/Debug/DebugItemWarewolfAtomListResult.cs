@@ -24,7 +24,7 @@ namespace Dev2.Activities.Debug
         readonly string _assignedToVariableName;
         readonly string _newValue;
 
-        public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, WarewolfDataEvaluationCommon.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate = false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate = false)
         {
             _labelText = "";
             _operand = operand;
@@ -38,7 +38,7 @@ namespace Dev2.Activities.Debug
             _assignedToVariableName = assignedToVariableName;
         }
 
-        public DebugItemWarewolfAtomListResult(WarewolfDataEvaluationCommon.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate=false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate=false)
         {
             _labelText = "";
             _operand = operand;

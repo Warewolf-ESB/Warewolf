@@ -153,110 +153,11 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             ExecuteProcess(DataObject);
             //------------Assert Results-------------------------
             var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
-            /*Assert.AreEqual("5.27", ages[0]);
-            Assert.AreEqual("2.30", ages[1]);
-            Assert.AreEqual("1.00", ages[2]);
-            Assert.AreEqual("-3.46", ages[3]);
-            Assert.AreEqual("0.88", ages[4]);*/
-
             var evalAsList = DataObject.Environment.EvalAsList("[[b]]", 1);
         }  
         
-        //Ignored the test to be plumbed later
-       /* [Ignore]
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("SelectAndApplyActivity_SetupExecute")]
-        public void SelectAndApplyActivity_SetupExecute_GivenSelectAndApplyActivityWithNumberFormat_ToCorrectFormat()
-        {
-            //DsfActivity activity = inputMapping != null ? CreateWorkflow(inputMapping, isInputMapping) : CreateWorkflow();
-            DataObject.Environment = new ExecutionEnvironment();
-            DataObject.Environment.Assign("[[Person().Age]]", "5.2687454", 0);
-            DataObject.Environment.Assign("[[Person().Age]]", "2.3", 0);
-            DataObject.Environment.Assign("[[Person().Age]]", "1", 0);
-            DataObject.Environment.Assign("[[Person().Age]]", "-3.4554", 0);
-            DataObject.Environment.Assign("[[Person().Age]]", "0.875768", 0);
-            const string dataSource = "[[Person(*).Age]]";
-            const string alias = "[[result]]";
-
-            var activity = new DsfNumberFormatActivity
-            {
-                Expression = "[[result]]",
-                Result = "[[result]]",
-                RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
-                RoundingDecimalPlaces = "2",
-                DecimalPlacesToShow = "2"
-            };
-            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
-            {
-                DataSource = dataSource,
-                Alias = alias,
-                ApplyActivity = activity
-            };
-            DsfSelectAndApplyActivity dsfSelectAndApplyActivityContainerActivity = new DsfSelectAndApplyActivity
-            {
-                DataSource = dataSource,
-                Alias = alias,
-                ApplyActivity = dsfSelectAndApplyActivity
-            };
-          
-            TestStartNode = new FlowStep
-            {
-                Action = dsfSelectAndApplyActivityContainerActivity
-            };
-          
-            
-            
-            //------------Setup for test--------------------------
-            SetupArgumentsForFormatNumber("", "", activity);
-            //------------Execute Test---------------------------
-            ExecuteProcess(DataObject);
-            //------------Assert Results-------------------------
-            var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
-            Assert.AreEqual("5.27", ages[0]);
-            Assert.AreEqual("2.30", ages[1]);
-            Assert.AreEqual("1.00", ages[2]);
-            Assert.AreEqual("-3.46", ages[3]);
-            Assert.AreEqual("0.88", ages[4]);
-        }
-        */
-
 
         #region Private Test Methods
-
-        private DsfActivity CreateWorkflow()
-        {
-            DsfActivity activity = new DsfActivity
-            {
-                ServiceName = "SelectApplyTestService",
-                InputMapping = ActivityStrings.SelectApply_Input_Mapping,
-                OutputMapping = ActivityStrings.SelectApply_Output_Mapping
-            };
-
-            TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
-
-            return activity;
-        }
-
-        private DsfActivity CreateWorkflow(string mapping, bool isInputMapping)
-        {
-            DsfActivity activity = new DsfActivity();
-            if (isInputMapping)
-            {
-                activity.InputMapping = mapping;
-                activity.OutputMapping = ActivityStrings.SelectApply_Input_Mapping;
-            }
-            else
-            {
-                activity.InputMapping = ActivityStrings.SelectApply_Output_Mapping;
-                activity.OutputMapping = mapping;
-            }
-            activity.ServiceName = "SelectApplyTestService";
-
-            TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
-
-            return activity;
-        }
 
         private DsfSelectAndApplyActivity SetupArguments(string currentDl, string testData, IDev2Activity activity, bool isInputMapping = false, string inputMapping = null)
         {

@@ -28,6 +28,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
 using WpfControls.Editors;
+using ISuggestionProvider = WpfControls.Editors.ISuggestionProvider;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 

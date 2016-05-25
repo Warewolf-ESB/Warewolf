@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -1062,14 +1063,12 @@ namespace Dev2.UI
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
                         //box should simbly ignore that provider.
                     }
-
+                    bool cleared = false;
+                    bool hasError = false;
                     if (results != null && results.Count > 0)
                     {
                         _cachedState = context.State;
-
-                        bool cleared = false;
-                        bool hasError = false;
-
+                        
                         IntellisenseProviderResult popup = null;
 
                         // ReSharper disable ForCanBeConvertedToForeach
@@ -1077,11 +1076,7 @@ namespace Dev2.UI
                         // ReSharper restore ForCanBeConvertedToForeach
                         {
                             IntellisenseProviderResult currentResult = results[i];
-
-
-
-
-
+                            
                             if (!currentResult.IsError)
                             {
                                 if (!currentResult.IsPopup)
@@ -1107,11 +1102,7 @@ namespace Dev2.UI
                                 }
                             }
                         }
-
                         _lastResultHasError = hasError;
-
-
-
 
                         if (popup != null)
                         {
@@ -1148,9 +1139,7 @@ namespace Dev2.UI
                     }
                     else
                     {
-
-
-
+                        var ttErrorBuilder = new StringBuilder();
                         if(text.Contains("[[") && text.Contains("]]"))
                         {
                             if(FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
@@ -1172,7 +1161,6 @@ namespace Dev2.UI
                         }
 
                         _lastResultHasError = hasError;
-                        _fromPopup = false;
 
                         string errorText = ttErrorBuilder.ToString();
                         _toolTip.Content = string.IsNullOrEmpty(errorText) ? _defaultToolTip : errorText;

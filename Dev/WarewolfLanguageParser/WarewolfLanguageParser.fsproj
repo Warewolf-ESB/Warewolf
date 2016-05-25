@@ -103,6 +103,7 @@
     <Compile Include="WarewolfLanguageLex.fs" />
     <Compile Include="CommonFunctions.fs" />
     <Compile Include="EvaluationFunctions.fs" />
+    <Compile Include="WarewolfDataEvaluationCommon.fs" />
     <Compile Include="Sort.fs" />
     <Compile Include="Delete.fs" />
     <Compile Include="DataMergeFunctions.fs" />
@@ -114,7 +115,7 @@
     <Compile Include="WarewolfTestData.fs" />
     <Compile Include="IntellisenseStringProvider.fs" />
     <None Include="app.config" />
-    <Compile Include="WarewolfDataEvaluationCommon.fs" />
+   
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
