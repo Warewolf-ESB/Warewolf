@@ -16,7 +16,6 @@ using Dev2.Util;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Activities.Debug;
 using Dev2.Diagnostics;
@@ -37,6 +36,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity
     {
         public string _response;
+        public ushort _prefetch;
         #region Ctor
 
         public DsfConsumeRabbitMQActivity()
@@ -55,9 +55,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public string Response { get; set; }
         
         [FindMissing]
-        public ushort? Prefetch { get; set; }
-
-        [ExcludeFromCodeCoverage]
+        public string Prefetch { get; set; }
+        
         [FindMissing]
         public bool ReQueue { get; set; }
         
@@ -113,7 +112,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     using (Channel = Connection.CreateModel())
                     {
-                        Channel.BasicQos(0, Prefetch == null ? (ushort)1 : Prefetch.GetValueOrDefault(), false);
+                        _prefetch = ushort.Parse(Prefetch);
+
+                        Channel.BasicQos(0, _prefetch, false);
                         if (ReQueue)
                         {
                             BasicGetResult response;
@@ -183,8 +184,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
             debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Prefetch"), debugItem);
-            value = Prefetch == null ? "1" : Prefetch.Value.ToString();            
-            AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
+            AddDebugItem(new DebugEvalResult(Prefetch, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
             debugItem = new DebugItem();
