@@ -20,6 +20,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel;
@@ -289,6 +290,7 @@ namespace Warewolf.Studio.ViewModels
                     Password = Password,
                     UserName = UserName,
                     Name = ResourceName,
+                    IsSharepointOnline = IsSharepointOnline,
                     Id = _sharePointServiceSource == null ? Guid.NewGuid() : _sharePointServiceSource.Id
                 };
             // ReSharper disable once RedundantIfElseBlock
@@ -298,6 +300,7 @@ namespace Warewolf.Studio.ViewModels
                 _sharePointServiceSource.Server = ServerName;
                 _sharePointServiceSource.Password = Password;
                 _sharePointServiceSource.UserName = UserName;
+                _sharePointServiceSource.IsSharepointOnline = IsSharepointOnline;
                 return _sharePointServiceSource;
             }
         }
@@ -318,7 +321,8 @@ namespace Warewolf.Studio.ViewModels
                 UserName = UserName,
                 Password = Password,
                 Id = Item.Id,
-                Path = Path
+                Path = Path,
+                IsSharepointOnline = IsSharepointOnline
             };
         }
 

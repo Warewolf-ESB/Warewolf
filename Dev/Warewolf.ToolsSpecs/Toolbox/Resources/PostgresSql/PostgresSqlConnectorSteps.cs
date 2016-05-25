@@ -81,16 +81,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [When(@"I select getemployees as the action")]
-        public void WhenISelectedAsTheAction()
+        [When(@"I select ""(.*)"" as the action")]
+        public void WhenISelectedAsTheAction(string actionName)
         {
-            var dataTable = new DataTable();
-            dataTable.Columns.Add(new DataColumn("name"));
-            dataTable.Columns.Add(new DataColumn("salary"));
-            dataTable.Columns.Add(new DataColumn("age"));
-            dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill",4200,45 }, true));
-            GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-            GetViewModel().ActionRegion.SelectedAction = _selectedAction;
+            if (actionName == "getemployees")
+            {
+                var dataTable = new DataTable();
+                dataTable.Columns.Add(new DataColumn("name"));
+                dataTable.Columns.Add(new DataColumn("salary"));
+                dataTable.Columns.Add(new DataColumn("age"));
+                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill",4200,45 }, true));
+                GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
+                GetViewModel().ActionRegion.SelectedAction = _selectedAction;
+            }
         }
 
         [Given(@"I click on Generate Output")]
@@ -107,10 +110,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var value = row["Value"];
                 var serviceInputs = viewModel.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
-                Assert.AreEqual<string>(inputValue, serviceInput.Name);
-                Assert.AreEqual<string>(value, serviceInput.Value);
+                Assert.AreEqual(inputValue, serviceInput.Name);
+                Assert.AreEqual(value, serviceInput.Value);
                 rowNum++;
             }
+        }
+
+        [Then(@"Inputs is Enabled")]
+        public void ThenInputsIsEnabled()
+        {
+            var viewModel = GetViewModel();
+            var hasInputs = viewModel.InputArea.Inputs != null;
+            Assert.IsTrue(hasInputs);
         }
 
         [Given(@"I Enter a value as the input")]
@@ -162,9 +173,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var dataNameValue = dataRow[0].ToString();
                 var dataSalaryValue = dataRow[1].ToString();
                 var dataAgeValue = dataRow[2].ToString();
-                Assert.AreEqual<string>(nameValue, dataNameValue);
-                Assert.AreEqual<string>(salaryValue, dataSalaryValue);
-                Assert.AreEqual<string>(ageValue, dataAgeValue);
+                Assert.AreEqual(nameValue, dataNameValue);
+                Assert.AreEqual(salaryValue, dataSalaryValue);
+                Assert.AreEqual(ageValue, dataAgeValue);
                 rowIdx++;
             }
         }
@@ -241,7 +252,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var selectedSource = GetViewModel().SourceRegion.SelectedSource = _postgresSqlSource;
             Assert.IsNotNull(selectedSource);
-            Assert.AreEqual<string>(sourceName, selectedSource.Name);
+            Assert.AreEqual(sourceName, selectedSource.Name);
         }
 
         [Given(@"Action Is Enable")]
@@ -256,7 +267,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var selectedProcedure = GetViewModel().ActionRegion.SelectedAction = _selectedAction;
             Assert.IsNotNull(selectedProcedure);
-            Assert.AreEqual<string>(actionName, selectedProcedure.Name);
+            Assert.AreEqual(actionName, selectedProcedure.Name);
         }
 
         [Given(@"Inputs Is Enable")]
@@ -279,8 +290,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var value = row["Value"];
                 var serviceInputs = viewModel.InputArea.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
-                Assert.AreEqual<string>(inputValue, serviceInput.Name);
-                Assert.AreEqual<string>(value, serviceInput.Value);
+                Assert.AreEqual(inputValue, serviceInput.Name);
+                Assert.AreEqual(value, serviceInput.Value);
                 rowNum++;
             }
         }

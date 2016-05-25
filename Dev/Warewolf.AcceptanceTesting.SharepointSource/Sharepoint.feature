@@ -129,7 +129,7 @@ Scenario: Editing saved Sharepoint Source
    Then "Save" is "Enabled" 
 
 @SharepointSource
-Scenario: Cancel Sharepoint Source Test
+Scenario: Cancel Test
    Given I open New Sharepoint Source 
    Then "New SharePoint Service Source" tab is opened
    And title is "New SharePoint Service Source"

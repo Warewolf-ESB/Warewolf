@@ -4,12 +4,14 @@
 	I want to be told the sum of two numbers
 
 @Zip
+@ignore
 Scenario: Zip tool Small View
        Given I have Zip Small View on design surface
        Then Zip small view has
        | File or Folder | Destination | Result |
        |                |             |        |
-
+	   
+@ignore
 Scenario: Zip tool Large View
        Given I have Zip Large View on design surface
        Then Zip Large View has
@@ -21,13 +23,15 @@ Scenario: Zip tool Large View
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-
+	   
+@ignore
 Scenario: Zip tool Small View water marks
        Given I have Zip Small View on design surface
        Then Zip small view watermarks are
        | File or Folder | Destination     | Result      |
        | [[PathToZip]]  | [[ZipFileName]] | [[Success]] |
-
+	   
+@ignore
 Scenario: Zip tool Large View Water marks
        Given I have Zip Large View on design surface
        Then Zip Large View watermarks are
@@ -39,7 +43,8 @@ Scenario: Zip tool Large View Water marks
        | [[Error().Message]]        | http://lcl:3142/services/err |    
        And End this workflow is "Unselected"
        And Done button is "Visible"
-
+	   
+@ignore
 Scenario: Zip Large View is validating when clicking on done with blank fields
        Given I have Zip Large View on design surface
        And "File or Folder" is focused
@@ -50,7 +55,8 @@ Scenario: Zip Large View is validating when clicking on done with blank fields
        When I click "Done"
        Then Validation message is thrown
        And Zip Small View is "Not Visible"
-
+	   
+@ignore
 Scenario: Zip tool Large View to small view persisting data correctly
        Given I have Zip Large View on design surface
        And Zip Large View has
@@ -68,7 +74,8 @@ Scenario: Zip tool Large View to small view persisting data correctly
        And Zip small view has
        | File or Folder | Destination | Result  |
        | C:\Test.zip    | D:\         | [[Zip]] |
-
+	   
+@ignore
 Scenario Outline: Zip  Compression is not changing by opening and closing large view
        Given I have Zip Large View on design surface
        And Zip Large View has
@@ -94,7 +101,8 @@ Examples:
      | 3  | Partial (Best Speed)   |
      | 4  | Max (Best Compression) |
 
-
+	 
+@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Zip Large View on design surface
        When Zip Large View has
@@ -118,7 +126,8 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | Destination | Result    |
        | C:\[[a]] | D:\         | [[Zip]] |
 
-
+	   
+@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Zip Large View on design surface
        And Zip Large View has
@@ -138,16 +147,17 @@ Scenario: Close large view is closing large view without validating
        | File or Folder | Destination | Result    |
        | C:\[[a]  | D:\         | [[Zip]] |
 
-
+	   
+@ignore
 Scenario Outline: Zip Large View is validating incorrect source path
        Given I have Zip Large View on design surface
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | '<SPath>'      |                 |                 | D:\         |               |               |                 | Normal (Default) |        |
+       | "<SPath>"      |                 |                 | D:\         |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -162,16 +172,17 @@ Examples:
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
 
-
+	
+@ignore
 Scenario Outline: Zip Large View is validating incorrect Destination path
        Given I have Zip Large View on design surface
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | C:/Test.txt    |                 |                 | '<DPath>'   |               |               |                 | Normal (Default) |        |
+       | C:/Test.txt    |                 |                 | "<DPath>"   |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | DPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -185,18 +196,17 @@ Examples:
     | 9  | [[a#]]            | True       |
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
-
-
-
+	
+@ignore
 Scenario Outline: Zip Large View is validating incorrect variable in source username field
        Given I have Zip Large View on design surface
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | C:/Test.txt    | '<Variable>'    | sas             | D:/         |               |               |                 | Normal (Default) |        |
+       | C:/Test.txt    | "<Variable>"    | sas             | D:/         |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -210,19 +220,17 @@ Examples:
     | 9  | [[User]][[name]]  | False      |
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
-
-
-
-
+	
+@ignore
 Scenario Outline: Zip Large View is validating incorrect variable in Destination username field
        Given I have Zip Large View on design surface
        And "File or Folder" is focused
        And Zip Large View has
        | File or Folder | Source Username | Source Password | Destination | Dest Username | Dest Password |Archive Password | Compression      | Result |
-       | C:/Test.txt    |                 |                 | D:/         | '<Username>'  | abc           |                 | Normal (Default) |        |
+       | C:/Test.txt    |                 |                 | D:/         | "<Username>"  | abc           |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -236,9 +244,8 @@ Examples:
     | 9  | [[User]][[name]]  | False      |
     | 10 | [[rec(@).a]]      | True       |
     | 11 | [[[rec().a]]      | True       |
-
-
-
+	
+@ignore
 Scenario Outline: Zip Large View is validating incorrect variable in Result field
        Given I have Zip Large View on design surface
        And "File or Folder" is focused
@@ -247,7 +254,7 @@ Scenario Outline: Zip Large View is validating incorrect variable in Result fiel
        | C:/Test.txt    |                 |                 | D:/         |               |               |                 | Normal (Default) |        |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -257,8 +264,8 @@ Examples:
     | 5  | [[[[a]]]]        | True       |
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
-
-
+	
+@ignore
 Scenario Outline: Zip On error fields incorrect variables are validating
        Given I have Zip Large View on design surface
        And Zip Large View with water marks has
@@ -267,11 +274,11 @@ Scenario Outline: Zip On error fields incorrect variables are validating
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        And End this workflow is "Unselected"
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

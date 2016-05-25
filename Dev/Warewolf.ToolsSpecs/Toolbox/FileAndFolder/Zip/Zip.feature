@@ -5,18 +5,18 @@ Feature: Zip
 	I want a tool that Zip File or Folder at a given location
 
 Scenario Outline: Zip file at location
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>' for zip tests
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
-	And the Compression as '<compression>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>" for zip tests
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+	And the Compression as "<compression>"
     When the Zip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password |Source Private Key File | Destination Path                      | Destination Username | Destination Password | Destination Private Key File |Overwrite  | Archive Password  | Compression Ratio |
@@ -54,43 +54,43 @@ Scenario Outline: Zip file at location
 		| 26 | SFTP to SFTP PK | [[path]] | sftp://localhost/filetozip41.txt                              | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/filetozip141.txt                              | dev2              | Q/ulw&]      | True     |                 | None            | [[result]] | Success | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
 Scenario Outline: Zip file at location Null
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>' for zip tests
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And use private public key for source is '<sourcePrivateKeyFile>'
-	And use private public key for destination is '<destinationPrivateKeyFile>'
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
-	And the Compression as '<compression>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>" for zip tests
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+	And the Compression as "<compression>"
     When the Zip file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
 		| No | Name          | source   | sourceLocation                                       | username | password | destination | destinationLocation | destUsername      | destPassword | selected | archivepassword | compression     | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		| 1  | Local to FTPS | [[path]] | NULL                                                 | ""       | ""       | [[path1]]   | c:\filetozip0.txt   | integrationtester | I73573r0     | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
 		| 2  | Local to FTPS | [[path]] | c:\filetozip0.txt                                    | ""       | ""       | [[path1]]   | Null                | integrationtester | I73573r0     | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
-		| 3  | UNC to Local  | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\      | ""       | ""       | [[path1]]   | c:\My New1.zip      | ""                | ""           | True     |                 | BestSpeed       | [[result]] | Error  | An           |                      |                           |
+		| 3  | UNC to Local  | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\      | ""       | ""       | [[path1]]   | c:\My New1.zip      | ""                | ""           | True     |                 | BestSpeed       | [[result]] | Error  | NO           |                      |                           |
 		| 4  | FTP to Local  | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip0.txt | ""       | ""       | [[path1]]   | " "                 | ""                | ""           | True     |                 | Default         | [[result]] | Error  | An           |                      |                           |
 		| 5  | FTPS to Local | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip0.txt |          | I73573r0 | [[path1]]   | c:\My New3.zip      | ""                | ""           | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
-		| 6  | SFTP to Local | [[path]] | sftp://localhost/filetozip0.txt                      | dev2     | Q/ulw&]  | [[path1]]   | c:\My New4.zip      | ""                | ""           | True     |                 | None            | [[result]] | Error  | An           |                      |                           |
+		| 6  | SFTP to Local | [[path]] | sftp://localhost/filetozip0.txt                      | dev2     | Q/ulw&]  | [[path1]]   | c:\My New4.zip      | ""                | ""           | True     |                 | None            | [[result]] | Error  | NO           |                      |                           |
 		
 
 
 		Scenario Outline: Zip file at location is compressed at ratio
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>' for zip tests
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And use private public key for source is ''
-	And use private public key for destination is ''
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
-	And the Compression as '<compression>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>" for zip tests
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is ""
+	And use private public key for destination is ""
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+	And the Compression as "<compression>"
     When the Zip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
-	And the output is approximately '<compressionTimes>' the size of the original input 
+	Then the result variable "<resultVar>" will be "<result>"
+	And the output is approximately "<compressionTimes>" the size of the original input 
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password  | Compression Ratio |
@@ -105,19 +105,18 @@ Scenario Outline: Zip file at location Null
 		| 3  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestSpeed | [[result]] | Success | NO           | 1.66              |
 		| 4  | Local to Local | [[path]] | c:\filetozip0.txt | ""       | ""       | [[path1]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestCompression | [[result]] | Success | NO           | 1.71              |
 	
-#Complex Types	WOLF-1042	
-@ignore												
+#Complex Types	WOLF-1042								
 Scenario Outline: Zip file at location using complex types
-	Given I have a source path '<source>' with value '<sourceLocation>'
-	And source credentials as '<username>' and '<password>' for zip tests
-	And I have a destination path '<destination>' with value '<destinationLocation>'
-	And destination credentials as '<destUsername>' and '<destPassword>'
-	And overwrite is '<selected>'
-	And result as '<resultVar>'	
-	And Archive Password as '<archivepassword>'
-	And the Compression as '<compression>'
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>" for zip tests
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And result as "<resultVar>"	
+	And Archive Password as "<archivepassword>"
+	And the Compression as "<compression>"
     When the Zip file tool is executed
-	Then the result variable '<resultVar>' will be '<result>'
+	Then the result variable "<resultVar>" will be "<result>"
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password  | Compression Ratio |

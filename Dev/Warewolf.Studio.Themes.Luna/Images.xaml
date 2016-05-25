@@ -15,6 +15,7 @@
         <ResourceDictionary Source="Images/Explorer-Permission.xaml" />
 
         <ResourceDictionary Source="Images/DotNetDLL.xaml" />
+        <ResourceDictionary Source="Images/WcfEndPoint.xaml" />
         <ResourceDictionary Source="Images/MySQL.xaml" />
         <ResourceDictionary Source="Images/Postgre.xaml" />
         <ResourceDictionary Source="Images/Oracle.xaml" />
@@ -118,16 +119,7 @@
         <ResourceDictionary Source="Images/warewolf_logo_black.xaml" />
 
         <ResourceDictionary Source="Images/RabbitMQ.xaml" />
-        <ResourceDictionary Source="Images/DatabaseLogo.xaml" />
-        <ResourceDictionary Source="Images/PluginLogo.xaml" />
-        <ResourceDictionary Source="Images/WebLogo.xaml" />
-        <ResourceDictionary Source="Images/AddDatabaseLogo.xaml" />
-        <ResourceDictionary Source="Images/AddPluginLogo.xaml" />
-        <ResourceDictionary Source="Images/AddWebLogo.xaml" />
         <ResourceDictionary Source="Images/SharepointLogo.xaml" />
-        <ResourceDictionary Source="Images/AddSharepointLogo.xaml" />
-        <ResourceDictionary Source="Images/DotNetLogo.xaml" />
-        <ResourceDictionary Source="Images/AddDotNetLogo.xaml" />
         <ResourceDictionary Source="Images/FileLogo.xaml" />
         <ResourceDictionary Source="Images/ViewFileLogo.xaml" />
         <ResourceDictionary Source="Images/EditFileLogo.xaml" />

@@ -5,7 +5,6 @@
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.Oracle"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:oracle="clr-namespace:Dev2.Activities.Designers2.Oracle"
                                MinWidth="350"

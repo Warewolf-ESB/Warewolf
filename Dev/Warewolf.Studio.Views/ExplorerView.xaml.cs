@@ -2,6 +2,7 @@
 using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -318,6 +319,12 @@ namespace Warewolf.Studio.Views
 
             if (drag != null && drop != null && drag.Node.Manager.ParentNode != null && drop.Node.Manager.ParentNode != null && Mouse.LeftButton == MouseButtonState.Released)
             {
+                if (Equals(drag.Node.Manager.ParentNode, drop.Node))
+                {
+                    CancelDrag = true;
+                    Reset(drop);
+                    return;
+                }
                 var destination = drop.Node.Data as IExplorerItemViewModel;
                 var source = drag.Node.Data as IExplorerItemViewModel;
 
@@ -357,7 +364,7 @@ namespace Warewolf.Studio.Views
                                     {
                                         exp.AllowDrag = true;
                                     }
-                                });
+                                }, TaskScheduler.FromCurrentSynchronizationContext());
                             }
                         }
                         else
@@ -369,7 +376,7 @@ namespace Warewolf.Studio.Views
                                 {
                                     exp.AllowDrag = true;
                                 }
-                            });
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
                         }
                     }
                 }
@@ -413,7 +420,7 @@ namespace Warewolf.Studio.Views
                                             {
                                                 exp.AllowDrag = true;
                                             }
-                                        });
+                                        }, TaskScheduler.FromCurrentSynchronizationContext());
                                     }
                                 }
                                 else
@@ -425,7 +432,7 @@ namespace Warewolf.Studio.Views
                                         {
                                             exp.AllowDrag = true;
                                         }
-                                    });
+                                    }, TaskScheduler.FromCurrentSynchronizationContext());
                                 }
                             }
                         }

@@ -3,20 +3,15 @@
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:ig="http://schemas.infragistics.com/xaml"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.ODBC"
-                             
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="380"
-                               Height="380"
+                               MinHeight="370"
+                               Height="370"
                                MaxWidth="Infinity"
-                               MaxHeight="Infinity"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
@@ -25,195 +20,64 @@
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+                <luna:SharedResourceDictionary Source="../Core/CustomToolDesignerRegions.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
 
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                      Content="{Binding ButtonDisplayValue}"
                                      Margin="0,0,7,12"
-                                     IsValidatedBefore="{Binding IsFixed}"
-                                     IsClosedAfter="{Binding IsFixed}"                  
-                                     CustomCommand ="{Binding DoneCommand}"
-                                     PostCommand ="{Binding DoneCompletedCommand}"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
-    <Grid Margin="{StaticResource ElementBorder}">
+    <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
 
-        <Grid x:Name="SourcesGrid" Grid.Row="0" 
-              Grid.Column="0"
-              Grid.ColumnSpan="3"
-              Visibility="{Binding SourceVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+        <Grid Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterNegative}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="SourceLabel" Text="Source" />
-            <ComboBox x:Name="SourcesComboBox"
-                                      Grid.Column="1"
-                                      DisplayMemberPath="Name" 
-                                      Margin="{StaticResource ControlBorderRight}"
-                                      ToolTip="{x:Static languages:Core.ManageDbServiceSourcesTooltip}"
-                                      ItemsSource="{Binding Sources}"
-                                      SelectedItem="{Binding SelectedSource, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DatabaseServiceSourceTypesHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </ComboBox>
-            <Button x:Name="SourceEditButton" 
-                                    Grid.Column="2"
-                                    Margin="{StaticResource ControlBorderRight}"
-                                    Content="..."
-                                    ToolTip="{x:Static languages:Core.ManageDbServiceEditSourceTooltip}"
-                                    Command="{Binding Path=EditSourceCommand, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DatabaseServiceEditSourceHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-            <Button x:Name="SourceNewButton" 
-                                    Grid.Column="3"
-                                    Content="{x:Static languages:Core.New}" 
-                                    Width="Auto"
-                                    Style="{StaticResource ButtonOrangeStyle}" 
-                                    ToolTip="{x:Static languages:Core.ManageDbServiceNewSourceTooltip}"
-                                    Command="{Binding Path=NewSourceCommand, Mode=TwoWay}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.DatabaseServiceNewSourceHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-            <Button x:Name="TestInputButton"
-                Grid.Column="4"
-                
-                Content="Validate" 
-                Width="Auto" 
-                Margin="{StaticResource ControlBorderRight}"
-                ToolTip="{x:Static languages:Core.ManageDbServiceTestActionTooltip}"
-                HorizontalAlignment="Right"
-                Command="{Binding Path=TestInputCommand, Mode=TwoWay}"
-                IsEnabled="True" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="True">
+                                    <Setter Property="RowDefinition.Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=OutputsRegion.IsEnabled}" Value="False">
+                                    <Setter Property="RowDefinition.Height" Value="Auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewOdbcSelectionActionGrid}"/>
+
+            <Control Grid.Row="1" x:Name="OutputsControl" DataContext="{Binding OutputsRegion}" Template="{StaticResource NewOutputsGrid}"/>
+
+            <Grid x:Name="ErrorGrid"
+                      Grid.Row="2"
+                      Margin="{StaticResource ControlBorderTop}"
+                      Visibility="{Binding OnErrorVisible}">
+                <errors:OnError />
+            </Grid>
         </Grid>
 
-        <Grid x:Name="ActionsGrid" 
-              Grid.Column="0"
-              Grid.ColumnSpan="3"
-              Grid.Row="1" 
-              Margin="{StaticResource ControlBorderTop}" 
-              IsEnabled="{Binding ActionVisible}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{Binding ElementName=SourceLabel, Path=ActualWidth}"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="ActionLabel" Text="Action" Margin="{StaticResource ControlBorderRight}" />
-
-            <TextBox 
-                     x:Name="ActionsComboBox"
-                      Text="{Binding MyCommand,  Mode=TwoWay}"
-                         Grid.Column="1"
-                         Margin="{StaticResource ControlBorderRight}"
-                         IsEnabled="True"
-                       ToolTip="{x:Static languages:Core.ManageDbServiceActionsTooltip}"
-                       TextWrapping="Wrap"
-                       Height="80"
-                       MinLines="5"
-                       VerticalContentAlignment="Top"
-                VerticalScrollBarVisibility="Auto"
-                  
-            />
-
-
-        </Grid>
-
-       
-
-        <ig:XamGrid x:Name="OutputsMappingDataGrid" 
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    Grid.Row="2"
-                    ItemsSource="{Binding Outputs}" 
-                    IsAlternateRowsEnabled="False"
-                    AutoGenerateColumns="False" 
-                    Margin="{StaticResource ControlBorderTop}"
-                    IsEnabled="{Binding OutputsVisible}"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    MinHeight="30"
-                    MaxHeight="Infinity"
-                    ColumnWidth="*">
-<!--            <ig:XamGrid.Columns>-->
-<!--                <ig:TextColumn x:Name="OutputColumn" Key="MappedFrom" HeaderText="Mapped From" MinimumWidth="100" IsReadOnly="True">-->
-<!--                    <ig:TextColumn.AddNewRowEditorTemplate>-->
-<!--                        <DataTemplate DataType="db:IServiceOutputMapping">-->
-<!--                            <ui:IntellisenseTextBox WrapInBrackets="True" IsEnabled="False" Text="{Binding MappedFrom}" ToolTip="{Binding Path=MappedFrom}"></ui:IntellisenseTextBox>-->
-<!--                        </DataTemplate>-->
-<!--                    </ig:TextColumn.AddNewRowEditorTemplate>-->
-<!--                </ig:TextColumn>-->
-<!--                <customControls:IntellisenseTextBoxColumn Key="MappedTo" HeaderText="Mapped To"  MinimumWidth="100" Watermark="Mapped To">-->
-<!--                    <customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>-->
-<!--                        <DataTemplate DataType="db:IServiceOutputMapping">-->
-<!--                            <ui:IntellisenseTextBox Text="{Binding MappedTo}" ToolTip="{Binding Path=MappedTo}">-->
-<!--                                <ui:IntellisenseTextBox.IntellisenseProvider>-->
-<!--                                    <interfaceImplementors:CompositeIntellisenseProvider>-->
-<!--                                        <interfaceImplementors:DefaultIntellisenseProvider />-->
-<!--                                    </interfaceImplementors:CompositeIntellisenseProvider>-->
-<!--                                </ui:IntellisenseTextBox.IntellisenseProvider>-->
-<!--                            </ui:IntellisenseTextBox>-->
-<!--                        </DataTemplate>-->
-<!--                    </customControls:IntellisenseTextBoxColumn.AddNewRowEditorTemplate>-->
-<!--                </customControls:IntellisenseTextBoxColumn>-->
-<!--            </ig:XamGrid.Columns>-->
-            <ig:XamGrid.SortingSettings>
-                <ig:SortingSettings AllowSorting="False" AllowMultipleColumnSorting="False" ShowSortIndicator="False"/>
-            </ig:XamGrid.SortingSettings>
-            <ig:XamGrid.EditingSettings>
-                <ig:EditingSettings AllowEditing="Cell"
-                                                            IsMouseActionEditingEnabled="SingleClick"
-                                                            IsEnterKeyEditingEnabled="True" 
-                                                            IsF2EditingEnabled="True" 
-                                                            IsOnCellActiveEditingEnabled="True" />
-            </ig:XamGrid.EditingSettings>
-            <ig:XamGrid.ConditionalFormattingSettings>
-                <ig:ConditionalFormattingSettings AllowConditionalFormatting="True"/>
-            </ig:XamGrid.ConditionalFormattingSettings>
-        </ig:XamGrid>
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="{StaticResource ControlBorderTop}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Recordset Name" ></TextBlock>
-            <TextBox Grid.Column="1" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:Core.MappingsRecordsetNameHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </TextBox>
-        </Grid>
-        <Grid x:Name="ErrorGrid" 
-              Grid.Column="0" 
-              Grid.ColumnSpan="3"
-              Grid.Row="4"
-              Margin="{StaticResource ControlBorderTop}" 
-              Visibility="{Binding OnErrorVisible}">
-            <errors:OnError />
+        <Grid  Visibility="{Binding GenerateOutputsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+            <Control DataContext="{Binding ManageServiceInputViewModel}" Template="{StaticResource NewGenerateOutputsViewDB}" Margin="0,0,0,-5"/>
         </Grid>
     </Grid>
 </core:ActivityDesignerTemplate>

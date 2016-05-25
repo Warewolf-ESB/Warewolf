@@ -214,19 +214,17 @@ Scenario Outline:Executing with Incorrect Recordsets
 	Given I have a variable "<input>" and I selected "DiskAvailable"	
 	When the gather system infomartion tool is executed
 	Then the value of the variable "[[my(2).roles]]" is a valid "String"
-	And the execution has 'AN' error
+	And the execution has "AN" error
 	Examples: 
 	| input                                      |
 	| [[rec&^[a]]().a]]                          |
 	| [[]]                                       |
 	| [[rec&^]][[rec&^]] is not a valid variable |
 
-@ignore
-#Complex Types WOLF-1042
 Scenario Outline: Assign a DateTime into a complex types
-	Given I have a variable '<object>' and I selected '<Type>'	
+	Given I have a variable "<object>" and I selected "<Type>"	
 	When the gather system infomartion tool is executed
-	Then the value of the variable '<object>' is a valid "DateTime"
+	Then the value of the variable "<object>" is a valid "DateTime"
 	And the execution has "<error>" error
 	And the debug output as 
 	| # | Variable   | Type   | results  |

@@ -10,7 +10,6 @@ Scenario: A webservice that returns a primitive array
 	When the mapping is generated
 	Then the mapping should contain the primitive array
 
-@ignore
 @Webservice_ExecutingJsonWithPrimitiveArrays_10641
 Scenario: Execute webservice which returns a primitive array
 	Given I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sensor=true&amp;address=address
@@ -21,9 +20,9 @@ Scenario: Execute webservice which returns a primitive array
 
 
 Scenario Outline: Apply JsonPath to payload
-	Given I have a webservice with '<response file>' as a response
-	When I apply '<path>' to the response
-	Then the mapping should be '<mapping>'
+	Given I have a webservice with "<response file>" as a response
+	When I apply "<path>" to the response
+	Then the mapping should be "<mapping>"
 	Examples: 
 		| response file              | path                | mapping                              |
 		| simple json.txt            | $.store.book[*]     | UnnamedArrayData().category          |

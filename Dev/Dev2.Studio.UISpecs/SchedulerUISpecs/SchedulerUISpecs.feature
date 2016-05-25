@@ -14,7 +14,7 @@ Scenario: CreateSaveDeleteSchedule
 	#And I click "RESOURCEPICKEROKBUTTON"
 	#And I click "SCHEDULEREDITTRIGGERBUTTON"
 	#And I wait for "1" seconds
-	Given I click on 'okBtn' in "TriggerEditDialog"
+	Given I click on "okBtn" in "TriggerEditDialog"
 	#And I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {ENTER}" to "TriggerEditDialog"
 	#And I click "SCHEDULERSAVEBUTTON"
 	#And I wait for "3" seconds
@@ -36,14 +36,14 @@ Scenario: CreateSaveDeleteSchedule
 Scenario: CreateSchedule
 	Given I click "RIBBONSCHEDULE"
 	# 5 secs
-	#And I click on 'UI_NewTaskButton_AutoID' in "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SchedulerView_AutoID"
-	#And I click on 'UI_DeleteTaskButton_AutoID' in "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SchedulerView_AutoID"
+	#And I click on "UI_NewTaskButton_AutoID" in "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SchedulerView_AutoID"
+	#And I click on "UI_DeleteTaskButton_AutoID" in "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SchedulerView_AutoID"
 	# 5 secs
-	#And I click on 'UI_NewTaskButton_AutoID' in "ACTIVETAB,UI_SchedulerView_AutoID"
-	#And I click on 'UI_DeleteTaskButton_AutoID' in "ACTIVETAB,UI_SchedulerView_AutoID"
+	#And I click on "UI_NewTaskButton_AutoID" in "ACTIVETAB,UI_SchedulerView_AutoID"
+	#And I click on "UI_DeleteTaskButton_AutoID" in "ACTIVETAB,UI_SchedulerView_AutoID"
 	# 9 secs
-	#And I click on 'UI_NewTaskButton_AutoID' in "ACTIVETAB"
-	#And I click on 'UI_DeleteTaskButton_AutoID' in "ACTIVETAB"
+	#And I click on "UI_NewTaskButton_AutoID" in "ACTIVETAB"
+	#And I click on "UI_DeleteTaskButton_AutoID" in "ACTIVETAB"
 	# 19 SEC
 	# 4 SEC
 	#And I click "ACTIVETAB,UI_SchedulerView_AutoID,UI_NewTaskButton_AutoID"

@@ -13,19 +13,15 @@ namespace Dev2.Integration.Tests
     public class TimeZoneChanges
     {
         private readonly string _webServerUri = ServerSettings.WebserverURI;
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("GlobalConstants_TimezoneChanges")]
-        [Ignore]
         // ReSharper disable once InconsistentNaming
         public void GlobalConstants_TimezoneChanges_Change_ExpectDatetime_Now_Change()
         {
             try
             {
-
-
                 // ReSharper disable once UnusedVariable
                 var a = GlobalConstants.NullDataListID;
                 ChangeTimeZone("South Africa Standard Time");
@@ -39,11 +35,9 @@ namespace Dev2.Integration.Tests
                 XDocument their = XDocument.Parse(reponseDataChanged);
                 var theirHour = DateTime.Parse( their.Descendants().First(x => x.Name == "a").Value);
                 Assert.IsTrue( Math.Abs(theirHour.Subtract(myHour).Hours) >1);
-
             }
             finally
             {
-
                 ChangeTimeZone("South Africa Standard Time");
             }
         }

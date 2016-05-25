@@ -67,12 +67,12 @@
 ##decide if variable [[A]] Ends With variable [[B]] (False)
 ##decide if variable [[A]] Contains variable [[B]] (True)
 ##decide if variable [[A]] Contains variable [[B]] (False)
-##decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
-##ecide if variable [[A]] Doesn't Starts With variable [[B]] (False)
-##decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
-##decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
-##decide if variable [[A]] Doesn't Contains variable [[B]] (True)
-##decide if variable [[A]] Doesn't Contains variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Starts With variable [[B]] (True)
+##ecide if variable [[A]] Doesn"t Starts With variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Ends With variable [[B]] (True)
+##decide if variable [[A]] Doesn"t Ends With variable [[B]] (False)
+##decide if variable [[A]] Doesn"t Contains variable [[B]] (True)
+##decide if variable [[A]] Doesn"t Contains variable [[B]] (False)
 ##decide if There Is An Error (True)	
 ##decide if There Is An Error (False)
 ##decide if There Is No Error (True)
@@ -1018,7 +1018,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (False)
 	| NO |
 
 
-Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Starts With variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "country"
 	And is "[[A]]" "NotStartsWith" "[[B]]"	
@@ -1034,7 +1034,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
 	| YES |
 
 
-Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Starts With variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "South"
 	And is "[[A]]" "NotStartsWith" "[[B]]"	
@@ -1049,7 +1049,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
 	|    |
 	| NO |
 
-Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Ends With variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "continent"
 	And is "[[A]]" "NotEndsWith" "[[B]]"	
@@ -1064,7 +1064,7 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (True)
 	|     |
 	| YES |
 
-Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Ends With variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "country"
 	And is "[[A]]" "NotEndsWith" "[[B]]"	
@@ -1079,7 +1079,7 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
 	|    |
 	| NO |
 
-Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
+Scenario: decide if variable [[A]] Doesn"t Contains variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Nile"
 	And is "[[A]]" "NotContain" "[[B]]"	
@@ -1094,7 +1094,7 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
 	|     |
 	| YES |
 
-Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
+Scenario: decide if variable [[A]] Doesn"t Contains variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Africa"
 	And is "[[A]]" "NotContain" "[[B]]"
@@ -1278,13 +1278,12 @@ Scenario: decide if variable [[A]] greater than a variable [[B]] (False)
 	|       |
 	| NO |
 
-@ignore
 #Complex Types WOLF-1042
 Scenario Outline: Ensuring all complex type inputs work as expected
-	Given a decision variable '<variable1>' value '<Var1>'	
-	And a decision variable '<variable2>' value '<Var2>'
-	And check if '<variable1>' '<matchtype>' '<variable2>'
-	And Require all decisions to be true is '<Requirement>'
+	Given a decision variable "<variable1>" value "<Var1>"	
+	And a decision variable "<variable2>" value "<Var2>"
+	And is "<variable1>" "<matchtype>" "<variable2>"
+	And Require all decisions to be true is "<Requirement>"
 	When the decision tool is executed
 	Then the execution has "NO" error
 	Examples: 
@@ -1311,7 +1310,7 @@ Scenario: validate that a variable is Null Positive
 	Given decide if "[[A]]" "IsNull" 
 	When the decision tool is executed
 	Then the execution has "NO" error
-	Then the debug inputs as
+	Then the debug inputs as  
        |           | Statement | Require all decisions to be true |
        | [[A]] =   | String    | YES                              |
     And the debug output as 

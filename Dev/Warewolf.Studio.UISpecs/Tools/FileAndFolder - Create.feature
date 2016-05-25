@@ -5,13 +5,11 @@
 
 @Create
 # Coded UI TESTS
-@ignore
 Scenario: Create tool Small View
        Given I have Create Small View on design surface
        Then Create small view has
        | File or Folder |  Result |
        |                |         |
-@ignore
 Scenario: Create tool Large View
        Given I have Create Large View on design surface
        Then Create Large View has
@@ -23,13 +21,11 @@ Scenario: Create tool Large View
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-@ignore
 Scenario: Create tool Small View water marks
        Given I have Create Small View on design surface
        Then Create small view watermarks are
        | File or Folder   |Result      |
        | [[PathToCreate]] |[[Success]] |
-@ignore
 Scenario: Create tool Large View Water marks
        Given I have Create Large View on design surface
        Then Create Large View watermarks are
@@ -41,7 +37,6 @@ Scenario: Create tool Large View Water marks
        |                            |                       |
        And End this workflow is "Unselected"
        And Done button is "Visible"
-@ignore
 Scenario: Create Large View is validating when clicking on done with blank fields
        Given I have Create Large View on design surface
        And "File or Folder" is focused
@@ -52,7 +47,6 @@ Scenario: Create Large View is validating when clicking on done with blank field
        When I click "Done"
        Then Validation message is thrown
        And Create Small View is "Not Visible"
-@ignore
 Scenario: Create tool Large View to small view persisting data correctly
        Given I have Create Large View on design surface
        And Create Large View has
@@ -71,7 +65,6 @@ Scenario: Create tool Large View to small view persisting data correctly
        | File or Folder |  Result            |
        | C:\Test        |  [[FolderCreated]] |
 
-@ignore
 Scenario: After correcting incorrect variable done button is closing large view
        Given I have Create Large View on design surface
        When Create Large View has
@@ -95,7 +88,6 @@ Scenario: After correcting incorrect variable done button is closing large view
        | File or Folder | Result            |
        | C:\[[a]]       | [[FolderCreated]] |
 
-@ignore
 Scenario: Close large view is closing large view without validating
        Given I have Create Large View on design surface
        And Create Large View has
@@ -115,7 +107,6 @@ Scenario: Close large view is closing large view without validating
         | File or Folder | Result            |
         | C:\[[a2@]]     | [[FolderCreated]] |
 
-@ignore
 Scenario Outline: Create Large View is validating incorrect path
        Given I have Create Large View on design surface
        And "File or Folder" is focused
@@ -124,7 +115,7 @@ Scenario Outline: Create Large View is validating incorrect path
        | <SPath>        |          |          | [[FolderCreated]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | SPath             | Validation |
     | 1  | D:\Test.txt       | False      |
@@ -140,7 +131,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Create Large View is validating incorrect variable in  username field
        Given I have Create Large View on design surface
        And "File or Folder" is focused
@@ -149,7 +139,7 @@ Scenario Outline: Create Large View is validating incorrect variable in  usernam
         | D:\Test.txt    | <Variable> |          | [[FolderCreated]] |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable          | Validation |
     | 1  | testing           | False      |
@@ -165,7 +155,6 @@ Examples:
     | 11 | [[[rec().a]]      | True       |
 
 
-@ignore
 Scenario Outline: Create Large View is validating incorrect variable in Result field
        Given I have Create Large View on design surface
        And "File or Folder" is focused
@@ -174,7 +163,7 @@ Scenario Outline: Create Large View is validating incorrect variable in Result f
        | D:\Test.txt    |          |          | <Result> |
        And If it exists Overwrite is "Unselected"      
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Result           | Validation |
     | 1  | result           | False      |
@@ -185,7 +174,6 @@ Examples:
     | 6  | [[rec(*).a]]     | False      |
     | 7  | [[rec().a@]]     | True       |
 
-@ignore
 Scenario Outline: Create On error fields incorrect variables are validating
        Given I have Create Large View on design surface
        And Create Large View with water marks has
@@ -195,11 +183,11 @@ Scenario Outline: Create On error fields incorrect variables are validating
        And If it exists Overwrite is "Unselected"      
        And On Error box consists
        | Put error in this variable | Call this web service |
-       | '<Variable>'               | '<Variable>'          |
+       | "<Variable>"               | "<Variable>"          |
        And End this workflow is "Unselected"
        And Done button is "Visible"
        When I click on "Done"
-       Then Validation message is thrown '<Validation>'
+       Then Validation message is thrown "<Validation>"
 Examples: 
     | No | Variable      | Validation |
     | 1  | [[a]]         | False      |

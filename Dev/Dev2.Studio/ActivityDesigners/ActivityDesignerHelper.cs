@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2016 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,6 +9,7 @@
 */
 
 using Dev2.Activities;
+using Dev2.Activities.Designers2.AggregateCalculate;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Activities.Designers2.Calculate;
 using Dev2.Activities.Designers2.CaseConvert;
@@ -42,6 +42,10 @@ using Dev2.Activities.Designers2.Move;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.MySqlDatabase;
 using Dev2.Activities.Designers2.Net_DLL;
+using Dev2.Activities.Designers2.ODBC;
+using Dev2.Activities.Designers2.Oracle;
+using Dev2.Activities.Designers2.PostgreSql;
+using Dev2.Activities.Designers2.RabbitMQ.Consume;
 using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
@@ -53,15 +57,22 @@ using Dev2.Activities.Designers2.Script;
 using Dev2.Activities.Designers2.SelectAndApply;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Activities.Designers2.Service;
+using Dev2.Activities.Designers2.SharePointCopyFile;
+using Dev2.Activities.Designers2.SharePointDeleteFile;
+using Dev2.Activities.Designers2.SharePointFileDownload;
+using Dev2.Activities.Designers2.SharePointFileUpload;
+using Dev2.Activities.Designers2.SharepointFolderRead;
 using Dev2.Activities.Designers2.SharepointListCreate;
 using Dev2.Activities.Designers2.SharepointListDelete;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Activities.Designers2.SharepointListUpdate;
+using Dev2.Activities.Designers2.SharePointMoveFile;
 using Dev2.Activities.Designers2.SortRecords;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Activities.Designers2.UniqueRecords;
 using Dev2.Activities.Designers2.Unzip;
+using Dev2.Activities.Designers2.WCFEndPoint;
 using Dev2.Activities.Designers2.Web_Service_Delete;
 using Dev2.Activities.Designers2.Web_Service_Post;
 using Dev2.Activities.Designers2.Web_Service_Put;
@@ -73,19 +84,16 @@ using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
+using Dev2.Activities.Exchange;
+using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
+using Dev2.Activities.WcfEndPoint;
 using Dev2.Studio.ViewModels.Workflow;
 using System;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Activities.Designers2.Oracle;
-using Dev2.Activities.Designers2.ODBC;
-using Dev2.Activities.Designers2.PostgreSql;
-using Dev2.Activities.Designers2.RabbitMQ.Consume;
-using Dev2.Activities.Exchange;
-using Dev2.Activities.RabbitMQ.Consume;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ActivityDesigners
@@ -108,6 +116,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
+                { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                 { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
                 { typeof(DsfPathCopy), typeof(CopyDesigner) },
@@ -159,6 +168,13 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointCreateListItemActivity), typeof(SharepointListCreateDesigner) },
                 { typeof(SharepointDeleteListItemActivity), typeof(SharepointListDeleteDesigner) },
                 { typeof(SharepointUpdateListItemActivity), typeof(SharepointListUpdateDesigner) },
+                { typeof(SharepointReadFolderItemActivity), typeof(SharePointReadFolderDesigner) },
+                { typeof(SharepointFileUploadActivity), typeof(SharePointFileUploadDesigner) },
+                { typeof(SharepointFileDownLoadActivity), typeof(SharePointFileDownLoadDesigner) },
+                { typeof(SharepointCopyFileActivity), typeof(SharePointCopyFileDesigner) },
+                { typeof(SharepointDeleteFileActivity), typeof(SharePointDeleteFileDesigner) },
+                { typeof(SharepointMoveFileActivity), typeof(SharePointMoveFileDesigner) },
+                { typeof(DsfWcfEndPointActivity),typeof(WcfEndPointDesigner)},
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },

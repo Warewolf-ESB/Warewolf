@@ -1,12 +1,12 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using Dev2.Activities.Exchange;
+﻿using Dev2.Activities.Exchange;
 using Dev2.Data.Util;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using netDumbster.smtp;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using Warewolf.Tools.Specs.BaseTypes;
 
@@ -15,7 +15,6 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
     [Binding]
     public class ExchangeEmailSteps : RecordSetBases
     {
-
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -34,24 +33,21 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             ScenarioContext.Current.TryGetValue("body", out body);
             string subject;
             ScenarioContext.Current.TryGetValue("subject", out subject);
-            string fromAccount;
-            ScenarioContext.Current.TryGetValue("fromAccount", out fromAccount);
             string password;
             ScenarioContext.Current.TryGetValue("password", out password);
             string simulationOutput;
             ScenarioContext.Current.TryGetValue("simulationOutput", out simulationOutput);
             string to;
             ScenarioContext.Current.TryGetValue("to", out to);
-            bool isHtml;
-            ScenarioContext.Current.TryGetValue("isHtml", out isHtml);
 
             var server = SimpleSmtpServer.Start(25);
             ScenarioContext.Current.Add("server", server);
 
             var selectedEmailSource = new ExchangeSource()
             {
-                UserName = "",
-                Password = "",
+                AutoDiscoverUrl = "https://outlook.office365.com/EWS/Exchange.asmx",
+                UserName = "bernartdt@dvtdev.onmicrosoft.com",
+                Password = "Kailey@40",
                 ResourceName = Guid.NewGuid().ToString(),
                 ResourceID = Guid.NewGuid()
             };
@@ -146,6 +142,12 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             var hasAnError = expectedError == actuallyHasErrors;
             var errorMessageMatches = anError.Equals(fetchErrors, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(hasAnError || errorMessageMatches, message);
+        }
+
+        [Given(@"exchange to address is ""(.*)""")]
+        public void GivenExchangeToAddressIs(string to)
+        {
+            ScenarioContext.Current.Add("to", to);
         }
     }
 }

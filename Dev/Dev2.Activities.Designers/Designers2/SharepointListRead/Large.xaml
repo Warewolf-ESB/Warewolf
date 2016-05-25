@@ -6,6 +6,7 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
@@ -140,7 +141,7 @@
                 </Grid.ColumnDefinitions>
                 <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                        Margin="0"
-                                       ItemsSource="{Binding ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Style="{StaticResource ActivityMapppingDataGridStyle}">
                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                     <DataGrid.Columns>

@@ -377,7 +377,6 @@ Scenario: Edit DB Source
 	Then the "DemoDB" tab is opened
 
 #Complex Types WOLF-1042
-@ignore
 Scenario Outline: Saving results in complex types
 	Given I have "DB Source" as "DemoDB"
 	And table as "dbo.[Country]"
@@ -386,7 +385,7 @@ Scenario Outline: Saving results in complex types
 	| [[Country(*).CountryID().value]]   | CountryID   | int         |
 	| [[Country(*).Description().value]] | Description | varchar(50) |
 	And "skip blank rows" is checked by default
-	And The result variable '<result>' equals '<value>'
+	And The result variable "<result>" equals "<value>"
 	When the tool is executed
 	And the execution has "NO" error 
 	Examples: 
