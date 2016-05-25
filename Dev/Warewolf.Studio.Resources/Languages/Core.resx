@@ -4593,6 +4593,19 @@ Data
   <data name="RabbitMQToolTipQueueName" xml:space="preserve">
     <value>Provide a meaningful name for the queue.</value>
   </data>
+  <data name="RabbitMQHelpResponse" xml:space="preserve">
+    <value>Provide a meaningful name for the queue.&lt;br /&gt;
+        &lt;br /&gt;
+
+        Allowed:&lt;br /&gt;
+        Data   
+        &lt;ol&gt;
+            &lt;li&gt;[[Scalar]]&lt;/li&gt;            
+        &lt;/ol&gt;</value>
+  </data>
+  <data name="RabbitMQToolTipResponse" xml:space="preserve">
+    <value>Put response variables go in here.</value>
+  </data>
   <data name="RabbitMQHelpIsDurable" xml:space="preserve">
     <value>Make the queue durable.&lt;br/&gt;
         &lt;br /&gt;
