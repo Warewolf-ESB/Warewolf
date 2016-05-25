@@ -1160,7 +1160,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 fullDataList.Add(item);
             }
-
+            foreach (var item in ComplexObjectCollection)
+            {
+                fullDataList.Add(item);
+            }
             return fullDataList;
         }
         /// <summary>
@@ -1275,12 +1278,11 @@ namespace Dev2.Studio.ViewModels.DataList
             else
             {
                 RecsetCollection.Clear();
-                AddRecordSet();
                 ScalarCollection.Clear();
+                ComplexObjectCollection.Clear();
 
-                ComplexObjectCollection.Clear();
+                AddRecordSet();
                 AddComplexObject();
-                ComplexObjectCollection.Clear();
             }
 
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
@@ -1356,7 +1358,7 @@ namespace Dev2.Studio.ViewModels.DataList
                             }
                             if (jsonAttribute)
                             {
-
+                                AddComplexObjectFromXmlNode(c);
                             }
                             else
                             {
@@ -1376,6 +1378,50 @@ namespace Dev2.Studio.ViewModels.DataList
             catch (Exception e)
             {
                 Dev2Logger.Error(e);
+            }
+        }
+
+        private void AddComplexObjectFromXmlNode(XmlNode xmlNode)
+        {
+            var children = xmlNode.ChildNodes;
+            var isArray = false;
+            if (xmlNode.Attributes != null)
+            {
+                 isArray = ParseBoolAttribute(xmlNode.Attributes["IsArray"]);
+            }
+            var name = GetNameForArrayComplexObject(xmlNode, isArray);
+            var parent = new ComplexObjectItemModel(name) {IsArray = isArray};
+            ComplexObjectCollection.Add(parent);
+            foreach (XmlNode c in children)
+            {
+                AddComplexObjectFromXmlNode(c,parent);
+                
+            }
+        }
+
+        private static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
+        {
+            var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
+            return name;
+        }
+
+        private void AddComplexObjectFromXmlNode(XmlNode c, ComplexObjectItemModel parent)
+        {
+            var isArray = false;
+            if (c.Attributes != null)
+            {
+                isArray = ParseBoolAttribute(c.Attributes["IsArray"]);
+            }
+            var name = GetNameForArrayComplexObject(c, isArray);
+            var complexObjectItemModel = new ComplexObjectItemModel(name) { IsArray = isArray };
+            parent.Children.Add(complexObjectItemModel);
+            if (c.HasChildNodes)
+            {
+                var children = c.ChildNodes;
+                foreach (XmlNode childNode in children)
+                {
+                    AddComplexObjectFromXmlNode(childNode, complexObjectItemModel);
+                }
             }
         }
 
@@ -1490,14 +1536,18 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private bool ParseIsEditable(XmlAttribute attr)
         {
+           return ParseBoolAttribute(attr);
+        }
+
+        private bool ParseBoolAttribute(XmlAttribute attr)
+        {
             var result = true;
             if (attr != null)
             {
-                Boolean.TryParse(attr.Value, out result);
+                bool.TryParse(attr.Value, out result);
             }
             return result;
         }
-
         // ReSharper disable InconsistentNaming
         private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
         // ReSharper restore InconsistentNaming

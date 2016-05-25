@@ -877,6 +877,83 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(expectedResult, result);
         }
 
+
+        [TestMethod]
+        public void WriteDataListToResourceModel_ShouldContainAllVariables()
+        {
+            Setup();
+            var personObject = new ComplexObjectItemModel("Person");
+            personObject.Children.Add(new ComplexObjectItemModel("Age"));
+            personObject.Children.Add(new ComplexObjectItemModel("Name"));
+            var schoolObject = new ComplexObjectItemModel("School");
+            schoolObject.Children.Add(new ComplexObjectItemModel("Name"));
+            schoolObject.Children.Add(new ComplexObjectItemModel("Location"));
+            personObject.Children.Add(schoolObject);
+            _dataListViewModel.ComplexObjectCollection.Add(personObject);
+
+            const string expectedResult = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><School Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></School></Person></DataList>";
+            StringAssert.Contains(expectedResult,@"<Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />");
+            StringAssert.Contains(expectedResult,@"<Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />");
+            StringAssert.Contains(expectedResult,@"<Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><School Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></School></Person>");
+        }
+
+        [TestMethod]
+        public void WriteDataListToResourceModel_WithJsonArray_ShouldContainAllVariablesWithJsonArraySetTrue()
+        {
+            Setup();
+            var personObject = new ComplexObjectItemModel("Person");
+            personObject.Children.Add(new ComplexObjectItemModel("Age"));
+            personObject.Children.Add(new ComplexObjectItemModel("Name"));
+            var schoolObject = new ComplexObjectItemModel("Schools") {IsArray = true};
+            schoolObject.Children.Add(new ComplexObjectItemModel("Name"));
+            schoolObject.Children.Add(new ComplexObjectItemModel("Location"));
+            personObject.Children.Add(schoolObject);
+            _dataListViewModel.ComplexObjectCollection.Add(personObject);
+
+            const string expectedResult = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></Schools></Person></DataList>";
+            StringAssert.Contains(expectedResult,@"<Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />");
+            StringAssert.Contains(expectedResult,@"<Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" />");
+            StringAssert.Contains(expectedResult,@"<Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></Schools></Person>");
+        }
+
+        [TestMethod]
+        public void ConvertDataListStringToCollections_DataListWithComplexObject_ShouldPopulateComplexObject()
+        {
+            Setup();
+            const string expectedResult = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></Schools></Person></DataList>";
+            _dataListViewModel.ConvertDataListStringToCollections(expectedResult);
+            Assert.IsNotNull(_dataListViewModel.ComplexObjectCollection);
+            var personObject = _dataListViewModel.ComplexObjectCollection.FirstOrDefault(model => model.Name == "Person");
+            Assert.IsNotNull(personObject);
+            Assert.IsNotNull(personObject.Children);
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name=="Name"));
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name=="Age"));
+            var schools = personObject.Children.FirstOrDefault(model => model.Name=="Schools");
+            Assert.IsNotNull(schools);
+            Assert.IsFalse(schools.IsArray);
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name=="Name"));
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name=="Location"));
+        }
+
+        [TestMethod]
+        public void ConvertDataListStringToCollections_DataListWithComplexObjectHasArray_ShouldPopulateComplexObjectSetNameWithBrackets()
+        {
+            Setup();
+            const string expectedResult = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""None"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /><Person Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ><Age Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Age><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Schools Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""True"" ColumnIODirection=""None"" ><Name Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Name><Location Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" ></Location></Schools></Person></DataList>";
+            _dataListViewModel.ConvertDataListStringToCollections(expectedResult);
+            Assert.IsNotNull(_dataListViewModel.ComplexObjectCollection);
+            var personObject = _dataListViewModel.ComplexObjectCollection.FirstOrDefault(model => model.Name == "Person");
+            Assert.IsNotNull(personObject);
+            Assert.IsNotNull(personObject.Children);
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name=="Name"));
+            Assert.IsNotNull(personObject.Children.FirstOrDefault(model => model.Name=="Age"));
+            var schools = personObject.Children.FirstOrDefault(model => model.Name=="Schools()");
+            Assert.IsNotNull(schools);
+            Assert.IsTrue(schools.IsArray);
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name=="Name"));
+            Assert.IsNotNull(schools.Children.FirstOrDefault(model => model.Name=="Location"));
+        }
+
         #endregion WriteDataToResourceModel Tests
 
         #region Internal Test Methods

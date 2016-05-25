@@ -403,8 +403,5 @@ namespace Dev2.Studio.Core.Models.DataList
         //    return name;
         //}
 
-        #region Overrides of DataListItemModel
-
-        #endregion
     }
 }
