@@ -383,7 +383,7 @@
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Diagnostics.Test\Dev2.Diagnostics.Tests.csproj">
+    <ProjectReference Include="..\Dev2.Diagnostics.Tests\Dev2.Diagnostics.Tests.csproj">
       <Project>{BF41B889-B0EE-436C-9511-5943C77582E1}</Project>
       <Name>Dev2.Diagnostics.Tests</Name>
     </ProjectReference>
