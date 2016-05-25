@@ -271,7 +271,7 @@ namespace WarewolfParsingTest
             var res = EvaluationFunctions.eval(env, 1, "[[Rec(*)]][[Rec(*)]]");
             //------------Assert Results-------------------------
             // note this is currently undefined behaviour
-            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,a1,a");
+            Assert.AreEqual("11,1a,a1,aa", CommonFunctions.evalResultToString(res));
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -287,7 +287,7 @@ namespace WarewolfParsingTest
             var res = EvaluationFunctions.eval(env, 1, "[[Rec(*)]][[Rec(3)]]");
             //------------Assert Results-------------------------
             // note this is currently undefined behaviour
-            Assert.AreEqual(CommonFunctions.evalResultToString(res), "1,a3,c");
+            Assert.AreEqual("13,1c,a3,ac", CommonFunctions.evalResultToString(res));
         }
 
         [TestMethod]
@@ -335,7 +335,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.eval(env, 0,  "[[Rec(*).a]][[x]]" );
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  "1,2,31" );
+            Assert.AreEqual("11,21,31",  CommonFunctions.evalResultToString(res) );
         }
 
         [TestMethod]
@@ -412,7 +412,7 @@ namespace WarewolfParsingTest
             //------------Execute Test---------------------------
             var res = EvaluationFunctions.eval(env, 0,  " [[Rec()]]" );
             //------------Assert Results-------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString(res),  " 3,c" );
+            Assert.AreEqual(" 3, c",  CommonFunctions.evalResultToString(res) );
         }
 
 

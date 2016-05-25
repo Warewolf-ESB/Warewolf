@@ -192,7 +192,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
             | Star -> false
             | Last -> true
             | _ -> true
-        | _ -> false
+        | _ -> true
     
     match right with
     | WarewolfAtomResult x -> 
@@ -214,7 +214,7 @@ and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssig
         | RecordSetExpression b -> 
             match b.Index with
             | Star -> addToRecordSetFramedWithAtomList env b x shouldUseLast update (Some value)
-            | Last -> addToRecordSetFramedWithAtomList env b  x true update (Some value)
+            | Last -> addToRecordSetFramedWithAtomList env b x true update (Some value)
             | _ -> 
                 try 
                     addToRecordSetFramed env b x.[0]

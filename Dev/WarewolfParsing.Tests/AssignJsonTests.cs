@@ -177,7 +177,9 @@ namespace WarewolfParsingTest
             var obj = WarewolfDataEvaluationCommon.addAtomicPropertyToJson(j, "Name", DataStorage.WarewolfAtom.NewDataString("a"));
             var result = obj.ToString();
             //------------Assert Results-------------------------
-            Assert.AreEqual(@"{""Name"": ""a""}", result);
+            Assert.AreEqual(@"{
+  ""Name"": ""a""
+}", result);
         }
 
         [TestMethod]
