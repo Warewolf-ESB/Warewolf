@@ -22,7 +22,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Activities.WcfEndPoint
 {
-    [ToolDescriptorInfo("Resources-Service", "WCF Connector", ToolType.Native, "6AEB1028-6332-46F9-8BED-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("WcfEndPoint", "WCF Connector", ToolType.Native, "6AEB1028-6332-46F9-8BED-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWcfEndPointActivity : DsfActivity
     {
         public IWcfAction Method { get; set; }
