@@ -257,6 +257,18 @@
             <Control Template="{StaticResource NewActionGrid}" Grid.Row="1"/>
         </Grid>
     </ControlTemplate>
+    <ControlTemplate x:Key="NewWcfSelectionActionGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewSelectionGrid}"/>
+
+            <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="1"/>
+        </Grid>
+    </ControlTemplate>
     <ControlTemplate x:Key="NewOdbcSelectionActionGrid">
         <Grid>
             <Grid.RowDefinitions>
